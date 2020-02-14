@@ -294,7 +294,7 @@ extern void zh_compPrintCredits( ZH_COMP_DECL );
 extern void zh_compPrintLogo( ZH_COMP_DECL );
 extern void zh_compPrintModes( ZH_COMP_DECL );
 
-/* Misc functions defined in harbour.c */
+/* Misc functions defined in ziher.c */
 extern void zh_compNOOPfill( PZH_ZFUNC pFunc, ZH_SIZE nFrom, ZH_ISIZ nCount, ZH_BOOL fPop, ZH_BOOL fCheck );
 extern ZH_BOOL zh_compHasJump( PZH_ZFUNC pFunc, ZH_SIZE nPos );
 
@@ -356,7 +356,8 @@ extern const ZH_BYTE zh_comp_pcode_len[];
 /* /kx command-line setting types - compatibility modes
  * (turn on a bit in ZH_ULONG word)
 */
-#define ZH_COMPFLAG_ZIHER      ZH_SM_ZIHER     /* 1 -kh */
+#define ZH_COMPFLAG_ZIHER        ZH_SM_ZIHER     /* 1 -kh */
+#define ZH_COMPFLAG_XBASE        ZH_SM_XBASE     /* 2 -kh */
 #define ZH_COMPFLAG_SHORTCUTS    ZH_SM_SHORTCUTS   /* 8 -z enable shortcuts for logical operators */
 #define ZH_COMPFLAG_ARRSTR       ZH_SM_ARRSTR      /* 16 -ks strings as array of bytes */
 #define ZH_COMPFLAG_EXTOPT       ZH_SM_EXTOPT      /* 32 -ko Cl*pper incompatible optimizations */
@@ -369,7 +370,8 @@ extern const ZH_BYTE zh_comp_pcode_len[];
 
 #define ZH_COMP_ISSUPPORTED(flag)   ( ZH_COMP_PARAM->supported & (flag) )
 
-#define ZH_SUPPORT_ZIHER          ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_ZIHER) )
+#define ZH_SUPPORT_ZIHER            ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_ZIHER) )
+#define ZH_SUPPORT_XBASE            ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_XBASE) )
 #define ZH_SUPPORT_ARRSTR           ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_ARRSTR) )
 #define ZH_SUPPORT_EXTOPT           ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_EXTOPT) )
 #define ZH_SUPPORT_MACROTEXT        ( ZH_COMP_ISSUPPORTED(ZH_COMPFLAG_MACROTEXT) )

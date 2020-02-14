@@ -1,7 +1,7 @@
 /*
- * Header file for macro related defines
+ * assert() wrapper
  *
- * Copyright 2001-2002 {list of individual authors and e-mail addresses}
+ * Copyright 2007 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,18 +44,17 @@
  *
  */
 
-/* NOTE: This file is also used by C code. */
+#ifndef ZH_ASSERT_H_
+#define ZH_ASSERT_H_
 
-#ifndef ZH_MACRO_CH_
-#define ZH_MACRO_CH_
+#include "zh_api.h"
 
-/* runtime settings for macro compiler */
-#define ZH_SM_ZIHER      1    /* extended Ziher features */
-#define ZH_SM_XBASE      2
-#define ZH_SM_SHORTCUTS  8    /* enable/disable shortcuts for logical operators */
-#define ZH_SM_ARRSTR     16   /* enable/disable strings as array of bytes */
-#define ZH_SM_EXTOPT     32   /* enable/disable operator optimizations */
-#define ZH_SM_RT_MACRO   64   /* disable automatic setup of macro flag */
-#define ZH_SM_PARSER     128  /* address of macro parser (TODO) */
+#if ( defined( ZH_OS_WIN_CE ) && defined( _MSC_VER ) ) || ! defined( ZH_TR_LEVEL_DEBUG )
+   #ifndef assert
+      #define assert( exp )   ( ( void ) 0 )
+   #endif
+#else
+   #include <assert.h>
+#endif
 
-#endif /* ZH_MACRO_CH_ */
+#endif /* ZH_ASSERT_H_ */
