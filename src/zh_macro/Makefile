@@ -5,7 +5,7 @@ YACC_SOURCE := macro.y
 YACC_DEPEND := macrolex.c
 YACC_HEADERS := \
    zh_macro.h \
-   hbsetup.h \
+   zh_setup.h \
    hbpcode.h \
    hbdefs.h \
 

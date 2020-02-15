@@ -131,7 +131,7 @@ static void zh_compDumpFindCFunc( ZH_COMP_DECL )
 
 static void zh_compGenCStdHeaders( ZH_COMP_DECL, FILE * yyc, ZH_BOOL fHbInLine )
 {
-   fprintf( yyc, "#include \"hbvmpub.h\"\n" );
+   fprintf( yyc, "#include \"zh_vmpub.h\"\n" );
 
    if( ZH_COMP_PARAM->iGenCOutput != ZH_COMPGENC_COMPACT )
       fprintf( yyc, "#include \"hbpcode.h\"\n" );
@@ -145,9 +145,9 @@ static void zh_compGenCStdHeaders( ZH_COMP_DECL, FILE * yyc, ZH_BOOL fHbInLine )
    {
       fprintf( yyc, "#include \"zh_api.h\"\n" );
       fprintf( yyc, "#include \"hbstack.h\"\n" );
-      fprintf( yyc, "#include \"zh_apierr.h\"\n" );
+      fprintf( yyc, "#include \"zh_api_error.h\"\n" );
       fprintf( yyc, "#include \"zh_apiitm.h\"\n" );
-      fprintf( yyc, "#include \"hbvm.h\"\n" );
+      fprintf( yyc, "#include \"zh_vm.h\"\n" );
       fprintf( yyc, "#include \"zh_apicls.h\"\n" );
       fprintf( yyc, "#include \"hboo.ch\"\n" );
    }

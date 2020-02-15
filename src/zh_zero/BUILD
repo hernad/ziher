@@ -6,7 +6,6 @@ cc_library(
     name = "zh_zero",
     srcs = glob( ["*.c"]),
     hdrs = glob( ["*.h", "*.zhh"]),
-    copts = ["-DZH_MACRO_SUPPORT"],
     alwayslink = 1,
     visibility = ["//visibility:public"],
     # https://github.com/bazelbuild/bazel/issues/92

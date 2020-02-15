@@ -1404,7 +1404,7 @@ typedef ZH_U32 ZH_FATTR;
 
 
 
-#define ZH_SYMBOL_UNUSED( symbol )  ( void ) symbol
+#define ZH_SYMBOL_UNUSED( symbol )  ( void )symbol
 #define ZH_SOURCE_FILE_UNUSED()  static void * dummy = &dummy
 
 /*
@@ -1413,12 +1413,9 @@ typedef ZH_U32 ZH_FATTR;
  * starting procedure (due to unknown order of static data initialization)
  */
 #define ZH_START_PROCEDURE "MAIN"
-#if defined( __WATCOMC__ ) || \
-    ( defined( __GNUC__ ) && ! defined( __DJGPP__ ) && ! defined( ZH_OS_OS2_GCC ) )
-   #define ZH_START_PROC_STRICT
-#endif
 
-#if defined( __WATCOMC__ ) || defined( _MSC_VER ) || defined( __POCC__ )
+
+#if defined( _MSC_VER )
    #define ZH_DLL_ENTRY_POINT    DllMain
 #else
    #define ZH_DLL_ENTRY_POINT    DllEntryPoint
@@ -1430,12 +1427,6 @@ typedef ZH_U32 ZH_FATTR;
    #define ZH_EXPORT_ATTR     __attribute__ (( dllexport ))
 #elif defined( __GNUC__ ) && defined( ZH_OS_LINUX ) && __GNUC__ >= 3
    #define ZH_EXPORT_ATTR     __attribute__ ((visibility ("default")))
-#elif defined( __BORLANDC__ )
-   #define ZH_EXPORT_ATTR     __declspec( dllexport )
-#elif defined( __WATCOMC__ )
-   #define ZH_EXPORT_ATTR     __declspec( dllexport )
-#elif defined( ASANLM ) || defined( ASANT )
-   #define ZH_EXPORT_ATTR
 #elif defined( ZH_OS_WIN )
    #define ZH_EXPORT_ATTR     _declspec( dllexport )
 #else
@@ -1480,9 +1471,6 @@ typedef ZH_U32 ZH_FATTR;
       extern ZH_EXPORT void      zh_mbntowccpy( wchar_t * dstW, const char * srcA, ZH_SIZE nLen );
    ZH_EXTERN_END
 
-#endif
-
-#if defined( ZH_OS_WIN )
    #if defined( UNICODE )
       #define ZH_TCHAR_COPYTO( d, s, l )     zh_mbntowccpy( d, s, l )
       #define ZH_TCHAR_COPYFROM( d, s, l )   zh_wcntombcpy( d, s, l )
