@@ -1,0 +1,150 @@
+/* Last Translator: Sami Laham (sami laham.com.br) */
+
+#include "zh_lang_api.h"
+
+static ZH_LANG s_lang =
+{
+   {
+      /* Identification */
+
+      "pt_BR",
+      "Portuguese",
+      "Portugues",
+      "",
+      "UTF8",
+      "",
+
+      /* Month names */
+
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
+
+      /* Day names */
+
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+
+      
+
+      "Banco de Dados    # Registro   Ult. Atuali.    Tam.",
+      "Voce quer mais exemplos?",
+      "Pagina No.",
+      "** Subtotal **",
+      "* Subsubtotal *",
+      "*** Total ***",
+      "Ins",
+      "   ",
+      "Data inválida",
+      "Faixa: ",
+      " - ",
+      "S/N",
+      "EXPRESSÃO INVALIDA",
+
+      /* Error description names */
+
+      "Erro desconhecido",
+      "Erro nos parâmetros",
+      "Erro de limite",
+      "Overflow de string",
+      "Overflow numérico",
+      "Divisão por zero",
+      "Erro numérico",
+      "Erro de sintaxe",
+      "Operação muito complexa",
+      "",
+      "",
+      "Memória insuficiente",
+      "Função indefinida",
+      "Método não exportado",
+      "Variável não existe",
+      "Alias não existe",
+      "Nenhuma variável exportada",
+      "Nome de alias incorreto",
+      "Nome de alias duplicado",
+      "",
+      "Erro de criação",
+      "Erro de abertura",
+      "Erro ao fechar",
+      "Erro de leitura",
+      "Erro de escrita",
+      "Erro de impressão",
+      "",
+      "",
+      "",
+      "",
+      "Operação não suportada",
+      "Limite excedido",
+      "Corrupção Detectada",
+      "Tipo incorreto de dado",
+      "Tamanho do dado muito longo",
+      "Workarea não está em uso",
+      "Workarea não indexada",
+      "Uso exclusivo requerido",
+      "Travamento requerido",
+      "Escrita não permitida",
+      "Falha no travamento do Append",
+      "Falha no travamento",
+      "",
+      "",
+      "",
+      "Falha Object destructor",
+      "acesso á matriz",
+      "atribuir á matriz",
+      "dimensão da matriz",
+      "não é uma matriz",
+      "condicional",
+
+      /* Internal error names */
+
+      "Erro irrecuperável %d: ",
+      "Falha na recuperaçao do erro",
+      "ERRORBLOCK() para erro ausente",
+      "Muitas chamadas recursivas ao manipulador de erros",
+      "Falha ao carregar ou RDD inválido",
+      "Tipo de método inválido %s",
+      "zh_xgrab nao pode alocar memória",
+      "zh_xrealloc chamado com ponteiro NULL",
+      "zh_xrealloc chamado com ponteiro inválido",
+      "zh_xrealloc nao pode realocar memória",
+      "zh_xfree chamado com ponteiro inválido",
+      "zh_xfree chamado com ponteiro NULL",
+      "Não posso localizar procedure de inícializaçao: '%s'",
+      "Nao ha procedure de inicializaçao",
+      "VM opcode nao suportado",
+      "Item de símbolo esperado de %s",
+      "Tipo de símbolo inválido para self em %s",
+      "Codeblock esperado em %s",
+      "Tipo incorreto de item na pilha tentando executar um pop de %s",
+      "Stack underflow \"estouro negativo de pilha\"",
+      "Um item iria ser copiado para ele mesmo em %s",
+      "Symbol item inválido passado como memvar %s",
+      "Buffer overflow de memória",
+      "zh_xgrab requisitou para alocar zero bytes",
+      "zh_xrealloc requisitou para redimensiorar para zero byte",
+      "zh_xalloc requisitou para alocar zero bytes",
+
+      /* Texts */
+
+      "DD/MM/YYYY",
+      "S",
+      "N"
+   }
+};
+
+#define ZH_LANG_ID      PT_BR
+#include "zh_msg_reg.h"

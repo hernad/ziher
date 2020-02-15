@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_apicdp.h"
+#include "zh_codepage_api.h"
 
 #if defined( ZH_OS_UNIX ) && ! defined( ZH_NO_FNMATCH )
 #  include <fnmatch.h>

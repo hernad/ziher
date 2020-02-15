@@ -89,7 +89,7 @@
 
 /* zhfloat.h have to be included first */
 #include "zh_float.h"
-#include "zh_apicdp.h"
+#include "zh_codepage_api.h"
 #include <stddef.h>
 
 

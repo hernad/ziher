@@ -51,7 +51,7 @@
 #define ZH_APIGT_H_
 
 #include "zh_api.h"
-#include "zh_apicdp.h"
+#include "zh_codepage_api.h"
 
 ZH_EXTERN_BEGIN
 

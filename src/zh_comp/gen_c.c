@@ -143,12 +143,12 @@ static void zh_compGenCStdHeaders( ZH_COMP_DECL, FILE * yyc, ZH_BOOL fHbInLine )
 
    if( fHbInLine )
    {
-      fprintf( yyc, "#include \"hbapi.h\"\n" );
+      fprintf( yyc, "#include \"zh_api.h\"\n" );
       fprintf( yyc, "#include \"hbstack.h\"\n" );
-      fprintf( yyc, "#include \"hbapierr.h\"\n" );
-      fprintf( yyc, "#include \"hbapiitm.h\"\n" );
+      fprintf( yyc, "#include \"zh_apierr.h\"\n" );
+      fprintf( yyc, "#include \"zh_apiitm.h\"\n" );
       fprintf( yyc, "#include \"hbvm.h\"\n" );
-      fprintf( yyc, "#include \"hbapicls.h\"\n" );
+      fprintf( yyc, "#include \"zh_apicls.h\"\n" );
       fprintf( yyc, "#include \"hboo.ch\"\n" );
    }
 }
