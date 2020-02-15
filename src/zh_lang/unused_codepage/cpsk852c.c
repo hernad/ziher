@@ -1,7 +1,7 @@
 /*
  * National Collation Support Module (SK852C)
  *
- * Copyright 2009 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2009 Przemyslaw Czerpak
  *
  * This file is generated automatically by cpinfo.prg
  */

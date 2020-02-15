@@ -354,7 +354,6 @@ extern ZH_UNITABLE zh_uniTbl_CWI2;
 extern ZH_EXPORT PZH_CODEPAGE zh_vmCDP( void );
 extern ZH_EXPORT void         zh_vmSetCDP( PZH_CODEPAGE pCDP );
 
-
 /* character flags */
 #define ZH_CDP_DIGIT    0x01
 #define ZH_CDP_ALPHA    0x02
@@ -498,7 +497,6 @@ extern ZH_EXPORT int          zh_cdpUTF8CharSize( ZH_WCHAR wc );
 extern ZH_EXPORT int          zh_cdpU16CharToUTF8( char * szUTF8, ZH_WCHAR wc );
 extern ZH_EXPORT ZH_BOOL      zh_cdpUTF8ToU16NextChar( ZH_UCHAR ucChar, int * n, ZH_WCHAR * pwc );
 
-
 extern ZH_EXPORT PZH_ITEM     zh_itemDeserializeCP( const char ** pBufferPtr, ZH_SIZE * pnSize, PZH_CODEPAGE cdpIn, PZH_CODEPAGE cdpOut );
 extern ZH_EXPORT char *       zh_itemSerializeCP( PZH_ITEM pItem, int iFlags, PZH_CODEPAGE cdpIn, PZH_CODEPAGE cdpOut, ZH_SIZE * pnSize );
 
@@ -515,7 +513,6 @@ extern ZH_EXPORT ZH_BOOL      zh_cdpCharEq( PZH_CODEPAGE cdp, const char * szTex
                                                               const char * szText2, ZH_SIZE nLen2, ZH_SIZE * pnPos2 );
 extern ZH_EXPORT ZH_BOOL      zh_cdpCharCaseEq( PZH_CODEPAGE cdp, const char * szText1, ZH_SIZE nLen1, ZH_SIZE * pnPos1,
                                                                   const char * szText2, ZH_SIZE nLen2, ZH_SIZE * pnPos2 );
-
 ZH_EXTERN_END
 
 #endif /* ZH_APICDP_H_ */

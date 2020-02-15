@@ -2,7 +2,7 @@
  * Unicode character tables
  * code generated automatically by uc16_gen.prg
  *
- * Copyright 2012 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2012 Przemyslaw Czerpak
  *
  */
 

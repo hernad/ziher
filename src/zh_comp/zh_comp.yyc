@@ -187,7 +187,7 @@ static void zh_compErrUnclosed( ZH_COMP_DECL, const char * szStru );
 static void zh_compDebugStart( void ) { }
 
 
-#line 191 "zihery.c" /* yacc.c:339  */
+#line 191 "zh_comp_y.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -206,7 +206,7 @@ static void zh_compDebugStart( void ) { }
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "zihery.h".  */
+   by #include "zh_comp_y.h".  */
 #ifndef YY_ZH_COMP_YY_ZIHERY_H_INCLUDED
 # define YY_ZH_COMP_YY_ZIHERY_H_INCLUDED
 /* Debug traces.  */
@@ -379,7 +379,7 @@ union YYSTYPE
    } asCodeblock;
    PZH_VARTYPE asVarType;
 
-#line 383 "zihery.c" /* yacc.c:355  */
+#line 383 "zh_comp_y.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -400,7 +400,7 @@ int zh_comp_yyparse (PZH_COMP pComp);
 extern int  yylex( YYSTYPE *, ZH_COMP_DECL );    /* main lex token function, called by yyparse() */
 extern void yyerror( ZH_COMP_DECL, const char * );     /* parsing error management function */
 
-#line 404 "zihery.c" /* yacc.c:358  */
+#line 404 "zh_comp_y.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -3483,13 +3483,13 @@ yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, PZH_COMP pComp)
           case 17: /* LITERAL  */
 #line 290 "ziher.y" /* yacc.c:1257  */
       { if( ((*yyvaluep).valChar).dealloc ) zh_xfree( ((*yyvaluep).valChar).string ); }
-#line 3487 "zihery.c" /* yacc.c:1257  */
+#line 3487 "zh_comp_y.c" /* yacc.c:1257  */
         break;
 
     case 97: /* CBSTART  */
 #line 289 "ziher.y" /* yacc.c:1257  */
       { if( ((*yyvaluep).asCodeblock).string )  zh_xfree( ((*yyvaluep).asCodeblock).string ); }
-#line 3493 "zihery.c" /* yacc.c:1257  */
+#line 3493 "zh_comp_y.c" /* yacc.c:1257  */
         break;
 
 
@@ -3757,20 +3757,20 @@ yyreduce:
         case 9:
 #line 303 "ziher.y" /* yacc.c:1646  */
     { yyclearin; yyerrok; }
-#line 3761 "zihery.c" /* yacc.c:1646  */
+#line 3761 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 309 "ziher.y" /* yacc.c:1646  */
     { yyclearin; yyerrok; }
-#line 3767 "zihery.c" /* yacc.c:1646  */
+#line 3767 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 313 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->currLine = ( int ) (yyvsp[-1].valLong).lNumber;
                     ZH_COMP_PARAM->pLex->fEol = ZH_FALSE; }
-#line 3774 "zihery.c" /* yacc.c:1646  */
+#line 3774 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -3779,7 +3779,7 @@ yyreduce:
                     ZH_COMP_PARAM->currLine = ( int ) (yyvsp[-2].valLong).lNumber;
                     ZH_COMP_PARAM->pLex->fEol = ZH_FALSE;
                     (yyvsp[-1].valChar).dealloc = ZH_FALSE; }
-#line 3783 "zihery.c" /* yacc.c:1646  */
+#line 3783 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -3789,199 +3789,199 @@ yyreduce:
                     ZH_COMP_PARAM->pLex->fEol = ZH_FALSE;
                     if( (yyvsp[-3].valChar).dealloc ) { zh_xfree( (yyvsp[-3].valChar).string ); (yyvsp[-3].valChar).dealloc = ZH_FALSE; }
                     (yyvsp[-1].valChar).dealloc = ZH_FALSE; }
-#line 3793 "zihery.c" /* yacc.c:1646  */
+#line 3793 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 328 "ziher.y" /* yacc.c:1646  */
     { zh_compFunctionAdd( ZH_COMP_PARAM, (yyvsp[0].string), ( ZH_SYMBOLSCOPE ) (yyvsp[-1].iNumber), 0 ); }
-#line 3799 "zihery.c" /* yacc.c:1646  */
+#line 3799 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 329 "ziher.y" /* yacc.c:1646  */
     { zh_compFunctionAdd( ZH_COMP_PARAM, (yyvsp[0].string), ( ZH_SYMBOLSCOPE ) (yyvsp[-1].iNumber), ZH_FUNF_PROCEDURE ); }
-#line 3805 "zihery.c" /* yacc.c:1646  */
+#line 3805 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 330 "ziher.y" /* yacc.c:1646  */
     { zh_compFunctionAdd( ZH_COMP_PARAM, (yyvsp[0].string), ( ZH_SYMBOLSCOPE ) (yyvsp[-1].iNumber), 0 ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_PARAMETER; }
-#line 3811 "zihery.c" /* yacc.c:1646  */
+#line 3811 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 331 "ziher.y" /* yacc.c:1646  */
     { zh_compFunctionAdd( ZH_COMP_PARAM, (yyvsp[0].string), ( ZH_SYMBOLSCOPE ) (yyvsp[-1].iNumber), ZH_FUNF_PROCEDURE ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_PARAMETER;}
-#line 3817 "zihery.c" /* yacc.c:1646  */
+#line 3817 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 334 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) = 0; }
-#line 3823 "zihery.c" /* yacc.c:1646  */
+#line 3823 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 335 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->fVParams = ZH_TRUE; (yyval.iNumber) = 0; }
-#line 3829 "zihery.c" /* yacc.c:1646  */
+#line 3829 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 337 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->fVParams = ZH_TRUE; (yyval.iNumber) = (yyvsp[-2].iNumber); }
-#line 3835 "zihery.c" /* yacc.c:1646  */
+#line 3835 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 31:
 #line 340 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, ' ', NULL ); }
-#line 3841 "zihery.c" /* yacc.c:1646  */
+#line 3841 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 33:
 #line 344 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, ' ', NULL ); }
-#line 3847 "zihery.c" /* yacc.c:1646  */
+#line 3847 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 348 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'N', NULL ); }
-#line 3853 "zihery.c" /* yacc.c:1646  */
+#line 3853 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 349 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'C', NULL ); }
-#line 3859 "zihery.c" /* yacc.c:1646  */
+#line 3859 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 350 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'D', NULL ); }
-#line 3865 "zihery.c" /* yacc.c:1646  */
+#line 3865 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 38:
 #line 351 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'L', NULL ); }
-#line 3871 "zihery.c" /* yacc.c:1646  */
+#line 3871 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 39:
 #line 352 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'B', NULL ); }
-#line 3877 "zihery.c" /* yacc.c:1646  */
+#line 3877 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 40:
 #line 353 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'O', NULL ); }
-#line 3883 "zihery.c" /* yacc.c:1646  */
+#line 3883 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 41:
 #line 354 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'S', (yyvsp[0].string) );   }
-#line 3889 "zihery.c" /* yacc.c:1646  */
+#line 3889 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 355 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, ' ', NULL ); }
-#line 3895 "zihery.c" /* yacc.c:1646  */
+#line 3895 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 359 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'A', NULL ); }
-#line 3901 "zihery.c" /* yacc.c:1646  */
+#line 3901 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 45:
 #line 360 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'n', NULL ); }
-#line 3907 "zihery.c" /* yacc.c:1646  */
+#line 3907 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 361 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'c', NULL ); }
-#line 3913 "zihery.c" /* yacc.c:1646  */
+#line 3913 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 47:
 #line 362 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'd', NULL ); }
-#line 3919 "zihery.c" /* yacc.c:1646  */
+#line 3919 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 363 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'l', NULL ); }
-#line 3925 "zihery.c" /* yacc.c:1646  */
+#line 3925 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 49:
 #line 364 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'a', NULL ); }
-#line 3931 "zihery.c" /* yacc.c:1646  */
+#line 3931 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 365 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'b', NULL ); }
-#line 3937 "zihery.c" /* yacc.c:1646  */
+#line 3937 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 51:
 #line 366 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 'o', NULL ); }
-#line 3943 "zihery.c" /* yacc.c:1646  */
+#line 3943 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 367 "ziher.y" /* yacc.c:1646  */
     { (yyval.asVarType) = zh_compVarTypeNew( ZH_COMP_PARAM, 's', (yyvsp[0].string) );   }
-#line 3949 "zihery.c" /* yacc.c:1646  */
+#line 3949 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 370 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); (yyval.iNumber) = 1; }
-#line 3955 "zihery.c" /* yacc.c:1646  */
+#line 3955 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 371 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); (yyval.iNumber)++; }
-#line 3961 "zihery.c" /* yacc.c:1646  */
+#line 3961 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 380 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 3967 "zihery.c" /* yacc.c:1646  */
+#line 3967 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 57:
 #line 381 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 3973 "zihery.c" /* yacc.c:1646  */
+#line 3973 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 382 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 3979 "zihery.c" /* yacc.c:1646  */
+#line 3979 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 59:
 #line 383 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 3985 "zihery.c" /* yacc.c:1646  */
+#line 3985 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 60:
@@ -3992,62 +3992,62 @@ yyreduce:
                                          ZH_COMP_EXPR_FREE( ZH_COMP_ERROR_SYNTAX( (yyvsp[-1].asExpr) ) );
                                       ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN;
                                     }
-#line 3996 "zihery.c" /* yacc.c:1646  */
+#line 3996 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 61:
 #line 390 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4002 "zihery.c" /* yacc.c:1646  */
+#line 4002 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 62:
 #line 391 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4008 "zihery.c" /* yacc.c:1646  */
+#line 4008 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 392 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4014 "zihery.c" /* yacc.c:1646  */
+#line 4014 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 393 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4020 "zihery.c" /* yacc.c:1646  */
+#line 4020 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 65:
 #line 394 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4026 "zihery.c" /* yacc.c:1646  */
+#line 4026 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 395 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4032 "zihery.c" /* yacc.c:1646  */
+#line 4032 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 396 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenStatement( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) ); ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN; }
-#line 4038 "zihery.c" /* yacc.c:1646  */
+#line 4038 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 68:
 #line 397 "ziher.y" /* yacc.c:1646  */
     { zh_compGenBreak( ZH_COMP_PARAM ); zh_compGenPCode2( ZH_P_DOSHORT, 0, ZH_COMP_PARAM );
                                       ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_BREAK_CODE; }
-#line 4045 "zihery.c" /* yacc.c:1646  */
+#line 4045 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 69:
 #line 399 "ziher.y" /* yacc.c:1646  */
     { zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 4051 "zihery.c" /* yacc.c:1646  */
+#line 4051 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 70:
@@ -4057,19 +4057,19 @@ yyreduce:
                                        zh_compGenPCode2( ZH_P_DOSHORT, 1, ZH_COMP_PARAM );
                                        ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_BREAK_CODE;
                                     }
-#line 4061 "zihery.c" /* yacc.c:1646  */
+#line 4061 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 71:
 #line 405 "ziher.y" /* yacc.c:1646  */
     { zh_compLoopExit( ZH_COMP_PARAM ); ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_BREAK_CODE; }
-#line 4067 "zihery.c" /* yacc.c:1646  */
+#line 4067 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 72:
 #line 406 "ziher.y" /* yacc.c:1646  */
     { zh_compLoopLoop( ZH_COMP_PARAM ); ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_BREAK_CODE; }
-#line 4073 "zihery.c" /* yacc.c:1646  */
+#line 4073 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 73:
@@ -4087,13 +4087,13 @@ yyreduce:
                         }
                         ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE;
                      }
-#line 4091 "zihery.c" /* yacc.c:1646  */
+#line 4091 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 74:
 #line 420 "ziher.y" /* yacc.c:1646  */
     {  zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 4097 "zihery.c" /* yacc.c:1646  */
+#line 4097 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 75:
@@ -4117,13 +4117,13 @@ yyreduce:
                         }
                         ZH_COMP_PARAM->functions.pLast->funFlags |= ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE;
                      }
-#line 4121 "zihery.c" /* yacc.c:1646  */
+#line 4121 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 76:
 #line 441 "ziher.y" /* yacc.c:1646  */
     {  zh_compLinePushIfInside( ZH_COMP_PARAM ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_PUBLIC; }
-#line 4127 "zihery.c" /* yacc.c:1646  */
+#line 4127 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 77:
@@ -4132,13 +4132,13 @@ yyreduce:
                         ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE;
                         ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN;
                      }
-#line 4136 "zihery.c" /* yacc.c:1646  */
+#line 4136 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 79:
 #line 447 "ziher.y" /* yacc.c:1646  */
     {  zh_compLinePushIfInside( ZH_COMP_PARAM ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_PRIVATE; }
-#line 4142 "zihery.c" /* yacc.c:1646  */
+#line 4142 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 80:
@@ -4147,7 +4147,7 @@ yyreduce:
                         ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE;
                         ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN;
                      }
-#line 4151 "zihery.c" /* yacc.c:1646  */
+#line 4151 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 87:
@@ -4158,7 +4158,7 @@ yyreduce:
                   else
                      zh_compGenWarning( ZH_COMP_PARAM, zh_comp_szWarnings, 'W', ZH_COMP_WARN_DUPL_ANNOUNCE, (yyvsp[0].string), NULL );
                }
-#line 4162 "zihery.c" /* yacc.c:1646  */
+#line 4162 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 90:
@@ -4171,7 +4171,7 @@ yyreduce:
                }
                zh_compModuleAdd( ZH_COMP_PARAM, (yyvsp[0].valChar).string, ZH_FALSE );
             }
-#line 4175 "zihery.c" /* yacc.c:1646  */
+#line 4175 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 91:
@@ -4193,37 +4193,37 @@ yyreduce:
                   }
                }
             }
-#line 4197 "zihery.c" /* yacc.c:1646  */
+#line 4197 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 92:
 #line 494 "ziher.y" /* yacc.c:1646  */
     { zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 4203 "zihery.c" /* yacc.c:1646  */
+#line 4203 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 94:
 #line 497 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) = 0; }
-#line 4209 "zihery.c" /* yacc.c:1646  */
+#line 4209 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 95:
 #line 498 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) = 1; }
-#line 4215 "zihery.c" /* yacc.c:1646  */
+#line 4215 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 96:
 #line 499 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) = 1; }
-#line 4221 "zihery.c" /* yacc.c:1646  */
+#line 4221 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 97:
 #line 500 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) = 0; }
-#line 4227 "zihery.c" /* yacc.c:1646  */
+#line 4227 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 98:
@@ -4239,187 +4239,187 @@ yyreduce:
                              }
                              (yyval.lNumber) = 0;
                            }
-#line 4243 "zihery.c" /* yacc.c:1646  */
+#line 4243 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 100:
 #line 516 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) += (yyvsp[0].lNumber); }
-#line 4249 "zihery.c" /* yacc.c:1646  */
+#line 4249 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 101:
 #line 519 "ziher.y" /* yacc.c:1646  */
     { (yyval.lNumber) = 0; }
-#line 4255 "zihery.c" /* yacc.c:1646  */
+#line 4255 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 103:
 #line 523 "ziher.y" /* yacc.c:1646  */
     { zh_compExternAdd( ZH_COMP_PARAM, (yyvsp[0].string), 0 ); }
-#line 4261 "zihery.c" /* yacc.c:1646  */
+#line 4261 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 104:
 #line 524 "ziher.y" /* yacc.c:1646  */
     { zh_compExternAdd( ZH_COMP_PARAM, (yyvsp[0].string), 0 ); }
-#line 4267 "zihery.c" /* yacc.c:1646  */
+#line 4267 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 105:
 #line 527 "ziher.y" /* yacc.c:1646  */
     { zh_compExternAdd( ZH_COMP_PARAM, (yyvsp[0].string), ZH_FS_DEFERRED ); }
-#line 4273 "zihery.c" /* yacc.c:1646  */
+#line 4273 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 106:
 #line 528 "ziher.y" /* yacc.c:1646  */
     { zh_compExternAdd( ZH_COMP_PARAM, (yyvsp[0].string), ZH_FS_DEFERRED ); }
-#line 4279 "zihery.c" /* yacc.c:1646  */
+#line 4279 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 108:
 #line 532 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = "STEP"; }
-#line 4285 "zihery.c" /* yacc.c:1646  */
+#line 4285 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 109:
 #line 533 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = "TO"; }
-#line 4291 "zihery.c" /* yacc.c:1646  */
+#line 4291 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 110:
 #line 534 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = "LOOP"; }
-#line 4297 "zihery.c" /* yacc.c:1646  */
+#line 4297 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 111:
 #line 535 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = "EXIT"; }
-#line 4303 "zihery.c" /* yacc.c:1646  */
+#line 4303 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 112:
 #line 536 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = "IN"; }
-#line 4309 "zihery.c" /* yacc.c:1646  */
+#line 4309 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 113:
 #line 537 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4315 "zihery.c" /* yacc.c:1646  */
+#line 4315 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 114:
 #line 538 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4321 "zihery.c" /* yacc.c:1646  */
+#line 4321 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 115:
 #line 539 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4327 "zihery.c" /* yacc.c:1646  */
+#line 4327 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 116:
 #line 540 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4333 "zihery.c" /* yacc.c:1646  */
+#line 4333 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 117:
 #line 541 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4339 "zihery.c" /* yacc.c:1646  */
+#line 4339 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 118:
 #line 542 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4345 "zihery.c" /* yacc.c:1646  */
+#line 4345 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 119:
 #line 543 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4351 "zihery.c" /* yacc.c:1646  */
+#line 4351 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 120:
 #line 544 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4357 "zihery.c" /* yacc.c:1646  */
+#line 4357 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 121:
 #line 545 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4363 "zihery.c" /* yacc.c:1646  */
+#line 4363 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 122:
 #line 546 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4369 "zihery.c" /* yacc.c:1646  */
+#line 4369 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 123:
 #line 547 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4375 "zihery.c" /* yacc.c:1646  */
+#line 4375 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 124:
 #line 548 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 4381 "zihery.c" /* yacc.c:1646  */
+#line 4381 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 125:
 #line 553 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewDouble( (yyvsp[0].valDouble).dNumber, (yyvsp[0].valDouble).bWidth, (yyvsp[0].valDouble).bDec, ZH_COMP_PARAM ); }
-#line 4387 "zihery.c" /* yacc.c:1646  */
+#line 4387 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 126:
 #line 554 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewLong( (yyvsp[0].valLong).lNumber, ZH_COMP_PARAM ); }
-#line 4393 "zihery.c" /* yacc.c:1646  */
+#line 4393 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 127:
 #line 557 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewDate( ( long ) (yyvsp[0].valLong).lNumber, ZH_COMP_PARAM ); }
-#line 4399 "zihery.c" /* yacc.c:1646  */
+#line 4399 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 128:
 #line 560 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewTimeStamp( (yyvsp[0].valTimeStamp).date, (yyvsp[0].valTimeStamp).time, ZH_COMP_PARAM ); }
-#line 4405 "zihery.c" /* yacc.c:1646  */
+#line 4405 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 129:
 #line 563 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewLong( (yyvsp[-1].valLong).lNumber, ZH_COMP_PARAM ); }
-#line 4411 "zihery.c" /* yacc.c:1646  */
+#line 4411 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 130:
 #line 564 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, zh_compExprNewDouble( (yyvsp[-1].valDouble).dNumber, (yyvsp[-1].valDouble).bWidth, (yyvsp[-1].valDouble).bDec, ZH_COMP_PARAM ) ); }
-#line 4417 "zihery.c" /* yacc.c:1646  */
+#line 4417 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 131:
 #line 569 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewNil( ZH_COMP_PARAM ); }
-#line 4423 "zihery.c" /* yacc.c:1646  */
+#line 4423 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 133:
@@ -4428,535 +4428,535 @@ yyreduce:
                                  (yyval.asExpr) = zh_compExprNewString( (yyvsp[0].valChar).string, (yyvsp[0].valChar).length, (yyvsp[0].valChar).dealloc, ZH_COMP_PARAM );
                                  (yyvsp[0].valChar).dealloc = ZH_FALSE;
                               }
-#line 4432 "zihery.c" /* yacc.c:1646  */
+#line 4432 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 136:
 #line 593 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewLogical( ZH_TRUE, ZH_COMP_PARAM ); }
-#line 4438 "zihery.c" /* yacc.c:1646  */
+#line 4438 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 137:
 #line 594 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewLogical( ZH_FALSE, ZH_COMP_PARAM ); }
-#line 4444 "zihery.c" /* yacc.c:1646  */
+#line 4444 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 139:
 #line 602 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewSelf( ZH_COMP_PARAM ); }
-#line 4450 "zihery.c" /* yacc.c:1646  */
+#line 4450 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 141:
 #line 616 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArray( (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 4456 "zihery.c" /* yacc.c:1646  */
+#line 4456 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 143:
 #line 624 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4462 "zihery.c" /* yacc.c:1646  */
+#line 4462 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 145:
 #line 630 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewHash( NULL, ZH_COMP_PARAM ); }
-#line 4468 "zihery.c" /* yacc.c:1646  */
+#line 4468 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 146:
 #line 631 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewHash( (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 4474 "zihery.c" /* yacc.c:1646  */
+#line 4474 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 148:
 #line 637 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( zh_compExprNewList( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr) ); }
-#line 4480 "zihery.c" /* yacc.c:1646  */
+#line 4480 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 149:
 #line 638 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( zh_compExprAddListExpr( (yyvsp[-4].asExpr), (yyvsp[-2].asExpr) ), (yyvsp[0].asExpr) ); }
-#line 4486 "zihery.c" /* yacc.c:1646  */
+#line 4486 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 150:
 #line 643 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVar( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 4492 "zihery.c" /* yacc.c:1646  */
+#line 4492 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 151:
 #line 646 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAlias( (yyvsp[-1].string), ZH_COMP_PARAM ); }
-#line 4498 "zihery.c" /* yacc.c:1646  */
+#line 4498 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 152:
 #line 651 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMacro( NULL, '&', (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 4504 "zihery.c" /* yacc.c:1646  */
+#line 4504 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 153:
 #line 652 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMacro( NULL, 0, (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 4510 "zihery.c" /* yacc.c:1646  */
+#line 4510 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 155:
 #line 660 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMacro( (yyvsp[0].asExpr), 0, NULL, ZH_COMP_PARAM ); }
-#line 4516 "zihery.c" /* yacc.c:1646  */
+#line 4516 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 159:
 #line 674 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAlias( "FIELD", ZH_COMP_PARAM ); }
-#line 4522 "zihery.c" /* yacc.c:1646  */
+#line 4522 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 160:
 #line 675 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4528 "zihery.c" /* yacc.c:1646  */
+#line 4528 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 161:
 #line 680 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4534 "zihery.c" /* yacc.c:1646  */
+#line 4534 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 162:
 #line 681 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4540 "zihery.c" /* yacc.c:1646  */
+#line 4540 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 163:
 #line 682 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4546 "zihery.c" /* yacc.c:1646  */
+#line 4546 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 164:
 #line 683 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4552 "zihery.c" /* yacc.c:1646  */
+#line 4552 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 165:
 #line 684 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4558 "zihery.c" /* yacc.c:1646  */
+#line 4558 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 166:
 #line 685 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4564 "zihery.c" /* yacc.c:1646  */
+#line 4564 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 167:
 #line 686 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4570 "zihery.c" /* yacc.c:1646  */
+#line 4570 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 168:
 #line 687 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4576 "zihery.c" /* yacc.c:1646  */
+#line 4576 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 169:
 #line 688 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4582 "zihery.c" /* yacc.c:1646  */
+#line 4582 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 170:
 #line 689 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4588 "zihery.c" /* yacc.c:1646  */
+#line 4588 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 171:
 #line 690 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4594 "zihery.c" /* yacc.c:1646  */
+#line 4594 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 172:
 #line 691 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4600 "zihery.c" /* yacc.c:1646  */
+#line 4600 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 173:
 #line 692 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4606 "zihery.c" /* yacc.c:1646  */
+#line 4606 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 174:
 #line 693 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4612 "zihery.c" /* yacc.c:1646  */
+#line 4612 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 175:
 #line 696 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVar( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 4618 "zihery.c" /* yacc.c:1646  */
+#line 4618 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 177:
 #line 700 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4624 "zihery.c" /* yacc.c:1646  */
+#line 4624 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 178:
 #line 701 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4630 "zihery.c" /* yacc.c:1646  */
+#line 4630 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 179:
 #line 702 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4636 "zihery.c" /* yacc.c:1646  */
+#line 4636 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 180:
 #line 703 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4642 "zihery.c" /* yacc.c:1646  */
+#line 4642 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 181:
 #line 704 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4648 "zihery.c" /* yacc.c:1646  */
+#line 4648 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 182:
 #line 705 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4654 "zihery.c" /* yacc.c:1646  */
+#line 4654 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 183:
 #line 706 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4660 "zihery.c" /* yacc.c:1646  */
+#line 4660 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 184:
 #line 707 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4666 "zihery.c" /* yacc.c:1646  */
+#line 4666 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 185:
 #line 708 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4672 "zihery.c" /* yacc.c:1646  */
+#line 4672 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 186:
 #line 709 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4678 "zihery.c" /* yacc.c:1646  */
+#line 4678 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 187:
 #line 710 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4684 "zihery.c" /* yacc.c:1646  */
+#line 4684 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 188:
 #line 711 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4690 "zihery.c" /* yacc.c:1646  */
+#line 4690 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 189:
 #line 712 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4696 "zihery.c" /* yacc.c:1646  */
+#line 4696 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 190:
 #line 713 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4702 "zihery.c" /* yacc.c:1646  */
+#line 4702 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 191:
 #line 714 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4708 "zihery.c" /* yacc.c:1646  */
+#line 4708 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 192:
 #line 715 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4714 "zihery.c" /* yacc.c:1646  */
+#line 4714 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 193:
 #line 716 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[-1].asExpr) ); }
-#line 4720 "zihery.c" /* yacc.c:1646  */
+#line 4720 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 194:
 #line 717 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4726 "zihery.c" /* yacc.c:1646  */
+#line 4726 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 195:
 #line 718 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4732 "zihery.c" /* yacc.c:1646  */
+#line 4732 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 196:
 #line 719 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasVar( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4738 "zihery.c" /* yacc.c:1646  */
+#line 4738 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 197:
 #line 728 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasExpr( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4744 "zihery.c" /* yacc.c:1646  */
+#line 4744 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 198:
 #line 729 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasExpr( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4750 "zihery.c" /* yacc.c:1646  */
+#line 4750 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 199:
 #line 730 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasExpr( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4756 "zihery.c" /* yacc.c:1646  */
+#line 4756 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 200:
 #line 731 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasExpr( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4762 "zihery.c" /* yacc.c:1646  */
+#line 4762 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 201:
 #line 732 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewAliasExpr( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4768 "zihery.c" /* yacc.c:1646  */
+#line 4768 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 202:
 #line 733 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) ); (yyval.asExpr) = zh_compErrorAlias( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4774 "zihery.c" /* yacc.c:1646  */
+#line 4774 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 203:
 #line 738 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4780 "zihery.c" /* yacc.c:1646  */
+#line 4780 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 204:
 #line 739 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4786 "zihery.c" /* yacc.c:1646  */
+#line 4786 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 205:
 #line 740 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4792 "zihery.c" /* yacc.c:1646  */
+#line 4792 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 206:
 #line 741 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4798 "zihery.c" /* yacc.c:1646  */
+#line 4798 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 207:
 #line 742 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4804 "zihery.c" /* yacc.c:1646  */
+#line 4804 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 208:
 #line 743 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4810 "zihery.c" /* yacc.c:1646  */
+#line 4810 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 209:
 #line 744 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4816 "zihery.c" /* yacc.c:1646  */
+#line 4816 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 210:
 #line 745 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4822 "zihery.c" /* yacc.c:1646  */
+#line 4822 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 211:
 #line 746 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4828 "zihery.c" /* yacc.c:1646  */
+#line 4828 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 212:
 #line 747 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4834 "zihery.c" /* yacc.c:1646  */
+#line 4834 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 213:
 #line 748 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4840 "zihery.c" /* yacc.c:1646  */
+#line 4840 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 214:
 #line 749 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4846 "zihery.c" /* yacc.c:1646  */
+#line 4846 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 215:
 #line 750 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4852 "zihery.c" /* yacc.c:1646  */
+#line 4852 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 216:
 #line 751 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4858 "zihery.c" /* yacc.c:1646  */
+#line 4858 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 217:
 #line 752 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4864 "zihery.c" /* yacc.c:1646  */
+#line 4864 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 218:
 #line 753 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4870 "zihery.c" /* yacc.c:1646  */
+#line 4870 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 219:
 #line 754 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4876 "zihery.c" /* yacc.c:1646  */
+#line 4876 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 220:
 #line 755 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 4882 "zihery.c" /* yacc.c:1646  */
+#line 4882 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 222:
 #line 762 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewFunCall( zh_compExprNewFunName( (yyvsp[-3].string), ZH_COMP_PARAM ), (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 4888 "zihery.c" /* yacc.c:1646  */
+#line 4888 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 224:
 #line 766 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewFunCall( (yyvsp[-3].asExpr), (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 4894 "zihery.c" /* yacc.c:1646  */
+#line 4894 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 225:
 #line 770 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); }
-#line 4900 "zihery.c" /* yacc.c:1646  */
+#line 4900 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 227:
 #line 776 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4906 "zihery.c" /* yacc.c:1646  */
+#line 4906 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 228:
 #line 777 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 4912 "zihery.c" /* yacc.c:1646  */
+#line 4912 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 231:
 #line 784 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, zh_compExprNewVarRef( (yyvsp[0].string), ZH_COMP_PARAM ) ); }
-#line 4918 "zihery.c" /* yacc.c:1646  */
+#line 4918 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 232:
 #line 785 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, zh_compExprNewRef( (yyvsp[0].asExpr), ZH_COMP_PARAM ) ); }
-#line 4924 "zihery.c" /* yacc.c:1646  */
+#line 4924 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 233:
 #line 786 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, zh_compExprNewRef( (yyvsp[0].asExpr), ZH_COMP_PARAM ) ); }
-#line 4930 "zihery.c" /* yacc.c:1646  */
+#line 4930 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 234:
 #line 787 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, zh_compExprNewRef( (yyvsp[0].asExpr), ZH_COMP_PARAM ) ); }
-#line 4936 "zihery.c" /* yacc.c:1646  */
+#line 4936 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 235:
 #line 788 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckPassByRef( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); (yyval.asExpr)->value.asList.reference = ZH_TRUE; }
-#line 4942 "zihery.c" /* yacc.c:1646  */
+#line 4942 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 236:
 #line 791 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgRef( ZH_COMP_PARAM ); }
-#line 4948 "zihery.c" /* yacc.c:1646  */
+#line 4948 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 238:
 #line 797 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compCheckMethod( ZH_COMP_PARAM, zh_compExprNewMethodObject( (yyvsp[0].asExpr), (yyvsp[-2].asExpr) ) ); }
-#line 4954 "zihery.c" /* yacc.c:1646  */
+#line 4954 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 239:
 #line 798 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMethodObject( (yyvsp[0].asExpr), (yyvsp[-2].asExpr) ); }
-#line 4960 "zihery.c" /* yacc.c:1646  */
+#line 4960 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 240:
@@ -4965,392 +4965,392 @@ yyreduce:
                                                 zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_WITHOBJECT, NULL, NULL );
                                              (yyval.asExpr) = (yyvsp[0].asExpr);
                                           }
-#line 4969 "zihery.c" /* yacc.c:1646  */
+#line 4969 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 241:
 #line 805 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewSend( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 4975 "zihery.c" /* yacc.c:1646  */
+#line 4975 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 242:
 #line 806 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMacroSend( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 4981 "zihery.c" /* yacc.c:1646  */
+#line 4981 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 243:
 #line 809 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVarRef( (yyvsp[-1].string), ZH_COMP_PARAM ); }
-#line 4987 "zihery.c" /* yacc.c:1646  */
+#line 4987 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 245:
 #line 817 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewMethodCall( (yyvsp[-3].asExpr), (yyvsp[-1].asExpr) ); }
-#line 4993 "zihery.c" /* yacc.c:1646  */
+#line 4993 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 255:
 #line 837 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 4999 "zihery.c" /* yacc.c:1646  */
+#line 4999 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 265:
 #line 847 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5005 "zihery.c" /* yacc.c:1646  */
+#line 5005 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 268:
 #line 850 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5011 "zihery.c" /* yacc.c:1646  */
+#line 5011 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 270:
 #line 852 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5017 "zihery.c" /* yacc.c:1646  */
+#line 5017 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 282:
 #line 866 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5023 "zihery.c" /* yacc.c:1646  */
+#line 5023 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 283:
 #line 867 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5029 "zihery.c" /* yacc.c:1646  */
+#line 5029 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 285:
 #line 871 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgRef( ZH_COMP_PARAM ); }
-#line 5035 "zihery.c" /* yacc.c:1646  */
+#line 5035 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 287:
 #line 875 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewEmpty( ZH_COMP_PARAM ); }
-#line 5041 "zihery.c" /* yacc.c:1646  */
+#line 5041 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 289:
 #line 879 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVar( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 5047 "zihery.c" /* yacc.c:1646  */
+#line 5047 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 295:
 #line 885 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprListStrip( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5053 "zihery.c" /* yacc.c:1646  */
+#line 5053 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 317:
 #line 918 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewPostInc( (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 5059 "zihery.c" /* yacc.c:1646  */
+#line 5059 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 318:
 #line 919 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewPostDec( (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 5065 "zihery.c" /* yacc.c:1646  */
+#line 5065 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 319:
 #line 922 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 5071 "zihery.c" /* yacc.c:1646  */
+#line 5071 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 320:
 #line 925 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewPreInc( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5077 "zihery.c" /* yacc.c:1646  */
+#line 5077 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 321:
 #line 926 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewPreDec( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5083 "zihery.c" /* yacc.c:1646  */
+#line 5083 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 322:
 #line 929 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewNot( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5089 "zihery.c" /* yacc.c:1646  */
+#line 5089 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 323:
 #line 930 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewNegate( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5095 "zihery.c" /* yacc.c:1646  */
+#line 5095 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 324:
 #line 931 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 5101 "zihery.c" /* yacc.c:1646  */
+#line 5101 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 325:
 #line 934 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAssign( (yyvsp[-2].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5107 "zihery.c" /* yacc.c:1646  */
+#line 5107 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 326:
 #line 937 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAssign( (yyvsp[-2].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5113 "zihery.c" /* yacc.c:1646  */
+#line 5113 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 327:
 #line 940 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewPlusEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5119 "zihery.c" /* yacc.c:1646  */
+#line 5119 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 328:
 #line 943 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewMinusEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5125 "zihery.c" /* yacc.c:1646  */
+#line 5125 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 329:
 #line 946 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewMultEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5131 "zihery.c" /* yacc.c:1646  */
+#line 5131 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 330:
 #line 949 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewDivEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5137 "zihery.c" /* yacc.c:1646  */
+#line 5137 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 331:
 #line 952 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewModEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5143 "zihery.c" /* yacc.c:1646  */
+#line 5143 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 332:
 #line 955 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewExpEq( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5149 "zihery.c" /* yacc.c:1646  */
+#line 5149 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 339:
 #line 966 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewPlus( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5155 "zihery.c" /* yacc.c:1646  */
+#line 5155 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 340:
 #line 967 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewMinus( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5161 "zihery.c" /* yacc.c:1646  */
+#line 5161 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 341:
 #line 968 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewMult( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5167 "zihery.c" /* yacc.c:1646  */
+#line 5167 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 342:
 #line 969 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewDiv( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5173 "zihery.c" /* yacc.c:1646  */
+#line 5173 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 343:
 #line 970 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewMod( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5179 "zihery.c" /* yacc.c:1646  */
+#line 5179 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 344:
 #line 971 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewPower( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5185 "zihery.c" /* yacc.c:1646  */
+#line 5185 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 345:
 #line 974 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewAnd( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5191 "zihery.c" /* yacc.c:1646  */
+#line 5191 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 346:
 #line 975 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewOr( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5197 "zihery.c" /* yacc.c:1646  */
+#line 5197 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 347:
 #line 978 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewEQ( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5203 "zihery.c" /* yacc.c:1646  */
+#line 5203 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 348:
 #line 979 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewLT( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5209 "zihery.c" /* yacc.c:1646  */
+#line 5209 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 349:
 #line 980 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewGT( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5215 "zihery.c" /* yacc.c:1646  */
+#line 5215 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 350:
 #line 981 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewLE( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5221 "zihery.c" /* yacc.c:1646  */
+#line 5221 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 351:
 #line 982 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewGE( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5227 "zihery.c" /* yacc.c:1646  */
+#line 5227 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 352:
 #line 983 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewNE( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5233 "zihery.c" /* yacc.c:1646  */
+#line 5233 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 353:
 #line 984 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewNE( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5239 "zihery.c" /* yacc.c:1646  */
+#line 5239 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 354:
 #line 985 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewIN( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5245 "zihery.c" /* yacc.c:1646  */
+#line 5245 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 355:
 #line 986 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprSetOperand( zh_compExprNewEqual( (yyvsp[-2].asExpr), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5251 "zihery.c" /* yacc.c:1646  */
+#line 5251 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 357:
 #line 995 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArrayAt( (yyvsp[-2].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5257 "zihery.c" /* yacc.c:1646  */
+#line 5257 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 358:
 #line 996 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArrayAt( (yyvsp[-2].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5263 "zihery.c" /* yacc.c:1646  */
+#line 5263 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 359:
 #line 997 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArrayAt( (yyvsp[-3].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5269 "zihery.c" /* yacc.c:1646  */
+#line 5269 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 360:
 #line 1000 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5275 "zihery.c" /* yacc.c:1646  */
+#line 5275 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 361:
 #line 1001 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 5281 "zihery.c" /* yacc.c:1646  */
+#line 5281 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 362:
 #line 1004 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewCodeBlock( (yyvsp[0].asCodeblock).string, (yyvsp[0].asCodeblock).length, (yyvsp[0].asCodeblock).flags, ZH_COMP_PARAM ); (yyvsp[0].asCodeblock).string = NULL; }
-#line 5287 "zihery.c" /* yacc.c:1646  */
+#line 5287 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 363:
 #line 1005 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-2].asExpr); }
-#line 5293 "zihery.c" /* yacc.c:1646  */
+#line 5293 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 364:
 #line 1010 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = NULL; }
-#line 5299 "zihery.c" /* yacc.c:1646  */
+#line 5299 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 365:
 #line 1011 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = NULL; (yyvsp[-1].asExpr)->value.asCodeblock.flags |= ZH_BLOCK_VPARAMS; }
-#line 5305 "zihery.c" /* yacc.c:1646  */
+#line 5305 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 366:
 #line 1012 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr);   }
-#line 5311 "zihery.c" /* yacc.c:1646  */
+#line 5311 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 367:
 #line 1013 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-2].asExpr);   (yyvsp[-3].asExpr)->value.asCodeblock.flags |= ZH_BLOCK_VPARAMS; }
-#line 5317 "zihery.c" /* yacc.c:1646  */
+#line 5317 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 368:
 #line 1016 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_LOCAL; (yyval.asExpr) = zh_compExprCBVarAdd( (yyvsp[-2].asExpr), (yyvsp[-1].string), (yyvsp[0].asVarType)->cVarType, ZH_COMP_PARAM ); }
-#line 5323 "zihery.c" /* yacc.c:1646  */
+#line 5323 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 369:
 #line 1017 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_LOCAL; (yyval.asExpr) = zh_compExprCBVarAdd( (yyvsp[-4].asExpr), (yyvsp[-1].string), (yyvsp[0].asVarType)->cVarType, ZH_COMP_PARAM ); }
-#line 5329 "zihery.c" /* yacc.c:1646  */
+#line 5329 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 370:
 #line 1020 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddCodeblockExpr( (yyvsp[(-1) - (1)].asExpr), (yyvsp[0].asExpr) ); }
-#line 5335 "zihery.c" /* yacc.c:1646  */
+#line 5335 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 371:
 #line 1021 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddCodeblockExpr( (yyvsp[(-1) - (3)].asExpr), (yyvsp[0].asExpr) ); }
-#line 5341 "zihery.c" /* yacc.c:1646  */
+#line 5341 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 372:
 #line 1025 "ziher.y" /* yacc.c:1646  */
     { (yyval.bTrue) = ZH_COMP_PARAM->functions.pLast->bBlock;
                 ZH_COMP_PARAM->functions.pLast->bBlock = ZH_TRUE; }
-#line 5348 "zihery.c" /* yacc.c:1646  */
+#line 5348 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 373:
 #line 1028 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->bBlock = (yyvsp[-1].bTrue); }
-#line 5354 "zihery.c" /* yacc.c:1646  */
+#line 5354 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 375:
@@ -5380,7 +5380,7 @@ yyreduce:
                   pVar =pVar->pNext;
                }
             }
-#line 5384 "zihery.c" /* yacc.c:1646  */
+#line 5384 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 376:
@@ -5398,55 +5398,55 @@ yyreduce:
                   ZH_COMP_PARAM->lastLine = (yyvsp[-3].sNumber);
                }
             }
-#line 5402 "zihery.c" /* yacc.c:1646  */
+#line 5402 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 378:
 #line 1073 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "{||...}*" ); }
-#line 5408 "zihery.c" /* yacc.c:1646  */
+#line 5408 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 379:
 #line 1077 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5414 "zihery.c" /* yacc.c:1646  */
+#line 5414 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 380:
 #line 1078 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 5420 "zihery.c" /* yacc.c:1646  */
+#line 5420 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 381:
 #line 1080 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[-1].asExpr); }
-#line 5426 "zihery.c" /* yacc.c:1646  */
+#line 5426 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 383:
 #line 1093 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewIIF( zh_compExprAddListExpr( zh_compExprAddListExpr( zh_compExprNewList( (yyvsp[-5].asExpr), ZH_COMP_PARAM ), (yyvsp[-3].asExpr) ), (yyvsp[-1].asExpr) ) ); }
-#line 5432 "zihery.c" /* yacc.c:1646  */
+#line 5432 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 385:
 #line 1099 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_LOCAL; zh_compLinePush( ZH_COMP_PARAM ); }
-#line 5438 "zihery.c" /* yacc.c:1646  */
+#line 5438 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 387:
 #line 1101 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_STATIC; zh_compLinePush( ZH_COMP_PARAM ); }
-#line 5444 "zihery.c" /* yacc.c:1646  */
+#line 5444 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 389:
 #line 1103 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_TH_STATIC; zh_compLinePush( ZH_COMP_PARAM ); }
-#line 5450 "zihery.c" /* yacc.c:1646  */
+#line 5450 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 391:
@@ -5459,43 +5459,43 @@ yyreduce:
                            ZH_COMP_PARAM->iVarScope = ( ZH_VSCOMP_PRIVATE | ZH_VSCOMP_PARAMETER );
                         }
                       }
-#line 5463 "zihery.c" /* yacc.c:1646  */
+#line 5463 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 392:
 #line 1112 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5469 "zihery.c" /* yacc.c:1646  */
+#line 5469 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 393:
 #line 1115 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) = 1; }
-#line 5475 "zihery.c" /* yacc.c:1646  */
+#line 5475 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 394:
 #line 1116 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber)++; }
-#line 5481 "zihery.c" /* yacc.c:1646  */
+#line 5481 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 395:
 #line 1119 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) = 1; }
-#line 5487 "zihery.c" /* yacc.c:1646  */
+#line 5487 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 396:
 #line 1120 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber)++; }
-#line 5493 "zihery.c" /* yacc.c:1646  */
+#line 5493 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 398:
 #line 1130 "ziher.y" /* yacc.c:1646  */
     { zh_compRTVariableAdd( ZH_COMP_PARAM, zh_compExprNewRTVar( NULL, (yyvsp[-1].asExpr), ZH_COMP_PARAM ), ZH_FALSE ); }
-#line 5499 "zihery.c" /* yacc.c:1646  */
+#line 5499 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 399:
@@ -5503,7 +5503,7 @@ yyreduce:
     { ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[0].asExpr), ZH_COMP_PARAM ) );
                  zh_compRTVariableAdd( ZH_COMP_PARAM, zh_compExprNewRTVar( NULL, (yyvsp[-3].asExpr), ZH_COMP_PARAM ), ZH_TRUE );
                }
-#line 5507 "zihery.c" /* yacc.c:1646  */
+#line 5507 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 400:
@@ -5512,7 +5512,7 @@ yyreduce:
                   ZH_COMP_EXPR_FREE( zh_compArrayDimPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   zh_compRTVariableAdd( ZH_COMP_PARAM, zh_compExprNewRTVar( NULL, (yyvsp[-2].asExpr), ZH_COMP_PARAM ), ZH_TRUE );
                }
-#line 5516 "zihery.c" /* yacc.c:1646  */
+#line 5516 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 401:
@@ -5534,7 +5534,7 @@ yyreduce:
                      ZH_COMP_EXPR_FREE( zh_compExprGenPush( zh_compExprNewNil( ZH_COMP_PARAM ), ZH_COMP_PARAM ) );
                   }
                }
-#line 5538 "zihery.c" /* yacc.c:1646  */
+#line 5538 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 402:
@@ -5542,7 +5542,7 @@ yyreduce:
     { (yyval.iNumber) = ZH_COMP_PARAM->iVarScope;
                                 zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) );
                               }
-#line 5546 "zihery.c" /* yacc.c:1646  */
+#line 5546 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 403:
@@ -5571,37 +5571,37 @@ yyreduce:
                   }
                   ZH_COMP_PARAM->iVarScope = (yyvsp[-2].iNumber);
                }
-#line 5575 "zihery.c" /* yacc.c:1646  */
+#line 5575 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 404:
 #line 1189 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableDim( (yyvsp[-2].string), (yyvsp[-1].asExpr), ZH_COMP_PARAM ); }
-#line 5581 "zihery.c" /* yacc.c:1646  */
+#line 5581 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 406:
 #line 1198 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 5587 "zihery.c" /* yacc.c:1646  */
+#line 5587 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 407:
 #line 1199 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 5593 "zihery.c" /* yacc.c:1646  */
+#line 5593 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 408:
 #line 1200 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-3].asExpr), (yyvsp[0].asExpr) ); }
-#line 5599 "zihery.c" /* yacc.c:1646  */
+#line 5599 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 409:
 #line 1203 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_FIELD; }
-#line 5605 "zihery.c" /* yacc.c:1646  */
+#line 5605 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 410:
@@ -5609,55 +5609,55 @@ yyreduce:
     {
                if( (yyvsp[-1].string) ) zh_compFieldSetAlias( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[-2].iNumber) );
              }
-#line 5613 "zihery.c" /* yacc.c:1646  */
+#line 5613 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 411:
 #line 1210 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) = zh_compFieldsCount( ZH_COMP_PARAM ); zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5619 "zihery.c" /* yacc.c:1646  */
+#line 5619 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 412:
 #line 1211 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5625 "zihery.c" /* yacc.c:1646  */
+#line 5625 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 413:
 #line 1214 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = NULL; }
-#line 5631 "zihery.c" /* yacc.c:1646  */
+#line 5631 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 414:
 #line 1215 "ziher.y" /* yacc.c:1646  */
     { (yyval.string) = (yyvsp[0].string); }
-#line 5637 "zihery.c" /* yacc.c:1646  */
+#line 5637 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 415:
 #line 1218 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_MEMVAR; }
-#line 5643 "zihery.c" /* yacc.c:1646  */
+#line 5643 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 417:
 #line 1221 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5649 "zihery.c" /* yacc.c:1646  */
+#line 5649 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 418:
 #line 1222 "ziher.y" /* yacc.c:1646  */
     { zh_compVariableAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5655 "zihery.c" /* yacc.c:1646  */
+#line 5655 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 419:
 #line 1225 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredAdd( ZH_COMP_PARAM, (yyvsp[-1].string) ); ZH_COMP_PARAM->szDeclaredFun = (yyvsp[-1].string); }
-#line 5661 "zihery.c" /* yacc.c:1646  */
+#line 5661 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 420:
@@ -5680,55 +5680,55 @@ yyreduce:
                ZH_COMP_PARAM->szDeclaredFun = NULL;
                ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE;
              }
-#line 5684 "zihery.c" /* yacc.c:1646  */
+#line 5684 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 421:
 #line 1244 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->pLastClass = zh_compClassAdd( ZH_COMP_PARAM, (yyvsp[0].string), NULL ); }
-#line 5690 "zihery.c" /* yacc.c:1646  */
+#line 5690 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 422:
 #line 1244 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5696 "zihery.c" /* yacc.c:1646  */
+#line 5696 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 423:
 #line 1245 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->pLastClass = zh_compClassAdd( ZH_COMP_PARAM, (yyvsp[-1].string), NULL ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5702 "zihery.c" /* yacc.c:1646  */
+#line 5702 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 424:
 #line 1246 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->pLastClass = zh_compClassAdd( ZH_COMP_PARAM, (yyvsp[-2].string), (yyvsp[-1].string) ); ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5708 "zihery.c" /* yacc.c:1646  */
+#line 5708 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 425:
 #line 1247 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5714 "zihery.c" /* yacc.c:1646  */
+#line 5714 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 426:
 #line 1248 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->cDataListType = (yyvsp[0].asVarType)->cVarType; }
-#line 5720 "zihery.c" /* yacc.c:1646  */
+#line 5720 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 427:
 #line 1248 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->cDataListType = 0; ZH_COMP_PARAM->iVarScope = ZH_VSCOMP_NONE; }
-#line 5726 "zihery.c" /* yacc.c:1646  */
+#line 5726 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 434:
 #line 1261 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->pLastMethod = zh_compMethodAdd( ZH_COMP_PARAM, ZH_COMP_PARAM->pLastClass, (yyvsp[-1].string) ); }
-#line 5732 "zihery.c" /* yacc.c:1646  */
+#line 5732 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 435:
@@ -5749,13 +5749,13 @@ yyreduce:
                }
                ZH_COMP_PARAM->pLastMethod = NULL;
              }
-#line 5753 "zihery.c" /* yacc.c:1646  */
+#line 5753 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 436:
 #line 1280 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->pLastMethod = zh_compMethodAdd( ZH_COMP_PARAM, ZH_COMP_PARAM->pLastClass, (yyvsp[0].string) ); }
-#line 5759 "zihery.c" /* yacc.c:1646  */
+#line 5759 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 437:
@@ -5812,181 +5812,181 @@ yyreduce:
 
                ZH_COMP_PARAM->pLastMethod = NULL;
              }
-#line 5816 "zihery.c" /* yacc.c:1646  */
+#line 5816 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 451:
 #line 1354 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( (yyvsp[0].asExpr) ); }
-#line 5822 "zihery.c" /* yacc.c:1646  */
+#line 5822 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 452:
 #line 1357 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5828 "zihery.c" /* yacc.c:1646  */
+#line 5828 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 453:
 #line 1358 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5834 "zihery.c" /* yacc.c:1646  */
+#line 5834 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 454:
 #line 1359 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-3].string), zh_compVarTypeNew( ZH_COMP_PARAM, 'F', NULL ) ); }
-#line 5840 "zihery.c" /* yacc.c:1646  */
+#line 5840 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 455:
 #line 1360 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), (yyvsp[0].asVarType) ); }
-#line 5846 "zihery.c" /* yacc.c:1646  */
+#line 5846 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 456:
 #line 1361 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5852 "zihery.c" /* yacc.c:1646  */
+#line 5852 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 457:
 #line 1362 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-3].string), zh_compVarTypeNew( ZH_COMP_PARAM, 'F', NULL ) ); }
-#line 5858 "zihery.c" /* yacc.c:1646  */
+#line 5858 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 458:
 #line 1365 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_OPTIONAL, NULL ) ); }
-#line 5864 "zihery.c" /* yacc.c:1646  */
+#line 5864 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 459:
 #line 1366 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_OPTIONAL + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5870 "zihery.c" /* yacc.c:1646  */
+#line 5870 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 460:
 #line 1367 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-3].string), zh_compVarTypeNew( ZH_COMP_PARAM, 'F' + ZH_VT_OFFSET_OPTIONAL + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5876 "zihery.c" /* yacc.c:1646  */
+#line 5876 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 461:
 #line 1368 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_OPTIONAL, NULL ) ); }
-#line 5882 "zihery.c" /* yacc.c:1646  */
+#line 5882 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 462:
 #line 1369 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-1].string), zh_compVarTypeNew( ZH_COMP_PARAM, (yyvsp[0].asVarType)->cVarType + ZH_VT_OFFSET_OPTIONAL + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5888 "zihery.c" /* yacc.c:1646  */
+#line 5888 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 463:
 #line 1370 "ziher.y" /* yacc.c:1646  */
     { zh_compDeclaredParameterAdd( ZH_COMP_PARAM, (yyvsp[-3].string), zh_compVarTypeNew( ZH_COMP_PARAM, 'F' + ZH_VT_OFFSET_OPTIONAL + ZH_VT_OFFSET_BYREF, NULL ) ); }
-#line 5894 "zihery.c" /* yacc.c:1646  */
+#line 5894 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 472:
 #line 1383 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_NEXTFOR ); }
-#line 5900 "zihery.c" /* yacc.c:1646  */
+#line 5900 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 473:
 #line 1386 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDCASE ); }
-#line 5906 "zihery.c" /* yacc.c:1646  */
+#line 5906 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 474:
 #line 1389 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDIF ); }
-#line 5912 "zihery.c" /* yacc.c:1646  */
+#line 5912 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 475:
 #line 1392 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDWITH ); }
-#line 5918 "zihery.c" /* yacc.c:1646  */
+#line 5918 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 476:
 #line 1395 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDSEQ ); }
-#line 5924 "zihery.c" /* yacc.c:1646  */
+#line 5924 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 477:
 #line 1398 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDDO ); }
-#line 5930 "zihery.c" /* yacc.c:1646  */
+#line 5930 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 478:
 #line 1401 "ziher.y" /* yacc.c:1646  */
     { zh_compErrStru( ZH_COMP_PARAM, ZH_COMP_ERR_ENDSWITCH ); }
-#line 5936 "zihery.c" /* yacc.c:1646  */
+#line 5936 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 479:
 #line 1404 "ziher.y" /* yacc.c:1646  */
     { zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM ); }
-#line 5942 "zihery.c" /* yacc.c:1646  */
+#line 5942 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 480:
 #line 1405 "ziher.y" /* yacc.c:1646  */
     { zh_compGenJumpHere( (yyvsp[-2].sNumber), ZH_COMP_PARAM ); }
-#line 5948 "zihery.c" /* yacc.c:1646  */
+#line 5948 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 481:
 #line 1406 "ziher.y" /* yacc.c:1646  */
     { zh_compGenJumpHere( (yyvsp[-2].sNumber), ZH_COMP_PARAM ); zh_compElseIfFix( ZH_COMP_PARAM, (yyvsp[-1].pVoid) ); }
-#line 5954 "zihery.c" /* yacc.c:1646  */
+#line 5954 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 482:
 #line 1407 "ziher.y" /* yacc.c:1646  */
     { zh_compGenJumpHere( (yyvsp[-3].sNumber), ZH_COMP_PARAM ); zh_compElseIfFix( ZH_COMP_PARAM, (yyvsp[-2].pVoid) ); }
-#line 5960 "zihery.c" /* yacc.c:1646  */
+#line 5960 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 483:
 #line 1411 "ziher.y" /* yacc.c:1646  */
     { ++ZH_COMP_PARAM->functions.pLast->wIfCounter; zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 5966 "zihery.c" /* yacc.c:1646  */
+#line 5966 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 484:
 #line 1413 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-2].asExpr), ZH_COMP_PARAM ) ); (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM ); }
-#line 5972 "zihery.c" /* yacc.c:1646  */
+#line 5972 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 485:
 #line 1415 "ziher.y" /* yacc.c:1646  */
     { (yyval.sNumber) = zh_compGenJump( 0, ZH_COMP_PARAM ); zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM ); }
-#line 5978 "zihery.c" /* yacc.c:1646  */
+#line 5978 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 486:
 #line 1418 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; }
-#line 5984 "zihery.c" /* yacc.c:1646  */
+#line 5984 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 488:
 #line 1422 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; zh_compLinePush( ZH_COMP_PARAM ); }
-#line 5990 "zihery.c" /* yacc.c:1646  */
+#line 5990 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 489:
@@ -5994,7 +5994,7 @@ yyreduce:
     { ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
                }
-#line 5998 "zihery.c" /* yacc.c:1646  */
+#line 5998 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 490:
@@ -6002,13 +6002,13 @@ yyreduce:
     { (yyval.pVoid) = zh_compElseIfGen( ZH_COMP_PARAM, NULL, zh_compGenJump( 0, ZH_COMP_PARAM ) );
                   zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM );
                }
-#line 6006 "zihery.c" /* yacc.c:1646  */
+#line 6006 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 491:
 #line 1432 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; zh_compLinePush( ZH_COMP_PARAM ); }
-#line 6012 "zihery.c" /* yacc.c:1646  */
+#line 6012 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 492:
@@ -6016,7 +6016,7 @@ yyreduce:
     { ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
                }
-#line 6020 "zihery.c" /* yacc.c:1646  */
+#line 6020 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 493:
@@ -6024,7 +6024,7 @@ yyreduce:
     { (yyval.pVoid) = zh_compElseIfGen( ZH_COMP_PARAM, (yyvsp[-6].pVoid), zh_compGenJump( 0, ZH_COMP_PARAM ) );
                   zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM );
                }
-#line 6028 "zihery.c" /* yacc.c:1646  */
+#line 6028 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 494:
@@ -6034,25 +6034,25 @@ yyreduce:
                      --ZH_COMP_PARAM->functions.pLast->wIfCounter;
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ( ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE );
                }
-#line 6038 "zihery.c" /* yacc.c:1646  */
+#line 6038 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 497:
 #line 1453 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "IF*" ); }
-#line 6044 "zihery.c" /* yacc.c:1646  */
+#line 6044 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 504:
 #line 1464 "ziher.y" /* yacc.c:1646  */
     { zh_compElseIfFix( ZH_COMP_PARAM, (yyvsp[-1].pVoid) ); }
-#line 6050 "zihery.c" /* yacc.c:1646  */
+#line 6050 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 507:
 #line 1476 "ziher.y" /* yacc.c:1646  */
     { zh_compElseIfFix( ZH_COMP_PARAM, (yyvsp[-2].pVoid) ); }
-#line 6056 "zihery.c" /* yacc.c:1646  */
+#line 6056 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 508:
@@ -6061,19 +6061,19 @@ yyreduce:
                      --ZH_COMP_PARAM->functions.pLast->wCaseCounter;
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ( ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE );
                }
-#line 6065 "zihery.c" /* yacc.c:1646  */
+#line 6065 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 511:
 #line 1488 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "CASE*" ); }
-#line 6071 "zihery.c" /* yacc.c:1646  */
+#line 6071 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 518:
 #line 1497 "ziher.y" /* yacc.c:1646  */
     { ++ZH_COMP_PARAM->functions.pLast->wCaseCounter; zh_compLinePushIfDebugger( ZH_COMP_PARAM );}
-#line 6077 "zihery.c" /* yacc.c:1646  */
+#line 6077 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 521:
@@ -6084,13 +6084,13 @@ yyreduce:
                            zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_MAYHEM_IN_CASE, NULL, NULL );
                         }
                      }
-#line 6088 "zihery.c" /* yacc.c:1646  */
+#line 6088 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 522:
 #line 1509 "ziher.y" /* yacc.c:1646  */
     { zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 6094 "zihery.c" /* yacc.c:1646  */
+#line 6094 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 523:
@@ -6099,7 +6099,7 @@ yyreduce:
                   ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
                }
-#line 6103 "zihery.c" /* yacc.c:1646  */
+#line 6103 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 524:
@@ -6109,13 +6109,13 @@ yyreduce:
                   (yyval.pVoid) = zh_compElseIfGen( ZH_COMP_PARAM, NULL, zh_compGenJump( 0, ZH_COMP_PARAM ) );
                   zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM );
                }
-#line 6113 "zihery.c" /* yacc.c:1646  */
+#line 6113 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 525:
 #line 1521 "ziher.y" /* yacc.c:1646  */
     { zh_compLinePushIfInside( ZH_COMP_PARAM ); }
-#line 6119 "zihery.c" /* yacc.c:1646  */
+#line 6119 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 526:
@@ -6124,7 +6124,7 @@ yyreduce:
                   ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
                }
-#line 6128 "zihery.c" /* yacc.c:1646  */
+#line 6128 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 527:
@@ -6134,25 +6134,25 @@ yyreduce:
                   (yyval.pVoid) = zh_compElseIfGen( ZH_COMP_PARAM, (yyvsp[-6].pVoid), zh_compGenJump( 0, ZH_COMP_PARAM ) );
                   zh_compGenJumpHere( (yyvsp[-1].sNumber), ZH_COMP_PARAM );
                }
-#line 6138 "zihery.c" /* yacc.c:1646  */
+#line 6138 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 528:
 #line 1534 "ziher.y" /* yacc.c:1646  */
     {zh_compLinePushIfDebugger( ZH_COMP_PARAM ); }
-#line 6144 "zihery.c" /* yacc.c:1646  */
+#line 6144 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 529:
 #line 1534 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; }
-#line 6150 "zihery.c" /* yacc.c:1646  */
+#line 6150 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 531:
 #line 1536 "ziher.y" /* yacc.c:1646  */
     { zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_MAYHEM_IN_CASE, NULL, NULL ); }
-#line 6156 "zihery.c" /* yacc.c:1646  */
+#line 6156 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 533:
@@ -6161,7 +6161,7 @@ yyreduce:
                   ZH_COMP_EXPR_FREE( zh_compExprGenPush( (yyvsp[-1].asExpr), ZH_COMP_PARAM ) );
                   (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
                }
-#line 6165 "zihery.c" /* yacc.c:1646  */
+#line 6165 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 534:
@@ -6170,7 +6170,7 @@ yyreduce:
                   zh_compLoopHere( ZH_COMP_PARAM );
                   zh_compGenJump( (yyvsp[-4].sNumber) - ZH_COMP_PARAM->functions.pLast->nPCodePos, ZH_COMP_PARAM );
                }
-#line 6174 "zihery.c" /* yacc.c:1646  */
+#line 6174 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 535:
@@ -6182,7 +6182,7 @@ yyreduce:
                   zh_compLoopEnd( ZH_COMP_PARAM );
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_WITH_RETURN;
                }
-#line 6186 "zihery.c" /* yacc.c:1646  */
+#line 6186 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 536:
@@ -6193,19 +6193,19 @@ yyreduce:
                   ++ZH_COMP_PARAM->functions.pLast->wWhileCounter;
                   zh_compLoopStart( ZH_COMP_PARAM, ZH_TRUE );
                }
-#line 6197 "zihery.c" /* yacc.c:1646  */
+#line 6197 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 537:
 #line 1570 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; }
-#line 6203 "zihery.c" /* yacc.c:1646  */
+#line 6203 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 540:
 #line 1575 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "WHILE*" ); }
-#line 6209 "zihery.c" /* yacc.c:1646  */
+#line 6209 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 547:
@@ -6222,7 +6222,7 @@ yyreduce:
                      zh_compForStart( ZH_COMP_PARAM, zh_compExprAsSymbol( (yyvsp[-2].asExpr) ), 0 );
                   }
                }
-#line 6226 "zihery.c" /* yacc.c:1646  */
+#line 6226 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 548:
@@ -6231,7 +6231,7 @@ yyreduce:
                   zh_compLoopStart( ZH_COMP_PARAM, ZH_TRUE );
                   (yyval.sNumber) = zh_compGenJump( 0, ZH_COMP_PARAM );
                }
-#line 6235 "zihery.c" /* yacc.c:1646  */
+#line 6235 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 549:
@@ -6239,7 +6239,7 @@ yyreduce:
     {                                      /* 11 */
                   (yyval.sNumber) = ZH_COMP_PARAM->functions.pLast->nPCodePos;
                }
-#line 6243 "zihery.c" /* yacc.c:1646  */
+#line 6243 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 550:
@@ -6286,19 +6286,19 @@ yyreduce:
                   ZH_COMP_EXPR_FREE( (yyvsp[-7].asExpr) );  /* deletes $5, $2, $4 */
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ( ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE );
                }
-#line 6290 "zihery.c" /* yacc.c:1646  */
+#line 6290 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 553:
 #line 1655 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = NULL; }
-#line 6296 "zihery.c" /* yacc.c:1646  */
+#line 6296 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 554:
 #line 1656 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprReduce( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 6302 "zihery.c" /* yacc.c:1646  */
+#line 6302 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 555:
@@ -6308,55 +6308,55 @@ yyreduce:
                      if( ZH_COMP_PARAM->functions.pLast->wForCounter )
                         --ZH_COMP_PARAM->functions.pLast->wForCounter;
                   }
-#line 6312 "zihery.c" /* yacc.c:1646  */
+#line 6312 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 559:
 #line 1670 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "FOR*" ); }
-#line 6318 "zihery.c" /* yacc.c:1646  */
+#line 6318 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 566:
 #line 1679 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVarRef( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 6324 "zihery.c" /* yacc.c:1646  */
+#line 6324 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 567:
 #line 1680 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewRef( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 6330 "zihery.c" /* yacc.c:1646  */
+#line 6330 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 568:
 #line 1683 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 6336 "zihery.c" /* yacc.c:1646  */
+#line 6336 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 569:
 #line 1684 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 6342 "zihery.c" /* yacc.c:1646  */
+#line 6342 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 570:
 #line 1687 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVarRef( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 6348 "zihery.c" /* yacc.c:1646  */
+#line 6348 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 572:
 #line 1691 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 6354 "zihery.c" /* yacc.c:1646  */
+#line 6354 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 573:
 #line 1692 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 6360 "zihery.c" /* yacc.c:1646  */
+#line 6360 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 574:
@@ -6366,7 +6366,7 @@ yyreduce:
                 zh_compLinePushIfInside( ZH_COMP_PARAM );
                 zh_compDebugStart();
              }
-#line 6370 "zihery.c" /* yacc.c:1646  */
+#line 6370 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 575:
@@ -6380,7 +6380,7 @@ yyreduce:
                 zh_compLoopStart( ZH_COMP_PARAM, ZH_TRUE );
                 (yyval.sNumber) = ZH_COMP_PARAM->functions.pLast->nPCodePos;
              }
-#line 6384 "zihery.c" /* yacc.c:1646  */
+#line 6384 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 576:
@@ -6389,7 +6389,7 @@ yyreduce:
                 /* 9 */
                 (yyval.sNumber) = zh_compGenJumpFalse( 0, ZH_COMP_PARAM );
              }
-#line 6393 "zihery.c" /* yacc.c:1646  */
+#line 6393 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 577:
@@ -6406,19 +6406,19 @@ yyreduce:
                 ZH_COMP_EXPR_FREE( (yyvsp[-8].asExpr) );
                 ZH_COMP_EXPR_FREE( (yyvsp[-6].asExpr) );
              }
-#line 6410 "zihery.c" /* yacc.c:1646  */
+#line 6410 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 578:
 #line 1732 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) =  1; }
-#line 6416 "zihery.c" /* yacc.c:1646  */
+#line 6416 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 579:
 #line 1733 "ziher.y" /* yacc.c:1646  */
     { (yyval.iNumber) = -1; }
-#line 6422 "zihery.c" /* yacc.c:1646  */
+#line 6422 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 580:
@@ -6428,7 +6428,7 @@ yyreduce:
                   zh_compSwitchStart( ZH_COMP_PARAM, (yyvsp[0].asExpr) );
                   zh_compGenJump( 0, ZH_COMP_PARAM );
                }
-#line 6432 "zihery.c" /* yacc.c:1646  */
+#line 6432 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 581:
@@ -6437,7 +6437,7 @@ yyreduce:
                   zh_compSwitchEnd( ZH_COMP_PARAM );
                   zh_compLoopEnd( ZH_COMP_PARAM );
                }
-#line 6441 "zihery.c" /* yacc.c:1646  */
+#line 6441 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 582:
@@ -6445,7 +6445,7 @@ yyreduce:
     {
                   ZH_COMP_EXPR_FREE( (yyvsp[-1].asExpr) );
                }
-#line 6449 "zihery.c" /* yacc.c:1646  */
+#line 6449 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 583:
@@ -6455,13 +6455,13 @@ yyreduce:
                      --ZH_COMP_PARAM->functions.pLast->wSwitchCounter;
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ( ZH_FUNF_WITH_RETURN | ZH_FUNF_BREAK_CODE );
                }
-#line 6459 "zihery.c" /* yacc.c:1646  */
+#line 6459 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 586:
 #line 1766 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "SWITCH*" ); }
-#line 6465 "zihery.c" /* yacc.c:1646  */
+#line 6465 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 593:
@@ -6470,7 +6470,7 @@ yyreduce:
                   ++ZH_COMP_PARAM->functions.pLast->wSwitchCounter;
                   zh_compLinePushIfInside( ZH_COMP_PARAM );
                }
-#line 6474 "zihery.c" /* yacc.c:1646  */
+#line 6474 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 594:
@@ -6478,7 +6478,7 @@ yyreduce:
     {
                   (yyval.asExpr) = zh_compExprReduce( (yyvsp[-1].asExpr), ZH_COMP_PARAM );
                }
-#line 6482 "zihery.c" /* yacc.c:1646  */
+#line 6482 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 596:
@@ -6489,31 +6489,31 @@ yyreduce:
                      zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_MAYHEM_IN_CASE, NULL, NULL );
                   }
                }
-#line 6493 "zihery.c" /* yacc.c:1646  */
+#line 6493 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 597:
 #line 1796 "ziher.y" /* yacc.c:1646  */
     { zh_compSwitchAdd( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); zh_compLinePush( ZH_COMP_PARAM ); }
-#line 6499 "zihery.c" /* yacc.c:1646  */
+#line 6499 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 599:
 #line 1799 "ziher.y" /* yacc.c:1646  */
     { zh_compSwitchAdd( ZH_COMP_PARAM, (yyvsp[0].asExpr) ); zh_compLinePush( ZH_COMP_PARAM ); }
-#line 6505 "zihery.c" /* yacc.c:1646  */
+#line 6505 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 603:
 #line 1807 "ziher.y" /* yacc.c:1646  */
     { zh_compSwitchAdd( ZH_COMP_PARAM, NULL ); zh_compLinePush( ZH_COMP_PARAM ); }
-#line 6511 "zihery.c" /* yacc.c:1646  */
+#line 6511 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 604:
 #line 1807 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE; }
-#line 6517 "zihery.c" /* yacc.c:1646  */
+#line 6517 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 606:
@@ -6524,7 +6524,7 @@ yyreduce:
                   ++ZH_COMP_PARAM->functions.pLast->wSeqBegCounter;
                   (yyval.sNumber) = zh_compSequenceBegin( ZH_COMP_PARAM );
                }
-#line 6528 "zihery.c" /* yacc.c:1646  */
+#line 6528 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 607:
@@ -6539,7 +6539,7 @@ yyreduce:
                   (yyval.sNumber) = zh_compSequenceEnd( ZH_COMP_PARAM );
                   (yyvsp[-1].lNumber) = zh_compLoopCount( ZH_COMP_PARAM );
                }
-#line 6543 "zihery.c" /* yacc.c:1646  */
+#line 6543 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 608:
@@ -6551,7 +6551,7 @@ yyreduce:
                   if( (yyvsp[0].sNumber) )
                      zh_compGenJumpThere( (yyvsp[-5].sNumber), (yyvsp[0].sNumber), ZH_COMP_PARAM );
                }
-#line 6555 "zihery.c" /* yacc.c:1646  */
+#line 6555 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 609:
@@ -6584,7 +6584,7 @@ yyreduce:
                   zh_compSequenceFinish( ZH_COMP_PARAM, (yyvsp[-7].sNumber), (yyvsp[-3].sNumber), (yyvsp[0].sNumber),
                                          (yyvsp[-4].lNumber) != 0, (yyvsp[-2].sNumber) != 0, (yyvsp[-5].lNumber) == lLoopCount );
                }
-#line 6588 "zihery.c" /* yacc.c:1646  */
+#line 6588 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 610:
@@ -6593,19 +6593,19 @@ yyreduce:
                   if( ZH_COMP_PARAM->functions.pLast->wSeqBegCounter )
                      --ZH_COMP_PARAM->functions.pLast->wSeqBegCounter;
                }
-#line 6597 "zihery.c" /* yacc.c:1646  */
+#line 6597 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 613:
 #line 1877 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "BEGIN SEQUENCE*" ); }
-#line 6603 "zihery.c" /* yacc.c:1646  */
+#line 6603 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 620:
 #line 1886 "ziher.y" /* yacc.c:1646  */
     { (yyval.sNumber) = 0; }
-#line 6609 "zihery.c" /* yacc.c:1646  */
+#line 6609 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 621:
@@ -6615,13 +6615,13 @@ yyreduce:
                   zh_compGenPCode1( ZH_P_SEQBLOCK, ZH_COMP_PARAM );
                   (yyval.sNumber) = ZH_COMP_PARAM->functions.pLast->nPCodePos;
                }
-#line 6619 "zihery.c" /* yacc.c:1646  */
+#line 6619 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 622:
 #line 1895 "ziher.y" /* yacc.c:1646  */
     { (yyval.sNumber) = 0; }
-#line 6625 "zihery.c" /* yacc.c:1646  */
+#line 6625 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 624:
@@ -6632,7 +6632,7 @@ yyreduce:
                   ++ZH_COMP_PARAM->functions.pLast->wAlwaysCounter;
                   zh_compSequenceAlways( ZH_COMP_PARAM );
                }
-#line 6636 "zihery.c" /* yacc.c:1646  */
+#line 6636 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 625:
@@ -6643,7 +6643,7 @@ yyreduce:
                      --ZH_COMP_PARAM->functions.pLast->wSeqCounter;
                   ZH_COMP_PARAM->functions.pLast->funFlags &= ~ ZH_FUNF_BREAK_CODE;
                }
-#line 6647 "zihery.c" /* yacc.c:1646  */
+#line 6647 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 628:
@@ -6656,7 +6656,7 @@ yyreduce:
                   zh_compLinePushIfInside( ZH_COMP_PARAM );
                   zh_compGenPCode2( ZH_P_SEQRECOVER, ZH_P_POP, ZH_COMP_PARAM );
                }
-#line 6660 "zihery.c" /* yacc.c:1646  */
+#line 6660 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 629:
@@ -6670,7 +6670,7 @@ yyreduce:
                   zh_compGenPCode1( ZH_P_SEQRECOVER, ZH_COMP_PARAM );
                   zh_compGenPopVar( (yyvsp[0].string), ZH_COMP_PARAM );
                }
-#line 6674 "zihery.c" /* yacc.c:1646  */
+#line 6674 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 630:
@@ -6678,7 +6678,7 @@ yyreduce:
     {
                   (yyval.asExpr) = zh_compExprNewFunCall( (yyvsp[-1].asExpr), (yyvsp[0].asExpr), ZH_COMP_PARAM );
                }
-#line 6682 "zihery.c" /* yacc.c:1646  */
+#line 6682 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 631:
@@ -6688,55 +6688,55 @@ yyreduce:
                   /* DOIDENT is the only one identifier which can be returned in lower letters */
                   (yyval.asExpr) = zh_compExprNewFunCall( zh_compExprNewFunName( zh_compIdentifierNew( ZH_COMP_PARAM, zh_strupr( zh_strdup( (yyvsp[-1].string) ) ), ZH_IDENT_FREE ), ZH_COMP_PARAM ), (yyvsp[0].asExpr), ZH_COMP_PARAM );
                }
-#line 6692 "zihery.c" /* yacc.c:1646  */
+#line 6692 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 632:
 #line 1960 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = NULL; }
-#line 6698 "zihery.c" /* yacc.c:1646  */
+#line 6698 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 633:
 #line 1961 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = (yyvsp[0].asExpr); }
-#line 6704 "zihery.c" /* yacc.c:1646  */
+#line 6704 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 634:
 #line 1964 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( zh_compExprNewArgList( zh_compExprNewNil( ZH_COMP_PARAM ), ZH_COMP_PARAM ), zh_compExprNewNil( ZH_COMP_PARAM ) ); }
-#line 6710 "zihery.c" /* yacc.c:1646  */
+#line 6710 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 635:
 #line 1965 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( zh_compExprNewArgList( zh_compExprNewNil( ZH_COMP_PARAM ), ZH_COMP_PARAM ), (yyvsp[0].asExpr) ); }
-#line 6716 "zihery.c" /* yacc.c:1646  */
+#line 6716 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 636:
 #line 1966 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewArgList( (yyvsp[0].asExpr), ZH_COMP_PARAM ); }
-#line 6722 "zihery.c" /* yacc.c:1646  */
+#line 6722 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 637:
 #line 1967 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-1].asExpr), zh_compExprNewNil( ZH_COMP_PARAM ) ); }
-#line 6728 "zihery.c" /* yacc.c:1646  */
+#line 6728 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 638:
 #line 1968 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprAddListExpr( (yyvsp[-2].asExpr), (yyvsp[0].asExpr) ); }
-#line 6734 "zihery.c" /* yacc.c:1646  */
+#line 6734 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 639:
 #line 1971 "ziher.y" /* yacc.c:1646  */
     { (yyval.asExpr) = zh_compExprNewVarRef( (yyvsp[0].string), ZH_COMP_PARAM ); }
-#line 6740 "zihery.c" /* yacc.c:1646  */
+#line 6740 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 644:
@@ -6748,7 +6748,7 @@ yyreduce:
                   zh_compGenPCode1( ZH_P_WITHOBJECTSTART, ZH_COMP_PARAM );
                   ZH_COMP_PARAM->functions.pLast->wWithObjectCnt++;
                }
-#line 6752 "zihery.c" /* yacc.c:1646  */
+#line 6752 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 645:
@@ -6764,23 +6764,23 @@ yyreduce:
                      zh_compGenPCode1( ZH_P_POP, ZH_COMP_PARAM );
                   }
                }
-#line 6768 "zihery.c" /* yacc.c:1646  */
+#line 6768 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 648:
 #line 2003 "ziher.y" /* yacc.c:1646  */
     { zh_compErrUnclosed( ZH_COMP_PARAM, "WITH OBJECT*" ); }
-#line 6774 "zihery.c" /* yacc.c:1646  */
+#line 6774 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
   case 655:
 #line 2012 "ziher.y" /* yacc.c:1646  */
     { ZH_COMP_PARAM->fError = ZH_FALSE; }
-#line 6780 "zihery.c" /* yacc.c:1646  */
+#line 6780 "zh_comp_y.c" /* yacc.c:1646  */
     break;
 
 
-#line 6784 "zihery.c" /* yacc.c:1646  */
+#line 6784 "zh_comp_y.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires

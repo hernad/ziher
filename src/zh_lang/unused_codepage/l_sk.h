@@ -1,4 +1,4 @@
-/* Przemyslaw Czerpak <druzus / at / priv.onet.pl> */
+/* Przemyslaw Czerpak */
 /* Viktor Szakats  */
 
 #define ZH_CP_UPPER     "AÁÄBCČDĎ.DZ..DŽ.EÉĚËFGH.CH.IÍJKLĹĽMNŇOÓÔÖŐPQRŔŘSŠTŤUÚŮÜŰVWXYÝZŽ"

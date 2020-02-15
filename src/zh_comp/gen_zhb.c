@@ -2,7 +2,7 @@
  * Compiler Ziher Portable Object (.hrb) generation
  *
  * Copyright 1999 Eddie Runia <eddie@runia.com>
- * Copyright 2007 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2007 Przemyslaw Czerpak
  *    rewritten to work on memory buffers and with new compiler code
  *
  * This program is free software; you can redistribute it and/or modify

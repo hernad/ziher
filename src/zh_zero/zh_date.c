@@ -5,7 +5,7 @@
  * Copyright 1999-2001 Viktor Szakats
  *   (zh_dateEncStr(), zh_dateDecStr(), zh_dateStrPut(), zh_dateStrGet())
  * Copyright 1999 Jose Lalin <dezac@corevia.com> (zh_dateDOW())
- * Copyright 2009 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2009 Przemyslaw Czerpak
  *   (time/timestamp functions)
  *
  * This program is free software; you can redistribute it and/or modify

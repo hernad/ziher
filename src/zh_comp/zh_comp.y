@@ -36,17 +36,7 @@
 /* Compile using: bison -d -v ziher.y */
 
 /* to pacify some meaningless warnings */
-#if defined( __BORLANDC__ )
-#  if ! defined( __STDC__ )
-#     define __STDC__
-#  endif
-#  pragma warn -aus
-#  pragma warn -ccc
-#  pragma warn -rch
-#elif defined( __WATCOMC__ )
-#  pragma warning 13 9
-#  pragma warning 368 9
-#elif defined( _MSC_VER )
+#if defined( _MSC_VER )
 #  pragma warning( disable : 4244 )
 #  pragma warning( disable : 4702 )
 #endif

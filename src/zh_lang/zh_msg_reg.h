@@ -1,7 +1,7 @@
 /*
  * Code used to register new lang definition
  *
- * Copyright 2009 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2009 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

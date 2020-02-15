@@ -1,7 +1,7 @@
 /*
  * Example of Ziher codepage using UTF-16 little endian encoding
  *
- * Copyright 2011 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2011 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -1,7 +1,7 @@
 /*
  * assert() wrapper
  *
- * Copyright 2007 Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2007 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

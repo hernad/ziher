@@ -47,10 +47,6 @@
 #include "zh_comp.h"
 
 
-#define ZH_USE_ARRAYAT_REF
-#define ZH_USE_OBJMSG_REF
-
-
 /* Forward declarations
  */
 
@@ -4842,7 +4838,6 @@ static void zh_compExprPushOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
     */
    if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_SEND )
    {
-#ifdef ZH_USE_OBJMSG_REF
       if( ZH_SUPPORT_EXTOPT && bOpEq != bNewOp )
       {
          zh_compExprPushSendPop( pSelf->value.asOperator.pLeft, ZH_COMP_PARAM );
@@ -4852,7 +4847,6 @@ static void zh_compExprPushOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, bNewOp );
       }
       else
-#endif
       {
          zh_compExprPushSendPopPush( pSelf->value.asOperator.pLeft,
                                      pSelf->value.asOperator.pRight,
@@ -4877,7 +4871,6 @@ static void zh_compExprPushOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
             return;
          }
       }
-#ifdef ZH_USE_ARRAYAT_REF
       /* NOTE: code for arrays is differ to correctly handle a[ i++ ]++ */
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_ARRAYAT )
       {
@@ -4890,7 +4883,6 @@ static void zh_compExprPushOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, bNewOp );
          return;
       }
-#endif
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_VARIABLE )
       {
 #if defined( ZH_MACRO_SUPPORT )
@@ -4994,7 +4986,6 @@ static void zh_compExprUseOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
     */
    if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_SEND )
    {
-#ifdef ZH_USE_OBJMSG_REF
       if( ZH_SUPPORT_EXTOPT && bOpEq != bNewOp )
       {
          zh_compExprPushSendPop( pSelf->value.asOperator.pLeft, ZH_COMP_PARAM );
@@ -5004,7 +4995,6 @@ static void zh_compExprUseOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, bNewOp );
       }
       else
-#endif
       {
          zh_compExprPushSendPopPush( pSelf->value.asOperator.pLeft,
                                      pSelf->value.asOperator.pRight,
@@ -5031,7 +5021,6 @@ static void zh_compExprUseOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
             return;
          }
       }
-#ifdef ZH_USE_ARRAYAT_REF
       /* NOTE: code for arrays is differ to correctly handle a[ i++ ]++ */
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_ARRAYAT )
       {
@@ -5044,7 +5033,6 @@ static void zh_compExprUseOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, bNewOp );
          return;
       }
-#endif
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_VARIABLE )
       {
 #if defined( ZH_MACRO_SUPPORT )
@@ -5111,7 +5099,6 @@ static void zh_compExprPushPreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
     */
    if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_SEND )
    {
-#ifdef ZH_USE_OBJMSG_REF
       if( ZH_SUPPORT_EXTOPT )
       {
          zh_compExprPushSendPop( pSelf->value.asOperator.pLeft, ZH_COMP_PARAM );
@@ -5120,7 +5107,6 @@ static void zh_compExprPushPreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( ( bOper == ZH_P_INC ) ? ZH_P_INCEQ : ZH_P_DECEQ ) );
       }
       else
-#endif
       {
          zh_compExprPushSendPopPush( pSelf->value.asOperator.pLeft, NULL,
                                      ZH_FALSE, bOper, ZH_COMP_PARAM );
@@ -5143,7 +5129,6 @@ static void zh_compExprPushPreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQ : ZH_P_DECEQ ) );
          return;
       }
-#ifdef ZH_USE_ARRAYAT_REF
       /* NOTE: code for arrays is differ to correctly handle a[ i++ ]++ */
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_ARRAYAT )
       {
@@ -5157,7 +5142,6 @@ static void zh_compExprPushPreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQ : ZH_P_DECEQ ) );
          return;
       }
-#endif
 #if ! defined( ZH_MACRO_SUPPORT )
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_VARIABLE )
       {
@@ -5213,7 +5197,6 @@ static void zh_compExprPushPostOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
     */
    if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_SEND )
    {
-#ifdef ZH_USE_OBJMSG_REF
       if( ZH_SUPPORT_EXTOPT )
       {
          /* push reference to current value */
@@ -5227,7 +5210,6 @@ static void zh_compExprPushPostOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( ( bOper == ZH_P_INC ) ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
       }
       else
-#endif
       {
          zh_compExprPushSendPopPush( pSelf->value.asOperator.pLeft, NULL,
                                      ZH_TRUE, bOper, ZH_COMP_PARAM );
@@ -5254,7 +5236,6 @@ static void zh_compExprPushPostOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
          return;
       }
-#ifdef ZH_USE_ARRAYAT_REF
       /* NOTE: code for arrays is differ to correctly handle a[ i++ ]++ */
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_ARRAYAT )
       {
@@ -5272,7 +5253,6 @@ static void zh_compExprPushPostOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
          return;
       }
-#endif
 #if ! defined( ZH_MACRO_SUPPORT )
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_VARIABLE )
       {
@@ -5324,7 +5304,6 @@ static void zh_compExprUsePreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
     */
    if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_SEND )
    {
-#ifdef ZH_USE_OBJMSG_REF
       if( ZH_SUPPORT_EXTOPT )
       {
          /* push reference to current value */
@@ -5334,7 +5313,6 @@ static void zh_compExprUsePreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( ( bOper == ZH_P_INC ) ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
       }
       else
-#endif
       {
          zh_compExprPushSendPopPush( pSelf->value.asOperator.pLeft, NULL,
                                      ZH_FALSE, bOper, ZH_COMP_PARAM );
@@ -5359,7 +5337,6 @@ static void zh_compExprUsePreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
          return;
       }
-#ifdef ZH_USE_ARRAYAT_REF
       /* NOTE: code for arrays is differ to correctly handle a[ i++ ]++ */
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_ARRAYAT )
       {
@@ -5372,7 +5349,6 @@ static void zh_compExprUsePreOp( PZH_EXPR pSelf, ZH_BYTE bOper, ZH_COMP_DECL )
          ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ( bOper == ZH_P_INC ? ZH_P_INCEQPOP : ZH_P_DECEQPOP ) );
          return;
       }
-#endif
 #if ! defined( ZH_MACRO_SUPPORT )
       else if( pSelf->value.asOperator.pLeft->ExprType == ZH_ET_VARIABLE )
       {

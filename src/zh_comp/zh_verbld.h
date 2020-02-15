@@ -1,7 +1,7 @@
 /*
  * Version information and build time switches.
  *
- * Copyright 2008-present Przemyslaw Czerpak <druzus / at / priv.onet.pl>
+ * Copyright 2008-present Przemyslaw Czerpak
  *
  * This file is generated automatically by Ziher preprocessor
  * and is covered by the same license as Ziher PP

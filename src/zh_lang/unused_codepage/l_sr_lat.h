@@ -1,4 +1,4 @@
-/* Przemyslaw Czerpak <druzus / at / priv.onet.pl> */
+/* Przemyslaw Czerpak */
 
 #define ZH_CP_UPPER     "ABCČĆDĐEFGHIJKLMNOPQRSŠTUVWXYZŽ"
 #define ZH_CP_LOWER     "abcčćdđefghijklmnopqrsštuvwxyzž"

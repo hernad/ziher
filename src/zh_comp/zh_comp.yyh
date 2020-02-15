@@ -202,7 +202,7 @@ union YYSTYPE
    } asCodeblock;
    PZH_VARTYPE asVarType;
 
-#line 206 "zihery.h" /* yacc.c:1909  */
+#line 206 "zh_comp_y.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
