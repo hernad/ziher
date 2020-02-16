@@ -2,7 +2,7 @@
  * The Eval API
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
- * Copyright 1999-2001 Viktor Szakats (vszakats.net/ziher) (zh_itemDo()/zh_itemDoC() (based on ZH_DO() by Ryszard Glab))
+ * Copyright 1999-2001 Viktor Szakats (zh_itemDo()/zh_itemDoC() (based on ZH_DO() by Ryszard Glab))
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
  * Memvar (PRIVATE/PUBLIC) runtime support
  *
  * Copyright 1999 Ryszard Glab <rglab@imid.med.pl>
- * Copyright 1999-2001 Viktor Szakats (vszakats.net/ziher)
+ * Copyright 1999-2001 Viktor Szakats
  *   __mvSave(), __mvRestore() (Thanks to Dave Pearson and Jo French for
  *   the original Clipper function FReadMem() to read .mem files)
  *

@@ -3,7 +3,7 @@
  *
  * Copyright 2010 Przemyslaw Czerpak
  * This code uses ZH_DLL_NAME* macros defined by
- *    Viktor Szakats (vszakats.net/ziher)
+ *    Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

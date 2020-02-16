@@ -1,7 +1,7 @@
 /*
  * ASort() function
  *
- * Copyright 1999-2001 Viktor Szakats (vszakats.net/ziher)
+ * Copyright 1999-2001 Viktor Szakats
  * Copyright 1999-2001 Jose Lalin <dezac@corevia.com>
  *
  * This program is free software; you can redistribute it and/or modify

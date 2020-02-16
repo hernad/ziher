@@ -2,7 +2,7 @@
  * The Array API (C level)
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
- * Copyright 1999-2001 Viktor Szakats (vszakats.net/ziher)
+ * Copyright 1999-2001 Viktor Szakats
  *   (zh_arrayIsObject(), zh_arrayCopyC(), zh_arrayGetC())
  * Copyright 2001 Ron Pinkas <ron@profit-master.com>
  *   (zh_arrayClone(), zh_arrayFromStack(), zh_arrayFromParams())

@@ -2,7 +2,7 @@
  * The Extend API
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
- * Copyright 1999-2009 Viktor Szakats (vszakats.net/ziher) (zh_stor(), zh_retn*len(), zh_retdl(), zh_parn*def())
+ * Copyright 1999-2009 Viktor Szakats (zh_stor(), zh_retn*len(), zh_retdl(), zh_parn*def())
  * Copyright 2000 Jose Lalin <dezac@corevia.com> (zh_retd())
  *
  * This program is free software; you can redistribute it and/or modify

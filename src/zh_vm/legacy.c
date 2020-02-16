@@ -1,4 +1,4 @@
-/* Copyright 2015 Viktor Szakats (vszakats.net/ziher) */
+/* Copyright 2015 Viktor Szakats */
 
 #include "zh_api.h"
 

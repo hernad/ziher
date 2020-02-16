@@ -1,7 +1,11 @@
 /*
  * Ziher standalone compiler entry point
  *
+ * Initial code (before Ziher):
  * Copyright 2007 Przemyslaw Czerpak
+ * 
+ * Ziher project:
+ * Copyright 2020 Ernad Husremovic hernad@bring.out.ba
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

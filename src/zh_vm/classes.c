@@ -15,7 +15,7 @@
  *    __objHasMsg()
  *    __objSendMsg()
  *
- * Copyright 1999-2001 Viktor Szakats (vszakats.net/ziher)
+ * Copyright 1999-2001 Viktor Szakats
  *    __classNew()
  *    __classInstance()
  *    __classAdd()

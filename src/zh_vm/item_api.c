@@ -2,7 +2,7 @@
  * The Item API
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
- * Copyright 1999-2007 Viktor Szakats (vszakats.net/ziher)
+ * Copyright 1999-2007 Viktor Szakats
  *    zh_itemPCount(), zh_itemParamPtr(), zh_itemReturnPtr()
  *    zh_itemPutDL(), zh_itemPutNI(), zh_itemGetDL(), zh_itemGetNI(),
  *    zh_itemGetCPtr(), zh_itemPutCLPtr(), zh_itemGetCLen(), zh_itemGetNLen()

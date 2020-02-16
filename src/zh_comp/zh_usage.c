@@ -1,7 +1,11 @@
 /*
  * Compile help & info related functions
  *
- * Copyright 1999-2017 Viktor Szakats (vszakats.net/ziher)
+ * Initial code (before Ziher):
+ * Copyright 1999-2017 Viktor Szakats
+ * 
+ * Ziher project:
+ * Copyright 2020 Ernad Husremovic hernad@bring.out.ba
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -165,15 +169,16 @@ void zh_compPrintCredits( ZH_COMP_DECL )
 {
    zh_compOutStd( ZH_COMP_PARAM,
          "\n"
-         "Credits:  The Ziher Team\n"
-         "          (replace space with @ in email addresses)\n"
+         "Credits:\n"
          "\n"
+         "Initial source code contribution (before Ziher):\n"
+         "-------------------------------------------------\n"
          "Alejandro de Garate (alex_degarate hotmail com)\n"
          "Aleksander Czajczynski <hb fki.pl>\n"
          "Alex Shashkov (shashkov ostu.ru)\n"
          "Alexander S. Kresin (alex belacy.belgorod.su)\n"
          "Alexey Myronenko (m.oleksa ukr.net)\n"
-         "Andi Jahja (xziher cbn.net.id)\n"
+         "Andi Jahja (xharbour cbn.net.id)\n"
          "Antonio Carlos Pantaglione (toninho fwi.com.br)\n"
          "Antonio Linares (alinares fivetechsoft.com)\n"
          "April White (bright.tigra gmail.com)\n"
@@ -198,7 +203,7 @@ void zh_compPrintCredits( ZH_COMP_DECL )
          "Gonzalo A. Diethelm (gonzalo.diethelm iname.com)\n"
          "Gustavo Junior Alves (alves coslinux.com.br)\n"
          "Hannes Ziegler (hz knowleXbase.com)\n"
-         "Horacio D. Roldan Kasimatis (ziher_ar yahoo com.ar)\n"
+         "Horacio D. Roldan Kasimatis (harbour_ar yahoo com.ar)\n"
          "Ignacio Ortiz de Zuniga (ignacio fivetech.com)\n"
          "Ilias Lazaridis (ilias lazaridis.com)\n"
          "Istvan Bisz (istvan.bisz t-online.hu)\n"
@@ -208,7 +213,7 @@ void zh_compPrintCredits( ZH_COMP_DECL )
          "Jon Berg (jmberg pnh10.med.navy.mil)\n"
          "Jorge A. Giraldo (jorgeagiraldo emtelsa.multi.net.co)\n"
          "Jose Lalin (dezac corevia.com)\n"
-         "Klas Engwall (ziher engwall.com)\n"
+         "Klas Engwall (harbour engwall.com)\n"
          "Kwon, Oh-Chul (ohchul fivetech.net)\n"
          "Leslee Griffith (les.griffith vantagesystems.ca)\n"
          "Lorenzo Fiorini (lorenzo.fiorini gmail com)\n"
@@ -228,7 +233,7 @@ void zh_compPrintCredits( ZH_COMP_DECL )
          "Mindaugas Kavaliauskas (dbtopas dbtopas.lt)\n"
          "Mitja Podgornik (Yamamoto rocketmail.com)\n"
          "Nicolas del Pozo (niko geroa.com)\n"
-         "Patrick Mast (ziher winfakt.com)\n"
+         "Patrick Mast (harbour winfakt.com)\n"
          "Paul Tucker (ptucker sympatico.ca)\n"
          "Pavel Tsarenko (tpe2 mail.ru)\n"
          "Peter Rees (peter rees.co.nz)\n"
@@ -250,10 +255,17 @@ void zh_compPrintCredits( ZH_COMP_DECL )
          "Tim Stone (timstone mstrlink.com)\n"
          "Tomaz Zupan (tomaz.zupan orpo.si)\n"
          "Vailton Renato (vailtom gmail com)\n"
-         "Viktor Szakats (vszakats.net/ziher)\n"
+         "Viktor Szakats (vszakats.net/harbour)\n"
          "Vladimir Kazimirchik (v_kazimirchik yahoo com)\n"
          "Walter Negro (anegro overnet.com.ar)\n"
          "Xavi (jarabal gmail com)\n"
+         "---------------------------------------------------\n"
+         "\n"
+         "Ziher authors:\n"
+         "===================================================\n"
+         "Bakir Husremovic (bhusremovic@gmail.com)\n"
+         "Ernad Husremovic (hernad@bring.out.ba)\n"
+         "===================================================\n"
       );
 }
 
@@ -263,6 +275,6 @@ void zh_compPrintLogo( ZH_COMP_DECL )
 
    zh_compOutStd( ZH_COMP_PARAM, szVer );
    zh_compOutStd( ZH_COMP_PARAM,
-      "\nCopyright (c) 1999-" ZH_VER_COMMIT_YEAR ", " ZH_VER_ORIGIN_URL "\n" );
+      "\nCopyright (c) 2020-" ZH_VER_COMMIT_YEAR ", " ZH_VER_ORIGIN_URL "\n" );
    zh_xfree( szVer );
 }
