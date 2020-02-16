@@ -1,0 +1,102 @@
+/* Copyright 2011-present Viktor Szakats */
+
+
+#include "zh_ver.h"
+
+#if defined( _ZH_INCLUDE_ICON )
+1 ICON DISCARDABLE "ziher.ico"
+#endif
+
+#define ZH_MACRO2STRING( macro )   ZH_MACRO2STRING_( macro )
+#define ZH_MACRO2STRING_( macro )  #macro
+
+#define ZH_VER_PROD                ZH_VER_MAJOR,ZH_VER_MINOR,ZH_VER_RELEASE,0
+#define ZH_VER_PROD_STR            ZH_MACRO2STRING( ZH_VER_MAJOR ) "." ZH_MACRO2STRING( ZH_VER_MINOR ) "." ZH_MACRO2STRING( ZH_VER_RELEASE )
+#define ZH_VER_FILE                ZH_VER_PROD
+#define ZH_VER_FILE_STR            ZH_VER_PROD_STR
+
+#define ZH_NAME                    "Ziher"
+
+/* Version info */
+
+#include <winver.h>
+
+VS_VERSION_INFO  VERSIONINFO
+FILEVERSION      ZH_VER_FILE
+PRODUCTVERSION   ZH_VER_PROD
+FILEFLAGSMASK    VS_FFI_FILEFLAGSMASK
+FILEFLAGS        0
+FILEOS           VOS__WINDOWS32
+FILETYPE         VFT_APP
+BEGIN
+   BLOCK "StringFileInfo"
+   BEGIN
+      BLOCK "040904B0"  /* LANGUAGE: US English (0x0409), ENCODING: Unicode (1200/0x04B0) */
+      BEGIN
+         VALUE "Comments",         "No comment :)" "\0"
+         VALUE "CompanyName",      ZH_NAME "\0"
+         VALUE "FileDescription",  ZH_NAME "\0"
+         VALUE "FileVersion",      ZH_VER_FILE_STR ZH_VER_STATUS "\0"
+         VALUE "LegalCopyright",   "Copyright © 1999-2020" "\0"
+         VALUE "ProductName",      ZH_NAME "\0"
+         VALUE "ProductVersion",   ZH_VER_PROD_STR ZH_VER_STATUS "\0"
+      END
+   END
+   BLOCK "VarFileInfo"
+   BEGIN
+      VALUE "Translation", 0x0409, 0x04B0  /* LANGUAGE: US English (0x0409), ENCODING: Unicode (1200/0x04B0) */
+   END
+END
+
+/* Manifest */
+
+#if ! defined( HBMK_DYNLIB ) && ! defined( ZH_DYNLIB )
+
+/* String escaping rules:
+      https://msdn.microsoft.com/library/aa381050
+   Application Manifest doc, including the list of 'supportedOS Id's:
+      https://msdn.microsoft.com/library/aa374191 */
+
+#ifndef CREATEPROCESS_MANIFEST_RESOURCE_ID
+#define CREATEPROCESS_MANIFEST_RESOURCE_ID  1
+#endif
+#ifndef RT_MANIFEST
+#define RT_MANIFEST  24
+#endif
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST
+BEGIN
+   "<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>"
+   "<assembly xmlns=""urn:schemas-microsoft-com:asm.v1"" manifestVersion=""1.0"">"
+      "<assemblyIdentity name=""" ZH_NAME """ version=""" ZH_VER_PROD_STR ".0"" type=""win32""/>"
+      "<application xmlns=""urn:schemas-microsoft-com:asm.v3"">"
+         "<windowsSettings>"
+            "<dpiAware xmlns=""http:" "//schemas.microsoft.com/SMI/2005/WindowsSettings"">true</dpiAware>"
+         "</windowsSettings>"
+      "</application>"
+      "<trustInfo xmlns=""urn:schemas-microsoft-com:asm.v3"">"
+         "<security>"
+            "<requestedPrivileges>"
+               "<requestedExecutionLevel level=""asInvoker"" uiAccess=""false""/>"
+            "</requestedPrivileges>"
+         "</security>"
+      "</trustInfo>"
+      "<dependency>"
+         "<dependentAssembly>"
+            "<assemblyIdentity name=""Microsoft.Windows.Common-Controls"" version=""6.0.0.0"" type=""win32"" processorArchitecture=""*"" publicKeyToken=""6595b64144ccf1df""/>"
+         "</dependentAssembly>"
+      "</dependency>"
+      "<compatibility xmlns=""urn:schemas-microsoft-com:compatibility.v1"">"
+         "<application>"
+            "<supportedOS Id=""{e2011457-1546-43c5-a5fe-008deee3d3f0}""/>"  /* Vista / Server 2008 */
+            "<supportedOS Id=""{35138b9a-5d96-4fbd-8e2d-a2440225f93a}""/>"  /* 7 / Server 2008 R2 */
+            "<supportedOS Id=""{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}""/>"  /* 8 / Server 2012 */
+            "<supportedOS Id=""{1f676c76-80e1-4239-95bb-83d0f6d0da78}""/>"  /* 8.1 / Server 2012 R2 */
+            "<supportedOS Id=""{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}""/>"  /* 10 / Server 2016 */
+         "</application>"
+      "</compatibility>"
+   "</assembly>"
+END
+
+#endif
+
