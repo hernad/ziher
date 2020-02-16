@@ -3,13 +3,13 @@
  *
  * Copyright 2009 Przemyslaw Czerpak
  *
- * This file is generated automatically by cpinfo.prg
+ * This file is generated automatically by cpinfo.zh
  */
 
 #define ZH_CP_ID        HU852C
 #define ZH_CP_INFO      "Hungarian CP-852 (ntxhu852.obj compatible)"
 #define ZH_CP_UNITB     ZH_UNITB_852
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "AĆÁÄBCDEÉFGHIŹÍJKLMNOĽÓÖž ŐPQRSTUŚÚÜś ŰVWXYZ"
 #define ZH_CP_LOWER     "a áäbcdeéfghi íjklmno óö ôőpqrstu úü ľűvwxyz"
 #define ZH_CP_UTF8

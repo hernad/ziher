@@ -131,25 +131,25 @@ static void zh_compDumpFindCFunc( ZH_COMP_DECL )
 
 static void zh_compGenCStdHeaders( ZH_COMP_DECL, FILE * yyc, ZH_BOOL fHbInLine )
 {
-   fprintf( yyc, "#include \"zh_vmpub.h\"\n" );
+   fprintf( yyc, "#include \"zh_vm_pub.h\"\n" );
 
    if( ZH_COMP_PARAM->iGenCOutput != ZH_COMPGENC_COMPACT )
-      fprintf( yyc, "#include \"hbpcode.h\"\n" );
+      fprintf( yyc, "#include \"zh_pcode.h\"\n" );
 
-   fprintf( yyc, "#include \"hbinit.h\"\n" );
+   fprintf( yyc, "#include \"zh_init.h\"\n" );
 
    if( ZH_COMP_PARAM->iGenCOutput == ZH_COMPGENC_REALCODE )
-      fprintf( yyc, "#include \"hbxvm.h\"\n" );
+      fprintf( yyc, "#include \"zh_xvm.h\"\n" );
 
    if( fHbInLine )
    {
       fprintf( yyc, "#include \"zh_api.h\"\n" );
-      fprintf( yyc, "#include \"hbstack.h\"\n" );
+      fprintf( yyc, "#include \"zh_stack.h\"\n" );
       fprintf( yyc, "#include \"zh_api_error.h\"\n" );
-      fprintf( yyc, "#include \"zh_apiitm.h\"\n" );
+      fprintf( yyc, "#include \"zh_item_api.h\"\n" );
       fprintf( yyc, "#include \"zh_vm.h\"\n" );
-      fprintf( yyc, "#include \"zh_apicls.h\"\n" );
-      fprintf( yyc, "#include \"hboo.ch\"\n" );
+      fprintf( yyc, "#include \"zh_class_api.h\"\n" );
+      fprintf( yyc, "#include \"oo.zhh\"\n" );
    }
 }
 

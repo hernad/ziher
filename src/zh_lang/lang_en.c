@@ -144,4 +144,4 @@ static ZH_LANG s_lang =
 };
 
 #define ZH_LANG_ID      EN /* ISO ID in uppercase */
-#include "zh_msg_reg.h"
+#include "zh_lang_register_messages.h"

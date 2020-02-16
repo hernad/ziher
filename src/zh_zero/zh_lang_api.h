@@ -48,7 +48,7 @@
 #define ZH_APILNG_H_
 
 #include "zh_defs.h"
-#include "zh_vmpub.h"
+#include "zh_vm_pub.h"
 #include "zh_init.h"
 
 #include "lang.zhh" /* Base values for the unified language item table */

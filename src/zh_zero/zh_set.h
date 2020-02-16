@@ -48,7 +48,7 @@
 #define ZH_SET_H_
 
 #include "zh_api.h"
-#include "zh_api_gt.h"
+#include "zh_gt_api.h"
 #include "zh_apifs.h"
 
 ZH_EXTERN_BEGIN

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        SVWIN
 #define ZH_CP_INFO      "Swedish Windows-1252"
 #define ZH_CP_UNITB     ZH_UNITB_1252
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_INTERLEAVED
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_INTERLEAVED
 #include "l_sv.h"
 #define ZH_CP_UTF8
 

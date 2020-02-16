@@ -47,7 +47,7 @@
 #define ZH_CP_ID        RUISO
 #define ZH_CP_INFO      "Russian ISO-8859-5"
 #define ZH_CP_UNITB     ZH_UNITB_8859_5
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁЄЇЎ"
 #define ZH_CP_LOWER     "абвгдежзийклмнопрстуфхцчшщъыьэюяёєїў"
 #define ZH_CP_UTF8

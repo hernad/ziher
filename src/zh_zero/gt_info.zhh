@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef ZH_GTINFO_CH_
-#define ZH_GTINFO_CH_
+#ifndef ZH_GTINFO_ZH_
+#define ZH_GTINFO_ZH_
 
 #define ZH_GTI_ISGRAPHIC        0   /* 1 if GT has graphic support / pixel oriented */
 #define ZH_GTI_SCREENWIDTH      1   /* Get/set width of application window in pixels */
@@ -194,4 +194,4 @@
 #define ZH_GTI_RESIZEMODE_FONT  0   /* Default */
 #define ZH_GTI_RESIZEMODE_ROWS  1
 
-#endif /* ZH_GTINFO_CH_ */
+#endif /* ZH_GTINFO_ZH_ */

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        ELWIN
 #define ZH_CP_INFO      "Greek ANSI CP-1253"
 #define ZH_CP_UNITB     ZH_UNITB_1253
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_EQUAL
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_EQUAL
 #include "l_el.h"
 #define ZH_CP_UTF8
 

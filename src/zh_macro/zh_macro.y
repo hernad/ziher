@@ -512,9 +512,9 @@ SimpleExpression :
             | ObjectData
             | ObjectMethod
             | ExprAssign
-            | ExprOperEq            { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_HARBOUR ); }
-            | ExprPostOp            { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_HARBOUR ); }
-            | ExprPreOp             { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_HARBOUR ); }
+            | ExprOperEq            { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_ZIHER ); }
+            | ExprPostOp            { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_ZIHER ); }
+            | ExprPreOp             { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_ZIHER ); }
             | ExprUnary
             | ExprMath
             | ExprBool
@@ -573,7 +573,7 @@ LeftExpression : NumValue
                | PareExpList
                | FunCall
                | IfInline
-               | ObjectData         { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_HARBOUR ); }
+               | ObjectData         { ZH_MACRO_IFENABLED( $$, $1, ZH_SM_ZIHER ); }
                | ObjectMethod
                ;
 

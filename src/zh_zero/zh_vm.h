@@ -56,10 +56,10 @@ extern ZH_EXPORT void     zh_vmInit( ZH_BOOL bStartMainProc );
 extern ZH_EXPORT int      zh_vmQuit( void ); /* Immediately quits the virtual machine, return ERRORLEVEL code */
 
 /* registration AtInit, AtExit and AtQuit functions.
- * AtInit functions are executed just before .prg INIT procedures.
- * AtExit functions are executed just after .prg EXIT procedures.
+ * AtInit functions are executed just before .zh INIT procedures.
+ * AtExit functions are executed just after .zh EXIT procedures.
  * AtQuit functions are executed after deallocating all HVM items and
- * disabling .prg destructors. They can make final cleanup at C level
+ * disabling .zh destructors. They can make final cleanup at C level
  * but should not reenter HVM.
  */
 extern ZH_EXPORT void     zh_vmAtInit( ZH_INIT_FUNC pFunc, void * cargo );

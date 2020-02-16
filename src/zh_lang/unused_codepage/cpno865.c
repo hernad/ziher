@@ -3,13 +3,13 @@
  *
  * Copyright 2009 Przemyslaw Czerpak
  *
- * This file is generated automatically by cpinfo.prg
+ * This file is generated automatically by cpinfo.zh
  */
 
 #define ZH_CP_ID        NO865
 #define ZH_CP_INFO      "Norwegian CP-865 (ntxnor.obj compatible)"
 #define ZH_CP_UNITB     ZH_UNITB_865
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "ABCDEÉFGHIJKLMNOPQRSTUVWXYÜZÆ ØÅ"
 #define ZH_CP_LOWER     "abcdeèfghijklmnopqrstuvwxyüzæéøå"
 #define ZH_CP_UTF8

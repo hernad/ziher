@@ -47,7 +47,7 @@
 #define ZH_CP_ID        TR857
 #define ZH_CP_INFO      "Turkish CP-857"
 #define ZH_CP_UNITB     ZH_UNITB_857
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_tr.h"
 #define ZH_CP_UTF8
 

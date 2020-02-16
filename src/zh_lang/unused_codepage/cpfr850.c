@@ -47,7 +47,7 @@
 #define ZH_CP_ID        FR850
 #define ZH_CP_INFO      "French CP-850"
 #define ZH_CP_UNITB     ZH_UNITB_850
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_EQUAL
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_EQUAL
 #include "l_fr.h"
 #define ZH_CP_UTF8
 

@@ -58,7 +58,7 @@ ZH_EXTERN_BEGIN
 typedef enum
 {
    ZH_LANG_C,                      /* C language (by default) <file.c> */
-   ZH_LANG_PORT_OBJ,               /* Portable objects <file.hrb> */
+   ZH_LANG_PORT_OBJ,               /* Portable objects <file.zhb> */
    ZH_LANG_PORT_OBJ_BUF            /* Portable objects in memory buffer */
 } ZH_LANGUAGES;                    /* supported Ziher output languages */
 
@@ -810,7 +810,7 @@ typedef struct _ZH_COMP
    ZH_BYTE           cDataListType;       /* current declared variable list type */
 
    int               iErrorCount;
-   int               iModulesCount;       /* number of compiled .prg modules */
+   int               iModulesCount;       /* number of compiled .zh modules */
    int               iStartProc;          /* holds if we need to create the starting procedure */
    int               iMaxTransCycles;     /* maximum translate cycles in PP (-r=<n>) */
    int               iHidden;             /* hide strings */

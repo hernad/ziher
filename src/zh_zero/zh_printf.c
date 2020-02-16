@@ -539,15 +539,12 @@ static size_t put_dbl( char *buffer, size_t bufsize, size_t size,
     * (-lm link switch) function so we will make small trick here and
     * calculate it in a loop
     */
-#if 0
-   value += _POWD( 10, -precision ) / 2;
-#else
+
    n = precision;
    dFract = 1;
    while( --n >= 0 )
       dFract /= 10;
    value += dFract / 2;
-#endif
 
    dFract = _MODFD( value, &dInt );
    width -= precision;
@@ -1402,12 +1399,7 @@ int zh_vsnprintf( char * buffer, size_t nSize, const char * format, va_list argl
 {
    int result;
 
-#if defined( __DJGPP__ ) && ( __DJGPP__ < 2 || ( __DJGPP__ == 2 && __DJGPP_MINOR__ <= 3 ) )
-   /* Use vsprintf() for DJGPP <= 2.03.
-      This is a temporary hack, should implement a C99 snprintf() ourselves. */
-   result = vsprintf( buffer, format, arglist );
-   #define _ZH_SNPRINTF_ADD_EOS
-#elif defined( _MSC_VER ) && _MSC_VER >= 1400
+#if defined( _MSC_VER ) && _MSC_VER >= 1400
    result = _vsnprintf_s( buffer, nSize, _TRUNCATE, format, arglist );
 #elif defined( _MSC_VER )
    result = _vsnprintf( buffer, nSize, format, arglist );

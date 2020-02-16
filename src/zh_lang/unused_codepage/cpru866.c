@@ -47,7 +47,7 @@
 #define ZH_CP_ID        RU866
 #define ZH_CP_INFO      "Russian CP-866"
 #define ZH_CP_UNITB     ZH_UNITB_866
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_ru.h"
 #define ZH_CP_UTF8
 

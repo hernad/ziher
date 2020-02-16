@@ -309,7 +309,7 @@ ZH_BOOL zh_compI18nSave( ZH_COMP_DECL, ZH_BOOL fFinal )
       FileName.szName = ZH_COMP_PARAM->pFileName->szName;
    else if( ! fFinal )
       /* The exact file name was given generate single .pot file for
-       * all compiled .prg files in final phase.
+       * all compiled .zh files in final phase.
        */
       return ZH_FALSE;
 

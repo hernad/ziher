@@ -52,7 +52,7 @@
 #ifndef ZH_APIEXT_H_
 #define ZH_APIEXT_H_
 
-#include "zh_vmpub.h"
+#include "zh_vm_pub.h"
 
 ZH_EXTERN_BEGIN
 
@@ -403,23 +403,6 @@ extern void       zh_xRefFree( void * pMem );   /* decrement reference counter a
 extern ZH_COUNTER zh_xRefCount( void * pMem );  /* return number of references */
 extern void *     zh_xRefResize( void * pMem, ZH_SIZE nSave, ZH_SIZE nSize, ZH_SIZE * pnAllocated );   /* reallocates memory, create copy if reference counter greater then 1 */
 
-#if 0
-
-/*
- * I used this macros only to test some speed overhead,
- * They may not be supported in the future so please do
- * not create any code which needs them. [druzus]
- */
-
-#define zh_xRefInc( p )             (++(*ZH_COUNTER_PTR( p )))
-#define zh_xRefDec( p )             (--(*ZH_COUNTER_PTR( p ))==0)
-#define zh_xRefFree( p )            do { \
-                                       if( zh_xRefDec( p ) ) \
-                                          zh_xfree( p ); \
-                                    } while( 0 )
-#define zh_xRefCount( p )           (*ZH_COUNTER_PTR( p ))
-
-#endif
 
 #endif /* _ZH_API_INTERNAL_ */
 

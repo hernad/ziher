@@ -268,7 +268,7 @@ PZH_COMP zh_comp_new( void )
       pComp->fAutoMemvarAssume = ZH_FALSE;   /* holds if undeclared variables are automatically assumed MEMVAR (-a)*/
       pComp->fForceMemvars     = ZH_FALSE;   /* holds if memvars are assumed when accessing undeclared variable (-v)*/
       pComp->fDebugInfo        = ZH_FALSE;   /* holds if generate debugger required info */
-      pComp->fHideSource       = ! pComp->fDebugInfo;  /* do not store .prg file names in PCODE */
+      pComp->fHideSource       = ! pComp->fDebugInfo;  /* do not store .zh file names in PCODE */
       pComp->fNoStartUp        = ZH_FALSE;   /* C code generation embed ZH_FS_FIRST or not */
       pComp->fCredits          = ZH_FALSE;   /* print credits */
       pComp->fBuildInfo        = ZH_FALSE;   /* print build info */

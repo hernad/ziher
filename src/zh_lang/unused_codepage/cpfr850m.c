@@ -3,7 +3,7 @@
  *
  * Copyright 2009 Przemyslaw Czerpak
  *
- * This file is generated automatically by cpinfo.prg
+ * This file is generated automatically by cpinfo.zh
  */
 
 #define ZH_CP_ID        FR850M

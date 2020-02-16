@@ -47,7 +47,7 @@
 #define ZH_CP_ID        ESWIN
 #define ZH_CP_INFO      "Spanish (Modern) Windows-1252"
 #define ZH_CP_UNITB     ZH_UNITB_1252
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_es.h"
 #define ZH_CP_UTF8
 

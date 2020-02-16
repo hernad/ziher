@@ -3,13 +3,13 @@
  *
  * Copyright 2009 Przemyslaw Czerpak
  *
- * This file is generated automatically by cpinfo.prg
+ * This file is generated automatically by cpinfo.zh
  */
 
 #define ZH_CP_ID        FR850C
 #define ZH_CP_INFO      "French CP-850 (ntxfre.obj compatible)"
 #define ZH_CP_UNITB     ZH_UNITB_850
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "AAAAABCDEEEEEFGHIIIIIJKLMNOOOOOPQRSTUUUUUVWXYZ"
 #define ZH_CP_LOWER     "aáàâäbcdeéèêëfghiíìîïjklmnoóòôöpqrstuúùûüvwxyz"
 #define ZH_CP_UTF8

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        ITISO
 #define ZH_CP_INFO      "Italian ISO-8859-1"
 #define ZH_CP_UNITB     ZH_UNITB_8859_1
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_it.h"
 #define ZH_CP_UTF8
 

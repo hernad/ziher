@@ -45,8 +45,8 @@
  */
 
 /*
-   If accented characters need special sorting ( ZH_CDP_ACSORT_EQUAL or
-   ZH_CDP_ACSORT_INTERLEAVE ) then you need to mark the accented characters
+   If accented characters need special sorting ( ZH_CODEPAGE_ACSORT_EQUAL or
+   ZH_CODEPAGE_ACSORT_INTERLEAVE ) then you need to mark the accented characters
    with the symbol '~' before each of them, for example:
       a~Ç
    If there is two-character sequence, which is considered as one, it should
@@ -69,7 +69,7 @@
 #define ZH_CP_ID        EN
 #define ZH_CP_INFO      "English CP-437"
 #define ZH_CP_UNITB     ZH_UNITB_437
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 #define ZH_CP_LOWER     "abcdefghijklmnopqrstuvwxyz"
 #define ZH_CP_UTF8

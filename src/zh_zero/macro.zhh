@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef ZH_MACRO_CH_
-#define ZH_MACRO_CH_
+#ifndef ZH_MACRO_ZH_
+#define ZH_MACRO_ZH_
 
 /* runtime settings for macro compiler */
 #define ZH_SM_ZIHER      1    /* extended Ziher features */
@@ -58,4 +58,4 @@
 #define ZH_SM_RT_MACRO   64   /* disable automatic setup of macro flag */
 #define ZH_SM_PARSER     128  /* address of macro parser (TODO) */
 
-#endif /* ZH_MACRO_CH_ */
+#endif /* ZH_MACRO_ZH_ */

@@ -49,7 +49,7 @@
 #define ZH_SETUP_H_
 
 /*
- * Include settings common for .prg and .c files
+ * Include settings common for .zh and .c files
  */
 
 /*
@@ -98,7 +98,7 @@
  *   If strict ANSI C compatibility is required then all symbol tables
  * have to be joined manually by calling special function named
  * zh_vm_SymbolInit_<module_name>
- * (for example for myfirst.prg it will be: 'zh_vm_SymbolInit_MYFIRST'
+ * (for example for myfirst.zh it will be: 'zh_vm_SymbolInit_MYFIRST'
  * The generation of this function is performed by the macro called
  * ZH_CALL_ON_STARTUP that is defined in 'zhinit.h'
  *

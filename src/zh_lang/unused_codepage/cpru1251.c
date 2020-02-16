@@ -47,7 +47,7 @@
 #define ZH_CP_ID        RU1251
 #define ZH_CP_INFO      "Russian Windows-1251"
 #define ZH_CP_UNITB     ZH_UNITB_1251
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_ru.h"
 #define ZH_CP_UTF8
 

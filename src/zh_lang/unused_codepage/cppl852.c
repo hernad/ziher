@@ -47,7 +47,7 @@
 #define ZH_CP_ID        PL852
 #define ZH_CP_INFO      "Polish CP-852"
 #define ZH_CP_UNITB     ZH_UNITB_852
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_pl.h"
 #define ZH_CP_UTF8
 

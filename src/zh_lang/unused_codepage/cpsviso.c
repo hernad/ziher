@@ -48,7 +48,7 @@
 #define ZH_CP_ID        SVISO
 #define ZH_CP_INFO      "Swedish ISO-8859-15"
 #define ZH_CP_UNITB     ZH_UNITB_8859_15
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_INTERLEAVED
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_INTERLEAVED
 #include "l_sv.h"
 #define ZH_CP_UTF8
 

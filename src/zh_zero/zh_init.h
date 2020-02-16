@@ -161,8 +161,6 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
 
 #elif defined( ZH_GNUC_STARTUP ) || \
       defined( __GNUC__ ) || \
-      defined( __SUNPRO_C ) || defined( __SUNPRO_CC ) || \
-      defined( __DCC__ ) || \
       defined( __clang__ )
 
    #if defined( ZH_PRAGMA_STARTUP ) || defined( ZH_DATASEG_STARTUP )
@@ -201,8 +199,7 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #define ZH_CALL_ON_STARTUP_END( func ) \
       }
 
-#elif defined( ZH_PRAGMA_STARTUP ) || \
-      defined( __BORLANDC__ ) || defined( __POCC__ )
+#elif defined( ZH_PRAGMA_STARTUP )
 
    #if ! defined( ZH_PRAGMA_STARTUP )
       #define ZH_PRAGMA_STARTUP
@@ -263,54 +260,8 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
       static ZH_$INITSYM _s_init_func_##func = func;
 
    /*  After each '*_END' symbol, additional 'hooks' are required
-    *  See the C output of a generated .prg for example
+    *  See the C output of a generated .zh for example
     */
-
-#elif defined( __WATCOMC__ )
-
-   #if defined( ZH_PRAGMA_STARTUP )
-      #error Wrong macros set for startup code - clean your make/env settings.
-   #endif
-
-   #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
-
-   #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
-      }; \
-      static PZH_SYMB symbols = symbols_table; \
-      static void func( void ) \
-      { \
-         symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-      }
-
-   #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
-      static void func( void ) \
-      {
-
-   #define ZH_CALL_ON_STARTUP_END( func ) \
-      }
-
-   #define ZH_DATASEG_STARTUP
-   #define ZH_STARTUP_SEGMENT          "XI"
-
-   #define ZH_WATCOM_STARTUP_ID        0x00
-   #define ZH_WATCOM_STARTUP_PRIORITY  0x40  /* default "program" priority */
-
-   #pragma pack( __push, 1 )
-   struct _s_init_info_
-   {
-      unsigned char     id;
-      unsigned char     priority;
-      void ( * func ) ( void );
-   };
-   #pragma pack( __pop )
-
-
-   #define ZH_DATASEG_FUNC( func )     ZH_DATASEG_FUNC_( func )
-
-   #define ZH_DATASEG_FUNC_( func ) \
-         static struct _s_init_info_ _s_init_info_##func = \
-                  { ZH_WATCOM_STARTUP_ID, ZH_WATCOM_STARTUP_PRIORITY, func };
 
 #else
    #error Unknown initialization method.

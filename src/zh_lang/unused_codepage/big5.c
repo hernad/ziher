@@ -1,6 +1,6 @@
 /*
  * BIG5 <-> UCS16 conversion tables
- * code generated automatically by tests/big5_gen.prg
+ * code generated automatically by tests/big5_gen.zh
  *
  * Copyright 2011 Przemyslaw Czerpak
  *

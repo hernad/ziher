@@ -56,38 +56,15 @@
 #include "zh_setup.h"
 #include "zh_ver.h"
 
-#if defined( __POCC__ ) || defined( __MINGW32__ ) || \
-    ( defined( _MSC_VER ) && _MSC_VER >= 1600 ) || \
-    ( defined( __BORLANDC__ ) && __BORLANDC__ >= 0x0582 ) || \
-    ( defined( __WATCOMC__ ) && __WATCOMC__ >= 1270 ) || \
-    ( ( defined( __GNUC__ ) || defined( __SUNPRO_C ) || defined( __SUNPRO_CC ) ) && \
-      ( defined( _ISOC99_SOURCE ) || defined( _STDC_C99 ) || \
-        ( defined( __STDC_VERSION__ ) && __STDC_VERSION__ >= 199901L ) || \
-        ( defined( __DJGPP__ ) && \
-          ( __DJGPP__ > 2 || ( __DJGPP__ == 2 && __DJGPP_MINOR__ >= 4 ) ) ) || \
-        defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN ) || \
-        defined( ZH_OS_BSD ) || defined( ZH_OS_SUNOS ) || \
-        defined( ZH_OS_BEOS ) || defined( ZH_OS_QNX ) || \
-        defined( ZH_OS_VXWORKS ) || defined( ZH_OS_MINIX ) ) )
+#if  defined( __MINGW32__ ) || defined( _MSC_VER ) || defined( __GNUC__ ) || \
+   defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN )
 #  include <stdint.h>
 #  if defined( _MSC_VER ) && _MSC_VER >= 1400
-#  include <intrin.h>
+#    include <intrin.h>
 #  endif
-   /* NOTE: Hack to avoid collision between stdint.h and unistd.h. [vszakats] */
-#  if defined( ZH_OS_VXWORKS ) && defined( _INTPTR ) && ! defined( _INTPTR_T )
-#     define _INTPTR_T
-#  endif
-   #if ( defined( __BORLANDC__ ) && __BORLANDC__ >= 0x0582 )  /* workaround for compiler bug */
-      #undef INT32_MIN
-      #define INT32_MIN ((int32_t) (-INT32_MAX-1))
-      #undef INT64_MIN
-      #define INT64_MIN (9223372036854775807i64-1)
-      #undef INT64_MAX
-      #define INT64_MAX 9223372036854775807i64
-   #endif
 #endif
 
-#if ( defined( __GNUC__ ) || defined( __SUNPRO_C ) || defined( __SUNPRO_CC ) ) && \
+#if defined( __GNUC__ ) && \
     ( defined( _ISOC99_SOURCE ) || defined( _STDC_C99 ) || \
       ( defined( __STDC_VERSION__ ) && __STDC_VERSION__ >= 199901L ) )
    #define ZH_C99_STATIC    static
@@ -97,41 +74,14 @@
    #define ZH_C99_RESTRICT
 #endif
 
-#if 0
-#define ZH_CLIPPER_INT_ITEMS
-#define ZH_LONG_LONG_OFF
-#endif
-
 #if defined( ZH_OS_WIN )
    #if defined( ZH_OS_WIN_64 )
       #undef ZH_LONG_LONG_OFF
    #endif
 #endif
 
-#if defined( ZH_OS_DOS )
-
-   #if defined( __WATCOMC__ ) && defined( __386__ ) && ! defined( __WINDOWS_386__ )
-      #define ZH_DOS_INT86 int386
-      #define ZH_DOS_INT86X int386x
-      #define ZH_XREGS w
-   #elif defined( __DJGPP__ )
-      #define ZH_DOS_INT86 int86
-      #define ZH_DOS_INT86X int86x
-      #define ZH_XREGS w
-   #else
-      #define ZH_DOS_INT86 int86
-      #define ZH_DOS_INT86X int86x
-      #define ZH_XREGS x
-   #endif
-
-#elif defined( ZH_OS_DARWIN )
-
-   /* Detect if it is Darwin < 6.x */
+#if defined( ZH_OS_DARWIN )
    #include <pthread.h>
-   #ifndef PTHREAD_MUTEX_RECURSIVE
-      #define ZH_OS_DARWIN_5
-   #endif
-
 #endif
 
 /*
@@ -481,9 +431,7 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
 /* #define PCODE_LONG_LIM(l)     ZH_LIM_LONG( l ) */
 
 /* type of ZH_ITEM */
-#if 0
-typedef USHORT ZH_TYPE;
-#endif
+
 typedef ZH_U32 ZH_TYPE;
 
 /* type of file attributes */
@@ -1192,7 +1140,7 @@ typedef ZH_U32 ZH_FATTR;
 /*
  * ZH_FORCE_IEEE754_DOUBLE will can be used on platforms which use different
  * double format and we want to force storing double number as IEEE754
- * double value for sharing binary data (e.g. PCODE in .hrb files or CDX
+ * double value for sharing binary data (e.g. PCODE in .zhb files or CDX
  * indexes or DBFs with "B" fields.
  */
 #if defined( ZH_FORCE_IEEE754_DOUBLE )
@@ -1403,7 +1351,6 @@ typedef ZH_U32 ZH_FATTR;
 #define ZH_DECONST( c, p )    ( ( c ) ZH_UNCONST( p ) )
 
 
-
 #define ZH_SYMBOL_UNUSED( symbol )  ( void )symbol
 #define ZH_SOURCE_FILE_UNUSED()  static void * dummy = &dummy
 
@@ -1443,12 +1390,6 @@ typedef ZH_U32 ZH_FATTR;
 
 #if defined( __GNUC__ ) && defined( ZH_OS_WIN )
    #define ZH_IMPORT_ATTR     __attribute__ (( dllimport ))
-#elif defined( __BORLANDC__ )
-   #define ZH_IMPORT_ATTR     __declspec( dllimport )
-#elif defined( __WATCOMC__ )
-   #define ZH_IMPORT_ATTR     __declspec( dllimport )
-#elif defined( ASANLM ) || defined( ASANT )
-   #define ZH_IMPORT_ATTR
 #elif defined( ZH_OS_WIN )
    #define ZH_IMPORT_ATTR     _declspec( dllimport )
 #else

@@ -45,13 +45,13 @@
  */
 
 #include "zh_ver.h"     /* include version macros (__ZIHER__) */
-#include "zh_setup.ch"  /* include zh_setup.ch to set default build settings */
+#include "setup.zhh"  /* include zh_setup.ch to set default build settings */
 #include "std.zhh"      /* include to set default rules */
 
 /* undefine all rules which are not necessary in default PP tables */
 #undef ZH_VER_H_
-#undef ZH_SETUP_CH_
-#undef ZH_STD_CH_
+#undef ZH_SETUP_ZH_
+#undef ZH_STD_ZH_
 
 #undef ZH_VER_MAJOR
 #undef ZH_VER_MINOR

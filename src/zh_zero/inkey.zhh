@@ -49,8 +49,8 @@
 /* NOTE: Keystroke descriptions marked with an asterisk (*) are only */
 /*       available on enhanced keyboards (those with more than 84 keys) */
 
-#ifndef ZH_INKEY_CH_
-#define ZH_INKEY_CH_
+#ifndef ZH_INKEY_ZH_
+#define ZH_INKEY_ZH_
 
 /* Input event masks */
 
@@ -366,4 +366,4 @@
 #define ZH_KX_PRTSCR            28
 #define ZH_KX_PAUSE             29
 
-#endif /* ZH_INKEY_CH_ */
+#endif /* ZH_INKEY_ZH_ */

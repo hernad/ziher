@@ -119,7 +119,7 @@ struct _ZH_SYMB;
 
 #  define ZH_VM_EXECUTE( pSym ) \
                do { \
-                  /* Running pCode dynamic function from .hrb? */ \
+                  /* Running pCode dynamic function from .zhb? */ \
                   if( ( pSym )->scope.value & ZH_FS_PCODEFUNC ) \
                      zh_vmExecute( ( pSym )->value.pCodeFunc->pCode, \
                                    ( pSym )->value.pCodeFunc->pSymbols ); \
@@ -139,7 +139,7 @@ struct _ZH_SYMB;
 #  endif /* ! ZH_NO_PROFILER */
    } ZH_DYNS, * PZH_DYNS;
 
-   /* pCode dynamic function - HRB */
+   /* pCode dynamic function - ZHB */
    typedef struct _ZH_PCODEFUNC
    {
       ZH_BYTE *   pCode;         /* function body - PCODE */

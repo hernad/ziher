@@ -1,6 +1,6 @@
 /*
  * Unicode character tables
- * code generated automatically by uc16_gen.prg
+ * code generated automatically by uc16_gen.zh
  *
  * Copyright 2012 Przemyslaw Czerpak
  *

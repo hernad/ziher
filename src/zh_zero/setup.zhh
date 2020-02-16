@@ -1,7 +1,7 @@
 /*
- * Header file for language API (Ziher Level)
+ * Header file for runtime configuration, common for Ziher and C level.
  *
- * Copyright 2001-2002 Viktor Szakats
+ * Copyright 1999-2009 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,18 +44,10 @@
  *
  */
 
-/* NOTE: This file is also used by C code. */
+/* NOTE: This file is used by C code and at Ziher build time.
+         Normally you never need to #include it in any .prg code. */
 
-#ifndef ZH_LANG_CH_
-#define ZH_LANG_CH_
+#ifndef ZH_SETUP_ZH_
+#define ZH_SETUP_ZH_
 
-#define ZH_LANG_ITEM_BASE_ID            0
-#define ZH_LANG_ITEM_BASE_MONTH         6
-#define ZH_LANG_ITEM_BASE_DAY           18
-#define ZH_LANG_ITEM_BASE_NATMSG        25
-#define ZH_LANG_ITEM_BASE_ERRDESC       38
-#define ZH_LANG_ITEM_BASE_ERRINTR       89
-#define ZH_LANG_ITEM_BASE_TEXT          115
-#define ZH_LANG_ITEM_MAX_               118
-
-#endif /* ZH_LANG_CH_ */
+#endif /* ZH_SETUP_ZH_ */

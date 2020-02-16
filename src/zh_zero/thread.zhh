@@ -1,7 +1,7 @@
 /*
- * Code used to register new lang definition
+ * Header file with MT mode constant values
  *
- * Copyright 2009 Przemyslaw Czerpak
+ * Copyright 2008 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,26 +44,14 @@
  *
  */
 
-#if defined( ZH_LANG_ID )
+/* NOTE: This file is also used by C code. */
 
-ZH_LANG_ANNOUNCE( ZH_LANG_ID )
+#ifndef ZH_THREAD_ZH_
+#define ZH_THREAD_ZH_
 
-#if defined( ZH_PRAGMA_STARTUP )
-ZH_CALL_ON_STARTUP_BEGIN( _zh_lang_Init_ )
-   zh_langRegister( &s_lang );
-ZH_CALL_ON_STARTUP_END( _zh_lang_Init_ )
-#else
-ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
-   zh_langRegister( &s_lang );
-ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
-#endif
+#define ZH_THREAD_INHERIT_PUBLIC    1
+#define ZH_THREAD_INHERIT_PRIVATE   2
+#define ZH_THREAD_INHERIT_MEMVARS   3
+#define ZH_THREAD_MEMVARS_COPY      4
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_lang_Init_
-#elif defined( ZH_DATASEG_STARTUP )
-   #define ZH_DATASEG_BODY    \
-            ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
-   #include "zhiniseg.h"
-#endif
-
-#endif /* ZH_LANG_ID */
+#endif /* ZH_THREAD_ZH_ */

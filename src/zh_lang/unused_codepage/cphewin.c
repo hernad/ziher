@@ -47,7 +47,7 @@
 #define ZH_CP_ID        HEWIN
 #define ZH_CP_INFO      "Hebrew Windows-1255"
 #define ZH_CP_UNITB     ZH_UNITB_1255
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_he.h"
 #define ZH_CP_UTF8
 

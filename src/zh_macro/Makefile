@@ -6,8 +6,8 @@ YACC_DEPEND := macrolex.c
 YACC_HEADERS := \
    zh_macro.h \
    zh_setup.h \
-   hbpcode.h \
-   hbdefs.h \
+   zh_pcode.h \
+   zh_defs.h \
 
 C_SOURCES := \
    macroa.c \

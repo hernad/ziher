@@ -47,7 +47,7 @@
 #define ZH_CP_ID        ITISB
 #define ZH_CP_INFO      "Italian ISO-8859-1b (with BOX characters)"
 #define ZH_CP_UNITB     ZH_UNITB_8859_1B
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "A└┴┬├─┼BCDE╚╔FGHI╠═JKLMNO╥╙PQRSTU┘┌VWXYZ"
 #define ZH_CP_LOWER     "aàáâãäåbcdeèéfghiìíjklmnoòópqrstuùúvwxyz"
 #define ZH_CP_UTF8

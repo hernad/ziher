@@ -45,7 +45,7 @@
  */
 
 #include "zh_comp.h"
-#include "zh_verbld.h"
+#include "zh_ver_bld.h"
 
 void zh_compPrintUsage( ZH_COMP_DECL, const char * szSelf )
 {
@@ -65,7 +65,7 @@ void zh_compPrintUsage( ZH_COMP_DECL, const char * szSelf )
       "\n          -gc[<type>]      output type: C source (.c) (default)",
       "\n                           <type>: 0=compact (default) 1=normal 2=verbose",
       "\n                                   3=generate real C code",
-      "\n          -gh              output type: Ziher Portable Object (.hrb)",
+      "\n          -gh              output type: Ziher Portable Object (.zhb)",
       "\n          -gd[.<destext>]  generate dependencies list into (.d) file",
       "\n          -ge[<mode>]      error output <mode>: 0=Clipper (default)",
       "\n                                                1=IDE friendly",
@@ -106,7 +106,7 @@ void zh_compPrintUsage( ZH_COMP_DECL, const char * szSelf )
    int iLine;
 
    zh_snprintf( buffer, sizeof( buffer ),
-                "\nSyntax:  %s <file[s][.prg]|@file> [options]\n", szSelf );
+                "\nSyntax:  %s <file[s][.zh]|@file> [options]\n", szSelf );
    zh_compOutStd( ZH_COMP_PARAM, buffer );
 
    for( iLine = 0; iLine < ( int ) ZH_SIZEOFARRAY( s_szOptions ); iLine++ )

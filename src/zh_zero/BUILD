@@ -12,6 +12,15 @@ cc_library(
     includes = ["."],
 )
 
+filegroup(
+    name = "headers",
+    srcs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 #windows_dll_library(
 #    name = "zero_win",
 #    srcs = ["lib.cc"],

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        IT437
 #define ZH_CP_INFO      "Italian CP-437"
 #define ZH_CP_UNITB     ZH_UNITB_437
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "AAAAÄÅBCDEEÉFGHIIIJKLMNOOOPQRSTUUUVWXYZ"
 #define ZH_CP_LOWER     "aàáâäåbcdeèéfghiìíjklmnoòópqrstuùúvwxyz"
 #define ZH_CP_UTF8

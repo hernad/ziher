@@ -1,10 +1,7 @@
 /*
- * .prg interface to preprocessor
- * __pp_StdRules() function
- *    intentionally in separate file to not force linking
- *    standard PP rules table when user does not need them
+ * Header file for language API (Ziher Level)
  *
- * Copyright 2006 Przemyslaw Czerpak
+ * Copyright 2001-2002 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,13 +44,18 @@
  *
  */
 
-#include "zh_api.h"
-#include "zh_pp.h"
+/* NOTE: This file is also used by C code. */
 
-ZH_FUNC( __PP_STDRULES )
-{
-   PZH_PP_STATE pState = zh_pp_Param( 1 );
+#ifndef ZH_LANG_ZH_
+#define ZH_LANG_ZH_
 
-   if( pState )
-      zh_pp_setStdRules( pState );
-}
+#define ZH_LANG_ITEM_BASE_ID            0
+#define ZH_LANG_ITEM_BASE_MONTH         6
+#define ZH_LANG_ITEM_BASE_DAY           18
+#define ZH_LANG_ITEM_BASE_NATMSG        25
+#define ZH_LANG_ITEM_BASE_ERRDESC       38
+#define ZH_LANG_ITEM_BASE_ERRINTR       89
+#define ZH_LANG_ITEM_BASE_TEXT          115
+#define ZH_LANG_ITEM_MAX_               118
+
+#endif /* ZH_LANG_ZH_ */

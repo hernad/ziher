@@ -70,35 +70,35 @@ struct _ZH_CODEPAGE;
 
 #define _PZH_CODEPAGE       struct _ZH_CODEPAGE *
 
-#define ZH_CDPCHAR_GET( c, s, n, i, w )         (c)->wcharGet( c, s, n, i, w )
-#define ZH_CDPCHAR_PUT( c, s, n, i, w )         (c)->wcharPut( c, s, n, i, w )
-#define ZH_CDPCHAR_LEN( c, w )                  (c)->wcharLen( c, w )
-#define ZH_CDPCHAR_UPPER( c, w )                (c)->wcharUpper( c, w )
-#define ZH_CDPCHAR_LOWER( c, w )                (c)->wcharLower( c, w )
-#define ZH_CDPCHAR_FLAGS( c, w )                (c)->wcharFlags( c, w )
-#define ZH_CDPCHAR_CMP( c, s1, n1, s2, n2, e )  (c)->wcharCmp( c, s1, n1, s2, n2, e )
-#define ZH_CDPCHAR_CMPI( c, s1, n1, s2, n2, e ) (c)->wcharCmpI( c, s1, n1, s2, n2, e )
+#define ZH_CODEPAGE_CHAR_GET( c, s, n, i, w )         (c)->wcharGet( c, s, n, i, w )
+#define ZH_CODEPAGE_CHAR_PUT( c, s, n, i, w )         (c)->wcharPut( c, s, n, i, w )
+#define ZH_CODEPAGE_CHAR_LEN( c, w )                  (c)->wcharLen( c, w )
+#define ZH_CODEPAGE_CHAR_UPPER( c, w )                (c)->wcharUpper( c, w )
+#define ZH_CODEPAGE_CHAR_LOWER( c, w )                (c)->wcharLower( c, w )
+#define ZH_CODEPAGE_CHAR_FLAGS( c, w )                (c)->wcharFlags( c, w )
+#define ZH_CODEPAGE_CHAR_CMP( c, s1, n1, s2, n2, e )  (c)->wcharCmp( c, s1, n1, s2, n2, e )
+#define ZH_CODEPAGE_CHAR_CMPI( c, s1, n1, s2, n2, e ) (c)->wcharCmpI( c, s1, n1, s2, n2, e )
 
-#define ZH_CDP_GET_FUNC( func ) ZH_BOOL func( _PZH_CODEPAGE cdp, const char * pSrc, ZH_SIZE nLen, ZH_SIZE * pnIndex, ZH_WCHAR * wc )
-typedef ZH_CDP_GET_FUNC( ( * PZH_CDP_GET_FUNC ) );
+#define ZH_CODEPAGE_GET_FUNC( func ) ZH_BOOL func( _PZH_CODEPAGE cdp, const char * pSrc, ZH_SIZE nLen, ZH_SIZE * pnIndex, ZH_WCHAR * wc )
+typedef ZH_CODEPAGE_GET_FUNC( ( * PZH_CODEPAGE_GET_FUNC ) );
 
-#define ZH_CDP_PUT_FUNC( func ) ZH_BOOL func( _PZH_CODEPAGE cdp, char * pDst, ZH_SIZE nLen, ZH_SIZE * pnIndex, ZH_WCHAR wc )
-typedef ZH_CDP_PUT_FUNC( ( * PZH_CDP_PUT_FUNC ) );
+#define ZH_CODEPAGE_PUT_FUNC( func ) ZH_BOOL func( _PZH_CODEPAGE cdp, char * pDst, ZH_SIZE nLen, ZH_SIZE * pnIndex, ZH_WCHAR wc )
+typedef ZH_CODEPAGE_PUT_FUNC( ( * PZH_CODEPAGE_PUT_FUNC ) );
 
-#define ZH_CDP_LEN_FUNC( func ) int func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
-typedef ZH_CDP_LEN_FUNC( ( * PZH_CDP_LEN_FUNC ) );
+#define ZH_CODEPAGE_LEN_FUNC( func ) int func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
+typedef ZH_CODEPAGE_LEN_FUNC( ( * PZH_CODEPAGE_LEN_FUNC ) );
 
-#define ZH_CDP_UPPER_FUNC( func ) ZH_WCHAR func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
-typedef ZH_CDP_UPPER_FUNC( ( * PZH_CDP_UPPER_FUNC ) );
+#define ZH_CODEPAGE_UPPER_FUNC( func ) ZH_WCHAR func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
+typedef ZH_CODEPAGE_UPPER_FUNC( ( * PZH_CODEPAGE_UPPER_FUNC ) );
 
-#define ZH_CDP_LOWER_FUNC( func ) ZH_WCHAR func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
-typedef ZH_CDP_LOWER_FUNC( ( * PZH_CDP_LOWER_FUNC ) );
+#define ZH_CODEPAGE_LOWER_FUNC( func ) ZH_WCHAR func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
+typedef ZH_CODEPAGE_LOWER_FUNC( ( * PZH_CODEPAGE_LOWER_FUNC ) );
 
-#define ZH_CDP_FLAGS_FUNC( func ) int func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
-typedef ZH_CDP_FLAGS_FUNC( ( * PZH_CDP_FLAGS_FUNC ) );
+#define ZH_CODEPAGE_FLAGS_FUNC( func ) int func( _PZH_CODEPAGE cdp, ZH_WCHAR wc )
+typedef ZH_CODEPAGE_FLAGS_FUNC( ( * PZH_CODEPAGE_FLAGS_FUNC ) );
 
-#define ZH_CDP_CMP_FUNC( func ) int func( _PZH_CODEPAGE cdp, const char * szFirst, ZH_SIZE nLenFirst, const char * szSecond, ZH_SIZE nLenSecond, ZH_BOOL fExact )
-typedef ZH_CDP_CMP_FUNC( ( * PZH_CDP_CMP_FUNC ) );
+#define ZH_CODEPAGE_CMP_FUNC( func ) int func( _PZH_CODEPAGE cdp, const char * szFirst, ZH_SIZE nLenFirst, const char * szSecond, ZH_SIZE nLenSecond, ZH_BOOL fExact )
+typedef ZH_CODEPAGE_CMP_FUNC( ( * PZH_CODEPAGE_CMP_FUNC ) );
 
 
 typedef struct _ZH_UNITABLE
@@ -131,14 +131,14 @@ typedef struct _ZH_CODEPAGE
    const ZH_UCHAR *        acc;
    int                     nACSort;
    int                     type;
-   PZH_CDP_GET_FUNC        wcharGet;
-   PZH_CDP_PUT_FUNC        wcharPut;
-   PZH_CDP_LEN_FUNC        wcharLen;
-   PZH_CDP_UPPER_FUNC      wcharUpper;
-   PZH_CDP_LOWER_FUNC      wcharLower;
-   PZH_CDP_FLAGS_FUNC      wcharFlags;
-   PZH_CDP_CMP_FUNC        wcharCmp;
-   PZH_CDP_CMP_FUNC        wcharCmpI;
+   PZH_CODEPAGE_GET_FUNC        wcharGet;
+   PZH_CODEPAGE_PUT_FUNC        wcharPut;
+   PZH_CODEPAGE_LEN_FUNC        wcharLen;
+   PZH_CODEPAGE_UPPER_FUNC      wcharUpper;
+   PZH_CODEPAGE_LOWER_FUNC      wcharLower;
+   PZH_CODEPAGE_FLAGS_FUNC      wcharFlags;
+   PZH_CODEPAGE_CMP_FUNC        wcharCmp;
+   PZH_CODEPAGE_CMP_FUNC        wcharCmpI;
    int                     nMulti;
    int                     nMultiUC;
    PZH_MULTICHAR           multi;
@@ -208,10 +208,7 @@ typedef struct _ZH_CODEPAGE
 #define ZH_CPID_10079      "maciceland"
 #define ZH_CPID_10081      "macturkish"
 #define ZH_CPID_ATARIST    "atarist"
-#define ZH_CPID_NEXTSTEP   "nextstep"
 #define ZH_CPID_USASCII    "us-ascii"
-#define ZH_CPID_646YU      "iso646-yu"
-#define ZH_CPID_646YUC     "iso646-yuc"
 #define ZH_CPID_CWI2       "cwi-2"
 
 #define ZH_UNITB_437       &zh_uniTbl_437
@@ -275,11 +272,7 @@ typedef struct _ZH_CODEPAGE
 #define ZH_UNITB_10029     &zh_uniTbl_10029
 #define ZH_UNITB_10079     &zh_uniTbl_10079
 #define ZH_UNITB_10081     &zh_uniTbl_10081
-#define ZH_UNITB_ATARIST   &zh_uniTbl_ATARIST
-#define ZH_UNITB_NEXTSTEP  &zh_uniTbl_NEXTSTEP
 #define ZH_UNITB_USASCII   &zh_uniTbl_USASCII
-#define ZH_UNITB_646YU     &zh_uniTbl_646YU
-#define ZH_UNITB_646YUC    &zh_uniTbl_646YUC
 #define ZH_UNITB_CWI2      &zh_uniTbl_CWI2
 #define ZH_UNITB_UNDEF     NULL /* ((PZH_UNITABLE) (-1)) */
 
@@ -344,54 +337,50 @@ extern ZH_UNITABLE zh_uniTbl_10007;
 extern ZH_UNITABLE zh_uniTbl_10029;
 extern ZH_UNITABLE zh_uniTbl_10079;
 extern ZH_UNITABLE zh_uniTbl_10081;
-extern ZH_UNITABLE zh_uniTbl_ATARIST;
-extern ZH_UNITABLE zh_uniTbl_NEXTSTEP;
 extern ZH_UNITABLE zh_uniTbl_USASCII;
-extern ZH_UNITABLE zh_uniTbl_646YU;
-extern ZH_UNITABLE zh_uniTbl_646YUC;
 extern ZH_UNITABLE zh_uniTbl_CWI2;
 
 extern ZH_EXPORT PZH_CODEPAGE zh_vmCDP( void );
 extern ZH_EXPORT void         zh_vmSetCDP( PZH_CODEPAGE pCDP );
 
 /* character flags */
-#define ZH_CDP_DIGIT    0x01
-#define ZH_CDP_ALPHA    0x02
-#define ZH_CDP_LOWER    0x04
-#define ZH_CDP_UPPER    0x08
-#define ZH_CDP_MULTI1   0x10
-#define ZH_CDP_MULTI2   0x20
+#define ZH_CODEPAGE_DIGIT    0x01
+#define ZH_CODEPAGE_ALPHA    0x02
+#define ZH_CODEPAGE_LOWER    0x04
+#define ZH_CODEPAGE_UPPER    0x08
+#define ZH_CODEPAGE_MULTI1   0x10
+#define ZH_CODEPAGE_MULTI2   0x20
 
 /* accented character sorting */
-#define ZH_CDP_ACSORT_NONE          0     /* no special sorting for accented
+#define ZH_CODEPAGE_ACSORT_NONE          0     /* no special sorting for accented
                                              characters */
-#define ZH_CDP_ACSORT_EQUAL         1     /* accented characters have the same
+#define ZH_CODEPAGE_ACSORT_EQUAL         1     /* accented characters have the same
                                              weight as corresponding unaccented
                                              ones */
-#define ZH_CDP_ACSORT_INTERLEAVED   2     /* accented characters sort after
+#define ZH_CODEPAGE_ACSORT_INTERLEAVED   2     /* accented characters sort after
                                              their unaccented counterparts only
                                              if the unaccented versions of all
                                              characters being compared are the
                                              same ( interleaving ) */
 
 /* letter case sensitive sorting */
-#define ZH_CDP_CSSORT_UPLO          0     /* upper letters first then lower
+#define ZH_CODEPAGE_CSSORT_UPLO          0     /* upper letters first then lower
                                              ones */
-#define ZH_CDP_CSSORT_MIXED         1     /* upper and lower letters are
+#define ZH_CODEPAGE_CSSORT_MIXED         1     /* upper and lower letters are
                                              mixed */
-#define ZH_CDP_CSSORT_IGNORE        2     /* ignore case */
+#define ZH_CODEPAGE_CSSORT_IGNORE        2     /* ignore case */
 
 /* byte order */
-#define ZH_CDP_ENDIAN_NATIVE        0
-#define ZH_CDP_ENDIAN_LITTLE        1
-#define ZH_CDP_ENDIAN_BIG           2
+#define ZH_CODEPAGE_ENDIAN_NATIVE        0
+#define ZH_CODEPAGE_ENDIAN_LITTLE        1
+#define ZH_CODEPAGE_ENDIAN_BIG           2
 
 /* codepage types */
-#define ZH_CDP_TYPE_CUSTOM          0x0001
-#define ZH_CDP_TYPE_CHARIDX         0x0002
-#define ZH_CDP_TYPE_CHARUNI         0x0004
-#define ZH_CDP_TYPE_BINSORT         0x0008
-#define ZH_CDP_TYPE_UTF8            0x0010
+#define ZH_CODEPAGE_TYPE_CUSTOM          0x0001
+#define ZH_CODEPAGE_TYPE_CHARIDX         0x0002
+#define ZH_CODEPAGE_TYPE_CHARUNI         0x0004
+#define ZH_CODEPAGE_TYPE_BINSORT         0x0008
+#define ZH_CODEPAGE_TYPE_UTF8            0x0010
 
 /* maximal size of unicode character in 'char' representation for buffers
  * To encode all ISO 10646 Universal Character Set (UCS) values (characters
@@ -404,15 +393,15 @@ extern ZH_EXPORT void         zh_vmSetCDP( PZH_CODEPAGE pCDP );
 #define ZH_MAX_CHAR_LEN             8
 
 /* codepage uses simple binary sorting */
-#define ZH_CDP_ISBINSORT( cdp )     ( ( ( cdp )->type & ZH_CDP_TYPE_BINSORT ) != 0 )
+#define ZH_CODEPAGE_ISBINSORT( cdp )     ( ( ( cdp )->type & ZH_CODEPAGE_TYPE_BINSORT ) != 0 )
 /* codepage uses custom string decoding */
-#define ZH_CDP_ISCUSTOM( cdp )      ( ( ( cdp )->type & ZH_CDP_TYPE_CUSTOM ) != 0 )
+#define ZH_CODEPAGE_ISCUSTOM( cdp )      ( ( ( cdp )->type & ZH_CODEPAGE_TYPE_CUSTOM ) != 0 )
 /* codepage use character indexes instead of bytes ones */
-#define ZH_CDP_ISCHARIDX( cdp )     ( ( ( cdp )->type & ZH_CDP_TYPE_CHARIDX ) != 0 )
+#define ZH_CODEPAGE_ISCHARIDX( cdp )     ( ( ( cdp )->type & ZH_CODEPAGE_TYPE_CHARIDX ) != 0 )
 /* Chr(), Asc() and similar functions operates on Unicode values instead of bytes */
-#define ZH_CDP_ISCHARUNI( cdp )     ( ( ( cdp )->type & ZH_CDP_TYPE_CHARUNI ) != 0 )
+#define ZH_CODEPAGE_ISCHARUNI( cdp )     ( ( ( cdp )->type & ZH_CODEPAGE_TYPE_CHARUNI ) != 0 )
 /* codepage uses UTF-8 encoding */
-#define ZH_CDP_ISUTF8( cdp )        ( ( ( cdp )->type & ZH_CDP_TYPE_UTF8 ) != 0 )
+#define ZH_CODEPAGE_ISUTF8( cdp )        ( ( ( cdp )->type & ZH_CODEPAGE_TYPE_UTF8 ) != 0 )
 
 #define zh_cdpGetID( cdp )          ( ( cdp )->id )
 

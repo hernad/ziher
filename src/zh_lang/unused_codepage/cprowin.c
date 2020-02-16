@@ -47,7 +47,7 @@
 #define ZH_CP_ID        ROWIN
 #define ZH_CP_INFO      "Romanian Windows-1250"
 #define ZH_CP_UNITB     ZH_UNITB_1250
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_ro.h"
 #define ZH_CP_UTF8
 

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        BGWIN
 #define ZH_CP_INFO      "Bulgarian Windows-1251"
 #define ZH_CP_UNITB     ZH_UNITB_1251
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_bg.h"
 #define ZH_CP_UTF8
 

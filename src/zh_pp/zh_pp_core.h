@@ -828,7 +828,7 @@ static void zh_pp_dumpEnd( PZH_PP_STATE pState )
                              pState->iDumpLine + 1 );
 
       /* I do not like it - dump data should be separated from
-         preprocessed .prg code. What is inside DUMP area and
+         preprocessed .zh code. What is inside DUMP area and
          how it will be interpreted depends on backend not on
          PP itself */
       if( pState->fWritePreprocesed )
@@ -949,9 +949,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
                       * word concatenation which is not Clipper compatible and
                       * will break code like:
                       */
-#if 0
-                     "//   if /**/lVar; endif" /* enclosed in double-quotes to make commit checker happy */
-#endif
+
                      pState->nSpacesMin = 1;
                      ++n;
                   }
@@ -1774,7 +1772,7 @@ static PZH_PP_RULE zh_pp_ruleNew( PZH_PP_TOKEN pMatch, PZH_PP_TOKEN pResult,
    return pRule;
 }
 
-static void zh_pp_ruleFree( PZH_PP_RULE pRule )
+void zh_pp_ruleFree( PZH_PP_RULE pRule )
 {
    zh_pp_tokenListFree( &pRule->pMatch );
    zh_pp_tokenListFree( &pRule->pResult );
@@ -5206,7 +5204,7 @@ static void zh_pp_preprocessToken( PZH_PP_STATE pState )
                minor extension which allow to use the same source code
                as scripts in *nix system and compile it, this feature
                will be necessary also when we integrate compiler with HVM and
-               add support for direct execution compiled .prg files */
+               add support for direct execution compiled .zh files */
          }
          else if( ZH_PP_TOKEN_TYPE( pToken->type ) != ZH_PP_TOKEN_KEYWORD )
          {
@@ -5552,7 +5550,7 @@ void zh_pp_setIncFunc( PZH_PP_STATE pState, PZH_PP_INC_FUNC pIncFunc )
 }
 
 /*
- * reset PP context, used for multiple .prg file compilation
+ * reset PP context, used for multiple .zh file compilation
  * with DO ... or *.clp files
  */
 void zh_pp_reset( PZH_PP_STATE pState )
@@ -5620,7 +5618,7 @@ void zh_pp_setStdBase( PZH_PP_STATE pState )
    zh_pp_ruleListSetId( pState, pState->pCommands, ZH_PP_COMMAND );
 
    /* clear total number of preprocessed lines so we will report only
-    * lines in compiled .prg files
+    * lines in compiled .zh files
     */
    pState->iLineTot = 0;
 }
@@ -5668,9 +5666,9 @@ void zh_pp_initDynDefines( PZH_PP_STATE pState, ZH_BOOL fArchDefs )
 #endif
    }
 
-#if defined( __HARBOUR__ )
+#if defined( __ZIHER__ )
    zh_snprintf( szResult, sizeof( szResult ), "0x%02X%02X%02X", ZH_VER_MAJOR & 0xFF, ZH_VER_MINOR & 0xFF, ZH_VER_RELEASE & 0xFF );
-   zh_pp_addDefine( pState, "__HARBOUR__", szResult );
+   zh_pp_addDefine( pState, "__ZIHER__", szResult );
 #endif
 
    /* __DATE__ */

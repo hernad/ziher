@@ -56,12 +56,12 @@ ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
 
 #if defined( ZH_CP_RAW )
    #if defined( ZH_CP_CUSTOM )
-      #define ZH_CP_TP_CUSTOM    ZH_CDP_TYPE_CUSTOM
+      #define ZH_CP_TP_CUSTOM    ZH_CODEPAGE_TYPE_CUSTOM
    #else
       #if defined( ZH_CP_GET_FUNC ) && \
           defined( ZH_CP_PUT_FUNC ) && \
           defined( ZH_CP_LEN_FUNC )
-         #define ZH_CP_TP_CUSTOM    ZH_CDP_TYPE_CUSTOM
+         #define ZH_CP_TP_CUSTOM    ZH_CODEPAGE_TYPE_CUSTOM
       #else
          #define ZH_CP_TP_CUSTOM    0
          #define ZH_CP_GET_FUNC     NULL
@@ -84,19 +84,19 @@ ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
    #endif
 
    #if defined( ZH_CP_CHARIDX )
-      #define ZH_CP_TP_CHARIDX   ZH_CDP_TYPE_CHARIDX
+      #define ZH_CP_TP_CHARIDX   ZH_CODEPAGE_TYPE_CHARIDX
    #else
       #define ZH_CP_TP_CHARIDX   0
    #endif
 
    #if defined( ZH_CP_CHARUNI )
-      #define ZH_CP_TP_CHARUNI   ZH_CDP_TYPE_CHARUNI
+      #define ZH_CP_TP_CHARUNI   ZH_CODEPAGE_TYPE_CHARUNI
    #else
       #define ZH_CP_TP_CHARUNI   0
    #endif
 
    #if defined( ZH_CP_UTF8 )
-      #define ZH_CP_TP_UTF8      ZH_CDP_TYPE_UTF8
+      #define ZH_CP_TP_UTF8      ZH_CODEPAGE_TYPE_UTF8
    #else
       #define ZH_CP_TP_UTF8      0
    #endif
@@ -111,7 +111,7 @@ ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
       s_lower,
       s_sort,
       NULL,
-      ZH_CDP_ACSORT_NONE,
+      ZH_CODEPAGE_ACSORT_NONE,
       ( ZH_CP_TP_CUSTOM | ZH_CP_TP_CHARIDX | ZH_CP_TP_CHARUNI | ZH_CP_TP_UTF8 ),
       ZH_CP_GET_FUNC,
       ZH_CP_PUT_FUNC,
@@ -133,7 +133,7 @@ ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
    zh_cdpRegisterRaw( &s_codePage );
 #else
    #ifndef ZH_CP_CSSORT
-      #define ZH_CP_CSSORT    ZH_CDP_CSSORT_UPLO
+      #define ZH_CP_CSSORT    ZH_CODEPAGE_CSSORT_UPLO
    #endif
    #ifdef ZH_CP_UTF8
       #define ZH_CP_UTF8_STR  ZH_TRUE

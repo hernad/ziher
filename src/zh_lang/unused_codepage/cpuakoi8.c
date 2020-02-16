@@ -47,7 +47,7 @@
 #define ZH_CP_ID        UAKOI8
 #define ZH_CP_INFO      "Ukrainian KOI8-U"
 #define ZH_CP_UNITB     ZH_UNITB_KOI_8U
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_uk.h"
 #define ZH_CP_UTF8
 

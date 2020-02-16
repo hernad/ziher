@@ -47,7 +47,7 @@
 #define ZH_CP_ID        TRWIN
 #define ZH_CP_INFO      "Turkish Windows-1254"
 #define ZH_CP_UNITB     ZH_UNITB_1254
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_tr.h"
 #define ZH_CP_UTF8
 

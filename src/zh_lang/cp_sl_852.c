@@ -47,7 +47,7 @@
 #define ZH_CP_ID        SL852
 #define ZH_CP_INFO      "Slovenian CP-852"
 #define ZH_CP_UNITB     ZH_UNITB_852
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "cp_sl_lang.h"
 #define ZH_CP_UTF8
 

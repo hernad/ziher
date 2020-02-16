@@ -47,7 +47,7 @@
 #define ZH_CP_ID        PT850
 #define ZH_CP_INFO      "Portuguese CP-850"
 #define ZH_CP_UNITB     ZH_UNITB_850
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_pt.h"
 #define ZH_CP_UTF8
 

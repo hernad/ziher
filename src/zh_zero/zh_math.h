@@ -48,17 +48,6 @@
 #ifndef ZH_MATH_H_
 #define ZH_MATH_H_
 
-#if defined( __DJGPP__ )
-#include <libm/math.h>
-#else
 #include <math.h>
-#endif
-
-/* NOTE: Workaround for Pelles C 5.00 not having an 'inf' (HUGE_VAL)
-         in '-Tarm-coff' mode. [vszakats] */
-#if defined( __POCC__ ) && defined( ZH_OS_WIN_CE )
-   #undef HUGE_VAL
-   #define HUGE_VAL   ( 1.0 / ( 1.0, 0.0 ) )
-#endif
 
 #endif /* ZH_MATH_H_ */

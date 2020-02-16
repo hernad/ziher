@@ -47,7 +47,7 @@
 #define ZH_CP_ID        PLWIN
 #define ZH_CP_INFO      "Polish Windows-1250"
 #define ZH_CP_UNITB     ZH_UNITB_1250
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_pl.h"
 #define ZH_CP_UTF8
 

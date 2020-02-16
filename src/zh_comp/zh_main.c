@@ -98,11 +98,7 @@ int zh_compMainExt( int argc, const char * const argv[],
       if( ZH_COMP_PARAM->fBuildInfo )
       {
          zh_compOutStd( ZH_COMP_PARAM, "\n" );
-#if defined( ZH_OS_DOS )
-         zh_verBuildInfoCB( zh_conOutErr );
-#else
          zh_verBuildInfoCB( zh_conOutStd );
-#endif
       }
 
       if( ZH_COMP_PARAM->fCredits )
@@ -2236,8 +2232,8 @@ static void zh_compAnnounce( ZH_COMP_DECL, const char * szFunName )
 {
    PZH_ZFUNC pFunc;
 
-   /* Clipper call this function after compiling .prg module where ANNOUNCE
-    * symbol was defined not after compiling all .prg modules and search for
+   /* Clipper call this function after compiling .zh module where ANNOUNCE
+    * symbol was defined not after compiling all .zh modules and search for
     * public ANNOUNCEd function/procedure in all compiled so far modules
     * and then for static one in currently compiler module.
     */
@@ -4038,7 +4034,7 @@ static void zh_compGenIncluded( ZH_COMP_DECL )
                   break;
                case ZH_LANG_PORT_OBJ:
                case ZH_LANG_PORT_OBJ_BUF:
-                  FileName.szExtension = ".hrb";
+                  FileName.szExtension = ".zhb";
                   break;
 
                default:
@@ -4226,7 +4222,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
       }
 
       if( ! pFileName->szExtension )
-         pFileName->szExtension = ".prg";
+         pFileName->szExtension = ".zh";
       zh_fsFNameMerge( szFileName, pFileName );
 
       if( szBuffer )
@@ -4276,8 +4272,8 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
          }
 
 #if ! defined( ZH_MODULES_MERGE )
-         /* TODO: HRB format does not support yet multiple static functions
-          *       with the same name. Such functionality needs extended .HRB
+         /* TODO: ZHB format does not support yet multiple static functions
+          *       with the same name. Such functionality needs extended .ZHB
           *       file format.
           */
          if( ZH_COMP_PARAM->iLanguage != ZH_LANG_PORT_OBJ &&

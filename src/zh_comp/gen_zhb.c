@@ -1,5 +1,5 @@
 /*
- * Compiler Ziher Portable Object (.hrb) generation
+ * Compiler Ziher Portable Object (.zhb) generation
  *
  * Copyright 1999 Eddie Runia <eddie@runia.com>
  * Copyright 2007 Przemyslaw Czerpak
@@ -94,8 +94,8 @@ void zh_compGenBufPortObj( ZH_COMP_DECL, ZH_BYTE ** pBufPtr, ZH_SIZE * pnSize )
       /* FIXME: this conversion strips upper byte from symbol scope
        *        Now we added workaround for it by using some strict
        *        bit order and restoring some others at runtime when
-       *        .hrb file is loaded but we should create new format
-       *        for .hrb files in which this field will have at least
+       *        .zhb file is loaded but we should create new format
+       *        for .zhb files in which this field will have at least
        *        16-bit [druzus]
        */
       *ptr++ = ( ZH_BYTE ) pSym->cScope;
@@ -139,7 +139,7 @@ void zh_compGenPortObj( ZH_COMP_DECL, PZH_FNAME pFileName )
    FILE * yyc;
 
    if( ! pFileName->szExtension )
-      pFileName->szExtension = ".hrb";
+      pFileName->szExtension = ".zhb";
    zh_fsFNameMerge( szFileName, pFileName );
 
    yyc = zh_fopen( szFileName, "wb" );

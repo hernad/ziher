@@ -2379,19 +2379,19 @@ yyreduce:
 
   case 110:
 #line 526 "macro.y" /* yacc.c:1646  */
-    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_HARBOUR ); }
+    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_ZIHER ); }
 #line 2384 "macroy.c" /* yacc.c:1646  */
     break;
 
   case 111:
 #line 527 "macro.y" /* yacc.c:1646  */
-    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_HARBOUR ); }
+    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_ZIHER ); }
 #line 2390 "macroy.c" /* yacc.c:1646  */
     break;
 
   case 112:
 #line 528 "macro.y" /* yacc.c:1646  */
-    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_HARBOUR ); }
+    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_ZIHER ); }
 #line 2396 "macroy.c" /* yacc.c:1646  */
     break;
 
@@ -2450,7 +2450,7 @@ yyreduce:
 
   case 148:
 #line 587 "macro.y" /* yacc.c:1646  */
-    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_HARBOUR ); }
+    { ZH_MACRO_IFENABLED( (yyval.asExpr), (yyvsp[0].asExpr), ZH_SM_ZIHER ); }
 #line 2455 "macroy.c" /* yacc.c:1646  */
     break;
 

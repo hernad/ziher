@@ -48,7 +48,7 @@
 #define ZH_CP_ID        HRWIN
 #define ZH_CP_INFO      "Croatian Windows-1250"
 #define ZH_CP_UNITB     ZH_UNITB_1250
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_hr.h"
 #define ZH_CP_UTF8
 

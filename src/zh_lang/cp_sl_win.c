@@ -47,7 +47,7 @@
 #define ZH_CP_ID        SLWIN
 #define ZH_CP_INFO      "Slovenian CP-1250"
 #define ZH_CP_UNITB     ZH_UNITB_1250
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "lang_sl.h"
 #define ZH_CP_UTF8
 

@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef ZH_MEMORY_CH_
-#define ZH_MEMORY_CH_
+#ifndef ZH_MEMORY_ZH_
+#define ZH_MEMORY_ZH_
 
 /* Parameters for Memory() function */
 
@@ -74,4 +74,4 @@
 #define ZH_MEM_BLOCKS        1007   /* Total number of memory blocks allocated */
 #define ZH_MEM_STATISTICS    1008   /* Return non 0 value if FM statistic is enabled */
 #define ZH_MEM_CANLIMIT      1009   /* Return non 0 value if used memory limit is supported */
-#endif /* ZH_MEMORY_CH_ */
+#endif /* ZH_MEMORY_ZH_ */

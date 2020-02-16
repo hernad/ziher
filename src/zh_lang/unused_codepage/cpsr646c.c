@@ -47,7 +47,7 @@
 #define ZH_CP_ID        SR646C
 #define ZH_CP_INFO      "Serbian ISO-646C (Cyrillic YUSCII)"
 #define ZH_CP_UNITB     ZH_UNITB_646YUC
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "АБЦЧЋДЂЕФГХИЈКЛМНОПЉРСШТУВЊЏЅЗЖ"
 #define ZH_CP_LOWER     "абцчћдђефгхијклмнопљрсштувњџѕзж"
 #define ZH_CP_UTF8

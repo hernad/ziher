@@ -55,7 +55,7 @@
 #  include "utf8_sort.h"
 #endif
 
-static ZH_CDP_GET_FUNC( UTF8_get )
+static ZH_CODEPAGE_GET_FUNC( UTF8_get )
 {
    ZH_SIZE nIndex = *pnIndex;
    int n = 0;
@@ -81,7 +81,7 @@ static ZH_CDP_GET_FUNC( UTF8_get )
    return ZH_FALSE;
 }
 
-static ZH_CDP_PUT_FUNC( UTF8_put )
+static ZH_CODEPAGE_PUT_FUNC( UTF8_put )
 {
    int i = zh_cdpUTF8CharSize( wc );
 
@@ -96,14 +96,14 @@ static ZH_CDP_PUT_FUNC( UTF8_put )
    return ZH_FALSE;
 }
 
-static ZH_CDP_LEN_FUNC( UTF8_len )
+static ZH_CODEPAGE_LEN_FUNC( UTF8_len )
 {
    ZH_SYMBOL_UNUSED( cdp );
 
    return zh_cdpUTF8CharSize( wc );
 }
 
-static ZH_CDP_UPPER_FUNC( UTF8_upper )
+static ZH_CODEPAGE_UPPER_FUNC( UTF8_upper )
 {
    ZH_WCHAR wcUP;
 
@@ -113,7 +113,7 @@ static ZH_CDP_UPPER_FUNC( UTF8_upper )
    return wcUP ? wcUP : wc;
 }
 
-static ZH_CDP_LOWER_FUNC( UTF8_lower )
+static ZH_CODEPAGE_LOWER_FUNC( UTF8_lower )
 {
    ZH_WCHAR wcLO;
 
@@ -123,14 +123,14 @@ static ZH_CDP_LOWER_FUNC( UTF8_lower )
    return wcLO ? wcLO : wc;
 }
 
-static ZH_CDP_FLAGS_FUNC( UTF8_flags )
+static ZH_CODEPAGE_FLAGS_FUNC( UTF8_flags )
 {
    ZH_SYMBOL_UNUSED( cdp );
 
    return s_uc_flags( wc );
 }
 
-static ZH_CDP_CMP_FUNC( UTF8_cmp )
+static ZH_CODEPAGE_CMP_FUNC( UTF8_cmp )
 {
    int iRet;
 
@@ -142,13 +142,13 @@ static ZH_CDP_CMP_FUNC( UTF8_cmp )
    iRet = 0;
    for( ;; )
    {
-      if( ! ZH_CDPCHAR_GET( cdp, szSecond, nLenSecond, &nPos2, &wc2 ) )
+      if( ! ZH_CODEPAGE_CHAR_GET( cdp, szSecond, nLenSecond, &nPos2, &wc2 ) )
       {
-         if( fExact && ZH_CDPCHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
+         if( fExact && ZH_CODEPAGE_CHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
             iRet = 1;
          break;
       }
-      if( ! ZH_CDPCHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
+      if( ! ZH_CODEPAGE_CHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
       {
          iRet = -1;
          break;
@@ -187,7 +187,7 @@ static ZH_CDP_CMP_FUNC( UTF8_cmp )
    return iRet;
 }
 
-static ZH_CDP_CMP_FUNC( UTF8_cmpi )
+static ZH_CODEPAGE_CMP_FUNC( UTF8_cmpi )
 {
    int iRet = 0;
 
@@ -198,21 +198,21 @@ static ZH_CDP_CMP_FUNC( UTF8_cmpi )
 
    for( ;; )
    {
-      if( ! ZH_CDPCHAR_GET( cdp, szSecond, nLenSecond, &nPos2, &wc2 ) )
+      if( ! ZH_CODEPAGE_CHAR_GET( cdp, szSecond, nLenSecond, &nPos2, &wc2 ) )
       {
-         if( fExact && ZH_CDPCHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
+         if( fExact && ZH_CODEPAGE_CHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
             iRet = 1;
          break;
       }
-      if( ! ZH_CDPCHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
+      if( ! ZH_CODEPAGE_CHAR_GET( cdp, szFirst, nLenFirst, &nPos1, &wc1 ) )
       {
          iRet = -1;
          break;
       }
       if( wc1 != wc2 )
       {
-         ZH_USHORT us1 = s_uniSort[ ZH_CDPCHAR_UPPER( cdp, wc1 ) ],
-                   us2 = s_uniSort[ ZH_CDPCHAR_UPPER( cdp, wc2 ) ];
+         ZH_USHORT us1 = s_uniSort[ ZH_CODEPAGE_CHAR_UPPER( cdp, wc1 ) ],
+                   us2 = s_uniSort[ ZH_CODEPAGE_CHAR_UPPER( cdp, wc2 ) ];
          if( us1 != us2 )
          {
             iRet = us1 < us2 ? -1 : 1;
@@ -263,13 +263,13 @@ static void zh_cp_init( PZH_CODEPAGE cdp )
    {
       flags[ i ] = 0;
       if( ZH_ISDIGIT( i ) )
-         flags[ i ] |= ZH_CDP_DIGIT;
+         flags[ i ] |= ZH_CODEPAGE_DIGIT;
       if( ZH_ISALPHA( i ) )
-         flags[ i ] |= ZH_CDP_ALPHA;
+         flags[ i ] |= ZH_CODEPAGE_ALPHA;
       if( ZH_ISUPPER( i ) )
-         flags[ i ] |= ZH_CDP_UPPER;
+         flags[ i ] |= ZH_CODEPAGE_UPPER;
       if( ZH_ISLOWER( i ) )
-         flags[ i ] |= ZH_CDP_LOWER;
+         flags[ i ] |= ZH_CODEPAGE_LOWER;
       upper[ i ] = ( ZH_UCHAR ) ZH_TOUPPER( i );
       lower[ i ] = ( ZH_UCHAR ) ZH_TOLOWER( i );
    }

@@ -57,7 +57,7 @@
 #define ZH_CP_ID        UA866
 #define ZH_CP_INFO      "Ukrainian CP-866"
 #define ZH_CP_UNITB     ZH_UNITB_866
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #define ZH_CP_UPPER     "АБВГДЕЁЄЖЗИIЇЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 #define ZH_CP_LOWER     "абвгдеёєжзиiїйклмнопрстуфхцчшщъыьэюя"
 #define ZH_CP_UTF8

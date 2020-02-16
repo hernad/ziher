@@ -47,7 +47,7 @@
 #define ZH_CP_ID        LT775
 #define ZH_CP_INFO      "Lithuanian CP-775"
 #define ZH_CP_UNITB     ZH_UNITB_775
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_lt.h"
 #define ZH_CP_UTF8
 

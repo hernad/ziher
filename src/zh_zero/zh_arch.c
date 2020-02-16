@@ -52,7 +52,7 @@
  * IEEE754 double value making conversion from/to native C double type.
  * They should be used on platforms which does not use IEEE754 double
  * and user needs binary compatibility, e.g. he wants to share CDXs or
- * or DBFs with "B" fields with other station or use common .hrb files
+ * or DBFs with "B" fields with other station or use common .zhb files
  * functions zh_put_ord_ieee754() and zh_get_ord_ieee754() converts
  * to/from special modified IEEE754 double form used by some index formats
  * like CDX or NSX to create index keys. In this form double numbers can

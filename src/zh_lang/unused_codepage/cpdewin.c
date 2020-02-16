@@ -47,7 +47,7 @@
 #define ZH_CP_ID        DEWIN
 #define ZH_CP_INFO      "German Windows-1252"
 #define ZH_CP_UNITB     ZH_UNITB_1252
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_NONE
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
 #include "l_de.h"
 #define ZH_CP_UTF8
 

@@ -47,7 +47,7 @@
 #define ZH_CP_ID        EL737
 #define ZH_CP_INFO      "Greek CP-737"
 #define ZH_CP_UNITB     ZH_UNITB_737
-#define ZH_CP_ACSORT    ZH_CDP_ACSORT_EQUAL
+#define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_EQUAL
 #include "l_el.h"
 #define ZH_CP_UTF8
 

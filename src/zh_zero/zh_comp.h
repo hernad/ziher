@@ -116,7 +116,7 @@ extern void zh_compParserRun( ZH_COMP_DECL );
 #define ZH_FUNF_WITH_RETURN       0x0020   /* there was RETURN statement in previous line */
 #define ZH_FUNF_EXTBLOCK          0x0040   /* it's extended codeblock */
 #define ZH_FUNF_FILE_DECL         0x0080   /* pseudo function with file wide declarations */
-#define ZH_FUNF_FILE_FIRST        0x0100   /* 1st real or pseudo function in compiled .prg module */
+#define ZH_FUNF_FILE_FIRST        0x0100   /* 1st real or pseudo function in compiled .zh module */
 #define ZH_FUNF_ATTACHED          0x0200   /* function attached to function list */
 
 extern               void         zh_compFunctionAdd( ZH_COMP_DECL, const char * szFunName, ZH_SYMBOLSCOPE cScope, int iType ); /* starts a new Clipper language function definition */

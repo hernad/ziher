@@ -49,7 +49,7 @@
 
 #include "big5.c"
 
-static ZH_CDP_GET_FUNC( BIG5_get )
+static ZH_CODEPAGE_GET_FUNC( BIG5_get )
 {
    *wc = 0;
    if( *pnIndex < nLen )
@@ -74,7 +74,7 @@ static ZH_CDP_GET_FUNC( BIG5_get )
    return ZH_FALSE;
 }
 
-static ZH_CDP_PUT_FUNC( BIG5_put )
+static ZH_CODEPAGE_PUT_FUNC( BIG5_put )
 {
    if( *pnIndex < nLen )
    {
@@ -105,7 +105,7 @@ static ZH_CDP_PUT_FUNC( BIG5_put )
    return ZH_FALSE;
 }
 
-static ZH_CDP_LEN_FUNC( BIG5_len )
+static ZH_CODEPAGE_LEN_FUNC( BIG5_len )
 {
    ZH_USHORT b5 = s_ucs16_to_big5( wc );
 
@@ -128,13 +128,13 @@ static void zh_cp_init( PZH_CODEPAGE cdp )
    {
       flags[ i ] = 0;
       if( ZH_ISDIGIT( i ) )
-         flags[ i ] |= ZH_CDP_DIGIT;
+         flags[ i ] |= ZH_CODEPAGE_DIGIT;
       if( ZH_ISALPHA( i ) )
-         flags[ i ] |= ZH_CDP_ALPHA;
+         flags[ i ] |= ZH_CODEPAGE_ALPHA;
       if( ZH_ISUPPER( i ) )
-         flags[ i ] |= ZH_CDP_UPPER;
+         flags[ i ] |= ZH_CODEPAGE_UPPER;
       if( ZH_ISLOWER( i ) )
-         flags[ i ] |= ZH_CDP_LOWER;
+         flags[ i ] |= ZH_CODEPAGE_LOWER;
       upper[ i ] = ( ZH_UCHAR ) ZH_TOUPPER( i );
       lower[ i ] = ( ZH_UCHAR ) ZH_TOLOWER( i );
    }

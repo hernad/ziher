@@ -963,16 +963,6 @@ long zh_timeUTCOffset( void ) /* in seconds */
       memset( &tzInfo, 0, sizeof( tzInfo ) );
       retval = GetTimeZoneInformation( &tzInfo );
 
-      /* disabled because users reported that in some
-       * countries/windows versions GetTimeZoneInformation()
-       * returns TIME_ZONE_ID_INVALID but sets correct
-       * tzInfo.StandardBias field.
-       */
-#if 0
-      if( retval == TIME_ZONE_ID_INVALID )
-         return 0;
-#endif
-
       /* silence warning caused by disabling 'retval' check above */
 #if defined( _MSC_VER ) && _MSC_VER >= 1800
 #pragma warning(push)

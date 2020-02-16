@@ -600,6 +600,8 @@ ZH_PP_STATE, * PZH_PP_STATE;
 extern void zh_pp_initRules( PZH_PP_RULE * pRulesPtr, int * piRules,
                              const ZH_PP_DEFRULE pDefRules[], int iDefRules );
 
+void zh_pp_ruleFree( PZH_PP_RULE pRule );
+
 
 #else
 
