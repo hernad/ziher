@@ -1,4 +1,4 @@
-/*
+*/*
  * Header file for automatic static initialization
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
