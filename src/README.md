@@ -5,4 +5,4 @@ Install [bazel.build](https://bazel.build/).
     # [ziher/src]
     bazel query //... 
 
-    # bazel build //zh_comp
+    # bazel run //zh_comp/main:zhcomp -- -credits
