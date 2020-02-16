@@ -52,7 +52,7 @@
 #include "zh_api.h"
 #include "zh_date.h"
 #if defined( ZH_LONG_LONG_OFF )
-#  include "zhmath.h"
+#  include "zh_math.h"
 #endif
 
 #include <time.h>

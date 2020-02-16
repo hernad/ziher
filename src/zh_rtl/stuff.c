@@ -1,8 +1,8 @@
 /*
- * Ziher math functions and API
+ * Stuff() function
  *
- * Copyright 2001 IntTec GmbH, Neunlindenstr 32, 79106 Freiburg, Germany
- *        Author: Martin Vogel <vogel@inttec.de>
+ * Copyright 2012 Przemyslaw Czerpak
+ * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,20 +45,69 @@
  *
  */
 
-#ifndef ZH_MATH_H_
-#define ZH_MATH_H_
+#include "zh_api.h"
+#include "zh_codepage_api.h"
 
-#if defined( __DJGPP__ )
-#include <libm/math.h>
-#else
-#include <math.h>
-#endif
+/* replaces characters in a string */
+ZH_FUNC( STUFF )
+{
+   const char * szText = zh_parc( 1 );
+   const char * szIns = zh_parc( 4 );
 
-/* NOTE: Workaround for Pelles C 5.00 not having an 'inf' (HUGE_VAL)
-         in '-Tarm-coff' mode. [vszakats] */
-#if defined( __POCC__ ) && defined( ZH_OS_WIN_CE )
-   #undef HUGE_VAL
-   #define HUGE_VAL   ( 1.0 / ( 1.0, 0.0 ) )
-#endif
+   if( szText && szIns && ZH_IS_PARAM_NUM( 2 ) && ZH_IS_PARAM_NUM( 3 ) )
+   {
+      PZH_CODEPAGE cdp = zh_vmCDP();
+      ZH_SIZE nLen = zh_parclen( 1 );
+      ZH_SIZE nPos = zh_parns( 2 );
+      ZH_SIZE nDel = zh_parns( 3 );
+      ZH_SIZE nIns = zh_parclen( 4 );
+      ZH_SIZE nTot;
 
-#endif /* ZH_MATH_H_ */
+      if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
+      {
+         if( nPos )
+            nPos = nPos < 1 ? nLen : zh_cdpTextPos( cdp, szText, nLen, nPos - 1 );
+         if( nDel )
+         {
+            if( nPos < nLen )
+            {
+               nDel = zh_cdpTextPos( cdp, szText + nPos, nLen - nPos, nDel );
+               if( nDel == 0 )
+                  nDel = nLen - nPos;
+            }
+            else
+               nDel = 0;
+         }
+      }
+      else
+      {
+         if( nPos )
+         {
+            if( nPos < 1 || nPos > nLen )
+               nPos = nLen;
+            else
+               nPos--;
+         }
+         if( nDel )
+         {
+            if( nDel < 1 || nDel > nLen - nPos )
+               nDel = nLen - nPos;
+         }
+      }
+
+      if( ( nTot = nLen + nIns - nDel ) > 0 )
+      {
+         char * szResult = ( char * ) zh_xgrab( nTot + 1 );
+
+         zh_xmemcpy( szResult, szText, nPos );
+         zh_xmemcpy( szResult + nPos, szIns, nIns );
+         zh_xmemcpy( szResult + nPos + nIns, szText + nPos + nDel,
+                     nLen - ( nPos + nDel ) );
+         zh_retclen_buffer( szResult, nTot );
+      }
+      else
+         zh_retc_null();
+   }
+   else
+      zh_retc_null();
+}

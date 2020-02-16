@@ -1,0 +1,272 @@
+/*
+ * MEMVAR save/restore functions with >10 long variable name support.
+ *
+ * Copyright 2010 Viktor Szakats
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#pragma -gc0
+
+#include "memvar.zhh"
+#include "error.zhh"
+#include "fileio.ch"
+
+/*
+ * 0xC0, 'H', 'B', 'V' followed two-byte version number in Little Endian order.
+ * Corresponding magic(5) rule:
+ *
+ *    0       string          \xc0HBV         Ziher variable dump file
+ *    >4      leshort         x               version %d
+ *
+ * Until such time that the serialized format changes, and handling of
+ * previously-saved files is required, only a naive approach of using
+ * version 1 is taken.
+ */
+
+#define _HBMEM_EXT       ".hbv"
+
+#define _HBMEM_SIG_LEN   6
+#define _HBMEM_SIGNATURE ( ;
+   zh_BChar( 0xC0 ) + ;
+   zh_BChar( 0x48 ) + ;
+   zh_BChar( 0x42 ) + ;
+   zh_BChar( 0x56 ) + ;
+   zh_BChar( 0x01 ) + ;
+   zh_BChar( 0x00 ) )
+
+PROCEDURE zh_mvSave( cFileName, cMask, lIncludeMask )
+
+   LOCAL nCount
+   LOCAL xValue
+   LOCAL cName
+   LOCAL nScope
+   LOCAL lMatch
+
+   LOCAL aVars
+   LOCAL hFile
+   LOCAL tmp
+
+   LOCAL oError
+   LOCAL nRetries
+
+   IF ZH_ISSTRING( cFileName )
+
+      IF Set( _SET_DEFEXTENSIONS )
+         cFileName := zh_FNameExtSetDef( cFileName, _HBMEM_EXT )
+      ENDIF
+
+      IF ! ZH_ISSTRING( cMask ) .OR. ;
+         Empty( cMask ) .OR. zh_LeftEq( cMask, "*" )
+         cMask := "*"
+      ENDIF
+
+      zh_default( @lIncludeMask, .T. )
+
+      aVars := {}
+
+      FOR EACH nScope IN { ZH_MV_PUBLIC, ZH_MV_PRIVATE }
+         nCount := __mvDbgInfo( nScope )
+         FOR tmp := 1 TO nCount
+            xValue := __mvDbgInfo( nScope, tmp, @cName )
+            IF ValType( xValue ) $ "CNDTL"
+               lMatch := zh_WildMatchI( cMask, cName )
+               IF iif( lIncludeMask, lMatch, ! lMatch )
+                  AAdd( aVars, { cName, xValue } )
+               ENDIF
+            ENDIF
+         NEXT
+      NEXT
+
+      nRetries := 0
+      DO WHILE .T.
+         IF ( hFile := zh_vfOpen( cFileName, FO_CREAT + FO_TRUNC + FO_WRITE + FO_EXCLUSIVE ) ) == NIL
+            oError := ErrorNew()
+
+            oError:severity    := ES_ERROR
+            oError:genCode     := EG_OPEN
+            oError:subSystem   := "BASE"
+            oError:subCode     := 2006
+            oError:canRetry    := .T.
+            oError:canDefault  := .T.
+            oError:fileName    := cFileName
+            oError:osCode      := FError()
+            oError:tries       := ++nRetries
+
+            IF zh_defaultValue( Eval( ErrorBlock(), oError ), .F. )
+               LOOP
+            ENDIF
+         ENDIF
+         EXIT
+      ENDDO
+
+      IF hFile != NIL
+         zh_vfWrite( hFile, _HBMEM_SIGNATURE )
+         zh_vfWrite( hFile, zh_Serialize( aVars ) )
+         zh_vfClose( hFile )
+      ENDIF
+   ELSE
+      oError := ErrorNew()
+
+      oError:severity    := ES_ERROR
+      oError:genCode     := EG_ARG
+      oError:subSystem   := "BASE"
+      oError:subCode     := 2008
+      oError:canRetry    := .F.
+      oError:canDefault  := .F.
+      oError:Args        := zh_AParams()
+      oError:operation   := ProcName()
+
+      Eval( ErrorBlock(), oError )
+   ENDIF
+
+   RETURN
+
+FUNCTION zh_mvRestore( cFileName, lAdditive, cMask, lIncludeMask )
+
+   LOCAL item
+   LOCAL cName
+   LOCAL lMatch
+
+   LOCAL aVars
+   LOCAL cBuffer
+   LOCAL xValue
+
+   LOCAL hFile
+
+   LOCAL oError
+   LOCAL nRetries
+
+   IF ZH_ISSTRING( cFileName )
+
+      IF ! zh_defaultValue( lAdditive, .T. )
+         __mvClear()
+      ENDIF
+
+      IF Set( _SET_DEFEXTENSIONS )
+         cFileName := zh_FNameExtSetDef( cFileName, _HBMEM_EXT )
+      ENDIF
+
+      IF ! ZH_ISSTRING( cFileName ) .OR. ;
+         Empty( cMask ) .OR. zh_LeftEq( cMask, "*" )
+         cMask := "*"
+      ENDIF
+
+      zh_default( @lIncludeMask, .T. )
+
+      nRetries := 0
+      DO WHILE .T.
+
+         IF ( hFile := zh_vfOpen( cFileName, FO_READ ) ) == NIL
+            oError := ErrorNew()
+
+            oError:severity    := ES_ERROR
+            oError:genCode     := EG_OPEN
+            oError:subSystem   := "BASE"
+            oError:subCode     := 2005
+            oError:canRetry    := .T.
+            oError:canDefault  := .T.
+            oError:fileName    := cFileName
+            oError:osCode      := FError()
+            oError:tries       := ++nRetries
+
+            IF zh_defaultValue( Eval( ErrorBlock(), oError ), .F. )
+               LOOP
+            ENDIF
+         ENDIF
+         EXIT
+      ENDDO
+
+      IF hFile == NIL
+         RETURN .F.
+      ENDIF
+
+      xValue := NIL
+
+      IF zh_vfReadLen( hFile, _HBMEM_SIG_LEN ) == _HBMEM_SIGNATURE
+
+         cBuffer := Space( zh_vfSize( hFile ) - _HBMEM_SIG_LEN )
+         zh_vfSeek( hFile, _HBMEM_SIG_LEN, FS_SET )
+         zh_vfRead( hFile, @cBuffer, zh_BLen( cBuffer ) )
+         zh_vfClose( hFile )
+
+         aVars := zh_Deserialize( cBuffer )
+         cBuffer := NIL
+
+         IF ZH_ISARRAY( aVars )
+            FOR EACH item IN aVars
+               IF ZH_ISARRAY( item ) .AND. Len( item ) == 2 .AND. ;
+                  ZH_ISSTRING( item[ 1 ] ) .AND. ;
+                  ! Empty( item[ 1 ] )
+
+                  cName := item[ 1 ]
+                  lMatch := zh_WildMatchI( cMask, cName )
+                  IF iif( lIncludeMask, lMatch, ! lMatch )
+                     IF xValue == NIL
+                        xValue := item[ 2 ]
+                     ENDIF
+                     __mvPut( cName, item[ 2 ] )
+                  ENDIF
+               ENDIF
+            NEXT
+            __mvSetBase()
+         ENDIF
+      ELSE
+         zh_vfClose( hFile )
+      ENDIF
+
+      RETURN xValue
+   ELSE
+      oError := ErrorNew()
+
+      oError:severity    := ES_ERROR
+      oError:genCode     := EG_ARG
+      oError:subSystem   := "BASE"
+      oError:subCode     := 2007
+      oError:canRetry    := .F.
+      oError:canDefault  := .F.
+      oError:Args        := zh_AParams()
+      oError:operation   := ProcName()
+
+      Eval( ErrorBlock(), oError )
+   ENDIF
+
+   RETURN NIL

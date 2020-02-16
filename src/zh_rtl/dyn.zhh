@@ -1,0 +1,100 @@
+/*
+ * Dynamic call (high-level header)
+ *
+ * Copyright 2010 Viktor Szakats
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+/* NOTE: This file is also used by C code. */
+
+#ifndef HBDYN_ZH_
+#define HBDYN_ZH_
+
+/* C calling conventions */
+#define ZH_DYN_CALLCONV_CDECL               0x0000000  /* C default */
+#define ZH_DYN_CALLCONV_STDCALL             0x0100000  /* Windows API default */
+#define ZH_DYN_CALLCONV_SYSCALL             0x0200000  /* OS/2 32-bit default */
+
+/* String encodings */
+#define ZH_DYN_ENC_ASCII                    0x0000000
+#define ZH_DYN_ENC_UTF8                     0x0010000
+#define ZH_DYN_ENC_UTF16                    0x0020000
+#define ZH_DYN_ENC_RAW                      0x0040000
+
+/* Misc options */
+#define ZH_DYC_OPT_NONE                     0x0000000
+#define ZH_DYC_OPT_NULLTERM                 0x1000000
+
+/* C types */
+#define ZH_DYN_CTYPE_DEFAULT                0x0000000
+#define ZH_DYN_CTYPE_CHAR                   0x0000001
+#define ZH_DYN_CTYPE_CHAR_UNSIGNED          0x0000011
+#define ZH_DYN_CTYPE_CHAR_PTR               0x0000101
+#define ZH_DYN_CTYPE_CHAR_UNSIGNED_PTR      0x0000111
+#define ZH_DYN_CTYPE_SHORT                  0x0000002
+#define ZH_DYN_CTYPE_SHORT_UNSIGNED         0x0000012
+#define ZH_DYN_CTYPE_SHORT_PTR              0x0000102
+#define ZH_DYN_CTYPE_SHORT_UNSIGNED_PTR     0x0000112
+#define ZH_DYN_CTYPE_INT                    0x0000003
+#define ZH_DYN_CTYPE_INT_UNSIGNED           0x0000013
+#define ZH_DYN_CTYPE_INT_PTR                0x0000103
+#define ZH_DYN_CTYPE_INT_UNSIGNED_PTR       0x0000113
+#define ZH_DYN_CTYPE_LONG                   0x0000004
+#define ZH_DYN_CTYPE_LONG_UNSIGNED          0x0000014
+#define ZH_DYN_CTYPE_LONG_PTR               0x0000104
+#define ZH_DYN_CTYPE_LONG_UNSIGNED_PTR      0x0000114
+#define ZH_DYN_CTYPE_LLONG                  0x0000005
+#define ZH_DYN_CTYPE_LLONG_UNSIGNED         0x0000015
+#define ZH_DYN_CTYPE_LLONG_PTR              0x0000105
+#define ZH_DYN_CTYPE_LLONG_UNSIGNED_PTR     0x0000115
+#define ZH_DYN_CTYPE_FLOAT                  0x0000006
+#define ZH_DYN_CTYPE_FLOAT_PTR              0x0000106
+#define ZH_DYN_CTYPE_DOUBLE                 0x0000007
+#define ZH_DYN_CTYPE_DOUBLE_PTR             0x0000107
+#define ZH_DYN_CTYPE_BOOL                   0x0000008
+#define ZH_DYN_CTYPE_BOOL_PTR               0x0000108
+#define ZH_DYN_CTYPE_VOID                   0x0000009
+#define ZH_DYN_CTYPE_VOID_PTR               0x0000109
+#define ZH_DYN_CTYPE_STRUCTURE              0x000000A
+#define ZH_DYN_CTYPE_STRUCTURE_PTR          0x000010A
+
+#endif /* HBDYN_ZH_ */

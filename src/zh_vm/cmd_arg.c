@@ -65,9 +65,7 @@ static int     s_argc = 0;
 static char ** s_argv = NULL;
 
 #if ! defined( ZH_OS_WIN )
-
-static char    s_szAppName[ ZH_PATH_MAX ];
-
+   static char    s_szAppName[ ZH_PATH_MAX ];
 #else
 
 #include "hbwinuni.h"
@@ -817,8 +815,7 @@ ZH_FUNC( ZH_CMDLINE )
 /* Check for command-line internal arguments */
 void zh_cmdargProcess( void )
 {
-   int iHandles;
-
+   
    if( zh_cmdargCheck( "INFO" ) )
    {
       {
@@ -846,52 +843,7 @@ void zh_cmdargProcess( void )
    if( zh_cmdargCheck( "BUILD" ) )
       zh_verBuildInfoCB( zh_conOutErr );
 
-   iHandles = zh_cmdargNum( "F" );
-   if( iHandles > 20 )
-   {
-      #if defined( __WATCOMC__ )
-         #if defined( ZH_OS_OS2 )
-            DosSetMaxFH( iHandles );
-         #elif defined( ZH_OS_DOS )
-            _grow_handles( iHandles );
-         #endif
-      #endif
-   }
-   else if( iHandles < 0 )
-   {
-      #if defined( __WATCOMC__ )
-         #if defined( ZH_OS_OS2 )
-            DosSetMaxFH( 256 );
-         #endif
-      #endif
-   }
+   
 }
 
 
-/* Last commit string */
-const char * zh_verCommitInfo( void )
-{
-   return ZH_VER_COMMIT_INFO;
-}
-
-
-
-/* build time Ziher platform setting */
-const char * zh_verZH_PLAT( void )
-{
-#ifdef ZH_PLATFORM
-   return ZH_PLATFORM;
-#else
-   return "";
-#endif
-}
-
-/* build time Ziher compiler setting */
-const char * zh_verZH_COMP( void )
-{
-#ifdef ZH_COMPILER
-   return ZH_COMPILER;
-#else
-   return "";
-#endif
-}

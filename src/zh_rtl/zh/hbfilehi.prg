@@ -1,0 +1,346 @@
+/*
+ * High-level portable file functions.
+ *
+ * Copyright 2009-2017 Viktor Szakats
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#define _ISDRIVESPEC( cDir )  ( ! zh_osDriveSeparator() == "" .AND. Right( cDir, Len( zh_osDriveSeparator() ) ) == zh_osDriveSeparator() )
+
+/* NOTE: Can hurt if there are symlinks on the way. */
+FUNCTION zh_PathNormalize( cPath )
+
+   LOCAL aDir
+   LOCAL cDir
+
+   IF ! ZH_ISSTRING( cPath )
+      RETURN ""
+   ENDIF
+
+   IF ! cPath == ""
+
+      aDir := zh_ATokens( cPath, zh_ps() )
+
+      FOR EACH cDir IN aDir DESCEND
+
+         IF cDir == "." .OR. ;
+            ( cDir == "" .AND. ;
+            ! cDir:__enumIsLast() .AND. ;
+            ( cDir:__enumIndex() > 2 .OR. ;
+            ( cDir:__enumIndex() == 2 .AND. ! aDir[ 1 ] == "" ) ) )
+
+            zh_ADel( aDir, cDir:__enumIndex(), .T. )
+
+         ELSEIF ! cDir == ".." .AND. ;
+            ! cDir == "" .AND. ;
+            ! _ISDRIVESPEC( cDir )
+
+            IF ! cDir:__enumIsLast() .AND. ;
+               aDir[ cDir:__enumIndex() + 1 ] == ".."
+               zh_ADel( aDir, cDir:__enumIndex() + 1, .T. )
+               zh_ADel( aDir, cDir:__enumIndex(), .T. )
+            ENDIF
+         ENDIF
+      NEXT
+
+      cPath := ""
+      FOR EACH cDir IN aDir
+         cPath += cDir
+         IF ! cDir:__enumIsLast()
+            cPath += zh_ps()
+         ENDIF
+      NEXT
+
+      IF cPath == ""
+         cPath := "." + zh_ps()
+      ENDIF
+   ENDIF
+
+   RETURN cPath
+
+FUNCTION zh_PathJoin( cPathA, cPathR )
+
+   LOCAL cDirA
+   LOCAL cDirR, cDriveR, cNameR, cExtR
+
+   IF ! ZH_ISSTRING( cPathR )
+      RETURN ""
+   ENDIF
+
+   IF ! ZH_ISSTRING( cPathA ) .OR. cPathA == ""
+      RETURN cPathR
+   ENDIF
+
+   zh_FNameSplit( cPathR, @cDirR, @cNameR, @cExtR, @cDriveR )
+
+   IF ! cDriveR == "" .OR. ( ! cDirR == "" .AND. Left( cDirR, 1 ) $ zh_osPathDelimiters() )
+      RETURN cPathR
+   ENDIF
+
+   IF ( cDirA := zh_FNameDir( cPathA ) ) == ""
+      RETURN cPathR
+   ENDIF
+
+   RETURN zh_FNameMerge( cDirA + cDirR, cNameR, cExtR )
+
+FUNCTION zh_PathRelativize( cPathBase, cPathTarget, lForceRelative )
+
+   LOCAL tmp
+
+   LOCAL aPathBase
+   LOCAL aPathTarget
+
+   LOCAL cTestBase
+   LOCAL cTestTarget
+
+   LOCAL cTargetFileName
+
+   IF ! ZH_ISSTRING( cPathBase ) .OR. ! ZH_ISSTRING( cPathTarget )
+      RETURN ""
+   ENDIF
+
+   cPathBase   := zh_PathJoin( zh_DirBase(), zh_DirSepAdd( cPathBase ) )
+   cPathTarget := zh_PathJoin( zh_DirBase(), cPathTarget )
+
+   /* TODO: Optimize to operate on strings instead of arrays */
+
+   aPathBase   := s_FN_ToArray( cPathBase )
+   aPathTarget := s_FN_ToArray( cPathTarget, @cTargetFileName )
+
+   tmp := 1
+   cTestBase := ""
+   cTestTarget := ""
+   DO WHILE tmp <= Len( aPathTarget ) .AND. tmp <= Len( aPathBase )
+      cTestBase   += aPathBase[ tmp ]
+      cTestTarget += aPathTarget[ tmp ]
+      IF ! zh_FileMatch( cTestBase, cTestTarget )
+         EXIT
+      ENDIF
+      ++tmp
+   ENDDO
+
+   IF tmp > Len( aPathTarget ) .AND. tmp > Len( aPathBase )
+      tmp--
+   ENDIF
+
+   IF tmp == Len( aPathBase )
+      RETURN s_FN_FromArray( aPathTarget, tmp, cTargetFileName, "" )
+   ENDIF
+
+   /* Different drive spec. There is no way to solve that using relative dirs. */
+   IF ! zh_osDriveSeparator() == "" .AND. ;
+      tmp == 1 .AND. ( ;
+      Right( aPathBase[ 1 ]  , Len( zh_osDriveSeparator() ) ) == zh_osDriveSeparator() .OR. ;
+      Right( aPathTarget[ 1 ], Len( zh_osDriveSeparator() ) ) == zh_osDriveSeparator() )
+      RETURN cPathTarget
+   ENDIF
+
+   /* Force to return relative paths even when base is different. */
+   IF zh_defaultValue( lForceRelative, .T. ) .AND. ;
+      zh_vfDirExists( cPathBase + ( cTestTarget := s_FN_FromArray( aPathTarget, tmp, cTargetFileName, Replicate( ".." + zh_ps(), Len( aPathBase ) - tmp ) ) ) )
+      RETURN cTestTarget
+   ENDIF
+
+   RETURN cPathTarget
+
+STATIC FUNCTION s_FN_ToArray( cPath, /* @ */ cFileName  )
+
+   LOCAL cDir, cName, cExt
+
+   zh_FNameSplit( cPath, @cDir, @cName, @cExt )
+
+   IF ! cName == "" .OR. ! cExt == ""
+      cFileName := cName + cExt
+   ENDIF
+
+   RETURN zh_ATokens( cDir, zh_ps() )
+
+STATIC FUNCTION s_FN_FromArray( aPath, nFrom, cFileName, cDirPrefix )
+
+   LOCAL nTo := Len( aPath )
+   LOCAL cDir
+   LOCAL tmp
+
+   IF nFrom > Len( aPath ) .OR. nTo < 1
+      RETURN ""
+   ENDIF
+
+   IF nFrom < 1
+      nFrom := 1
+   ENDIF
+
+   cDir := ""
+   FOR tmp := nFrom TO nTo
+      cDir += aPath[ tmp ]
+      IF nFrom < nTo
+         cDir += zh_ps()
+      ENDIF
+   NEXT
+
+   RETURN zh_FNameMerge( zh_DirSepDel( zh_DirSepAdd( cDirPrefix ) + cDir ), cFileName )
+
+FUNCTION zh_DirSepAdd( cDir )
+
+   IF ! ZH_ISSTRING( cDir )
+      RETURN ""
+   ENDIF
+
+   IF ! cDir == "" .AND. ;
+      ! _ISDRIVESPEC( cDir ) .AND. ;
+      ! Right( cDir, 1 ) == zh_ps()
+
+      cDir += zh_ps()
+   ENDIF
+
+   RETURN cDir
+
+FUNCTION zh_DirSepDel( cDir )
+
+   IF ! ZH_ISSTRING( cDir )
+      RETURN ""
+   ENDIF
+
+   IF zh_osDriveSeparator() == ""
+      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == zh_ps() .AND. ;
+         ! cDir == zh_ps() + zh_ps()
+
+         cDir := zh_StrShrink( cDir )
+      ENDDO
+   ELSE
+      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == zh_ps() .AND. ;
+         ! cDir == zh_ps() + zh_ps() .AND. ;
+         ! Right( cDir, Len( zh_osDriveSeparator() ) + 1 ) == zh_osDriveSeparator() + zh_ps()
+
+         cDir := zh_StrShrink( cDir )
+      ENDDO
+   ENDIF
+
+   RETURN cDir
+
+FUNCTION zh_DirSepToOS( cFileName )
+
+   IF ZH_ISSTRING( cFileName )
+      RETURN StrTran( cFileName, iif( zh_ps() == "\", "/", "\" ), zh_ps() )
+   ENDIF
+
+   RETURN ""
+
+FUNCTION zh_DirBuild( cDir )
+
+   LOCAL cDirTemp
+   LOCAL cDirItem
+   LOCAL tmp
+
+   IF ! ZH_ISSTRING( cDir )
+      RETURN .F.
+   ENDIF
+
+   cDir := zh_PathNormalize( cDir )
+
+   IF ! zh_vfDirExists( cDir )
+
+      cDir := zh_DirSepAdd( cDir )
+
+      IF ! zh_osDriveSeparator() == "" .AND. ;
+         ( tmp := At( zh_osDriveSeparator(), cDir ) ) > 0
+         cDirTemp := Left( cDir, tmp )
+         cDir := SubStr( cDir, tmp + 1 )
+      ELSEIF Left( cDir, 1 ) == zh_ps()
+         cDirTemp := Left( cDir, 1 )
+         cDir := SubStr( cDir, 2 )
+      ELSE
+         cDirTemp := ""
+      ENDIF
+
+      FOR EACH cDirItem IN zh_ATokens( cDir, zh_ps() )
+         IF ! Right( cDirTemp, 1 ) == zh_ps() .AND. ! cDirTemp == ""
+            cDirTemp += zh_ps()
+         ENDIF
+         IF ! cDirItem == ""  /* Skip root path, if any */
+            cDirTemp += cDirItem
+            IF zh_vfExists( cDirTemp )
+               RETURN .F.
+            ELSEIF ! zh_vfDirExists( cDirTemp )
+               IF zh_vfDirMake( cDirTemp ) != 0
+                  RETURN .F.
+               ENDIF
+            ENDIF
+         ENDIF
+      NEXT
+   ENDIF
+
+   RETURN .T.
+
+FUNCTION zh_DirUnbuild( cDir )
+
+   LOCAL tmp
+
+   IF ! ZH_ISSTRING( cDir )
+      RETURN .F.
+   ENDIF
+
+   IF zh_vfDirExists( cDir )
+
+      cDir := zh_DirSepDel( cDir )
+
+      DO WHILE ! cDir == ""
+         IF zh_vfDirExists( cDir ) .AND. ;
+            zh_vfDirRemove( cDir ) != 0
+            RETURN .F.
+         ENDIF
+         IF ( tmp := RAt( zh_ps(), cDir ) ) == 0  /* FIXME: use zh_URAt() function */
+            EXIT
+         ENDIF
+         cDir := Left( cDir, tmp - 1 )
+         IF ! zh_osDriveSeparator() == "" .AND. ;
+            Right( cDir, Len( zh_osDriveSeparator() ) ) == zh_osDriveSeparator()
+            EXIT
+         ENDIF
+      ENDDO
+   ENDIF
+
+   RETURN .T.
+
+FUNCTION zh_FNameExists( cName )
+   RETURN ;
+      zh_vfExists( cName ) .OR. ;
+      zh_vfDirExists( cName )

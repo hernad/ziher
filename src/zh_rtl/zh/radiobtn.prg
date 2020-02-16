@@ -1,0 +1,345 @@
+/*
+ * RadioButton class
+ *
+ * Copyright 2000 Luiz Rafael Culik <culik@sl.conex.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#pragma -gc0
+
+#include "hbclass.ch"
+
+#include "button.ch"
+#include "color.ch"
+
+CREATE CLASS RadioButtn FUNCTION HBRadioButton
+
+   EXPORTED:
+
+   VAR cargo                                 /* NOTE: CA-Cl*pper 5.3 has a bug, where this var is filled with NIL every time its value is read ( cargo := o:cargo ). */
+
+   METHOD display()
+   METHOD hitTest( nMRow, nMCol )
+   METHOD isAccel( xKey )
+   METHOD killFocus()
+   METHOD select( lState )
+   METHOD setFocus()
+
+   METHOD bitmaps( aBitmaps ) SETGET
+   METHOD buffer() SETGET
+   METHOD data( cData ) SETGET               /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
+   METHOD capCol( nCapCol ) SETGET
+   METHOD capRow( nCapRow ) SETGET
+   METHOD caption( cCaption ) SETGET
+   METHOD col( nCol ) SETGET
+   METHOD colorSpec( cColorSpec ) SETGET
+   METHOD fBlock( bFBlock ) SETGET
+   METHOD hasFocus() SETGET
+   METHOD row( nRow ) SETGET
+   METHOD sBlock( bSBlock ) SETGET
+   METHOD style( cStyle ) SETGET
+
+   METHOD New( nRow, nCol, cCaption, cData )  /* NOTE: This method is a Ziher extension [vszakats] */
+
+   PROTECTED:
+
+   VAR aBitmaps   INIT { "radio_f.bmu", "radio_e.bmu" }
+   VAR lBuffer    INIT .F.
+   VAR cData
+   VAR nCapCol
+   VAR nCapRow
+   VAR cCaption
+   VAR nCol
+   VAR cColorSpec
+   VAR bFBlock
+   VAR lHasFocus  INIT .F.
+   VAR nRow
+   VAR bSBlock
+   VAR cStyle     INIT "(* )"
+
+ENDCLASS
+
+METHOD setFocus() CLASS RadioButtn
+
+   IF ! ::lHasFocus
+      ::lHasFocus := .T.
+      ::display()
+
+      IF ZH_ISEVALITEM( ::bFBlock )
+         Eval( ::bFBlock )
+      ENDIF
+   ENDIF
+
+   RETURN Self
+
+METHOD select( lState ) CLASS RadioButtn
+
+   LOCAL lOldState := ::lBuffer
+
+   ::lBuffer := iif( ZH_ISLOGICAL( lState ), lState, ! ::lBuffer )
+
+   IF lOldState != ::lBuffer .AND. ;
+      ZH_ISEVALITEM( ::bSBlock )
+
+      Eval( ::bSBlock )
+   ENDIF
+
+   RETURN Self
+
+METHOD killFocus() CLASS RadioButtn
+
+   IF ::lHasFocus
+      ::lHasFocus := .F.
+
+      IF ZH_ISEVALITEM( ::bFBlock )
+         Eval( ::bFBlock )
+      ENDIF
+
+      ::display()
+   ENDIF
+
+   RETURN Self
+
+METHOD display() CLASS RadioButtn
+
+   LOCAL cColor
+   LOCAL cStyle := ::cStyle
+   LOCAL nPos
+   LOCAL cOldCaption
+
+   DispBegin()
+
+   cColor := iif( ::lBuffer, zh_ColorIndex( ::cColorSpec, 3 ), zh_ColorIndex( ::cColorSpec, 1 ) )
+   zh_DispOutAt( ::nRow, ::nCol, zh_ULeft( cStyle, 1 ) + ;
+      iif( ::lBuffer, zh_USubStr( cStyle, 2, 1 ), zh_USubStr( cStyle, 3, 1 ) ) + ;
+      zh_URight( cStyle, 1 ), cColor )
+
+   IF ! Empty( cOldCaption := ::cCaption )
+
+      IF ( nPos := zh_UAt( "&", cOldCaption ) ) == 0
+      ELSEIF nPos == zh_ULen( cOldCaption )
+         nPos := 0
+      ELSE
+         cOldCaption := zh_UStuff( cOldCaption, nPos, 1, "" )
+      ENDIF
+
+      zh_DispOutAt( ::nCapRow, ::nCapCol, cOldCaption, zh_ColorIndex( ::cColorSpec, 4 ) )
+
+      IF nPos != 0
+         zh_DispOutAt( ::nCapRow, ::nCapCol + nPos - 1, zh_USubStr( cOldCaption, nPos, 1 ), iif( ::lHasfocus, zh_ColorIndex( ::cColorSpec, 6 ), zh_ColorIndex( ::cColorSpec, 5 ) ) )
+      ENDIF
+   ENDIF
+
+   DispEnd()
+
+   RETURN Self
+
+METHOD isAccel( xKey ) CLASS RadioButtn
+
+   LOCAL cKey
+
+   DO CASE
+   CASE ZH_ISSTRING( xKey )
+      cKey := xKey
+   CASE ZH_ISNUMERIC( xKey )
+      cKey := zh_keyChar( xKey )
+   OTHERWISE
+      RETURN .F.
+   ENDCASE
+
+   RETURN ! cKey == "" .AND. zh_AtI( "&" + cKey, ::cCaption ) > 0  /* FIXME: Use zh_UAtI() */
+
+METHOD hitTest( nMRow, nMCol ) CLASS RadioButtn
+
+   LOCAL nPos
+   LOCAL nLen
+
+   IF nMRow == ::Row .AND. ;
+      nMCol >= ::Col .AND. ;
+      nMCol < ::Col + 3
+      RETURN HTCLIENT
+   ENDIF
+
+   nLen := zh_ULen( ::cCaption )
+
+   IF ( nPos := zh_UAt( "&", ::cCaption ) ) == 0 .AND. nPos < nLen
+      nLen--
+   ENDIF
+
+   IF nMRow == ::CapRow .AND. ;
+      nMCol >= ::CapCol .AND. ;
+      nMCol < ::CapCol + nLen
+      RETURN HTCLIENT
+   ENDIF
+
+   RETURN HTNOWHERE
+
+METHOD bitmaps( aBitmaps ) CLASS RadioButtn
+
+   IF aBitmaps != NIL
+      ::aBitmaps := checkVariableTypeAndValidBlock( Self, "BITMAPS", aBitmaps, "A", 1001, {|| Len( aBitmaps ) == 2 } )
+   ENDIF
+
+   RETURN ::aBitmaps
+
+METHOD buffer() CLASS RadioButtn
+   RETURN ::lBuffer
+
+METHOD data( cData ) CLASS RadioButtn
+
+   IF PCount() > 0
+      ::cData := iif( cData == NIL, NIL, checkVariableTypeAndValidBlock( Self, "DATA", cData, "C", 1001 ) )
+   ENDIF
+
+   RETURN iif( ::cData == NIL, __Caption( ::Caption ), ::cData )
+
+METHOD capCol( nCapCol ) CLASS RadioButtn
+
+   IF nCapCol != NIL
+      ::nCapCol := checkVariableTypeAndValidBlock( Self, "CAPCOL", nCapCol, "N", 1001 )
+   ENDIF
+
+   RETURN ::nCapCol
+
+METHOD capRow( nCapRow ) CLASS RadioButtn
+
+   IF nCapRow != NIL
+      ::nCapRow := checkVariableTypeAndValidBlock( Self, "CAPROW", nCapRow, "N", 1001 )
+   ENDIF
+
+   RETURN ::nCapRow
+
+METHOD caption( cCaption ) CLASS RadioButtn
+
+   IF cCaption != NIL
+      ::cCaption := checkVariableTypeAndValidBlock( Self, "CAPTION", cCaption, "C", 1001 )
+   ENDIF
+
+   RETURN ::cCaption
+
+METHOD col( nCol ) CLASS RadioButtn
+
+   IF nCol != NIL
+      ::nCol := checkVariableTypeAndValidBlock( Self, "COL", nCol, "N", 1001 )
+   ENDIF
+
+   RETURN ::nCol
+
+METHOD colorSpec( cColorSpec ) CLASS RadioButtn
+
+   IF cColorSpec != NIL
+      ::cColorSpec := checkVariableTypeAndValidBlock( Self, "COLORSPEC", cColorSpec, "C", 1001, ;
+         {|| ! Empty( zh_ColorIndex( cColorSpec, 6 ) ) .AND. Empty( zh_ColorIndex( cColorSpec, 7 ) ) } )
+   ENDIF
+
+   RETURN ::cColorSpec
+
+METHOD fBlock( bFBlock ) CLASS RadioButtn
+
+   IF PCount() > 0
+      ::bFBlock := iif( bFBlock == NIL, NIL, checkVariableTypeAndValidBlock( Self, "FBLOCK", bFBlock, "B", 1001 ) )
+   ENDIF
+
+   RETURN ::bFBlock
+
+METHOD hasFocus() CLASS RadioButtn
+   RETURN ::lHasFocus
+
+METHOD row( nRow ) CLASS RadioButtn
+
+   IF nRow != NIL
+      ::nRow := checkVariableTypeAndValidBlock( Self, "ROW", nRow, "N", 1001 )
+   ENDIF
+
+   RETURN ::nRow
+
+METHOD sBlock( bSBlock ) CLASS RadioButtn
+
+   IF PCount() > 0
+      ::bSBlock := iif( bSBlock == NIL, NIL, checkVariableTypeAndValidBlock( Self, "SBLOCK", bSBlock, "B", 1001 ) )
+   ENDIF
+
+   RETURN ::bSBlock
+
+METHOD style( cStyle ) CLASS RadioButtn
+
+   IF cStyle != NIL
+      ::cStyle := checkVariableTypeAndValidBlock( Self, "STYLE", cStyle, "C", 1001, {|| cStyle == "" .OR. zh_ULen( cStyle ) == 4 } )
+   ENDIF
+
+   RETURN ::cStyle
+
+METHOD New( nRow, nCol, cCaption, cData ) CLASS RadioButtn
+
+   LOCAL cColor
+
+   IF ! ZH_ISNUMERIC( nRow ) .OR. ;
+      ! ZH_ISNUMERIC( nCol )
+      RETURN NIL
+   ENDIF
+
+   ::nCapRow  := nRow
+   ::nCapCol  := nCol + 3 + 1
+   ::cCaption := zh_defaultValue( cCaption, "" )
+   ::nCol     := nCol
+   ::nRow     := nRow
+   ::cData    := cData  /* NOTE: Every type is allowed here to be fully compatible */
+
+   IF IsDefColor()
+      ::cColorSpec := "W/N,W+/N,W+/N,N/W,W/N,W/N,W+/N"
+   ELSE
+      cColor := SetColor()
+      ::cColorSpec := ;
+         zh_ColorIndex( cColor, CLR_UNSELECTED ) + "," + ;
+         zh_ColorIndex( cColor, CLR_UNSELECTED ) + "," + ;
+         zh_ColorIndex( cColor, CLR_ENHANCED   ) + "," + ;
+         zh_ColorIndex( cColor, CLR_ENHANCED   ) + "," + ;
+         zh_ColorIndex( cColor, CLR_STANDARD   ) + "," + ;
+         zh_ColorIndex( cColor, CLR_STANDARD   ) + "," + ;
+         zh_ColorIndex( cColor, CLR_BACKGROUND )
+   ENDIF
+
+   RETURN Self
+
+FUNCTION RadioButto( nRow, nCol, cCaption, cData ) /* NOTE: cData argument is undocumented */
+   RETURN HBRadioButton():New( nRow, nCol, cCaption, cData )
+

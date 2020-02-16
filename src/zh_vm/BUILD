@@ -7,4 +7,5 @@ cc_library(
     alwayslink = 1,
     deps = [ "//zh_zero:zh_zero" ],
     visibility = ["//visibility:public"],
+    includes = ["."],
 )

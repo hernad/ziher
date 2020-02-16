@@ -1,0 +1,119 @@
+/*
+ * CMonth(), CDoW(), zh_CDay() functions
+ *
+ * Copyright 2014 Viktor Szakats (zh_CDay())
+ * Copyright 1999 Jose Lalin <dezac@corevia.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#include "zh_api.h"
+#include "zh_item_api.h"
+#include "zh_api_error.h"
+#include "zh_lang_api.h"
+#include "zh_date.h"
+
+#if defined( __CODEGUARD__ )
+   static const char s_nullStr[ 4 ] = { 0 };
+#else
+   #define s_nullStr     ""
+#endif
+
+const char * zh_dateCMonth( int iMonth )
+{
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dateCMonth(%d)", iMonth ) );
+
+   return ( iMonth >= 1 && iMonth <= 12 ) ? zh_langDGetItem( ZH_LANG_ITEM_BASE_MONTH + iMonth - 1 ) : s_nullStr;
+}
+
+const char * zh_dateCDOW( int iDay )
+{
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dateCDOW(%d)", iDay ) );
+
+   return ( iDay >= 1 && iDay <= 7 ) ? zh_langDGetItem( ZH_LANG_ITEM_BASE_DAY + iDay - 1 ) : s_nullStr;
+}
+
+ZH_FUNC( CMONTH )
+{
+   PZH_ITEM pDate = zh_param( 1, ZH_IT_DATETIME );
+
+   if( pDate )
+   {
+      int iYear, iMonth, iDay;
+
+      zh_dateDecode( zh_itemGetDL( pDate ), &iYear, &iMonth, &iDay );
+      zh_retc_const( zh_dateCMonth( iMonth ) );
+   }
+   else
+      zh_errRT_BASE_SubstR( EG_ARG, 1116, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
+}
+
+ZH_FUNC( CDOW )
+{
+   PZH_ITEM pDate = zh_param( 1, ZH_IT_DATETIME );
+
+   if( pDate )
+   {
+      long lDate = zh_itemGetDL( pDate );
+
+      if( lDate )
+      {
+         int iYear, iMonth, iDay;
+
+         zh_dateDecode( lDate, &iYear, &iMonth, &iDay );
+         zh_retc_const( zh_dateCDOW( zh_dateDOW( iYear, iMonth, iDay ) ) );
+      }
+      else
+         zh_retc_null();
+   }
+   else
+      zh_errRT_BASE_SubstR( EG_ARG, 1117, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
+}
+
+ZH_FUNC( ZH_CDAY )
+{
+   PZH_ITEM pDay = zh_param( 1, ZH_IT_NUMERIC );
+
+   if( pDay )
+      zh_retc_const( zh_dateCDOW( zh_itemGetNI( pDay ) ) );
+   else
+      zh_errRT_BASE_SubstR( EG_ARG, 1117, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
+}

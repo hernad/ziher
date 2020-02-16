@@ -1,0 +1,148 @@
+/*
+ * Alert(), zh_Alert() functions
+ *
+ * Released to Public Domain by Vladimir Kazimirchik <v_kazimirchik@yahoo.com>
+ * Further modifications 1999-2017 Viktor Szakats
+ *    Changes for higher Clipper compatibility, console mode, extensions, __NoNoAlert()
+ *
+ */
+
+#include "box.ch"
+#include "color.ch"
+#include "inkey.zhh"
+#include "setcurs.ch"
+#include "hbgtinfo.ch"
+
+/* FIXME: Clipper defines a clipped window for Alert() [vszakats] */
+
+/* NOTE: Clipper will return NIL if the first parameter is not a string, but
+         this is not documented. [vszakats] */
+
+/* NOTE: Clipper handles these buttons { "Ok", "", "Cancel" } in a buggy way.
+         This is fixed. [vszakats] */
+
+STATIC s_lNoAlert
+
+FUNCTION Alert( cMessage, aOptions, xColorNorm )
+
+   LOCAL xColorHigh
+   LOCAL aOptionsOK
+   LOCAL cOption
+   LOCAL nPos
+
+   IF s_lNoAlert == NIL
+      s_lNoAlert := zh_argCheck( "NOALERT" )
+   ENDIF
+
+   IF s_lNoAlert
+      RETURN NIL
+   ENDIF
+
+
+   IF ! ZH_ISSTRING( cMessage )
+      RETURN NIL
+   ENDIF
+
+   cMessage := StrTran( cMessage, ";", Chr( 10 ) )
+
+   IF ZH_ISSTRING( xColorNorm ) .AND. ! Empty( xColorNorm )
+      xColorNorm := zh_ColorIndex( xColorNorm, CLR_STANDARD )
+      xColorHigh := zh_StrReplace( ;
+         iif( ( nPos := zh_BAt( "/", xColorNorm ) ) > 0, ;
+            zh_BSubStr( xColorNorm, nPos + 1 ) + "/" + zh_BLeft( xColorNorm, nPos - 1 ), ;
+            "N/" + xColorNorm ), "+*" )
+   ELSE
+      xColorNorm := 0x4f  // first pair color (Box line and Text)
+      xColorHigh := 0x1f  // second pair color (Options buttons)
+   ENDIF
+
+   aOptionsOK := {}
+   FOR EACH cOption IN zh_defaultValue( aOptions, {} )
+      IF ZH_ISSTRING( cOption ) .AND. ! Empty( cOption )
+         AAdd( aOptionsOK, cOption )
+      ENDIF
+   NEXT
+
+   DO CASE
+   CASE Len( aOptionsOK ) == 0
+      aOptionsOK := { "Ok" }
+
+   ENDCASE
+
+   RETURN zh_gtAlert( cMessage, aOptionsOK, xColorNorm, xColorHigh )
+
+/* NOTE: xMessage can be of any type, xColorNorm can be numeric.
+         These are Ziher extensions over Alert(). */
+/* NOTE: nDelay parameter is a Ziher extension over Alert(). */
+
+FUNCTION zh_Alert( xMessage, aOptions, xColorNorm, nDelay )
+
+   LOCAL cMessage
+   LOCAL xColorHigh
+   LOCAL aOptionsOK
+   LOCAL cString
+   LOCAL nPos
+
+   IF s_lNoAlert == NIL
+      s_lNoAlert := zh_argCheck( "NOALERT" )
+   ENDIF
+
+   IF s_lNoAlert
+      RETURN NIL
+   ENDIF
+
+
+   IF PCount() == 0
+      RETURN NIL
+   ENDIF
+
+   DO CASE
+   CASE ZH_ISARRAY( xMessage )
+      cMessage := ""
+      FOR EACH cString IN xMessage
+         cMessage += iif( cString:__enumIsFirst(), "", Chr( 10 ) ) + zh_CStr( cString )
+      NEXT
+   CASE ZH_ISSTRING( xMessage )
+      cMessage := StrTran( xMessage, ";", Chr( 10 ) )
+   OTHERWISE
+      cMessage := zh_CStr( xMessage )
+   ENDCASE
+
+   IF ZH_ISSTRING( xColorNorm ) .AND. ! Empty( xColorNorm )
+      xColorNorm := zh_ColorIndex( xColorNorm, CLR_STANDARD )
+      xColorHigh := zh_StrReplace( ;
+         iif( ( nPos := zh_BAt( "/", xColorNorm ) ) > 0, ;
+            zh_BSubStr( xColorNorm, nPos + 1 ) + "/" + zh_BLeft( xColorNorm, nPos - 1 ), ;
+            "N/" + xColorNorm ), "+*" )
+   ELSEIF ZH_ISNUMERIC( xColorNorm )
+      xColorNorm := zh_bitAnd( xColorNorm, 0xff )
+      xColorHigh := zh_bitAnd( ;
+         zh_bitOr( ;
+            zh_bitShift( xColorNorm, -4 ), ;
+            zh_bitShift( xColorNorm,  4 ) ), 0x77 )
+   ELSE
+      xColorNorm := 0x4f  // first pair color (Box line and Text)
+      xColorHigh := 0x1f  // second pair color (Options buttons)
+   ENDIF
+
+   aOptionsOK := {}
+   FOR EACH cString IN zh_defaultValue( aOptions, {} )
+      IF ZH_ISSTRING( cString ) .AND. ! cString == ""
+         AAdd( aOptionsOK, cString )
+      ENDIF
+   NEXT
+
+   DO CASE
+   CASE Len( aOptionsOK ) == 0
+      aOptionsOK := { "Ok" }
+   ENDCASE
+
+   RETURN zh_gtAlert( cMessage, aOptionsOK, xColorNorm, xColorHigh, nDelay )
+
+
+PROCEDURE __NoNoAlert()
+
+   s_lNoAlert := .F.
+
+   RETURN
+
