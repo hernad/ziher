@@ -463,7 +463,7 @@ static void zh_writeEndInit( ZH_COMP_DECL, FILE * yyc, const char * szModulname,
             "   #pragma startup zh_vm_SymbolInit_%s\n"
             "#elif defined( ZH_DATASEG_STARTUP )\n"
             "   #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( zh_vm_SymbolInit_%s )\n"
-            "   #include \"hbiniseg.h\"\n"
+            "   #include \"zh_ini_seg.h\"\n"
             "#endif\n",
             szModulname, szModulname );
 }

@@ -8267,5 +8267,5 @@ ZH_CALL_ON_STARTUP_END( _zh_dbfnsx_rdd_init_ )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( dbfnsx1__InitSymbols ) \
                               ZH_DATASEG_FUNC( _zh_dbfnsx_rdd_init_ )
-   #include "hbiniseg.h"
+   #include "zh_ini_seg.h"
 #endif

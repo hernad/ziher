@@ -48,7 +48,7 @@
 
 #include "memvar.zhh"
 #include "error.zhh"
-#include "fileio.ch"
+#include "fileio.zhh"
 
 /*
  * 0xC0, 'H', 'B', 'V' followed two-byte version number in Little Endian order.

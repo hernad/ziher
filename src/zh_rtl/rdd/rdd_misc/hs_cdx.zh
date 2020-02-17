@@ -53,7 +53,7 @@
  */
 
 #include "db_info.zhh"
-#include "fileio.ch"
+#include "fileio.zhh"
 #include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 

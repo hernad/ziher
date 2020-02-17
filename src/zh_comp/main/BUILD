@@ -8,4 +8,5 @@ cc_binary(
         "//zh_comp:zh_comp",
         "//zh_pp:zh_pp"
     ],
+    visibility = ["//visibility:public"],
 )

@@ -10053,7 +10053,7 @@ ZH_CALL_ON_STARTUP_END( _zh_sixcdx_rdd_init_ )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_sixcdx1_InitSymbols_ ) \
                               ZH_DATASEG_FUNC( _zh_sixcdx_rdd_init_ )
-   #include "hbiniseg.h"
+   #include "zh_ini_seg.h"
 #endif
 
 #else
@@ -10075,7 +10075,7 @@ ZH_CALL_ON_STARTUP_END( _zh_dbfcdx_rdd_init_ )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_dbfcdx1_InitSymbols_ ) \
                               ZH_DATASEG_FUNC( _zh_dbfcdx_rdd_init_ )
-   #include "hbiniseg.h"
+   #include "zh_ini_seg.h"
 #endif
 
 #endif

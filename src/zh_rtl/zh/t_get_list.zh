@@ -48,7 +48,7 @@
 #include "class.zhh"
 
 #include "button.zhh"
-#include "getexit.ch"
+#include "get_exit.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
 #include "tbrowse.ch"

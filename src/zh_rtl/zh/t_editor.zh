@@ -53,7 +53,7 @@
 #include "button.zhh"
 #include "color.zhh"
 #include "error.zhh"
-#include "fileio.ch"
+#include "fileio.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
 

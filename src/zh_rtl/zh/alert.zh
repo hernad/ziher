@@ -9,7 +9,7 @@
 #include "color.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
-#include "hbgtinfo.ch"
+#include "gt_info.zhh"
 
 
 STATIC s_lNoAlert

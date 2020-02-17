@@ -45,7 +45,7 @@
  */
 
 #include "directory.zhh"
-#include "fileio.ch"
+#include "fileio.zhh"
 
 STATIC FUNCTION zh_doScan( cPath, cMask, cAttr, cPathSep )
 

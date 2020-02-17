@@ -71,7 +71,7 @@ void zh_compPrintUsage( ZH_COMP_DECL, const char * szSelf )
       "\n                                   3=generate real C code",
       "\n          -gh              output type: Ziher Portable Object (.zhb)",
       "\n          -gd[.<destext>]  generate dependencies list into (.d) file",
-      "\n          -ge[<mode>]      error output <mode>: 0=Clipper (default)",
+      "\n          -ge[<mode>]      error output <mode>: 0=pcode (default)",
       "\n                                                1=IDE friendly",
       "\n          -i<path>         #include file search path",
       "\n          -i[-|+]          disable/enable support for INCLUDE envvar",

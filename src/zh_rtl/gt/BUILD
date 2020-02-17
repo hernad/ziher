@@ -1,4 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:zh_comp.bzl", "zh_comp_all")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS")
 
 cc_library(
     name = "zh_rtl_gt",
@@ -30,3 +32,24 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+
+cc_library(
+    name = "zh_rtl_gt_zh",
+    srcs = [ ":zh_rtl_gt_zh_c" ],
+    hdrs = glob([
+        "*.zh",
+        "*.zhh",
+    ]),
+    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    visibility = ["//visibility:public"],
+)
+
+zh_comp_all(
+    name = "zh_rtl_gt_zh_c", 
+    srcs = glob([ 
+        "*.zh", 
+    ]),
+    args = ZH_COMP_OPTS,
+    deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
+    visibility = ["//visibility:public"],
+)

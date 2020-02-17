@@ -49,9 +49,9 @@
 #include "class.zhh"
 
 #include "inkey.zhh"
-#include "memoedit.ch"
+#include "memoedit.zhh"
 #include "set_curs.zhh"
-#include "hbgtinfo.ch"
+#include "gt_info.zhh"
 
 // A specialized ZHEditor which can simulate MemoEdit() behaviour
 CREATE CLASS ZHMemoEditor INHERIT ZHEditor

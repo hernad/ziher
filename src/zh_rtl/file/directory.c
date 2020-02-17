@@ -49,12 +49,8 @@
 #include "zh_apifs.h"
 #include "zh_item_api.h"
 
-#include "directory.zhh"
+#include "../directory.zhh"
 
-/* NOTE: 8.3 support should be added in a separate way, like
-         as a function which converts full names to 8.3 names, since
-         this issue is very much platform specific, and this is
-         not the only place which may need the conversion [vszakats]. */
 
 PZH_ITEM zh_fsDirectory( const char * pszDirSpec, const char * pszAttributes, ZH_BOOL fDateTime )
 {

@@ -58,7 +58,7 @@
 #include "zh_item_api.h"
 #include "zh_thread.h"
 #include "zh_vm.h"
-#include "directory.zhh"
+#include "../directory.zhh"
 
 #if defined( ZH_OS_UNIX )
 #  include <sys/types.h>

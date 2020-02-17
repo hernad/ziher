@@ -7,7 +7,7 @@
 
 #pragma -gc0
 
-#include "achoice.ch"
+#include "achoice.zhh"
 #include "color.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"

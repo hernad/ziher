@@ -1,7 +1,7 @@
 /*
- * SaveScreen() buffer helper functions
+ * Header file for AChoice() function
  *
- * Copyright 2012 Viktor Szakats
+ * Copyright 1999 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,19 +44,21 @@
  *
  */
 
-#include "gt_info.zhh"
+#ifndef _ACHOICE_CH
+#define _ACHOICE_CH
 
-FUNCTION __XSaveGetChar( cSaveScreen, nPos )
-   RETURN iif( zh_gtInfo( ZH_GTI_COMPATBUFFER ), ;
-      Chr( zh_BPeek( cSaveScreen, nPos * 2 + 1 ) ), ;
-      zh_UChar( zh_BPeek( cSaveScreen, nPos * 4 + 2 ) * 256 + zh_BPeek( cSaveScreen, nPos * 4 + 1 ) ) )
+/* User callback calling mode values */
+#define AC_IDLE         0       /* Idle */
+#define AC_HITTOP       1       /* Attempt to move above the first item */
+#define AC_HITBOTTOM    2       /* Attempt to move below the last item */
+#define AC_EXCEPT       3       /* Keystroke exception */
+#define AC_NOITEM       4       /* There's no selectable item */
 
-FUNCTION __XSaveGetColor( cSaveScreen, nPos )
-   RETURN iif( zh_gtInfo( ZH_GTI_COMPATBUFFER ), ;
-      zh_BPeek( cSaveScreen, nPos * 2 + 2 ), ;
-      zh_BPeek( cSaveScreen, nPos * 4 + 3 ) )
+/* User callback return values */
+#define AC_ABORT        0       /* Abort AChoice() and return zero */
+#define AC_SELECT       1       /* Select current item and return it's index */
+#define AC_CONT         2       /* Continue AChoice() */
+#define AC_GOTO         3       /* Search first chars for the last pressed key */
+#define AC_REDRAW       4       /* Redraw AChoice() */
 
-FUNCTION __XSaveGetAttr( cSaveScreen, nPos )
-   RETURN iif( zh_gtInfo( ZH_GTI_COMPATBUFFER ), ;
-      0, ;
-      zh_BPeek( cSaveScreen, nPos * 4 + 4 ) )
+#endif /* _ACHOICE_CH */

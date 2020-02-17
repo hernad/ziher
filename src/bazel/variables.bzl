@@ -1,0 +1,1 @@
+ZH_COMP_OPTS=["-n","-izh_zero", "-izh_rtl"]

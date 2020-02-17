@@ -69,7 +69,7 @@
  *
  */
 
-#include "fileio.ch"
+#include "fileio.zhh"
 
 STATIC s_cLineComment := ";"
 STATIC s_cHalfLineComment := "#"

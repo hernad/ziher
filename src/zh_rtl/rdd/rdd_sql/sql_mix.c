@@ -2122,5 +2122,5 @@ ZH_CALL_ON_STARTUP_END( _zh_sqlmix_rdd_init_ )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( sqlmix__InitSymbols ) \
    ZH_DATASEG_FUNC( _zh_sqlmix_rdd_init_ )
-   #include "hbiniseg.h"
+   #include "zh_ini_seg.h"
 #endif

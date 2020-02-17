@@ -50,7 +50,7 @@
 
 #include "color.zhh"
 #include "set_curs.zhh"
-#include "getexit.ch"
+#include "get_exit.zhh"
 #include "inkey.zhh"
 #include "button.zhh"
 

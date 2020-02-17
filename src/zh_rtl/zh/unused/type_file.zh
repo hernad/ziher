@@ -45,7 +45,7 @@
  */
 
 #include "error.zhh"
-#include "fileio.ch"
+#include "fileio.zhh"
 
 #define BUFFER_LENGTH  8192
 
