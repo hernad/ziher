@@ -448,8 +448,6 @@ static void zh_gt_std_Tone( PZH_GT pGT, double dFrequency, double dDuration )
    }
 
    ZH_SYMBOL_UNUSED( dFrequency );
-
-   /* convert Clipper (DOS) timer tick units to seconds ( x / 18.2 ) */
    zh_gtSleep( pGT, dDuration / 18.2 );
 }
 

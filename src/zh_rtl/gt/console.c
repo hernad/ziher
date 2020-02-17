@@ -156,16 +156,6 @@ void zh_conRelease( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_conRelease()" ) );
 
-   /*
-    * Clipper does not restore screen size on exit so I removed the code with:
-    *    zh_gtSetMode( s_originalMaxRow + 1, s_originalMaxCol + 1 );
-    * If the low-level GT drive change some video adapter parameters which
-    * have to be restored on exit then it should does it in its Exit()
-    * method. Here we cannot force any actions because it may cause bad
-    * results in some GTs, e.g. when the screen size is controlled by remote
-    * user and not Ziher application (some terminal modes), [Druzus]
-    */
-
    zh_gtExit();
 
    zh_fsSetDevMode( s_hFilenoStdin,  FD_TEXT );
@@ -587,10 +577,6 @@ ZH_FUNC( DISPOUT ) /* writes a single value to the screen, but is not affected b
          zh_xfree( pszString );
    }
 }
-
-/* Undocumented Clipper function */
-
-/* NOTE: Clipper does no checks about the screen positions. [vszakats] */
 
 ZH_FUNC( DISPOUTAT )  /* writes a single value to the screen at specific position, but is not affected by SET ALTERNATE */
 {

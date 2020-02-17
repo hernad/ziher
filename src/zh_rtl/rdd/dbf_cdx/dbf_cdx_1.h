@@ -4600,10 +4600,6 @@ static void zh_cdxTagSkipPrev( LPCDXTAG pTag )
    }
 }
 
-/*
- * Reorder the Tag list by their position in index file (not names)
- * to be Clipper compatible
- */
 static void zh_cdxReorderTagList( LPCDXTAG * TagListPtr )
 {
    ZH_BOOL fRepeat = ZH_TRUE;
@@ -7399,10 +7395,6 @@ static ZH_ERRCODE zh_cdxOrderListAdd( CDXAREAP pArea, LPDBORDERINFO pOrderInfo )
    if( fProd )
       pArea->dbfarea.fHasTags = ZH_TRUE;
 
-   /* dbfcdx specific: If there was no controlling order, set this one.
-    * This is the behaviour of Clipper's dbfcdx, although
-    * Clipper doc says a different rule
-    */
    if( ! pArea->uiTag )
    {
       pArea->uiTag = zh_cdxGetTagNumber( pArea, pIndex->TagList );

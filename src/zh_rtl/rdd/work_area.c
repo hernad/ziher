@@ -936,10 +936,6 @@ static ZH_ERRCODE zh_waNewArea( AREAP pArea )
    return ZH_SUCCESS;
 }
 
-/*
- * Open a data store in the WorkArea.
- * Like in Clipper it's also mapped as Create() method at WA level
- */
 static ZH_ERRCODE zh_waOpen( AREAP pArea, LPDBOPENINFO pInfo )
 {
    if( ! pArea->atomAlias && pInfo->atomAlias && pInfo->atomAlias[ 0 ] )
@@ -1509,19 +1505,6 @@ static ZH_ERRCODE zh_waRelEval( AREAP pArea, LPDBRELINFO pRelInfo )
                }
                else
                {
-                  /*
-                   * If current order equals to zero, use GOTOID instead of SEEK
-                   * Unfortunately it interacts with buggy .prg code which returns
-                   * non numerical values from relation expression and RDD accepts
-                   * only numerical record ID. In such case SELF_GOTO() works like
-                   * SELF_GOEOF() but SELF_GOTOID() reports error. So for Clipper
-                   * compatibility SELF_GOTO() is used here but if RDD can use
-                   * non numerical record IDs then this method should be overloaded
-                   * to use SELF_GOTOID(), [druzus]
-                   */
-                  #if 0
-                  errCode = SELF_GOTOID( pArea, pResult );
-                  #endif
                   errCode = SELF_GOTO( pArea, zh_itemGetNL( pResult ) );
                   if( errCode == ZH_SUCCESS )
                   {
@@ -2025,7 +2008,6 @@ static const RDDFUNCS waTable =
    /* WorkArea/Database management */
 /* ( DBENTRYP_CP )   */ zh_waAlias,             /* Alias       */
 /* ( DBENTRYP_V )    */ zh_waClose,             /* Close       */
-   /* Like in Clipper map CREATE() method at work area level to OPEN() */
 /* ( DBENTRYP_VO )   */ zh_waOpen,              /* Create      */
 /* ( DBENTRYP_SI )   */ zh_waInfo,              /* Info        */
 /* ( DBENTRYP_V )    */ zh_waNewArea,           /* NewArea     */

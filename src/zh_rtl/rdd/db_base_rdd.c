@@ -249,7 +249,6 @@ ZH_FUNC( DBAPPEND )
       ZH_BOOL bUnLockAll = zh_parldef( 1, ZH_TRUE );
       ZH_ERRCODE errCode;
 
-      /* Clipper clears NETERR flag before APPEND */
       zh_rddSetNetErr( ZH_FALSE );
       errCode = SELF_APPEND( pArea, bUnLockAll );
       zh_retl( errCode == ZH_SUCCESS );
@@ -284,9 +283,6 @@ ZH_FUNC( DBCOMMITALL )
 }
 
 /*
- * In Clipper the arguments are:
- *    dbCreate( cFile, aStruct, cRDD, lKeepOpen, cAlias, cDelimArg ) --> NIL
- * In Ziher (ZH_EXTENSION):
  *    dbCreate( cFile, aStruct, cRDD, lKeepOpen, cAlias, cDelimArg, ;
  *              cCodePage, nConnection ) --> <lSuccess>
  */
@@ -298,14 +294,6 @@ ZH_FUNC( DBCREATE )
    ZH_BOOL fKeepOpen, fCurrArea;
    ZH_ULONG ulConnection;
 
-   /*
-    * NOTE: 4th, 5th and 6th parameters are undocumented Clipper ones
-    * 4th is boolean flag indicating if file should stay open (any boolean
-    *     value will enable this behavior)
-    * 5th is alias - if not given then WA is open without alias
-    * 6th is optional DELIMITED value used by some RDDs like DELIM
-    */
-
    szFileName = zh_parc( 1 );
    pStruct = zh_param( 2, ZH_IT_ARRAY );
    szDriver = zh_parc( 3 );
@@ -316,13 +304,6 @@ ZH_FUNC( DBCREATE )
    szCpId = zh_parc( 7 );
    ulConnection = zh_parnl( 8 );
 
-   /*
-    * Clipper allows to use empty struct array for RDDs which does not
-    * support fields, e.g.: DBFBLOB in CL5.3
-    * In CL5.3 it's also possible to create DBF file without fields.
-    * if some RDD wants to block it then they should serve it in lower
-    * level, [druzus]
-    */
    if( ! pStruct ||
        ! szFileName )
    {
@@ -370,13 +351,6 @@ ZH_FUNC( ZH_DBCREATETEMP )
    szCpId = zh_parc( 4 );
    ulConnection = zh_parnl( 5 );
 
-   /*
-    * Clipper allows to use empty struct array for RDDs which does not
-    * support fields, e.g.: DBFBLOB in CL5.3
-    * In CL5.3 it's also possible to create DBF file without fields.
-    * if some RDD wants to block it then they should serve it in lower
-    * level, [druzus]
-    */
    if( ! szAlias || ! pStruct )
    {
       zh_errRT_DBCMD( EG_ARG, EDBCMD_DBCMDBADPARAMETER, NULL, ZH_ERR_FUNCNAME );
@@ -405,12 +379,6 @@ ZH_FUNC( ZH_DBCREATETEMP )
                                    pStruct ) == ZH_SUCCESS );
 }
 
-/*
- * I'm not sure if lKeepOpen open works exactly like in dbCreate(), I haven't
- * tested it with Clipper yet. If it doesn't then please inform me about it
- * and I'll update the code. [druzus]
- */
-
 /* NOTE: The created table will be kept open if lOpenMode parameter
          is of logical type. If .T. it will be opened in a new workarea,
          if .F. it will be opened in the current one. */
@@ -426,11 +394,6 @@ ZH_FUNC( __DBOPENSDF )
    ZH_ULONG ulConnection;
    ZH_ERRCODE errCode;
 
-   /*
-    * NOTE: 4th and 5th parameters are undocumented Clipper ones
-    * 4th is boolean flag indicating if file should stay open and
-    * 5th is alias - if not given then WA is open without alias
-    */
 
    szFileName = zh_parc( 1 );
    pStruct = zh_param( 2, ZH_IT_ARRAY );
@@ -712,10 +675,6 @@ ZH_FUNC( DBSELECTAREA )
    {
       int iNewArea = zh_parni( 1 );
 
-      /*
-       * NOTE: iNewArea >= ZH_RDD_MAX_AREA_NUM used intentionally
-       * In Clipper area 65535 is reserved for "M" alias [druzus]
-       */
       if( iNewArea < 1 || iNewArea >= ZH_RDD_MAX_AREA_NUM )
       {
          if( zh_rddSelectFirstAvailable() != ZH_SUCCESS )
@@ -961,10 +920,7 @@ ZH_FUNC( FIELDNAME )
          zh_retc_buffer( szName );
          return;
       }
-      /* This is not Clipper compatible! - David G. Holm <dholm@jsd-llc.com> */
-#if 0
-      zh_errRT_DBCMD( EG_ARG, EDBCMD_FIELDNAME_BADPARAMETER, NULL, ZH_ERR_FUNCNAME );
-#endif
+
    }
    zh_retc_null();
 }
@@ -1418,7 +1374,6 @@ ZH_FUNC( ORDLISTADD )
       DBORDERINFO pOrderInfo;
       ZH_ERRCODE errCode;
 
-      /* Clipper clears NETERR flag when index is open */
       zh_rddSetNetErr( ZH_FALSE );
 
       memset( &pOrderInfo, 0, sizeof( pOrderInfo ) );
@@ -1648,10 +1603,6 @@ ZH_FUNC( SELECT )
 
       if( szAlias )
       {
-         /*
-          * I do not like this Clipper behavior, in some constructions
-          * programmer may use "<aliasNum>" in some others not. [Druzus]
-          */
          if( zh_rddVerifyAliasName( szAlias ) == ZH_SUCCESS )
             zh_rddGetAliasNumber( szAlias, &iArea );
       }
@@ -1828,7 +1779,6 @@ ZH_FUNC( __DBARRANGE )
    pSrcArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
    pDstArea = ( AREAP ) zh_rddGetWorkAreaPointer( ( ZH_AREANO ) zh_parni( 1 ) );
 
-   /* TODO: check what Clipper does when pDstArea == NULL or pSrcArea == pDstArea */
    if( pSrcArea && pDstArea && pSrcArea != pDstArea )
    {
       DBSORTINFO dbSortInfo;
@@ -2310,13 +2260,6 @@ ZH_FUNC( __DBSKIPPER )
             SELF_SKIP( pArea, 0 );
          else if( lRecs > 0 )
          {
-            /* the condition below is exact Clipper behavior anyhow
-             * we cannot replicate it without introducing serious problem:
-             * some RDDs use non continuous record numbers (i.e. ADT) and
-             * the condition: ulRecNo != ulRecords + 1 can be true also for
-             * normal records not only for the phantom EOF record. [druzus]
-             */
-
             {
                while( lSkipped < lRecs )
                {

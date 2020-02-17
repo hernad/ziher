@@ -119,9 +119,6 @@ static void zh_gt_w9xTone( double dFreq, double dDurat )
    /* sync with internal clock with very small time period */
    zh_idleSleep( 0.01 );
 
-   /* Clipper ignores Tone() requests (but delays anyway) if Frequency is
-      less than < 20 hz (and so should we) to maintain compatibility .. */
-
    if( dFreq >= 20.0 )
    {
       /* Setup Sound Control Port Registers and timer channel 2 */
@@ -171,9 +168,6 @@ static void zh_gt_wNtTone( double dFreq, double dDurat )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_wNtTone(%lf, %lf)", dFreq, dDurat ) );
 
-   /* Clipper ignores Tone() requests (but delays anyway) if Frequency is
-      less than < 20 hz.  Windows NT minimum is 37... */
-
    if( dFreq >= 37.0 )
       Beep( ( DWORD ) dFreq, ( DWORD ) ( dDurat * 1000 ) );  /* Beep wants Milliseconds */
    else
@@ -185,11 +179,6 @@ void zh_gt_winapi_tone( double dFrequency, double dDuration )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_winapi_tone(%lf, %lf)", dFrequency, dDuration ) );
 
-   /*
-    * According to the Clipper NG, the duration in 'ticks' is truncated to the
-    * integer portion  ... Depending on the platform, Ziher allows a finer
-    * resolution, but the minimum is 1 tick (for compatibility)
-    */
    /* Convert from ticks to seconds */
    dDuration = ( ZH_MIN( ZH_MAX( 1.0, dDuration ), ULONG_MAX ) ) / 18.2;
 

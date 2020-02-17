@@ -50,10 +50,6 @@
 #include "zh_lang_api.h"
 #include "zh_codepage_api.h"
 
-/* NOTE: Ad-hoc names mostly taken from various Clipper source files.
-         These should be named properly if exported outside this file.
-         [vszakats] */
-
 #define _DIR_HEADER      1              /* "Database Files    # Records    Last Update     Size" */
 #define _LF_SAMPLES      2              /* "Do you want more samples?" */
 #define _RF_PAGENO       3              /* "Page No." */

@@ -86,12 +86,6 @@ static void zh_mlGetEOLs( PZH_MLC_INFO pMLC, int iParam )
 
    pMLC->pEOLs = pMLC->EOL_buffer;
 
-/* NOTE: This is a parameter extension (ZH_EXTENSION) which breaks
-         our effort to keep strict parameter compatibility with
-         Clipper 5.x. In this case we've resorted to a compromise
-         because there was no other idea which seemed natural enough.
-         Clipper will ignore these parameters and use CRLF EOL hard
-         coded. [vszakats] */
    nLen = zh_parclen( iParam );
    if( nLen )
    {

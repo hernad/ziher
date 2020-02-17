@@ -66,7 +66,6 @@ ZH_FUNC( FOPEN )
    else
    {
       zh_fsSetFError( 0 );
-      /* NOTE: Undocumented but existing Clipper Run-time error */
       zh_errRT_BASE( EG_ARG, 2021, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
    }
 }
@@ -247,7 +246,6 @@ ZH_FUNC( FREADSTR )
          uiError = zh_fsError();
          buffer[ nRead ] = '\0';
 
-         /* NOTE: Clipper will not return zero chars from this functions. */
          zh_retc_buffer( buffer );
       }
       else

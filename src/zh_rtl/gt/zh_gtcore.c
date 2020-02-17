@@ -757,7 +757,6 @@ static void zh_gt_def_Tone( PZH_GT pGT, double dFrequency, double dDuration )
 {
    ZH_SYMBOL_UNUSED( dFrequency );
 
-   /* convert Clipper (MS-DOS) timer tick units to seconds ( x / 18.2 ) */
    zh_gtSleep( pGT, dDuration / 18.2 );
 }
 
@@ -2789,11 +2788,7 @@ static void zh_gt_def_InkeyPut( PZH_GT pGT, int iKey )
    if( pGT->inkeyHead != pGT->inkeyTail && pGT->inkeyLastPos >= 0 &&
        ( iKey == K_MOUSEMOVE || ZH_INKEY_ISMOUSEPOS( iKey ) ) )
    {
-      /*
-       * Clipper does not store in buffer repeated mouse movement
-       * IMHO it's good idea to reduce unnecessary inkey buffer
-       * overloading so I also implemented it, [druzus]
-       */
+
       int iLastKey = pGT->inkeyBuffer[ pGT->inkeyLastPos ];
 
       if( iLastKey == K_MOUSEMOVE || ZH_INKEY_ISMOUSEPOS( iLastKey ) )
@@ -2804,10 +2799,6 @@ static void zh_gt_def_InkeyPut( PZH_GT pGT, int iKey )
       }
    }
 
-   /*
-    * When the buffer is full new event overwrite the last one
-    * in the buffer - it's Clipper behavior, [druzus]
-    */
    pGT->inkeyBuffer[ pGT->inkeyLastPos = iHead++ ] = iKey;
    if( iHead >= pGT->inkeyBufferSize )
       iHead = 0;
@@ -2936,13 +2927,6 @@ static void zh_gt_def_InkeyPoll( PZH_GT pGT )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_def_InkeyPoll(%p)", ( void * ) pGT ) );
 
-   /*
-    * Clipper 5.3 always poll events without respecting
-    * _SET_TYPEAHEAD when CL5.2 only when it's non zero.
-    * IMHO keeping CL5.2 behavior will be more accurate for Ziher
-    * because it allows to control it by user what some times could be
-    * necessary due to different low-level GT behavior on some platforms
-    */
    if( zh_setGetTypeAhead() )
       zh_gt_def_InkeyPollDo( pGT );
 }
@@ -2983,7 +2967,6 @@ static int zh_gt_def_InkeyGet( PZH_GT pGT, ZH_BOOL fWait, double dSeconds, int i
          return iKey;
    }
 
-   /* Wait forever ?, Use fixed value 100 for strict Clipper compatibility */
    timeout = ( fWait && dSeconds * 100 >= 1 ) ? ( ZH_MAXINT ) ( dSeconds * 1000 ) : -1;
    timer = zh_timerInit( timeout );
 
@@ -3172,19 +3155,6 @@ static void zh_gt_def_MouseSetCursor( PZH_GT pGT, ZH_BOOL fVisible )
    }
    else if( pGT->fMouseVisible )
    {
-      /*
-       * mouse drivers use hide counters, so repeated calls to
-       * ZH_GTSELF_MOUSEHIDE( pGT ) will need at least the same number of
-       * calls to ZH_GTSELF_MOUSESHOW() to make mouse cursor visible. This
-       * behavior is not compatible with Clipper so call to
-       * ZH_GTSELF_MOUSEHIDE( pGT ) is guarded by pGT->fMouseVisible.
-       * The counter is not updated when mouse cursor is visible and
-       * ZH_GTSELF_MOUSESHOW() is called so this behavior is enough.
-       * If some platform works in differ way then and this behavior
-       * will create problems GT driver should overload
-       * ZH_GTSELF_MOUSESETCURSOR()/ZH_GTSELF_MOUSEGETCURSOR() methods.
-       * [druzus]
-       */
       ZH_GTSELF_MOUSEHIDE( pGT );
       pGT->fMouseVisible = ZH_FALSE;
    }

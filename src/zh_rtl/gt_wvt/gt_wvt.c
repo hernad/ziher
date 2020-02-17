@@ -1627,10 +1627,6 @@ static void zh_gt_wvt_AddCharToInputQueue( PZH_GTWVT pWVT, int iKey )
       }
    }
 
-   /*
-    * When the buffer is full new event overwrite the last one
-    * in the buffer - it's Clipper behavior, [druzus]
-    */
    pWVT->Keys[ pWVT->keyLastPos = iPos ] = iKey;
    if( ++iPos >= ( int ) ZH_SIZEOFARRAY( pWVT->Keys ) )
       iPos = 0;

@@ -3,8 +3,6 @@
  *
  * Released to Public Domain by Vladimir Kazimirchik <v_kazimirchik@yahoo.com>
  * Further modifications 1999-2017 Viktor Szakats
- *    Changes for higher Clipper compatibility, console mode, extensions, __NoNoAlert()
- *
  */
 
 #include "box.ch"
@@ -13,13 +11,6 @@
 #include "setcurs.ch"
 #include "hbgtinfo.ch"
 
-/* FIXME: Clipper defines a clipped window for Alert() [vszakats] */
-
-/* NOTE: Clipper will return NIL if the first parameter is not a string, but
-         this is not documented. [vszakats] */
-
-/* NOTE: Clipper handles these buttons { "Ok", "", "Cancel" } in a buggy way.
-         This is fixed. [vszakats] */
 
 STATIC s_lNoAlert
 

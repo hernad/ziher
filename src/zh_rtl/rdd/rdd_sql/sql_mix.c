@@ -1659,8 +1659,6 @@ static ZH_ERRCODE sqlmixOrderCreate( SQLMIXAREAP pArea, LPDBORDERCREATEINFO pOrd
       pArea->sqlarea.area.valResult = 0;
    }
 
-   /* TODO: WHILE condition is not tested, like in DBFCDX. Why? Compatibility with Clipper? */
-
    SELF_GOTO( &pArea->sqlarea.area, ulRecNo );
 
    pTagNew = zh_mixTagCreate( pOrderInfo->atomBagName, pOrderInfo->abExpr, pKeyItem, pForItem, pWhileItem, bType, uiLen, pArea );

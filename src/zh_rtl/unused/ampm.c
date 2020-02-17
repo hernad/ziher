@@ -1,5 +1,5 @@
 /*
- * AMPM() compatibility function from the SAMPLES directory of Clipper.
+ * AMPM() compatibility function
  *
  * Copyright 1999-2001 Viktor Szakats
  *

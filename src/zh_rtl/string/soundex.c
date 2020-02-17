@@ -72,11 +72,6 @@ ZH_FUNC( SOUNDEX )
       {
          char cChar = pszString[ nPos ];
 
-         /* NOTE: Intentionally not using toupper()/IsAlpha() to be 100%
-                  Clipper compatible here, these ANSI C functions may behave
-                  differently for accented and national characters. It's also
-                  faster this way. [vszakats] */
-
          /* Convert to uppercase: ZH_TOUPPER() */
          if( cChar >= 'a' && cChar <= 'z' )
             cChar -= ( 'a' - 'A' );

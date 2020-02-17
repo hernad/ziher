@@ -1452,7 +1452,6 @@ static void zh_gt_trm_LinuxTone( PZH_GTTRM pTerm, double dFrequency, double dDur
    zh_gt_trm_termOut( pTerm, escseq, strlen( escseq ) );
    zh_gt_trm_termFlush( pTerm );
 
-   /* convert Clipper (DOS) timer tick units to seconds ( x / 18.2 ) */
    zh_gtSleep( pTerm->pGT, dDuration / 18.2 );
 }
 
@@ -1924,7 +1923,6 @@ static void zh_gt_trm_BsdTone( PZH_GTTRM pTerm, double dFrequency, double dDurat
    zh_gt_trm_termOut( pTerm, escseq, strlen( escseq ) );
    zh_gt_trm_termFlush( pTerm );
 
-   /* convert Clipper (DOS) timer tick units to seconds ( x / 18.2 ) */
    zh_gtSleep( pTerm->pGT, dDuration / 18.2 );
 }
 

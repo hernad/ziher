@@ -78,7 +78,6 @@ static ZH_GT_FUNCS SuperTable;
 #endif
 #define ZH_XWC_XLIB_UNLOCKRAW( dpy ) do { ZH_XWC_XLIB_UNLOCK( dpy )
 
-/* mouse button mapping into Clipper keycodes */
 static const int s_mousePressKeys   [ XWC_MAX_BUTTONS ] = { K_LBUTTONDOWN, K_MBUTTONDOWN, K_RBUTTONDOWN, K_MWFORWARD, K_MWBACKWARD };
 static const int s_mouseReleaseKeys [ XWC_MAX_BUTTONS ] = { K_LBUTTONUP,   K_MBUTTONUP,   K_RBUTTONUP   };
 static const int s_mouseDblPressKeys[ XWC_MAX_BUTTONS ] = { K_LDBLCLK,     K_MDBLCLK,     K_RDBLCLK    , K_MWFORWARD, K_MWBACKWARD };
@@ -5127,7 +5126,7 @@ static void zh_gt_xwc_Tone( PZH_GT pGT, double dFrequency, double dDuration )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_xwc_Tone(%p,%lf,%lf)", ( void * ) pGT, dFrequency, dDuration ) );
 
-   /* The conversion from Clipper (DOS) timer tick units to
+   /* The conversion from (DOS) timer tick units to
       milliseconds is * 1000.0 / 18.2. */
    dDuration /= 18.2;
 

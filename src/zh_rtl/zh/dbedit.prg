@@ -50,15 +50,6 @@
 #include "inkey.zhh"
 #include "setcurs.ch"
 
-/* NOTE: Extension: Ziher supports codeblocks and function pointers
-         as the xUserFunc parameter. [vszakats] */
-/* NOTE: Clipper is buggy and will throw an error if the number of
-         columns is zero. (Check: dbEdit(0,0,20,20,{})) [vszakats] */
-/* NOTE: Clipper will throw an error if there's no database open [vszakats] */
-/* NOTE: The NG says that the return value is NIL, but it's not. [vszakats] */
-/* NOTE: Ziher is multithreading ready and Clipper only reentrant safe
-         [vszakats] */
-
 FUNCTION dbEdit( nTop, nLeft, nBottom, nRight, ;
       acColumns, xUserFunc, ;
       xColumnSayPictures, xColumnHeaders, ;

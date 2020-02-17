@@ -83,5 +83,5 @@ ZH_FUNC( RIGHT )
       }
    }
    else
-      zh_retc_null();  /* Clipper doesn't error */
+      zh_retc_null();
 }

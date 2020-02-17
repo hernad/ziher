@@ -55,10 +55,7 @@
 #include "zh_vm.h"
 #include "zh_stack.h"
 
-/* This is added to be able to detect a recursive error, and not let Ziher
-   go into an infinite loop, this is an emulated version of the Clipper
-   "Unrecoverable error 650: Processor stack fault" internal error, but
-   better shows what is really the problem. [vszakats] */
+
 #define ZH_ERROR_LAUNCH_MAX    8
 
 /* Error class instance variables offsets */
@@ -581,7 +578,7 @@ ZH_USHORT zh_errLaunch( PZH_ITEM pError )
          zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
    }
    else
-      uiAction = E_RETRY;  /* Clipper does this, undocumented */
+      uiAction = E_RETRY;
 
    return uiAction;
 }
@@ -1022,9 +1019,6 @@ ZH_USHORT zh_errRT_BASE( ZH_ERRCODE errGenCode, ZH_ERRCODE errSubCode, const cha
    va_list va;
    ZH_ULONG ulArgPos;
 
-   /* I replaced EF_CANRETRY with EF_NONE for Clipper compatibility
-    * If it's wrong and I missed something please fix me, Druzus.
-    */
    pError = zh_errRT_New( ES_ERROR, ZH_ERR_SS_BASE, errGenCode, errSubCode, szDescription, szOperation, 0, EF_NONE /* EF_CANRETRY */ );
 
    /* Build the array from the passed arguments. */

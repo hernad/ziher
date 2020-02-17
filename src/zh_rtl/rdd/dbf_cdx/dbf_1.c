@@ -1356,15 +1356,6 @@ ZH_BOOL zh_dbfLockIdxGetData( ZH_BYTE bScheme, PZH_DBFLOCKDATA pLockData )
 
    switch( bScheme )
    {
-      case DB_DBFLOCK_CLIPPER:
-         pLockData->offset = IDX_LOCKPOS_CLIPPER;
-         pLockData->size   = IDX_LOCKPOOL_CLIPPER;
-         break;
-
-      case DB_DBFLOCK_CLIPPER2:
-         pLockData->offset = IDX_LOCKPOS_CLIPPER2;
-         pLockData->size   = IDX_LOCKPOOL_CLIPPER2;
-         break;
 
       case DB_DBFLOCK_COMIX:
          pLockData->offset = IDX_LOCKPOS_COMIX;
@@ -1524,19 +1515,6 @@ static ZH_ERRCODE zh_dbfLockData( DBFAREAP pArea,
 {
    switch( pArea->bLockType )
    {
-      case DB_DBFLOCK_CLIPPER:
-         *pnPos = DBF_LOCKPOS_CLIPPER;
-         *iDir = DBF_LOCKDIR_CLIPPER;
-         *pnFlSize = DBF_FLCKSIZE_CLIPPER;
-         *pnRlSize = DBF_RLCKSIZE_CLIPPER;
-         break;
-
-      case DB_DBFLOCK_CLIPPER2:
-         *pnPos = DBF_LOCKPOS_CLIPPER2;
-         *iDir = DBF_LOCKDIR_CLIPPER2;
-         *pnFlSize = DBF_FLCKSIZE_CLIPPER2;
-         *pnRlSize = DBF_RLCKSIZE_CLIPPER2;
-         break;
 
       case DB_DBFLOCK_COMIX:
          *pnPos = DBF_LOCKPOS_COMIX;
@@ -2317,17 +2295,6 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
          ZH_MAXINT lVal;
          ZH_BOOL fDbl;
 
-         /* dBase documentation defines maximum numeric field size as 20
-          * but Clipper allows to create longer fields so I remove this
-          * limit, Druzus
-          */
-#if 0
-         if( pField->uiLen > 20 )
-         {
-            fError = ZH_TRUE;
-            break;
-         }
-#endif
          fDbl = zh_strnToNum( ( const char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
                               pField->uiLen, &lVal, &dVal );
 
@@ -2562,11 +2529,6 @@ static ZH_ERRCODE zh_dbfPutRec( DBFAREAP pArea, const ZH_BYTE * pBuffer )
 static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem )
 {
    LPFIELD pField;
-   /* this buffer is for varlength, date and number conversions,
-    * dBase documentation defines maximum numeric field size as 20
-    * but Clipper allows to create longer fields so I removed this
-    * limit [druzus]
-    */
    char szBuffer[ 256 ];
    const char * pszPtr;
    ZH_SIZE nSize, nLen;
@@ -3010,8 +2972,6 @@ static ZH_ERRCODE zh_dbfClose( DBFAREAP pArea )
       if( pArea->fUpdateHeader )
          SELF_WRITEDBHEADER( &pArea->area );
 
-      /* It's not Clipper compatible but it reduces the problem with
-         buggy Windows network setting */
       if( zh_setGetHardCommit() )
          SELF_FLUSH( &pArea->area );
    }
@@ -3148,7 +3108,7 @@ static ZH_ERRCODE zh_dbfCreate( DBFAREAP pArea, LPDBOPENINFO pCreateInfo )
       pArea->bLockType = ( ZH_BYTE ) zh_itemGetNI( pItem );
       if( pArea->bLockType == 0 )
       {
-         pArea->bLockType = DB_DBFLOCK_CLIPPER;
+         pArea->bLockType = DB_DBFLOCK_VFP;
       }
    }
 
@@ -3767,8 +3727,6 @@ static ZH_ERRCODE zh_dbfInfo( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem 
          }
          switch( iScheme )
          {
-            case DB_DBFLOCK_CLIPPER:
-            case DB_DBFLOCK_CLIPPER2:
             case DB_DBFLOCK_COMIX:
             case DB_DBFLOCK_VFP:
             case DB_DBFLOCK_HB32:
@@ -3986,7 +3944,6 @@ static ZH_ERRCODE zh_dbfRecInfo( DBFAREAP pArea, PZH_ITEM pRecID, ZH_USHORT uiIn
          break;
 
       case DBRI_LOCKED:
-         /* Clipper also checks only fShared and RLOCK and ignore FLOCK */
          zh_itemPutL( pInfo, ! pArea->fShared || /* pArea->fFLocked || */
                                zh_dbfIsLocked( pArea, ulRecNo ) );
          break;
@@ -4175,7 +4132,7 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
       }
       pArea->bLockType = ( ZH_BYTE ) zh_itemGetNI( pItem );
       if( ! pArea->bLockType )
-         pArea->bLockType = DB_DBFLOCK_CLIPPER;
+         pArea->bLockType = DB_DBFLOCK_VFP;
    }
 
    if( pOpenInfo->cdpId )
@@ -4323,15 +4280,6 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
          return errCode;
       }
 
-      /* We cannot accept bFieldFlags as is because Clipper
-       * creates tables where this field is random so we have to
-       * try to guess if we can use it. If we know that table
-       * was created by VFP which uses field flags then we can
-       * retrieve information from bFieldFlags without any problem.
-       * Otherwise we check if extended field types are used or if
-       * unused bytes in field area are cleared. It's not perfect
-       * but works in most of cases, Druzus.
-       */
       uiFlags = ZH_FF_HIDDEN | ZH_FF_NULLABLE | ZH_FF_BINARY | ZH_FF_AUTOINC;
       if( pArea->bTableType == DB_DBF_VFP )
          uiFlagsMask = uiFlags;
@@ -4478,14 +4426,6 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
          case 'N':
             dbFieldInfo.uiType = ZH_FT_LONG;
             dbFieldInfo.uiDec = pField->bDec;
-            /* dBase documentation defines maximum numeric field size as 20
-             * but Clipper allows to create longer fields so I removed this
-             * limit, Druzus
-             */
-#if 0
-            if( pField->bLen > 20 )
-               errCode = ZH_FAILURE;
-#endif
             break;
 
          case 'F':
@@ -5669,22 +5609,6 @@ static ZH_ERRCODE zh_dbfChildStart( DBFAREAP pArea, LPDBRELINFO pRelInfo )
 static ZH_ERRCODE zh_dbfChildSync( DBFAREAP pArea, LPDBRELINFO pRelInfo )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfChildSync(%p, %p)", ( void * ) pArea, ( void * ) pRelInfo ) );
-
-   /*
-    * !!! The side effect of calling GOCOLD() inside CHILDSYNC() is
-    * evaluation of index expressions (index KEY and FOR condition)
-    * when the pArea is not the current one - it means that the
-    * used RDD has to set proper work area before eval.
-    * IMHO GOCOLD() could be safely removed from this place but I'm not
-    * sure it's Clipper compatible - I will have to check it, Druzus.
-    */
-   /*
-    * I've checked in CL5.3 Technical Reference Guide that only
-    * FORCEREL() should ensure that the work area buffer is not HOT
-    * and then call RELEVAL() - I hope it describes the CL5.3 DBF* RDDs
-    * behavior so I replicate it - the GOCOLD() is moved from CHILDSYNC()
-    * to FORCEREL(), Druzus.
-    */
    /*
     * After some cleanups, the core DBF* code can work with GOCOLD() here
     * and in FORCEREL() without any problems. Because calling GOCOLD() in
@@ -6658,7 +6582,7 @@ static ZH_ERRCODE zh_dbfRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
          zh_itemPutNI( pItem, pData->bTableType ? pData->bTableType : DB_DBF_STD );
          switch( iType )
          {
-            case DB_DBF_STD:        /* standard dBase/Clipper DBF file */
+            case DB_DBF_STD:        /* standard DBF file */
             case DB_DBF_VFP:        /* VFP DBF file */
                pData->bTableType = ( ZH_BYTE ) iType;
          }
@@ -6672,8 +6596,6 @@ static ZH_ERRCODE zh_dbfRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
                               zh_setGetDBFLockScheme() );
          switch( iScheme )
          {
-            case DB_DBFLOCK_CLIPPER:
-            case DB_DBFLOCK_CLIPPER2:
             case DB_DBFLOCK_COMIX:
             case DB_DBFLOCK_VFP:
             case DB_DBFLOCK_HB32:

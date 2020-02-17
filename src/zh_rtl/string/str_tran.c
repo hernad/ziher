@@ -3,8 +3,6 @@
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  * Copyright 2011 Przemyslaw Czerpak
- * rewritten to fix incompatibilities with Clipper and fatal performance
- * of original code
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,10 +48,6 @@
 #include "zh_api.h"
 #include "zh_item_api.h"
 #include "zh_api_error.h"
-
-/* FIXME: Check for string overflow, Clipper can crash if the resulting
-          string is too large. Example:
-          StrTran( "...", ".", Replicate( "A", 32000 ) ) [vszakats] */
 
 ZH_FUNC( STRTRAN )
 {

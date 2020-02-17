@@ -1,5 +1,5 @@
 /*
- * Quick Clipper Browse()
+ * Quick Browse()
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  *

@@ -63,7 +63,7 @@ ZH_EXTERN_BEGIN
 #define FPT_LOCKPOS                     0x00000000L
 #define FPT_LOCKSIZE                    0x00000001L
 
-#define FPT_ROOTBLOCK_OFFSET                  0x218 /* Clipper 5.3 ROOT data block offset */
+#define FPT_ROOTBLOCK_OFFSET                  0x218
 
 #define SIX_ITEM_BUFSIZE                         14
 #define FLEX_ITEM_BUFSIZE                         8
@@ -130,7 +130,7 @@ ZH_EXTERN_BEGIN
 #define FPTIT_FLEX_COMPRCH 0x03FA   /* 1018 ! */
 
 /* Flex II types */
-#define FPTIT_FLEX_DBLITEM 0x2710   /* 10000 14-bytes Clipper double item */
+#define FPTIT_FLEX_DBLITEM 0x2710   /* 10000 14-bytes double item */
 #define FPTIT_FLEX_LOGICAL 0x2711   /* 10001 4-bytes logical value */
 #define FPTIT_FLEX_NULSTR  0x2722   /* 10002 empty string */
 
@@ -183,7 +183,7 @@ typedef struct _FPTHEADER
    ZH_BYTE  flexRev[ 4 ];              /* Offset of reversed GC page */
    ZH_BYTE  flexDir[ 4 ];              /* Offset of GC page */
    ZH_BYTE  counter[ 4 ];              /* cyclic counter to sign changes in network env. */
-   ZH_BYTE  rootBlock[ 4 ];            /* Clipper 5.3 ROOT data block */
+   ZH_BYTE  rootBlock[ 4 ];            /* ROOT data block */
    ZH_BYTE  flexSize[ 2 ];             /* FlexFile3 alternative block size */
    ZH_BYTE  reserved4[ 482 ];          /* */
 } FPTHEADER;

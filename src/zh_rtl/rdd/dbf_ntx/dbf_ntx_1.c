@@ -1347,32 +1347,9 @@ static LPPAGEINFO zh_ntxPageNew( LPTAGINFO pTag, ZH_BOOL fNull )
 
    if( pTag->pIndex->NextAvail != 0 )
    {
-      /*
-         Handling of a pool of empty pages.
-         Some sources says that this address is in the first 4 bytes of
-         a page ( https://www.clicketyclick.dk/databases/xbase/format/ ).
-         But as I understood, studying dumps of Clipper ntx'es, address of the
-         next available page is in the address field of a first key item
-         in the page - it is done here now in such a way.
-         = Alexander Kresin =
-       */
       pPage = zh_ntxPageLoad( pTag, pTag->pIndex->NextAvail );
       if( ! pPage )
          return NULL;
-      /*
-         Unfortunately Clipper does not left unused index pages clean and
-         the key counter can be set to non zero value so to make possible
-         concurrent index access from Clipper and xZiher it's necessary
-         to disable the check code below. [druzus]
-       */
-#if 0
-      if( pPage->uiKeys != 0 )
-      {
-         zh_ntxErrorRT( pTag->pIndex->pArea, EG_CORRUPTION, EDBF_CORRUPT,
-                        pTag->pIndex->IndexName, 0, 0, NULL );
-         return NULL;
-      }
-#endif
       pTag->pIndex->NextAvail = zh_ntxGetKeyPage( pPage, 0 );
 #if defined( ZH_NTX_NOMULTITAG )
       zh_ntxSetKeyPage( pPage, 0, 0 );
@@ -1608,19 +1585,18 @@ static LPTAGINFO zh_ntxTagLoad( LPNTXINDEX pIndex, ZH_ULONG ulBlock,
       pIndex->NextAvail = ZH_GET_LE_UINT32( lpNTX->next_page );
       pIndex->TagBlock = 0;
 
-      /* TODO: this breaks unlocking !!! */
       if( usType & NTX_FLAG_LARGEFILE )
       {
          pIndex->pArea->dbfarea.bLockType = DB_DBFLOCK_HB64;
       }
       else if( usType & NTX_FLAG_EXTLOCK )
       {
-         pIndex->pArea->dbfarea.bLockType = DB_DBFLOCK_CLIPPER2;
+         pIndex->pArea->dbfarea.bLockType = DB_DBFLOCK_VFP;
       }
       else if( ! pIndex->pArea->dbfarea.bLockType )
       {
          pIndex->pArea->dbfarea.bLockType = ( usType & NTX_FLAG_EXTLOCK ) ?
-                           DB_DBFLOCK_CLIPPER2 : DB_DBFLOCK_CLIPPER;
+                           DB_DBFLOCK_VFP : DB_DBFLOCK_COMMIX;
       }
    }
    return pTag;
@@ -1729,9 +1705,8 @@ static ZH_ERRCODE zh_ntxTagHeaderSave( LPTAGINFO pTag )
    type = NTX_FLAG_DEFALUT |
       ( pTag->ForExpr ? NTX_FLAG_FORITEM : 0 ) |
       ( pTag->Partial ? NTX_FLAG_PARTIAL | NTX_FLAG_FORITEM : 0 ) |
-      ( pIndex->pArea->dbfarea.bLockType == DB_DBFLOCK_CLIPPER2 ? NTX_FLAG_EXTLOCK : 0 ) |
+      ( pIndex->pArea->dbfarea.bLockType == DB_DBFLOCK_VFP ? NTX_FLAG_EXTLOCK : 0 ) |
       ( pTag->Partial  ? NTX_FLAG_PARTIAL | NTX_FLAG_FORITEM : 0 ) |
-      /* non Clipper flags */
       ( pTag->Custom   ? NTX_FLAG_CUSTOM : 0 ) |
       ( pTag->ChgOnly  ? NTX_FLAG_CHGONLY : 0 ) |
       ( pTag->Template ? NTX_FLAG_TEMPLATE : 0 ) |
@@ -7605,11 +7580,6 @@ static ZH_ERRCODE zh_ntxOrderListFocus( NTXAREAP pArea, LPDBORDERINFO pOrderInfo
    {
       LPTAGINFO pTag = zh_ntxFindTag( pArea, pOrderInfo->itmOrder,
                                       pOrderInfo->atomBagName );
-      /*
-       * In Clipper tag is not changed when bad name is given in DBFNTX
-       * but not in DBFCDX. I'd like to keep the same behavior in
-       * [x]Ziher RDDs and I chosen DBFCDX one as default. [druzus]
-       */
       pArea->lpCurTag = pTag;
    }
 

@@ -62,12 +62,6 @@ ZH_ERRCODE zh_rddVerifyAliasName( const char * szAlias )
    {
       char c;
 
-      /* Clipper ignores only trailing spaces */
-#if 0
-      while( *szAlias == ' ' )
-         szAlias++;
-#endif
-
       c = *szAlias;
       if( ( c >= 'A' && c <= 'Z' ) || ( c >= 'a' && c <= 'z' ) || c == '_' )
       {
@@ -601,15 +595,8 @@ ZH_ERRCODE zh_rddOpenTable( const char * szFileName, const char * szDriver,
       return ZH_FAILURE;
    }
 
-   /* Clipper clears NETERR flag before parameter validation, [druzus]
-    */
    zh_rddSetNetErr( ZH_FALSE );
 
-   /* Now check parameters, first RDD name.
-    * Clipper seems to make something like:
-    *    if( szDriver && strlen( szDriver ) > 1 )
-    * but I do not think we should replicate it, [druzus]
-    */
    szDriver = zh_rddFindDrv( szDriver, szFileName );
 
    /* First try to create new area node and validate RDD name */
@@ -619,9 +606,6 @@ ZH_ERRCODE zh_rddOpenTable( const char * szFileName, const char * szDriver,
       return ZH_FAILURE;
    }
 
-   /* Then check if valid file name was given - Clipper allows to use empty
-    * ("") file name
-    */
    if( ! szFileName )
    {
       zh_rddReleaseCurrentArea();

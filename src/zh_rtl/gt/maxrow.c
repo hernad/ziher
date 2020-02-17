@@ -50,17 +50,6 @@
 
 ZH_FUNC( MAXROW ) /* Return the maximum screen/window row number (zero origin) */
 {
-   /*
-    * if called with logical .T. parameter then return real screen high - 1
-    * It gives exactly the same result in all standard GT drivers so we
-    * are still Clipper compatible. The difference can appear in some extended
-    * GT drivers which have additional functionality, e.g. CTW GT which
-    * is upper level GT and add CTIII Window support. When it's activated
-    * then MaxRow() will return current window max row and MaxRow(.T.) real
-    * screen (window 0) max row what is the exact behavior of MaxRow()
-    * in CT3, [druzus]
-    */
-
    if( zh_parl( 1 ) )
    {
       int iRows, iCols;

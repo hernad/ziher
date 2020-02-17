@@ -1755,7 +1755,6 @@ METHOD Input( cChar ) CLASS Get
             cChar := ""
          ENDIF
 
-      /* Clipper 5.2 undocumented: # allow T,F,Y,N for Logical [ckedem] */
       CASE cPic == "L" .OR. ( cPic == "#" .AND. ::cType == "L" )
          IF ! Upper( cChar ) $ "YNTF" + ;
                                zh_langMessage( ZH_LANG_ITEM_BASE_TEXT + 1 ) + ;

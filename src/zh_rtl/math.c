@@ -649,8 +649,7 @@ ZH_FUNC( EXP )
             zh_retndlen( zh_exc.retval, zh_exc.retvalwidth, zh_exc.retvaldec );
          else
          {
-            /* math exception is up to the Ziher function, so do this as
-               Clipper compatible as possible */
+
             if( zh_exc.type == ZH_MATH_ERR_OVERFLOW )
                zh_retndlen( HUGE_VAL, -1, -1 );
             else
@@ -684,8 +683,6 @@ ZH_FUNC( LOG )
                zh_retndlen( zh_exc.retval, zh_exc.retvalwidth, zh_exc.retvaldec );
             else
             {
-               /* math exception is up to the Ziher function, so do this as
-                  Clipper compatible as possible */
                switch( zh_exc.type )
                {
                   case ZH_MATH_ERR_SING:               /* argument to log was 0.0 */
@@ -726,8 +723,6 @@ ZH_FUNC( SQRT )
             if( zh_exc.handled )
                zh_retndlen( zh_exc.retval, zh_exc.retvalwidth, zh_exc.retvaldec );
             else
-               /* math exception is up to the Ziher function, so do this as
-                  Clipper compatible as possible */
                zh_retnd( 0.0 );  /* return 0.0 on all errors (all (?) of type DOMAIN) */
          }
          else

@@ -117,10 +117,6 @@ static ZH_ERRCODE zh_usrReturn( void )
 {
    ZH_ERRCODE errCode = zh_parni( -1 );
 
-   /*
-    * clear the return value - it's not strictly necessary and Clipper
-    * does not make it in many functions but it will much nicer ;-)
-    */
    zh_ret();
 
    return errCode;

@@ -573,7 +573,7 @@ static ZH_BYTE zh_nsxItemType( PZH_ITEM pItem )
 }
 
 /*
- * convert NSX (Clipper) type of key expression to internal one
+ * convert NSX type of key expression to internal one
  */
 static ZH_UCHAR zh_nsxKeyType( ZH_USHORT uiType, ZH_BYTE * pbTrail )
 {
@@ -615,7 +615,7 @@ static ZH_UCHAR zh_nsxKeyTypeCmp( ZH_UCHAR ucType )
 }
 
 /*
- * convert internal type of key expression to NSX (Clipper) one
+ * convert internal type of key expression to NSX one
  */
 static ZH_USHORT zh_nsxKeyTypeRaw( ZH_UCHAR ucType )
 {
@@ -6628,7 +6628,7 @@ static ZH_ERRCODE zh_nsxOpen( NSXAREAP pArea, LPDBOPENINFO pOpenInfo )
       pArea->dbfarea.bLockType = ( ZH_BYTE ) zh_itemGetNI( pItem );
       zh_itemRelease( pItem );
       if( pArea->dbfarea.bLockType == 0 )
-         pArea->dbfarea.bLockType = DB_DBFLOCK_CLIPPER;
+         pArea->dbfarea.bLockType = DB_DBFLOCK_VFP;
    }
 
    errCode = SUPER_OPEN( &pArea->dbfarea.area, pOpenInfo );

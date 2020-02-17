@@ -324,8 +324,6 @@ static ZH_ERRCODE zh_sdfRecId( SDFAREAP pArea, PZH_ITEM pRecNo )
 
    errCode = SELF_RECNO( &pArea->area, &ulRecNo );
 
-   /* this is for strict Clipper compatibility but IMHO Clipper should not
-      do that and always set fixed size independent to the record number */
    if( ulRecNo < 10000000 )
    {
       zh_itemPutNLLen( pRecNo, ulRecNo, 7 );

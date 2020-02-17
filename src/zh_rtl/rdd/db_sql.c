@@ -148,12 +148,7 @@ static ZH_BOOL zh_exportBufSqlVar( PZH_FILEBUF pFileBuf, PZH_ITEM pValue,
                zh_addToFBuffer( pFileBuf, *szEsc );
             if( ( ZH_UCHAR ) *szVal >= 32 )
                zh_addToFBuffer( pFileBuf, *szVal );
-            else
-            {
-#if 0
-               printf( "%d %c", *szVal, *szVal );
-#endif
-            }
+
             szVal++;
          }
          zh_addStrToFBuffer( pFileBuf, szDelim );
@@ -334,11 +329,6 @@ static ZH_ULONG zh_db2Sql( AREAP pArea, PZH_ITEM pFields, ZH_MAXINT llNext,
       zh_xfree( szInsert );
    zh_destroyFBuffer( pFileBuf );
    zh_itemRelease( pTmp );
-
-#if 0
-   /* Writing EOF */
-   zh_fileWrite( pFile, "\x1A", 1, -1 );
-#endif
 
    return ulRecords;
 }

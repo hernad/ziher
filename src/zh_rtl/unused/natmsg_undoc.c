@@ -51,8 +51,6 @@
 ZH_FUNC_TRANSLATE( ISAFFIRM, __NATISAFFIRM )
 ZH_FUNC_TRANSLATE( ISNEGATIVE, __NATISNEGATIVE )
 ZH_FUNC_TRANSLATE( NATIONMSG, __NATMSG )
-/* NOTE: Intentionally using one leading underscore, like in Clipper. [vszakats] */
 ZH_FUNC_TRANSLATE( _NATSORTVER, __NATSORTVER )
-/* NOTE: Intentionally using one leading underscore, like in Clipper. [vszakats] */
 ZH_FUNC_TRANSLATE( _NATMSGVER, __NATMSGVER )
 

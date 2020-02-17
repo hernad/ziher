@@ -1,5 +1,5 @@
 /*
- * LenNum() compatibility function from the SAMPLES directory of Clipper.
+ * LenNum()
  *
  * Copyright 1999-2001 Viktor Szakats
  *

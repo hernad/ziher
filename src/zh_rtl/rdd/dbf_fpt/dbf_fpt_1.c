@@ -356,12 +356,7 @@ static ZH_ERRCODE zh_fptPutRootBlock( FPTAREAP pArea, ZH_ULONG ulBlock )
                type[4] = 1001 (big endian)
                size[4] = rest of block size (block size - 8) (big endian)
 
-   TODO: Clipper 5.3 can use more then one GC page. I don't have any
-   documentation for that and don't have time for farther hacking
-   binary files to find the algorithm. If you have any documentation
-   about it, please send it to me.
-   OK. I've found a while for analyzing the FPT file created by Clipper
-   and I think I know this structure. It's a tree. The node type
+   It's a tree. The node type
    is marked in the first two bytes of GC page encoded as bit field with
    the number of items 2 - means branch node, 3-leaf node. The value in
    GC node is calculated as:
@@ -4292,7 +4287,6 @@ static ZH_ERRCODE zh_fptOpenMemFile( FPTAREAP pArea, LPDBOPENINFO pOpenInfo )
             {
                pArea->uiMemoVersion = DB_MEMOVER_CLIP;
             }
-            /* Check for compatibility with Clipper 5.3/FlexFile3 malformed memo headers */
             if( pArea->uiMemoVersion != DB_MEMOVER_SIX &&
                 memcmp( fptHeader.signature2, "FlexFile3\003", 10 ) == 0 )
             {
@@ -5090,17 +5084,12 @@ static ZH_ERRCODE zh_fptFieldInfo( FPTAREAP pArea, ZH_USHORT uiIndex, ZH_USHORT 
             zh_itemPutNL( pItem, zh_fptGetMemoLen( pArea, uiIndex ) );
             return ZH_SUCCESS;
          case DBS_BLOB_OFFSET:
-            /* Clipper 5.3 does not support it :-( [druzus] */
             zh_dbfGetMemoData( ( DBFAREAP ) pArea, uiIndex - 1,
                                &ulBlock, &ulSize, &ulType );
             zh_itemPutNInt( pItem, ( ZH_FOFFSET ) ulBlock * pArea->ulMemoBlockSize +
                                    ( pArea->bMemoType == DB_MEMO_FPT ? sizeof( FPTBLOCK ) : 0 ) );
             return ZH_SUCCESS;
          case DBS_BLOB_POINTER:
-            /*
-             * Clipper 5.3 it returns the same value as DBS_BLOB_OFFSET
-             * in Ziher - it's a Clipper bug [druzus]
-             */
             zh_dbfGetMemoData( ( DBFAREAP ) pArea, uiIndex - 1,
                                &ulBlock, &ulSize, &ulType );
             zh_itemPutNL( pItem, ulBlock );

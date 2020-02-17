@@ -68,11 +68,6 @@ FUNCTION AChoice( nTop, nLeft, nBottom, nRight, acItems, xSelect, xUserFunc, nPo
 
    ColorSelect( CLR_STANDARD )
 
-   /* NOTE: Undocumented parameter passing handled. AChoice()
-            is called in such way in rldialg.prg from RL tool
-            supplied with Clipper 5.x. 6th parameter is the
-            user function and 7th parameter is zero (empty I
-            suppose). [vszakats] */
    IF Empty( xUserFunc ) .AND. ValType( xSelect ) $ "CBS"
       xUserFunc := xSelect
       xSelect := NIL

@@ -57,47 +57,35 @@ ZH_EXTERN_BEGIN
 #define DBF_TABLEEXT                      ".dbf"
 
 /* DBF locking schemes */
-#define DBF_LOCKPOS_CLIPPER               1000000000UL
-#define DBF_LOCKPOS_CLIPPER2              4000000000UL
 #define DBF_LOCKPOS_COMIX                 1000000000UL
 #define DBF_LOCKPOS_VFP                   0x40000000UL
 #define DBF_LOCKPOS_VFPX                  0x7ffffffeUL
 #define DBF_LOCKPOS_HB32                  4000000000UL
 #define DBF_LOCKPOS_HB64                  ZH_LL( 0x7F00000000000000 )
 
-#define DBF_LOCKDIR_CLIPPER               1
-#define DBF_LOCKDIR_CLIPPER2              1
 #define DBF_LOCKDIR_COMIX                 1
 #define DBF_LOCKDIR_VFP                   2  /* lock forward at at record offset */
 #define DBF_LOCKDIR_VFPX                  -1
 #define DBF_LOCKDIR_HB32                  1
 #define DBF_LOCKDIR_HB64                  1
 
-#define DBF_FLCKSIZE_CLIPPER              1000000000UL
-#define DBF_FLCKSIZE_CLIPPER2             294967295UL
 #define DBF_FLCKSIZE_COMIX                1000000000UL
 #define DBF_FLCKSIZE_VFP                  0x3ffffffdUL
 #define DBF_FLCKSIZE_VFPX                 0x07ffffffUL
 #define DBF_FLCKSIZE_HB32                 294967295UL
 #define DBF_FLCKSIZE_HB64                 0xfffffffeUL
 
-#define DBF_RLCKSIZE_CLIPPER              1UL
-#define DBF_RLCKSIZE_CLIPPER2             1UL
 #define DBF_RLCKSIZE_COMIX                1UL
 #define DBF_RLCKSIZE_VFP                  1UL
 #define DBF_RLCKSIZE_VFPX                 1UL
 #define DBF_RLCKSIZE_HB32                 1UL
 #define DBF_RLCKSIZE_HB64                 1UL
 
-#define IDX_LOCKPOS_CLIPPER               1000000000UL
-#define IDX_LOCKPOS_CLIPPER2              1000000000UL
 #define IDX_LOCKPOS_COMIX                 0xfffeffffUL
 #define IDX_LOCKPOS_VFP                   0x7ffffffeUL
 #define IDX_LOCKPOS_HB32                  0xfffeffffUL
 #define IDX_LOCKPOS_HB64                  ZH_LL( 0x7FFFFFFF00000001 )
 
-#define IDX_LOCKPOOL_CLIPPER              0UL
-#define IDX_LOCKPOOL_CLIPPER2             0UL
 #define IDX_LOCKPOOL_COMIX                0x00010000UL
 #define IDX_LOCKPOOL_VFP                  0UL
 #define IDX_LOCKPOOL_HB32                 0x00010000UL

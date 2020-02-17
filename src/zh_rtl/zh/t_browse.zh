@@ -104,10 +104,6 @@
 
 CREATE CLASS TBrowse
 
-/* The first 18 instance variables are exactly the same as in Clipper
- * so also some code which access them directly by array indexes should work
- */
-
    VAR cargo      AS USUAL          EXPORTED    // 01. User-definable variable
 
    PROTECTED:
@@ -129,7 +125,7 @@ CREATE CLASS TBrowse
    VAR bGoTopBlock    AS BLOCK INIT {|| NIL }   // 12. Code block executed by TBrowse:goTop()
    VAR bGoBottomBlock AS BLOCK INIT {|| NIL }   // 13. Code block executed by TBrowse:goBottom()
 
-   VAR dummy                   INIT ""          // 14. ??? In Clipper it's character variable with internal C level structure containing browse data
+   VAR dummy                   INIT ""          // 14. it's character variable with internal C level structure containing browse data
 
    VAR cBorder    AS CHARACTER                  // 15. character value defining characters drawn around object
    VAR cMessage                                 // 16. character string displayed on status bar
@@ -603,13 +599,7 @@ METHOD readRecord( nRow ) CLASS TBrowse
       IF nRow <= ::nLastRow
          nToMove := nRow - ::nBufferPos
          nMoved := _SKIP_RESULT( Eval( ::bSkipBlock, nToMove ) )
-         /* FIXME: add protection against unexpected results
-          *        CA-Cl*pper does not fully respect here the returned
-          *        value and current code below replicates what Clipper
-          *        seems to do but it means that in network environment
-          *        with concurrent modifications wrong records can be
-          *        shown. [druzus]
-          */
+
          IF nToMove > 0
             IF nMoved < 0
                nMoved := 0
@@ -793,13 +783,6 @@ METHOD stabilize() CLASS TBrowse
          ::nRowPos := ::nLastRow
       ENDIF
       IF ::nBufferPos != ::nRowPos
-         /* FIXME: add protection against unexpected results
-          *        CA-Cl*pper does not fully respect here the returned
-          *        value and current code below replicates what Clipper
-          *        seems to do but it means that in network environment
-          *        with concurrent modifications wrong records can be
-          *        shown. [druzus]
-          */
          nToMove := ::nRowPos - ::nBufferPos
          nMoved := _SKIP_RESULT( Eval( ::bSkipBlock, nToMove ) )
          IF nToMove > 0
@@ -829,19 +812,6 @@ METHOD stabilize() CLASS TBrowse
 
 METHOD forceStable() CLASS TBrowse
 
-   /* TODO: CA-Cl*pper does not call ::stabilize() if TBrowse object
-    *       is stable and does not need screen update. It may be important
-    *       for applications which do not expect that cursor position may
-    *       be changed. I'll change it in the future but first I will have
-    *       to revert my stupid modifications in Ziher core code. Looking
-    *       at old TBrowse implementation I replaced some:
-    *             DO WHILE ! oBrw:stabilize(); ENDDO
-    *       with:
-    *             oBrw:forceStable()
-    *       In Clipper it's not the same because oBrw:forceStable()
-    *       may not set cursor position and only ::stabilize() does it.
-    *       [druzus]
-    */
    DO WHILE ! ::stabilize()
    ENDDO
 
@@ -1424,9 +1394,6 @@ METHOD doConfigure() CLASS TBrowse
 
    ::lStable := .F.
    ::lFrames := .T.
-
-   /* Clipper does not set refreshAll flag in Configure */
-   /* ::lRefresh := .T. */
 
    ::nLastRow := nRowCount
    ::nLastScroll := 0
@@ -2319,9 +2286,6 @@ METHOD hitTest( mRow, mCol ) CLASS TBrowse
    ENDIF
 
 #ifdef ZH_BRW_STATICMOUSE
-   /* This is not CA-Cl*pper compatible, in Clipper ::mRowPos and ::mColPos
-    * is calculated dynamically by call to MCol() and MRow()
-    */
    ::mRowPos := ::mColPos := 0
 #endif
 

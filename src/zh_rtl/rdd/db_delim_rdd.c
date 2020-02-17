@@ -365,11 +365,6 @@ static ZH_ERRCODE zh_delimReadRecord( DELIMAREAP pArea )
          else
             cStop = pArea->cSeparator;
 
-         /*
-          * Clipper uses different rules for character fields, they
-          * can be terminated only with valid stop character when
-          * other fields also by length
-          */
          if( pField->uiType == ZH_FT_STRING ||
              ( pField->uiType == ZH_FT_TIMESTAMP && cStop == pArea->cDelim ) )
          {

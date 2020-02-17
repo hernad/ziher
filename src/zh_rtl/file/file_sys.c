@@ -3809,10 +3809,6 @@ ZH_FHANDLE zh_fsExtOpen( const char * pszFileName, const char * pDefExt,
       {
          zh_fsClose( hFile );
          hFile = FS_ERROR;
-         /*
-          * fix for NetErr() support and Clipper compatibility,
-          * should be revised with a better multi platform solution.
-          */
          zh_fsSetError( ( nExFlags & FXO_TRUNCATE ) ? 5 : 32 );
       }
       else if( nExFlags & FXO_TRUNCATE )
@@ -3829,10 +3825,6 @@ ZH_FHANDLE zh_fsExtOpen( const char * pszFileName, const char * pDefExt,
       }
    }
 #else
-   /*
-    * Temporary fix for NetErr() support and Clipper compatibility,
-    * should be revised with a better solution.
-    */
    if( ( nExFlags & ( FXO_TRUNCATE | FXO_APPEND | FXO_UNIQUE ) ) == 0 &&
        zh_fsError() == 5 )
    {

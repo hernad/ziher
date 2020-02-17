@@ -44,47 +44,6 @@
  *
  */
 
-/*
- * Notes from the fringe... <ptucker@sympatico.ca>
- *
- * Clipper is a bit schizoid with the treatment of file attributes, but we've
- * emulated that weirdness here for your viewing amusement.
- *
- * In Clippers' home world of MS-DOS, there are 5 basic attributes: 'A'rchive,
- * 'H'idden, 'S'ystem, 'R'eadonly and 'D'irectory.  In addition, a file can
- * have no attributes, and only 1 file per physical partition can have the
- * 'V'olume label.
- *
- * For a given file request, it is implied that the attribute mask includes
- * all attributes except 'H'idden, 'S'ystem, 'D'irectory and 'V'olume.
- * The returned file list will always include (for instance) 'R'eadOnly files
- * unless they also happen to be 'H'idden and that attribute was not requested.
- *
- * "V" is a special case - you will get back the entry that describes the
- * volume label for the drive implied by the file mask.
- *
- * Differences from the 'standard' (where supported):
- * - Filenames will be returned in the same case as they are stored in the
- *   directory.  Clipper (and VO too) will convert the names to upper case
- * - Filenames will be the full filename as supported by the OS in use.
- * - There are a number of additional file attributes returned.
- *   They are:
- *       'I' - DEVICE      File is a device
- *       'T' - TEMPORARY   File is a Temporary file
- *       'P' - SPARSE      File is Sparse
- *       'L' - REPARSE     File/Dir is a reparse point
- *       'C' - COMPRESSED  File/Dir is compressed
- *       'O' - OFFLINE     File/Dir is not online
- *       'X' - NOTINDEXED  Exclude File/Dir from Indexing Service
- *       'E' - ENCRYPTED   File/Dir is Encrypted
- *       'M' - VOLCOMP     Volume Supports Compression
- * - Clipper can sometimes drop the ReadOnly indication of directories.
- *   Ziher detects this correctly.
- *
- * TODO: - check that path support vis stat works on all platforms
- *       - UNC Support? ie: dir \\myserver\root
- *
- */
 
 #include "zh_api.h"
 #include "zh_apifs.h"

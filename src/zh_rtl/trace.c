@@ -1,5 +1,5 @@
 /*
- * The Clipper tracing API
+ * The Ziher tracing API
  *
  * Copyright 2009 Viktor Szakats
  * Copyright 1999 Gonzalo A. Diethelm <gonzalo.diethelm@iname.com>

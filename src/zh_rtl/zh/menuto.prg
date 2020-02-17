@@ -204,8 +204,6 @@ FUNCTION __MenuTo( bBlock, cVariable )
                MRow(), MCol() ) ) > 0
                n := nMouseClik
             ENDIF
-            /* QUESTION: Clipper does this, but shouldn't we only
-                         exit when HitTest() was successful? */
             IF nKeyStd == K_LDBLCLK
                lExit := .T.
             ENDIF
