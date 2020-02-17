@@ -46,7 +46,7 @@
  */
 
 #include "class.zhh"
-#include "hblang.ch"
+#include "lang.zhh"
 
 #include "color.zhh"
 #include "set_curs.zhh"

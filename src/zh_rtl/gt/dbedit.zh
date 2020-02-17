@@ -46,7 +46,7 @@
 
 #pragma -gc0
 
-#include "dbedit.ch"
+#include "dbedit.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
 

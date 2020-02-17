@@ -47,7 +47,7 @@
 
 #include "class.zhh"
 
-#include "tbrowse.ch"
+#include "tbrowse.zhh"
 
 /* NOTE: In CA-Cl*pper TBColumn class does not inherit from any other classes. */
 

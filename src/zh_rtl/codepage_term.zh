@@ -44,7 +44,7 @@
  *
  */
 
-#include "hbextcdp.ch"
+#include "codepage_ext.zhh"
 
 FUNCTION zh_cdpTerm()
 

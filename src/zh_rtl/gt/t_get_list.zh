@@ -51,7 +51,7 @@
 #include "get_exit.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
-#include "tbrowse.ch"
+#include "tbrowse.zhh"
 
 #define SCORE_ROW       0
 #define SCORE_COL       60

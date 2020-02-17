@@ -55,7 +55,7 @@
 #include "error.zhh"
 #include "inkey.zhh"
 #include "set_curs.zhh"
-#include "tbrowse.ch"
+#include "tbrowse.zhh"
 
 /* ZH_BRW_STATICMOUSE controls if mouse position is static
  * and set by call to HitTest() method or dynamic calculated

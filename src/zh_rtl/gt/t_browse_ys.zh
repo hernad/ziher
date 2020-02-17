@@ -1,7 +1,5 @@
 /*
- * Header file for dynamic PCODE modules (ZHB) options
- *
- * Copyright 2009 Przemyslaw Czerpak
+ * Copyright 2007
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,38 +42,54 @@
  *
  */
 
-/* NOTE: This file is also used by C code. */
-
-#ifndef ZH_ZZH_ZH_
-#define ZH_ZZH_ZH_
-
-#define ZH_ZZH_BIND_DEFAULT      0x0   /* do not overwrite any functions, ignore
-                                          public ZHB functions if functions with
-                                          the same names already exist in HVM */
-
-#define ZH_ZZH_BIND_LOCAL        0x1   /* do not overwrite any functions
-                                          but keep local references, so
-                                          if module has public function FOO and
-                                          this function exists also in HVM
-                                          then the function in ZHB is converted
-                                          to STATIC one */
-
-#define ZH_ZZH_BIND_OVERLOAD     0x2   /* overload all existing public functions */
-
-#define ZH_ZZH_BIND_FORCELOCAL   0x3   /* convert all public functions to STATIC ones */
-
-#define ZH_ZZH_BIND_MODEMASK     0x3   /* ZH_ZZH_BIND_* mode mask */
-
-#define ZH_ZZH_BIND_LAZY         0x4   /* lazy binding with external public
-                                          functions allows to load .zhb files
-                                          with unresolved or cross function
-                                          references */
+#pragma -gc0
 
 
-#define ZH_ZZH_FUNC_PUBLIC       0x1   /* locally defined public functions */
-#define ZH_ZZH_FUNC_STATIC       0x2   /* locally defined static functions */
-#define ZH_ZZH_FUNC_LOCAL        0x3   /* locally defined functions */
-#define ZH_ZZH_FUNC_EXTERN       0x4   /* external functions used in ZHB module */
+#include "button.zhh"
+#include "tbrowse.zhh"
 
+FUNCTION TApplyKey( nKey, oBrowse )
+   RETURN oBrowse:applyKey( nKey )
 
-#endif /* ZH_ZZH_ZH_ */
+PROCEDURE TBAddCol() /* TODO */
+   RETURN
+
+PROCEDURE TBBBlock() /* TODO */
+   RETURN
+
+PROCEDURE TBClose() /* TODO */
+   RETURN
+
+PROCEDURE TBCreate() /* TODO */
+   RETURN
+
+PROCEDURE TBDelCol() /* TODO */
+   RETURN
+
+PROCEDURE TBDisplay() /* TODO */
+   RETURN
+
+PROCEDURE TBEditCell() /* TODO */
+   RETURN
+
+PROCEDURE TBFBlock() /* TODO */
+   RETURN
+
+PROCEDURE TBGoBot() /* TODO */
+   RETURN
+
+PROCEDURE TBGoTop() /* TODO */
+   RETURN
+
+PROCEDURE TBInsCol() /* TODO */
+   RETURN
+
+PROCEDURE TBModal() /* TODO */
+   RETURN
+
+PROCEDURE TBSBlock() /* TODO */
+   RETURN
+
+PROCEDURE TBSkip() /* TODO */
+   RETURN
+

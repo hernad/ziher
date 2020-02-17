@@ -1,7 +1,7 @@
 /*
- * Header file for dynamic PCODE modules (ZHB) options
+ * Header file for box drawing
  *
- * Copyright 2009 Przemyslaw Czerpak
+ * Copyright 1999 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,38 +44,30 @@
  *
  */
 
-/* NOTE: This file is also used by C code. */
+#ifndef _BOX_CH
+#define _BOX_CH
 
-#ifndef ZH_ZZH_ZH_
-#define ZH_ZZH_ZH_
+/* #defines for DispBox() */
 
-#define ZH_ZZH_BIND_DEFAULT      0x0   /* do not overwrite any functions, ignore
-                                          public ZHB functions if functions with
-                                          the same names already exist in HVM */
+/* Single-line */
+#define B_SINGLE        ( Chr( 218 ) + Chr( 196 ) + Chr( 191 ) + Chr( 179 ) + ; /* "┌─┐│┘─└│" */
+                          Chr( 217 ) + Chr( 196 ) + Chr( 192 ) + Chr( 179 ) )
 
-#define ZH_ZZH_BIND_LOCAL        0x1   /* do not overwrite any functions
-                                          but keep local references, so
-                                          if module has public function FOO and
-                                          this function exists also in HVM
-                                          then the function in ZHB is converted
-                                          to STATIC one */
+/* Double-line */
+#define B_DOUBLE        ( Chr( 201 ) + Chr( 205 ) + Chr( 187 ) + Chr( 186 ) + ; /* "╔═╗║╝═╚║" */
+                          Chr( 188 ) + Chr( 205 ) + Chr( 200 ) + Chr( 186 ) )
 
-#define ZH_ZZH_BIND_OVERLOAD     0x2   /* overload all existing public functions */
+/* Single-line top, double-line sides */
+#define B_SINGLE_DOUBLE ( Chr( 214 ) + Chr( 196 ) + Chr( 183 ) + Chr( 186 ) + ; /* "╓─╖║╜─╙║" */
+                          Chr( 189 ) + Chr( 196 ) + Chr( 211 ) + Chr( 186 ) )
 
-#define ZH_ZZH_BIND_FORCELOCAL   0x3   /* convert all public functions to STATIC ones */
+/* Double-line top, single-line sides */
+#define B_DOUBLE_SINGLE ( Chr( 213 ) + Chr( 205 ) + Chr( 184 ) + Chr( 179 ) + ; /* "╒═╕│╛═╘│" */
+                          Chr( 190 ) + Chr( 205 ) + Chr( 212 ) + Chr( 179 ) )
 
-#define ZH_ZZH_BIND_MODEMASK     0x3   /* ZH_ZZH_BIND_* mode mask */
+#define ZH_B_SINGLE_UNI        zh_UTF8ToStrBox( "┌─┐│┘─└│" )
+#define ZH_B_DOUBLE_UNI        zh_UTF8ToStrBox( "╔═╗║╝═╚║" )
+#define ZH_B_SINGLE_DOUBLE_UNI zh_UTF8ToStrBox( "╓─╖║╜─╙║" )
+#define ZH_B_DOUBLE_SINGLE_UNI zh_UTF8ToStrBox( "╒═╕│╛═╘│" )
 
-#define ZH_ZZH_BIND_LAZY         0x4   /* lazy binding with external public
-                                          functions allows to load .zhb files
-                                          with unresolved or cross function
-                                          references */
-
-
-#define ZH_ZZH_FUNC_PUBLIC       0x1   /* locally defined public functions */
-#define ZH_ZZH_FUNC_STATIC       0x2   /* locally defined static functions */
-#define ZH_ZZH_FUNC_LOCAL        0x3   /* locally defined functions */
-#define ZH_ZZH_FUNC_EXTERN       0x4   /* external functions used in ZHB module */
-
-
-#endif /* ZH_ZZH_ZH_ */
+#endif /* _BOX_CH */

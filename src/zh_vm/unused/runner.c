@@ -73,7 +73,7 @@ typedef struct
    PZH_SYMB    pSymRead;                        /* Symbols read */
    PZH_DYNF    pDynFunc;                        /* Functions read */
    PZH_SYMBOLS pModuleSymbols;
-} ZHB_BODY, * PZHB_BODY;
+} ZZH_BODY, * PZZH_BODY;
 
 static const char s_szHead[ 4 ] = { '\xC0', 'H', 'R', 'B' };
 
@@ -160,7 +160,7 @@ static ZH_ULONG zh_zhbFindSymbol( const char * szName, PZH_DYNF pDynFunc, ZH_ULO
    return SYM_NOT_FOUND;
 }
 
-static void zh_zhbInitStatic( PZHB_BODY pHrbBody )
+static void zh_zhbInitStatic( PZZH_BODY pHrbBody )
 {
    if( ! pHrbBody->fInit && ! pHrbBody->fExit )
    {
@@ -191,7 +191,7 @@ static void zh_zhbInitStatic( PZHB_BODY pHrbBody )
    }
 }
 
-static void zh_zhbInit( PZHB_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
+static void zh_zhbInit( PZZH_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
 {
    if( pHrbBody->fInit )
    {
@@ -237,7 +237,7 @@ static void zh_zhbInit( PZHB_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
    }
 }
 
-static void zh_zhbExit( PZHB_BODY pHrbBody )
+static void zh_zhbExit( PZZH_BODY pHrbBody )
 {
    if( pHrbBody->fExit )
    {
@@ -265,7 +265,7 @@ static void zh_zhbExit( PZHB_BODY pHrbBody )
    }
 }
 
-static void zh_zhbUnLoad( PZHB_BODY pHrbBody )
+static void zh_zhbUnLoad( PZZH_BODY pHrbBody )
 {
    zh_zhbExit( pHrbBody );
 
@@ -300,9 +300,9 @@ static void zh_zhbUnLoad( PZHB_BODY pHrbBody )
    zh_xfree( pHrbBody );
 }
 
-static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHORT usMode, const char * szFileName )
+static PZZH_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHORT usMode, const char * szFileName )
 {
-   PZHB_BODY pHrbBody = NULL;
+   PZZH_BODY pHrbBody = NULL;
 
    if( szHrbBody )
    {
@@ -311,7 +311,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
       ZH_SIZE nPos;
       ZH_ULONG ul;
       char * buffer, ch;
-      ZH_USHORT usBind = ( usMode & ZH_ZHB_BIND_MODEMASK );
+      ZH_USHORT usBind = ( usMode & ZH_ZZH_BIND_MODEMASK );
 
       PZH_SYMB pSymRead;           /* Symbols read */
       PZH_DYNF pDynFunc;           /* Functions read */
@@ -325,7 +325,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
          return NULL;
       }
 
-      pHrbBody = ( PZHB_BODY ) zh_xgrab( sizeof( ZHB_BODY ) );
+      pHrbBody = ( PZZH_BODY ) zh_xgrab( sizeof( ZZH_BODY ) );
 
       pHrbBody->fInit = ZH_FALSE;
       pHrbBody->fExit = ZH_FALSE;
@@ -455,7 +455,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
             {
                pSymRead[ ul ].value.pCodeFunc = &pHrbBody->pDynFunc[ nPos ].pcodeFunc;
                pSymRead[ ul ].scope.value |= ZH_FS_PCODEFUNC | ZH_FS_LOCAL |
-                  ( usBind == ZH_ZHB_BIND_FORCELOCAL ? ZH_FS_STATIC : 0 );
+                  ( usBind == ZH_ZZH_BIND_FORCELOCAL ? ZH_FS_STATIC : 0 );
             }
          }
          else if( pSymRead[ ul ].value.pCodeFunc == ( PZH_PCODEFUNC ) SYM_DEFERRED )
@@ -481,7 +481,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
             }
             else if( ( pSymRead[ ul ].scope.value & ZH_FS_DEFERRED ) == 0 )
             {
-               if( ( usMode & ZH_ZHB_BIND_LAZY ) != 0 )
+               if( ( usMode & ZH_ZZH_BIND_LAZY ) != 0 )
                   pSymRead[ ul ].scope.value |= ZH_FS_DEFERRED;
                else
                {
@@ -499,7 +499,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
 
       if( zh_vmLockModuleSymbols() )
       {
-         if( usBind == ZH_ZHB_BIND_LOCAL )
+         if( usBind == ZH_ZZH_BIND_LOCAL )
          {
             for( ul = 0; ul < pHrbBody->ulSymbols; ul++ )
             {
@@ -519,7 +519,7 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
          pHrbBody->pModuleSymbols = zh_vmRegisterSymbols( pHrbBody->pSymRead,
                         ( ZH_USHORT ) pHrbBody->ulSymbols,
                         szFileName ? szFileName : "pcode.zhb", 0,
-                        ZH_TRUE, ZH_FALSE, usBind == ZH_ZHB_BIND_OVERLOAD );
+                        ZH_TRUE, ZH_FALSE, usBind == ZH_ZZH_BIND_OVERLOAD );
 
          if( pHrbBody->pModuleSymbols->pModuleSymbols != pSymRead )
          {
@@ -554,9 +554,9 @@ static PZHB_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
    return pHrbBody;
 }
 
-static PZHB_BODY zh_zhbLoadFromFile( const char * szHrb, ZH_USHORT usMode )
+static PZZH_BODY zh_zhbLoadFromFile( const char * szHrb, ZH_USHORT usMode )
 {
-   PZHB_BODY pHrbBody = NULL;
+   PZZH_BODY pHrbBody = NULL;
    PZH_ITEM pError = NULL;
    PZH_FILE pFile;
 
@@ -597,7 +597,7 @@ static PZHB_BODY zh_zhbLoadFromFile( const char * szHrb, ZH_USHORT usMode )
    return pHrbBody;
 }
 
-static void zh_zhbDo( PZHB_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
+static void zh_zhbDo( PZZH_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
 {
    PZH_ITEM pRetVal = NULL;
 
@@ -625,9 +625,9 @@ static void zh_zhbDo( PZHB_BODY pHrbBody, int iPCount, PZH_ITEM * pParams )
 }
 
 /* ZHB module destructor */
-static ZH_GARBAGE_FUNC( zh_zhb_Destructor )
+static ZH_GARBAGE_FUNC( zh_zzh_Destructor )
 {
-   PZHB_BODY * pHrbPtr = ( PZHB_BODY * ) Cargo;
+   PZZH_BODY * pHrbPtr = ( PZZH_BODY * ) Cargo;
 
    if( *pHrbPtr )
    {
@@ -638,20 +638,20 @@ static ZH_GARBAGE_FUNC( zh_zhb_Destructor )
 
 static const ZH_GC_FUNCS s_gcHrbFuncs =
 {
-   zh_zhb_Destructor,
+   zh_zzh_Destructor,
    zh_gcDummyMark
 };
 
-static PZHB_BODY zh_zhbParam( int iParam )
+static PZZH_BODY zh_zhbParam( int iParam )
 {
-   PZHB_BODY * pHrbPtr = ( PZHB_BODY * ) zh_parptrGC( &s_gcHrbFuncs, iParam );
+   PZZH_BODY * pHrbPtr = ( PZZH_BODY * ) zh_parptrGC( &s_gcHrbFuncs, iParam );
 
    return pHrbPtr ? *pHrbPtr : NULL;
 }
 
-static void zh_zhbReturn( PZHB_BODY pHrbBody )
+static void zh_zhbReturn( PZZH_BODY pHrbBody )
 {
-   PZHB_BODY * pHrbPtr = ( PZHB_BODY * ) zh_gcAllocate( sizeof( PZHB_BODY ),
+   PZZH_BODY * pHrbPtr = ( PZZH_BODY * ) zh_gcAllocate( sizeof( PZZH_BODY ),
                                                         &s_gcHrbFuncs );
 
    *pHrbPtr = pHrbBody;
@@ -669,7 +669,7 @@ static void zh_zhbReturn( PZHB_BODY pHrbBody )
  */
 ZH_FUNC( ZH_ZHBRUN )
 {
-   ZH_USHORT usMode = ZH_ZHB_BIND_DEFAULT;
+   ZH_USHORT usMode = ZH_ZZH_BIND_DEFAULT;
    ZH_USHORT nParam = 1;
    ZH_SIZE nLen;
 
@@ -684,7 +684,7 @@ ZH_FUNC( ZH_ZHBRUN )
    if( nLen > 0 )
    {
       const char * fileOrBody = zh_parc( nParam );
-      PZHB_BODY pHrbBody;
+      PZZH_BODY pHrbBody;
 
       if( zh_zhbCheckSig( fileOrBody, nLen ) != 0 )
          pHrbBody = zh_zhbLoad( fileOrBody, nLen, usMode, NULL );
@@ -720,7 +720,7 @@ ZH_FUNC( ZH_ZHBRUN )
 
 ZH_FUNC( ZH_ZHBLOAD )
 {
-   ZH_USHORT usMode = ZH_ZHB_BIND_DEFAULT;
+   ZH_USHORT usMode = ZH_ZZH_BIND_DEFAULT;
    ZH_USHORT nParam = 1;
    ZH_SIZE nLen;
 
@@ -735,7 +735,7 @@ ZH_FUNC( ZH_ZHBLOAD )
    if( nLen > 0 )
    {
       const char * fileOrBody = zh_parc( nParam );
-      PZHB_BODY pHrbBody;
+      PZZH_BODY pHrbBody;
 
       if( zh_zhbCheckSig( fileOrBody, nLen ) != 0 )
          pHrbBody = zh_zhbLoad( fileOrBody, nLen, usMode, NULL );
@@ -768,7 +768,7 @@ ZH_FUNC( ZH_ZHBLOAD )
 
 ZH_FUNC( ZH_ZHBDO )
 {
-   PZHB_BODY pHrbBody = zh_zhbParam( 1 );
+   PZZH_BODY pHrbBody = zh_zhbParam( 1 );
 
    if( pHrbBody )
    {
@@ -794,11 +794,11 @@ ZH_FUNC( ZH_ZHBDO )
 
 ZH_FUNC( ZH_ZHBUNLOAD )
 {
-   PZHB_BODY * pHrbPtr = ( PZHB_BODY * ) zh_parptrGC( &s_gcHrbFuncs, 1 );
+   PZZH_BODY * pHrbPtr = ( PZZH_BODY * ) zh_parptrGC( &s_gcHrbFuncs, 1 );
 
    if( pHrbPtr )
    {
-      PZHB_BODY pHrbBody = *pHrbPtr;
+      PZZH_BODY pHrbBody = *pHrbPtr;
 
       if( pHrbBody )
       {
@@ -812,7 +812,7 @@ ZH_FUNC( ZH_ZHBUNLOAD )
 
 ZH_FUNC( ZH_ZHBGETFUNSYM )
 {
-   PZHB_BODY pHrbBody = zh_zhbParam( 1 );
+   PZZH_BODY pHrbBody = zh_zhbParam( 1 );
    const char * szName = zh_parc( 2 );
 
    if( pHrbBody && szName )
@@ -837,7 +837,7 @@ ZH_FUNC( ZH_ZHBGETFUNSYM )
 
 ZH_FUNC( ZH_ZHBGETFUNLIST )
 {
-   PZHB_BODY pHrbBody = zh_zhbParam( 1 );
+   PZZH_BODY pHrbBody = zh_zhbParam( 1 );
 
    if( pHrbBody )
    {
@@ -853,12 +853,12 @@ ZH_FUNC( ZH_ZHBGETFUNLIST )
              ( pSym->scope.value & ZH_FS_INITEXIT ) == 0 )
          {
             if( iType == 0 ||
-                ( ( iType & ZH_ZHB_FUNC_EXTERN ) &&
+                ( ( iType & ZH_ZZH_FUNC_EXTERN ) &&
                   ( pSym->scope.value & ZH_FS_LOCAL ) == 0 ) ||
                 ( ( pSym->scope.value & ZH_FS_LOCAL ) &&
-                  ( ( ( iType & ZH_ZHB_FUNC_STATIC ) &&
+                  ( ( ( iType & ZH_ZZH_FUNC_STATIC ) &&
                       ( pSym->scope.value & ZH_FS_STATIC ) ) ||
-                    ( ( iType & ZH_ZHB_FUNC_PUBLIC ) &&
+                    ( ( iType & ZH_ZZH_FUNC_PUBLIC ) &&
                       ( pSym->scope.value & ZH_FS_STATIC ) == 0 ) ) ) )
             {
                zh_arrayAdd( paList, zh_itemPutC( pFuncName, pSym->szName ) );
