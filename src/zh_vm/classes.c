@@ -4679,7 +4679,6 @@ ZH_FUNC_STATIC( msgNoMethod )
       zh_snprintf( szDesc, sizeof( szDesc ), "Class: '%s' has no exported method", zh_objGetClsName( zh_stackSelfItem() ) );
       zh_errRT_BASE_SubstR( EG_NOMETHOD, 1004, szDesc, szName, ZH_ERR_ARGS_BASEPARAMS );
    }
-#endif
 }
 
 /* __msgScopeErr()
