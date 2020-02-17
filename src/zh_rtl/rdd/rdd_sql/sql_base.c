@@ -48,10 +48,10 @@
 #include "zh_item_api.h"
 #include "zh_vm.h"
 #include "zh_set.h"
-#include "hbrddsql.h"
-#include "rdd_sys.zhh"
+#include "zh_rdd_sql.h"
+#include "../rdd_sys.zhh"
 
-#include "hbtrace.h"
+#include "zh_trace.h"
 
 #define SUPERTABLE              ( &sqlbaseSuper )
 

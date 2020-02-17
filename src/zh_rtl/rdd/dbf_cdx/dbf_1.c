@@ -55,15 +55,17 @@
 #include "zh_lang_api.h"
 #include "zh_set.h"
 #include "zh_date.h"
-#include "zh_sx_func.h"
 #include "zh_stack.h"
 #include "zh_vm.h"
 #include "error.zhh"
-#include "rdd_sys.zhh"
-#include "sx_def.zhh"
 
+#include "../rdd_sys.zhh"
+#include "../dbf_six/sx_def.zhh"
 #include "zh_codepage_api.h"
 
+#ifdef ZH_SIXCDX
+   #include "../dbf_six/zh_sx_func.h"
+#endif
 
 static ZH_USHORT s_uiRddId = ( ZH_USHORT ) -1;
 static RDDFUNCS  dbfSuper;

@@ -53,9 +53,10 @@
 #include "zh_item_api.h"
 #include "zh_lang_api.h"
 #include "zh_api_error.h"
-#include "zh_dbf_err.h"
 #include "zh_rdd_sdf.h"
 #include "rdd_sys.zhh"
+
+#include "dbf_cdx/zh_dbf_error.h"
 
 #define SUPERTABLE  ( &sdfSuper )
 

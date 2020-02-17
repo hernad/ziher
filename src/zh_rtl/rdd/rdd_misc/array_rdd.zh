@@ -54,7 +54,7 @@
 #include "error.zhh"
 #include "fileio.ch"
 #include "hbtrace.ch"
-#include "hbusrrdd.ch"
+#include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
 #define THROW( oErr )      ( Eval( ErrorBlock(), oErr ), Break( oErr ) )

@@ -54,8 +54,8 @@
 #include "zh_xvm.h"
 #include "zh_stack.h"
 #include "zh_init.h"
-#include "rdd_sys.zhh"
-#include "hbusrrdd.ch"
+#include "../rdd_sys.zhh"
+#include "rdd_usr.zhh"
 
 #define SELF_USRNODE( w )  ( s_pUsrRddNodes[ ( w )->rddID ] )
 #define SELF_USRDATA( w )  ( ( LPUSRRDDDATA ) ( ( ZH_BYTE * ) ( w ) + \

@@ -103,8 +103,8 @@ C_SOURCES := \
    hbprocfn.c \
    hbrand.c \
    hbrandom.c \
-   hbregex.c \
-   hbregexc.c \
+   zh_regex.h.c \
+   zh_regex.hc.c \
    hbrunfun.c \
    hbsha1.c \
    hbsha1hm.c \

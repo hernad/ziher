@@ -48,7 +48,7 @@
 #define ZH_RDDDBF_H_
 
 #include "zh_rdd_api.h"
-#include "zh_dbf_err.h"
+#include "zh_dbf_error.h"
 #include "zh_dbf.h"
 
 ZH_EXTERN_BEGIN

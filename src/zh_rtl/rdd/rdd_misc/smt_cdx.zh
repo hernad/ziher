@@ -51,7 +51,7 @@
  */
 
 #include "db_info.zhh"
-#include "hbusrrdd.ch"
+#include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
 /* Force linking DBFCDX and DBFFPT from which our RDD inherits */

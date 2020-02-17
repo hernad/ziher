@@ -138,7 +138,7 @@
 #include "zh_math.h"
 #include "hbrddntx.h"
 #include "rdd_sys.zhh"
-#include "hbregex.h"
+#include "zh_regex.h"
 #include "zh_codepage_api.h"
 
 #ifdef ZH_NTX_DEBUG_DISP

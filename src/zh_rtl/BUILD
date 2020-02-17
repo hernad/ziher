@@ -24,10 +24,11 @@ cc_library(
         "string/*.h",
         "string/*.zhh",
         "gt/*.h",
-        "gt/*.zhh"
+        "gt/*.zhh",
     ]),
     alwayslink = 1,
     deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm" ],
     visibility = ["//visibility:public"],
+    includes = ["*.*", "string/*.*"]
 )
 

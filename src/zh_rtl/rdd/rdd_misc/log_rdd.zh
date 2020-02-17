@@ -52,7 +52,7 @@
 
 #include "db_info.zhh"
 #include "fileio.ch"
-#include "hbusrrdd.ch"
+#include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
 #define ARRAY_FILENAME      1

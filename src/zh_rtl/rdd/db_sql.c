@@ -53,9 +53,9 @@
 #include "zh_rdd_api.h"
 #include "zh_lang_api.h"
 #include "zh_api_error.h"
-#include "zh_dbf_err.h"
 #include "zh_vm.h"
 #include "zh_date.h"
+#include "dbf_cdx/zh_dbf_error.h"
 
 #define ZH_FILE_BUF_SIZE  0x10000
 typedef struct _ZH_FILEBUF

@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "zh_rdd_fpt.h": "c",
+        "zh_regex.h": "c"
+    }
+}

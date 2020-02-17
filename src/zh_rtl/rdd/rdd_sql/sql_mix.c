@@ -49,14 +49,13 @@
 #include "zh_item_api.h"
 #include "zh_rdd_api.h"
 #include "zh_api_error.h"
-#include "zh_dbf_err.h"
 #include "zh_lang_api.h"
 #include "zh_date.h"
 #include "zh_set.h"
 #include "zh_vm.h"
-#include "rdd_sys.zhh"
-
-#include "hbrddsql.h"
+#include "zh_rdd_sql.h"
+#include "../rdd_sys.zhh"
+#include "../dbf_cdx/zh_dbf_error.h"
 
 #define SUPERTABLE  ( &sqlmixSuper )
 

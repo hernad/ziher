@@ -46,4 +46,4 @@
 
 #define ZH_SIXCDX
 
-#include "dbfcdx1.c"
+#include "dbf_cdx_1.h"

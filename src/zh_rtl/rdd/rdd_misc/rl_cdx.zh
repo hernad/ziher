@@ -52,7 +52,7 @@
  * This idea comes from one of messages sent by Mindaugas Kavaliauskas.
  */
 
-#include "hbusrrdd.ch"
+#include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
 ANNOUNCE RLCDX

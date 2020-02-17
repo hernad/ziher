@@ -56,7 +56,7 @@
 
 #include "zh_api.h"
 #include "zh_apifs.h"
-#include "hbrddnsx.h"
+#include "zh_rdd_nsx.h"
 #include "zh_item_api.h"
 #include "zh_api_error.h"
 #include "zh_init.h"
@@ -65,8 +65,8 @@
 #include "zh_set.h"
 #include "zh_stack.h"
 #include "zh_math.h"
-#include "rdd_sys.zhh"
-#include "hbregex.h"
+#include "zh_rtl/string/zh_regex.h"
+#include "../rdd_sys.zhh"
 
 static RDDFUNCS  nsxSuper;
 static ZH_USHORT s_uiRddId;

@@ -1,7 +1,7 @@
 /*
- * VFPCDX
+ * SQL Database Driver include file
  *
- * Copyright 2007 Miguel Angel Marchuet Frutos <miguelangel /at/ marchuet.net>
+ * Copyright 2009 Mindaugas Kavaliauskas <dbtopas at dbtopas.lt>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,9 +14,9 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; see the file LICENSE.txt.  If not, write to
- * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ * along with this software; see the file COPYING.txt.  If not, write to
+ * the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307 USA (or visit the web site https://www.gnu.org/).
  *
  * As a special exception, the Ziher Project gives permission for
  * additional uses of the text contained in its release of Ziher.
@@ -44,27 +44,21 @@
  *
  */
 
-#include "db_info.zhh"
-#include "rdd_usr.zhh"
-#include "rdd_sys.zhh"
+/* NOTE: This file is also used by C code. */
 
-/* Force linking DBFCDX from which our RDD inherits */
-REQUEST DBFCDX
-REQUEST DBFFPT
+#ifndef ZH_RDDSQL_ZH_
+#define ZH_RDDSQL_ZH_
 
-ANNOUNCE VFPCDX
+/* New ...INFO_ constants */
+#define DBI_QUERY             1001
 
-/* We are inheriting from DBFCDX */
-FUNCTION VFPCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSuperRddID )
-   RETURN USRRDD_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, "DBFCDX", {}, pSuperRddID )
+#define RDDI_CONNECT          1001
+#define RDDI_DISCONNECT       1002
+#define RDDI_EXECUTE          1003
+#define RDDI_ERROR            1004
+#define RDDI_ERRORNO          1005
+#define RDDI_NEWID            1006
+#define RDDI_AFFECTEDROWS     1007
+#define RDDI_QUERY            1008
 
-INIT PROCEDURE VFPCDX_INIT()
-
-   rddRegister( "VFPCDX", RDT_FULL )
-
-   rddInfo( RDDI_TABLETYPE, DB_DBF_VFP, "VFPCDX" )
-   rddInfo( RDDI_MEMOTYPE, DB_MEMO_FPT, "VFPCDX" )
-   rddInfo( RDDI_MEMOVERSION, DB_MEMOVER_STD, "VFPCDX" )
-   rddInfo( RDDI_LOCKSCHEME, DB_DBFLOCK_VFP, "VFPCDX" )
-
-   RETURN
+#endif
