@@ -3,7 +3,7 @@
  *    zh_UChar(), zh_UCode(), zh_ULen(), zh_UPeek(), zh_UPoke()
  *    zh_BChar(), zh_BCode(), zh_BLen(), zh_BPeek(), zh_BPoke()
  *
- * Copyright 2012 Przemyslaw Czerpak < druzus /at/ priv.onet.pl >
+ * Copyright 2012 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

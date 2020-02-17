@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBCHARACTER );
+ZH_FUNC_EXTERN( __ZHCHARACTER );
 
 ZH_FUNC( HBCHARACTER )
 {
-   ZH_FUNC_EXEC( __HBCHARACTER );
+   ZH_FUNC_EXEC( __ZHCHARACTER );
 
    if( zh_vmRequestQuery() == 0 )
    {

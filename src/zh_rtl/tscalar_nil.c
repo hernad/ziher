@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBNIL );
+ZH_FUNC_EXTERN( __ZHNIL );
 
 ZH_FUNC( HBNIL )
 {
-   ZH_FUNC_EXEC( __HBNIL );
+   ZH_FUNC_EXEC( __ZHNIL );
 
    if( zh_vmRequestQuery() == 0 )
    {

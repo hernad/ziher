@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBBLOCK );
+ZH_FUNC_EXTERN( __ZHBLOCK );
 
 ZH_FUNC( HBBLOCK )
 {
-   ZH_FUNC_EXEC( __HBBLOCK );
+   ZH_FUNC_EXEC( __ZHBLOCK );
 
    if( zh_vmRequestQuery() == 0 )
    {

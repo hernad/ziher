@@ -67,7 +67,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "hbwinuni.h"
+   #include "zh_win_uni.h"
 #endif
 
 #if defined( ZH_OS_LINUX )  || \

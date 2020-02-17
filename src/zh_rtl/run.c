@@ -51,7 +51,7 @@
 #include "zh_apifs.h"
 
 #if defined( ZH_OS_WIN )
-   #include "hbwinuni.h"
+   #include "zh_win_uni.h"
    #include <windows.h>
 #endif
 

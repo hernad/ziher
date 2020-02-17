@@ -1,7 +1,7 @@
 /*
- * File() function
+ * zh_FileExists() function
  *
- * Copyright 1999-2002 Viktor Szakats
+ * Copyright 2007 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,12 @@
 #include "zh_api.h"
 #include "zh_apifs.h"
 
-ZH_FUNC( FILE )
+ZH_FUNC( ZH_FILEEXISTS )
 {
-   const char * szFile = zh_parc( 1 );
+   zh_retl( zh_fsFileExists( zh_parc( 1 ) ) );
+}
 
-   zh_retl( szFile ? zh_spFile( szFile, NULL ) : ZH_FALSE );
+ZH_FUNC( ZH_DIREXISTS )
+{
+   zh_retl( zh_fsDirExists( zh_parc( 1 ) ) );
 }

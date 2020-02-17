@@ -1,7 +1,7 @@
 /*
  * Ziher Graphic Terminal low-level code
  *
- * Copyright 2006 Przemyslaw Czerpak < druzus /at/ priv.onet.pl >
+ * Copyright 2006 Przemyslaw Czerpak
  *
  * part of the code in zh_gt_def_* functions is based on the code
  * from old zh_api.c copyrighted by:

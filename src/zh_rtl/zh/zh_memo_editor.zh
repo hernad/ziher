@@ -1,0 +1,373 @@
+/*
+ * MemoEdit() function
+ *
+ * Copyright 2000 Maurilio Longo <maurilio.longo@libero.it>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#pragma -gc0
+
+#include "hbclass.ch"
+
+#include "inkey.zhh"
+#include "memoedit.ch"
+#include "setcurs.ch"
+#include "hbgtinfo.ch"
+
+// A specialized ZHEditor which can simulate MemoEdit() behaviour
+CREATE CLASS ZHMemoEditor INHERIT ZHEditor
+
+   VAR lCallKeyboardHook AS LOGICAL INIT .F. // To avoid recursive calls in endless loop. [jarabal]
+
+   VAR xUserFunction                         // User Function called to change default MemoEdit() behaviour
+
+   METHOD MemoInit( xUserFunction )          // This method is called after ::New() returns to perform ME_INIT actions
+   METHOD Edit()                             // Calls ::super:Edit( nKey ) but is needed to handle configurable keys
+   METHOD KeyboardHook( nKey )               // Gets called every time there is a key not handled directly by ZHEditor
+   METHOD IdleHook()                         // Gets called every time there are no more keys to handle
+
+   METHOD HandleUserKey( nKey, nUdfReturn )  // Handles keys returned to MemoEdit() by user function
+   METHOD xDo( nStatus )                     // Calls xUserFunction saving and restoring cursor position and shape
+
+   METHOD MoveCursor( nKey )                 // Redefined to properly managed CTRL-W
+   METHOD InsertState( lInsState )           // Redefined for _SET_SCOREBOARD messages
+
+   PROTECTED:
+
+   METHOD UserFunctionIsValid()
+
+ENDCLASS
+
+METHOD UserFunctionIsValid() CLASS ZHMemoEditor
+
+   RETURN ZH_ISSTRING( ::xUserFunction ) .OR. ZH_ISEVALITEM( ::xUserFunction )
+
+METHOD MemoInit( xUserFunction ) CLASS ZHMemoEditor
+
+   LOCAL nUdfReturn
+
+   // Save/Init object internal representation of user function
+   ::xUserFunction := xUserFunction
+
+   IF ::UserFunctionIsValid()
+
+      DO WHILE .T.
+         nUdfReturn := ::xDo( ME_INIT )
+         DO CASE
+         // Tested with CL52 that only these 3 actions are processed and
+         // then ME_INIT call repeated
+         CASE zh_keyStd( nUdfReturn ) == K_INS
+         CASE nUdfReturn == ME_TOGGLEWRAP
+         CASE nUdfReturn == ME_TOGGLESCROLL
+            // At this time there is no input from user of MemoEdit() only handling
+            // of values returned by ::xUserFunction, so I pass NIL as the key code.
+            ::HandleUserKey( , nUdfReturn )
+            LOOP
+         ENDCASE
+         EXIT
+      ENDDO
+   ENDIF
+
+   RETURN Self
+
+METHOD Edit() CLASS ZHMemoEditor
+
+   LOCAL nKey, nKeyStd
+
+   // NOTE: K_ALT_W is not compatible with Cl*pper exit memo and save key, but I cannot discriminate
+   //       K_CTRL_W and K_CTRL_END from Ziher code.
+   LOCAL hConfigurableKeys := { K_CTRL_Y =>, K_CTRL_T =>, K_CTRL_B =>, ;
+                                K_CTRL_V =>, K_ALT_W =>, K_ESC => }
+   LOCAL bKeyBlock
+
+   // If I have an user function I need to trap configurable keys and ask to
+   // user function if handle them the standard way or not
+   IF ::lEditAllow .AND. ::UserFunctionIsValid()
+
+      DO WHILE ! ::lExitEdit
+
+         // I need to test this condition here since I never block inside ZHEditor:Edit()
+         // if there is an user function
+         IF ( nKey := Inkey(, zh_bitOr( Set( _SET_EVENTMASK ), ZH_INKEY_EXT ) ) ) == 0
+            ::IdleHook()
+            nKey := Inkey( 0, zh_bitOr( Set( _SET_EVENTMASK ), ZH_INKEY_EXT ) )
+         ENDIF
+         nKeyStd := zh_keyStd( nKey )
+
+         IF ( bKeyBlock := SetKey( nKey ) ) != NIL .OR. ;
+            ( bKeyBlock := SetKey( nKeyStd ) ) != NIL
+            Eval( bKeyBlock )
+            LOOP
+         ENDIF
+
+         // Is it a configurable key?
+         // K_ALT_W is a Ziher extension, it is Ctrl+W in Cl*pper
+         IF nKeyStd $ hConfigurableKeys .OR. ;
+            ( zh_bitAnd( zh_keyMod( nKey ), ZH_KF_CTRL ) != 0 .AND. Upper( zh_keyChar( zh_keyVal( nKey ) ) ) == "W" )
+            ::HandleUserKey( nKey, ::xDo( iif( ::lDirty, ME_UNKEYX, ME_UNKEY ) ) )
+         ELSE
+            ::super:Edit( nKey )
+         ENDIF
+      ENDDO
+   ELSE
+      // If I cannot edit text buffer or there is not a user function enter standard ZHEditor
+      // ::Edit() method which is able to handle everything
+      ::super:Edit()
+   ENDIF
+
+   RETURN Self
+
+// I come here if I have an unknown key and it is not a configurable key
+// if there is an user function I leave to it its handling
+METHOD KeyboardHook( nKey ) CLASS ZHMemoEditor
+
+   LOCAL nKeyStd
+   LOCAL cBackScr
+   LOCAL nRow
+   LOCAL nCol
+
+   IF ::UserFunctionIsValid() .AND. ! ::lCallKeyboardHook  // To avoid recursive calls in endless loop. [jarabal]
+
+      ::lCallKeyboardHook := .T.
+      ::HandleUserKey( nKey, ::xDo( iif( ::lDirty, ME_UNKEYX, ME_UNKEY ) ) )
+      ::lCallKeyboardHook := .F.
+
+   ELSEIF zh_keyStd( nKey ) == K_ESC
+
+      IF ::lDirty .AND. Set( _SET_SCOREBOARD )
+         cBackScr := SaveScreen( 0, MaxCol() - 19, 0, MaxCol() )
+
+         nRow := Row()
+         nCol := Col()
+         zh_DispOutAt( 0, MaxCol() - 19, "Abort Edit? (Y/N)" )
+         SetPos( 0, MaxCol() - 2 )
+
+         nKeyStd := Inkey( 0 )
+
+         RestScreen( 0, MaxCol() - 19, 0, MaxCol(), cBackScr )
+         SetPos( nRow, nCol )
+
+         IF Upper( zh_keyChar( nKeyStd ) ) == "Y"
+            zh_keySetLast( K_ESC )  /* Cl*pper compatibility */
+            ::lSaved := .F.
+            ::lExitEdit := .T.
+         ENDIF
+      ELSE
+         ::lSaved := .F.
+         ::lExitEdit := .T.
+      ENDIF
+   ENDIF
+
+   RETURN Self
+
+METHOD IdleHook() CLASS ZHMemoEditor
+
+   IF ::UserFunctionIsValid()
+      ::xDo( ME_IDLE )
+   ENDIF
+
+   RETURN Self
+
+METHOD HandleUserKey( nKey, nUdfReturn ) CLASS ZHMemoEditor
+
+   LOCAL nKeyStd
+
+   SWITCH nUdfReturn
+   CASE ME_DEFAULT
+
+      // I won't reach this point during ME_INIT since ME_DEFAULT ends initialization phase of MemoEdit()
+
+      IF ZH_ISNUMERIC( nKey )
+         // ZHEditor is not able to handle keys with a value higher than 256, but I have to tell him
+         // that user wants to save text
+         IF zh_keyStd( nKey ) == K_ESC
+            ::lSaved := .F.
+            ::lExitEdit := .T.
+         ELSE
+            ::super:Edit( nKey )
+         ENDIF
+      ELSE
+         RETURN .F.
+      ENDIF
+      EXIT
+
+   CASE ME_DATA
+      IF ZH_ISNUMERIC( nKey )
+         /* TODO: convert nKey >=1 .and. nKey <= 31 to key value with unicode character */
+         IF ZH_ULen( zh_keyChar( nKey ) ) > 0
+            ::super:Edit( nKey )
+         ENDIF
+      ELSE
+         RETURN .F.
+      ENDIF
+      EXIT
+
+   CASE ME_TOGGLEWRAP
+      ::lWordWrap := ! ::lWordWrap
+      EXIT
+
+   CASE ME_TOGGLESCROLL
+      // TODO: ZHEditor does not support vertical scrolling of text inside window without moving cursor position
+      EXIT
+
+   CASE ME_WORDRIGHT
+      ::super:MoveCursor( K_CTRL_RIGHT )
+      EXIT
+
+   CASE ME_BOTTOMRIGHT
+      ::super:MoveCursor( K_CTRL_END )
+      EXIT
+
+   CASE ME_PASTE
+      zh_gtInfo( ZH_GTI_CLIPBOARDPASTE )
+      EXIT
+
+   CASE ME_IGNORE
+      /* do nothing */
+      EXIT
+
+   OTHERWISE
+
+      nKeyStd := zh_keyStd( nUdfReturn )
+      IF ( nKeyStd >= 1 .AND. nKeyStd <= 31 ) .OR. ;
+         nKeyStd == K_ALT_W .OR. ;
+         ( zh_bitAnd( zh_keyMod( nUdfReturn ), ZH_KF_CTRL ) != 0 .AND. Upper( zh_keyChar( zh_keyVal( nUdfReturn ) ) ) == "W" )
+         ::super:Edit( nUdfReturn )
+      ELSE
+         RETURN .F.
+      ENDIF
+
+   ENDSWITCH
+
+   RETURN .T.
+
+METHOD xDo( nStatus ) CLASS ZHMemoEditor
+
+   LOCAL nOldRow := ::Row()
+   LOCAL nOldCol := ::Col()
+   LOCAL nOldCur := SetCursor()
+
+   LOCAL xResult := Do( ::xUserFunction, nStatus, ::nRow, ::nCol - 1 )
+
+   SetPos( nOldRow, nOldCol )
+   SetCursor( nOldCur )
+
+   RETURN zh_defaultValue( xResult, ME_DEFAULT )
+
+METHOD MoveCursor( nKey ) CLASS ZHMemoEditor
+
+   IF zh_keyStd( nKey ) == K_CTRL_W
+      ::lSaved := .T.
+      ::lExitEdit := .T.
+      RETURN .F.
+   ENDIF
+
+   RETURN ::super:MoveCursor( nKey )
+
+METHOD InsertState( lInsState ) CLASS ZHMemoEditor
+
+   IF ZH_ISLOGICAL( lInsState ) .AND. ::lEditAllow
+      Set( _SET_INSERT, lInsState )
+      SetCursor( iif( lInsState, SC_INSERT, SC_NORMAL ) )
+      IF Set( _SET_SCOREBOARD )
+         zh_DispOutAt( 0, MaxCol() - 19, iif( lInsState, "<insert>", "        " ) )
+      ENDIF
+   ENDIF
+
+   RETURN Self
+
+/* --- */
+
+FUNCTION MemoEdit( ;
+   cString, ;
+   nTop, ;
+   nLeft, ;
+   nBottom, ;
+   nRight, ;
+   lEditMode, ;
+   xUserFunction, ;
+   nLineLength, ;
+   nTabSize, ;
+   nTextBuffRow, ;
+   nTextBuffColumn, ;
+   nWindowRow, ;
+   nWindowColumn )
+
+   LOCAL oEd
+
+   LOCAL nOldCursor
+
+   zh_default( @nLeft           , 0 )
+   zh_default( @nRight          , MaxCol() )
+   zh_default( @nLineLength     , nRight - nLeft )
+   zh_default( @nTextBuffColumn , 0 )
+   zh_default( @nWindowColumn   , nTextBuffColumn )
+   zh_default( @cString         , "" )
+
+   oEd := ZHMemoEditor():New( cString, ;
+      zh_defaultValue( nTop, 0 ), ;
+      nLeft, ;
+      zh_defaultValue( nBottom, MaxRow() ), ;
+      nRight, ;
+      zh_defaultValue( lEditMode, .T. ), ;
+      nLineLength, ;
+      zh_defaultValue( nTabSize, 4 ), ;
+      zh_defaultValue( nTextBuffRow, 1 ), ;
+      nTextBuffColumn, ;
+      zh_defaultValue( nWindowRow, 0 ), ;
+      nWindowColumn )
+   oEd:MemoInit( xUserFunction )
+   oEd:display()
+
+   /* Contrary to what the NG says, any logical value will make it pass
+      through without any editing. */
+   IF ! ZH_ISLOGICAL( xUserFunction )
+      nOldCursor := SetCursor()
+      oEd:InsertState( Set( _SET_INSERT ) )
+      oEd:Edit()
+      IF oEd:Saved()
+         cString := oEd:GetText( .T. )
+      ENDIF
+      SetCursor( nOldCursor )
+   ENDIF
+
+   RETURN cString

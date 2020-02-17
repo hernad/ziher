@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBPOINTER );
+ZH_FUNC_EXTERN( __ZHPOINTER );
 
 ZH_FUNC( HBPOINTER )
 {
-   ZH_FUNC_EXEC( __HBPOINTER );
+   ZH_FUNC_EXEC( __ZHPOINTER );
 
    if( zh_vmRequestQuery() == 0 )
    {

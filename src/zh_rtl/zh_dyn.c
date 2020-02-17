@@ -68,7 +68,7 @@
 
 typedef void ( *PZH_DYNADDR )( void );
 
-static int zh_hbtoctype( int iZiherType )
+static int zh_zhToCtype( int iZiherType )
 {
    switch( iZiherType )
    {
@@ -943,7 +943,7 @@ void zh_dynCall( int iFuncFlags, void * pFunctionRaw, int iParams, int iFirst, i
             }
 
             if( pArg[ tmp ].iType == ZH_DYN_CTYPE_DEFAULT )
-               pArg[ tmp ].iType = zh_hbtoctype( ZH_ITEM_TYPE( pParam ) );
+               pArg[ tmp ].iType = zh_zhToCtype( ZH_ITEM_TYPE( pParam ) );
 
             pArg[ tmp ].bByRef = ZH_ISBYREF( iFirst + tmp );
 
@@ -1052,7 +1052,7 @@ void zh_dynCall( int iFuncFlags, void * pFunctionRaw, int iParams, int iFirst, i
             }
 
             if( pArg[ tmp ].iType == ZH_DYN_CTYPE_DEFAULT )
-               pArg[ tmp ].iType = zh_hbtoctype( ZH_ITEM_TYPE( pParam ) );
+               pArg[ tmp ].iType = zh_zhToCtype( ZH_ITEM_TYPE( pParam ) );
 
             pArg[ tmp ].bByRef = ZH_ISBYREF( iFirst + tmp );
 

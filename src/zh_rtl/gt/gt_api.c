@@ -9,7 +9,7 @@
  *    zh_gtGetColorStr(), zh_gtSetColorStr(), zh_gtSetMode()
  * Copyright 1999-2001 Viktor Szakats
  *    zh_gtDrawShadow()
- * Copyright 2006 Przemyslaw Czerpak < druzus /at/ priv.onet.pl >
+ * Copyright 2006 Przemyslaw Czerpak
  *    The body of these functions which were usable in new GT API
  *    have been moved to zh_gt_core.c to zh_gt_def_*() functions
  *    some of my modifications.

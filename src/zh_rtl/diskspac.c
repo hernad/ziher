@@ -67,7 +67,7 @@
 #  endif
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
-#  include "hbwinuni.h"
+#  include "zh_win_uni.h"
 #endif
 
 ZH_FUNC( DISKSPACE )

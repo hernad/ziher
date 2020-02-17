@@ -1,5 +1,5 @@
 /*
- * HBTextLine Class (used by HBEditor class)
+ * HBTextLine Class (used by ZHEditor class)
  *
  * Copyright 2000 Maurilio Longo <maurilio.longo@libero.it>
  *

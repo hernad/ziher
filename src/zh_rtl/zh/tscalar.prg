@@ -109,7 +109,7 @@ METHOD PROCEDURE BecomeErr() CLASS ScalarObject
 
 /* --- */
 
-CREATE CLASS Array INHERIT HBScalar FUNCTION __HBArray
+CREATE CLASS Array INHERIT HBScalar FUNCTION __ZHArray
 
    METHOD Init( nElements )
 
@@ -238,7 +238,7 @@ METHOD _Size( newSize ) CLASS Array
 
 /* --- */
 
-CREATE CLASS Block INHERIT HBScalar FUNCTION __HBBlock
+CREATE CLASS Block INHERIT HBScalar FUNCTION __ZHBlock
 
    METHOD AsString()
 
@@ -249,7 +249,7 @@ METHOD AsString() CLASS Block
 
 /* --- */
 
-CREATE CLASS Character INHERIT HBScalar FUNCTION __HBCharacter
+CREATE CLASS Character INHERIT HBScalar FUNCTION __ZHCharacter
 
    METHOD AsString()
    METHOD AsExpStr()
@@ -264,7 +264,7 @@ METHOD AsExpStr() CLASS Character
 
 /* --- */
 
-CREATE CLASS Date INHERIT HBScalar FUNCTION __HBDate
+CREATE CLASS Date INHERIT HBScalar FUNCTION __ZHDate
 
    METHOD Year()
    METHOD Month()
@@ -291,7 +291,7 @@ METHOD Day() CLASS Date
 
 /* --- */
 
-CREATE CLASS TimeStamp INHERIT HBScalar FUNCTION __HBTimeStamp
+CREATE CLASS TimeStamp INHERIT HBScalar FUNCTION __ZHTimeStamp
 
    METHOD Date()
    METHOD Time()
@@ -339,7 +339,7 @@ METHOD Sec() CLASS TimeStamp
 
 /* --- */
 
-CREATE CLASS Hash INHERIT HBScalar FUNCTION __HBHash
+CREATE CLASS Hash INHERIT HBScalar FUNCTION __ZHHash
 
    METHOD AsString()
 
@@ -350,7 +350,7 @@ METHOD AsString() CLASS Hash
 
 /* --- */
 
-CREATE CLASS Logical INHERIT HBScalar FUNCTION __HBLogical
+CREATE CLASS Logical INHERIT HBScalar FUNCTION __ZHLogical
 
    METHOD AsString()
 
@@ -361,7 +361,7 @@ METHOD AsString() CLASS Logical
 
 /* --- */
 
-CREATE CLASS NIL INHERIT HBScalar FUNCTION __HBNil
+CREATE CLASS NIL INHERIT HBScalar FUNCTION __ZHNil
 
    METHOD AsString()
 
@@ -372,7 +372,7 @@ METHOD AsString() CLASS NIL
 
 /* --- */
 
-CREATE CLASS Numeric INHERIT HBScalar FUNCTION __HBNumeric
+CREATE CLASS Numeric INHERIT HBScalar FUNCTION __ZHNumeric
 
    METHOD AsString()
 
@@ -383,7 +383,7 @@ METHOD AsString() CLASS Numeric
 
 /* --- */
 
-CREATE CLASS Symbol INHERIT HBScalar FUNCTION __HBSymbol
+CREATE CLASS Symbol INHERIT HBScalar FUNCTION __ZHSymbol
 
    METHOD AsString()
 
@@ -394,7 +394,7 @@ METHOD AsString() CLASS Symbol
 
 /* --- */
 
-CREATE CLASS Pointer INHERIT HBScalar FUNCTION __HBPointer
+CREATE CLASS Pointer INHERIT HBScalar FUNCTION __ZHPointer
 
    METHOD AsString()
 

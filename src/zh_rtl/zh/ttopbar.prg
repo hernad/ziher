@@ -53,7 +53,7 @@
 #include "inkey.zhh"
 
 
-CREATE CLASS TopBarMenu FUNCTION HBTopBarMenu
+CREATE CLASS TopBarMenu FUNCTION ZHTopBarMenu
 
    EXPORTED:
 
@@ -458,5 +458,5 @@ METHOD New( nRow, nLeft, nRight ) CLASS TopBarMenu
 /* --- */
 
 FUNCTION TopBar( nRow, nLeft, nRight )
-   RETURN HBTopBarMenu():New( nRow, nLeft, nRight )
+   RETURN ZHTopBarMenu():New( nRow, nLeft, nRight )
 

@@ -58,7 +58,7 @@
 #include "zh_item_api.h"
 #include "zh_thread.h"
 #include "zh_vm.h"
-#include "../directry.zhh"
+#include "directory.zhh"
 
 #if defined( ZH_OS_UNIX )
 #  include <sys/types.h>
@@ -561,11 +561,7 @@ static PZH_FILE s_fileExtOpen( PZH_FILE_FUNCS pFuncs, const char * pszFileName, 
             inode  = ( ZH_ULONG ) statbuf.st_ino;
             if( ( nExFlags & FXO_NOSEEKPOS ) == 0 )
             {
-#  if defined( ZH_OS_VXWORKS )
-               fSeek  = ! S_ISFIFO( statbuf.st_mode );
-#  else
                fSeek  = ! S_ISFIFO( statbuf.st_mode ) && ! S_ISSOCK( statbuf.st_mode );
-#  endif
             }
          }
 #endif /* ZH_OS_UNIX */

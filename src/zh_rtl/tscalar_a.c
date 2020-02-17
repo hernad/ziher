@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBARRAY );
+ZH_FUNC_EXTERN( __ZHARRAY );
 
-ZH_FUNC( HBARRAY )
+ZH_FUNC( ZHARRAY )
 {
-   ZH_FUNC_EXEC( __HBARRAY );
+   ZH_FUNC_EXEC( __ZHARRAY );
 
    if( zh_vmRequestQuery() == 0 )
    {

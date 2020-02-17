@@ -217,9 +217,8 @@ ZH_FUNC( ZH_VERSION )
          break;
 
       case ZH_VERSION_PLATFORM:
-      #if defined( ZH_OS_WIN_CE ) /* NOTE: Must precede ZH_OS_WIN */
-         zh_retc_const( "WCE" );
-      #elif defined( ZH_OS_WIN )
+
+      #if defined( ZH_OS_WIN )
          zh_retc_const( "WIN" );
       #else
          zh_retc_const( zh_verPlatformMacro() );

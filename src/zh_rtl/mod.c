@@ -72,17 +72,6 @@ ZH_FUNC( MOD )
       {
          PZH_ITEM pResult = zh_errRT_BASE_Subst( EG_ZERODIV, 1341, NULL, "%", ZH_ERR_ARGS_BASEPARAMS );
 
-         /* In CA-Cl*pper Mod() function ignores substitution result
-          * and return original numeric item keeping its internal
-          * representation: integer or double, size and number of
-          * decimal places, it can be seen in code like:
-          *    PROCEDURE Main()
-          *       Set( _SET_FIXED, .T. )
-          *       ? Transform( Mod( 12345, 0 ), "" )
-          *       RETURN
-          *
-          * [druzus]
-          */
          if( pResult )
          {
             zh_itemReturn( pNumber );

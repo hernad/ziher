@@ -47,11 +47,11 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-ZH_FUNC_EXTERN( __HBDATE );
+ZH_FUNC_EXTERN( __ZHDATE );
 
-ZH_FUNC( HBDATE )
+ZH_FUNC( ZHDATE )
 {
-   ZH_FUNC_EXEC( __HBDATE );
+   ZH_FUNC_EXEC( __ZHDATE );
 
    if( zh_vmRequestQuery() == 0 )
    {

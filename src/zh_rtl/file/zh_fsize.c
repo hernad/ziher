@@ -55,7 +55,7 @@
 
 #if defined( ZH_OS_WIN )
 #  include <windows.h>
-#  include "hbwinuni.h"
+#  include "zh_win_uni.h"
 #else
 #  include <sys/types.h>
 #  include <sys/stat.h>
