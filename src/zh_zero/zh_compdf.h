@@ -65,7 +65,7 @@ typedef enum
 /* Error message format modes */
 typedef enum
 {
-   ZH_ERRORFMT_CLIPPER,
+   ZH_ERRORFMT_DEFAULT,
    ZH_ERRORFMT_IDE
 } ZH_ERRORFMT;
 
@@ -491,7 +491,7 @@ typedef struct ZH_RTVAR_
    struct ZH_RTVAR_ * pPrev;
 } ZH_RTVAR, * PZH_RTVAR;
 
-/* structure to hold a Clipper defined function */
+/* structure to hold a Ziher defined function */
 typedef struct _ZH_ZFUNC
 {
    const char * szName;                   /* name of a defined Ziher function */
@@ -563,7 +563,7 @@ typedef struct _ZH_ZFUNCALL
    struct _ZH_ZFUNCALL * pNext;              /* pointer to the next called function */
 } ZH_ZFUNCALL, PZH_ZFUNCALL;
 
-/* structure to control all Clipper defined functions */
+/* structure to control all Ziher defined functions */
 typedef struct
 {
    PZH_ZFUNC pFirst;            /* pointer to the first defined function */
@@ -571,7 +571,7 @@ typedef struct
    int       iCount;            /* number of defined functions */
 } ZH_ZFUNCTION_LIST;
 
-/* structure to control all Clipper defined functions */
+/* structure to control all Ziher defined functions */
 typedef struct
 {
    PZH_HINLINE pFirst;        /* pointer to the first defined inline */
@@ -823,7 +823,7 @@ typedef struct _ZH_COMP
    int               ilastLineErr;        /* line number with last syntax error */
    int               iTraceInclude;       /* trace included files and generate dependencies list */
    int               iSyntaxCheckOnly;    /* syntax check only */
-   int               iErrorFmt;           /* error message formatting mode (default: Clipper) */
+   int               iErrorFmt;           /* error message formatting mode */
 
    ZH_BOOL           fQuiet;              /* be quiet during compilation (-q) */
    ZH_BOOL           fGauge;              /* hide line counter gauge (-ql) */

@@ -426,7 +426,7 @@ static const char * zh_compChkParseSwitch( ZH_COMP_DECL, const char * szSwitch,
                         ++szSwPtr;
                         /* fallthrough */
                      default:
-                        ZH_COMP_PARAM->iErrorFmt = ZH_ERRORFMT_CLIPPER;
+                        ZH_COMP_PARAM->iErrorFmt = ZH_ERRORFMT_DEFAULT;
                         break;
                   }
                   break;
@@ -863,15 +863,9 @@ void zh_compChkCommandLine( ZH_COMP_DECL, int argc, const char * const argv[] )
 /* check environment parameters */
 void zh_compChkEnvironment( ZH_COMP_DECL )
 {
-   /* NOTE: if ZIHERCMD envvar exists then it's used instead of CLIPPERCMD */
+ 
    char * szEnvCMD = zh_getenv( "ZIHERCMD" );
 
-   if( ! szEnvCMD || szEnvCMD[ 0 ] == '\0' )
-   {
-      if( szEnvCMD )
-         zh_xfree( szEnvCMD );
-      szEnvCMD = zh_getenv( "CLIPPERCMD" );
-   }
 
    if( szEnvCMD )
    {

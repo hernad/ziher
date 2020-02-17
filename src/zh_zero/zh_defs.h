@@ -302,17 +302,8 @@ typedef ZH_UCHAR            ZH_U8;
    typedef double       ZH_MAXDBL;
 #endif
 
-#if defined( ZH_CLIPPER_INT_ITEMS )
-#  define ZH_VMINT_MAX           SHRT_MAX
-#  define ZH_VMINT_MIN           SHRT_MIN
-#  define ZH_VMUINT_MAX          USHRT_MAX
-#  define ZH_VMLONG_MAX          LONG_MAX
-#  define ZH_VMLONG_MIN          LONG_MIN
-#  define ZH_VMULONG_MAX         ULONG_MAX
-   typedef long                  ZH_MAXINT;
-   typedef unsigned long         ZH_MAXUINT;
-#  define PFHL                   "l"
-#elif ! defined( ZH_LONG_LONG_OFF ) && ULONG_MAX == UINT_MAX
+
+#if ! defined( ZH_LONG_LONG_OFF ) && ULONG_MAX == UINT_MAX
 #  define ZH_VMINT_MAX           INT_MAX
 #  define ZH_VMINT_MIN           INT_MIN
 #  define ZH_VMUINT_MAX          UINT_MAX
@@ -379,16 +370,6 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
  * math operations, ZH_*_LENGTH() macros are used when new
  * item is created. [druzus]
  */
-/* NOTE: the positive number limit 999999999 in ZH_INT_LENGTH()
- *       (ZH_LONG_LENGTH() on 16-bit platforms) below is not
- *       compatible with other limits. Clipper have such limit
- *       but IMHO it's result of some typo or wrong compiler
- *       warnings cleanup when someone removed one digit from
- *       upper limit instead of removing the whole limit.
- *       It's also possible that it comes from DBASE and was
- *       intentionally replicated. I think we should keep it
- *       only in strict compatibility mode. [druzus]
- */
 #if ZH_VMINT_MIN < -999999999
 #  define ZH_INT_LENGTH( i )        ( ( (i) < -999999999 || (i) > 999999999 ) ? 20 : 10 )
 #else
@@ -424,11 +405,6 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
  * not have separated limit for result of math operations. [druzus]
  */
 #define ZH_DBL_LENGTH( d ) ( ( (d) > 9999999999.0 || (d) < -999999999.0 ) ? 20 : 10 )
-
-/* uncomment this if you need strict Clipper compatibility */
-/* #define PCODE_LONG_LIM(l)     ZH_LIM_INT32( l ) */
-
-/* #define PCODE_LONG_LIM(l)     ZH_LIM_LONG( l ) */
 
 /* type of ZH_ITEM */
 

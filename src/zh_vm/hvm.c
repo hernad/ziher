@@ -3051,8 +3051,6 @@ static void zh_vmAddInt( PZH_ITEM pResult, ZH_LONG lAdd )
    }
 }
 
-/* NOTE: Clipper is resetting the number width on a negate. */
-
 static void zh_vmNegate( void )
 {
    ZH_STACK_TLS_PRELOAD
@@ -3485,13 +3483,6 @@ static void zh_vmDivide( PZH_ITEM pResult, PZH_ITEM pItem1, PZH_ITEM pItem2 )
       }
       else
       {
-         /* If all both operand was integer and the result is an integer, too,
-            push the number without decimals. Clipper compatible. Actually,
-            this is not Clipper compatible. The only time Clipper returns 0
-            decimal places is for compiler optimized integer division with an
-            integer result. Therefore this code is not needed and has been
-            removed - David G. Holm <dholm@jsd-llc.com>
-          */
          zh_itemPutND( pResult, zh_itemGetND( pItem1 ) / dDivisor );
       }
    }
@@ -3527,8 +3518,6 @@ static void zh_vmModulus( PZH_ITEM pResult, PZH_ITEM pItem1, PZH_ITEM pItem2 )
       }
       else
       {
-         /* NOTE: Clipper always returns the result of modulus
-                  with the SET number of decimal places. */
          zh_itemPutND( pResult, ( double ) ( ZH_ITEM_GET_NUMINTRAW( pItem1 ) % nDivisor ) );
       }
    }
@@ -3548,8 +3537,6 @@ static void zh_vmModulus( PZH_ITEM pResult, PZH_ITEM pItem1, PZH_ITEM pItem2 )
       }
       else
       {
-         /* NOTE: Clipper always returns the result of modulus
-                  with the SET number of decimal places. */
          zh_itemPutND( pResult, fmod( zh_itemGetND( pItem1 ), dDivisor ) );
       }
    }
@@ -3571,8 +3558,6 @@ static void zh_vmPower( PZH_ITEM pResult, PZH_ITEM pItem1, PZH_ITEM pItem2 )
 
    if( ZH_IS_NUMERIC( pItem1 ) && ZH_IS_NUMERIC( pItem2 ) )
    {
-      /* NOTE: Clipper always returns the result of power
-               with the SET number of decimal places. */
       zh_itemPutND( pResult, pow( zh_itemGetND( pItem1 ), zh_itemGetND( pItem2 ) ) );
    }
    else if( ! zh_objOperatorCall( ZH_OO_OP_POWER, pResult, pItem1, pItem2, NULL ) )
@@ -5422,10 +5407,6 @@ static ZH_BOOL zh_vmArrayNew( PZH_ITEM pArray, ZH_USHORT uiDimension )
    else if( ZH_IS_DOUBLE( pDim ) )
       nElements = ( ZH_ISIZ ) pDim->item.asDouble.value;
    else
-      /* NOTE: Clipper creates empty array if non-numeric value is
-       * specified as dimension and stops further processing.
-       * There is no runtime error generated.
-       */
       nElements = 0;
 
    if( nElements >= 0 )
@@ -5701,9 +5682,6 @@ static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM pAlias, PZH_SYMB pField )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSelectWorkArea(%p,%p)", ( void * ) pAlias, ( void * ) pField ) );
 
-   /* NOTE: Clipper doesn't generate an error if an workarea specified
-    * as numeric value cannot be selected
-    */
    do
    {
       fRepeat = ZH_FALSE;
@@ -8729,9 +8707,6 @@ void zh_vmRequestCancel( void )
          zh_conOutErr( zh_conNewLine(), 0 );
       }
 
-      /*
-       * Clipper does not execute EXIT procedures when quitting using break key
-       */
       s_fDoExitProc = ZH_FALSE;
       zh_stackSetActionRequest( ZH_QUIT_REQUESTED );
    }
@@ -12242,9 +12217,6 @@ ZH_FUNC( ERRORLEVEL )
    ZH_STACK_TLS_PRELOAD
 
    zh_retni( s_nErrorLevel );
-
-   /* NOTE: This should be ZH_IS_PARAM_NUM( 1 ), but it's sort of a Clipper bug that it
-            accepts other types also and considers them zero. [vszakats] */
 
    if( zh_pcount() >= 1 )
       /* Only replace the error level if a parameter was passed */

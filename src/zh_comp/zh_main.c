@@ -199,7 +199,6 @@ static int zh_compReadClpFile( ZH_COMP_DECL, const char * szClpFile )
    inFile = zh_fopen( szClpFile, "r" );
    if( ! inFile )
    {
-      /* TODO: Clipper compatible error */
       zh_snprintf( buffer, sizeof( buffer ),
                    "Cannot open input file: %s\n", szClpFile );
       zh_compOutErr( ZH_COMP_PARAM, buffer );
@@ -216,9 +215,6 @@ static int zh_compReadClpFile( ZH_COMP_DECL, const char * szClpFile )
       {
          ch = fgetc( inFile );
 
-         /* '"' - quoting file names is Ziher extension.
-          * Clipper does not serve it, [druzus]
-          */
          if( ch == '"' )
          {
             while( ( ch = fgetc( inFile ) ) != EOF && ch != '"' && ch != '\n' )
@@ -419,9 +415,7 @@ void zh_compVariableAdd( ZH_COMP_DECL, const char * szVarName, PZH_VARTYPE pVarT
       /* variable defined in a function/procedure */
       zh_compCheckDuplVars( ZH_COMP_PARAM, pFunc->pFields, szVarName );
       zh_compCheckDuplVars( ZH_COMP_PARAM, pFunc->pStatics, szVarName );
-      /* NOTE: Clipper warns if PARAMETER variable duplicates the MEMVAR
-       * declaration
-       */
+
       if( ! ( ZH_COMP_PARAM->iVarScope == ZH_VSCOMP_PRIVATE ||
               ZH_COMP_PARAM->iVarScope == ZH_VSCOMP_PUBLIC ) )
          zh_compCheckDuplVars( ZH_COMP_PARAM, pFunc->pMemvars, szVarName );
@@ -711,20 +705,6 @@ PZH_HVAR zh_compVariableFind( ZH_COMP_DECL, const char * szVarName, int * piPos,
             *piScope = ZH_VS_LOCAL_VAR;
             if( fStatic )
             {
-               /* local variable was referenced in a codeblock during
-                * initialization of static variable. This cannot be supported
-                * because static variables are initialized at program
-                * startup when there is no local variables yet - hence we
-                * cannot detach this local variable
-                * For example:
-                * LOCAL locvar
-                * STATIC stavar := {| x | locvar }
-                *
-                * NOTE: Clipper creates such a codeblock however at the
-                * time of codeblock evaluation it generates a runtime error:
-                * 'bound error: array access'
-                * Called from: (b)STATICS$(0)
-                */
                zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_ILLEGAL_INIT, "(b)", szVarName );
             }
             else if( fBlock && ZH_COMP_PARAM->functions.pLast->iEarlyEvalPass < 2 )
@@ -918,15 +898,6 @@ void zh_compPushMacroText( ZH_COMP_DECL, const char * szText, ZH_SIZE nLen, ZH_B
          char szSymName[ ZH_SYMBOL_NAME_LEN + 1 ];
          int iSize = 0;
 
-         /* Check if macro operator is used inside a string
-          * Macro operator is ignored if it is the last char or
-          * next char is '(' e.g. "this is &(ignored)"
-          * (except if strict Clipper compatibility mode is enabled)
-          *
-          * NOTE: This uses _a-zA-Z pattern to check for
-          * beginning of a variable name
-          */
-
          while( n < nLen && iSize < ZH_SYMBOL_NAME_LEN )
          {
             char ch = szText[ n ];
@@ -946,13 +917,6 @@ void zh_compPushMacroText( ZH_COMP_DECL, const char * szText, ZH_SIZE nLen, ZH_B
 
             szSymName[ iSize ] = '\0';
 
-            /* NOTE: All variables are assumed memvars in macro compiler -
-             * there is no need to check for a valid name but to be Clipper
-             * compatible we should check if macrotext variable does not refer
-             * to local, static or field and generate error in such case.
-             * Only MEMVAR or undeclared (memvar will be assumed)
-             * variables can be used in macro text.
-             */
             iScope = zh_compVariableScope( ZH_COMP_PARAM, szSymName );
             if( iScope == ZH_VS_UNDECLARED || ( iScope & ZH_VS_LOCAL_MEMVAR ) )
             {
@@ -1818,7 +1782,7 @@ static void zh_compWarnUnusedVar( ZH_COMP_DECL, const char * szFuncName,
 {
    char szFun[ ZH_SYMBOL_NAME_LEN + 17 ];
 
-   if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_CLIPPER )
+   if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_DEFAULT )
       zh_snprintf( szFun, sizeof( szFun ), "%s(%i)", szFuncName, iDeclLine );
    else
       zh_snprintf( szFun, sizeof( szFun ), "%i:%s", iDeclLine, szFuncName );
@@ -2179,7 +2143,7 @@ static ZH_BOOL zh_compRegisterFunc( ZH_COMP_DECL, PZH_ZFUNC pFunc, ZH_BOOL fErro
 }
 
 /*
- * Stores a Clipper defined function/procedure
+ * Stores a defined function/procedure
  * szFunName - name of a function
  * cScope    - scope of a function
  * iType     - ZH_FUNF_PROCEDURE if a procedure or 0
@@ -2232,15 +2196,6 @@ static void zh_compAnnounce( ZH_COMP_DECL, const char * szFunName )
 {
    PZH_ZFUNC pFunc;
 
-   /* Clipper call this function after compiling .zh module where ANNOUNCE
-    * symbol was defined not after compiling all .zh modules and search for
-    * public ANNOUNCEd function/procedure in all compiled so far modules
-    * and then for static one in currently compiler module.
-    */
-
-   /* check for reserved name
-    * NOTE: Clipper doesn't check for it
-    */
    zh_compCheckReservedNames( ZH_COMP_PARAM, szFunName, ZH_TRUE );
 
    pFunc = zh_compFunctionFind( ZH_COMP_PARAM, szFunName, ZH_FALSE );

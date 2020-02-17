@@ -4183,28 +4183,16 @@ ZH_FUNC( __CLS_INCDATA )
       zh_retni( 0 );
 }
 
-/* NOTE: Undocumented Clipper function */
-/* see for parameter compatibility with Clipper. */
 
 ZH_FUNC_TRANSLATE( __CLASSNEW, __CLSNEW )
-
-/* NOTE: Undocumented Clipper function */
-
 ZH_FUNC_TRANSLATE( __CLASSINSTANCE, __CLSINST )
-
-/* NOTE: Undocumented Clipper function */
-
 ZH_FUNC_TRANSLATE( __CLASSADD, __CLSADDMSG )
-
-/* NOTE: Undocumented Clipper function */
 
 ZH_FUNC( __CLASSNAME )
 {
    ZH_STACK_TLS_PRELOAD
    zh_retc( zh_clsName( ( ZH_USHORT ) zh_parni( 1 ) ) );
 }
-
-/* NOTE: Undocumented Clipper function */
 
 ZH_FUNC( __CLASSSEL )
 {
@@ -4674,12 +4662,11 @@ ZH_FUNC_STATIC( msgNoMethod )
    PZH_SYMB pSym = zh_itemGetSymbol( zh_stackBaseItem() );
    const char * szName = pSym ? pSym->szName : "";
 
-#if 1  /* Clipper compatible error message */
+
    if( szName[ 0 ] == '_' )
       zh_errRT_BASE_SubstR( EG_NOVARMETHOD, 1005, NULL, szName + 1, ZH_ERR_ARGS_SELFPARAMS );
    else
       zh_errRT_BASE_SubstR( EG_NOMETHOD, 1004, NULL, szName, ZH_ERR_ARGS_SELFPARAMS );
-#else
    char szDesc[ 40 + ZH_SYMBOL_NAME_LEN ];
 
    if( szName[ 0 ] == '_' )
@@ -5528,13 +5515,11 @@ ZH_FUNC( __OBJSETCLASSHANDLE )
 }
 
 
-/* Ziher equivalent for Clipper internal __mdCreate() */
 ZH_USHORT zh_clsCreate( ZH_USHORT usSize, const char * szClassName )
 {
    return zh_clsNew( szClassName, usSize, NULL, NULL, ZH_FALSE );
 }
 
-/* Ziher equivalent for Clipper internal __mdAdd() */
 void zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr )
 {
    PZH_SYMB pExecSym;
@@ -5553,7 +5538,7 @@ void zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr
    zh_itemRelease( pFuncItem );
 }
 
-/* Ziher equivalent for Clipper internal __mdAssociate() */
+
 void zh_clsAssociate( ZH_USHORT usClassH )
 {
    PZH_ITEM pSelf = zh_clsInst( usClassH );
@@ -5600,30 +5585,4 @@ ZH_FUNC( __CLSVERIFY )
    zh_itemReturnRelease( pReturn );
 }
 
-#if 0
-/* return real function name ignoring aliasing */
-const char * zh_clsRealMethodName( void )
-{
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 1 );
-   const char * szName = NULL;
 
-   if( nOffset > 0 )
-   {
-      PZH_STACK_STATE pStack = zh_stackItem( nOffset )->item.asSymbol.stackstate;
-
-      if( pStack->uiClass && pStack->uiClass <= s_uiClasses )
-      {
-         PCLASS pClass = s_pClasses[ pStack->uiClass ];
-
-         if( ( ZH_SIZE ) pStack->uiMethod < zh_clsMthNum( pClass ) )
-         {
-            PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
-
-            if( pMethod->pMessage )
-               szName = pMethod->pMessage->pSymbol->szName;
-         }
-      }
-   }
-   return szName;
-}
-#endif

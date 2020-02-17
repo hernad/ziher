@@ -487,11 +487,6 @@ ZH_BOOL zh_itemFreeC( char * szText )
       return ZH_FALSE;
 }
 
-/* NOTE: Clipper is buggy and will not append a trailing zero, although
-         the NG says that it will. Check your buffers, since what may have
-         worked with Clipper could overrun the buffer with Ziher.
-         The correct buffer size is 9 bytes: char szDate[ 9 ]
-         [vszakats] */
 
 char * zh_itemGetDS( PZH_ITEM pItem, char * szDate )
 {
@@ -1506,8 +1501,6 @@ const char * zh_itemTypeStr( PZH_ITEM pItem )
    return "U";
 }
 
-/* Internal API, not standard Clipper */
-
 void zh_itemInit( PZH_ITEM pItem )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemInit(%p)", ( void * ) pItem ) );
@@ -1562,8 +1555,6 @@ void zh_itemClear( PZH_ITEM pItem )
    }
    /* GCLOCK leave */
 }
-
-/* Internal API, not standard Clipper */
 
 void zh_itemCopy( PZH_ITEM pDest, PZH_ITEM pSource )
 {
@@ -1623,8 +1614,6 @@ void zh_itemCopy( PZH_ITEM pDest, PZH_ITEM pSource )
    }
 }
 
-/* Internal API, not standard Clipper */
-
 void zh_itemCopyToRef( PZH_ITEM pDest, PZH_ITEM pSource )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemCopyToRef(%p, %p)", ( void * ) pDest, ( void * ) pSource ) );
@@ -1655,8 +1644,6 @@ void zh_itemCopyToRef( PZH_ITEM pDest, PZH_ITEM pSource )
 
    zh_itemCopy( pDest, pSource );
 }
-
-/* Internal API, not standard Clipper */
 
 void zh_itemCopyFromRef( PZH_ITEM pDest, PZH_ITEM pSource )
 {
@@ -1694,8 +1681,6 @@ void zh_itemMove( PZH_ITEM pDest, PZH_ITEM pSource )
    /* GCLOCK leave */
 }
 
-/* Internal API, not standard Clipper */
-
 void zh_itemMoveRef( PZH_ITEM pDest, PZH_ITEM pSource )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemMoveRef(%p, %p)", ( void * ) pDest, ( void * ) pSource ) );
@@ -1725,7 +1710,6 @@ void zh_itemMoveRef( PZH_ITEM pDest, PZH_ITEM pSource )
    /* GCLOCK leave */
 }
 
-/* Internal API, not standard Clipper */
 
 void zh_itemMoveToRef( PZH_ITEM pDest, PZH_ITEM pSource )
 {
@@ -1790,7 +1774,6 @@ void zh_itemMoveFromRef( PZH_ITEM pDest, PZH_ITEM pSource )
       zh_itemMove( pDest, pSource );
 }
 
-/* Internal API, not standard Clipper */
 
 void zh_itemSwap( PZH_ITEM pItem1, PZH_ITEM pItem2 )
 {
@@ -1811,7 +1794,7 @@ void zh_itemSwap( PZH_ITEM pItem1, PZH_ITEM pItem2 )
    /* GCLOCK leave */
 }
 
-/* Internal API, not standard Clipper */
+
 /* De-references item passed by the reference */
 
 PZH_ITEM zh_itemUnRefOnce( PZH_ITEM pItem )
@@ -1936,7 +1919,6 @@ PZH_ITEM zh_itemUnRefOnce( PZH_ITEM pItem )
    return pItem;
 }
 
-/* Internal API, not standard Clipper */
 /* De-references item passed by the reference */
 
 PZH_ITEM zh_itemUnRef( PZH_ITEM pItem )
@@ -2010,7 +1992,6 @@ PZH_ITEM zh_itemUnRefRefer( PZH_ITEM pItem )
    return pLast;
 }
 
-/* Internal API, not standard Clipper */
 /* Resize string buffer of given string item */
 
 PZH_ITEM zh_itemReSizeString( PZH_ITEM pItem, ZH_SIZE nSize )
@@ -2043,7 +2024,6 @@ PZH_ITEM zh_itemReSizeString( PZH_ITEM pItem, ZH_SIZE nSize )
    return pItem;
 }
 
-/* Internal API, not standard Clipper */
 /* UnShare string buffer of given string item */
 
 PZH_ITEM zh_itemUnShareString( PZH_ITEM pItem )
@@ -2103,7 +2083,6 @@ ZH_BOOL zh_itemGetWriteCL( PZH_ITEM pItem, char ** pszValue, ZH_SIZE * pnLen )
    return ZH_FALSE;
 }
 
-/* Internal API, not standard Clipper */
 /* clone the given item */
 PZH_ITEM zh_itemClone( PZH_ITEM pItem )
 {
@@ -2311,7 +2290,6 @@ ZH_BOOL zh_itemCompare( PZH_ITEM pItem1, PZH_ITEM pItem2, ZH_BOOL bForceExact, i
    return fResult;
 }
 
-/* Internal API, not standard Clipper */
 
 /* Check whether two strings are equal (0), smaller (-1), or greater (1) */
 int zh_itemStrCmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
@@ -2559,8 +2537,7 @@ ZH_BOOL zh_itemStrBuf( char * szResult, PZH_ITEM pNumber, int iSize, int iDec )
             }
          }
 
-         /* now try to round the results and set 0 in places over defined
-            precision, the same is done by Clipper */
+
          if( iPos >= 0 )
          {
             int iZer, iLast;
@@ -2717,7 +2694,6 @@ char * zh_itemStr( PZH_ITEM pNumber, PZH_ITEM pWidth, PZH_ITEM pDec )
          iDec = 0;
       }
 
-      /* Clipper ignores decimal places when iWidth is 1 */
       if( iWidth > 1 && pDec && ZH_IS_NUMERIC( pDec ) )
       {
          /* This function does not include the decimal places in the width,

@@ -334,11 +334,6 @@ static void open_handle( PZH_SET_STRUCT pSet, const char * file_name,
 
    fStripEof = fAppend && szDevice == NULL && ! fPipe;
 
-   /* Open the file either in append (fAppend) or truncate mode (! fAppend), but
-      always use binary mode */
-
-   /* QUESTION: What sharing mode does Clipper use ? [vszakats] */
-
    do
    {
       if( fPipe )
@@ -1105,23 +1100,6 @@ void zh_setInitialize( PZH_SET_STRUCT pSet )
    pSet->ZH_SET_CONSOLE = ZH_TRUE;
    pSet->ZH_SET_DATEFORMAT = zh_strdup( "mm/dd/yy" );
    pSet->ZH_SET_TIMEFORMAT = zh_strdup( "hh:mm:ss.fff" );
-   /*
-    * Tests shows that Clipper has two different flags to control ALT+D
-    * and AltD() behavior and on startup these flags are not synchronized.
-    * When application starts _SET_DEBUG is set to ZH_FALSE but debugger
-    * can be activated by hitting K_ALT_D or calling AltD() function without
-    * parameter. It means that some other internal flag enables these
-    * operations.
-    * Because Ziher is using _SET_DEBUG flag only then we have to
-    * initialize it to ZH_TRUE when debugger is linked to keep real Clipper
-    * behavior or we will have to add second flag too and try to replicate
-    * exactly unsynchronized behavior of these flags which exists in Clipper.
-    * IMHO it's a bug in Clipper (side effect of some internal solutions) and
-    * we should not try to emulate it [druzus].
-    */
-   #if 0
-   pSet->ZH_SET_DEBUG = ZH_FALSE;
-   #endif
    pSet->ZH_SET_DEBUG = zh_dynsymFind( "__DBGENTRY" ) ? ZH_TRUE : ZH_FALSE;
    pSet->ZH_SET_DECIMALS = 2;
    pSet->ZH_SET_DEFAULT = zh_strdup( "" );

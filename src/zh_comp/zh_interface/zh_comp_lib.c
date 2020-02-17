@@ -65,7 +65,7 @@ static void s_pp_msg( void * cargo, int iErrorFmt, int iLine,
                       "line:%i", iLine );
       else
          zh_snprintf( szLine, sizeof( szLine ),
-                      iErrorFmt == ZH_ERRORFMT_CLIPPER ? "%s(%i)" : "%s:%i",
+                      iErrorFmt == ZH_ERRORFMT_DEFAULT ? "%s(%i)" : "%s:%i",
                       szModule, iLine );
       pError = zh_errRT_New( ES_ERROR, "COMPILER", 1001, ( ZH_ERRCODE ) iValue,
                              szMsgBuf, szLine, 0 /*OsCode*/, EF_NONE );

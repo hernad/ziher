@@ -362,13 +362,13 @@
 #define DB_CRYPT_SIX            1
 
 /* LOCK SCHEMES: RDDI_LOCKSCHEME, DBI_LOCKSCHEME */
-#define DB_DBFLOCK_DEFAULT      0
-#define DB_DBFLOCK_CLIPPER      1   /* default Cl*pper locking scheme */
+#define DB_DBFLOCK_NOLOCK       0
+#define DB_DBFLOCK_DEFAULT      1   /* default locking scheme */
 #define DB_DBFLOCK_COMIX        2   /* COMIX and CL53 DBFCDX hyper locking scheme */
 #define DB_DBFLOCK_VFP          3   /* [V]FP, CL52 DBFCDX, SIx3 SIXCDX, CDXLOCK.OBJ */
 #define DB_DBFLOCK_HB32         4   /* Ziher hyper locking scheme for 32-bit file API */
 #define DB_DBFLOCK_HB64         5   /* Ziher hyper locking scheme for 64-bit file API */
-#define DB_DBFLOCK_CLIPPER2     6   /* extended Cl*pper locking scheme NTXLOCK2.OBJ */
+#define DB_DBFLOCK_DEFAULT2     6   /* extended locking scheme NTXLOCK2.OBJ */
 
 /* DBF HEADER UPDATING */
 #define DB_SETHEADER_CLOSE    0  /* update in CLOSE method - it always happens if necessary */
@@ -387,7 +387,6 @@
 /* update in CLOSE after any record modification */
 #define DB_SETHEADER_CHANGE      ( DB_SETHEADER_CLOSE + DB_SETHEADER_REPLACE )
 /* update in COMMIT and CLOSE after any record modification - Cl*pper compatible */
-#define DB_SETHEADER_CLIPPER     ( DB_SETHEADER_COMMIT + DB_SETHEADER_REPLACE )
 /* update in GOCOLD after any record modification */
 #define DB_SETHEADER_FULL        ( DB_SETHEADER_WRITE + DB_SETHEADER_REPLACE )
 

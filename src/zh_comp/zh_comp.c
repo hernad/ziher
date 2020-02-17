@@ -169,7 +169,7 @@ static void zh_compOutMsg( void * cargo, int iErrorFmt, int iLine,
 
    if( szModule )
    {
-      if( iErrorFmt == ZH_ERRORFMT_CLIPPER )
+      if( iErrorFmt == ZH_ERRORFMT_DEFAULT )
          zh_snprintf( buffer, sizeof( buffer ), "\r%s(%i) ", szModule, iLine );
       else if( iLine )
          zh_snprintf( buffer, sizeof( buffer ), "\n%s:%i: ", szModule, iLine );
@@ -179,7 +179,7 @@ static void zh_compOutMsg( void * cargo, int iErrorFmt, int iLine,
       zh_compOutErr( ( PZH_COMP ) cargo, buffer );
    }
 
-   if( iErrorFmt == ZH_ERRORFMT_CLIPPER )
+   if( iErrorFmt == ZH_ERRORFMT_DEFAULT )
       zh_snprintf( buffer, sizeof( buffer ), "%s %c%04i  ",
                    cPrefix == 'W' ? "Warning" : "Error", cPrefix, iValue );
    else
@@ -286,7 +286,7 @@ PZH_COMP zh_comp_new( void )
       pComp->iGenCOutput = ZH_COMPGENC_COMPACT;  /* C code generation default mode */
       pComp->iExitLevel  = ZH_EXITLEVEL_DEFAULT; /* holds if there was any warning during the compilation process */
       pComp->iLanguage   = ZH_LANG_C;            /* default Ziher generated output language */
-      pComp->iErrorFmt   = ZH_ERRORFMT_CLIPPER;  /* default Ziher generated output language */
+      pComp->iErrorFmt   = ZH_ERRORFMT_DEFAULT;  /* default Ziher generated output language */
 
       pComp->outMsgFunc  = zh_compOutMsg;
    }

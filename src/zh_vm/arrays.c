@@ -1556,7 +1556,6 @@ static ZH_BOOL zh_nestedCloneFind( PZH_NESTED_CLONED pClonedList, void * pValue,
 
 void zh_nestedCloneDo( PZH_ITEM pDstItem, PZH_ITEM pSrcItem, PZH_NESTED_CLONED pClonedList )
 {
-   /* Clipper clones nested array ONLY if NOT an Object!!! */
    if( ZH_IS_ARRAY( pSrcItem ) )
    {
       if( ! zh_nestedCloneFind( pClonedList, ( void * ) pSrcItem->item.asArray.value, pDstItem ) )

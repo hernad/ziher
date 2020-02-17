@@ -4,7 +4,7 @@
  * Copyright 1999 Ryszard Glab <rglab@imid.med.pl>
  * Copyright 1999-2001 Viktor Szakats
  *   __mvSave(), __mvRestore() (Thanks to Dave Pearson and Jo French for
- *   the original Clipper function FReadMem() to read .mem files)
+ *   the original function FReadMem() to read .mem files)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -661,12 +661,8 @@ static void zh_memvarCreateFromDynSymbol( PZH_DYNS pDynVar, int iScope, PZH_ITEM
              */
             pMemvar->type = ZH_IT_LOGICAL;
 
-            /* NOTE: PUBLIC variables named CLIPPER and ZIHER are initialized
-                     to .T., this is normal Clipper behaviour. [vszakats] */
-
             pMemvar->item.asLogical.value =
-                        ( strcmp( pDynVar->pSymbol->szName, "ZIHER" ) == 0 ||
-                          strcmp( pDynVar->pSymbol->szName, "CLIPPER" ) == 0 );
+                        ( strcmp( pDynVar->pSymbol->szName, "ZIHER" ) == 0 );
          }
       }
    }
@@ -1363,8 +1359,6 @@ static ZH_DYNS_FUNC( zh_memvarSave )
       /* Process it if it matches the passed mask */
       if( bIncludeMask ? bMatch : ! bMatch )
       {
-         /* NOTE: Clipper will not initialize the record buffer with
-                  zeros, so they will look trashed. [vszakats] */
          memset( buffer, 0, ZH_MEM_REC_LEN );
 
          /* NOTE: Save only the first 10 characters of the name */
@@ -1376,7 +1370,6 @@ static ZH_DYNS_FUNC( zh_memvarSave )
             ZH_SIZE nLen = zh_itemGetCLen( pMemvar ) + 1;
             int iOverFlow = 0;
 
-            /* Clipper supports only 64 KiB strings */
             if( nLen > USHRT_MAX )
             {
                nLen = USHRT_MAX;
@@ -1399,7 +1392,6 @@ static ZH_DYNS_FUNC( zh_memvarSave )
             zh_itemGetNLen( pMemvar, &iWidth, &iDec );
             buffer[ 11 ] = 'N' + 128;
 
-/* NOTE: This would be the correct method, but Clipper is buggy here. [vszakats] */
             buffer[ 16 ] = ( ZH_BYTE ) iWidth + ( iDec == 0 ? 0 : ( ZH_BYTE ) ( iDec + 1 ) );
             buffer[ 17 ] = ( ZH_BYTE ) iDec;
             ZH_PUT_LE_DOUBLE( &buffer[ ZH_MEM_REC_LEN ], dNumber );
@@ -1442,7 +1434,6 @@ ZH_FUNC( __MVSAVE )
 {
    ZH_STACK_TLS_PRELOAD
 
-   /* Clipper also checks for the number of arguments here */
    if( zh_pcount() == 3 && ZH_ISCHAR( 1 ) && ZH_ISCHAR( 2 ) && ZH_ISLOG( 3 ) )
    {
       const char * pszFileName = zh_parc( 1 );

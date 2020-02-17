@@ -1063,9 +1063,7 @@ int zh_comp_yylex( YYSTYPE * yylval_ptr, ZH_COMP_DECL )
 
             case RETURN:
             case BREAK:
-               /* NOTE: Clipper does not like break[] in any context
-                *       There are no resons to limit this use in Ziher.
-                */
+
                if( pLex->iState == LOOKUP &&
                    ( ZH_PP_TOKEN_ISEOC( pToken->pNext ) ||
                      ! ZH_PP_LEX_NEEDLEFT( pToken->pNext ) ) )

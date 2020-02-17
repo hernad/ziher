@@ -119,7 +119,7 @@ extern void zh_compParserRun( ZH_COMP_DECL );
 #define ZH_FUNF_FILE_FIRST        0x0100   /* 1st real or pseudo function in compiled .zh module */
 #define ZH_FUNF_ATTACHED          0x0200   /* function attached to function list */
 
-extern               void         zh_compFunctionAdd( ZH_COMP_DECL, const char * szFunName, ZH_SYMBOLSCOPE cScope, int iType ); /* starts a new Clipper language function definition */
+extern               void         zh_compFunctionAdd( ZH_COMP_DECL, const char * szFunName, ZH_SYMBOLSCOPE cScope, int iType );
 extern               PZH_HINLINE  zh_compInlineAdd( ZH_COMP_DECL, const char * szFunName, int iLine );
 extern               void         zh_compFunctionMarkStatic( ZH_COMP_DECL, const char * szFunName );
 extern ZH_EXPORT_INT const char * zh_compGetFuncID( const char * szFuncName, ZH_FUNC_ID * pFunID, int * piFlags );

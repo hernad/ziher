@@ -192,7 +192,7 @@ static const ZH_PP_OPERATOR s_operators[] =
    { "^"    , 1, "^"    , ZH_PP_TOKEN_POWER     | ZH_PP_TOKEN_STATIC }
 /* unused: ? ~ " ' ` */
 /* not accessible: " ' `  */
-/* illegal in Clipper: ~ */
+/* illegal: ~ */
 };
 
 static const char s_pp_dynamicResult = 0;
@@ -677,12 +677,12 @@ static void zh_pp_readLine( PZH_PP_STATE pState )
          }
       }
       iLine = 1;
-      /* In Clipper ^Z works like \n */
+      /* ^Z works like \n */
       if( ch == '\n' || ch == '\x1a' )
       {
          break;
       }
-      /* Clipper strips \r characters even from quoted strings */
+      /* strips \r characters even from quoted strings */
       else if( ch != '\r' )
       {
          zh_membufAddCh( pState->pBuffer, ( char ) ch );
@@ -715,10 +715,6 @@ static ZH_BOOL zh_pp_canQuote( ZH_BOOL fQuote, char * pBuffer, ZH_SIZE nLen,
 {
    char cQuote = 0;
 
-   /*
-    * TODO: this is Clipper compatible but it breaks valid code so we may
-    *       think about changing this condition in the future.
-    */
    while( n < nLen )
    {
       if( pBuffer[ n ] == ']' )
@@ -904,14 +900,10 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
       if( pState->fCanNextLine )
       {
          pState->nSpaces = pState->nSpacesNL;
-         /*
-          * set minimum number of leading spaces to 1 to avoid problems
-          * with automatic word concatenation which is not Clipper compatible
-          */
+
          pState->nSpacesMin = 1;
          pState->fCanNextLine = ZH_FALSE;
-         /* Clipper left only last leading blank character from
-            concatenated lines */
+
          if( nLen > 1 && ZH_PP_ISBLANK( pBuffer[ 0 ] ) )
          {
             while( nLen > 1 && ZH_PP_ISBLANK( pBuffer[ 1 ] ) )
@@ -941,15 +933,9 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
                   if( nLen > 1 && ch == '*' && pBuffer[ 1 ] == '/' )
                   {
                      pState->iStreamDump = ZH_PP_STREAM_OFF;
-                     /* Clipper clear number of leading spaces when multiline
-                        comment ends */
-                     pState->nSpaces = 0;
-                     /*
-                      * but we cannot make the same because we have automatic
-                      * word concatenation which is not Clipper compatible and
-                      * will break code like:
-                      */
 
+                     pState->nSpaces = 0;
+                  
                      pState->nSpacesMin = 1;
                      ++n;
                   }
@@ -1058,7 +1044,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
             else if( zh_pp_hasCommand( pBuffer, nLen, &n, 1, "ENDTEXT" ) ||
                      zh_pp_hasCommand( pBuffer, nLen, &n, 3, "#", "pragma", "__endtext" ) )
             {
-               if( pState->iStreamDump == ZH_PP_STREAM_CLIPPER )
+               if( pState->iStreamDump == ZH_PP_STREAM_TEXT )
                {
                   if( pState->pFuncEnd )
                      zh_pp_tokenAddStreamFunc( pState, pState->pFuncEnd, NULL, 0 );
@@ -1083,7 +1069,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
                zh_pp_tokenListFree( &pState->pFuncEnd );
                pState->iStreamDump = ZH_PP_STREAM_OFF;
             }
-            else if( pState->iStreamDump == ZH_PP_STREAM_CLIPPER )
+            else if( pState->iStreamDump == ZH_PP_STREAM_TEXT )
             {
                n = nLen;
                zh_pp_tokenAddStreamFunc( pState, pState->pFuncOut, pBuffer, n );
@@ -1288,12 +1274,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
             while( ++n < nLen && ZH_PP_ISNEXTIDCHAR( pBuffer[ n ] ) )
                ;
 
-            /*
-             * In Clipper note can be used only as 1st token and after
-             * statement separator ';' it does not work like a single line
-             * comment.
-             */
-
+  
             if( pState->fNewStatement &&
                 n == 4 && zh_strnicmp( "NOTE", pBuffer, 4 ) == 0 )
             {
@@ -1304,11 +1285,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
             {
                if( n < nLen && pBuffer[ n ] == '&' )
                {
-                  /*
-                   * [<keyword>][&<keyword>[.[<nextidchars>]]]+ is a single
-                   * token in Clipper and this fact is important in later
-                   * preprocessing so we have to replicate it
-                   */
+
                   while( nLen - n > 1 && pBuffer[ n ] == '&' &&
                          ZH_PP_ISFIRSTIDCHAR( pBuffer[ n + 1 ] ) )
                   {
@@ -1337,9 +1314,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
                   zh_pp_tokenAddNext( pState, pBuffer, n, ZH_PP_TOKEN_KEYWORD );
             }
          }
-         /* This is Clipper incompatible token - such characters are illegal
-            and error message generated, to replicate this behavior is enough
-            to change ZH_PP_ISILLEGAL() macro */
+
          else if( ZH_PP_ISTEXTCHAR( ch ) )
          {
             while( ++n < nLen && ZH_PP_ISTEXTCHAR( pBuffer[ n ] ) )
@@ -1410,11 +1385,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
          else if( ch == '&' && nLen > 1 && ZH_PP_ISFIRSTIDCHAR( pBuffer[ 1 ] ) )
          {
             int iParts = 0;
-            /*
-             * [<keyword>][&<keyword>[.[<nextidchars>]]]+ is a single token in Clipper
-             * and this fact is important in later preprocessing so we have
-             * to replicate it
-             */
+
             while( nLen - n > 1 && pBuffer[ n ] == '&' &&
                    ZH_PP_ISFIRSTIDCHAR( pBuffer[ n + 1 ] ) )
             {
@@ -1492,7 +1463,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
       }
 
       if( ! pState->fCanNextLine &&
-          ! ( pState->iStreamDump && pState->iStreamDump != ZH_PP_STREAM_CLIPPER ) &&
+          ! ( pState->iStreamDump && pState->iStreamDump != ZH_PP_STREAM_TEXT ) &&
           ( pState->iNestedBlock || pState->iBlockState == 5 ) )
       {
          pEolTokenPtr = pState->pNextTokenPtr;
@@ -1510,7 +1481,7 @@ static void zh_pp_getLine( PZH_PP_STATE pState )
    while( ( pState->pFile->pLineBuf ? pState->pFile->nLineBufLen != 0 :
                                       ! pState->pFile->fEof ) &&
           ( pState->fCanNextLine || pState->iNestedBlock ||
-            ( pState->iStreamDump && pState->iStreamDump != ZH_PP_STREAM_CLIPPER ) ) );
+            ( pState->iStreamDump && pState->iStreamDump != ZH_PP_STREAM_TEXT ) ) );
 
    if( pState->iStreamDump )
    {
@@ -1537,8 +1508,7 @@ static int zh_pp_tokenStr( PZH_PP_TOKEN pToken, PZH_MEM_BUFFER pBuffer,
    int iLines = 0;
    ZH_ISIZ nSpace = fSpaces ? pToken->spaces : 0;
 
-   /* This is workaround for stringify token list and later decoding by FLEX
-      which breaks Clipper compatible code */
+
    if( nSpace == 0 && fQuote && ltype &&
        ltype >= ZH_PP_TOKEN_ASSIGN && ltype != ZH_PP_TOKEN_EQ &&
        ZH_PP_TOKEN_TYPE( pToken->type ) >= ZH_PP_TOKEN_ASSIGN &&
@@ -2564,7 +2534,7 @@ static void zh_pp_pragmaNew( PZH_PP_STATE pState, PZH_PP_TOKEN pToken )
       {
          fError = zh_pp_pragmaStream( pState, pToken->pNext );
          if( ! fError )
-            pState->iStreamDump = ZH_PP_STREAM_CLIPPER;
+            pState->iStreamDump = ZH_PP_STREAM_TEXT;
       }
       else if( zh_pp_tokenValueCmp( pToken, "__stream", ZH_PP_CMP_DBASE ) )
       {
@@ -3085,9 +3055,7 @@ static ZH_BOOL zh_pp_matchMarkerNew( PZH_PP_TOKEN * pTokenPtr,
 
 static ZH_BOOL zh_pp_matchHasKeywords( PZH_PP_TOKEN pToken )
 {
-   /* Now we are strictly Clipper compatible here though the nested
-      optional markers which have keywords on deeper levels are not
-      recognized. Exactly the same makes Clipper PP */
+
    while( ZH_PP_TOKEN_ISMATCH( pToken ) )
       pToken = pToken->pNext;
    return pToken != NULL;
@@ -3397,8 +3365,6 @@ static void zh_pp_directiveNew( PZH_PP_STATE pState, PZH_PP_TOKEN pToken,
       {
          if( pMatch )
          {
-            /* Clipper PP makes something like that for result pattern of
-             #[x]translate and #[x]command */
             if( pStart->spaces > 1 )
                pStart->spaces = 1;
          }
@@ -3466,8 +3432,6 @@ static void zh_pp_directiveNew( PZH_PP_STATE pState, PZH_PP_TOKEN pToken,
                   else if( ZH_PP_TOKEN_TYPE( ( *pTokenPtr )->type ) == ZH_PP_TOKEN_LT )
                   {
                      ZH_SIZE spaces = ( *pTokenPtr )->spaces;
-                     /* Free the string dump token: '#'. Clipper PP always
-                        does it without checking type of next marker */
                      if( pDumpPtr )
                      {
                         pLast = *pDumpPtr;
@@ -3821,12 +3785,6 @@ static ZH_BOOL zh_pp_tokenMatch( PZH_PP_TOKEN pMatch, PZH_PP_TOKEN * pTokenPtr,
    {
       PZH_PP_TOKEN pRestrict = pMatch->pMTokens, pToken = *pTokenPtr;
 
-      /*
-       * Here we are strictly Clipper compatible. Clipper accepts dummy
-       * restrict marker which starts from comma, <id: ,[ something,...]>
-       * which always match empty expression. The same effect can be
-       * reached by giving ,, in the world list on other positions.
-       */
       while( pRestrict )
       {
          if( ZH_PP_TOKEN_TYPE( pRestrict->type ) == ZH_PP_TOKEN_COMMA )
@@ -3892,9 +3850,6 @@ static ZH_BOOL zh_pp_tokenMatch( PZH_PP_TOKEN pMatch, PZH_PP_TOKEN * pTokenPtr,
    }
    else if( type == ZH_PP_MMARKER_WILD )
    {
-      /* TODO? now we are strictly Clipper compatible, but we may
-         want to add some additional stop markers in the future here
-         to support wild match markers also as not the last expression */
       if( ! ZH_PP_TOKEN_ISEOS( *pTokenPtr ) )
       {
          fMatch = ZH_TRUE;
@@ -4049,8 +4004,6 @@ static PZH_PP_RESULT zh_pp_matchResultGet( PZH_PP_RULE pRule, ZH_USHORT usMatch,
    PZH_PP_MARKER pMarker = &pRule->pMarkers[ usIndex - 1];
    PZH_PP_RESULT pMarkerResult;
 
-   /* Clipper PP does not check status of match marker but only how many
-      different values were assigned to match pattern */
    if( pMarker->matches == 1 )
       pMarkerResult = pMarker->pResult;
    else if( usMatch < pMarker->matches )
@@ -4162,14 +4115,6 @@ static PZH_PP_TOKEN * zh_pp_matchResultLstAdd( PZH_PP_STATE pState,
          }
          else
          {
-            /* leading spaces calculation in Clipper is broken when
-               separate tokens are stringified, it can be quite
-               easy checked that it will interact with translation
-               done just before - spaces are partially inherited.
-               It means that Clipper PP does not clear some static
-               buffers where holds this information.
-               I decided to keep original internal spacing except the
-               first token */
             ZH_BOOL fSpaces = ZH_FALSE;
             if( ! fFirst )
                spaces = pToken->spaces;
@@ -4276,8 +4221,6 @@ static PZH_PP_TOKEN * zh_pp_matchResultAdd( PZH_PP_STATE pState,
    }
    else if( ZH_PP_TOKEN_TYPE( pMatch->type ) == ZH_PP_RMARKER_LOGICAL )
    {
-      /* Clipper documentation is wrong and Clipper PP only checks
-         if such pattern was assigned not is non empty */
       zh_pp_tokenAdd( &pResultPtr, pMarkerResult ? ".T." : ".F.", 3,
                pMatch->spaces, ZH_PP_TOKEN_LOGICAL | ZH_PP_TOKEN_STATIC );
    }
@@ -4620,9 +4563,6 @@ static ZH_BOOL zh_pp_processCommand( PZH_PP_STATE pState, PZH_PP_TOKEN * pFirstP
       }
    }
 
-   /* This is strictly compatible with Clipper PP which internally supports
-         text <!linefunc!>,<!endfunc!>
-      as stream begin directive */
    if( ! ZH_PP_TOKEN_ISEOC( *pFirstPtr ) &&
        zh_pp_tokenValueCmp( *pFirstPtr, "TEXT", ZH_PP_CMP_DBASE ) )
    {
@@ -4650,7 +4590,7 @@ static ZH_BOOL zh_pp_processCommand( PZH_PP_STATE pState, PZH_PP_TOKEN * pFirstP
          zh_pp_tokenAdd( &pFuncPtr, pToken->value, pToken->len, 0, ZH_PP_TOKEN_KEYWORD );
          zh_pp_tokenAdd( &pFuncPtr, "(", 1, 0, ZH_PP_TOKEN_LEFT_PB | ZH_PP_TOKEN_STATIC );
          zh_pp_tokenAdd( &pFuncPtr, ")", 1, 1, ZH_PP_TOKEN_RIGHT_PB | ZH_PP_TOKEN_STATIC );
-         pState->iStreamDump = ZH_PP_STREAM_CLIPPER;
+         pState->iStreamDump = ZH_PP_STREAM_TEXT;
          zh_pp_tokenListFreeCmd( pFirstPtr );
          fSubst = ZH_TRUE;
       }
@@ -5365,7 +5305,6 @@ static void zh_pp_preprocessToken( PZH_PP_STATE pState )
          {
             zh_pp_directiveNew( pState, pToken, ZH_PP_CMP_CASE, ZH_TRUE, fDirect, ZH_TRUE );
          }
-         /* Clipper PP does not accept #line and generates error */
          else if( zh_pp_tokenValueCmp( pToken, "LINE", ZH_PP_CMP_DBASE ) )
          {
             /* ignore #line directives */
@@ -6002,7 +5941,7 @@ void zh_pp_setStream( PZH_PP_STATE pState, int iMode )
       case ZH_PP_STREAM_INLINE_C:
          pState->iDumpLine = pState->pFile ? pState->pFile->iCurrentLine : 0;
          /* fallthrough */
-      case ZH_PP_STREAM_CLIPPER:
+      case ZH_PP_STREAM_TEXT:
       case ZH_PP_STREAM_PRG:
       case ZH_PP_STREAM_C:
          if( ! pState->pStreamBuffer )

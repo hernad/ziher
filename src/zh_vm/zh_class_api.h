@@ -133,9 +133,9 @@ extern ZH_EXPORT PZH_ITEM   zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNS pVarMsg 
 /* send message which allows to set execution context for debugger */
 extern ZH_EXPORT void       zh_dbg_objSendMessage( int iProcLevel, PZH_ITEM pObject, PZH_ITEM pMessage, int iParamOffset );
 
-extern ZH_EXPORT ZH_USHORT  zh_clsCreate( ZH_USHORT usSize, const char * szClassName ); /* Ziher equivalent for Clipper internal __mdCreate() */
-extern ZH_EXPORT void       zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr ); /* Ziher equivalent for Clipper internal __mdAdd() */
-extern ZH_EXPORT void       zh_clsAssociate( ZH_USHORT usClassH ); /* Ziher equivalent for Clipper internal __mdAssociate() */
+extern ZH_EXPORT ZH_USHORT  zh_clsCreate( ZH_USHORT usSize, const char * szClassName );
+extern ZH_EXPORT void       zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr ); 
+extern ZH_EXPORT void       zh_clsAssociate( ZH_USHORT usClassH ); 
 
 ZH_EXTERN_END
 

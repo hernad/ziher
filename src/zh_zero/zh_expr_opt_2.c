@@ -996,15 +996,6 @@ PZH_EXPR zh_compExprReduceIN( PZH_EXPR pSelf, ZH_COMP_DECL )
       {
          ZH_BOOL bResult;
 
-         /* NOTE: CA-Cl*pper has a bug where the $ operator returns .T.
-          *       when an empty string is searched [vszakats]
-          *
-          *       But this bug exist only in compiler and CA-Cl*pper macro
-          *       compiler does not have optimizer. This bug is replicated
-          *       by us only when Ziher extensions in compiler (-kh) are
-          *       not enabled e.g. in strict Clipper compatible mode (-kc)
-          *       [druzus]
-          */
          if( pLeft->nLength == 0 )
             bResult = ZH_COMP_PARAM->mode == ZH_MODE_COMPILER &&
                       ! ZH_SUPPORT_ZIHER;
@@ -1065,7 +1056,6 @@ PZH_EXPR zh_compExprReduceNE( PZH_EXPR pSelf, ZH_COMP_DECL )
                pSelf->ValType  = ZH_EV_LOGICAL;
                pSelf->value.asLogical = ZH_FALSE;
 
-               /* NOTE: COMPATIBILITY: Clipper doesn't optimize this */
             }
             break;
 
@@ -1985,14 +1975,6 @@ ZH_BOOL zh_compExprReduceAT( PZH_EXPR pSelf, ZH_COMP_DECL )
    {
       PZH_EXPR pReduced;
 
-      /* NOTE: CA-Cl*pper has a bug in At( "", cText ) compile time
-       *       optimization and always set 1 as result in such cases.
-       *       This bug exist only in compiler and CA-Cl*pper macro
-       *       compiler does not have optimizer. This bug is replicated
-       *       by us only when Ziher extensions in compiler (-kh) are
-       *       not enabled e.g. in strict Clipper compatible mode (-kc)
-       *       [druzus]
-       */
       if( pSub->nLength == 0 )
       {
          pReduced = zh_compExprNewLong( ( ZH_COMP_PARAM->mode == ZH_MODE_COMPILER &&
@@ -2038,18 +2020,6 @@ ZH_BOOL zh_compExprReduceCHR( PZH_EXPR pSelf, ZH_COMP_DECL )
    /* try to change it into a string */
    if( fDoOpt )
    {
-      /* NOTE: CA-Cl*pper's compiler optimizer will be wrong for those
-       *       Chr() cases where the passed parameter is a constant which
-       *       can be divided by 256 but it's not zero, in this case it
-       *       will return an empty string instead of a Chr( 0 ). [vszakats]
-       *
-       *       But this bug exist only in compiler and CA-Cl*pper macro
-       *       compiler does not have optimizer. This bug is replicated
-       *       by us only when Ziher extensions in compiler (-kh) are
-       *       not enabled e.g. in strict Clipper compatible mode (-kc)
-       *       [druzus]
-       */
-
       PZH_EXPR pExpr = ZH_COMP_EXPR_NEW( ZH_ET_STRING );
 
       pExpr->ValType = ZH_EV_STRING;

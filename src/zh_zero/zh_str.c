@@ -420,27 +420,6 @@ double zh_numRound( double dNum, int iDec )
       doComplete5 = dNum * dPow * doBase;
    }
 
-/*
- * double precision if 15 digit the 16th one is usually wrong but
- * can give some information about number,
- * Clipper display 16 digit only others are set to 0
- * many people don't know/understand FL arithmetic. They expect
- * that it will behaves in the same way as real numbers. It's not
- * true but in business application we can try to hide this problem
- * for them. Usually they not need such big precision in presented
- * numbers so we can decrease the precision to 15 digits and use
- * the cut part for proper rounding. It should resolve
- * most of problems. But if someone totally  not understand FL
- * and will try to convert big matrix or something like that it's quite
- * possible that he chose one of the natural school algorithm which
- * works nice with real numbers but can give very bad results in FL.
- * In such case it could be good to decrease precision even more.
- * It not fixes the used algorithm of course but will make many users
- * happy because they can see nice (proper) result.
- * So maybe it will be good to add SET PRECISION TO <n> for them and
- * use the similar hack in ==, >=, <=, <, > operations if it's set.
- */
-
 /* #define ZH_NUM_PRECISION  16 */
 
 #ifdef ZH_NUM_PRECISION
@@ -508,15 +487,6 @@ double zh_numRound( double dNum, int iDec )
 
    ( void ) modf( doComplete5, &doComplete5i );
 
-#if defined( __POCC__ )
-   if( iDec < 16 )
-   {
-      if( iDec >= 0 )
-         return doComplete5i / ( ZH_LONGLONG ) dPow;
-      else if( iDec > -16 )
-         return doComplete5i * ( ZH_LONGLONG ) dPow;
-   }
-#endif
    if( iDec < 0 )
       return doComplete5i * dPow;
    else

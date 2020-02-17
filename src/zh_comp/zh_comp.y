@@ -698,12 +698,12 @@ AliasVar   : NumAlias AliasId          { $$ = zh_compExprNewAliasVar( $1, $2, ZH
            | HashAlias AliasId         { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
            | SelfAlias AliasId         { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
            | ArrayAlias AliasId        { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
-           | ArrayAtAlias AliasId      { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
-           | VariableAtAlias AliasId   { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
-           | IfInlineAlias AliasId     { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
-           | FunCallAlias AliasId      { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
-           | ObjectDataAlias AliasId   { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
-           | ObjectMethodAlias AliasId { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }  /* QUESTION: Clipper reports error here - we can handle this */
+           | ArrayAtAlias AliasId      { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
+           | VariableAtAlias AliasId   { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
+           | IfInlineAlias AliasId     { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
+           | FunCallAlias AliasId      { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
+           | ObjectDataAlias AliasId   { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
+           | ObjectMethodAlias AliasId { ZH_COMP_EXPR_FREE( $2 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $1 ); }
            | VarAlias AliasId          { $$ = zh_compExprNewAliasVar( $1, $2, ZH_COMP_PARAM ); }
            | FieldAlias AliasId        { $$ = zh_compExprNewAliasVar( $1, $2, ZH_COMP_PARAM ); }
            | FieldVarAlias AliasId     { $$ = zh_compExprNewAliasVar( $1, $2, ZH_COMP_PARAM ); }
@@ -720,7 +720,7 @@ AliasExpr  : NumAlias PareExpList         { $$ = zh_compExprNewAliasExpr( $1, $2
            | MacroVarAlias PareExpList    { $$ = zh_compExprNewAliasExpr( $1, $2, ZH_COMP_PARAM ); }
            | MacroExprAlias PareExpList   { $$ = zh_compExprNewAliasExpr( $1, $2, ZH_COMP_PARAM ); }
            | PareExpListAlias PareExpList { $$ = zh_compExprNewAliasExpr( $1, $2, ZH_COMP_PARAM ); }
-           | FieldAlias PareExpList       { ZH_COMP_EXPR_FREE( $1 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $2 ); } /* QUESTION: Clipper reports error here - we can handle it */
+           | FieldAlias PareExpList       { ZH_COMP_EXPR_FREE( $1 ); $$ = zh_compErrorAlias( ZH_COMP_PARAM, $2 ); }
            ;
 
 /* Array expressions access
@@ -1073,12 +1073,6 @@ PareExpList : '(' ExpList ')'          { $$ = $2; }
 PareExpListAlias : PareExpList ALIASOP
                  ;
 
-/* NOTE: Clipper allows to pass variable by reference only as
- * function arguments, iif() 2nd and 3rd arguments and as
- * explicit array items {...@var...}
- * AFAIK these are also the only one places where empty expressions in
- * the parenthesis expressions list are accepted
- */
 IfInline : IIF '(' Expression ',' Argument ',' Argument ')'
             { $$ = zh_compExprNewIIF( zh_compExprAddListExpr( zh_compExprAddListExpr( zh_compExprNewList( $3, ZH_COMP_PARAM ), $5 ), $7 ) ); }
          ;
@@ -1929,12 +1923,7 @@ RecoverUsing : RECOVERUSING IdentName
                }
              ;
 
-/* NOTE: In Clipper all variables used in DO .. WITH are passed by reference
- * however if they are part of an expression then they are passed by value
- * for example:
- * DO .. WITH ++variable
- * will pass the value of variable not a reference
- */
+
 DoProc     : DO MacroAny DoArgs
                {
                   $$ = zh_compExprNewFunCall( $2, $3, ZH_COMP_PARAM );

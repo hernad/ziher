@@ -234,14 +234,6 @@ static void zh_macroSyntaxError( PZH_MACRO pMacro )
  *    string if there was no macro operator in it or a pointer to a new
  *    allocated memory with expanded string if there was a macro operator
  *    in passed string.
- * NOTE:
- *    Clipper restarts scanning of the text from the beginning of
- *    inserted text after macro expansion, for example:
- *    PRIVATE a:='&', b:='c'
- *    PRIVATE &a.b   // this will create 'c' variable
- *
- *    PRIVATE a:=0, b:='b', ab:='c'
- *    PRIVATE &a&b   //this will cause syntax error '&'
  *
  */
 static char * zh_macroTextSubst( const char * szString, ZH_SIZE * pnStringLen )
@@ -393,7 +385,6 @@ static char * zh_macroTextSubst( const char * szString, ZH_SIZE * pnStringLen )
  * a parameter.
  * PUSH operation
  * iContext contains additional info when ZH_SM_XBASE is enabled
- *  = 0 - in Clipper strict compatibility mode
  *  = ZH_P_MACROPUSHLIST
  *  = ZH_P_MACROPUSHPARE
  *
@@ -421,18 +412,7 @@ void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
       struMacro.uiNameLen = ZH_SYMBOL_NAME_LEN;
       struMacro.status    = ZH_MACRO_CONT;
       struMacro.length    = pItem->item.asString.length;
-      /*
-       * Clipper appears to expand nested macros statically vs. by
-       * Macro Parser, e.g.:
-       *       PROCEDURE Main()
-       *          LOCAL cText
-       *          cText := "( v := 'A' ) + &v"
-       *          M->v := "'B'"
-       *          ? "Macro:", cText
-       *          ? "Result:", &cText
-       *          ? "Type:", Type(cText)
-       *       RETURN
-       */
+   
       pszFree = zh_macroTextSubst( pItem->item.asString.value, &struMacro.length );
       struMacro.string = pszFree;
       if( pszFree == pItem->item.asString.value )
@@ -570,15 +550,6 @@ void zh_macroPushReference( PZH_ITEM pItem )
  * Compile and run:
  *    &alias->var or
  *    alias->&var
- * NOTE:
- *    Clipper implements these two cases as: &( alias +'->' + variable )
- *    This causes some non expected behaviours, for example:
- *    A :="M + M"
- *    ? &A->&A
- *    is the same as:
- *    &( "M + M->M + M" )
- *    instead of
- *    &( "M + M" ) -> &( "M + M" )
  */
 static void zh_macroUseAliased( PZH_ITEM pAlias, PZH_ITEM pVar, int iFlag, int iSupported )
 {
@@ -1097,9 +1068,6 @@ const char * zh_macroGetType( PZH_ITEM pItem )
           */
          if( struMacro.exprType == ZH_ET_CODEBLOCK )
          {
-            /* Clipper ignores any undeclared symbols or UDFs if the
-             * compiled expression is a valid codeblock
-             */
             szType = "B";
          }
          else if( struMacro.status & ZH_MACRO_UNKN_SYM )
@@ -1149,7 +1117,6 @@ const char * zh_macroGetType( PZH_ITEM pItem )
 
                   if( ulGenCode == EG_NOVAR || ulGenCode == EG_NOALIAS )
                   {
-                     /* Undeclared variable returns 'U' in Clipper */
                      szType = "U";
                   }
                   else
@@ -1348,8 +1315,6 @@ static void zh_macroMemvarGenPCode( ZH_BYTE bPCode, const char * szVarName, ZH_C
       }
    }
    else
-      /* Find the address of passed symbol - create the symbol if doesn't exist
-       * (Clipper compatibility). */
       pSym = zh_dynsymGetCase( szVarName );
 
    byBuf[ 0 ] = bPCode;

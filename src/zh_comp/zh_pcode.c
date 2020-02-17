@@ -600,7 +600,7 @@ void zh_compPCodeTrace( PZH_ZFUNC pFunc, const PZH_PCODE_FUNC * pFunctions, void
 
 void zh_compGenPCode1( ZH_BYTE byte, ZH_COMP_DECL )
 {
-   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined Clipper function */
+   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined function */
 
    if( ! pFunc->pCode )                              /* has been created the memory block to hold the pcode ? */
    {
@@ -616,7 +616,7 @@ void zh_compGenPCode1( ZH_BYTE byte, ZH_COMP_DECL )
 
 void zh_compGenPCode2( ZH_BYTE byte1, ZH_BYTE byte2, ZH_COMP_DECL )
 {
-   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined Clipper function */
+   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined function */
 
    if( ! pFunc->pCode )                              /* has been created the memory block to hold the pcode ? */
    {
@@ -633,7 +633,7 @@ void zh_compGenPCode2( ZH_BYTE byte1, ZH_BYTE byte2, ZH_COMP_DECL )
 
 void zh_compGenPCode3( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_COMP_DECL )
 {
-   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined Clipper function */
+   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined function */
 
    if( ! pFunc->pCode )                              /* has been created the memory block to hold the pcode ? */
    {
@@ -651,7 +651,7 @@ void zh_compGenPCode3( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_COMP_DECL
 
 void zh_compGenPCode4( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_BYTE byte4, ZH_COMP_DECL )
 {
-   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined Clipper function */
+   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined function */
 
    if( ! pFunc->pCode )                              /* has been created the memory block to hold the pcode ? */
    {
@@ -670,7 +670,7 @@ void zh_compGenPCode4( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_BYTE byte
 
 void zh_compGenPCodeN( const ZH_BYTE * pBuffer, ZH_SIZE nSize, ZH_COMP_DECL )
 {
-   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined Clipper function */
+   PZH_ZFUNC pFunc = ZH_COMP_PARAM->functions.pLast;   /* get the currently defined function */
 
    if( ! pFunc->pCode )                              /* has been created the memory block to hold the pcode ? */
    {

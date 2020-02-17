@@ -145,8 +145,6 @@ extern ZH_EXPORT PZH_ITEM     zh_itemPutNLL    ( PZH_ITEM pItem, ZH_LONGLONG lNu
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNLLLen ( PZH_ITEM pItem, ZH_LONGLONG lNumber, int iWidth );
 #endif
 
-/* Non Clipper compliant internal API */
-
 extern ZH_EXPORT PZH_ITEM     zh_itemParamPtr  ( ZH_USHORT uiParam, long lMask );
 extern ZH_EXPORT ZH_BOOL      zh_itemParamStore( ZH_USHORT uiParam, PZH_ITEM pItem );
 extern ZH_EXPORT ZH_BOOL      zh_itemParamStoreForward( ZH_USHORT uiParam, PZH_ITEM pItem );

@@ -294,7 +294,7 @@ PZH_ITEM zh_itemDoC( const char * szFunc, ZH_ULONG ulPCount, ... )
  * that you may access its value using a zh_par...( -1 ).
  */
 
-/* undocumented Clipper _cEval0() */
+
 void zh_evalBlock0( PZH_ITEM pCodeBlock )
 {
    zh_vmPushEvalSym();
@@ -302,7 +302,6 @@ void zh_evalBlock0( PZH_ITEM pCodeBlock )
    zh_vmSend( 0 );
 }
 
-/* undocumented Clipper _cEval1() */
 void zh_evalBlock1( PZH_ITEM pCodeBlock, PZH_ITEM pParam )
 {
    zh_vmPushEvalSym();

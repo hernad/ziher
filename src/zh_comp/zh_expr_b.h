@@ -524,12 +524,6 @@ static ZH_EXPR_FUNC( zh_compExprUseSelf )
       case ZH_EA_REDUCE:
          break;
       case ZH_EA_ARRAY_AT:
-         /* Clipper allows such operation and because some valid Clipper
-          * code needs it then I disabled error message, [druzus]
-          */
-         #if 0
-         ZH_COMP_ERROR_TYPE( pSelf );
-         #endif
          break;
       case ZH_EA_ARRAY_INDEX:
          zh_compErrorIndex( ZH_COMP_PARAM, pSelf );     /* SELF cannot be used as array index element */
@@ -1262,10 +1256,6 @@ static ZH_EXPR_FUNC( zh_compExprUseArrayAt )
       {
          PZH_EXPR pIdx;
 
-         /* Clipper forces memvar context for undeclared variables used with
-          * array index, e.g.: var[ n ]
-          * but not for code like: ( var )[ n ]
-          */
          if( pSelf->value.asList.pExprList->ExprType == ZH_ET_VARIABLE )
          {
 #if ! defined( ZH_MACRO_SUPPORT )
@@ -2656,7 +2646,6 @@ static ZH_EXPR_FUNC( zh_compExprUseSend )
    switch( iMessage )
    {
       case ZH_EA_REDUCE:
-         /* Clipper does not reduce object expressions */
          if( pSelf->value.asMessage.pObject &&
              ( ZH_SUPPORT_ZIHER || pSelf->nLength == 1 ) )
             pSelf->value.asMessage.pObject = ZH_EXPR_USE( pSelf->value.asMessage.pObject, ZH_EA_REDUCE );
@@ -4276,7 +4265,7 @@ static ZH_EXPR_FUNC( zh_compExprUsePower )
       case ZH_EA_REDUCE:
          pSelf->value.asOperator.pLeft  = ZH_EXPR_USE( pSelf->value.asOperator.pLeft, ZH_EA_REDUCE );
          pSelf->value.asOperator.pRight = ZH_EXPR_USE( pSelf->value.asOperator.pRight, ZH_EA_REDUCE );
-         if( ZH_SUPPORT_ZIHER )   /* Clipper doesn't optimize it */
+         if( ZH_SUPPORT_ZIHER )
             pSelf = zh_compExprReducePower( pSelf, ZH_COMP_PARAM );
          break;
 
@@ -4518,10 +4507,6 @@ static ZH_BOOL zh_compExprCodeblockPush( PZH_EXPR pSelf, int iEarlyEvalPass, ZH_
       if( pExpr->ExprType == ZH_ET_MACRO &&
           ( pExpr->value.asMacro.SubType & ZH_ET_MACRO_NOPARE ) == 0 )
       {
-         /* Clipper allows for list expressions in a codeblock
-          * macro := "1,2"
-          * Eval( {|| &macro} )
-          */
          pExpr->value.asMacro.SubType |= ZH_ET_MACRO_PARE;
       }
 
@@ -4774,31 +4759,7 @@ static void zh_compExprPushSendPopPush( PZH_EXPR pObj, PZH_EXPR pValue,
  *
  * pExpr is an expression created by zh_compExprNew<operator>Eq functions
  */
-/* NOTE: COMPATIBILITY ISSUE:
- * The ZH_SUPPORT_ZIHER in code below determines
- * the way the chained send messages are handled.
- * For example, the following code:
- *
- * a:b( COUNT() ):c += 1
- *
- * will be handled as:
- *
- * a:b( COUNT() ):c := a:b( COUNT() ):c + 1
- *
- * in strict Clipper compatibility mode
- * (ZH_SUPPORT_ZIHER is not set: -kc compiler switch ) and
- *
- * temp := a:b( COUNT() ), temp:c += 1
- *
- * in non-strict mode (-kh).
- * In practice in Clipper it will call COUNT() function two times: the
- * first time before addition and the second one after addition - in Ziher,
- * COUNT() function will be called only once, before addition.
- * The Ziher (non-strict) method is:
- * 1) faster
- * 2) it guarantees that the same instance variable of the same object will
- *   be changed
- */
+
 
 static void zh_compExprPushOperEq( PZH_EXPR pSelf, ZH_BYTE bOpEq, ZH_COMP_DECL )
 {

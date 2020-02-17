@@ -199,18 +199,14 @@ ZH_FUNC( AFILL )
          /* Explicit lCount of 0 - Nothing to do! */
          if( ZH_IS_PARAM_NUM( 4 ) && lCount == 0 )
             return;
-         /* Clipper aborts if negative start. */
          else if( lStart < 0 )
             return;
-         /* Clipper allows Start to be of wrong type, or 0, and corrects it to 1. */
          else if( lStart == 0 )
             lStart = 1;
          if( lCount < 0 )
          {
-            /* Clipper allows the Count to be negative, if start is 1, and corrects it to maximum elements. */
             if( lStart == 1 )
                nCount = 0;
-            /* Clipper aborts if negative count and start is not at 1. */
             else
                return;
          }
@@ -404,8 +400,6 @@ ZH_FUNC( ACOPY )
       zh_itemReturn( pDstArray ); /* ACopy() returns the target array */
    }
 }
-
-/* NOTE: Clipper will return NIL if the parameter is not an array. [vszakats] */
 
 ZH_FUNC( ACLONE )
 {

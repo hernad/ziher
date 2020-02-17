@@ -122,7 +122,7 @@ void zh_compPrintModes( ZH_COMP_DECL )
 {
    static const char * s_szOptions[] =
    {
-      "\nOptions:  c               clear all flags (strict Clipper mode)",
+      "\nOptions:  c               clear all flags (strict Legacy mode)",
       "\n          h[-]            Ziher mode",
       "\n          o[-]            allow operator optimizations",
       "\n          i[-]            enable support for ZH_INLINE",

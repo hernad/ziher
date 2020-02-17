@@ -581,15 +581,6 @@ PZH_EXPR zh_compExprNewMacro( PZH_EXPR pMacroExpr,
       /* Macro variable is used:  &identifier
        * or macro text: [text]&variable[more_macro_text]
        */
-      /*
-       * NOTE: Clipper assumes that all variables used in macro expressions
-       * are memvar variables
-       * NOTE: Clipper pushes the complete macro expression converted
-       * to string in case complex expression is used, e.g.
-       * My&var.1
-       * is pushed as:
-       * "MY&VAR.1"
-       */
       pExpr->value.asMacro.cMacroOp  = cMacroOp; /* '&' if variable or 0 if text */
       pExpr->value.asMacro.szMacro   = szName;   /* variable name or macro text */
       pExpr->value.asMacro.pExprList = NULL;     /* this is not a parenthesized expressions */
@@ -1272,9 +1263,6 @@ PZH_EXPR zh_compExprSetOperand( PZH_EXPR pExpr, PZH_EXPR pItem, ZH_COMP_DECL )
 
 /* ************************************************************************* */
 
-/* Handles prefix&macro-> and &macro.sufix-> in macro compiler
- * Clipper uses macro var directly as alias name in such case
- */
 PZH_EXPR zh_compExprMacroAsAlias( PZH_EXPR pExpr )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_compExprMacroAsAlias()" ) );

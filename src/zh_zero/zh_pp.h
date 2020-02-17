@@ -62,7 +62,7 @@ ZH_EXTERN_BEGIN
 #define ZH_PP_STREAM_OFF      0 /* standard preprocessing */
 #define ZH_PP_STREAM_COMMENT  1 /* multiline comment */
 #define ZH_PP_STREAM_DUMP_C   2 /* pragma BEGINDUMP */
-#define ZH_PP_STREAM_CLIPPER  3 /* Cl*pper compatible TEXT/ENDTEXT */
+#define ZH_PP_STREAM_TEXT     3 /* TEXT/ENDTEXT */
 #define ZH_PP_STREAM_PRG      4 /* TEXT/ENDTEXT lines joined with LF */
 #define ZH_PP_STREAM_C        5 /* TEXT/ENDTEXT lines joined and ESC sequences processed */
 #define ZH_PP_STREAM_INLINE_C 6 /* zh_inLIne() {...} data, should not be preprocessed */
@@ -222,8 +222,7 @@ typedef ZH_PP_MSG_FUNC_( ( * PZH_PP_MSG_FUNC ) );
 #define ZH_PP_TOKEN_ISPREDEF(t)  ( ( (t)->type & ZH_PP_TOKEN_PREDEFINED ) != 0 )
 
 /* These macros are very important for the PP behavior. They define what
-   and how will be translated. Their default definitions are not strictly
-   Clipper compatible to allow programmer using indirect # directive
+   and how will be translated.
          EOL - end of line    => '\n' or NULL
          EOC - end of command => EOL or ';'
          EOS - end of subst   => EOL or ';' + '#'
@@ -238,8 +237,7 @@ typedef ZH_PP_MSG_FUNC_( ( * PZH_PP_MSG_FUNC ) );
                                    ZH_PP_TOKEN_TYPE((t)->type) == ZH_PP_TOKEN_EOC )
 
 
-/* End Of Subst - define how many tokens in line should be translated,
-                  Clipper translates whole line */
+/* End Of Subst - define how many tokens in line should be translated */
 #  define ZH_PP_TOKEN_ISEOS(t)   ( ZH_PP_TOKEN_ISEOL(t) || \
                                    ( ZH_PP_TOKEN_TYPE((t)->type) == ZH_PP_TOKEN_EOC && \
                                      (t)->pNext && \
@@ -290,18 +288,6 @@ typedef ZH_PP_MSG_FUNC_( ( * PZH_PP_MSG_FUNC ) );
                                        ZH_PP_TOKEN_TYPE((t)->pNext->type) == ZH_PP_TOKEN_MACROVAR || \
                                        ZH_PP_TOKEN_TYPE((t)->pNext->type) == ZH_PP_TOKEN_MACROTEXT ) ) )
 
-/* I do not want to replicate exactly Clipper PP behavior and check if
-   expression is valid.
-   it's wrong and causes that potentially valid expressions are not
-   properly parsed, f.e:
-      ? 1 + + 2
-   does not work when
-      QOut( 1 + + 2 )
-   perfectly does.
-   It this difference will be reason of some problems then please inform me
-   with a code example so I'll be able if it should be implemented or not.
-   Now I simply disabled ZH_PP_TOKEN_NEEDRIGHT() macro.
- */
 
 #define ZH_PP_TOKEN_NEEDRIGHT(t) ( ZH_FALSE )
 
@@ -331,10 +317,6 @@ typedef ZH_PP_MSG_FUNC_( ( * PZH_PP_MSG_FUNC ) );
                                         ZH_PP_TOKEN_ISEXPVAL( (t)->pNext->type ) ) )
 
 
-/* Disable string quoting by [] for next token if current one is
-   constant value - it's not Clipper compatible but we need it for
-   accessing string characters by array index operator or introduce
-   similar extensions for other types in the future */
 #define ZH_PP_TOKEN_CANQUOTE(t)     ( ZH_PP_TOKEN_TYPE(t) != ZH_PP_TOKEN_KEYWORD && \
                                       ZH_PP_TOKEN_TYPE(t) != ZH_PP_TOKEN_MACROVAR && \
                                       ZH_PP_TOKEN_TYPE(t) != ZH_PP_TOKEN_MACROTEXT && \
@@ -365,12 +347,8 @@ ZH_PP_TOKEN, * PZH_PP_TOKEN;
 
 /* default maximum number of translations */
 #define ZH_PP_MAX_CYCLES      4096
-/* maximum number of single token translations, in Clipper it's 18 + number
-   of used rules, we will use also constant but increased by total number
-   of rules of given type: define, [x]translate, [x]command */
 #define ZH_PP_MAX_REPEATS     128
 
-/* Clipper allows only 16 nested includes */
 #define ZH_PP_MAX_INCLUDED_FILES    64
 
 #define ZH_PP_HASHID(t)       ( ( ZH_UCHAR ) ZH_PP_UPPER( (t)->value[ 0 ] ) )

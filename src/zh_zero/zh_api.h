@@ -863,7 +863,7 @@ extern ZH_EXPORT const char * zh_strLTrim( const char * szText, ZH_SIZE * nLen )
 extern ZH_EXPORT ZH_SIZE   zh_strRTrimLen( const char * szText, ZH_SIZE nLen, ZH_BOOL bAnySpace ); /* return length of a string, ignoring trailing white space (or true spaces) */
 extern ZH_EXPORT double    zh_strVal( const char * szText, ZH_SIZE nLen ); /* return the numeric value of a character string representation of a number */
 extern ZH_EXPORT ZH_MAXINT zh_strValInt( const char * szText, int * iOverflow );
-extern ZH_EXPORT char *    zh_strRemEscSeq( char * szText, ZH_SIZE * nLen ); /* remove C ESC sequences and converts them to Clipper chars */
+extern ZH_EXPORT char *    zh_strRemEscSeq( char * szText, ZH_SIZE * nLen );
 extern ZH_EXPORT char *    zh_numToStr( char * szBuf, ZH_SIZE nSize, ZH_MAXINT nNumber );
 extern ZH_EXPORT char *    zh_dblToStr( char * szBuf, ZH_SIZE nSize, double dNumber, int iMaxDec );
 extern ZH_EXPORT double    zh_numRound( double dResult, int iDec ); /* round a number to a specific number of digits */

@@ -1480,7 +1480,7 @@ static void zh_compPCodeEnumAssignedUnused( ZH_COMP_DECL, PZH_ZFUNC pFunc, PZH_O
                   To obtain real line number we need one more tree scan or other
                   algorithm. [Mindaugas] */
 
-               if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_CLIPPER )
+               if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_DEFAULT )
                   zh_snprintf( szFun, sizeof( szFun ), "%s(%i)", pFunc->szName, usLine );
                else
                   zh_snprintf( szFun, sizeof( szFun ), "%i:%s", usLine, pFunc->szName );
@@ -1661,7 +1661,7 @@ void zh_compPCodeTraceOptimizer( ZH_COMP_DECL )
       {
          char szFun[ 256 ];
 
-         if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_CLIPPER )
+         if( ZH_COMP_PARAM->iErrorFmt == ZH_ERRORFMT_DEFAULT )
             zh_snprintf( szFun, sizeof( szFun ), "%s(%i)", pFunc->szName, pVar->iDeclLine );
          else
             zh_snprintf( szFun, sizeof( szFun ), "%i:%s", pVar->iDeclLine, pFunc->szName );

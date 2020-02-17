@@ -232,7 +232,7 @@ PZH_EXPR zh_compExprNewFunCall( PZH_EXPR pName, PZH_EXPR pParms, ZH_COMP_DECL )
       else if( pName->value.asSymbol.funcid == ZH_F__GET_ &&
                zh_compExprParamListLen( pParms ) != 0 )
       {
-         /* Reserved Clipper function used to handle GET variables
+         /* Reserved function used to handle GET variables
           */
          PZH_EXPR pArg, pNext;
 
@@ -324,8 +324,6 @@ PZH_EXPR zh_compExprNewFunCall( PZH_EXPR pName, PZH_EXPR pParms, ZH_COMP_DECL )
                ZH_SIZE i = 0;
                char * szVar = pVar->value.asString.string;
 
-               /* NOTE: Clipper strips a string at the first '[' character too
-                */
                while( ++i < pVar->nLength )
                {
                   if( szVar[ i ] == '[' )

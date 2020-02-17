@@ -51,9 +51,6 @@ ZH_FUNC_EXTERN( __MVPUBLIC );
 
 ZH_FUNC( __QQPUB )
 {
-   /* In Clipper __QQPUB function does not check number of parameters
-      or parameter type - just simply takes directly the top item from
-      VM stack */
    if( zh_pcount() == 1 && zh_param( 1, ZH_IT_STRING ) )
    {
       ZH_FUNC_EXEC( __MVPUBLIC );
