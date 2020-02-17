@@ -217,11 +217,7 @@ void zh_compOutErr( ZH_COMP_DECL, const char * szMessage )
          ZH_COMP_PARAM->outErrFunc( ZH_COMP_PARAM, szMessage );
       else
       {
-#if defined( ZH_OS_DOS )
-         fprintf( stdout, "%s", szMessage ); fflush( stdout );
-#else
          fprintf( stderr, "%s", szMessage ); fflush( stderr );
-#endif
       }
    }
 }
