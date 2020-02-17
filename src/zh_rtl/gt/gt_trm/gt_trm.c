@@ -63,7 +63,7 @@
 #define ZH_GT_UNICODE_BUF
 
 #include "zh_api.h"
-#include "zh_gt_core.h"
+#include "../zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_codepage_api.h"
 #include "zh_string_api.h"
@@ -107,15 +107,10 @@ static ZH_GT_FUNCS SuperTable;
 
 #define ZH_GTTRM_ATTR_CHAR 0x00FF
 #define ZH_GTTRM_ATTR_STD  0x0000
-#if 0
-#define ZH_GTTRM_ATTR_ALT  0x0100
-#define ZH_GTTRM_ATTR_PROT 0x0200
-#define ZH_GTTRM_ATTR_ACSC 0x0400
-#else
+
 #define ZH_GTTRM_ATTR_ALT  0x0100
 #define ZH_GTTRM_ATTR_PROT 0x0100
 #define ZH_GTTRM_ATTR_ACSC 0x0100
-#endif
 #define ZH_GTTRM_ATTR_BOX  0x0800
 
 #define TERM_ANSI          1
@@ -3927,8 +3922,5 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    return ZH_TRUE;
 }
 
-/* *********************************************************************** */
 
-#include "zh_gt_reg.h"
-
-/* *********************************************************************** */
+#include "../zh_gt_reg.h"

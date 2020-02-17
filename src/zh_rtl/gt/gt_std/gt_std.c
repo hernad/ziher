@@ -49,7 +49,7 @@
 #define ZH_GT_NAME  STD
 
 #include "zh_api.h"
-#include "zh_gt_core.h"
+#include "../zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_apifs.h"
 #include "zh_codepage_api.h"
@@ -244,9 +244,7 @@ static void zh_gt_std_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
 
       tcgetattr( pGTSTD->hStdin, &pGTSTD->saved_TIO );
       memcpy( &pGTSTD->curr_TIO, &pGTSTD->saved_TIO, sizeof( struct termios ) );
-      #if 0
-      atexit( restore_input_mode );
-      #endif
+
       pGTSTD->curr_TIO.c_lflag &= ~( ICANON | ECHO );
       pGTSTD->curr_TIO.c_iflag &= ~ICRNL;
 
@@ -728,8 +726,4 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    return ZH_TRUE;
 }
 
-/* *********************************************************************** */
-
-#include "zh_gt_reg.h"
-
-/* *********************************************************************** */
+#include "../zh_gt_reg.h"

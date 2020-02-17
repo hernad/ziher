@@ -53,14 +53,14 @@
 #define ZH_GT_NAME  XWC
 
 #include "zh_api.h"
-#include "zh_gt_core.h"
+#include "../zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_set.h"
 #include "zh_vm.h"
 #include "zh_item_api.h"
 #include "zh_api_error.h"
 #include "inkey.zhh"
-#include "hbgfxdef.ch"
+#include "../gfx_def.zhh"
 #include "zh_codepage_api.h"
 #include "zh_string_api.h"
 #include "zh_thread.h"

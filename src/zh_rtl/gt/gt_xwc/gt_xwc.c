@@ -51,7 +51,7 @@
 /* #define ZH_XWC_USE_LOCALE */
 
 
-#include "gtxwc.h"
+#include "gt_xwc.h"
 #ifdef ZH_XWC_USE_LOCALE
 #  include <locale.h>
 #endif
@@ -6201,8 +6201,5 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    return ZH_TRUE;
 }
 
-/* *********************************************************************** */
 
-#include "zh_gt_reg.h"
-
-/* *********************************************************************** */
+#include "../zh_gt_reg.h"
