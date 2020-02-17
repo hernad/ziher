@@ -63,7 +63,7 @@
 
 #include "oo.zhh"
 
-REQUEST HBObject
+REQUEST ZHObject
 
 FUNCTION HBClass()
 
@@ -147,7 +147,7 @@ FUNCTION HBClass()
 
    RETURN __clsInst( s_hClass )
 
-/* xSuper is used here as the new preprocessor file (hbclass.ch) send here
+/* xSuper is used here as the new preprocessor file (class.zhh) send here
    always an array (if no superclass, this will be an empty one)
    In case of direct class creation (without the help of preprocessor) xSuper can be
    either NIL or contain the name of the superclass. */

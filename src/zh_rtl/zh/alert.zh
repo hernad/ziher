@@ -5,10 +5,10 @@
  * Further modifications 1999-2017 Viktor Szakats
  */
 
-#include "box.ch"
-#include "color.ch"
+#include "box.zhh"
+#include "color.zhh"
 #include "inkey.zhh"
-#include "setcurs.ch"
+#include "set_curs.zhh"
 #include "hbgtinfo.ch"
 
 

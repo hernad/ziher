@@ -46,7 +46,7 @@
 
 #pragma -gc0
 
-#include "directry.zhh"
+#include "directory.zhh"
 
 FUNCTION ADir( cFileMask, aName, aSize, aDate, aTime, aAttr )
 

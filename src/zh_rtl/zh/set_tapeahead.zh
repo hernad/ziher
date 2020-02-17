@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * SetTypeahead() undocumented function
+ *
+ * Copyright 1999 Jose Lalin <dezac@corevia.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,5 @@
  *
  */
 
-#pragma -gc0
-
-
-#include "button.zhh"
-#include "tbrowse.ch"
-
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
-
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
-
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBClose() /* TODO */
-   RETURN
-
-PROCEDURE TBCreate() /* TODO */
-   RETURN
-
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
-
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
-
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+FUNCTION SetTypeahead( nSize )
+   RETURN Set( _SET_TYPEAHEAD, nSize )

@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * Function used to validate instance variable type in assign messages.
+ *
+ * Copyright 2007 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,43 @@
  *
  */
 
-#pragma -gc0
+#include "error.zhh"
 
+/* NOTE: In CA-Cl*pper 5.2/5.3 the cMethod argument seems to be ignored. */
 
-#include "button.zhh"
-#include "tbrowse.ch"
+FUNCTION __eInstVar52( oVar, cMethod, xValue, cType, nSubCode, xMin, xMax )
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+   LOCAL oError
+   LOCAL lError
 
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
+   IF ValType( xValue ) == cType
+      lError := .F.
+      IF xMin != NIL
+         lError := ! xValue >= xMin
+      ENDIF
+      /* NOTE: In CA-Cl*pper 5.2, xMin validation result is
+               ignored when xMax != NIL. Ziher is doing the same. */
+      IF xMax != NIL
+         lError := ! xValue <= xMax
+      ENDIF
+   ELSE
+      lError := .T.
+   ENDIF
 
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
+   IF lError
+      oError := ErrorNew()
+      oError:description := zh_langErrMsg( EG_ARG )
+      oError:gencode := EG_ARG
+      oError:severity := ES_ERROR
+      oError:cansubstitute := .T.
+      oError:subsystem := oVar:className
+      oError:operation := cMethod
+      oError:subcode := nSubCode
+      oError:args := { xValue }
+      xValue := Eval( ErrorBlock(), oError )
+      IF ! ValType( xValue ) == cType
+         __errInHandler()
+      ENDIF
+   ENDIF
 
-PROCEDURE TBClose() /* TODO */
-   RETURN
-
-PROCEDURE TBCreate() /* TODO */
-   RETURN
-
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
-
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
-
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+   RETURN xValue

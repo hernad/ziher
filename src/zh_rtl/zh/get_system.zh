@@ -1,0 +1,289 @@
+/*
+ * GET system module (default)
+ *
+ * Copyright 1999-2001 Antonio Linares <alinares@fivetech.com>
+ * Copyright 2001 Luiz Rafael Culik (Support for CA-Cl*pper 5.3 GET-system)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+
+#include "inkey.zhh"
+
+#define SLUPDATED       1
+#define SOACTIVEGET     8
+#define SXREADVAR       9
+
+FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor )
+
+
+   LOCAL oGetList
+   LOCAL oSaveGetList
+
+   IF Empty( GetList )
+      SetPos( MaxRow() - 1, 0 )
+      RETURN .F.
+   ENDIF
+
+   oGetList := HBGetList():New( GetList )
+
+   oSaveGetList := __GetListActive()
+
+   __GetListSetActive( oGetList )
+   __GetListLast( oGetList )
+
+   oGetList:ReadModal( nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor )
+
+   __GetListSetActive( oSaveGetList )
+
+   SetPos( MaxRow() - 1, 0 )
+
+   RETURN oGetList:Updated()
+
+
+
+PROCEDURE GetReader( oGet, oGetList, oMenu, aMsg )
+
+   ZH_SYMBOL_UNUSED( oGetList )
+
+   oGet:Reader( oMenu, aMsg )
+
+   RETURN
+
+
+FUNCTION GetActive( oGet )
+
+   LOCAL oGetList := __GetListActive()
+
+   LOCAL oGetActiveOld
+
+   THREAD STATIC t_oGetActive
+
+   IF oGetList == NIL
+      /* NOTE: For complete compatibility we need to make sure this
+               function works even if there is no active GetList.
+               E.g. when 3rd party software manages GetLists on its
+               own and still uses this function. [vszakats] */
+      IF PCount() > 0
+         oGetActiveOld := t_oGetActive
+         t_oGetActive := oGet
+         RETURN oGetActiveOld
+      ELSE
+         RETURN t_oGetActive
+      ENDIF
+   ELSE
+      IF PCount() > 0
+         RETURN oGetList:GetActive( oGet )
+      ELSE
+         RETURN oGetList:GetActive()
+      ENDIF
+   ENDIF
+
+   RETURN NIL
+
+PROCEDURE GetDoSetKey( bKeyBlock, oGet )
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      oGetList:GetDoSetKey( bKeyBlock, oGet )
+   ENDIF
+
+   RETURN
+
+
+PROCEDURE GetApplyKey( oGet, nKey, oGetList, oMenu, aMsg )
+
+   IF ! ZH_ISOBJECT( oGetList )
+      oGetList := __GetListActive()
+   ENDIF
+
+
+   IF oGetList != NIL
+
+      oGetList:GetApplyKey( nKey, oGet, oMenu, aMsg )
+   ENDIF
+
+   RETURN
+
+
+FUNCTION GetPreValidate( oGet, aMsg )
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      RETURN oGetList:GetPreValidate( oGet, aMsg )
+
+   ENDIF
+
+   RETURN .F.
+
+
+FUNCTION GetPostValidate( oGet, aMsg )
+
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      RETURN oGetList:GetPostValidate( oGet, aMsg )
+
+   ENDIF
+
+   RETURN .F.
+
+FUNCTION ReadExit( lExit )
+   RETURN Set( _SET_EXIT, lExit )
+
+FUNCTION ReadInsert( lInsert )
+   RETURN Set( _SET_INSERT, lInsert )
+
+FUNCTION Updated()
+
+   LOCAL oGetList := __GetListLast()
+
+   RETURN iif( oGetList != NIL, oGetList:Updated(), .F. )
+
+PROCEDURE __KillRead()
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      oGetList:KillRead( .T. )
+   ENDIF
+
+   RETURN
+
+FUNCTION ReadUpdated( lUpdated )
+
+   LOCAL oGetList := __GetListLast()
+
+   IF oGetList != NIL
+      IF PCount() > 0
+         RETURN oGetList:ReadUpdated( lUpdated )
+      ELSE
+         RETURN oGetList:ReadUpdated()
+      ENDIF
+   ENDIF
+
+   RETURN .F.
+
+FUNCTION ReadKill( lKill )
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      IF PCount() > 0
+         RETURN oGetList:KillRead( lKill )
+      ELSE
+         RETURN oGetList:KillRead()
+      ENDIF
+   ENDIF
+
+   RETURN .F.
+
+FUNCTION ReadFormat( bFormat )
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      IF PCount() > 0
+         RETURN oGetList:SetFormat( bFormat )
+      ELSE
+         RETURN oGetList:SetFormat()
+      ENDIF
+   ENDIF
+
+   RETURN NIL
+
+PROCEDURE __SetFormat( bFormat )
+
+   LOCAL oGetList := __GetListActive()
+
+   IF oGetList != NIL
+      IF ZH_ISEVALITEM( bFormat )
+         oGetList:SetFormat( bFormat )
+      ELSE
+         oGetList:SetFormat()
+      ENDIF
+   ENDIF
+
+   RETURN
+
+#define SCORE_ROW       0
+#define SCORE_COL       60
+
+#define _GET_RANGE_FROM 10
+#define _GET_RANGE_TO   11
+
+FUNCTION RangeCheck( oGet, xDummy, xLow, xHigh )
+
+   LOCAL xValue
+   LOCAL cMessage
+   LOCAL nKey
+
+   ZH_SYMBOL_UNUSED( xDummy )
+
+   IF ! oGet:changed
+      RETURN .T.
+   ENDIF
+
+   xValue := oGet:varGet()
+
+   IF xValue >= xLow .AND. xValue <= xHigh
+      RETURN .T.
+   ENDIF
+
+   IF Set( _SET_SCOREBOARD )
+
+      cMessage := zh_ULeft( __natMsg( _GET_RANGE_FROM ) + LTrim( Transform( xLow, "" ) ) + ;
+         __natMsg( _GET_RANGE_TO ) + LTrim( Transform( xHigh, "" ) ), MaxCol() )
+
+      zh_DispOutAt( SCORE_ROW, Min( 60, MaxCol() - zh_ULen( cMessage ) ), cMessage )
+
+      DO WHILE ( nKey := Inkey( 0, zh_bitOr( Set( _SET_EVENTMASK ), ZH_INKEY_EXT ) ) ) == 0
+      ENDDO
+      zh_keyIns( nKey )
+
+      zh_DispOutAt( SCORE_ROW, Min( 60, MaxCol() - zh_ULen( cMessage ) ), Space( zh_ULen( cMessage ) ) )
+
+   ENDIF
+
+   RETURN .F.

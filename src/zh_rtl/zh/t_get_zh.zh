@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * Get Class (Ziher extended)
+ *
+ * Copyright 2009 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,29 @@
  *
  */
 
-#pragma -gc0
+#include "class.zhh"
 
+CREATE CLASS zh_Get INHERIT Get
 
-#include "button.zhh"
-#include "tbrowse.ch"
+   EXPORTED:
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+   METHOD hideInput( lHideInput ) SETGET
+   METHOD style( cStyle ) SETGET
 
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
+ENDCLASS
 
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
+METHOD hideInput( lHideInput ) CLASS zh_Get
 
-PROCEDURE TBClose() /* TODO */
-   RETURN
+   IF lHideInput != NIL
+      ::lHideInput := checkVariableTypeAndValidBlock( Self, "HIDEINPUT", lHideInput, "L", 1001 )
+   ENDIF
 
-PROCEDURE TBCreate() /* TODO */
-   RETURN
+   RETURN ::lHideInput
 
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
+METHOD style( cStyle ) CLASS zh_Get
 
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
+   IF cStyle != NIL
+      ::cStyle := checkVariableTypeAndValidBlock( Self, "STYLE", cStyle, "C", 1001, {|| zh_ULen( cStyle ) == 1 } )
+   ENDIF
 
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+   RETURN ::cStyle

@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * RadioButton() constructor function
+ *
+ * Copyright 2009 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,52 +46,10 @@
 
 #pragma -gc0
 
+/* NOTE: This function is a new Ziher functions implemented in the
+         original CA-Cl*pper namespace. This should have been marked as
+         ZH_EXTENSION, but it's not. */
 
-#include "button.zhh"
-#include "tbrowse.ch"
-
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
-
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
-
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBClose() /* TODO */
-   RETURN
-
-PROCEDURE TBCreate() /* TODO */
-   RETURN
-
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
-
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
-
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
+FUNCTION RadioButton( nRow, nCol, cCaption, cData )  /* NOTE: cData argument is undocumented */
+   RETURN ZHRadioButton():New( nRow, nCol, cCaption, cData )
 

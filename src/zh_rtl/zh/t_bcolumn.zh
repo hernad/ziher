@@ -45,7 +45,7 @@
  *
  */
 
-#include "hbclass.ch"
+#include "class.zhh"
 
 #include "tbrowse.ch"
 

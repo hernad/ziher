@@ -46,11 +46,11 @@
 
 #pragma -gc0
 
-#include "hbclass.ch"
+#include "class.zhh"
 
 #include "inkey.zhh"
 #include "memoedit.ch"
-#include "setcurs.ch"
+#include "set_curs.zhh"
 #include "hbgtinfo.ch"
 
 // A specialized ZHEditor which can simulate MemoEdit() behaviour

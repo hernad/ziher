@@ -48,13 +48,13 @@
 
 #define ZH_CLS_NOTOBJECT
 
-#include "hbclass.ch"
+#include "class.zhh"
 
-#include "button.ch"
-#include "color.ch"
+#include "button.zhh"
+#include "color.zhh"
 #include "error.zhh"
 #include "inkey.zhh"
-#include "setcurs.ch"
+#include "set_curs.zhh"
 #include "tbrowse.ch"
 
 /* ZH_BRW_STATICMOUSE controls if mouse position is static

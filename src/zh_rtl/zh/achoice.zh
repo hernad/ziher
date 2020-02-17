@@ -8,9 +8,9 @@
 #pragma -gc0
 
 #include "achoice.ch"
-#include "color.ch"
+#include "color.zhh"
 #include "inkey.zhh"
-#include "setcurs.ch"
+#include "set_curs.zhh"
 
 #define INRANGE( xLo, xVal, xHi )  ( xVal >= xLo .AND. xVal <= xHi )
 #define BETWEEN( xLo, xVal, xHi )  Min( Max( xLo, xVal ), xHi )

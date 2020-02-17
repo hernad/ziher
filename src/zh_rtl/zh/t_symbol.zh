@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * Ziher implementation of Class(y) Class Symbol
+ *
+ * Copyright 2003 Antonio Linares <alinares@fivetechsoft.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,34 @@
  *
  */
 
-#pragma -gc0
+#include "class.zhh"
 
+CREATE CLASS Symbol
 
-#include "button.zhh"
-#include "tbrowse.ch"
+   EXPORTED:
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+   METHOD New( cSymName )     // Constructor. cSymName may already exists or not
+   METHOD name()              // retrieves the symbol name
+   METHOD isEqual( oSymbol )  // Compares two symbol objects
+   METHOD exec( ... )         // Executes the function referred to by the
+                              // Symbol object, with an optional parameters list
+   PROTECTED:
 
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
+   VAR nSym                   // internal pointer to the Symbols table symbol
 
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
+ENDCLASS
 
-PROCEDURE TBClose() /* TODO */
-   RETURN
+METHOD New( cSymName ) CLASS Symbol
 
-PROCEDURE TBCreate() /* TODO */
-   RETURN
+   ::nSym := __dynsN2Sym( cSymName )
 
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
+   RETURN Self
 
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
+METHOD name() CLASS Symbol
+   RETURN ::nSym:Name
 
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
+METHOD isEqual( oSymbol ) CLASS Symbol
+   RETURN ::ClassH == oSymbol:ClassH .AND. ::nSym:Name == oSymbol:nSym:Name
 
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+METHOD exec( ... ) CLASS Symbol
+   RETURN ::nSym:exec( ... )

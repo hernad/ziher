@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * ZHTextLine Class (used by ZHEditor class)
+ *
+ * Copyright 2000 Maurilio Longo <maurilio.longo@libero.it>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,21 @@
  *
  */
 
-#pragma -gc0
+#include "class.zhh"
 
+CREATE CLASS ZHTextLine
 
-#include "button.zhh"
-#include "tbrowse.ch"
+   VAR cText       /* A line of text */
+   VAR lSoftCR     /* true if line doesn't end with a zh_eol() char (word wrapping) */
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+   METHOD New( cLine, lSoftCR )
 
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
+ENDCLASS
 
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
+/* Creates a new line of text */
+METHOD New( cLine, lSoftCR ) CLASS ZHTextLine
 
-PROCEDURE TBClose() /* TODO */
-   RETURN
+   ::cText := zh_defaultValue( cLine, "" )
+   ::lSoftCR := zh_defaultValue( lSoftCR, .F. )
 
-PROCEDURE TBCreate() /* TODO */
-   RETURN
-
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
-
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
-
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+   RETURN Self

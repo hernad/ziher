@@ -116,7 +116,7 @@ complex ones:
   66. 'B'               1+n   <val>       (ZH_SaveBlock())
   72. 'H' <BE64>        8+n   <key,val>,...
   79. 'O' <BE64>        8+n   <clsname>,<msg,val>,...   (__ClsGetPropertiesAndValues())
-  81. 'Q' <BE64:n>      8+n   <clsname>,HBPersistent:SaveToText(raw)
+  81. 'Q' <BE64:n>      8+n   <clsname>,ZHPersistent:SaveToText(raw)
   82. 'R' 'A' <BE64>    1+8   (index to array of arrays)
   82. 'R' 'O' <BE64>    1+8   (index to array of objects)
   82. 'R' 'H' <BE64>    1+8   (index to array of hashes)

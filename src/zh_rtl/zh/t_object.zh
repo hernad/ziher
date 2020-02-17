@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * Base Object from which all object finally inherit
+ *
+ * Copyright 2000 J. Lefebvre <jfl@mafact.com> and RA. Cuylen <rac@mafact.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -42,54 +44,64 @@
  *
  */
 
-#pragma -gc0
+/* WARNING: Cannot use the preprocessor, otherwise
+            it will auto inherit from itself. */
+
+#include "oo.zhh"
+#include "error.zhh"
+
+FUNCTION ZHObject()
+
+   STATIC s_oClass
+   LOCAL oClass
+
+   IF s_oClass == NIL .AND. __clsLockDef( @s_oClass )
+
+      BEGIN SEQUENCE
+
+         oClass := HBClass():New( "ZHObject",, @ZHObject() )
+
+         oClass:AddInline( "ISDERIVEDFROM"   , {| Self, xPar1 | __objDerivedFrom( Self, xPar1 ) }, ZH_OO_CLSTP_EXPORTED ) /* Xbase++ compatibility */
+
+         /* Class(y) */
+         oClass:AddInline( "ISKINDOF"        , {| Self, xPar1 | __objDerivedFrom( Self, xPar1 ) }, ZH_OO_CLSTP_EXPORTED )
+
+         oClass:AddMethod( "NEW"  , @ZHObject_New()   , ZH_OO_CLSTP_EXPORTED )
+         oClass:AddMethod( "INIT" , @ZHObject_Init()  , ZH_OO_CLSTP_EXPORTED )
+
+         oClass:AddMethod( "ERROR", @ZHObject_Error() , ZH_OO_CLSTP_EXPORTED )
+
+         oClass:SetOnError( @ZHObject_DftonError() )
+
+         oClass:AddInline( "MSGNOTFOUND"     , {| Self, cMsg | ::Error( "Message not found", ::className(), cMsg, iif( zh_LeftEq( cMsg, "_" ), 1005, 1004 ) ) }, ZH_OO_CLSTP_EXPORTED )
+
+         oClass:Create()
+
+      ALWAYS
+
+         __clsUnlockDef( @s_oClass, oClass )
+
+      END SEQUENCE
+
+   ENDIF
 
 
-#include "button.zhh"
-#include "tbrowse.ch"
+   RETURN s_oClass:Instance()
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+STATIC FUNCTION ZHObject_New( ... )
 
-PROCEDURE TBAddCol() /* TODO */
-   RETURN
+   QSelf():Init( ... )
 
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
+   RETURN QSelf()
 
-PROCEDURE TBClose() /* TODO */
-   RETURN
+STATIC FUNCTION ZHObject_Init()
+   RETURN QSelf()
 
-PROCEDURE TBCreate() /* TODO */
-   RETURN
+STATIC FUNCTION ZHObject_Dftonerror( ... )
+   RETURN QSelf():MsgNotFound( __GetMessage(), ... )
 
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
+STATIC FUNCTION ZHObject_Error( cDesc, cClass, cMsg, nCode )
 
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
+   zh_default( @nCode, 1004 )
 
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-
+   RETURN __errRT_SBASE( iif( nCode == 1005, EG_NOVARMETHOD, EG_NOMETHOD ), nCode, cDesc, cClass + ":" + cMsg, 1, QSelf() )

@@ -48,14 +48,14 @@
 
 #pragma -gc0
 
-#include "hbclass.ch"
+#include "class.zhh"
 
-#include "button.ch"
-#include "color.ch"
+#include "button.zhh"
+#include "color.zhh"
 #include "error.zhh"
 #include "fileio.ch"
 #include "inkey.zhh"
-#include "setcurs.ch"
+#include "set_curs.zhh"
 
 /* FIXME: Leave this here, until this code is cleaned off of RTEs */
 #pragma linenumber=on
@@ -223,14 +223,14 @@ METHOD SaveFile() CLASS ZHEditor
 // Add a new Line of text at end of current text
 METHOD AddLine( cLine, lSoftCR ) CLASS ZHEditor
 
-   AAdd( ::aText, HBTextLine():New( cLine, lSoftCR ) )
+   AAdd( ::aText, ZHTextLine():New( cLine, lSoftCR ) )
 
    RETURN Self
 
 // Insert a line of text at a defined row
 METHOD InsertLine( cLine, lSoftCR, nRow ) CLASS ZHEditor
 
-   zh_AIns( ::aText, nRow, HBTextLine():New( cLine, lSoftCR ), .T. )
+   zh_AIns( ::aText, nRow, ZHTextLine():New( cLine, lSoftCR ), .T. )
 
    RETURN Self
 
@@ -739,12 +739,12 @@ STATIC FUNCTION Text2Array( cText, nWordWrapCol, nTabWidth )
 
    LOCAL aArray := {}
 
-   zh_MLEval( cText, {| cLine, lSoftCR | AAdd( aArray, HBTextLine():New( cLine, lSoftCR ) ) }, ;
+   zh_MLEval( cText, {| cLine, lSoftCR | AAdd( aArray, ZHTextLine():New( cLine, lSoftCR ) ) }, ;
               iif( nWordWrapCol != NIL, nWordWrapCol + 1, 0xFFFF ), ;
               nTabWidth, nWordWrapCol != NIL )
 
    IF Empty( aArray )
-      AAdd( aArray, HBTextLine():New() )
+      AAdd( aArray, ZHTextLine():New() )
    ENDIF
 
    RETURN aArray

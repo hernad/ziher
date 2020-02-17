@@ -1,5 +1,7 @@
 /*
- * Copyright 2007
+ * __SetFunction() function
+ *
+ * Copyright 1999 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,52 +46,17 @@
 
 #pragma -gc0
 
+#include "inkey.zhh"
 
-#include "button.zhh"
-#include "tbrowse.ch"
+PROCEDURE __SetFunction( nFunctionKey, xKeySeq )
 
-FUNCTION TApplyKey( nKey, oBrowse )
-   RETURN oBrowse:applyKey( nKey )
+   DO CASE
+   CASE nFunctionKey == 1  ; nFunctionKey := K_F1
+   CASE nFunctionKey == 11 ; nFunctionKey := K_F11
+   CASE nFunctionKey == 12 ; nFunctionKey := K_F12
+   OTHERWISE               ; nFunctionKey := -nFunctionKey + 1
+   ENDCASE
 
-PROCEDURE TBAddCol() /* TODO */
+   SetKey( nFunctionKey, iif( ZH_ISSTRING( xKeySeq ), {|| __Keyboard(), zh_keyPut( xKeySeq ) }, NIL ) )
+
    RETURN
-
-PROCEDURE TBBBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBClose() /* TODO */
-   RETURN
-
-PROCEDURE TBCreate() /* TODO */
-   RETURN
-
-PROCEDURE TBDelCol() /* TODO */
-   RETURN
-
-PROCEDURE TBDisplay() /* TODO */
-   RETURN
-
-PROCEDURE TBEditCell() /* TODO */
-   RETURN
-
-PROCEDURE TBFBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBGoBot() /* TODO */
-   RETURN
-
-PROCEDURE TBGoTop() /* TODO */
-   RETURN
-
-PROCEDURE TBInsCol() /* TODO */
-   RETURN
-
-PROCEDURE TBModal() /* TODO */
-   RETURN
-
-PROCEDURE TBSBlock() /* TODO */
-   RETURN
-
-PROCEDURE TBSkip() /* TODO */
-   RETURN
-

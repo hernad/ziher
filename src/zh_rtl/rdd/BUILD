@@ -4,7 +4,7 @@ cc_library(
     name = "zh_rtl_rdd",
     srcs = glob([
         "*.c",
-        "nul_sys/*.c",
+        #"nul_sys/*.c",
         "dbf_cdx/*.c",
         "dbf_fpt/*.c",
         "dbf_nsx/*.c",
@@ -17,7 +17,7 @@ cc_library(
     hdrs = glob( [
         "*.h", 
         "*.zhh",
-        "nul_sys/*.h",
+        #"nul_sys/*.h",
         "dbf_cdx/*.h",
         "dbf_cdx/*.zhh",
         "dbf_fpt/*.h",
