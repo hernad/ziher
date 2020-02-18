@@ -54,7 +54,7 @@
 #include "zh_gt_core.h"
 #include "zh_apifs.h"
 
-#if defined( ZH_OS_UNIX ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_UNIX )
 
 #define MAX_CHAR_VAL  0xff
 #define ZH_CHRMAP( a, c )  ( ( ( a ) << 16 ) | ( c ) )
@@ -475,4 +475,4 @@ int main( int argc, char ** argv )
 }
 #endif
 
-#endif /* ZH_OS_UNIX || ZH_OS_DOS */
+#endif /* ZH_OS_UNIX */

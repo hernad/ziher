@@ -60,42 +60,7 @@
 
 /* --- */
 
-#if defined( ZH_OS_DOS )
-
-   #if defined( __DJGPP__ )
-      #include <sys/param.h>
-      #include <sys/stat.h>
-   #endif
-   #include <dos.h>
-#if ! defined( __WATCOMC__ )
-   #include <dir.h>
-#endif
-   #include <time.h>
-
-#if defined( __WATCOMC__ )
-   typedef struct
-   {
-      struct find_t    entry;
-   } ZH_FFIND_INFO, * PZH_FFIND_INFO;
-
-   #define FA_ARCH    _A_ARCH
-   #define FA_DIREC   _A_SUBDIR
-   #define FA_HIDDEN  _A_HIDDEN
-   #define FA_RDONLY  _A_RDONLY
-   #define FA_LABEL   _A_VOLID
-   #define FA_SYSTEM  _A_SYSTEM
-
-   #define ff_name    name
-   #define ff_fsize   size
-   #define ff_attrib  attrib
-#else
-   typedef struct
-   {
-      struct ffblk    entry;
-   } ZH_FFIND_INFO, * PZH_FFIND_INFO;
-#endif
-
-#elif defined( ZH_OS_WIN )
+#if defined( ZH_OS_WIN )
 
    #include <windows.h>
    #include "zhwinuni.h"
@@ -356,70 +321,7 @@ static ZH_BOOL zh_fsFindNextLow( PZH_FFIND ffind )
 
    zh_vmUnlock();
 
-#if defined( ZH_OS_DOS )
-
-   {
-      PZH_FFIND_INFO info = ( PZH_FFIND_INFO ) ffind->info;
-
-      /* Handling ZH_FA_LABEL doesn't need any special tricks
-         under the MS-DOS platform. */
-
-      if( ffind->bFirst )
-      {
-         ffind->bFirst = ZH_FALSE;
-
-         #if 0
-         tzset();
-         #endif
-
-#if defined( __WATCOMC__ )
-         bFound = ( _dos_findfirst( ffind->pszFileMask, ( ZH_USHORT ) zh_fsAttrToRaw( ffind->attrmask ), &info->entry ) == 0 );
-#else
-         bFound = ( findfirst( ffind->pszFileMask, &info->entry, ( ZH_USHORT ) zh_fsAttrToRaw( ffind->attrmask ) ) == 0 );
-#endif
-      }
-      else
-      {
-#if defined( __WATCOMC__ )
-         bFound = ( _dos_findnext( &info->entry ) == 0 );
-#else
-         bFound = ( findnext( &info->entry ) == 0 );
-#endif
-      }
-
-      /* Fill Ziher found file info */
-
-      if( bFound )
-      {
-         zh_strncpy( ffind->szName, info->entry.ff_name, sizeof( ffind->szName ) - 1 );
-         ffind->size = info->entry.ff_fsize;
-
-         raw_attr = info->entry.ff_attrib;
-
-         {
-            time_t ftime;
-            struct tm * ft;
-            struct stat sStat;
-
-            stat( info->entry.ff_name, &sStat );
-
-            ftime = sStat.st_mtime;
-            ft = localtime( &ftime );
-
-            iYear  = ft->tm_year + 1900;
-            iMonth = ft->tm_mon + 1;
-            iDay   = ft->tm_mday;
-
-            iHour  = ft->tm_hour;
-            iMin   = ft->tm_min;
-            iSec   = ft->tm_sec;
-         }
-      }
-      zh_fsSetIOError( bFound, 0 );
-   }
-
-#elif defined( ZH_OS_WIN )
-
+#if defined( ZH_OS_WIN )
    {
       PZH_FFIND_INFO info = ( PZH_FFIND_INFO ) ffind->info;
 

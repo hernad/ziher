@@ -773,8 +773,6 @@ void zh_socketCleanup( void )
    {
 #if defined( ZH_OS_WIN )
       WSACleanup();
-#elif defined( ZH_OS_DOS )
-      sock_exit();
 #endif
    }
    ZH_SOCKET_UNLOCK();
@@ -1807,10 +1805,6 @@ static int zh_socketSelectWRE( ZH_SOCKET sd, ZH_MAXINT timeout )
          iResult = -1;
          iError = ZH_SOCK_GETERROR();
       }
-#if defined( ZH_OS_DOS )
-      else if( iError == EISCONN )
-         iError = 0;
-#endif
       else if( iError != 0 )
          iResult = -1;
 
@@ -2265,8 +2259,6 @@ int zh_socketClose( ZH_SOCKET sd )
    zh_vmUnlock();
 #if defined( ZH_OS_WIN )
    ret = closesocket( sd );
-#elif defined( ZH_OS_DOS )
-   ret = close_s( sd );
 #else
 #  if defined( EINTR )
    {
@@ -2631,15 +2623,6 @@ int zh_socketSetBlockingIO( ZH_SOCKET sd, ZH_BOOL fBlocking )
    if( ret == 0 )
       ret = 1;
 
-
-
-
-#elif defined( ZH_OS_DOS )
-   int mode = fBlocking ? 0 : 1;
-   ret = ioctlsocket( sd, FIONBIO, ( char * ) &mode );
-   zh_socketSetOsError( ret != -1 ? 0 : ZH_SOCK_GETERROR() );
-   if( ret == 0 )
-      ret = 1;
 #elif defined( O_NONBLOCK )
    ret = fcntl( sd, F_GETFL, 0 );
    if( ret != -1 )

@@ -333,60 +333,6 @@ static void s_zh_winVerInit( void )
    s_fWinVerInit = ZH_TRUE;
 }
 
-#elif defined( ZH_OS_DOS )
-
-static ZH_BOOL s_fWinVerInit = ZH_FALSE;
-
-static ZH_BOOL s_fWin10    = ZH_FALSE;
-static ZH_BOOL s_fWin81    = ZH_FALSE;
-static ZH_BOOL s_fWin8     = ZH_FALSE;
-static ZH_BOOL s_fWin7     = ZH_FALSE;
-static ZH_BOOL s_fWinVista = ZH_FALSE;
-static ZH_BOOL s_fWin2K3   = ZH_FALSE;
-static ZH_BOOL s_fWin2K    = ZH_FALSE;
-static int     s_iWinNT    = 0;
-static int     s_iWin9x    = 0;
-static int     s_iWine     = 0;
-
-static void s_zh_winVerInit( void )
-{
-   union REGS regs;
-
-   /* TODO */
-   s_fWin10    = ZH_FALSE;
-   s_fWin81    = ZH_FALSE;
-   s_fWin8     = ZH_FALSE;
-   s_fWin7     = ZH_FALSE;
-   s_fWinVista = ZH_FALSE;
-   s_fWin2K3   = s_fWinVista;
-   s_fWin2K    = ZH_FALSE;
-
-   /* Host OS detection: Windows NT family */
-
-   {
-      regs.ZH_XREGS.ax = 0x3306;
-      ZH_DOS_INT86( 0x21, &regs, &regs );
-
-      if( regs.ZH_XREGS.bx == 0x3205 )
-         s_iWinNT = 5;
-   }
-
-   /* Host OS detection: 95/98 */
-
-   if( s_iWinNT == 0 )
-   {
-      regs.ZH_XREGS.ax = 0x1600;
-      ZH_DOS_INT86( 0x2F, &regs, &regs );
-
-      if( regs.h.al != 0x80 &&
-          regs.h.al != 0xFF &&
-          regs.h.al >= 4 )
-         s_iWin9x = 5;
-   }
-
-   s_fWinVerInit = ZH_TRUE;
-}
-
 #endif
 
 /* NOTE: Must be larger than 128, which is the maximum size of
@@ -646,7 +592,7 @@ ZH_BOOL zh_iswinsp( int iServicePackMajor, ZH_BOOL fOrUpper )
 
 int zh_iswine( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_iWine;
@@ -657,7 +603,7 @@ int zh_iswine( void )
 
 ZH_BOOL zh_iswin10( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin10;
@@ -668,7 +614,7 @@ ZH_BOOL zh_iswin10( void )
 
 ZH_BOOL zh_iswin81( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin81;
@@ -679,7 +625,7 @@ ZH_BOOL zh_iswin81( void )
 
 ZH_BOOL zh_iswin8( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin8;
@@ -690,7 +636,7 @@ ZH_BOOL zh_iswin8( void )
 
 ZH_BOOL zh_iswin7( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin7;
@@ -701,7 +647,7 @@ ZH_BOOL zh_iswin7( void )
 
 ZH_BOOL zh_iswinvista( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWinVista;
@@ -712,7 +658,7 @@ ZH_BOOL zh_iswinvista( void )
 
 ZH_BOOL zh_iswin2k3( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin2K3;
@@ -723,7 +669,7 @@ ZH_BOOL zh_iswin2k3( void )
 
 ZH_BOOL zh_iswin2k( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_fWin2K;
@@ -734,7 +680,7 @@ ZH_BOOL zh_iswin2k( void )
 
 int zh_iswinnt( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_iWinNT;
@@ -745,7 +691,7 @@ int zh_iswinnt( void )
 
 int zh_iswin9x( void )
 {
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
    if( ! s_fWinVerInit )
       s_zh_winVerInit();
    return s_iWin9x;
@@ -756,11 +702,7 @@ int zh_iswin9x( void )
 
 ZH_BOOL zh_iswince( void )
 {
-#if defined( ZH_OS_WIN_CE )
-   return ZH_TRUE;
-#else
    return ZH_FALSE;
-#endif
 }
 
 /* NOTE: The caller must free the returned buffer. [vszakats] */

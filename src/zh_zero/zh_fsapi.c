@@ -416,16 +416,7 @@ ZH_BOOL zh_fsDirExists( const char * pszDirName )
       pszDirName = zh_fsNameConv( pszDirName, &pszFree );
 
       {
-#  if defined( ZH_OS_DOS )
-#     if defined( __DJGPP__ )
-         int iAttr = _chmod( pszDirName, 0, 0 );
-         fExist = iAttr != -1 && ( iAttr & 0x10 ) != 0;
-#     else
-         unsigned int iAttr = 0;
-         fExist = _dos_getfileattr( pszDirName, &iAttr ) == 0 &&
-                  ( iAttr & 0x10 ) != 0;
-#     endif
-#  elif defined( ZH_OS_UNIX )
+#  if defined( ZH_OS_UNIX )
 #     if defined( ZH_USE_LARGEFILE64 )
          struct stat64 statbuf;
          fExist = stat64( pszDirName, &statbuf ) == 0 &&

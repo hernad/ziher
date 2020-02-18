@@ -310,7 +310,7 @@ static void open_handle( PZH_SET_STRUCT pSet, const char * file_name,
          {
             szFileName = zh_strdup( szDevice );
             def_ext = NULL;
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_DOS )
+#if defined( ZH_OS_WIN )
             fAppend = ZH_TRUE;
 #endif
          }

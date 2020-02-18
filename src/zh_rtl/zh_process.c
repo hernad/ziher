@@ -76,11 +76,6 @@
 #  endif
 #endif
 
-#ifndef ZH_PROCESS_USEFILES
-#  if defined( ZH_OS_DOS ) || defined( ZH_OS_WIN_CE )
-#    define ZH_PROCESS_USEFILES
-#  endif
-#endif
 
 #if defined( ZH_OS_UNIX ) && defined( EINTR )
 #  define ZH_FAILURE_RETRY( ret, exp ) \
@@ -253,8 +248,7 @@ static int zh_fsProcessExec( const char * pszFileName,
    if( lpParams )
       zh_xfree( lpParams );
 }
-#elif defined( ZH_OS_DOS ) || defined( ZH_OS_WIN ) || \
-      defined( ZH_OS_UNIX )
+#elif defined( ZH_OS_WIN ) || defined( ZH_OS_UNIX )
 {
    int iStdIn, iStdOut, iStdErr;
    char ** argv;
@@ -280,7 +274,7 @@ static int zh_fsProcessExec( const char * pszFileName,
       iStdErr = dup( 2 );
       dup2( hStderr, 2 );
    }
-#if defined( ZH_OS_UNIX ) && ! defined( ZH_OS_VXWORKS )
+#if defined( ZH_OS_UNIX )
    {
       pid_t pid = fork();
       if( pid == 0 )
