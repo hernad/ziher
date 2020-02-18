@@ -52,7 +52,7 @@
 #include "zh_item_api.h"
 #include "zh_stack.h"
 #include "zh_vm.h"
-#include "hbwinuni.h"
+#include "zh_win_uni.h"
 
 #if defined( ZH_OS_WIN )
 #  include <windows.h>

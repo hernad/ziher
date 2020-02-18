@@ -384,7 +384,6 @@ ZH_ERRCODE zh_fsTempDir( char * pszTempDir )
    }
 #else
    {
-#if ! defined( ZH_OS_OS2 )
       char szBuffer[ L_tmpnam ];
 
       if( tmpnam( szBuffer ) != NULL )
@@ -395,7 +394,6 @@ ZH_ERRCODE zh_fsTempDir( char * pszTempDir )
          zh_xfree( pTempName );
       }
       if( nResult != 0 )
-#endif
       {
          static const char * env_tmp[] = { "TEMP", "TMP", "TMPDIR", NULL };
 

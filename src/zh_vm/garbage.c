@@ -44,10 +44,6 @@
  *
  */
 
-/* NOTE: Need to have these before Ziher headers,
-         because in MT mode, they will automatically #include <os2.h>. */
-#define INCL_DOSPROCESS
-
 #include "zh_vm_opt.h"
 #include "zh_api.h"
 #include "zh_stack.h"

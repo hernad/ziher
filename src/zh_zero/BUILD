@@ -6,7 +6,7 @@ cc_library(
     name = "zh_zero",
     srcs = glob( ["*.c"]),
     hdrs = glob( ["*.h", "*.zhh"]),
-    alwayslink = 1,
+    #alwayslink = 1,
     visibility = ["//visibility:public"],
     # https://github.com/bazelbuild/bazel/issues/92
     includes = ["."],

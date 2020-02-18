@@ -64,17 +64,10 @@
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
 #  include <tlhelp32.h>
-#  include "hbwinuni.h"
-#  if defined( ZH_OS_WIN_CE )
-#     include "hbwince.h"
-#  endif
+#  include "zh_win_uni.h"
 #  ifndef TH32CS_SNAPMODULE32
 #  define TH32CS_SNAPMODULE32  0x00000010
 #  endif
-#elif defined( ZH_OS_OS2 )
-#  define INCL_DOSEXCEPTIONS
-#  define INCL_ERRORS
-#  include <os2.h>
 #endif
 
 #if defined( ZH_SIGNAL_EXCEPTION_HANDLER )
@@ -470,52 +463,6 @@ static LONG WINAPI zh_winExceptionHandler( struct _EXCEPTION_POINTERS * pExcepti
    return zh_cmdargCheck( "BATCH" ) ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH;
 }
 
-#elif defined( ZH_OS_OS2 )
-
-static EXCEPTIONREGISTRATIONRECORD s_regRec; /* Exception Registration Record */
-
-static ULONG _System zh_os2ExceptionHandler( PEXCEPTIONREPORTRECORD       pExceptionInfo,
-                                             PEXCEPTIONREGISTRATIONRECORD p2,
-                                             PCONTEXTRECORD               pCtx,
-                                             PVOID                        pv )
-{
-   ZH_SYMBOL_UNUSED( p2 );
-   ZH_SYMBOL_UNUSED( pv );
-
-   /* Don't print stack trace if inside unwind, normal process termination or process killed or
-      during debugging */
-   if( pExceptionInfo->ExceptionNum != XCPT_UNWIND && pExceptionInfo->ExceptionNum < XCPT_BREAKPOINT )
-   {
-      char buffer[ ZH_SYMBOL_NAME_LEN + ZH_SYMBOL_NAME_LEN + 5 ];
-      char file[ ZH_PATH_MAX ];
-      ZH_USHORT uiLine;
-      int iLevel = 0;
-
-      fprintf( stderr, ZH_I_("\nException %lx at address %p \n"), pExceptionInfo->ExceptionNum, pExceptionInfo->ExceptionAddress );
-
-      fprintf( stderr,
-         "\n"
-         "    Exception Code:%08X\n"
-         "    Exception Address:%08X\n"
-         "    EAX:%08X  EBX:%08X  ECX:%08X  EDX:%08X\n"
-         "    ESI:%08X  EDI:%08X  EBP:%08X\n"
-         "    CS:EIP:%04X:%08X  SS:ESP:%04X:%08X\n"
-         "    DS:%04X  ES:%04X  FS:%04X  GS:%04X\n"
-         "    Flags:%08X\n",
-         ( ZH_U32 ) pExceptionInfo->ExceptionNum,
-         ( ZH_U32 ) pExceptionInfo->ExceptionAddress,
-         ( ZH_U32 ) pCtx->ctx_RegEax, ( ZH_U32 ) pCtx->ctx_RegEbx, ( ZH_U32 ) pCtx->ctx_RegEcx, ( ZH_U32 ) pCtx->ctx_RegEdx,
-         ( ZH_U32 ) pCtx->ctx_RegEsi, ( ZH_U32 ) pCtx->ctx_RegEdi, ( ZH_U32 ) pCtx->ctx_RegEbp,
-         ( ZH_U32 ) pCtx->ctx_SegCs, ( ZH_U32 ) pCtx->ctx_RegEip, ( ZH_U32 ) pCtx->ctx_SegSs, ( ZH_U32 ) pCtx->ctx_RegEsp,
-         ( ZH_U32 ) pCtx->ctx_SegDs, ( ZH_U32 ) pCtx->ctx_SegEs, ( ZH_U32 ) pCtx->ctx_SegFs, ( ZH_U32 ) pCtx->ctx_SegGs,
-         ( ZH_U32 ) pCtx->ctx_EFlags );
-
-      while( zh_procinfo( iLevel++, buffer, &uiLine, file ) )
-         fprintf( stderr, ZH_I_( "Called from %s(%hu)%s%s\n" ), buffer, uiLine, *file ? ZH_I_( " in " ) : "", file );
-   }
-
-   return zh_cmdargCheck( "BATCH" ) ? XCPT_CONTINUE_STOP : XCPT_CONTINUE_SEARCH /* Exception not resolved... */;
-}
 
 #elif defined( ZH_SIGNAL_EXCEPTION_HANDLER )
 
@@ -563,20 +510,10 @@ static void zh_signalExceptionHandler( int sig, siginfo_t * si, void * ucp )
 
 void zh_vmSetExceptionHandler( void )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    {
       LPTOP_LEVEL_EXCEPTION_FILTER ef = SetUnhandledExceptionFilter( zh_winExceptionHandler );
       ZH_SYMBOL_UNUSED( ef );
-   }
-#elif defined( ZH_OS_OS2 ) /* Add OS2TermHandler to this thread's chain of exception handlers */
-   {
-      APIRET rc;                             /* Return code                   */
-
-      memset( &s_regRec, 0, sizeof( s_regRec ) );
-      s_regRec.ExceptionHandler = ( ERR ) zh_os2ExceptionHandler;
-      rc = DosSetExceptionHandler( &s_regRec );
-      if( rc != NO_ERROR )
-         zh_errInternal( ZH_EI_ERRUNRECOV, "Could not setup exception handler (DosSetExceptionHandler())", NULL, NULL );
    }
 #elif defined( ZH_SIGNAL_EXCEPTION_HANDLER )
    {
@@ -606,31 +543,8 @@ void zh_vmSetExceptionHandler( void )
 
 void zh_vmUnsetExceptionHandler( void )
 {
-#if defined( ZH_OS_OS2 ) /* Add OS2TermHandler to this thread's chain of exception handlers */
+#if defined( ZH_SIGNAL_EXCEPTION_HANDLER )
    {
-      APIRET rc;                             /* Return code                   */
-
-      /* I don't do any check on return code since Ziher is exiting in any case */
-      rc = DosUnsetExceptionHandler( &s_regRec );
-      ZH_SYMBOL_UNUSED( rc );
-   }
-#elif defined( ZH_SIGNAL_EXCEPTION_HANDLER )
-   {
-      /* we are using static buffer for alternative stack so we do not
-       * have to deallocate it to free the memory on application exit
-       */
-#if 0
-      stack_t ss, oss;
-      ss.ss_sp = NULL;
-      ss.ss_size = SIGSTKSZ;
-      ss.ss_flags = SS_DISABLE;
-      /* set alternative stack for SIGSEGV executed on stack overflow */
-      if( sigaltstack( &ss, &oss ) == 0 )
-      {
-         if( oss.ss_sp && SS_DISABLE )
-            free( oss.ss_sp );
-      }
-#endif
    }
 #endif
 }

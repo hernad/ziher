@@ -68,26 +68,6 @@
 #  if defined( ZH_HAS_POLL )
 #     include <poll.h>
 #  endif
-#elif defined( ZH_OS_OS2 )
-#  define INCL_DOSERRORS
-#  define INCL_DOSPROCESS
-#  include <os2.h>
-#  include <io.h>
-#  include <process.h>
-#  include <fcntl.h>
-#  if defined( ZH_OS_OS2 ) && defined( __GNUC__ )
-#    include <sys/wait.h>
-#  endif
-#  include "zh_gt_core.h"
-#elif defined( ZH_OS_DOS )
-#  include <process.h>
-#  include <fcntl.h>
-#  if defined( __DJGPP__ )
-#     include <sys/stat.h>
-#     include <unistd.h>
-#  else
-#     include <io.h>
-#  endif
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
 #  include "zh_win_uni.h"
@@ -121,119 +101,10 @@
    while( 0 )
 #endif
 
-#if defined( ZH_OS_OS2 )
 
-static char * zh_buildArgsOS2( const char *pszFileName, APIRET * ret )
-{
-   PZH_FNAME pFilepath;
-   char szFileBuf[ ZH_PATH_MAX ];
-   char * pArgs = NULL, * pszFree = NULL, cQuote = 0, c;
-   ZH_SIZE nLen = 0, nLen2;
-   void * pMem;
 
-   while( ZH_ISSPACE( *pszFileName ) )
-      ++pszFileName;
 
-   pszFileName = zh_osEncodeCP( pszFileName, &pszFree, NULL );
-
-   while( ( c = *pszFileName ) != '\0' )
-   {
-      ++pszFileName;
-      if( c == '"' )
-         cQuote = cQuote ? 0 : c;
-      else
-      {
-         if( cQuote == 0 && ZH_ISSPACE( c ) )
-            break;
-         if( nLen < sizeof( szFileBuf ) - 1 )
-            szFileBuf[ nLen++ ] = c;
-      }
-   }
-   szFileBuf[ nLen ] = '\0';
-
-   while( ZH_ISSPACE( *pszFileName ) )
-      ++pszFileName;
-   nLen2 = strlen( pszFileName );
-
-   pFilepath = zh_fsFNameSplit( szFileBuf );
-   if( pFilepath->szPath && ! pFilepath->szExtension )
-   {
-      pFilepath->szExtension = ".com";
-      if( ! zh_fsFileExists( zh_fsFNameMerge( szFileBuf, pFilepath ) ) )
-      {
-         pFilepath->szExtension = ".exe";
-         if( ! zh_fsFileExists( zh_fsFNameMerge( szFileBuf, pFilepath ) ) )
-         {
-            pFilepath->szExtension = NULL;
-            zh_fsFNameMerge( szFileBuf, pFilepath );
-         }
-      }
-      nLen = strlen( szFileBuf );
-   }
-   zh_xfree( pFilepath );
-
-   *ret = DosAllocMem( &pMem, nLen + nLen2 + 3,
-                       PAG_COMMIT | PAG_READ | PAG_WRITE | OBJ_TILE );
-   if( *ret == NO_ERROR )
-   {
-      pArgs = ( char * ) pMem;
-      memcpy( pArgs, szFileBuf, nLen + 1 );
-      memcpy( pArgs + nLen + 1, pszFileName, nLen2 + 1 );
-      pArgs[ nLen + nLen2 + 2 ] = '\0';
-   }
-
-   if( pszFree )
-      zh_xfree( pszFree );
-
-   return pArgs;
-}
-
-static void zh_freeArgsOS2( char * pArgs )
-{
-   DosFreeMem( pArgs );
-}
-
-#endif
-
-#if defined( ZH_OS_WIN_CE ) && defined( ZH_PROCESS_USEFILES )
-
-static void zh_getCommand( const char * pszFileName,
-                           LPTSTR * lpAppName, LPTSTR * lpParams )
-{
-   const char * src, * params;
-   char cQuote = 0;
-
-   while( ZH_ISSPACE( *pszFileName ) )
-      ++pszFileName;
-
-   params = NULL;
-   src = pszFileName;
-   while( *src )
-   {
-      if( *src == cQuote )
-         cQuote = 0;
-      else if( cQuote == 0 )
-      {
-         if( *src == '"' )
-            cQuote = *src;
-         else if( ZH_ISSPACE( *src ) )
-         {
-            params = src;
-            while( ZH_ISSPACE( *params ) )
-               ++params;
-            if( *params == 0 )
-               params = NULL;
-            break;
-         }
-      }
-      ++src;
-   }
-
-   *lpParams = params ? ZH_CHARDUP( params ) : NULL;
-   *lpAppName = ZH_CHARDUPN( pszFileName, src - pszFileName );
-}
-
-#elif defined( ZH_PROCESS_USEFILES ) || defined( ZH_OS_UNIX )
+#if defined( ZH_PROCESS_USEFILES ) || defined( ZH_OS_UNIX )
 
 /* convert command to argument list using standard Bourne shell encoding:
  * "" and '' can be used to group parameters with blank characters,
@@ -382,7 +253,7 @@ static int zh_fsProcessExec( const char * pszFileName,
    if( lpParams )
       zh_xfree( lpParams );
 }
-#elif defined( ZH_OS_DOS ) || defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 ) || \
+#elif defined( ZH_OS_DOS ) || defined( ZH_OS_WIN ) || \
       defined( ZH_OS_UNIX )
 {
    int iStdIn, iStdOut, iStdErr;
@@ -602,177 +473,8 @@ ZH_FHANDLE zh_fsProcessOpen( const char * pszFileName,
          hResult = ( ZH_FHANDLE ) pi.hProcess;
       }
 
-#elif defined( ZH_OS_OS2 )
 
-      HFILE hNull = ( HFILE ) FS_ERROR;
-      ULONG ulState = 0;
-      APIRET ret = NO_ERROR;
-      PID pid = ( PID ) -1;
-      PZH_GT pGT;
-
-      if( fDetach && ( ! phStdin || ! phStdout || ! phStderr ) )
-      {
-         ZH_FHANDLE hFile;
-
-         ret = zh_fsOS2DosOpen( "NUL:", &hFile, &ulState, 0,
-                                FILE_NORMAL, OPEN_ACCESS_READWRITE,
-                                OPEN_ACTION_OPEN_IF_EXISTS );
-         if( ret == NO_ERROR )
-            hNull = ( HFILE ) hFile;
-      }
-
-      if( ret == NO_ERROR && phStdin != NULL )
-      {
-         ret = DosQueryFHState( hPipeIn[ 1 ], &ulState );
-         if( ret == NO_ERROR && ( ulState & OPEN_FLAGS_NOINHERIT ) == 0 )
-            ret = DosSetFHState( hPipeIn[ 1 ], ( ulState & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-      }
-      if( ret == NO_ERROR && phStdout != NULL )
-      {
-         ret = DosQueryFHState( hPipeOut[ 0 ], &ulState );
-         if( ret == NO_ERROR && ( ulState & OPEN_FLAGS_NOINHERIT ) == 0 )
-            ret = DosSetFHState( hPipeOut[ 0 ], ( ulState & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-      }
-      if( ret == NO_ERROR && phStderr != NULL && phStdout != phStderr )
-      {
-         ret = DosQueryFHState( hPipeErr[ 0 ], &ulState );
-         if( ret == NO_ERROR && ( ulState & OPEN_FLAGS_NOINHERIT ) == 0 )
-            ret = DosSetFHState( hPipeErr[ 0 ], ( ulState & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-      }
-
-      if( ret == NO_ERROR && ( pGT = zh_gt_Base() ) != NULL )
-      {
-         ULONG ulStateIn, ulStateOut, ulStateErr;
-         HFILE hStdIn, hStdErr, hStdOut, hDup;
-
-         ulStateIn = ulStateOut = ulStateErr = OPEN_FLAGS_NOINHERIT;
-         hStdIn  = hStdErr = hStdOut = ( HFILE ) FS_ERROR;
-
-         if( ret == NO_ERROR && ( phStdin != NULL || fDetach ) )
-         {
-            hDup = 0;
-            ret = DosDupHandle( hDup, &hStdIn );
-            if( ret == NO_ERROR )
-            {
-               ret = DosQueryFHState( hStdIn, &ulStateIn );
-               if( ret == NO_ERROR && ( ulStateIn & OPEN_FLAGS_NOINHERIT ) == 0 )
-                  ret = DosSetFHState( hStdIn, ( ulStateIn & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-               if( ret == NO_ERROR )
-                  ret = DosDupHandle( phStdin != NULL ? ( HFILE ) hPipeIn[ 0 ] : hNull, &hDup );
-            }
-         }
-
-         if( ret == NO_ERROR && ( phStdout != NULL || fDetach ) )
-         {
-            hDup = 1;
-            ret = DosDupHandle( hDup, &hStdOut );
-            if( ret == NO_ERROR )
-            {
-               ret = DosQueryFHState( hStdOut, &ulStateOut );
-               if( ret == NO_ERROR && ( ulStateOut & OPEN_FLAGS_NOINHERIT ) == 0 )
-                  ret = DosSetFHState( hStdOut, ( ulStateOut & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-               if( ret == NO_ERROR )
-                  ret = DosDupHandle( phStdout != NULL ? ( HFILE ) hPipeOut[ 1 ] : hNull, &hDup );
-            }
-         }
-
-         if( ret == NO_ERROR && ( phStderr != NULL || fDetach ) )
-         {
-            hDup = 2;
-            ret = DosDupHandle( hDup, &hStdErr );
-            if( ret == NO_ERROR )
-            {
-               ret = DosQueryFHState( hStdErr, &ulStateErr );
-               if( ret == NO_ERROR && ( ulStateErr & OPEN_FLAGS_NOINHERIT ) == 0 )
-                  ret = DosSetFHState( hStdErr, ( ulStateErr & 0xFF00 ) | OPEN_FLAGS_NOINHERIT );
-               if( ret == NO_ERROR )
-                  ret = DosDupHandle( phStderr != NULL ? ( HFILE ) hPipeErr[ 1 ] : hNull, &hDup );
-            }
-         }
-
-         if( ret == NO_ERROR )
-         {
-            char * pArgs = zh_buildArgsOS2( pszFileName, &ret );
-            char uchLoadError[ CCHMAXPATH ] = { 0 };
-            RESULTCODES ChildRC = { 0, 0 };
-
-            if( pArgs )
-            {
-               ret = DosExecPgm( uchLoadError, sizeof( uchLoadError ),
-                                 fDetach ? EXEC_BACKGROUND : EXEC_ASYNCRESULT,
-                                 ( PCSZ ) pArgs, NULL /* env */,
-                                 &ChildRC,
-                                 ( PCSZ ) pArgs );
-               if( ret == NO_ERROR )
-                  pid = ChildRC.codeTerminate;
-               zh_freeArgsOS2( pArgs );
-            }
-         }
-
-         if( hNull != ( HFILE ) FS_ERROR )
-            DosClose( hNull );
-
-         if( hStdIn != ( HFILE ) FS_ERROR )
-         {
-            hDup = 0;
-            DosDupHandle( hStdIn, &hDup );
-            DosClose( hStdIn );
-            if( ( ulStateIn & OPEN_FLAGS_NOINHERIT ) == 0 )
-               DosSetFHState( hDup, ulStateIn & 0xFF00 );
-         }
-         if( hStdOut != ( HFILE ) FS_ERROR )
-         {
-            hDup = 1;
-            DosDupHandle( hStdOut, &hDup );
-            DosClose( hStdOut );
-            if( ( ulStateOut & OPEN_FLAGS_NOINHERIT ) == 0 )
-               DosSetFHState( hDup, ulStateOut & 0xFF00 );
-         }
-         if( hStdErr != ( HFILE ) FS_ERROR )
-         {
-            hDup = 2;
-            DosDupHandle( hStdErr, &hDup );
-            DosClose( hStdErr );
-            if( ( ulStateErr & OPEN_FLAGS_NOINHERIT ) == 0 )
-               DosSetFHState( hDup, ulStateErr & 0xFF00 );
-         }
-
-         zh_gt_BaseFree( pGT );
-      }
-      else
-      {
-         if( hNull != ( HFILE ) FS_ERROR )
-            DosClose( hNull );
-         if( ret == NO_ERROR )
-            ret = ( APIRET ) FS_ERROR;
-      }
-
-      fError = ret != NO_ERROR;
-      if( ! fError )
-      {
-         if( phStdin != NULL )
-         {
-            *phStdin = ( ZH_FHANDLE ) hPipeIn[ 1 ];
-            hPipeIn[ 1 ] = FS_ERROR;
-         }
-         if( phStdout != NULL )
-         {
-            *phStdout = ( ZH_FHANDLE ) hPipeOut[ 0 ];
-            hPipeOut[ 0 ] = FS_ERROR;
-         }
-         if( phStderr != NULL )
-         {
-            *phStderr = ( ZH_FHANDLE ) hPipeErr[ 0 ];
-            hPipeErr[ 0 ] = FS_ERROR;
-         }
-         if( pulPID )
-            *pulPID = pid;
-         hResult = ( ZH_FHANDLE ) pid;
-      }
-
-      zh_fsSetError( ( ZH_ERRCODE ) ret );
-
-#elif defined( ZH_OS_UNIX ) && ! defined( ZH_OS_VXWORKS )
+#elif defined( ZH_OS_UNIX )
 
       char ** argv = zh_buildArgs( pszFileName );
       pid_t pid = fork();
@@ -862,7 +564,7 @@ ZH_FHANDLE zh_fsProcessOpen( const char * pszFileName,
 
       zh_freeArgs( argv );
 
-#elif defined( ZH_OS_OS2 ) || defined( ZH_OS_WIN )
+#elif defined( ZH_OS_WIN )
 
       int hStdIn, hStdOut, hStdErr;
       char ** argv;
@@ -999,28 +701,6 @@ int zh_fsProcessValue( ZH_FHANDLE hProcess, ZH_BOOL fWait )
    else
       zh_fsSetError( ( ZH_ERRCODE ) FS_ERROR );
 }
-#elif defined( ZH_OS_OS2 )
-{
-   PID pid = ( PID ) hProcess;
-
-   if( pid > 0 )
-   {
-      RESULTCODES resultCodes = { 0, 0 };
-      APIRET ret;
-
-      zh_vmUnlock();
-      ret = DosWaitChild( DCWA_PROCESS, fWait ? DCWW_WAIT : DCWW_NOWAIT,
-                          &resultCodes, &pid, pid );
-      zh_fsSetError( ( ZH_ERRCODE ) ret );
-      if( ret == NO_ERROR )
-         iRetStatus = resultCodes.codeResult;
-      else
-         iRetStatus = -2;
-      zh_vmLock();
-   }
-   else
-      zh_fsSetError( ( ZH_ERRCODE ) FS_ERROR );
-}
 #elif defined( ZH_OS_UNIX )
 {
    int iStatus;
@@ -1078,20 +758,6 @@ ZH_BOOL zh_fsProcessClose( ZH_FHANDLE hProcess, ZH_BOOL fGentle )
       #if 0
       CloseHandle( hProc );
       #endif
-   }
-   else
-      zh_fsSetError( ( ZH_ERRCODE ) FS_ERROR );
-}
-#elif defined( ZH_OS_OS2 )
-{
-   PID pid = ( PID ) hProcess;
-
-   if( pid > 0 )
-   {
-      APIRET ret = DosKillProcess( fGentle ? DKP_PROCESS : DKP_PROCESSTREE, pid );
-
-      fResult = ret == NO_ERROR;
-      zh_fsSetError( ( ZH_ERRCODE ) ret );
    }
    else
       zh_fsSetError( ( ZH_ERRCODE ) FS_ERROR );
@@ -1367,7 +1033,7 @@ int zh_fsProcessRun( const char * pszFileName,
 
       CloseHandle( ( HANDLE ) zh_fsGetOsHandle( hProcess ) );
 
-#elif defined( ZH_OS_OS2 ) || defined( ZH_OS_WIN )
+#elif defined( ZH_OS_WIN )
 
       ZH_MAXINT nTimeOut = 0;
       int iPipeCount = 0;

@@ -326,26 +326,7 @@ extern ZH_EXPORT const char * zh_fsNameConv( const char * pszFileName, char ** p
 #if defined( ZH_OS_WIN )
 extern ZH_EXPORT ZH_WCHAR *   zh_fsNameConvU16( const char * pszFileName );
 #endif
-#if defined( ZH_OS_OS2 )
-extern ZH_EXPORT ZH_BOOL  zh_isWSeB( void );
-extern ZH_EXPORT ZH_ULONG zh_fsOS2DosOpen( const char * pszFileName,
-                                           ZH_FHANDLE * pHFile, ZH_ULONG * pulAction,
-                                           ZH_ULONG nInitSize, ZH_ULONG ulAttribute,
-                                           ZH_ULONG fsOpenFlags, ZH_ULONG fsOpenMode );
-extern ZH_EXPORT ZH_ULONG zh_fsOS2DosOpenL( const char * pszFileName,
-                                            ZH_FHANDLE * pHFile, ZH_ULONG * pulAction,
-                                            ZH_FOFFSET nInitSize, ZH_ULONG ulAttribute,
-                                            ZH_ULONG fsOpenFlags, ZH_ULONG fsOpenMode );
-extern ZH_EXPORT ZH_ULONG zh_fsOS2DosSetFileLocksL( ZH_FHANDLE hFile,
-                                                    void * pflUnlock, void * pflLock,
-                                                    ZH_ULONG timeout, ZH_ULONG flags );
-extern ZH_EXPORT ZH_ULONG zh_fsOS2DosSetFilePtrL( ZH_FHANDLE hFile, ZH_FOFFSET nPos,
-                                                 ZH_ULONG method, ZH_FOFFSET * pnCurPos );
-extern ZH_EXPORT ZH_ULONG zh_fsOS2DosSetFileSizeL( ZH_FHANDLE hFile, ZH_FOFFSET nSize );
-extern ZH_EXPORT ZH_BOOL  zh_fsOS2QueryPathInfo( const char * pszPathName,
-                                                 ZH_FOFFSET * pnSize, ZH_FATTR * pnAttr,
-                                                 long * plJulian, long * plMillisec );
-#endif
+
 
 /* Ziher file functions with shared file handles and locks
  * (buffers in the future)

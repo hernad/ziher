@@ -12253,15 +12253,9 @@ ZH_LANG_REQUEST( ZH_LANG_DEFAULT )
 
 #undef ZH_FORCE_LINK_MAIN
 
-#if ! defined( ZH_DYNLIB ) && defined( ZH_OS_WIN ) && \
-   ( defined( __WATCOMC__ ) || defined( __MINGW32__ ) )
+#if ! defined( ZH_DYNLIB ) && defined( ZH_OS_WIN ) && defined( __MINGW32__ ) 
 
 #  define ZH_FORCE_LINK_MAIN  zh_forceLinkMainWin
-
-#elif defined( __WATCOMC__ ) && \
-   ( defined( ZH_OS_LINUX ) || defined( ZH_OS_OS2 ) || defined( ZH_OS_WIN ) )
-
-#  define ZH_FORCE_LINK_MAIN  zh_forceLinkMainStd
 
 #endif
 

@@ -530,20 +530,11 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
 #define DLMALLOC_EXPORT extern
 #endif
 
-#ifndef _WIN32_WCE
-#if defined(UNDER_CE) || defined(__CEGCC__) || defined(__MINGW32CE__)
-#define _WIN32_WCE
-#endif
-#endif /* _WIN32_WCE */
 
 #ifndef WIN32
 #ifdef _WIN32
 #define WIN32 1
 #endif  /* _WIN32 */
-#ifdef _WIN32_WCE
-#define LACKS_FCNTL_H
-#define WIN32 1
-#endif /* _WIN32_WCE */
 #endif  /* WIN32 */
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -571,25 +562,6 @@ MAX_RELEASE_CHECK_RATE   default: 4095 unless not HAVE_MMAP
 #endif /* MMAP_CLEARS */
 #endif /* WIN32 */
 
-#ifndef __OS2__
-#if defined(OS2) || defined(OS_2) || defined(__EMX__)
-#define __OS2__
-#endif
-#endif /* __OS2__ */
-
-#ifdef __OS2__
-#define INCL_DOSMEMMGR
-#include <os2.h>
-#define HAVE_MMAP 1
-#define HAVE_MORECORE 0
-#define LACKS_SYS_MMAN_H
-#endif /* __OS2__ */
-
-#if defined(__WATCOMC__) && !defined(__OS2__)
-#ifndef LACKS_SYS_PARAM_H
-#define LACKS_SYS_PARAM_H
-#endif  /* LACKS_SYS_PARAM_H */
-#endif  /* __WATCOMC__ && !OS2 */
 
 #if defined(DARWIN) || defined(_DARWIN)
 /* Mac OSX docs advise not to use sbrk; it seems better to use mmap */

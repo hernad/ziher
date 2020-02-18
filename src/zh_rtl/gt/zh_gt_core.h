@@ -640,9 +640,9 @@ extern ZH_EXPORT int     zh_gt_winapi_getKbdState( void );
 extern ZH_EXPORT void    zh_gt_winapi_setKbdState( int kbdShifts );
 extern ZH_EXPORT void    zh_gt_winapi_tone( double dFrequency, double dDuration );
 #endif /* ZH_OS_WIN */
-#if defined( ZH_OS_DOS ) || defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 )
+#if defined( ZH_OS_WIN )
 extern int zh_gt_dos_keyCodeTranslate( int iKey, int iFlags, PZH_CODEPAGE cdp );
-#endif /* ZH_OS_DOS || ZH_OS_WIN || ZH_OS_OS2 */
+#endif
 
 ZH_EXTERN_END
 

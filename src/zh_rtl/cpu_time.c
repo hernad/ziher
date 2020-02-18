@@ -75,13 +75,8 @@ double zh_secondsCPU( int n )
    FILETIME Create, Exit, Kernel, User;
 #endif
 
-#if defined( ZH_OS_OS2 )
-   static ULONG s_timer_interval = 0;
 
-   QSGREC ** pBuf;
-#endif
-
-   if( ( n < 1 || n > 3 ) && ( n < 11 || n > 13 ) )
+if( ( n < 1 || n > 3 ) && ( n < 11 || n > 13 ) )
       n = 3;
 
 #if defined( ZH_OS_UNIX )

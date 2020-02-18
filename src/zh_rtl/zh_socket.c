@@ -704,17 +704,6 @@ PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
 #  define ZH_SOCK_GETHERROR()             WSAGetLastError()
 #  define ZH_SOCK_IS_EINTR( err )         ( (err) == WSAEINTR )
 #  define ZH_SOCK_IS_EINPROGRES( err )    ( (err) == WSAEWOULDBLOCK )
-#elif defined( ZH_OS_OS2 ) && defined( __WATCOMC__ )
-#  define ZH_SOCK_GETERROR()              sock_errno()
-#  define ZH_SOCK_GETHERROR()             h_errno
-#  define ZH_SOCK_IS_EINTR( err )         ( (err) == EINTR )
-#  define ZH_SOCK_IS_EINPROGRES( err )    ( (err) == EINPROGRESS )
-#elif defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) && ( __WATCOMC__ <= 1290 )
-   /* h_errno is still not supported by Linux OpenWatcom port :-( */
-#  define ZH_SOCK_GETERROR()              errno
-#  define ZH_SOCK_GETHERROR()             errno
-#  define ZH_SOCK_IS_EINTR( err )         ( (err) == EINTR )
-#  define ZH_SOCK_IS_EINPROGRES( err )    ( (err) == EINPROGRESS )
 #else
 #  define ZH_SOCK_GETERROR()              errno
 #  define ZH_SOCK_GETHERROR()             h_errno
@@ -770,8 +759,6 @@ int zh_socketInit( void )
 #if defined( ZH_OS_WIN )
       WSADATA wsadata;
       ret = WSAStartup( ZH_MKUSHORT( 1, 1 ), &wsadata );
-#elif defined( ZH_OS_DOS )
-      ret = sock_init();
 #endif
    }
    ZH_SOCKET_UNLOCK();
@@ -2314,18 +2301,6 @@ int zh_socketShutdown( ZH_SOCKET sd, int iMode )
       iMode = SD_SEND;
    else if( iMode == ZH_SOCKET_SHUT_RDWR )
       iMode = SD_BOTH;
-#elif defined( ZH_OS_OS2 )
-   if( iMode == ZH_SOCKET_SHUT_RD )
-      iMode = SO_RCV_SHUTDOWN;
-   else if( iMode == ZH_SOCKET_SHUT_WR )
-      iMode = SO_SND_SHUTDOWN;
-   else if( iMode == ZH_SOCKET_SHUT_RDWR )
-      iMode = SO_RCV_SHUTDOWN | SO_SND_SHUTDOWN;
-#elif defined( __WATCOMC__ )
-   if( iMode == ZH_SOCKET_SHUT_RD ||
-       iMode == ZH_SOCKET_SHUT_WR ||
-       iMode == ZH_SOCKET_SHUT_RDWR )
-   { ; }
 #else
    if( iMode == ZH_SOCKET_SHUT_RD )
       iMode = SHUT_RD;
@@ -2655,6 +2630,10 @@ int zh_socketSetBlockingIO( ZH_SOCKET sd, ZH_BOOL fBlocking )
    zh_socketSetOsError( ret != -1 ? 0 : ZH_SOCK_GETERROR() );
    if( ret == 0 )
       ret = 1;
+
+
+
+
 #elif defined( ZH_OS_DOS )
    int mode = fBlocking ? 0 : 1;
    ret = ioctlsocket( sd, FIONBIO, ( char * ) &mode );
@@ -2682,12 +2661,6 @@ int zh_socketSetBlockingIO( ZH_SOCKET sd, ZH_BOOL fBlocking )
          ret = 0;
    }
    zh_socketSetOsError( ret != -1 ? 0 : ZH_SOCK_GETERROR() );
-#elif defined( ZH_OS_OS2 )
-   unsigned long mode = fBlocking ? 0 : 1;
-   ret = ioctl( sd, FIONBIO, ( char * ) &mode );
-   zh_socketSetOsError( ret != -1 ? 0 : ZH_SOCK_GETERROR() );
-   if( ret == 0 )
-      ret = 1;
 #else
    int iTODO;
    ZH_SYMBOL_UNUSED( sd );
@@ -2723,9 +2696,7 @@ int zh_socketSetNoDelay( ZH_SOCKET sd, ZH_BOOL fNoDelay )
    return ret;
 }
 
-/* NOTE: For notes on Windows, see:
-         https://msdn.microsoft.com/library/ms740621
-         [vszakats] */
+/* NOTE: https://msdn.microsoft.com/library/ms740621 [vszakats] */
 int zh_socketSetExclusiveAddr( ZH_SOCKET sd, ZH_BOOL fExclusive )
 {
    int ret;
@@ -3438,8 +3409,7 @@ PZH_ITEM zh_socketGetHosts( const char * szAddr, int af )
       /* gethostbyname() in Windows and OS/2 does not accept direct IP
        * addresses
        */
-#if ( defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 ) ) && \
-    defined( ZH_HAS_GETHOSTBYADDR )
+#if defined( ZH_OS_WIN ) && defined( ZH_HAS_GETHOSTBYADDR )
       {
          struct in_addr sia;
 
@@ -3594,8 +3564,7 @@ char * zh_socketGetHostName( const void * pSockAddr, unsigned len )
 /*
  * IFACEs
  */
-#if defined( ZH_OS_WIN ) || ( defined( SIOCGIFCONF ) && \
-    !( defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) ) )
+#if defined( ZH_OS_WIN ) || defined( SIOCGIFCONF )
 static void zh_socketArraySetInetAddr( PZH_ITEM pItem, ZH_SIZE nPos,
                                        const void * pSockAddr, unsigned len )
 {
@@ -3624,40 +3593,6 @@ static ZH_SIZE zh_socketArrayFindInetAddr( const char * szAddr,
    return 0;
 }
 #endif
-#if defined( SIOCGIFCONF ) && defined( ZH_OS_BSD ) && \
-    ! defined( SIOCGIFHWADDR ) && ! defined( SIOCGENADDR )
-static char * zh_getMAC( const char * pszIfName )
-{
-   struct ifaddrs * ifap = NULL;
-   char * pszMAC = NULL;
-
-   if( getifaddrs( &ifap ) == 0 && ifap )
-   {
-      struct ifaddrs * ifa = ifap;
-
-      while( ifa != NULL )
-      {
-         if( ifa->ifa_addr != NULL && ifa->ifa_addr->sa_family == AF_LINK &&
-             ifa->ifa_name && strcmp( ifa->ifa_name, pszIfName ) == 0 )
-         {
-            struct sockaddr_dl * sdl = ( struct sockaddr_dl * ) ifa->ifa_addr;
-            unsigned char * data = ( unsigned char * ) LLADDR( sdl );
-            char hwaddr[ 24 ];
-
-            zh_snprintf( hwaddr, sizeof( hwaddr ),
-                         "%02X:%02X:%02X:%02X:%02X:%02X",
-                         data[ 0 ], data[ 1 ], data[ 2 ],
-                         data[ 3 ], data[ 4 ], data[ 5 ] );
-            pszMAC = zh_strdup( hwaddr );
-            break;
-         }
-         ifa = ifa->ifa_next;
-      }
-      freeifaddrs( ifap );
-   }
-   return pszMAC;
-}
-#endif
 
 PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
 {
@@ -3670,8 +3605,7 @@ PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
  *       new systems using 'struct lifreq' with SIOCGLIF* ioctls instead
  *       of 'struct ifreq' and SIOCGIF*
  */
-#if defined( SIOCGIFCONF ) && \
-    !( defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) )
+#if defined( SIOCGIFCONF )
    ZH_SOCKET sd;
 
    sd = zh_socketOpen( af ? af : ZH_SOCKET_AF_INET, ZH_SOCKET_PT_DGRAM, 0 );
@@ -3682,11 +3616,6 @@ PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
       char * buf, * ptr;
       const char * pLastName = NULL;
       int len = 0, size, iLastName = 0, iLastFamily = 0, flags, family;
-
-#  if defined( ZH_OS_DOS )
-#     undef ioctl
-#     define ioctl( s, cmd, argp )  ioctlsocket( ( s ), ( cmd ), ( char * ) ( argp ) )
-#  endif
 
 #  if defined( ZH_SOCKET_TRANSLATE_DOMAIN )
       af = zh_socketTransDomain( af, NULL );
@@ -3734,10 +3663,8 @@ PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
             }
 #  endif
             len += sizeof( pifr->ifr_name );
-#  if ! defined( ZH_OS_BEOS )
             if( len < ( int ) sizeof( struct ifreq ) )
                len = ( int ) sizeof( struct ifreq );
-#  endif
             ptr += len;
             size -= len;
 
@@ -3881,9 +3808,6 @@ PZH_ITEM zh_socketGetIFaces( int af, ZH_BOOL fNoAliases )
 #elif defined( ZH_OS_WIN )
    ZH_SOCKET sd;
 
-   /* TODO: add support for IP6 */
-
-   /* TODO: implement it */
    ZH_SYMBOL_UNUSED( fNoAliases );
 
    sd = zh_socketOpen( af ? af : ZH_SOCKET_AF_INET, ZH_SOCKET_PT_DGRAM, 0 );

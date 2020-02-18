@@ -28,7 +28,7 @@ cc_library(
         "gt/*.h",
         "gt/*.zhh"
     ]),
-    alwayslink = 1,
+    #alwayslink = 1,
     deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm" ],
     visibility = ["//visibility:public"],
     includes = ["*.*", "string/*.*"]
@@ -46,24 +46,9 @@ filegroup(
 )
 
 
-#zh_comp(
-#    name = "achoice", 
-#    zhin = "achoice.zh",
-#    args = ZH_COMP_OPTS,
-#    visibility = ["//visibility:public"],
-#)
-#
-#zh_comp(
-#    name = "adir", 
-#    zhin = "file/adir.zh",
-#    args = ZH_COMP_OPTS,
-#    visibility = ["//visibility:public"],
-#)
-
-
 cc_library(
-    name = "zh_rtl_zh",
-    srcs = [ ":zh_rtl_zh_c" ],
+    name = "zh_rtl_zh_c",
+    srcs = [ ":zh_rtl_zh" ],
     hdrs = glob([
         "*.zh",
         "*.zhh",
@@ -73,7 +58,7 @@ cc_library(
 )
 
 zh_comp_all(
-    name = "zh_rtl_zh_c", 
+    name = "zh_rtl_zh", 
     srcs = glob([ 
         "*.zh", 
         "file/*.zh",

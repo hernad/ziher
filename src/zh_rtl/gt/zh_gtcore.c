@@ -3655,12 +3655,6 @@ static char s_gtNameBuf[ ZH_GT_NAME_MAX_ + 1 ];
    static const char * s_szNameDefault = ZH_GT_DRVNAME( ZH_GT_LIB );
 #elif defined( ZH_OS_WIN )
    static const char * s_szNameDefault = "win";
-#elif defined( ZH_OS_DOS )
-   static const char * s_szNameDefault = "dos";
-#elif defined( ZH_OS_OS2 )
-   static const char * s_szNameDefault = "os2";
-#elif defined( ZH_OS_VXWORKS )
-   static const char * s_szNameDefault = "std";
 #elif defined( ZH_OS_UNIX )
    static const char * s_szNameDefault = "trm";
 #else

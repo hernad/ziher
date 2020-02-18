@@ -1412,12 +1412,6 @@ void zh_fsClose( ZH_FHANDLE hFileHandle )
    zh_vmUnlock();
 #if defined( ZH_OS_WIN )
    zh_fsSetIOError( CloseHandle( DosToWinHandle( hFileHandle ) ) != 0, 0 );
-#elif defined( ZH_OS_OS2 )
-   {
-      APIRET ret = DosClose( hFileHandle );
-
-      zh_fsSetError( ( ZH_ERRCODE ) ret );
-   }
 #else
    {
       int ret;

@@ -49,7 +49,7 @@
  */
 
 #include "zh_comp.h"
-
+#include "zh_zero/no_rtl.h"
 
 int main( int argc, char * argv[] )
 {

@@ -44,21 +44,17 @@
  *
  */
 
-/* NOTE: Need to have these before Ziher headers,
-         because in MT mode, they will automatically #include <os2.h>. */
-#define INCL_DOSPROCESS
-#define INCL_DOSERRORS
-#define INCL_DOSMODULEMGR
+
 
 #include "zh_api.h"
 #include "zh_item_api.h"
 #include "zh_apifs.h"
 #include "zh_codepage_api.h"
 #include "zh_vm.h"
-#include "memory.zhh"
 #include "zh_stack.h"
 #include "zh_ver_bld.h"
 
+#include "memory.zhh"
 
 /* Command-line argument management */
 static int     s_argc = 0;
@@ -68,7 +64,7 @@ static char ** s_argv = NULL;
    static char    s_szAppName[ ZH_PATH_MAX ];
 #else
 
-#include "hbwinuni.h"
+#include "zh_win_uni.h"
 #include <windows.h>
 
 static LPTSTR * s_lpArgV = NULL;
@@ -340,22 +336,6 @@ void zh_cmdargUpdate( void )
 #if ! defined( ZH_OS_WIN )
    if( s_argc > 0 )
    {
-#  if defined( ZH_OS_OS2 )
-      {
-         PPIB ppib = NULL;
-         APIRET ulrc;
-
-         ulrc = DosGetInfoBlocks( NULL, &ppib );
-         if( ulrc == NO_ERROR )
-         {
-            ulrc = DosQueryModuleName( ppib->pib_hmte,
-                                       ZH_SIZEOFARRAY( s_szAppName ),
-                                       s_szAppName );
-            if( ulrc == NO_ERROR )
-               s_argv[ 0 ] = s_szAppName;
-         }
-      }
-#  else
       /* NOTE: try to create absolute path from s_argv[ 0 ] if necessary */
       {
          PZH_FNAME pFName = zh_fsFNameSplit( s_argv[ 0 ] );
@@ -425,7 +405,6 @@ void zh_cmdargUpdate( void )
          }
          zh_xfree( pFName );
       }
-#  endif
    }
 #endif
 }
@@ -540,10 +519,6 @@ static char * zh_cmdargGet( const char * pszName, ZH_BOOL bRetValue )
       char * pszNext = pszEnvVar;
 
       /* Step through all envvar switches. */
-
-      /* NOTE: CA-Cl*pper doesn't need the switches to be separated by any
-               chars at all, Ziher is more strict/standard in this respect,
-               it requires the switches to be separated. */
 
       i = ( int ) strlen( pszName );
       while( *pszNext )

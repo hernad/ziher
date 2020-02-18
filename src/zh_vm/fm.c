@@ -1246,15 +1246,6 @@ ZH_SIZE zh_xquery( int iMode )
             GlobalMemoryStatus( &memorystatus );
             nResult = memorystatus.dwAvailPhys / 1024;
          }
-#elif defined( ZH_OS_OS2 )
-         {
-            ULONG ulSysInfo = 0;
-
-            if( DosQuerySysInfo( QSV_TOTAVAILMEM, QSV_TOTAVAILMEM, &ulSysInfo, sizeof( ULONG ) ) != NO_ERROR )
-               nResult = 0;
-            else
-               nResult = ulSysInfo / 1024;
-         }
 #else
          nResult = 9999;
 #endif
@@ -1274,15 +1265,6 @@ ZH_SIZE zh_xquery( int iMode )
             MEMORYSTATUS memorystatus;
             GlobalMemoryStatus( &memorystatus );
             nResult = ZH_MIN( memorystatus.dwAvailPhys, ULONG_MAX ) / 1024;
-         }
-#elif defined( ZH_OS_OS2 )
-         {
-            ULONG ulSysInfo = 0;
-
-            if( DosQuerySysInfo( QSV_TOTAVAILMEM, QSV_TOTAVAILMEM, &ulSysInfo, sizeof( ULONG ) ) != NO_ERROR )
-               nResult = 0;
-            else
-               nResult = ZH_MIN( ulSysInfo, ULONG_MAX ) / 1024;
          }
 #else
          nResult = 9999;
@@ -1304,15 +1286,6 @@ ZH_SIZE zh_xquery( int iMode )
             GlobalMemoryStatus( &memorystatus );
             nResult = memorystatus.dwAvailPhys / 1024;
          }
-#elif defined( ZH_OS_OS2 )
-         {
-            ULONG ulSysInfo = 0;
-
-            if( DosQuerySysInfo( QSV_TOTAVAILMEM, QSV_TOTAVAILMEM, &ulSysInfo, sizeof( ULONG ) ) != NO_ERROR )
-               nResult = 0;
-            else
-               nResult = ulSysInfo / 1024;
-         }
 #else
          nResult = 9999;
 #endif
@@ -1333,22 +1306,13 @@ ZH_SIZE zh_xquery( int iMode )
             GlobalMemoryStatus( &memorystatus );
             nResult = memorystatus.dwAvailVirtual / 1024;
          }
-#elif defined( ZH_OS_OS2 )
-         {
-            ULONG ulSysInfo = 0;
-
-            if( DosQuerySysInfo( QSV_TOTAVAILMEM, QSV_TOTAVAILMEM, &ulSysInfo, sizeof( ULONG ) ) != NO_ERROR )
-               nResult = 0;
-            else
-               nResult = ulSysInfo / 1024;
-         }
 #else
          nResult = 9999;
 #endif
          break;
 
       case ZH_MEM_EMS:        /* UNDOCUMENTED! (Free Expanded Memory [KB]) (?) */
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 )
+#if defined( ZH_OS_WIN )
          nResult = 0;
 #else
          nResult = 9999;
@@ -1370,36 +1334,20 @@ ZH_SIZE zh_xquery( int iMode )
             GlobalMemoryStatus( &memorystatus );
             nResult = memorystatus.dwTotalPhys / 1024;
          }
-#elif defined( ZH_OS_OS2 )
-         {
-            ULONG ulSysInfo = 0;
-
-            if( DosQuerySysInfo( QSV_MAXPRMEM, QSV_MAXPRMEM, &ulSysInfo, sizeof( ULONG ) ) != NO_ERROR )
-               nResult = 0;
-            else
-               nResult = ulSysInfo / 1024;
-         }
-#elif defined( ZH_OS_DOS )
-         {
-            union REGS regs;
-            regs.ZH_XREGS.ax = 0;
-            ZH_DOS_INT86( 0x12, &regs, &regs );
-            nResult = regs.w.ax;
-         }
 #else
          nResult = 9999;
 #endif
          break;
 
-      case ZH_MEM_FMSEGS:     /* UNDOCUMENTED! (Segments in Fixed Memory/Heap) (?) */
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 )
+      case ZH_MEM_FMSEGS:     /* (Segments in Fixed Memory/Heap) (?) */
+#if defined( ZH_OS_WIN )
          nResult = 1;
 #else
          nResult = 9999;
 #endif
          break;
 
-      case ZH_MEM_SWAP:       /* UNDOCUMENTED! (Free Swap Memory [KB]) */
+      case ZH_MEM_SWAP:       /* (Free Swap Memory [KB]) */
 #if defined( ZH_OS_WIN ) && defined( ZH_OS_WIN_XP )
          {
             MEMORYSTATUSEX memorystatus;
@@ -1414,31 +1362,23 @@ ZH_SIZE zh_xquery( int iMode )
             GlobalMemoryStatus( &memorystatus );
             nResult = memorystatus.dwAvailPageFile / 1024;
          }
-#elif defined( ZH_OS_OS2 )
-         {
-            /* NOTE: There is no way to know how much a swap file can grow on an
-                     OS/2 system. I think we should return free space on DASD
-                     media which contains swap file [maurilio.longo] */
-            nResult = 9999;
-         }
-#else
          nResult = 9999;
-#endif
          break;
+#endif
 
-      case ZH_MEM_CONV:       /* UNDOCUMENTED! (Free Conventional [KB]) */
-#if defined( ZH_OS_WIN ) || defined( ZH_OS_OS2 )
+      case ZH_MEM_CONV:       /* (Free Conventional [KB]) */
+#if defined( ZH_OS_WIN )
          nResult = 0;
 #else
          nResult = 9999;
 #endif
          break;
 
-      case ZH_MEM_EMSUSED:    /* UNDOCUMENTED! (Used Expanded Memory [KB]) (?) */
+      case ZH_MEM_EMSUSED:    /* (Used Expanded Memory [KB]) (?) */
          nResult = 0;
          break;
 
-      case ZH_MEM_USED:       /* Ziher extension (Memory used [bytes]) */
+      case ZH_MEM_USED:       /* (Memory used [bytes]) */
 #ifdef ZH_FM_STATISTICS
          nResult = s_nMemoryConsumed;
 #elif defined( ZH_FM_DLMT_ALLOC )
@@ -1450,7 +1390,7 @@ ZH_SIZE zh_xquery( int iMode )
 #endif
          break;
 
-      case ZH_MEM_BLOCKS:     /* Ziher extension (Memory blocks used) */
+      case ZH_MEM_BLOCKS:     /* (Memory blocks used) */
 #ifdef ZH_FM_STATISTICS
          nResult = s_nMemoryBlocks;
 #else
@@ -1458,7 +1398,7 @@ ZH_SIZE zh_xquery( int iMode )
 #endif
          break;
 
-      case ZH_MEM_USEDMAX:    /* Ziher extension (Maximum memory used [bytes]) */
+      case ZH_MEM_USEDMAX:    /* (Maximum memory used [bytes]) */
 #ifdef ZH_FM_STATISTICS
          nResult = s_nMemoryMaxConsumed;
 #elif defined( ZH_FM_DLMT_ALLOC )

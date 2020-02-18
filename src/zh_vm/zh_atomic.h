@@ -81,10 +81,6 @@ ZH_EXTERN_BEGIN
 
 #  if defined( ZH_USE_GCCATOMIC_OFF )
 #     undef ZH_USE_GCCATOMIC
-#  elif defined( ZH_OS_OS2 ) && \
-        ( __GNUC__ < 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ <= 5 ) )
-      /* allow users to enable it manually by ZH_USE_GCCATOMIC macro */
-      /* #undef ZH_USE_GCCATOMIC */
 #  elif ( __GNUC__ > 4 || ( __GNUC__ == 4 && __GNUC_MINOR__ >= 1 ) ) && \
         ! defined( __MINGW32CE__ ) && ! defined( ZH_USE_GCCATOMIC )
 #     define ZH_USE_GCCATOMIC

@@ -74,9 +74,7 @@
 
 #endif
 
-#if ! defined( MAXGETHOSTNAME ) && ( defined( ZH_OS_UNIX ) || \
-      ( ( defined( ZH_OS_OS2 ) || defined( ZH_OS_DOS ) ) && \
-        defined( __GNUC__ ) ) )
+#if ! defined( MAXGETHOSTNAME ) &&  defined( ZH_OS_UNIX )
    #define MAXGETHOSTNAME 256      /* should be enough for a host name */
 #endif
 

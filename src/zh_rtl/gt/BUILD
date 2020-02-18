@@ -27,15 +27,15 @@ cc_library(
         "gt_wvt/*.zhh",
 
     ]),
-    alwayslink = 1,
+    #alwayslink = 1,
     deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm", "//zh_rtl:zh_rtl" ],
     visibility = ["//visibility:public"],
 )
 
 
 cc_library(
-    name = "zh_rtl_gt_zh",
-    srcs = [ ":zh_rtl_gt_zh_c" ],
+    name = "zh_rtl_gt_zh_c",
+    srcs = [ ":zh_rtl_gt_zh" ],
     hdrs = glob([
         "*.zh",
         "*.zhh",
@@ -45,7 +45,7 @@ cc_library(
 )
 
 zh_comp_all(
-    name = "zh_rtl_gt_zh_c", 
+    name = "zh_rtl_gt_zh", 
     srcs = glob([ 
         "*.zh", 
     ]),

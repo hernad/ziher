@@ -5,6 +5,7 @@
 #include "zh_pp.h"
 #include "zh_date.h"
 #include "zh_zero/zh_ver_bld.h"
+#include "zh_zero/no_rtl.h"
 
 // Static functions in C. A static function in C is a function that has a scope that is limited to its object file.
 
