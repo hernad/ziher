@@ -10,7 +10,7 @@ cc_library(
         "gt_trm/*.c",
         #"gt_win/*.c",
         #"gt_wvt/*.c",
-        "gt_xwc/*.c"
+        #"gt_xwc/*.c"
     ]),
     hdrs = glob( [
         "*.h", 
@@ -23,11 +23,11 @@ cc_library(
         #"gt_win/*.zhh",
         #"gt_wvt/*.h",
         #"gt_wvt/*.zhh",
-        "gt_xwc/*.h",
-        "gt_wvt/*.zhh",
+        #"gt_xwc/*.h",
+        #"gt_wvt/*.zhh",
 
     ]),
-    #alwayslink = 1,
+    alwayslink = 1,
     deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm", "//zh_rtl:zh_rtl" ],
     visibility = ["//visibility:public"],
 )
@@ -41,6 +41,7 @@ cc_library(
         "*.zhh",
     ]),
     deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    alwayslink = 1,
     visibility = ["//visibility:public"],
 )
 

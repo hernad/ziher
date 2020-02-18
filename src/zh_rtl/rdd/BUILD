@@ -1,4 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:zh_comp.bzl", "zh_comp_all")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS")
 
 cc_library(
     name = "zh_rtl_rdd",
@@ -12,8 +14,8 @@ cc_library(
         "hsx/*.c",
         "rdd_misc/*.c",
         "rdd_sql/*.c",
-        "rdd_usr/*.c"
-    ]),
+        "rdd_usr/*.c",
+    ]) + ["//zh_rtl:headers"],
     hdrs = glob( [
         "*.h", 
         "*.zhh",
@@ -38,3 +40,26 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "zh_rtl_rdd_zh_c",
+    srcs = [ ":zh_rtl_rdd_zh" ],
+    hdrs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    alwayslink = 1,
+    visibility = ["//visibility:public"],
+)
+
+zh_comp_all(
+    name = "zh_rtl_rdd_zh", 
+    srcs = glob([ 
+        "*.zh", 
+        "rdd_misc/*.zh",
+        "dbf_six/*.zh",
+    ]),
+    args = ZH_COMP_OPTS,
+    deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
+    visibility = ["//visibility:public"],
+)

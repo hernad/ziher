@@ -67,7 +67,7 @@
 #include "zh_date.h"
 #include "zh_rdd_fpt.h"
 
-#include "../rdd_sys.zhh"
+#include "zh_rtl/rdd_sys.zhh"
 #include "zh_codepage_api.h"
 
 #include "../dbf_six/zh_sx_func.h"

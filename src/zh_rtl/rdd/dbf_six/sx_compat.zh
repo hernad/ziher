@@ -77,8 +77,8 @@
 
 #include "db_info.zhh"
 #include "db_struct.zhh"
-#include "ord.ch"
-#include "sx_def.zhh"
+#include "ord.zhh"
+#include "dbf_six.zhh"
 
 FUNCTION sxChar( nLen, /* @ */ xKeyVal )
 

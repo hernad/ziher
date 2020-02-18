@@ -52,7 +52,6 @@
 #include "zh_codepage_api.h"
 #include "zh_vm.h"
 #include "zh_stack.h"
-#include "zh_ver_bld.h"
 
 #include "memory.zhh"
 

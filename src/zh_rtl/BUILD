@@ -6,7 +6,8 @@ cc_library(
     name = "zh_rtl",
     srcs = glob( [
         "*.c", 
-        "zlib/*.c", 
+        "zlib/*.c",
+        "codepage/*.c",
         "crypto/*.c", 
         "string/*.c", 
         "file/*.c",
@@ -16,9 +17,11 @@ cc_library(
     ]),
     hdrs = glob([
         "*.h", 
-        "*.zhh", 
+        "*.zhh",
         "zlib/*.h", 
-        "zlib/*.zhh", 
+        "zlib/*.zhh",
+        "codepage/*.h",
+        "codepage/*.zhh",
         "crypto/*.h", 
         "crypto/*.zhh",
         "file/*.zhh",
@@ -28,8 +31,11 @@ cc_library(
         "gt/*.h",
         "gt/*.zhh"
     ]),
-    #alwayslink = 1,
-    deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm" ],
+    alwayslink = 1,
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_vm:zh_vm"
+    ],
     visibility = ["//visibility:public"],
     includes = ["*.*", "string/*.*"]
 )
@@ -50,10 +56,11 @@ cc_library(
     name = "zh_rtl_zh_c",
     srcs = [ ":zh_rtl_zh" ],
     hdrs = glob([
-        "*.zh",
-        "*.zhh",
+        "*.h",
+        "*.zhh"
     ]),
     deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    alwayslink = 1,
     visibility = ["//visibility:public"],
 )
 
@@ -62,7 +69,8 @@ zh_comp_all(
     srcs = glob([ 
         "*.zh", 
         "file/*.zh",
-        "memo/*.zh"
+        "memo/*.zh",
+        "zlib/*.zh"
     ]),
     args = ZH_COMP_OPTS,
     deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],

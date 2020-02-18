@@ -212,7 +212,7 @@ typedef struct _DBFAREA
    ZH_BOOL     fTemporary;          /* Temporary file */
    ZH_BOOL     fValidBuffer;        /* State of buffer */
    ZH_BOOL     fPositioned;         /* Positioned record */
-   ZH_BOOL     fRecordChanged;      /* Record changed */
+   ZH_BOOL     fRecordChanged;      /* Record.zhhanged */
    ZH_BOOL     fAppend;             /* ZH_TRUE if new record is added */
    ZH_BOOL     fDeleted;            /* ZH_TRUE if record is deleted */
    ZH_BOOL     fEncrypted;          /* ZH_TRUE if record is encrypted */

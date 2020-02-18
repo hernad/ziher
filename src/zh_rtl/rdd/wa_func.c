@@ -50,8 +50,8 @@
 #include "zh_item_api.h"
 #include "zh_api_error.h"
 #include "zh_vm.h"
-#include "rdd_sys.zhh"
 #include "zh_set.h"
+#include "zh_rtl/rdd_sys.zhh"
 
 /*
  * check if a given name can be used as alias expression

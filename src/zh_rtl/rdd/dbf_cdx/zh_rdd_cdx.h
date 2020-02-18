@@ -463,7 +463,7 @@ typedef struct _CDXAREA
    LPCDXSORTINFO  pSort;         /* Index build structure */
    LPCDXINDEX     lpIndexes;     /* Pointer to indexes array */
    const ZH_UCHAR * sortTab;     /* Table with sorted characters */
-   ZH_BOOL        fCdxAppend;    /* Appended record changed */
+   ZH_BOOL        fCdxAppend;    /* Appended record.zhhanged */
    ZH_BOOL        fSortCDP;      /* Use CDP functions for sorting */
    ZH_USHORT      uiTag;         /* current tag focus */
 

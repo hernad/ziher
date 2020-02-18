@@ -1,8 +1,7 @@
 /*
- * SIX compatible functions:
- *       sx_DefTrigger()
+ * Header file for hash constants
  *
- * Copyright 2007 Przemyslaw Czerpak
+ * Copyright 1999 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,49 +44,20 @@
  *
  */
 
-/* In separate source file to make it easy to override by user code */
+#ifndef ZH_HASH_ZH_
+#define ZH_HASH_ZH_
 
-#include "dbf_six.zhh"
+/* HASH autoadd options */
+#define ZH_HAUTOADD_NEVER       0x00
+#define ZH_HAUTOADD_ACCESS      0x01
+#define ZH_HAUTOADD_ASSIGN      0x02
+#define ZH_HAUTOADD_ALWAYS      zh_bitOr( ZH_HAUTOADD_ACCESS, ZH_HAUTOADD_ASSIGN )
+#define ZH_HAUTOADD_REFERENCE   ZH_HAUTOADD_ALWAYS
 
-FUNCTION sx_DefTrigger( nEvent, nArea, nFieldPos, xTrigVal )
+/* zh_HMerge() modes */
+#define ZH_HMERGE_UNION         0  /* logical OR  on items in two hash tables (default) */
+#define ZH_HMERGE_INTERSECT     1  /* logical AND on items in two hash tables */
+#define ZH_HMERGE_DIFFERENCE    2  /* logical XOR on items in two hash tables */
+#define ZH_HMERGE_REMOVE        3  /* h1 & ( h1 ^ h2 ) */
 
-   ZH_SYMBOL_UNUSED( nArea )
-   ZH_SYMBOL_UNUSED( nFieldPos )
-   ZH_SYMBOL_UNUSED( xTrigVal )
-
-   SWITCH nEvent
-   CASE EVENT_PREUSE
-#if 0
-      _sx_IniInit( nArea )
-#endif
-      sx_SetTrigger( TRIGGER_REMOVE )
-      EXIT
-   CASE EVENT_POSTUSE
-      EXIT
-   CASE EVENT_UPDATE
-      EXIT
-   CASE EVENT_APPEND
-      EXIT
-   CASE EVENT_DELETE
-      EXIT
-   CASE EVENT_RECALL
-      EXIT
-   CASE EVENT_PACK
-      EXIT
-   CASE EVENT_ZAP
-      EXIT
-   CASE EVENT_PUT
-      EXIT
-   CASE EVENT_GET
-      EXIT
-   CASE EVENT_PRECLOSE
-      EXIT
-   CASE EVENT_POSTCLOSE
-      EXIT
-   CASE EVENT_PREMEMOPACK
-      EXIT
-   CASE EVENT_POSTMEMOPACK
-      EXIT
-   ENDSWITCH
-
-   RETURN .T.
+#endif /* ZH_HASH_ZH_ */

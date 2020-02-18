@@ -48,8 +48,8 @@
 
 #include "db_info.zhh"
 
-#include "hbhash.ch"
-#include "sx_def.zhh"
+#include "hash.zhh"
+#include "dbf_six.zhh"
 
 #define ZH_SIX_SECTION "SXKEYWORDS"
 

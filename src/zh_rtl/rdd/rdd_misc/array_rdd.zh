@@ -53,7 +53,7 @@
 #include "db_struct.zhh"
 #include "error.zhh"
 #include "fileio.zhh"
-#include "hbtrace.ch"
+#include "trace.zhh"
 #include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 

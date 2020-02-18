@@ -1489,9 +1489,7 @@ ZH_FUNC( __MVSAVE )
       zh_errRT_BASE( EG_ARG, 2008, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
 
-/* NOTE: There's an extension in Ziher, which makes it possible to only
-         load (or not load) variable names with a specific name mask.
-         [vszakats] */
+
 
 ZH_FUNC( __MVRESTORE )
 {
@@ -1540,9 +1538,6 @@ ZH_FUNC( __MVRESTORE )
          {
             char * pszName;
 
-            /* FoxPro does not add 128 to item type: 'N', 'C', 'D', 'L'
-             * CA-Cl*pper respects it and read such files so we also should.
-             */
             ZH_USHORT uiType = ( ZH_USHORT ) ( buffer[ 11 ] & 0x7f );
             ZH_USHORT uiWidth = ( ZH_USHORT ) buffer[ 16 ];
             ZH_USHORT uiDec = ( ZH_USHORT ) buffer[ 17 ];

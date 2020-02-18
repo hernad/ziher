@@ -59,13 +59,11 @@
 #include "zh_vm.h"
 #include "error.zhh"
 
-#include "../rdd_sys.zhh"
-#include "../dbf_six/sx_def.zhh"
+#include "zh_rtl/rdd_sys.zhh"
+#include "zh_rtl/dbf_six.zhh"
 #include "zh_codepage_api.h"
 
-#ifdef ZH_SIXCDX
-   #include "../dbf_six/zh_sx_func.h"
-#endif
+#include "../dbf_six/zh_sx_func.h"
 
 static ZH_USHORT s_uiRddId = ( ZH_USHORT ) -1;
 static RDDFUNCS  dbfSuper;

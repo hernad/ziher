@@ -1,8 +1,8 @@
 /*
- * SIX compatible functions:
- *       sx_DefTrigger()
+ * Header file with trace constants and PP rules
  *
- * Copyright 2007 Przemyslaw Czerpak
+ * Copyright 1999 Gonzalo Diethelm <gonzalo.diethelm@iname.com>
+ * Copyright 2009 Przemyslaw Czerpak
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,49 +45,55 @@
  *
  */
 
-/* In separate source file to make it easy to override by user code */
+#ifndef ZH_TRACE_ZH_
+#define ZH_TRACE_ZH_
 
-#include "dbf_six.zhh"
+/* Tracing levels. */
+#define ZH_TR_ALWAYS     0
+#define ZH_TR_FATAL      1
+#define ZH_TR_ERROR      2
+#define ZH_TR_WARNING    3
+#define ZH_TR_INFO       4
+#define ZH_TR_DEBUG      5
+#define ZH_TR_LAST       6
 
-FUNCTION sx_DefTrigger( nEvent, nArea, nFieldPos, xTrigVal )
-
-   ZH_SYMBOL_UNUSED( nArea )
-   ZH_SYMBOL_UNUSED( nFieldPos )
-   ZH_SYMBOL_UNUSED( xTrigVal )
-
-   SWITCH nEvent
-   CASE EVENT_PREUSE
-#if 0
-      _sx_IniInit( nArea )
+#ifdef _ZH_TR_NOALWAYS_
+#undef ZH_TR_ALWAYS
+#define ZH_TR_ALWAYS     ZH_TR_LAST
 #endif
-      sx_SetTrigger( TRIGGER_REMOVE )
-      EXIT
-   CASE EVENT_POSTUSE
-      EXIT
-   CASE EVENT_UPDATE
-      EXIT
-   CASE EVENT_APPEND
-      EXIT
-   CASE EVENT_DELETE
-      EXIT
-   CASE EVENT_RECALL
-      EXIT
-   CASE EVENT_PACK
-      EXIT
-   CASE EVENT_ZAP
-      EXIT
-   CASE EVENT_PUT
-      EXIT
-   CASE EVENT_GET
-      EXIT
-   CASE EVENT_PRECLOSE
-      EXIT
-   CASE EVENT_POSTCLOSE
-      EXIT
-   CASE EVENT_PREMEMOPACK
-      EXIT
-   CASE EVENT_POSTMEMOPACK
-      EXIT
-   ENDSWITCH
 
-   RETURN .T.
+/* Default tracing level. */
+#define ZH_TR_DEFAULT   ZH_TR_WARNING
+
+/* If we compiled without specifying a -DZH_TR_LEVEL, use the value
+ * for ZH_TR_DEFAULT.
+ */
+#ifdef ZH_TR_LEVEL_ALWAYS
+#define ZH_TR_LEVEL     ZH_TR_ALWAYS
+#endif
+#ifdef ZH_TR_LEVEL_FATAL
+#define ZH_TR_LEVEL     ZH_TR_FATAL
+#endif
+#ifdef ZH_TR_LEVEL_ERROR
+#define ZH_TR_LEVEL     ZH_TR_ERROR
+#endif
+#ifdef ZH_TR_LEVEL_WARNING
+#define ZH_TR_LEVEL     ZH_TR_WARNING
+#endif
+#ifdef ZH_TR_LEVEL_INFO
+#define ZH_TR_LEVEL     ZH_TR_INFO
+#endif
+#ifdef ZH_TR_LEVEL_DEBUG
+#define ZH_TR_LEVEL     ZH_TR_DEBUG
+#endif
+
+#ifndef ZH_TR_LEVEL
+#define ZH_TR_LEVEL     ZH_TR_DEFAULT
+#endif
+
+#xtranslate ZH_TRACE_STEALTH( <l>, <x,...> ) => ZH_TRACE( <l>, <x> )
+#xtranslate ZH_TRACE( <l>, ( <x,...> ) )     => ZH_TRACE( <l>, <x> )
+#xtranslate ZH_TRACE( <l>, <x,...> )         => ;
+            iif( ZH_TR_LEVEL >= <l>, zh_traceLogAt( <l>, <x> ), )
+
+#endif /* ZH_TRACE_ZH_ */

@@ -54,8 +54,8 @@
 #include "zh_set.h"
 #include "zh_vm.h"
 #include "zh_rdd_sql.h"
-#include "../rdd_sys.zhh"
 #include "../dbf_cdx/zh_dbf_error.h"
+#include "zh_rtl/rdd_sys.zhh"
 
 #define SUPERTABLE  ( &sqlmixSuper )
 

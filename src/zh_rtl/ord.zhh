@@ -1,8 +1,7 @@
 /*
- * SIX compatible functions:
- *       sx_DefTrigger()
+ * Header file for the RDD API Index Order support
  *
- * Copyright 2007 Przemyslaw Czerpak
+ * Copyright 2000 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,49 +44,50 @@
  *
  */
 
-/* In separate source file to make it easy to override by user code */
+#ifndef ZH_ORD_ZH_
+#define ZH_ORD_ZH_
 
-#include "dbf_six.zhh"
+#define TOPSCOPE           0
+#define BOTTOMSCOPE        1
 
-FUNCTION sx_DefTrigger( nEvent, nArea, nFieldPos, xTrigVal )
+/* SCOPE commands: */
 
-   ZH_SYMBOL_UNUSED( nArea )
-   ZH_SYMBOL_UNUSED( nFieldPos )
-   ZH_SYMBOL_UNUSED( xTrigVal )
+#command SET SCOPETOP TO              => ordScope( TOPSCOPE, nil )
+#command SET SCOPETOP TO <x>          => ordScope( TOPSCOPE, <x> )
 
-   SWITCH nEvent
-   CASE EVENT_PREUSE
-#if 0
-      _sx_IniInit( nArea )
-#endif
-      sx_SetTrigger( TRIGGER_REMOVE )
-      EXIT
-   CASE EVENT_POSTUSE
-      EXIT
-   CASE EVENT_UPDATE
-      EXIT
-   CASE EVENT_APPEND
-      EXIT
-   CASE EVENT_DELETE
-      EXIT
-   CASE EVENT_RECALL
-      EXIT
-   CASE EVENT_PACK
-      EXIT
-   CASE EVENT_ZAP
-      EXIT
-   CASE EVENT_PUT
-      EXIT
-   CASE EVENT_GET
-      EXIT
-   CASE EVENT_PRECLOSE
-      EXIT
-   CASE EVENT_POSTCLOSE
-      EXIT
-   CASE EVENT_PREMEMOPACK
-      EXIT
-   CASE EVENT_POSTMEMOPACK
-      EXIT
-   ENDSWITCH
+#command SET SCOPEBOTTOM TO           => ordScope( BOTTOMSCOPE, nil )
+#command SET SCOPEBOTTOM TO <x>       => ordScope( BOTTOMSCOPE, <x> )
 
-   RETURN .T.
+#command SET SCOPE TO                 => ordScope( TOPSCOPE, nil );
+                                       ; ordScope( BOTTOMSCOPE, nil )
+
+#command SET SCOPE TO <x>, <y>        => ordScope( TOPSCOPE, <x> );
+                                       ; ordScope( BOTTOMSCOPE, <y> )
+
+#command SET SCOPE TO <x>             => ordScope( TOPSCOPE, <x> );
+                                       ; ordScope( BOTTOMSCOPE, <x> )
+
+#command SET SCOPE TO ,<x>            => ordScope( BOTTOMSCOPE, <x> )
+
+
+/*
+ * This pseudo-function is only document in CL5.3 NG but not implemented
+ * in Cl*pper
+ */
+
+
+#xtranslate ORDCOND( [FOR <for>]                             ;
+                     [<all:ALL>] [WHILE <while>]             ;
+                     [EVAL <eval>] [EVERY <every>]           ;
+                     [RECORD <rec>] [NEXT <next>]            ;
+                     [<rest:REST>] [<descend: DESCENDING>] ) ;
+      => ordCondSet( <"for">, <{for}>,                       ;
+                     [<.all.>], <{while}>,                   ;
+                     <{eval}>, <every>,                      ;
+                     RecNo(), <next>, <rec>,                 ;
+                     [<.rest.>], [<.descend.>] )
+
+
+#include "db_info.zhh"
+
+#endif /* ZH_ORD_ZH_ */

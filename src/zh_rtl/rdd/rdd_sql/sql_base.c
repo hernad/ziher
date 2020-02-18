@@ -49,7 +49,7 @@
 #include "zh_vm.h"
 #include "zh_set.h"
 #include "zh_rdd_sql.h"
-#include "../rdd_sys.zhh"
+#include "zh_rtl/rdd_sys.zhh"
 
 #include "zh_trace.h"
 

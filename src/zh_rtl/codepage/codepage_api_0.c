@@ -2457,7 +2457,6 @@ ZH_SIZE zh_cdpTextPos( PZH_CODEPAGE cdp, const char * pText, ZH_SIZE nSize, ZH_S
       {
          ZH_SIZE nPos = 0;
          ZH_WCHAR wc;
-
          do
          {
             if( ! ZH_CODEPAGE_CHAR_GET( cdp, pText, nSize, &nPos, &wc ) )

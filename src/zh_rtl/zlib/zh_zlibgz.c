@@ -52,11 +52,6 @@
 
 #include <zlib.h>
 
-#if ! defined( ZH_NO_GZLIB ) && \
-    defined( ZH_OS_WIN_CE ) && defined( _MSC_VER ) && ZLIB_VERNUM >= 0x1240
-   #define ZH_NO_GZLIB
-#endif
-
 #ifndef ZH_NO_GZLIB
 /* GZIP stream destructor */
 static ZH_GARBAGE_FUNC( zh_gz_Destructor )

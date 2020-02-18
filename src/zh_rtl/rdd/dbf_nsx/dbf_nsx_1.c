@@ -66,7 +66,7 @@
 #include "zh_stack.h"
 #include "zh_math.h"
 #include "zh_rtl/string/zh_regex.h"
-#include "../rdd_sys.zhh"
+#include "zh_rtl/rdd_sys.zhh"
 
 static RDDFUNCS  nsxSuper;
 static ZH_USHORT s_uiRddId;

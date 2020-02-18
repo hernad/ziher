@@ -106,7 +106,7 @@ typedef struct _DELIMAREA
    ZH_BOOL     fShared;             /* Shared file */
    ZH_BOOL     fReadonly;           /* Read only file */
    ZH_BOOL     fPositioned;         /* Positioned record */
-   ZH_BOOL     fRecordChanged;      /* Record changed */
+   ZH_BOOL     fRecordChanged;      /* Record.zhhanged */
    ZH_BOOL     fAnyEol;             /* Check for CRLF, LF, CR and LFCR EOLs */
 } DELIMAREA;
 
