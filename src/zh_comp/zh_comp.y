@@ -2879,15 +2879,6 @@ static PZH_EXPR zh_compCheckMethod( ZH_COMP_DECL, PZH_EXPR pExpr )
          if( ! zh_compForEachVarError( ZH_COMP_PARAM, pExpr->value.asMessage.pObject->value.asSymbol.name, &iDir ) )
          {
             pExpr->value.asMessage.pObject->ExprType = ZH_ET_VARREF;
-#if 0
-            if( iDir < 0 )
-            {
-               if( strcmp( "ISFIRST", szMessage ) == 0 )
-                  pExpr->value.asMessage.szMessage = "__ENUMISLAST";
-               else if( strcmp( "ISLAST",  szMessage ) == 0 )
-                  pExpr->value.asMessage.szMessage = "__ENUMISFIRST";
-            }
-#endif
          }
       }
    }

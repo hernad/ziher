@@ -58,9 +58,9 @@ extern ZH_EXPORT int      zh_vmQuit( void ); /* Immediately quits the virtual ma
 /* registration AtInit, AtExit and AtQuit functions.
  * AtInit functions are executed just before .zh INIT procedures.
  * AtExit functions are executed just after .zh EXIT procedures.
- * AtQuit functions are executed after deallocating all HVM items and
+ * AtQuit functions are executed after deallocating all ZHVM items and
  * disabling .zh destructors. They can make final cleanup at C level
- * but should not reenter HVM.
+ * but should not reenter ZHVM.
  */
 extern ZH_EXPORT void     zh_vmAtInit( ZH_INIT_FUNC pFunc, void * cargo );
 extern ZH_EXPORT void     zh_vmAtExit( ZH_INIT_FUNC pFunc, void * cargo );
@@ -81,7 +81,7 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessDynLibSymbols( PZH_SYMB pSymbols, ZH_USHOR
       struct _ZH_SYMBOLS * pNext;   /* pointer to the next SYMBOLS structure */
       ZH_SYMBOLSCOPE hScope;        /* scope collected from all symbols in module used to speed initialization code */
       void *    hDynLib;            /* handler to dynamic library */
-      ZH_BOOL   fAllocated;         /* the symbol table is dynamically allocated and should be freed on HVM exit */
+      ZH_BOOL   fAllocated;         /* the symbol table is dynamically allocated and should be freed on ZHVM exit */
       ZH_BOOL   fActive;            /* the symbol table is currently active */
       ZH_BOOL   fInitStatics;       /* static initialization should be executed */
       char *    szModuleName;       /* module name */
@@ -172,7 +172,7 @@ extern ZH_EXPORT void     zh_vmPushPointer( void * pPointer ); /* push an item o
 extern ZH_EXPORT void     zh_vmPushPointerGC( void * pPointer ); /* push an item of GC ZH_IT_POINTER type */
 extern ZH_EXPORT void     zh_vmPushItemRef( PZH_ITEM pItem ); /* push item reference */
 
-extern ZH_EXPORT ZH_BOOL  zh_vmIsMt( void ); /* return ZH_TRUE if HVM is compiled with thread support */
+extern ZH_EXPORT ZH_BOOL  zh_vmIsMt( void ); /* return ZH_TRUE if ZHVM is compiled with thread support */
 extern ZH_EXPORT void     zh_vmLock( void ); /* lock VM blocking GC execution by other threads */
 extern ZH_EXPORT void     zh_vmLockForce( void ); /* lock VM blocking GC execution by other threads, ignore GC request */
 extern ZH_EXPORT void     zh_vmUnlock( void ); /* unlock VM, allow GC execution */
@@ -180,15 +180,15 @@ extern ZH_EXPORT void     zh_vmUnlock( void ); /* unlock VM, allow GC execution 
 extern ZH_EXPORT ZH_BOOL  zh_vmSuspendThreads( ZH_BOOL fWait ); /* (try to) stop all threads except current one */
 extern ZH_EXPORT void     zh_vmResumeThreads( void ); /* unblock execution of threads stopped by zh_vmSuspendThreads() */
 #endif
-extern ZH_EXPORT ZH_BOOL  zh_vmThreadRegister( void * ); /* Register new thread without local thread HVM stack */
-extern ZH_EXPORT void     zh_vmThreadRelease( void * ); /* Remove registered thread which does not have local thread HVM stack yet */
-extern ZH_EXPORT void     zh_vmThreadInit( void * ); /* allocate local thread HVM stack */
-extern ZH_EXPORT void     zh_vmThreadQuit( void ); /* destroy local thread HVM stack */
+extern ZH_EXPORT ZH_BOOL  zh_vmThreadRegister( void * ); /* Register new thread without local thread ZHVM stack */
+extern ZH_EXPORT void     zh_vmThreadRelease( void * ); /* Remove registered thread which does not have local thread ZHVM stack yet */
+extern ZH_EXPORT void     zh_vmThreadInit( void * ); /* allocate local thread ZHVM stack */
+extern ZH_EXPORT void     zh_vmThreadQuit( void ); /* destroy local thread ZHVM stack */
 extern ZH_EXPORT void     zh_vmThreadQuitRequest( void * ); /* send QUIT request to given thread */
-extern ZH_EXPORT void     zh_vmWaitForThreads( void ); /* wait for all threads to terminate can be called only by main HVM thread */
-extern ZH_EXPORT void     zh_vmTerminateThreads( void ); /* send QUIT request to all threads except current one and wait for their termination, should be called only by main HVM thread */
-extern ZH_EXPORT ZH_BOOL  zh_vmThreadIsMain( void * ); /* check if given or current thread is main HVM thread */
-extern ZH_EXPORT PZH_ITEM zh_vmThreadStart( ZH_ULONG ulAttr, PZH_CARGO_FUNC pThreadFunc, void * cargo ); /* create new thread with HVM stack */
+extern ZH_EXPORT void     zh_vmWaitForThreads( void ); /* wait for all threads to terminate can be called only by main ZHVM thread */
+extern ZH_EXPORT void     zh_vmTerminateThreads( void ); /* send QUIT request to all threads except current one and wait for their termination, should be called only by main ZHVM thread */
+extern ZH_EXPORT ZH_BOOL  zh_vmThreadIsMain( void * ); /* check if given or current thread is main ZHVM thread */
+extern ZH_EXPORT PZH_ITEM zh_vmThreadStart( ZH_ULONG ulAttr, PZH_CARGO_FUNC pThreadFunc, void * cargo ); /* create new thread with ZHVM stack */
 extern ZH_EXPORT void *   zh_vmThreadState( void );
 
 ZH_EXTERN_END

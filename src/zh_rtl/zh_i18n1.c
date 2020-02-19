@@ -329,13 +329,13 @@ static PZH_I18N_TRANS zh_i18n_new( void )
    return pI18N;
 }
 
-/* HVM init */
+/* ZHVM init */
 void zh_i18n_init( void )
 {
    /* do nothing in this implementation */
 }
 
-/* HVM exit */
+/* ZHVM exit */
 void zh_i18n_exit( void )
 {
    /* do nothing in this implementation */

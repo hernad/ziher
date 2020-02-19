@@ -1,5 +1,5 @@
 /*
- * Header files to force macro inlining for HVM build
+ * Header files to force macro inlining for ZHVM build
  *
  * Copyright 2005 Przemyslaw Czerpak <druzus /at/ priv.onet.pl>
  *
@@ -48,7 +48,7 @@
  * This header file enable macro inlining of some functions.
  * It should be included before any other zh*.h files.
  * !!! Be careful - including this file cause that the final binaries
- * can be linked only with exactly the same HVM version for which
+ * can be linked only with exactly the same ZHVM version for which
  * it was compiled and only if exactly the same C compiler switches
  * which interacts with alignment are used. [druzus]
  */

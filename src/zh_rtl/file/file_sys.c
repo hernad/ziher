@@ -4043,7 +4043,7 @@ ZH_WCHAR * zh_fsNameConvU16( const char * pszFileName )
  */
 
    if( ! zh_vmIsReady() )
-      return zh_mbtowc( pszFileName );  /* No HVM stack */
+      return zh_mbtowc( pszFileName );  /* No ZHVM stack */
 
    cdp = zh_vmCDP();
    fTrim = zh_setGetTrimFileName();

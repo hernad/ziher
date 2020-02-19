@@ -69,6 +69,7 @@
 #include "zh_math.h"
 #include "zh_thread.h"
 
+
 #include "debug.zhh"
 #include "memory.zhh"
 
@@ -127,10 +128,10 @@ static void    zh_vmArrayGen( ZH_SIZE nElements ); /* generates an nElements Arr
 static void    zh_vmHashGen( ZH_SIZE nElements ); /* generates an nElements Hash and fills it from the stack values */
 
 /* macros */
-static void    zh_vmMacroDo( ZH_USHORT uiArgSets );         /* execute function passing arguments set on HVM stack func( &var ) */
-static void    zh_vmMacroFunc( ZH_USHORT uiArgSets );       /* execute procedure passing arguments set on HVM stack func( &var ) */
-static void    zh_vmMacroSend( ZH_USHORT uiArgSets );       /* execute procedure passing arguments set on HVM stack func( &var ) */
-static void    zh_vmMacroArrayGen( ZH_USHORT uiArgSets );   /* generate array from arguments set on HVM stack { &var } */
+static void    zh_vmMacroDo( ZH_USHORT uiArgSets );         /* execute function passing arguments set on ZHVM stack func( &var ) */
+static void    zh_vmMacroFunc( ZH_USHORT uiArgSets );       /* execute procedure passing arguments set on ZHVM stack func( &var ) */
+static void    zh_vmMacroSend( ZH_USHORT uiArgSets );       /* execute procedure passing arguments set on ZHVM stack func( &var ) */
+static void    zh_vmMacroArrayGen( ZH_USHORT uiArgSets );   /* generate array from arguments set on ZHVM stack { &var } */
 static void    zh_vmMacroPushIndex( void );              /* push macro array index {...}[ &var ] */
 
 /* Database */
@@ -174,7 +175,7 @@ static void    zh_vmPushAParams( void );        /* pushes array items */
 static void    zh_vmPushUnRef( void );          /* push the unreferenced latest value on the stack */
 static void    zh_vmDuplicate( void );          /* duplicates the latest value on the stack */
 static void    zh_vmDuplUnRef( void );          /* duplicates the latest value on the stack and unref the source one */
-static void    zh_vmSwap( int iCount );        /* swap bCount+1 time two items on HVM stack starting from the most top one */
+static void    zh_vmSwap( int iCount );        /* swap bCount+1 time two items on ZHVM stack starting from the most top one */
 
 /* Pop */
 static ZH_BOOL zh_vmPopLogical( void );           /* pops the stack latest value and returns its logical value */
@@ -237,7 +238,7 @@ ZH_SYMB zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* s
 static ZH_SYMB  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
 static PZH_ITEM s_breakBlock = NULL;
 
-static ZH_BOOL  s_fHVMActive = ZH_FALSE;  /* is HVM ready for PCODE executing */
+static ZH_BOOL  s_fZHVMActive = ZH_FALSE;  /* is ZHVM ready for PCODE executing */
 static ZH_BOOL  s_fDoExitProc = ZH_TRUE;  /* execute EXIT procedures */
 static int      s_nErrorLevel = 0;     /* application exit status */
 static PZH_SYMB s_pSymStart = NULL;    /* start symbol of the application. MAIN() is not required */
@@ -402,12 +403,12 @@ static void zh_vmDoModuleQuitFunctions( void )
 }
 
 
-/* call __HBVMINIT() function to initialize GetList public variable
+/* call __ZZHVMINIT() function to initialize GetList public variable
  * and set ErrorBlock() by ErrorSys() function
  */
-static void zh_vmDoInitHVM( void )
+static void zh_vmDoInitZHVM( void )
 {
-   PZH_DYNS pDynSym = zh_dynsymFind( "__HBVMINIT" );
+   PZH_DYNS pDynSym = zh_dynsymFind( "__ZZHVMINIT" );
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
@@ -438,11 +439,11 @@ static void zh_vmDoInitHelp( void )
 static ZH_CRITICAL_NEW( s_vmMtx );
 static ZH_COND_NEW( s_vmCond );
 
-/* number of allocated HVM stacks */
+/* number of allocated ZHVM stacks */
 static int volatile s_iStackCount = 0;
-/* number of running HVM threads */
+/* number of running ZHVM threads */
 static int volatile s_iRunningCount = 0;
-/* active HVM stacks list */
+/* active ZHVM stacks list */
 static PZH_THREADSTATE s_vmStackLst = NULL;
 /* thread number */
 static ZH_THREAD_NO s_threadNo = 0;
@@ -487,11 +488,11 @@ static void zh_vmRequestTest( void )
 /* unlock VM, allow GC and other exclusive single task code execution */
 void zh_vmUnlock( void )
 {
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
 
-      if( zh_stackId() )   /* check if thread has associated HVM stack */
+      if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
          if( zh_stackUnlock() == 1 )
          {
@@ -520,11 +521,11 @@ void zh_vmUnlock( void )
 /* lock VM blocking GC and other exclusive single task code execution */
 void zh_vmLock( void )
 {
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
 
-      if( zh_stackId() )   /* check if thread has associated HVM stack */
+      if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
          if( zh_stackLock() == 0 )
          {
@@ -553,11 +554,11 @@ void zh_vmLock( void )
 
 void zh_vmLockForce( void )
 {
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
 
-      if( zh_stackId() )   /* check if thread has associated HVM stack */
+      if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
          if( zh_stackLock() == 0 )
          {
@@ -619,7 +620,7 @@ void zh_vmResumeThreads( void )
 
 /* send QUIT request to all threads except current one
  * and wait for their termination,
- * should be called only by main HVM thread
+ * should be called only by main ZHVM thread
  */
 void zh_vmTerminateThreads( void )
 {
@@ -651,7 +652,7 @@ void zh_vmTerminateThreads( void )
 }
 
 /* wait for all threads to terminate
- * should be called only by main HVM thread
+ * should be called only by main ZHVM thread
  */
 void zh_vmWaitForThreads( void )
 {
@@ -687,7 +688,7 @@ ZH_BOOL zh_vmThreadIsMain( void * Cargo )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmThreadIsMain(%p)", Cargo ) );
 
-   if( ! s_fHVMActive || s_main_thread == NULL )
+   if( ! s_fZHVMActive || s_main_thread == NULL )
       return ZH_FALSE;
    else if( Cargo )
       return s_main_thread == ( ( PZH_THREADSTATE ) Cargo )->pStackId;
@@ -760,7 +761,7 @@ static void zh_vmStackInit( PZH_THREADSTATE pState )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmStackInit(%p)", ( void * ) pState ) );
 
-   zh_stackInit();      /* initialize HVM thread stack */
+   zh_stackInit();      /* initialize ZHVM thread stack */
 
    ZH_VM_LOCK();
    {
@@ -854,12 +855,12 @@ void zh_vmThreadInit( void * Cargo )
    if( ! pState )
       pState = zh_threadStateNew();
 
-   zh_vmStackInit( pState );  /* initialize HVM thread stack */
+   zh_vmStackInit( pState );  /* initialize ZHVM thread stack */
    zh_vmLock();
    {
       ZH_STACK_TLS_PRELOAD
 
-      zh_cdpSelectID( pState->pszCDP );
+      zh_codepageSelectID( pState->pszCDP );
       zh_langSelectID( pState->pszLang );
 
       zh_vmSetI18N( pState->pI18N );
@@ -880,12 +881,12 @@ void zh_vmThreadInit( void * Cargo )
       if( pState->pszDefRDD )
          zh_stackRDD()->szDefaultRDD = pState->pszDefRDD;
 
-      if( s_fHVMActive )
+      if( s_fZHVMActive )
       {
-         /* call __HBVMINIT() function to initialize GetList public variable
+         /* call __ZZHVMINIT() function to initialize GetList public variable
           * and set ErrorBlock() by ErrorSys() function
           */
-         zh_vmDoInitHVM();
+         zh_vmDoInitZHVM();
       }
 
       if( pState->pMemvars )
@@ -932,7 +933,7 @@ void zh_vmThreadQuit( void )
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
    zh_vmDebuggerExit( ZH_FALSE );   /* deactivate debugger */
    zh_gtRelease( NULL );
-   zh_vmStackRelease();          /* release HVM stack and remove it from linked HVM stacks list */
+   zh_vmStackRelease();          /* release ZHVM stack and remove it from linked ZHVM stacks list */
 }
 
 /* send QUIT request to given thread */
@@ -1011,7 +1012,7 @@ void zh_vmSetDynFunc( PZH_DYNS pDynSym )
    }
 }
 
-/* application entry point */
+/* Ziher application entry point */
 
 void zh_vmInit( ZH_BOOL bStartMainProc )
 {
@@ -1022,18 +1023,15 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 #endif
 
    zh_xinit();
-
    zh_vmSetExceptionHandler();
-
    zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
-
    zh_threadInit();
-   zh_vmStackInit( zh_threadStateNew() ); /* initialize HVM thread stack */
+   zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
    s_pSymbolsMtx = zh_threadMutexCreate();
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
    zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
-   zh_cdpSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
+   zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
    {
       ZH_STACK_TLS_PRELOAD
       s_main_thread = zh_stackId();
@@ -1042,9 +1040,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    }
 
    zh_cmdargUpdate();
-
-   zh_clsInit();              /* initialize Classy/OO system */
-
+   zh_clsInit(); /* initialize Classy/OO system */
    zh_errInit();
    zh_breakBlock();
 
@@ -1056,7 +1052,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
    /* Check for some internal switches */
    zh_cmdargProcess();
-
    zh_i18n_init();            /* initialize i18n module */
 
 #ifndef ZH_NO_PROFILER
@@ -1072,10 +1067,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    }
 #endif
 
-   /* enable executing PCODE (HVM reenter request) */
-   s_fHVMActive = ZH_TRUE;
+   /* enable executing PCODE (ZHVM reenter request) */
+   s_fZHVMActive = ZH_TRUE;
 
-   /* lock main HVM thread */
+   /* lock main ZHVM thread */
    zh_vmLock();
 
    s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
@@ -1094,11 +1089,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
     */
    zh_vmDoInitStatics();
 
-   /* call __HBVMINIT() function to initialize GetList public variable
+   /* call __ZZHVMINIT() function to initialize GetList public variable
     * and set ErrorBlock() by ErrorSys() function.
     */
-   zh_vmDoInitHVM();
-
+   zh_vmDoInitZHVM();
    zh_clsDoInit();                     /* initialize Class(y) .zh functions */
 
    zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
@@ -1111,8 +1105,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
     */
    zh_vmDoInitHelp();
 
-   /* This is undocumented CA-Cl*pper, if there's a function called _APPMAIN()
-      it will be executed first. [vszakats] */
+   /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
       PZH_DYNS pDynSym = zh_dynsymFind( "_APPMAIN" );
 
@@ -1135,13 +1128,13 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
          }
          else
          {
-#ifndef ZH_START_PROCEDURE
-            pszMain = NULL;
-#else
+//#ifndef ZH_START_PROCEDURE
+//            pszMain = NULL;
+//#else
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
             if( ! ( pDynSym && pDynSym->pSymbol->value.pFunPtr ) )
-#endif
+//#endif
             {
                if( s_vm_pszLinkedMain )
                {
@@ -1212,8 +1205,8 @@ int zh_vmQuit( void )
    /* deactivate debugger */
    zh_vmDebuggerExit( ZH_TRUE );
 
-   /* stop executing PCODE (HVM reenter request) */
-   s_fHVMActive = ZH_FALSE;
+   /* stop executing PCODE (ZHVM reenter request) */
+   s_fZHVMActive = ZH_FALSE;
 
    zh_vmStaticsClear();
 
@@ -1237,7 +1230,7 @@ int zh_vmQuit( void )
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
    zh_vmCleanModuleFunctions();
 
-   zh_vmStackRelease();             /* release HVM stack and remove it from linked HVM stacks list */
+   zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
    if( s_pSymbolsMtx )
    {
       zh_itemRelease( s_pSymbolsMtx );
@@ -2250,7 +2243,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             break;
          }
 
-         case ZH_P_PUSHSTRHIDDEN:
+         case ZH_P_PUSH_STR_HIDDEN:
          {
             ZH_SIZE nSize = ( ZH_SIZE ) ZH_PCODE_MKUSHORT( &pCode[ 2 ] );
             char * szText = zh_compDecodeString( pCode[ 1 ], ( const char * ) pCode + 4, &nSize );
@@ -2259,8 +2252,8 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             break;
          }
 
-         case ZH_P_PUSHDATE:
-            ZH_TRACE( ZH_TR_DEBUG, ( "(ZH_P_PUSHDATE)" ) );
+         case ZH_P_PUSH_DATE:
+            ZH_TRACE( ZH_TR_DEBUG, ( "(ZH_P_PUSH_DATE)" ) );
             {
                PZH_ITEM pItem = zh_stackAllocItem();
 
@@ -2283,7 +2276,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             }
             break;
 
-         case ZH_P_PUSHBLOCK:
+         case ZH_P_PUSH_BLOCK:
          {
             /* +0    -> _pushblock
              * +1 +2 -> size of codeblock
@@ -2296,7 +2289,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += nSize;
             break;
          }
-         case ZH_P_PUSHBLOCKLARGE:
+         case ZH_P_PUSH_BLOCKLARGE:
          {
             /* +0       -> _pushblock
              * +1 +2 +3 -> size of codeblock
@@ -2309,7 +2302,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += nSize;
             break;
          }
-         case ZH_P_PUSHBLOCKSHORT:
+         case ZH_P_PUSH_BLOCKSHORT:
          {
             /* +0    -> _pushblock
              * +1    -> size of codeblock
@@ -2346,12 +2339,12 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode++;
             break;
 
-         case ZH_P_PUSHALIASEDFIELD:
+         case ZH_P_PUSH_ALIASED_FIELD:
             zh_vmPushAliasedField( pSymbols + ZH_PCODE_MKUSHORT( &pCode[ 1 ] ) );
             pCode += 3;
             break;
 
-         case ZH_P_PUSHALIASEDFIELDNEAR:
+         case ZH_P_PUSH_ALIASED_FIELDNEAR:
             zh_vmPushAliasedField( pSymbols + pCode[ 1 ] );
             pCode += 2;
             break;
@@ -2566,7 +2559,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += 3;
             break;
 
-         case ZH_P_MACROSEND:
+         case ZH_P_MACRO_SEND:
             zh_vmMacroSend( ZH_PCODE_MKUSHORT( &pCode[ 1 ] ) );
             pCode += 3;
             break;
@@ -2657,7 +2650,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             break;
          }
 
-         case ZH_P_MPUSHALIASEDFIELD:
+         case ZH_P_MPUSH_ALIASED_FIELD:
          {
             PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushAliasedField( pDynSym->pSymbol );
@@ -2673,7 +2666,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             break;
          }
 
-         case ZH_P_MPUSHBLOCK:
+         case ZH_P_MPUSH_BLOCK:
          {
             /*NOTE: the pcode is stored in dynamically allocated memory
              * We need to handle it with more care than compile-time
@@ -2691,7 +2684,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             break;
          }
 
-         case ZH_P_MPUSHBLOCKLARGE:
+         case ZH_P_MPUSH_BLOCKLARGE:
          {
             /*NOTE: the pcode is stored in dynamically allocated memory
              * We need to handle it with more care than compile-time
@@ -5365,14 +5358,14 @@ static void zh_vmArrayGen( ZH_SIZE nElements ) /* generates an nElements Array a
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmArrayGen(%" ZH_PFS "u)", nElements ) );
 
-   /* create new array on HVM stack */
+   /* create new array on ZHVM stack */
    pArray = zh_stackAllocItem();
    zh_arrayNew( pArray, nElements );
 
    if( nElements )
    {
       ZH_SIZE nPos;
-      /* move items from HVM stack to created array */
+      /* move items from ZHVM stack to created array */
       for( nPos = 0; nPos < nElements; nPos++ )
       {
          PZH_ITEM pValue = zh_stackItemFromTop( ( int ) ( nPos - nElements - 1 ) );
@@ -5529,7 +5522,7 @@ static void zh_vmMacroPushIndex( void )
 }
 
 /*
- * On HVM stack we have sets with arguments
+ * On ZHVM stack we have sets with arguments
  *    offset   value
  *    (-9)     6
  *    (-8)     7
@@ -6554,7 +6547,7 @@ void zh_vmPushLogical( ZH_BOOL bValue )
    pItem->item.asLogical.value = bValue;
 }
 
-/* not used by HVM code */
+/* not used by ZHVM code */
 void zh_vmPushNumber( double dNumber, int iDec )
 {
    ZH_STACK_TLS_PRELOAD
@@ -6837,7 +6830,7 @@ void zh_vmPushEvalSym( void )
    pItem->item.asSymbol.stackstate = NULL;
 }
 
-/* -3    -> ZH_P_PUSHBLOCK
+/* -3    -> ZH_P_PUSH_BLOCK
  * -2 -1 -> size of codeblock
  *  0 +1 -> number of expected parameters
  * +2 +3 -> number of referenced local variables
@@ -6876,7 +6869,7 @@ static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nL
    pItem->item.asBlock.method = zh_stackBaseItem()->item.asSymbol.stackstate->uiMethod;
 }
 
-/* -2    -> ZH_P_PUSHBLOCKSHORT
+/* -2    -> ZH_P_PUSH_BLOCKSHORT
  * -1    -> size of codeblock
  *  0    -> start of table with referenced local variables
  *
@@ -6908,7 +6901,7 @@ static void zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SI
    pItem->item.asBlock.method = zh_stackBaseItem()->item.asSymbol.stackstate->uiMethod;
 }
 
-/* -(5|6)     -> ZH_P_MPUSHBLOCK[LARGE]
+/* -(5|6)     -> ZH_P_MPUSH_BLOCK[LARGE]
  * [-5] -4 -3 -> size of codeblock
  * -2 -1      -> number of expected parameters
  * +0         -> start of pcode
@@ -8003,8 +7996,8 @@ static void zh_vmVerifyPCodeVersion( const char * szModuleName, ZH_USHORT uiPCod
 {
    if( uiPCodeVer != 0 )
    {
-      if( uiPCodeVer > ZH_PCODE_VER ||    /* the module is compiled with newer compiler version then HVM */
-          uiPCodeVer < ZH_PCODE_VER_MIN ) /* the module is compiled with old not longer supported by HVM compiler version */
+      if( uiPCodeVer > ZH_PCODE_VER ||    /* the module is compiled with newer compiler version then ZHVM */
+          uiPCodeVer < ZH_PCODE_VER_MIN ) /* the module is compiled with old not longer supported by ZHVM compiler version */
       {
          char szPCode[ 10 ];
          zh_snprintf( szPCode, sizeof( szPCode ), "%i.%i", uiPCodeVer >> 8, uiPCodeVer & 0xff );
@@ -8733,7 +8726,7 @@ ZH_BOOL zh_vmRequestReenter( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestReenter()" ) );
 
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
       PZH_ITEM pItem;
@@ -8807,7 +8800,7 @@ ZH_BOOL zh_vmRequestReenterExt( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestReenterExt()" ) );
 
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_USHORT uiAction = 0;
       int iLocks = 0;
@@ -8872,7 +8865,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
 
    fResult = ZH_FALSE;
    *pResult = NULL;
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       PZH_SYMB pSymbol = NULL;
 
@@ -8948,14 +8941,14 @@ ZH_BOOL zh_vmIsActive( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsActive()" ) );
 
-   return s_fHVMActive;
+   return s_fZHVMActive;
 }
 
 ZH_BOOL zh_vmIsReady( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsReady()" ) );
 
-   if( s_fHVMActive )
+   if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
       return zh_stackId() != NULL;

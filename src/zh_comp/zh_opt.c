@@ -632,7 +632,7 @@ static ZH_OPT_FUNC( zh_p_switch )
             nPCodePos += 3;
             break;
          case ZH_P_PUSHLONG:
-         case ZH_P_PUSHDATE:
+         case ZH_P_PUSH_DATE:
             nPCodePos += 5;
             break;
          case ZH_P_PUSHLONGLONG:
@@ -796,9 +796,9 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_MPOPALIASEDVAR        */
    NULL,                       /* ZH_P_MPOPFIELD             */
    NULL,                       /* ZH_P_MPOPMEMVAR            */
-   NULL,                       /* ZH_P_MPUSHALIASEDFIELD     */
+   NULL,                       /* ZH_P_MPUSH_ALIASED_FIELD     */
    NULL,                       /* ZH_P_MPUSHALIASEDVAR       */
-   NULL,                       /* ZH_P_MPUSHBLOCK            */
+   NULL,                       /* ZH_P_MPUSH_BLOCK            */
    NULL,                       /* ZH_P_MPUSHFIELD            */
    NULL,                       /* ZH_P_MPUSHMEMVAR           */
    NULL,                       /* ZH_P_MPUSHMEMVARREF        */
@@ -826,11 +826,11 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_POPVARIABLE           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELD      */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    NULL,                       /* ZH_P_PUSHALIASEDVAR        */
-   NULL,                       /* ZH_P_PUSHBLOCK             */
-   NULL,                       /* ZH_P_PUSHBLOCKSHORT        */
+   NULL,                       /* ZH_P_PUSH_BLOCK             */
+   NULL,                       /* ZH_P_PUSH_BLOCKSHORT        */
    NULL,                       /* ZH_P_PUSHFIELD             */
    NULL,                       /* ZH_P_PUSHBYTE              */
    NULL,                       /* ZH_P_PUSHINT               */
@@ -874,7 +874,7 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_ENUMPREV              */
    NULL,                       /* ZH_P_ENUMEND               */
    zh_p_switch,                /* ZH_P_SWITCH                */
-   NULL,                       /* ZH_P_PUSHDATE              */
+   NULL,                       /* ZH_P_PUSH_DATE              */
    NULL,                       /* ZH_P_PLUSEQPOP             */
    NULL,                       /* ZH_P_MINUSEQPOP            */
    NULL,                       /* ZH_P_MULTEQPOP             */
@@ -886,22 +886,22 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_WITHOBJECTSTART       */
    NULL,                       /* ZH_P_WITHOBJECTMESSAGE     */
    NULL,                       /* ZH_P_WITHOBJECTEND         */
-   NULL,                       /* ZH_P_MACROSEND             */
+   NULL,                       /* ZH_P_MACRO_SEND             */
    NULL,                       /* ZH_P_PUSHOVARREF           */
    NULL,                       /* ZH_P_ARRAYPUSHREF          */
    NULL,                       /* ZH_P_VFRAME                */
    NULL,                       /* ZH_P_LARGEFRAME            */
    NULL,                       /* ZH_P_LARGEVFRAME           */
-   NULL,                       /* ZH_P_PUSHSTRHIDDEN         */
+   NULL,                       /* ZH_P_PUSH_STR_HIDDEN         */
    zh_p_localaddint,           /* ZH_P_LOCALADDINT           */
    NULL,                       /* ZH_P_MODEQPOP              */
    NULL,                       /* ZH_P_EXPEQPOP              */
    NULL,                       /* ZH_P_MODEQ                 */
    NULL,                       /* ZH_P_EXPEQ                 */
    NULL,                       /* ZH_P_DUPLUNREF             */
-   NULL,                       /* ZH_P_MPUSHBLOCKLARGE       */
+   NULL,                       /* ZH_P_MPUSH_BLOCKLARGE       */
    NULL,                       /* ZH_P_MPUSHSTRLARGE         */
-   NULL,                       /* ZH_P_PUSHBLOCKLARGE        */
+   NULL,                       /* ZH_P_PUSH_BLOCKLARGE        */
    NULL,                       /* ZH_P_PUSHSTRLARGE          */
    NULL,                       /* ZH_P_SWAP                  */
    NULL,                       /* ZH_P_PUSHVPARAMS           */
@@ -1114,8 +1114,8 @@ static void zh_compPCodeEnumScanLocals( PZH_ZFUNC pFunc, PZH_OPT_LOCAL pLocals )
                ZH_BYTE bCodeNext2 = pFunc->pCode[ nPosNext + zh_compPCodeSize( pFunc, nPosNext ) ];
 
                if( ( bCodeNext == ZH_P_PUSHTIMESTAMP ||
-                     bCodeNext == ZH_P_PUSHBLOCK ||
-                     bCodeNext == ZH_P_PUSHBLOCKSHORT ||
+                     bCodeNext == ZH_P_PUSH_BLOCK ||
+                     bCodeNext == ZH_P_PUSH_BLOCKSHORT ||
                      bCodeNext == ZH_P_PUSHFIELD ||
                      bCodeNext == ZH_P_PUSHBYTE ||
                      bCodeNext == ZH_P_PUSHINT ||
@@ -1133,9 +1133,9 @@ static void zh_compPCodeEnumScanLocals( PZH_ZFUNC pFunc, PZH_OPT_LOCAL pLocals )
                      bCodeNext == ZH_P_ONE ||
                      bCodeNext == ZH_P_ZERO ||
                      bCodeNext == ZH_P_PUSHLONGLONG ||
-                     bCodeNext == ZH_P_PUSHDATE ||
-                     bCodeNext == ZH_P_PUSHSTRHIDDEN ||
-                     bCodeNext == ZH_P_PUSHBLOCKLARGE ||
+                     bCodeNext == ZH_P_PUSH_DATE ||
+                     bCodeNext == ZH_P_PUSH_STR_HIDDEN ||
+                     bCodeNext == ZH_P_PUSH_BLOCKLARGE ||
                      bCodeNext == ZH_P_PUSHSTRLARGE ||
                      bCodeNext == ZH_P_LOCALINCPUSH ) &&
                    ( bCodeNext2 == ZH_P_PLUSEQPOP ||
@@ -1177,13 +1177,13 @@ static void zh_compPCodeEnumScanLocals( PZH_ZFUNC pFunc, PZH_OPT_LOCAL pLocals )
                pLocals[ isVar - 1 ].bFlags |= ( OPT_LOCAL_FLAG_CHANGE | OPT_LOCAL_FLAG_PUSH );
             break;
 
-         case ZH_P_PUSHBLOCK:
-         case ZH_P_PUSHBLOCKLARGE:
+         case ZH_P_PUSH_BLOCK:
+         case ZH_P_PUSH_BLOCKLARGE:
          {
             ZH_BYTE * pCode = &pFunc->pCode[ nPos + 5 ];
             ZH_USHORT usVarCount;
 
-            if( pFunc->pCode[ nPos ] == ZH_P_PUSHBLOCKLARGE )
+            if( pFunc->pCode[ nPos ] == ZH_P_PUSH_BLOCKLARGE )
                pCode++;
 
             usVarCount = ZH_PCODE_MKUSHORT( pCode );
@@ -1278,7 +1278,7 @@ static int zh_compPCodeTraceAssignedUnused( PZH_ZFUNC pFunc, ZH_SIZE nPos, ZH_BY
           pFunc->pCode[ nPos ] == ZH_P_SENDSHORT ||
           pFunc->pCode[ nPos ] == ZH_P_MACRODO ||
           pFunc->pCode[ nPos ] == ZH_P_MACROFUNC ||
-          pFunc->pCode[ nPos ] == ZH_P_MACROSEND )
+          pFunc->pCode[ nPos ] == ZH_P_MACRO_SEND )
       {
          fCanBreak = ZH_TRUE;
       }
@@ -1401,8 +1401,8 @@ static void zh_compPCodeEnumAssignedUnused( ZH_COMP_DECL, PZH_ZFUNC pFunc, PZH_O
          switch( pFunc->pCode[ nPosNext ] )
          {
             case ZH_P_PUSHTIMESTAMP:
-            case ZH_P_PUSHBLOCK:
-            case ZH_P_PUSHBLOCKSHORT:
+            case ZH_P_PUSH_BLOCK:
+            case ZH_P_PUSH_BLOCKSHORT:
             case ZH_P_PUSHFIELD:
             case ZH_P_PUSHBYTE:
             case ZH_P_PUSHINT:
@@ -1420,9 +1420,9 @@ static void zh_compPCodeEnumAssignedUnused( ZH_COMP_DECL, PZH_ZFUNC pFunc, PZH_O
             case ZH_P_ONE:
             case ZH_P_ZERO:
             case ZH_P_PUSHLONGLONG:
-            case ZH_P_PUSHDATE:
-            case ZH_P_PUSHSTRHIDDEN:
-            case ZH_P_PUSHBLOCKLARGE:
+            case ZH_P_PUSH_DATE:
+            case ZH_P_PUSH_STR_HIDDEN:
+            case ZH_P_PUSH_BLOCKLARGE:
             case ZH_P_PUSHSTRLARGE:
             case ZH_P_LOCALINCPUSH:
                switch( pFunc->pCode[ nPosNext + zh_compPCodeSize( pFunc, nPosNext ) ] )
@@ -1558,13 +1558,13 @@ static void zh_compPCodeEnumRenumberLocals( PZH_ZFUNC pFunc, PZH_OPT_LOCAL pLoca
             break;
          }
 
-         case ZH_P_PUSHBLOCK:
-         case ZH_P_PUSHBLOCKLARGE:
+         case ZH_P_PUSH_BLOCK:
+         case ZH_P_PUSH_BLOCKLARGE:
          {
             ZH_BYTE * pVar = &pFunc->pCode[ nPos + 5 ];
             ZH_USHORT usVarCount;
 
-            if( pFunc->pCode[ nPos ] == ZH_P_PUSHBLOCKLARGE )
+            if( pFunc->pCode[ nPos ] == ZH_P_PUSH_BLOCKLARGE )
                pVar++;
 
             usVarCount = ZH_PCODE_MKUSHORT( pVar );

@@ -54,7 +54,7 @@
 
 /*
  * Define PCODE version number
- * ZH_PCODE_VER_MIN define minimum supported PCODE by HVM
+ * ZH_PCODE_VER_MIN define minimum supported PCODE by ZHVM
  */
 
 #define ZH_PCODE_VER          0x0003
@@ -79,7 +79,7 @@
 #endif
 
 /*
- * Enable profiler support in HVM
+ * Enable profiler support in ZHVM
  * By default this is turned off. Define ZH_USE_PROFILER to turn it on.
  */
 

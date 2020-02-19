@@ -408,7 +408,7 @@ void zh_cmdargUpdate( void )
 #endif
 }
 
-/* places application parameters on the HVM stack */
+/* places application parameters on the ZHVM stack */
 
 int zh_cmdargPushArgs( void )
 {

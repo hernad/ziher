@@ -928,8 +928,8 @@ extern ZH_EXPORT const char *  zh_cmdargARGVN( int argc ); /* retrieve given com
 extern ZH_EXPORT ZH_BOOL       zh_cmdargIsInternal( const char * szArg, int * piLen ); /* determine if a string is an internal setting */
 extern ZH_EXPORT char *        zh_cmdargProgName( void ); /* return application name with path or NULL if not set, caller must free returned value with zh_xfree() if not NULL */
 extern ZH_EXPORT char *        zh_cmdargBaseProgName( void ); /* return application name without path or NULL if not set, caller must free returned value with zh_xfree() if not NULL */
-extern           int           zh_cmdargPushArgs( void ); /* places application parameters on the HVM stack */
-extern           void          zh_cmdargUpdate( void ); /* update arguments after HVM initialization */
+extern           int           zh_cmdargPushArgs( void ); /* places application parameters on the ZHVM stack */
+extern           void          zh_cmdargUpdate( void ); /* update arguments after ZHVM initialization */
 extern           ZH_BOOL       zh_cmdargCheck( const char * pszName ); /* Check if a given internal switch (like //INFO) was set */
 extern           char *        zh_cmdargString( const char * pszName ); /* Returns the string value of an internal switch (like //GT:cgi) */
 extern           int           zh_cmdargNum( const char * pszName ); /* Returns the numeric value of an internal switch (like //F:90) */
@@ -1024,7 +1024,7 @@ extern ZH_EXPORT void zh_idleSleep( double dSeconds ); /* sleep for a given time
 /* I18N public API */
 extern PZH_ITEM zh_i18n_ngettext( PZH_ITEM pNum, PZH_ITEM pMsgID, PZH_ITEM pContext );
 extern PZH_ITEM zh_i18n_gettext( PZH_ITEM pMsgID, PZH_ITEM pContext );
-/* I18N internal HVM API */
+/* I18N internal ZHVM API */
 #if defined( _ZH_API_INTERNAL_ ) || defined( _ZH_I18N_INTERNAL_ )
 extern void *   zh_vmI18N( void );
 extern void     zh_vmSetI18N( void * );

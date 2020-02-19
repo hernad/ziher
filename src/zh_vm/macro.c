@@ -815,7 +815,7 @@ static void zh_macroSetGetBlock( PZH_DYNS pVarSym, PZH_ITEM pItem,
 
    if( iWorkArea != 0 )
    {
-      bPushPcode = ZH_P_MPUSHALIASEDFIELD;
+      bPushPcode = ZH_P_MPUSH_ALIASED_FIELD;
       bPopPcode  = ZH_P_MPOPALIASEDFIELD;
    }
    else if( ! fMemVar )
@@ -920,7 +920,7 @@ ZH_FUNC( FIELDBLOCK )
       {
          /* Cl*pper does not create new symbol in this function
           * so only registered symbols are accepted. When table
-          * is open then all field symbols are registered in HVM.
+          * is open then all field symbols are registered in ZHVM.
           * It means that this function may not create field block
           * if table is not open yet and field name was never used
           * explicitly in compiled application. It's possible to
@@ -1400,7 +1400,7 @@ void zh_macroGenPushDate( long lDate, ZH_COMP_DECL )
 {
    ZH_BYTE pBuffer[ 5 ];
 
-   pBuffer[ 0 ] = ZH_P_PUSHDATE;
+   pBuffer[ 0 ] = ZH_P_PUSH_DATE;
    ZH_PUT_LE_UINT32( pBuffer + 1, lDate );
    zh_macroGenPCodeN( pBuffer, sizeof( pBuffer ), ZH_COMP_PARAM );
 }
@@ -1606,13 +1606,13 @@ void zh_macroGenPushAliasedVar( const char * szVarName,
          {
             /* database alias */
             zh_macroGenPushSymbol( szAlias, ZH_FALSE, ZH_COMP_PARAM );
-            zh_macroMemvarGenPCode( ZH_P_MPUSHALIASEDFIELD, szVarName, ZH_COMP_PARAM );
+            zh_macroMemvarGenPCode( ZH_P_MPUSH_ALIASED_FIELD, szVarName, ZH_COMP_PARAM );
          }
       }
       else
       {
          zh_macroGenPushLong( nWorkarea, ZH_COMP_PARAM );
-         zh_macroMemvarGenPCode( ZH_P_MPUSHALIASEDFIELD, szVarName, ZH_COMP_PARAM );
+         zh_macroMemvarGenPCode( ZH_P_MPUSH_ALIASED_FIELD, szVarName, ZH_COMP_PARAM );
       }
    }
    else
@@ -1799,21 +1799,21 @@ void zh_macroCodeBlockEnd( ZH_COMP_DECL )
       ++usParms;
    }
 
-   /* NOTE: 6 = ZH_P_MPUSHBLOCK + ZH_USHORT( size ) + ZH_USHORT( wParams ) + _ENDBLOCK
+   /* NOTE: 6 = ZH_P_MPUSH_BLOCK + ZH_USHORT( size ) + ZH_USHORT( wParams ) + _ENDBLOCK
     * runtime compiled codeblock cannot reference local variables defined in a
     * function
     */
    nSize = pCodeblock->nPCodePos + 6;
 
-   /* NOTE: ZH_P_MPUSHBLOCK differs from ZH_P_PUSHBLOCK - the pcode
+   /* NOTE: ZH_P_MPUSH_BLOCK differs from ZH_P_PUSH_BLOCK - the pcode
     * is stored in dynamic memory pool instead of static memory
     */
    if( nSize <= USHRT_MAX )
-      zh_macroGenPCode3( ZH_P_MPUSHBLOCK, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_COMP_PARAM );
+      zh_macroGenPCode3( ZH_P_MPUSH_BLOCK, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_COMP_PARAM );
    else
    {
       ++nSize;
-      zh_macroGenPCode4( ZH_P_MPUSHBLOCKLARGE, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_ULBYTE( nSize ), ZH_COMP_PARAM );
+      zh_macroGenPCode4( ZH_P_MPUSH_BLOCKLARGE, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_ULBYTE( nSize ), ZH_COMP_PARAM );
    }
    zh_macroGenPCode2( ZH_LOBYTE( usParms ), ZH_HIBYTE( usParms ), ZH_COMP_PARAM );
 

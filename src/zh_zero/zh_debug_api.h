@@ -53,7 +53,7 @@ ZH_EXTERN_BEGIN
 
 /* Debugger API */
 
-/* HVM debugger function */
+/* ZHVM debugger function */
 typedef void ( * ZH_DBGENTRY_FUNC )( int nMode, int nLine, const char * szName, int nIndex, PZH_ITEM pFrame );
 extern ZH_EXPORT ZH_DBGENTRY_FUNC zh_dbg_SetEntry( ZH_DBGENTRY_FUNC pFunDbgEntry );
 extern ZH_EXPORT ZH_BOOL zh_dbg_InvokeDebug( ZH_BOOL bInvoke );

@@ -72,7 +72,7 @@
   zh_mtvm() --> <lMultiThreadVM>
 
   * - this function call can be ignored by the destination thread in some
-      cases. HVM does not guaranties that the QUIT signal will be always
+      cases. ZHVM does not guaranties that the QUIT signal will be always
       delivered.
   ** - this is only information function and nWaitersCount or nQueueLength
        can be changed simultaneously by other threads so they cannot be
@@ -839,8 +839,8 @@ static ZH_THREAD_STARTFUNC( zh_threadStartFunc )
    /* execute user thread function */
    pThread->pFunc( pThread->cargo );
 
-   /* zh_vmThreadQuit() unlocks and release HVM stack and may release
-    * also pThItm item so we should not access any HVM items or
+   /* zh_vmThreadQuit() unlocks and release ZHVM stack and may release
+    * also pThItm item so we should not access any ZHVM items or
     * pThread structure after this function.
     */
    zh_vmThreadQuit();
@@ -2332,6 +2332,6 @@ ZH_FUNC( ZH_MTVM )
    zh_retl( ZH_TRUE );
 }
 
-/* function to use in REQUEST statement in .zh code to force MT HVM */
+/* function to use in REQUEST statement in .zh code to force MT ZHVM */
 ZH_FUNC( ZH_MT ) { ; }
 

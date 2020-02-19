@@ -86,7 +86,7 @@ ZH_EXTERN_BEGIN
 
 #define ZH_OO_MAX_OPERATOR    29
 
-extern void       zh_clsInit( void );           /* initialize Classy/OO system at HVM startup */
+extern void       zh_clsInit( void );           /* initialize Classy/OO system at ZHVM startup */
 extern void       zh_clsDoInit( void );         /* initialize Classy/OO system .zh functions */
 extern void       zh_clsReleaseAll( void );     /* releases all defined classes */
 extern void       zh_clsIsClassRef( void );     /* classes.c - mark all class internals as used */

@@ -286,7 +286,7 @@ static ZH_CODETRACE_FUNC( zh_p_switch )
             nPCodePos += 3;
             break;
          case ZH_P_PUSHLONG:
-         case ZH_P_PUSHDATE:
+         case ZH_P_PUSH_DATE:
             nPCodePos += 5;
             break;
          case ZH_P_PUSHLONGLONG:
@@ -412,9 +412,9 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_MPOPALIASEDVAR        */
    zh_p_default,               /* ZH_P_MPOPFIELD             */
    zh_p_default,               /* ZH_P_MPOPMEMVAR            */
-   zh_p_default,               /* ZH_P_MPUSHALIASEDFIELD     */
+   zh_p_default,               /* ZH_P_MPUSH_ALIASED_FIELD     */
    zh_p_default,               /* ZH_P_MPUSHALIASEDVAR       */
-   zh_p_default,               /* ZH_P_MPUSHBLOCK            */
+   zh_p_default,               /* ZH_P_MPUSH_BLOCK            */
    zh_p_default,               /* ZH_P_MPUSHFIELD            */
    zh_p_default,               /* ZH_P_MPUSHMEMVAR           */
    zh_p_default,               /* ZH_P_MPUSHMEMVARREF        */
@@ -442,11 +442,11 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_POPVARIABLE           */
    zh_p_default,               /* ZH_P_POWER                 */
    zh_p_default,               /* ZH_P_PUSHALIAS             */
-   zh_p_default,               /* ZH_P_PUSHALIASEDFIELD      */
-   zh_p_default,               /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   zh_p_default,               /* ZH_P_PUSH_ALIASED_FIELD      */
+   zh_p_default,               /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    zh_p_default,               /* ZH_P_PUSHALIASEDVAR        */
-   zh_p_default,               /* ZH_P_PUSHBLOCK             */
-   zh_p_default,               /* ZH_P_PUSHBLOCKSHORT        */
+   zh_p_default,               /* ZH_P_PUSH_BLOCK             */
+   zh_p_default,               /* ZH_P_PUSH_BLOCKSHORT        */
    zh_p_default,               /* ZH_P_PUSHFIELD             */
    zh_p_default,               /* ZH_P_PUSHBYTE              */
    zh_p_default,               /* ZH_P_PUSHINT               */
@@ -490,7 +490,7 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_ENUMPREV              */
    zh_p_default,               /* ZH_P_ENUMEND               */
    zh_p_switch,                /* ZH_P_SWITCH                */
-   zh_p_default,               /* ZH_P_PUSHDATE              */
+   zh_p_default,               /* ZH_P_PUSH_DATE              */
                                /* optimization of inlined math operations */
    zh_p_default,               /* ZH_P_PLUSEQPOP             */
    zh_p_default,               /* ZH_P_MINUSEQPOP            */
@@ -503,22 +503,22 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_WITHOBJECTSTART       */
    zh_p_default,               /* ZH_P_WITHOBJECTMESSAGE     */
    zh_p_default,               /* ZH_P_WITHOBJECTEND         */
-   zh_p_default,               /* ZH_P_MACROSEND             */
+   zh_p_default,               /* ZH_P_MACRO_SEND             */
    zh_p_default,               /* ZH_P_PUSHOVARREF           */
    zh_p_default,               /* ZH_P_ARRAYPUSHREF          */
    zh_p_default,               /* ZH_P_VFRAME                */
    zh_p_default,               /* ZH_P_LARGEFRAME            */
    zh_p_default,               /* ZH_P_LARGEVFRAME           */
-   zh_p_default,               /* ZH_P_PUSHSTRHIDDEN         */
+   zh_p_default,               /* ZH_P_PUSH_STR_HIDDEN         */
    zh_p_default,               /* ZH_P_LOCALADDINT           */
    zh_p_default,               /* ZH_P_MODEQPOP              */
    zh_p_default,               /* ZH_P_EXPEQPOP              */
    zh_p_default,               /* ZH_P_MODEQ                 */
    zh_p_default,               /* ZH_P_EXPEQ                 */
    zh_p_default,               /* ZH_P_DUPLUNREF             */
-   zh_p_default,               /* ZH_P_MPUSHBLOCKLARGE       */
+   zh_p_default,               /* ZH_P_MPUSH_BLOCKLARGE       */
    zh_p_default,               /* ZH_P_MPUSHSTRLARGE         */
-   zh_p_default,               /* ZH_P_PUSHBLOCKLARGE        */
+   zh_p_default,               /* ZH_P_PUSH_BLOCKLARGE        */
    zh_p_default,               /* ZH_P_PUSHSTRLARGE          */
    zh_p_default,               /* ZH_P_SWAP                  */
    zh_p_default,               /* ZH_P_PUSHVPARAMS           */

@@ -5143,7 +5143,7 @@ static void zh_pp_preprocessToken( PZH_PP_STATE pState )
             /* ignore first line if it begins with "#!"
                minor extension which allow to use the same source code
                as scripts in *nix system and compile it, this feature
-               will be necessary also when we integrate compiler with HVM and
+               will be necessary also when we integrate compiler with ZHVM and
                add support for direct execution compiled .zh files */
          }
          else if( ZH_PP_TOKEN_TYPE( pToken->type ) != ZH_PP_TOKEN_KEYWORD )

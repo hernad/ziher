@@ -812,7 +812,7 @@ void zh_memvarsClear( ZH_BOOL fAll )
    /* this is a little bit hacked but many times faster version
     * of memvars clearing because it scans only given thread stack
     * not global dynamic symbol table. It noticeable reduce the cost
-    * of HVM thread releasing.
+    * of ZHVM thread releasing.
     */
    zh_stackClearMemvars( pGetList ? ( int ) pGetList->uiSymNum : -1 );
 }

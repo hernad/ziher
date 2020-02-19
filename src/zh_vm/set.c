@@ -882,7 +882,7 @@ PZH_ITEM zh_setGetItem( ZH_set_enum set_specifier, PZH_ITEM pResult,
          if( pArg1 != NULL )
          {
             if( ZH_IS_STRING( pArg1 ) )
-               zh_cdpSelectID( zh_itemGetCPtr( pArg1 ) );
+               zh_codepageSelectID( zh_itemGetCPtr( pArg1 ) );
             else
                zh_errRT_BASE( EG_ARG, 2020, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
          }
@@ -1707,7 +1707,7 @@ ZH_BOOL zh_setSetItem( ZH_set_enum set_specifier, PZH_ITEM pItem )
          case ZH_SET_CODEPAGE:
             if( ZH_IS_STRING( pItem ) )
             {
-               zh_cdpSelectID( zh_itemGetCPtr( pItem ) );
+               zh_codepageSelectID( zh_itemGetCPtr( pItem ) );
                fResult = ZH_TRUE;
             }
             break;
@@ -2902,7 +2902,7 @@ ZH_WCHAR * zh_osStrU16Encode( const char * pszName )
       }
    }
 
-   return zh_mbtowc( pszName ); /* No HVM stack */
+   return zh_mbtowc( pszName ); /* No ZHVM stack */
 }
 
 ZH_WCHAR * zh_osStrU16EncodeN( const char * pszName, ZH_SIZE nLen )
@@ -2923,7 +2923,7 @@ ZH_WCHAR * zh_osStrU16EncodeN( const char * pszName, ZH_SIZE nLen )
       }
    }
 
-   return zh_mbntowc( pszName, nLen ); /* No HVM stack */
+   return zh_mbntowc( pszName, nLen ); /* No ZHVM stack */
 }
 
 char * zh_osStrU16Decode( const ZH_WCHAR * pszNameW )
@@ -2944,7 +2944,7 @@ char * zh_osStrU16Decode( const ZH_WCHAR * pszNameW )
       }
    }
 
-   return zh_wctomb( pszNameW ); /* No HVM stack */
+   return zh_wctomb( pszNameW ); /* No ZHVM stack */
 }
 
 char * zh_osStrU16Decode2( const ZH_WCHAR * pszNameW, char * pszBuffer, ZH_SIZE nSize )
@@ -2960,7 +2960,7 @@ char * zh_osStrU16Decode2( const ZH_WCHAR * pszNameW, char * pszBuffer, ZH_SIZE 
       }
    }
 
-   zh_wcntombcpy( pszBuffer, pszNameW, nSize ); /* No HVM stack */
+   zh_wcntombcpy( pszBuffer, pszNameW, nSize ); /* No ZHVM stack */
    return pszBuffer;
 }
 #endif

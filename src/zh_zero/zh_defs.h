@@ -366,7 +366,7 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
 #endif
 
 
-/* ZH_*_EXPLENGTH() macros are used by HVM to set the size of
+/* ZH_*_EXPLENGTH() macros are used by ZHVM to set the size of
  * math operations, ZH_*_LENGTH() macros are used when new
  * item is created. [druzus]
  */
@@ -1336,7 +1336,6 @@ typedef ZH_U32 ZH_FATTR;
  * starting procedure (due to unknown order of static data initialization)
  */
 #define ZH_START_PROCEDURE "MAIN"
-
 
 #if defined( _MSC_VER )
    #define ZH_DLL_ENTRY_POINT    DllMain

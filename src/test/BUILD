@@ -34,6 +34,7 @@ cc_library(
        "//zh_rtl:zh_rtl",
        "//zh_vm:zh_vm"
     ],
+    alwayslink=1,
     visibility = ["//visibility:public"],
 )
 

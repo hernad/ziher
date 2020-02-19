@@ -242,9 +242,9 @@ static const PZH_LABEL_FUNC s_GenLabelFuncTable[] =
    NULL,                       /* ZH_P_MPOPALIASEDVAR        */
    NULL,                       /* ZH_P_MPOPFIELD             */
    NULL,                       /* ZH_P_MPOPMEMVAR            */
-   NULL,                       /* ZH_P_MPUSHALIASEDFIELD     */
+   NULL,                       /* ZH_P_MPUSH_ALIASED_FIELD     */
    NULL,                       /* ZH_P_MPUSHALIASEDVAR       */
-   NULL,                       /* ZH_P_MPUSHBLOCK            */
+   NULL,                       /* ZH_P_MPUSH_BLOCK            */
    NULL,                       /* ZH_P_MPUSHFIELD            */
    NULL,                       /* ZH_P_MPUSHMEMVAR           */
    NULL,                       /* ZH_P_MPUSHMEMVARREF        */
@@ -272,11 +272,11 @@ static const PZH_LABEL_FUNC s_GenLabelFuncTable[] =
    NULL,                       /* ZH_P_POPVARIABLE           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELD      */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    NULL,                       /* ZH_P_PUSHALIASEDVAR        */
-   NULL,                       /* ZH_P_PUSHBLOCK             */
-   NULL,                       /* ZH_P_PUSHBLOCKSHORT        */
+   NULL,                       /* ZH_P_PUSH_BLOCK             */
+   NULL,                       /* ZH_P_PUSH_BLOCKSHORT        */
    NULL,                       /* ZH_P_PUSHFIELD             */
    NULL,                       /* ZH_P_PUSHBYTE              */
    NULL,                       /* ZH_P_PUSHINT               */
@@ -320,7 +320,7 @@ static const PZH_LABEL_FUNC s_GenLabelFuncTable[] =
    NULL,                       /* ZH_P_ENUMPREV              */
    NULL,                       /* ZH_P_ENUMEND               */
    NULL,                       /* ZH_P_SWITCH                */
-   NULL,                       /* ZH_P_PUSHDATE              */
+   NULL,                       /* ZH_P_PUSH_DATE              */
                                /* optimization of inlined math operations */
    NULL,                       /* ZH_P_PLUSEQPOP             */
    NULL,                       /* ZH_P_MINUSEQPOP            */
@@ -333,22 +333,22 @@ static const PZH_LABEL_FUNC s_GenLabelFuncTable[] =
    NULL,                       /* ZH_P_WITHOBJECTSTART       */
    NULL,                       /* ZH_P_WITHOBJECTMESSAGE     */
    NULL,                       /* ZH_P_WITHOBJECTEND         */
-   NULL,                       /* ZH_P_MACROSEND             */
+   NULL,                       /* ZH_P_MACRO_SEND             */
    NULL,                       /* ZH_P_PUSHOVARREF           */
    NULL,                       /* ZH_P_ARRAYPUSHREF          */
    NULL,                       /* ZH_P_VFRAME                */
    NULL,                       /* ZH_P_LARGEFRAME            */
    NULL,                       /* ZH_P_LARGEVFRAME           */
-   NULL,                       /* ZH_P_PUSHSTRHIDDEN         */
+   NULL,                       /* ZH_P_PUSH_STR_HIDDEN         */
    NULL,                       /* ZH_P_LOCALADDINT           */
    NULL,                       /* ZH_P_MODEQPOP              */
    NULL,                       /* ZH_P_EXPEQPOP              */
    NULL,                       /* ZH_P_MODEQ                 */
    NULL,                       /* ZH_P_EXPEQ                 */
    NULL,                       /* ZH_P_DUPLUNREF             */
-   NULL,                       /* ZH_P_MPUSHBLOCKLARGE       */
+   NULL,                       /* ZH_P_MPUSH_BLOCKLARGE       */
    NULL,                       /* ZH_P_MPUSHSTRLARGE         */
-   NULL,                       /* ZH_P_PUSHBLOCKLARGE        */
+   NULL,                       /* ZH_P_PUSH_BLOCKLARGE        */
    NULL,                       /* ZH_P_PUSHSTRLARGE          */
    NULL,                       /* ZH_P_SWAP                  */
    NULL,                       /* ZH_P_PUSHVPARAMS           */

@@ -19,7 +19,7 @@ else
    endif
 endif
 
-#ifeq ($(ZH_HVM_ALL),yes)
+#ifeq ($(ZH_ZHVM_ALL),yes)
 #
 #C_SOURCES := \
 #   hvmall.c \

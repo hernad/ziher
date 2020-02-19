@@ -80,15 +80,15 @@ PZH_DEBUGINFO zh_compGetDebugInfo( ZH_COMP_DECL )
                 * if it's not necessary then simply remove the
                 * code below. [druzus]
                 */
-               case ZH_P_PUSHBLOCKLARGE:
+               case ZH_P_PUSH_BLOCKLARGE:
                   nSkip = 8 + ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPos + 6 ] ) * 2;
                   break;
 
-               case ZH_P_PUSHBLOCK:
+               case ZH_P_PUSH_BLOCK:
                   nSkip = 7 + ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPos + 5 ] ) * 2;
                   break;
 
-               case ZH_P_PUSHBLOCKSHORT:
+               case ZH_P_PUSH_BLOCKSHORT:
                   nSkip = 2;
                   break;
             }

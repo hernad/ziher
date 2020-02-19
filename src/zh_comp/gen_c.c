@@ -1062,7 +1062,7 @@ static ZH_GENC_FUNC( zh_p_macrosend )
    ZH_SYMBOL_UNUSED( pFunc );
    ZH_SYMBOL_UNUSED( nPCodePos );
 
-   fprintf( cargo->yyc, "\tZH_P_MACROSEND, %u, %u,\n",
+   fprintf( cargo->yyc, "\tZH_P_MACRO_SEND, %u, %u,\n",
             pFunc->pCode[ nPCodePos + 1 ], pFunc->pCode[ nPCodePos + 2 ] );
    return 3;
 }
@@ -1389,7 +1389,7 @@ static ZH_GENC_FUNC( zh_p_pushalias )
 
 static ZH_GENC_FUNC( zh_p_pushaliasedfield )
 {
-   fprintf( cargo->yyc, "\tZH_P_PUSHALIASEDFIELD, %u, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_ALIASED_FIELD, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
@@ -1400,7 +1400,7 @@ static ZH_GENC_FUNC( zh_p_pushaliasedfield )
 
 static ZH_GENC_FUNC( zh_p_pushaliasedfieldnear )
 {
-   fprintf( cargo->yyc, "\tZH_P_PUSHALIASEDFIELDNEAR, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_ALIASED_FIELDNEAR, %u,",
             pFunc->pCode[ nPCodePos + 1 ] );
    if( cargo->bVerbose )
       fprintf( cargo->yyc, "\t/* %s */", zh_compSymbolName( cargo->ZH_COMP_PARAM, pFunc->pCode[ nPCodePos + 1 ] ) );
@@ -1419,9 +1419,9 @@ static ZH_GENC_FUNC( zh_p_pushaliasedvar )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblockshort )
+static ZH_GENC_FUNC( zh_p_push_blockshort )
 {
-   fprintf( cargo->yyc, "\tZH_P_PUSHBLOCKSHORT, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_BLOCKSHORT, %u,",
             pFunc->pCode[ nPCodePos + 1 ] );
    if( cargo->bVerbose )
       fprintf( cargo->yyc, "\t/* %u */",
@@ -1434,12 +1434,12 @@ static ZH_GENC_FUNC( zh_p_pushblockshort )
    return 2;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblock )
+static ZH_GENC_FUNC( zh_p_push_block )
 {
    ZH_USHORT wVar, w;
    ZH_SIZE   nStart = nPCodePos;
 
-   fprintf( cargo->yyc, "\tZH_P_PUSHBLOCK, %u, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_BLOCK, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
@@ -1491,12 +1491,12 @@ static ZH_GENC_FUNC( zh_p_pushblock )
    return nPCodePos - nStart;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblocklarge )
+static ZH_GENC_FUNC( zh_p_push_blocklarge )
 {
    ZH_USHORT wVar, w;
    ZH_SIZE   nStart = nPCodePos;
 
-   fprintf( cargo->yyc, "\tZH_P_PUSHBLOCKLARGE, %u, %u, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_BLOCKLARGE, %u, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ],
             pFunc->pCode[ nPCodePos + 3 ] );
@@ -1806,11 +1806,11 @@ static ZH_GENC_FUNC( zh_p_pushstrlarge )
    return nLen + 4;
 }
 
-static ZH_GENC_FUNC( zh_p_pushstrhidden )
+static ZH_GENC_FUNC( zh_p_push_str_hidden )
 {
    ZH_USHORT wLen = ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 2 ] );
 
-   fprintf( cargo->yyc, "\tZH_P_PUSHSTRHIDDEN, %u, %u, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_STR_HIDDEN, %u, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ],
             pFunc->pCode[ nPCodePos + 3 ] );
@@ -2185,7 +2185,7 @@ static ZH_GENC_FUNC( zh_p_switch )
 
 static ZH_GENC_FUNC( zh_p_pushdate )
 {
-   fprintf( cargo->yyc, "\tZH_P_PUSHDATE, %u, %u, %u, %u,",
+   fprintf( cargo->yyc, "\tZH_P_PUSH_DATE, %u, %u, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ],
             pFunc->pCode[ nPCodePos + 3 ],
@@ -2633,8 +2633,8 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_pushaliasedfield,
    zh_p_pushaliasedfieldnear,
    zh_p_pushaliasedvar,
-   zh_p_pushblock,
-   zh_p_pushblockshort,
+   zh_p_push_block,
+   zh_p_push_blockshort,
    zh_p_pushfield,
    zh_p_pushbyte,
    zh_p_pushint,
@@ -2699,7 +2699,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_vframe,
    zh_p_largeframe,
    zh_p_largevframe,
-   zh_p_pushstrhidden,
+   zh_p_push_str_hidden,
    zh_p_localaddint,
    zh_p_modeqpop,
    zh_p_expeqpop,
@@ -2708,7 +2708,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_duplunref,
    zh_p_dummy,
    zh_p_dummy,
-   zh_p_pushblocklarge,
+   zh_p_push_blocklarge,
    zh_p_pushstrlarge,
    zh_p_swap,
    zh_p_pushvparams,

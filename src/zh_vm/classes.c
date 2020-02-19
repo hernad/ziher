@@ -229,7 +229,7 @@ ZH_FUNC_STATIC( msgClassParent );
 
 /* --- */
 
-/* static variables and structures initialized at HVM startup which
+/* static variables and structures initialized at ZHVM startup which
  * do not need any synchronization mechanism in MT mode, [druzus]
  */
 
@@ -1090,7 +1090,7 @@ static void zh_clsAddFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
    }
 }
 
-/* initialize Classy/OO system at HVM startup */
+/* initialize Classy/OO system at ZHVM startup */
 void zh_clsInit( void )
 {
    PZH_SYMB pOpSym;
@@ -2192,7 +2192,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
          }
       }
 
-      /* remove this line if you want default HVM error message */
+      /* remove this line if you want default ZHVM error message */
       return &s___msgNoMethod;
    }
    return NULL;
@@ -5526,7 +5526,7 @@ void zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr
 
    /* We can use empty name "" for this symbol in zh_symbolNew()
     * It's only envelop for function with additional execution
-    * information for HVM not registered symbol. [druzus]
+    * information for ZHVM not registered symbol. [druzus]
     */
    pExecSym = zh_symbolNew( "" );
    pExecSym->value.pFunPtr = pFuncPtr;

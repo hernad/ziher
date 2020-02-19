@@ -52,7 +52,7 @@
 #include "zh_api_error.h"
 
 /* zh_UChar( <nCode> ) --> <cText>
- * return string with U+nCode character in HVM CP encoding
+ * return string with U+nCode character in ZHVM CP encoding
  */
 ZH_FUNC( ZH_UCHAR )
 {

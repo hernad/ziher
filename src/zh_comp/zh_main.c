@@ -2460,34 +2460,6 @@ void zh_compGenModuleName( ZH_COMP_DECL, const char * szFunName )
    ZH_COMP_PARAM->lastLine = -1;
 }
 
-#if 0
-void zh_compGenStaticName( const char * szVarName, ZH_COMP_DECL )
-{
-   if( ZH_COMP_PARAM->fDebugInfo )
-   {
-      ZH_BYTE bGlobal = 0;
-      PZH_ZFUNC pFunc;
-      int iVar;
-
-      if( ( ZH_COMP_PARAM->functions.pLast->funFlags & ZH_FUNF_FILE_DECL ) != 0 )
-      {
-         /* Variable declaration is outside of function/procedure body.
-            File-wide static variable
-          */
-         zh_compStaticDefStart( ZH_COMP_PARAM );
-         bGlobal = 1;
-      }
-      pFunc = ZH_COMP_PARAM->functions.pLast;
-      iVar = zh_compStaticGetPos( szVarName, pFunc );
-
-      zh_compGenPCode4( ZH_P_STATICNAME, bGlobal, ZH_LOBYTE( iVar ), ZH_HIBYTE( iVar ), ZH_COMP_PARAM );
-      zh_compGenPCodeN( ( ZH_BYTE * ) szVarName, strlen( szVarName ) + 1, ZH_COMP_PARAM );
-
-      if( bGlobal )
-         zh_compStaticDefEnd( ZH_COMP_PARAM );
-   }
-}
-#endif
 
 /*
  * Function generates passed pcode for passed runtime variable
@@ -2505,8 +2477,8 @@ static void zh_compGenVarPCode( ZH_BYTE bPCode, const char * szVarName, ZH_COMP_
       pSym = zh_compSymbolAdd( ZH_COMP_PARAM, szVarName, &wVar, ZH_SYM_MEMVAR );
    pSym->cScope |= ZH_FS_MEMVAR;
 
-   if( bPCode == ZH_P_PUSHALIASEDFIELD && wVar <= 255 )
-      zh_compGenPCode2( ZH_P_PUSHALIASEDFIELDNEAR, ( ZH_BYTE ) wVar, ZH_COMP_PARAM );
+   if( bPCode == ZH_P_PUSH_ALIASED_FIELD && wVar <= 255 )
+      zh_compGenPCode2( ZH_P_PUSH_ALIASED_FIELDNEAR, ( ZH_BYTE ) wVar, ZH_COMP_PARAM );
    else if( bPCode == ZH_P_POPALIASEDFIELD && wVar <= 255 )
       zh_compGenPCode2( ZH_P_POPALIASEDFIELDNEAR, ( ZH_BYTE ) wVar, ZH_COMP_PARAM );
    else
@@ -2554,7 +2526,7 @@ static void zh_compGenFieldPCode( ZH_COMP_DECL, ZH_BYTE bPCode, PZH_HVAR pField 
       if( bPCode == ZH_P_POPFIELD )
          bPCode = ZH_P_POPALIASEDFIELD;
       else if( bPCode == ZH_P_PUSHFIELD )
-         bPCode = ZH_P_PUSHALIASEDFIELD;
+         bPCode = ZH_P_PUSH_ALIASED_FIELD;
 
       zh_compGenPushSymbol( pField->szAlias, ZH_SYM_ALIAS, ZH_COMP_PARAM );
    }
@@ -2919,13 +2891,13 @@ void zh_compGenPushAliasedVar( const char * szVarName,
          {
             /* database alias */
             zh_compGenPushSymbol( szAlias, ZH_SYM_ALIAS, ZH_COMP_PARAM );
-            zh_compGenVarPCode( ZH_P_PUSHALIASEDFIELD, szVarName, ZH_COMP_PARAM );
+            zh_compGenVarPCode( ZH_P_PUSH_ALIASED_FIELD, szVarName, ZH_COMP_PARAM );
          }
       }
       else
       {
          zh_compGenPushLong( nWorkarea, ZH_COMP_PARAM );
-         zh_compGenVarPCode( ZH_P_PUSHALIASEDFIELD, szVarName, ZH_COMP_PARAM );
+         zh_compGenVarPCode( ZH_P_PUSH_ALIASED_FIELD, szVarName, ZH_COMP_PARAM );
       }
    }
    else
@@ -3058,7 +3030,7 @@ void zh_compGenPushDate( long lDate, ZH_COMP_DECL )
 {
    ZH_BYTE pBuffer[ 5 ];
 
-   pBuffer[ 0 ] = ZH_P_PUSHDATE;
+   pBuffer[ 0 ] = ZH_P_PUSH_DATE;
    ZH_PUT_LE_UINT32( pBuffer + 1, lDate );
    zh_compGenPCodeN( pBuffer, sizeof( pBuffer ), ZH_COMP_PARAM );
 }
@@ -3085,7 +3057,7 @@ void zh_compGenPushString( const char * szText, ZH_SIZE nStrLen, ZH_COMP_DECL )
          zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_STRING_TOO_LONG, NULL, NULL );
       else
       {
-         zh_compGenPCode4( ZH_P_PUSHSTRHIDDEN, ( ZH_BYTE ) ZH_COMP_PARAM->iHidden,
+         zh_compGenPCode4( ZH_P_PUSH_STR_HIDDEN, ( ZH_BYTE ) ZH_COMP_PARAM->iHidden,
                            ZH_LOBYTE( nStrLen ), ZH_HIBYTE( nStrLen ), ZH_COMP_PARAM );
          zh_compGenPCodeN( ( ZH_BYTE * ) szTemp, nStrLen, ZH_COMP_PARAM );
       }
@@ -3534,7 +3506,7 @@ void zh_compCodeBlockEnd( ZH_COMP_DECL )
          if( ZH_COMP_PARAM->iWarnings >= 1 )
             zh_compGenWarning( ZH_COMP_PARAM, zh_comp_szWarnings, 'W', ZH_COMP_WARN_FUN_WITH_NO_RETURN,
                                "{||...}", NULL );
-         /* finish the codeblock without popping the return value from HVM stack */
+         /* finish the codeblock without popping the return value from ZHVM stack */
          zh_compGenPCode1( ZH_P_ENDPROC, ZH_COMP_PARAM );
       }
    }
@@ -3594,19 +3566,19 @@ void zh_compCodeBlockEnd( ZH_COMP_DECL )
 
    if( nSize <= 255 && pCodeblock->wParamCount == 0 && wLocals == 0 )
    {
-      /* NOTE: 2 = ZH_P_PUSHBLOCK + ZH_BYTE( size ) */
-      zh_compGenPCode2( ZH_P_PUSHBLOCKSHORT, ( ZH_BYTE ) nSize, ZH_COMP_PARAM );
+      /* NOTE: 2 = ZH_P_PUSH_BLOCK + ZH_BYTE( size ) */
+      zh_compGenPCode2( ZH_P_PUSH_BLOCKSHORT, ( ZH_BYTE ) nSize, ZH_COMP_PARAM );
    }
    else
    {
-      /* NOTE: 8 = ZH_P_PUSHBLOCK + ZH_USHORT( size ) + ZH_USHORT( wParams ) + ZH_USHORT( wLocals ) + _ENDBLOCK */
+      /* NOTE: 8 = ZH_P_PUSH_BLOCK + ZH_USHORT( size ) + ZH_USHORT( wParams ) + ZH_USHORT( wLocals ) + _ENDBLOCK */
       nSize += 5 + wLocals * 2;
       if( nSize <= USHRT_MAX )
-         zh_compGenPCode3( ZH_P_PUSHBLOCK, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_COMP_PARAM );
+         zh_compGenPCode3( ZH_P_PUSH_BLOCK, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_COMP_PARAM );
       else if( nSize < UINT24_MAX )
       {
          ++nSize;
-         zh_compGenPCode4( ZH_P_PUSHBLOCKLARGE, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_ULBYTE( nSize ), ZH_COMP_PARAM );
+         zh_compGenPCode4( ZH_P_PUSH_BLOCKLARGE, ZH_LOBYTE( nSize ), ZH_HIBYTE( nSize ), ZH_ULBYTE( nSize ), ZH_COMP_PARAM );
       }
       else
          zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'E', ZH_COMP_ERR_BLOCK_TOO_BIG, NULL, NULL );

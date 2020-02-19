@@ -705,7 +705,7 @@ void zh_gcCollectAll( ZH_BOOL fForce )
 }
 
 
-/* MTNOTE: It's executed at the end of HVM cleanup code just before
+/* MTNOTE: It's executed at the end of ZHVM cleanup code just before
  *         application exit when other threads are destroyed, so it
  *         does not need additional protection code for MT mode, [druzus]
  */
@@ -759,7 +759,7 @@ ZH_FUNC( ZH_GCALL )
 {
    ZH_STACK_TLS_PRELOAD
 
-   /* call zh_ret() to clear stack return item, HVM does not clean
+   /* call zh_ret() to clear stack return item, ZHVM does not clean
     * it before calling functions/procedures if caller does not
     * try to retrieve returned value. It's safe and cost nearly
     * nothing in whole GC scan process. It may help when previously

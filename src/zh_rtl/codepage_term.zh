@@ -235,7 +235,7 @@ STATIC FUNCTION __CPStdToHb( cCPStd, cCtryStd )
          RETURN "UTF16LE"
       OTHERWISE
          aCP := zh_cdpList()
-         cCtryHb := __LangStdToCPCtryHb( cCtryStd )
+         cCtryHb := __LangStdToCPCtryZh( cCtryStd )
          FOR EACH cdp IN aCP
             IF zh_LeftEq( cdp, cCtryHb ) .AND. cCPStd == zh_cdpUniID( cdp )
                RETURN cdp
@@ -251,7 +251,7 @@ STATIC FUNCTION __CPStdToHb( cCPStd, cCtryStd )
 
    RETURN NIL
 
-STATIC FUNCTION __LangStdToCPCtryHb( cCtryStd )
+STATIC FUNCTION __LangStdToCPCtryZh( cCtryStd )
 
    SWITCH Lower( cCtryStd )
 #if 0
@@ -497,4 +497,4 @@ STATIC FUNCTION __LangStdToCPCtryHb( cCtryStd )
 #endif
    ENDSWITCH
 
-   RETURN Left( zh_cdpSelect(), 2 )  /* Caller assumes this never returns strings shorter than two chars */
+   RETURN Left( zh_codepageSelect(), 2 )  /* Caller assumes this never returns strings shorter than two chars */

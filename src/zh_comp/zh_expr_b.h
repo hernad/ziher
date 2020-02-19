@@ -2677,7 +2677,7 @@ static ZH_EXPR_FUNC( zh_compExprUseSend )
 
             if( fArgsList )
             {
-               ZH_GEN_FUNC3( PCode3, ZH_P_MACROSEND, ZH_LOBYTE( iParms ), ZH_HIBYTE( iParms ) );
+               ZH_GEN_FUNC3( PCode3, ZH_P_MACRO_SEND, ZH_LOBYTE( iParms ), ZH_HIBYTE( iParms ) );
                /* restore original expression type */
                pSelf->value.asMessage.pParms->ExprType = ZH_ET_ARGLIST;
             }

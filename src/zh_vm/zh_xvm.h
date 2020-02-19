@@ -59,7 +59,7 @@ ZH_EXTERN_BEGIN
  * executing so we have to check for break request flag. The return
  * value is ZH_TRUE when break request is set.
  * other functions does not execute error handler and we do not have
- * to check HVM state so they are simply declared as void.
+ * to check ZHVM state so they are simply declared as void.
  */
 
 extern ZH_EXPORT void    zh_xvmExitProc( void );
@@ -131,7 +131,7 @@ extern ZH_EXPORT ZH_BOOL zh_xvmSwapAlias( void );                  /* swaps item
 extern ZH_EXPORT ZH_BOOL zh_xvmLocalAddInt( int iLocal, ZH_LONG lAdd ); /* add integer to given local variable */
 extern ZH_EXPORT ZH_BOOL zh_xvmLocalInc( int iLocal );             /* increment given local variable */
 extern ZH_EXPORT ZH_BOOL zh_xvmLocalDec( int iLocal );             /* decrement given local variable */
-extern ZH_EXPORT ZH_BOOL zh_xvmLocalIncPush( int iLocal );         /* increment given local variable and push it on HVM stack */
+extern ZH_EXPORT ZH_BOOL zh_xvmLocalIncPush( int iLocal );         /* increment given local variable and push it on ZHVM stack */
 
 extern ZH_EXPORT ZH_BOOL zh_xvmAnd( void );
 extern ZH_EXPORT ZH_BOOL zh_xvmOr( void );

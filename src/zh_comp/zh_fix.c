@@ -58,7 +58,7 @@ typedef ZH_FIX_FUNC( ZH_FIX_FUNC_ );
 typedef ZH_FIX_FUNC_ * PZH_FIX_FUNC;
 
 
-static ZH_FIX_FUNC( zh_p_pushblock )
+static ZH_FIX_FUNC( zh_p_push_block )
 {
    ZH_BYTE * pLocal = &pFunc->pCode[ nPCodePos + 7 ];
    ZH_USHORT wVar;
@@ -83,7 +83,7 @@ static ZH_FIX_FUNC( zh_p_pushblock )
    return ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
 }
 
-static ZH_FIX_FUNC( zh_p_pushblocklarge )
+static ZH_FIX_FUNC( zh_p_push_blocklarge )
 {
    ZH_BYTE * pLocal = &pFunc->pCode[ nPCodePos + 8 ];
    ZH_USHORT wVar;
@@ -199,9 +199,9 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    NULL,                       /* ZH_P_MPOPALIASEDVAR        */
    NULL,                       /* ZH_P_MPOPFIELD             */
    NULL,                       /* ZH_P_MPOPMEMVAR            */
-   NULL,                       /* ZH_P_MPUSHALIASEDFIELD     */
+   NULL,                       /* ZH_P_MPUSH_ALIASED_FIELD     */
    NULL,                       /* ZH_P_MPUSHALIASEDVAR       */
-   NULL,                       /* ZH_P_MPUSHBLOCK            */
+   NULL,                       /* ZH_P_MPUSH_BLOCK            */
    NULL,                       /* ZH_P_MPUSHFIELD            */
    NULL,                       /* ZH_P_MPUSHMEMVAR           */
    NULL,                       /* ZH_P_MPUSHMEMVARREF        */
@@ -229,11 +229,11 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    NULL,                       /* ZH_P_POPVARIABLE           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELD      */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    NULL,                       /* ZH_P_PUSHALIASEDVAR        */
-   zh_p_pushblock,             /* ZH_P_PUSHBLOCK             */
-   NULL,                       /* ZH_P_PUSHBLOCKSHORT        */
+   zh_p_push_block,             /* ZH_P_PUSH_BLOCK             */
+   NULL,                       /* ZH_P_PUSH_BLOCKSHORT        */
    NULL,                       /* ZH_P_PUSHFIELD             */
    NULL,                       /* ZH_P_PUSHBYTE              */
    NULL,                       /* ZH_P_PUSHINT               */
@@ -277,7 +277,7 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    NULL,                       /* ZH_P_ENUMPREV              */
    NULL,                       /* ZH_P_ENUMEND               */
    NULL,                       /* ZH_P_SWITCH                */
-   NULL,                       /* ZH_P_PUSHDATE              */
+   NULL,                       /* ZH_P_PUSH_DATE              */
    NULL,                       /* ZH_P_PLUSEQPOP             */
    NULL,                       /* ZH_P_MINUSEQPOP            */
    NULL,                       /* ZH_P_MULTEQPOP             */
@@ -289,22 +289,22 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    NULL,                       /* ZH_P_WITHOBJECTSTART       */
    NULL,                       /* ZH_P_WITHOBJECTMESSAGE     */
    NULL,                       /* ZH_P_WITHOBJECTEND         */
-   NULL,                       /* ZH_P_MACROSEND             */
+   NULL,                       /* ZH_P_MACRO_SEND             */
    NULL,                       /* ZH_P_PUSHOVARREF           */
    NULL,                       /* ZH_P_ARRAYPUSHREF          */
    NULL,                       /* ZH_P_VFRAME                */
    NULL,                       /* ZH_P_LARGEFRAME            */
    NULL,                       /* ZH_P_LARGEVFRAME           */
-   NULL,                       /* ZH_P_PUSHSTRHIDDEN         */
+   NULL,                       /* ZH_P_PUSH_STR_HIDDEN         */
    zh_p_localfix,              /* ZH_P_LOCALADDINT           */
    NULL,                       /* ZH_P_MODEQPOP              */
    NULL,                       /* ZH_P_EXPEQPOP              */
    NULL,                       /* ZH_P_MODEQ                 */
    NULL,                       /* ZH_P_EXPEQ                 */
    NULL,                       /* ZH_P_DUPLUNREF             */
-   NULL,                       /* ZH_P_MPUSHBLOCKLARGE       */
+   NULL,                       /* ZH_P_MPUSH_BLOCKLARGE       */
    NULL,                       /* ZH_P_MPUSHSTRLARGE         */
-   zh_p_pushblocklarge,        /* ZH_P_PUSHBLOCKLARGE        */
+   zh_p_push_blocklarge,        /* ZH_P_PUSH_BLOCKLARGE        */
    NULL,                       /* ZH_P_PUSHSTRLARGE          */
    NULL,                       /* ZH_P_SWAP                  */
    NULL,                       /* ZH_P_PUSHVPARAMS           */

@@ -88,7 +88,7 @@
  *    zh_dbg_vmVarGGet( int, int )       dbgentry.c
  *
  *
- * Information from HVM send to debugger by __dbgEntry()
+ * Information from ZHVM send to debugger by __dbgEntry()
  *    ZH_DBG_MODULENAME, cName
  *    ZH_DBG_STATICNAME, nBase,  nIndex, cName
  *    ZH_DBG_LOCALNAME,  nIndex, cName

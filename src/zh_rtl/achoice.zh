@@ -506,12 +506,6 @@ FUNCTION AChoice( nTop, nLeft, nBottom, nRight, acItems, xSelect, xUserFunc, nPo
 
             IF nPos > 0 .AND. nMode != AC_EXCEPT
 
-#if 0
-               /* TODO: Disabled nRowsClr in DispPage() call:
-                  Please verify it, I do not know why it was added but
-                  it breaks code which adds dynamically new acItems positions */
-               nRowsClr := Min( nNumRows, nItems )
-#endif
                IF ( nMode := Ach_Limits( @nFrstItem, @nLastItem, @nItems, alSelect, acItems ) ) == AC_NOITEM
                   nPos := 0
                   nAtTop := Max( 1, nPos - nNumRows + 1 )

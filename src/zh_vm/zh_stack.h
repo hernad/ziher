@@ -152,7 +152,7 @@ typedef struct
    ZH_ISIZ    nWithObject;    /* stack offset to base current WITH OBJECT item */
    ZH_ISIZ    nRecoverBase;   /* current SEQUENCE envelope offset or 0 if no SEQUENCE is active */
    ZH_USHORT  uiActionRequest;/* request for some action - stop processing of opcodes */
-   ZH_USHORT  uiQuitState;    /* HVM is quitting */
+   ZH_USHORT  uiQuitState;    /* ZHVM is quitting */
    ZH_STACK_STATE state;      /* first (default) stack state frame */
    ZH_STACKRDD rdd;           /* RDD related data */
    char       szDate[ 9 ];    /* last returned date from zh_pards() YYYYMMDD format */

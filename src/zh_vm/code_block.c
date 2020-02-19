@@ -113,7 +113,7 @@ static const ZH_GC_FUNCS s_gcCodeblockFuncs =
 
 /* Creates the codeblock structure
  *
- * pBuffer -> the buffer with pcodes (without ZH_P_PUSHBLOCK)
+ * pBuffer -> the buffer with pcodes (without ZH_P_PUSH_BLOCK)
  * wLocals -> number of local variables referenced in a codeblock
  * pLocalPosTable -> a table with positions on eval stack for referenced variables
  * pSymbols    -> a pointer to the module symbol table

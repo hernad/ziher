@@ -46,25 +46,25 @@ static ZH_PSIZE_FUNC( zh_p_pushstrlarge )
    return 4 + ZH_PCODE_MKUINT24( &pFunc->pCode[ nPCodePos + 1 ] );
 }
 
-static ZH_PSIZE_FUNC( zh_p_pushstrhidden )
+static ZH_PSIZE_FUNC( zh_p_push_str_hidden )
 {
    ZH_SYMBOL_UNUSED( cargo );
    return 4 + ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 2 ] );
 }
 
-static ZH_PSIZE_FUNC( zh_p_pushblock )
+static ZH_PSIZE_FUNC( zh_p_push_block )
 {
    ZH_SYMBOL_UNUSED( cargo );
    return ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
 }
 
-static ZH_PSIZE_FUNC( zh_p_pushblockshort )
+static ZH_PSIZE_FUNC( zh_p_push_blockshort )
 {
    ZH_SYMBOL_UNUSED( cargo );
    return pFunc->pCode[ nPCodePos + 1 ];
 }
 
-static ZH_PSIZE_FUNC( zh_p_pushblocklarge )
+static ZH_PSIZE_FUNC( zh_p_push_blocklarge )
 {
    ZH_SYMBOL_UNUSED( cargo );
    return ZH_PCODE_MKUINT24( &pFunc->pCode[ nPCodePos + 1 ] );
@@ -171,9 +171,9 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    3,        /* ZH_P_MPOPALIASEDVAR        */
    3,        /* ZH_P_MPOPFIELD             */
    3,        /* ZH_P_MPOPMEMVAR            */
-   3,        /* ZH_P_MPUSHALIASEDFIELD     */
+   3,        /* ZH_P_MPUSH_ALIASED_FIELD     */
    3,        /* ZH_P_MPUSHALIASEDVAR       */
-   0,        /* ZH_P_MPUSHBLOCK            */
+   0,        /* ZH_P_MPUSH_BLOCK            */
    3,        /* ZH_P_MPUSHFIELD            */
    3,        /* ZH_P_MPUSHMEMVAR           */
    3,        /* ZH_P_MPUSHMEMVARREF        */
@@ -201,11 +201,11 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    3,        /* ZH_P_POPVARIABLE           */
    1,        /* ZH_P_POWER                 */
    1,        /* ZH_P_PUSHALIAS             */
-   3,        /* ZH_P_PUSHALIASEDFIELD      */
-   2,        /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   3,        /* ZH_P_PUSH_ALIASED_FIELD      */
+   2,        /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    3,        /* ZH_P_PUSHALIASEDVAR        */
-   0,        /* ZH_P_PUSHBLOCK             */
-   0,        /* ZH_P_PUSHBLOCKSHORT        */
+   0,        /* ZH_P_PUSH_BLOCK             */
+   0,        /* ZH_P_PUSH_BLOCKSHORT        */
    3,        /* ZH_P_PUSHFIELD             */
    2,        /* ZH_P_PUSHBYTE              */
    3,        /* ZH_P_PUSHINT               */
@@ -249,7 +249,7 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    1,        /* ZH_P_ENUMPREV              */
    1,        /* ZH_P_ENUMEND               */
    3,        /* ZH_P_SWITCH                */
-   5,        /* ZH_P_PUSHDATE              */
+   5,        /* ZH_P_PUSH_DATE              */
              /* optimization of inlined math operations */
    1,        /* ZH_P_PLUSEQPOP             */
    1,        /* ZH_P_MINUSEQPOP            */
@@ -262,22 +262,22 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    1,        /* ZH_P_WITHOBJECTSTART       */
    3,        /* ZH_P_WITHOBJECTMESSAGE     */
    1,        /* ZH_P_WITHOBJECTEND         */
-   3,        /* ZH_P_MACROSEND             */
+   3,        /* ZH_P_MACRO_SEND             */
    1,        /* ZH_P_PUSHOVARREF           */
    1,        /* ZH_P_ARRAYPUSHREF          */
    3,        /* ZH_P_VFRAME                */
    4,        /* ZH_P_LARGEFRAME            */
    4,        /* ZH_P_LARGEVFRAME           */
-   0,        /* ZH_P_PUSHSTRHIDDEN         */
+   0,        /* ZH_P_PUSH_STR_HIDDEN         */
    5,        /* ZH_P_LOCALADDINT           */
    1,        /* ZH_P_MODEQPOP              */
    1,        /* ZH_P_EXPEQPOP              */
    1,        /* ZH_P_MODEQ                 */
    1,        /* ZH_P_EXPEQ                 */
    1,        /* ZH_P_DUPLUNREF             */
-   0,        /* ZH_P_MPUSHBLOCKLARGE       */
+   0,        /* ZH_P_MPUSH_BLOCKLARGE       */
    0,        /* ZH_P_MPUSHSTRLARGE         */
-   0,        /* ZH_P_PUSHBLOCKLARGE        */
+   0,        /* ZH_P_PUSH_BLOCKLARGE        */
    0,        /* ZH_P_PUSHSTRLARGE          */
    2,        /* ZH_P_SWAP                  */
    1,        /* ZH_P_PUSHVPARAMS           */
@@ -363,9 +363,9 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_MPOPALIASEDVAR        */
    NULL,                       /* ZH_P_MPOPFIELD             */
    NULL,                       /* ZH_P_MPOPMEMVAR            */
-   NULL,                       /* ZH_P_MPUSHALIASEDFIELD     */
+   NULL,                       /* ZH_P_MPUSH_ALIASED_FIELD     */
    NULL,                       /* ZH_P_MPUSHALIASEDVAR       */
-   NULL,                       /* ZH_P_MPUSHBLOCK            */
+   NULL,                       /* ZH_P_MPUSH_BLOCK            */
    NULL,                       /* ZH_P_MPUSHFIELD            */
    NULL,                       /* ZH_P_MPUSHMEMVAR           */
    NULL,                       /* ZH_P_MPUSHMEMVARREF        */
@@ -393,11 +393,11 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_POPVARIABLE           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELD      */
-   NULL,                       /* ZH_P_PUSHALIASEDFIELDNEAR  */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
+   NULL,                       /* ZH_P_PUSH_ALIASED_FIELDNEAR  */
    NULL,                       /* ZH_P_PUSHALIASEDVAR        */
-   zh_p_pushblock,             /* ZH_P_PUSHBLOCK             */
-   zh_p_pushblockshort,        /* ZH_P_PUSHBLOCKSHORT        */
+   zh_p_push_block,             /* ZH_P_PUSH_BLOCK             */
+   zh_p_push_blockshort,        /* ZH_P_PUSH_BLOCKSHORT        */
    NULL,                       /* ZH_P_PUSHFIELD             */
    NULL,                       /* ZH_P_PUSHBYTE              */
    NULL,                       /* ZH_P_PUSHINT               */
@@ -441,7 +441,7 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_ENUMPREV              */
    NULL,                       /* ZH_P_ENUMEND               */
    NULL,                       /* ZH_P_SWITCH                */
-   NULL,                       /* ZH_P_PUSHDATE              */
+   NULL,                       /* ZH_P_PUSH_DATE              */
                                /* optimization of inlined math operations */
    NULL,                       /* ZH_P_PLUSEQPOP             */
    NULL,                       /* ZH_P_MINUSEQPOP            */
@@ -454,22 +454,22 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_WITHOBJECTSTART       */
    NULL,                       /* ZH_P_WITHOBJECTMESSAGE     */
    NULL,                       /* ZH_P_WITHOBJECTEND         */
-   NULL,                       /* ZH_P_MACROSEND             */
+   NULL,                       /* ZH_P_MACRO_SEND             */
    NULL,                       /* ZH_P_PUSHOVARREF           */
    NULL,                       /* ZH_P_ARRAYPUSHREF          */
    NULL,                       /* ZH_P_VFRAME                */
    NULL,                       /* ZH_P_LARGEFRAME            */
    NULL,                       /* ZH_P_LARGEVFRAME           */
-   zh_p_pushstrhidden,         /* ZH_P_PUSHSTRHIDDEN         */
+   zh_p_push_str_hidden,         /* ZH_P_PUSH_STR_HIDDEN         */
    NULL,                       /* ZH_P_LOCALADDINT           */
    NULL,                       /* ZH_P_MODEQPOP              */
    NULL,                       /* ZH_P_EXPEQPOP              */
    NULL,                       /* ZH_P_MODEQ                 */
    NULL,                       /* ZH_P_EXPEQ                 */
    NULL,                       /* ZH_P_DUPLUNREF             */
-   NULL,                       /* ZH_P_MPUSHBLOCKLARGE       */
+   NULL,                       /* ZH_P_MPUSH_BLOCKLARGE       */
    NULL,                       /* ZH_P_MPUSHSTRLARGE         */
-   zh_p_pushblocklarge,        /* ZH_P_PUSHBLOCKLARGE        */
+   zh_p_push_blocklarge,        /* ZH_P_PUSH_BLOCKLARGE        */
    zh_p_pushstrlarge,          /* ZH_P_PUSHSTRLARGE          */
    NULL,                       /* ZH_P_SWAP                  */
    NULL,                       /* ZH_P_PUSHVPARAMS           */
@@ -545,19 +545,6 @@ void zh_compPCodeEval( PZH_ZFUNC pFunc, const PZH_PCODE_FUNC * pFunctions, void 
             zh_snprintf( szOpcode, sizeof( szOpcode ), "%i", opcode );
             zh_errInternal( ZH_EI_COMPBADOPSIZE, "Invalid (zero) opcode %s size in zh_compPCodeEval()", szOpcode, NULL );
          }
-#if 0
-         /*
-          * Test code to validate return values by PCODE eval functions,
-          * in some cases the eval functions can return intentionally differ
-          * values so it's not enabled by default. [druzus]
-          */
-         if( zh_comp_pcode_len[ opcode ] != 0 && zh_comp_pcode_len[ opcode ] != nSkip )
-         {
-            char szMsg[ 100 ];
-            zh_snprintf( szMsg, sizeof( szMsg ), "Wrong PCODE (%d) size (%ld!=%d)", opcode, nSkip, zh_comp_pcode_len[ opcode ] );
-            zh_errInternal( ZH_EI_COMPBADOPSIZE, szMsg, NULL, NULL );
-         }
-#endif
          nPos += nSkip;
       }
       else

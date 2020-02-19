@@ -51,12 +51,12 @@
 
 #define ZH_ZZH_BIND_DEFAULT      0x0   /* do not overwrite any functions, ignore
                                           public ZHB functions if functions with
-                                          the same names already exist in HVM */
+                                          the same names already exist in ZHVM */
 
 #define ZH_ZZH_BIND_LOCAL        0x1   /* do not overwrite any functions
                                           but keep local references, so
                                           if module has public function FOO and
-                                          this function exists also in HVM
+                                          this function exists also in ZHVM
                                           then the function in ZHB is converted
                                           to STATIC one */
 

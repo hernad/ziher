@@ -535,7 +535,7 @@ static PZZH_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
          }
          else
          {
-            /* mark symbol table as dynamically allocated so HVM will free it on exit */
+            /* mark symbol table as dynamically allocated so ZHVM will free it on exit */
             pHrbBody->pModuleSymbols->fAllocated = ZH_TRUE;
 
             /* initialize static variables */

@@ -281,7 +281,7 @@ PZH_DYNS zh_dynsymNew( PZH_SYMB pSymbol )
              */
             if( pSymbol->scope.value & ZH_FS_PCODEFUNC )
             {
-               /* It's dynamic module so we are guessing that HVM
+               /* It's dynamic module so we are guessing that ZHVM
                 * intentionally not updated function address allowing
                 * multiple functions, e.g. programmer asked about keeping
                 * local references using zh_libLoad()/zh_zhbLoad() parameter.

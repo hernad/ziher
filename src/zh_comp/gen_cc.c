@@ -1074,7 +1074,7 @@ static ZH_GENC_FUNC( zh_p_pushaliasedvar )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblockshort )
+static ZH_GENC_FUNC( zh_p_push_blockshort )
 {
    ZH_USHORT usSize, us;
 
@@ -1099,7 +1099,7 @@ static ZH_GENC_FUNC( zh_p_pushblockshort )
    return 2 + usSize;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblock )
+static ZH_GENC_FUNC( zh_p_push_block )
 {
    ZH_USHORT usSize, us;
 
@@ -1124,7 +1124,7 @@ static ZH_GENC_FUNC( zh_p_pushblock )
    return 3 + usSize;
 }
 
-static ZH_GENC_FUNC( zh_p_pushblocklarge )
+static ZH_GENC_FUNC( zh_p_push_blocklarge )
 {
    ZH_SIZE nSize, ul;
 
@@ -1153,13 +1153,7 @@ static ZH_GENC_FUNC( zh_p_pushdouble )
 {
    ZH_GENC_LABEL();
 
-#if 0
-   fprintf( cargo->yyc, "\tzh_xvmPushDouble( %.*f, %u, %u );\n",
-            pFunc->pCode[ nPCodePos + 1 + sizeof( double ) + sizeof( ZH_BYTE ) ] + 1,
-            ZH_PCODE_MKDOUBLE( &pFunc->pCode[ nPCodePos + 1 ] ),
-            pFunc->pCode[ nPCodePos + 1 + sizeof( double ) ],
-            pFunc->pCode[ nPCodePos + 1 + sizeof( double ) + sizeof( ZH_BYTE ) ] );
-#else
+
    /*
     * This version keeps double calculation compatible with RT FL functions
     */
@@ -1171,7 +1165,7 @@ static ZH_GENC_FUNC( zh_p_pushdouble )
    fprintf( cargo->yyc, ", %u, %u );\n",
             pFunc->pCode[ nPCodePos + 1 + sizeof( double ) ],
             pFunc->pCode[ nPCodePos + 1 + sizeof( double ) + sizeof( ZH_BYTE ) ] );
-#endif
+
    return sizeof( double ) + sizeof( ZH_BYTE ) + sizeof( ZH_BYTE ) + 1;
 }
 
@@ -1438,7 +1432,7 @@ static ZH_GENC_FUNC( zh_p_pushstrlarge )
    return 5 + nLen;
 }
 
-static ZH_GENC_FUNC( zh_p_pushstrhidden )
+static ZH_GENC_FUNC( zh_p_push_str_hidden )
 {
    ZH_SIZE nLen = ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 2 ] );
 
@@ -1462,13 +1456,13 @@ static ZH_GENC_FUNC( zh_p_pushsym )
             fprintf( cargo->yyc, "\tzh_xvmPushFuncSymbol( symbols + %hu );\n",
                      ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] ) );
             return 4;
-         case ZH_P_PUSHALIASEDFIELDNEAR:
+         case ZH_P_PUSH_ALIASED_FIELDNEAR:
             fprintf( cargo->yyc,
                      "\tif( zh_xvmPushAliasedFieldExt( symbols + %u, symbols + %u ) ) break;\n",
                      ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] ),
                      pFunc->pCode[ nPCodePos + 4 ] );
             return 5;
-         case ZH_P_PUSHALIASEDFIELD:
+         case ZH_P_PUSH_ALIASED_FIELD:
             fprintf( cargo->yyc,
                      "\tif( zh_xvmPushAliasedFieldExt( symbols + %u, symbols + %u ) ) break;\n",
                      ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] ),
@@ -1506,13 +1500,13 @@ static ZH_GENC_FUNC( zh_p_pushsymnear )
             fprintf( cargo->yyc, "\tzh_xvmPushFuncSymbol( symbols + %u );\n",
                      pFunc->pCode[ nPCodePos + 1 ] );
             return 3;
-         case ZH_P_PUSHALIASEDFIELDNEAR:
+         case ZH_P_PUSH_ALIASED_FIELDNEAR:
             fprintf( cargo->yyc,
                      "\tif( zh_xvmPushAliasedFieldExt( symbols + %u, symbols + %u ) ) break;\n",
                      pFunc->pCode[ nPCodePos + 1 ],
                      pFunc->pCode[ nPCodePos + 3 ] );
             return 4;
-         case ZH_P_PUSHALIASEDFIELD:
+         case ZH_P_PUSH_ALIASED_FIELD:
             fprintf( cargo->yyc,
                      "\tif( zh_xvmPushAliasedFieldExt( symbols + %u, symbols + %u ) ) break;\n",
                      pFunc->pCode[ nPCodePos + 1 ],
@@ -2296,8 +2290,8 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_pushaliasedfield,
    zh_p_pushaliasedfieldnear,
    zh_p_pushaliasedvar,
-   zh_p_pushblock,
-   zh_p_pushblockshort,
+   zh_p_push_block,
+   zh_p_push_blockshort,
    zh_p_pushfield,
    zh_p_pushbyte,
    zh_p_pushint,
@@ -2362,7 +2356,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_vframe,
    zh_p_largeframe,
    zh_p_largevframe,
-   zh_p_pushstrhidden,
+   zh_p_push_str_hidden,
    zh_p_localaddint,
    zh_p_modeqpop,
    zh_p_expeqpop,
@@ -2371,7 +2365,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_duplunref,
    zh_p_dummy,
    zh_p_dummy,
-   zh_p_pushblocklarge,
+   zh_p_push_blocklarge,
    zh_p_pushstrlarge,
    zh_p_swap,
    zh_p_pushvparams,
