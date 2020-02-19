@@ -1,5 +1,5 @@
 /*
- * zh_ValToStr() function
+ * ValToStr() function
  *
  * Copyright 1999 David G. Holm <dholm@jsd-llc.com>
  *
@@ -48,7 +48,7 @@
 #include "zh_item_api.h"
 #include "zh_api_error.h"
 
-ZH_FUNC( ZH_VALTOSTR )
+ZH_FUNC( VALTOSTR )
 {
    PZH_ITEM pItem = zh_param( 1, ZH_IT_ANY );
 

@@ -340,7 +340,7 @@ FUNCTION zh_LogRddValueToText( uValue )
    CASE "C"  ; cText := zh_StrToExp( uValue ) ; EXIT
    CASE "N"  ; cText := zh_ntos( uValue ) ; EXIT
    CASE "D"  ; cText := "0d" + iif( Empty( uValue ), "0", DToS( uValue ) ) ; EXIT
-   OTHERWISE ; cText := zh_ValToStr( uValue )
+   OTHERWISE ; cText := ValToStr( uValue )
    ENDSWITCH
 
    RETURN "[" + cType + "]>>>" + cText + "<<<"
