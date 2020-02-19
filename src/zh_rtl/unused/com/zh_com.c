@@ -966,16 +966,6 @@ int zh_comSendBreak( int iPort, int iDurationInMilliSecs )
 #elif defined( CRTSXOFF )
    #define _ZH_OCRTSCTS       0
    #define _ZH_ICRTSCTS       CRTSXOFF
-#else
-   /* if you find compiler which does not support it then please check
-    * if such flow control is supported by OS. If yes then check exact
-    * value for this switch on given OS and define it only for given
-    * compiler and OS
-    */
-   #if defined( ZH_OS_LINUX ) && defined( __WATCOMC__ )
-      #define _ZH_OCRTSCTS    020000000000
-      #define _ZH_ICRTSCTS    020000000000
-   #endif
 #endif
 
 int zh_comFlowControl( int iPort, int * piFlow, int iFlow )

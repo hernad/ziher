@@ -410,10 +410,6 @@ static void zh_mspace_cleanup( void )
 
 #elif defined( ZH_FM_DL_ALLOC ) && defined( USE_DL_PREFIX )
 
-#if defined( __WATCOMC__ )
-#  pragma warning 367 9
-#endif
-
 static void dlmalloc_destroy( void )
 {
    if( ok_magic( gm ) )
@@ -431,9 +427,6 @@ static void dlmalloc_destroy( void )
    }
 }
 
-#if defined( __WATCOMC__ )
-#  pragma warning 367 2
-#endif
 
 #endif
 

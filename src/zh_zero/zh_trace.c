@@ -57,10 +57,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-#elif defined( ZH_OS_UNIX ) && \
-   ! defined( __WATCOMC__ ) && \
-   ! defined( ZH_OS_VXWORKS ) && \
-   ! defined( ZH_OS_QNX_BB10 )
+#elif defined( ZH_OS_UNIX )
    #include <syslog.h>
 #endif
 
@@ -259,11 +256,7 @@ static void zh_tracelog_( int level, const char * file, int line, const char * p
 
    if( s_sysout > 0 )
    {
-#if ( defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE ) ) || \
-      ( defined( ZH_OS_UNIX ) && \
-      ! defined( __WATCOMC__ ) && \
-      ! defined( ZH_OS_VXWORKS ) && \
-      ! defined( ZH_OS_QNX_BB10 ) )
+#if  defined( ZH_OS_WIN ) || defined( ZH_OS_UNIX )
 
       char message[ 1024 ];
 

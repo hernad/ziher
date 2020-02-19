@@ -229,8 +229,7 @@ extern ZH_EXPORT int        zh_fsCanWrite    ( ZH_FHANDLE hFileHandle, ZH_MAXINT
 #  define ZH_SHARELOCK_SIZE         0x1UL
 #  if defined( ZH_USE_BSDLOCKS_OFF )
 #     undef ZH_USE_BSDLOCKS
-#  elif defined( ZH_OS_LINUX ) && \
-        ! defined( __WATCOMC__ ) && ! defined( ZH_USE_BSDLOCKS )
+#  elif defined( ZH_OS_LINUX )
       /* default usage of BSD locks in *BSD systems for emulating
        * MS-DOS/Windows DENY_* flags has been disabled because tests
        * on FreeBSD 6.2 and macOS shows that this implementation

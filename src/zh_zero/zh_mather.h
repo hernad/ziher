@@ -52,32 +52,6 @@
 
 ZH_EXTERN_BEGIN
 
-#if defined( __WATCOMC__ )
-   #define ZH_MATH_HANDLER
-   #if __WATCOMC__ > 1000  /* && defined( __cplusplus ) */
-      #define exception _exception
-   #endif
-#elif defined( __BORLANDC__ )
-   #define ZH_MATH_HANDLER
-   #define matherr _matherr
-   #if __BORLANDC__ >= 0x0550  /* && defined( __cplusplus ) */
-      #define exception _exception
-   #endif
-#elif defined( __MINGW32CE__ )
-   #define ZH_MATH_HANDLER
-   #define matherr _matherr
-   #define exception _exception
-/* it seems that MinGW has some problem with MATH HANDLER
-   use ZH_MATH_ERRNO instead */
-#elif defined( __MINGW32__ ) && 0
-   #define ZH_MATH_HANDLER
-   #define matherr _matherr
-   #define exception _exception
-#elif defined( __DJGPP__ )
-   #if ! defined( __cplusplus )
-      #define ZH_MATH_HANDLER
-   #endif
-#endif
 
 #if ! defined( ZH_MATH_HANDLER ) && \
     ( defined( __GNUC__ ) || defined( ZH_OS_UNIX ) )

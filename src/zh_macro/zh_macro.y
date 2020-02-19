@@ -116,12 +116,7 @@
       YYABORT; \
    }
 
-#if defined( __BORLANDC__ ) || defined( __WATCOMC__ )
-/* The if() inside this macro is always TRUE but it's used to hide BCC warning */
-#define ZH_MACRO_ABORT if( !( ZH_MACRO_DATA->status & ZH_MACRO_CONT ) ) { YYABORT; }
-#else
 #define ZH_MACRO_ABORT { YYABORT; }
-#endif
 
 %}
 

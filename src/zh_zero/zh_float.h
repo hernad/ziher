@@ -66,10 +66,8 @@
 
 
 #  include <math.h>
-#  if defined( __BORLANDC__ ) || defined( __WATCOMC__ ) || defined( _MSC_VER ) || defined( ZH_OS_MINIX )
+#  if defined( _MSC_VER )
 #     include <float.h>
-#  elif defined( ZH_OS_SUNOS )
-#     include <ieeefp.h>    /* for finite() */
 #  endif
 
 
@@ -148,10 +146,7 @@
 #     define zh_isfinite( d )       isfinite( d )
 #  elif defined( _MSC_VER )
 #     define zh_isfinite( d )       _finite( ( double ) d )
-#  elif defined( __BORLANDC__ ) || defined( __WATCOMC__ )
-#     define zh_isfinite( d )       _finite( d )
-#  elif defined( __GNUC__ ) || defined( __DJGPP__ ) || \
-      defined( ZH_OS_SUNOS )
+#  elif defined( __GNUC__ )
 #     define zh_isfinite( d )       finite( d )
 #  endif
 

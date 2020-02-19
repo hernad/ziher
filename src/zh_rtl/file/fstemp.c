@@ -89,7 +89,7 @@
        * functions on 32-bit machines.
        */
       #define ZH_USE_LARGEFILE64
-   #elif defined( ZH_OS_UNIX ) && defined( O_LARGEFILE ) && ! defined( __WATCOMC__ )
+   #elif defined( ZH_OS_UNIX ) && defined( O_LARGEFILE )
       #define ZH_USE_LARGEFILE64
    #endif
 #endif

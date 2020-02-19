@@ -81,13 +81,10 @@
 #define _WIN32_WINNT  0x0600 /* for zh_gt_win_SetPalette_Vista() */
 
 #include <windows.h>
-#if defined( ZH_OS_WIN_CE )
-#  include "hbwince.h"
-#endif
 
 #include <wincon.h>
 
-#if defined( _MSC_VER ) || defined( __WATCOMC__ )
+#if defined( _MSC_VER )
 #  include <conio.h>
 #endif
 
@@ -95,9 +92,8 @@
 #  define ZH_GTWIN_USE_SETCONSOLEMENUCLOSE  /* Enable undocumented Windows API function call */
 #endif
 
-#if ! defined( __WATCOMC__ ) || ( __WATCOMC__ < 1280 )
-   typedef struct _ZH_CONSOLE_SCREEN_BUFFER_INFOEX
-   {
+typedef struct _ZH_CONSOLE_SCREEN_BUFFER_INFOEX
+{
       ULONG cbSize;
       COORD dwSize;
       COORD dwCursorPosition;
@@ -107,12 +103,12 @@
       WORD wPopupAttributes;
       BOOL bFullscreenSupported;
       COLORREF ColorTable[ 16 ];
-   } ZH_CONSOLE_SCREEN_BUFFER_INFOEX, * ZH_PCONSOLE_SCREEN_BUFFER_INFOEX;
+} ZH_CONSOLE_SCREEN_BUFFER_INFOEX, * ZH_PCONSOLE_SCREEN_BUFFER_INFOEX;
    #undef CONSOLE_SCREEN_BUFFER_INFOEX
    #undef PCONSOLE_SCREEN_BUFFER_INFOEX
    #define CONSOLE_SCREEN_BUFFER_INFOEX  ZH_CONSOLE_SCREEN_BUFFER_INFOEX
    #define PCONSOLE_SCREEN_BUFFER_INFOEX ZH_PCONSOLE_SCREEN_BUFFER_INFOEX
-#endif
+
 #if ! defined( ZH_GTWIN_USE_PCONSOLEINFOEX )
 #  define ZH_GTWIN_USE_PCONSOLEINFOEX
 #endif

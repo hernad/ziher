@@ -55,9 +55,7 @@
 #if defined( ZH_OS_UNIX )
 #  include <unistd.h>
 #  include <sys/types.h>
-#  if defined( __WATCOMC__ ) || defined( __CEGCC__ ) || defined( ZH_OS_VXWORKS )
-#     include <sys/stat.h>
-#  elif defined( ZH_OS_ANDROID )
+#  if defined( ZH_OS_ANDROID )
 #     include <sys/statfs.h>
 #  elif defined( ZH_OS_DARWIN )
 #     include <sys/param.h>

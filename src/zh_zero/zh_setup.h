@@ -474,8 +474,7 @@
 
 #if defined( __GNUC__ ) || defined( __SUNPRO_C )
    #define _ZH_INLINE_  __inline__
-#elif defined( __BORLANDC__ ) || defined( _MSC_VER ) || \
-      defined( __WATCOMC__ ) || defined( __POCC__ )
+#elif defined( _MSC_VER )
    #define _ZH_INLINE_  __inline
 #else /* __cplusplus */
    #define _ZH_INLINE_  inline

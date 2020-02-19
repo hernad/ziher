@@ -53,13 +53,11 @@
 #  include <windows.h>
 #elif defined( ZH_OS_DARWIN )
 #  include <libkern/OSAtomic.h>
-#elif defined( ZH_OS_SUNOS )
-#  include <atomic.h>
 #endif
 #if defined( __SVR4 )
 #  include <thread.h>
 #endif
-#if defined( ZH_OS_UNIX ) && !( defined( __WATCOMC__ ) || defined( ZH_OS_MINIX ) )
+#if defined( ZH_OS_UNIX )
 #  include <sched.h>
 #endif
 
@@ -290,69 +288,8 @@ ZH_EXTERN_BEGIN
 
 #  endif    /* x86 */
 
-#elif defined( __WATCOMC__ )
 
-#  if defined( ZH_CPU_X86 ) || defined( ZH_CPU_X86_64 )
-
-#     if ZH_COUNTER_SIZE == 4
-
-         void zh_atomic_inc32( volatile int * p );
-         #pragma aux zh_atomic_inc32 = \
-               "lock inc dword ptr [eax]" \
-               parm [ eax ] modify exact [] ;
-
-         unsigned char zh_atomic_dec32( volatile int * p );
-         #pragma aux zh_atomic_dec32 = \
-               "lock dec dword ptr [eax]", \
-               "setne al" \
-               parm [ eax ] value [ al ] modify exact [ al ] ;
-
-#        define ZH_ATOM_INC( p )    ( zh_atomic_inc32( ( volatile int * ) (p) ) )
-#        define ZH_ATOM_DEC( p )    ( zh_atomic_dec32( ( volatile int * ) (p) ) )
-#        define ZH_ATOM_GET( p )    (*(int volatile *)(p))
-#        define ZH_ATOM_SET( p, n ) do { *((int volatile *)(p)) = (n); } while(0)
-
-#     elif ZH_COUNTER_SIZE == 8
-
-         /* TODO: */
-
-#     endif
-
-      int zh_spinlock_trylock( volatile int * p );
-      #pragma aux zh_spinlock_trylock = \
-            "mov eax, 1", \
-            "xchg eax, dword ptr [edx]" \
-            parm [ edx ] value [ eax ] modify exact [ eax ] ;
-
-      static __inline void zh_spinlock_acquire( volatile int * l )
-      {
-         for( ;; )
-         {
-            if( ! zh_spinlock_trylock( l ) )
-               return;
-
-            #ifdef ZH_SPINLOCK_REPEAT
-               if( ! zh_spinlock_trylock( l ) )
-                  return;
-            #endif
-            ZH_SCHED_YIELD();
-         }
-      }
-
-      static __inline void zh_spinlock_release( volatile int * l )
-      {
-         *l = 0;
-      }
-
-#     define ZH_SPINLOCK_T          volatile int
-#     define ZH_SPINLOCK_INIT       0
-#     define ZH_SPINLOCK_TRY(l)     (zh_spinlock_trylock(l)==0)
-#     define ZH_SPINLOCK_RELEASE(l) zh_spinlock_release(l)
-#     define ZH_SPINLOCK_ACQUIRE(l) zh_spinlock_acquire(l)
-
-#  endif    /* x86 */
-
-#endif  /* ??? C compiler ??? */
+#endif  /* C compiler */
 
 
 #if defined( ZH_OS_WIN )

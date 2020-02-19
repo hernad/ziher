@@ -49,11 +49,7 @@
 #include "zh_thread.h"
 
 /* XXX: Check and possibly extend this to other Unix-like platforms */
-#if ( defined( ZH_OS_BSD ) && ! defined( ZH_OS_DARWIN ) ) || \
-   ( defined( ZH_OS_LINUX ) && \
-      ! defined( ZH_OS_ANDROID ) && \
-      ! defined( __WATCOMC__ ) && \
-      ! defined( __EMSCRIPTEN__ ) )
+#if ( defined( ZH_OS_LINUX ) && ! defined( ZH_OS_ANDROID ) && ! defined( __EMSCRIPTEN__ ) )
 #  define HAVE_SYS_SYSCTL_H
 #  define HAVE_DECL_CTL_KERN
 #  define HAVE_DECL_KERN_RANDOM

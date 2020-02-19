@@ -58,15 +58,8 @@
 # include <windows.h>
 #  endif
 
-/* NOTE: VxWorks supports dlopen() functionality only in shared
-         executables. [vszakats] */
-#if ! defined( ZH_HAS_DLFCN ) && \
-    ( ( defined( ZH_OS_LINUX ) && ! defined( __WATCOMC__ ) ) || \
-      defined( ZH_OS_SUNOS ) || defined( ZH_OS_DARWIN ) || \
-      defined( ZH_OS_BSD ) || defined( ZH_OS_BEOS ) || \
-      defined( ZH_OS_QNX ) || defined( ZH_OS_CYGWIN )  || \
-      defined( ZH_OS_MINIX ) || ( defined( __DJGPP__ ) && \
-        ( __DJGPP__ > 2 || ( __DJGPP__ == 2 && __DJGPP_MINOR__ >= 4 ) ) ) )
+
+#if ! defined( ZH_HAS_DLFCN ) && defined( ZH_OS_LINUX )  || defined( ZH_OS_DARWIN )
 #  define ZH_HAS_DLFCN
 #endif
 

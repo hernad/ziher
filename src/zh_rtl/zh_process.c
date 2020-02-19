@@ -315,9 +315,9 @@ static int zh_fsProcessExec( const char * pszFileName,
          zh_fsSetIOError( ZH_FALSE, 0 );
    }
 #else
-#  if defined( _MSC_VER ) || defined( __POCC__ )
+#  if defined( _MSC_VER )
       iResult = _spawnvp( _P_WAIT, argv[ 0 ], argv );
-#  elif defined( __MINGW32__ ) || defined( __WATCOMC__ )
+#  elif defined( __MINGW32__ )
       iResult = spawnvp( P_WAIT, argv[ 0 ], ( const char * const * ) argv );
 #  else
       iResult = spawnvp( P_WAIT, argv[ 0 ], ( char * const * ) argv );
@@ -546,11 +546,7 @@ ZH_FHANDLE zh_fsProcessOpen( const char * pszFileName,
 
          /* execute command */
          {
-#  if defined( __WATCOMC__ )
-            execvp( argv[ 0 ], ( const char ** ) argv );
-#  else
             execvp( argv[ 0 ], argv );
-#  endif
             exit( -1 );
          }
       }
@@ -592,9 +588,9 @@ ZH_FHANDLE zh_fsProcessOpen( const char * pszFileName,
 
       argv = zh_buildArgs( pszFileName );
 
-#if defined( _MSC_VER ) || defined( __LCC__ ) || defined( __POCC__ )
+#if defined( _MSC_VER )
       pid = _spawnvp( _P_NOWAIT, argv[ 0 ], argv );
-#elif defined( __MINGW32__ ) || defined( __WATCOMC__ )
+#elif defined( __MINGW32__ )
       pid = spawnvp( P_NOWAIT, argv[ 0 ], ( const char * const * ) argv );
 #else
       pid = spawnvp( P_NOWAIT, argv[ 0 ], ( char * const * ) argv );
@@ -1374,33 +1370,3 @@ int zh_fsProcessRun( const char * pszFileName,
 
    return iResult;
 }
-
-/* temporary hack for still missing sysconf() and chroot() in Watcom 1.9 */
-#if defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) && \
-    __WATCOMC__ <= 1290
-_WCRTLINK long sysconf( int __name )
-{
-   int iTODO;
-
-   switch( __name )
-   {
-      case _SC_OPEN_MAX:
-         return 1024;
-      case _SC_CLK_TCK:
-         return 100;
-      case _SC_PAGESIZE:
-      case /* _SC_PAGE_SIZE */ 30:
-         return 4096;
-   }
-   return -1;
-}
-
-_WCRTLINK int chroot( const char * __path )
-{
-   int iTODO;
-
-   ZH_SYMBOL_UNUSED( __path );
-
-   return -1;
-}
-#endif

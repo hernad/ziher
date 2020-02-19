@@ -165,14 +165,9 @@ ZH_BOOL zh_setenv( const char * szName, const char * szValue )
       zh_xfree( lpName );
       return fResult;
    }
-#elif defined( _BSD_SOURCE ) || _POSIX_C_SOURCE >= 200112L || \
-   _XOPEN_SOURCE >= 600 || \
-   defined( __WATCOMC__ ) || defined( __DJGPP__ ) || \
-   defined( ZH_OS_SUNOS ) || defined( ZH_OS_BSD ) || \
-   defined( ZH_OS_DARWIN ) || defined( ZH_OS_BEOS ) || \
-   defined( ZH_OS_QNX ) || defined( ZH_OS_VXWORKS ) || \
-   defined( ZH_OS_CYGWIN ) || defined( ZH_OS_MINIX ) || \
-   defined( ZH_OS_ANDROID )
+
+// https://stackoverflow.com/questions/48332332/what-does-define-posix-source-mean
+#elif  _POSIX_C_SOURCE >= 200112L || defined( ZH_OS_DARWIN ) || defined( ZH_OS_ANDROID )
    {
       ZH_BOOL fResult;
       char * pszNameFree = NULL, * pszValueFree = NULL;

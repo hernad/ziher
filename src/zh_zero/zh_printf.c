@@ -161,8 +161,7 @@
 #     define _x_long_dbl      long double
 #     define _FL_FIX          0.0078125L
 #     if defined( ZH_NO_MODFL ) || \
-         defined( __WATCOMC__ ) || defined( __MINGW32CE__ ) || defined( ZH_OS_CYGWIN ) || \
-         defined( ZH_OS_BEOS ) || \
+         defined( __MINGW32CE__ ) || defined( ZH_OS_CYGWIN ) || \
          defined( __OpenBSD__ ) || defined( __NetBSD__ ) || defined( __DragonFly__ ) || \
          ( defined( __FreeBSD_version ) && __FreeBSD_version < 603000 ) || \
          defined( ZH_OS_ANDROID ) || \
@@ -1404,8 +1403,6 @@ int zh_vsnprintf( char * buffer, size_t nSize, const char * format, va_list argl
 #elif defined( _MSC_VER )
    result = _vsnprintf( buffer, nSize, format, arglist );
    #define _ZH_SNPRINTF_ADD_EOS
-#elif defined( __WATCOMC__ ) && __WATCOMC__ < 1200
-   result = _vbprintf( buffer, nSize, format, arglist );
 #else
    result = vsnprintf( buffer, nSize, format, arglist );
 #endif

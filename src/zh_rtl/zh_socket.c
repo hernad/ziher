@@ -2202,11 +2202,6 @@ int zh_socketGetPeerName( ZH_SOCKET sd, void ** pSockAddr, unsigned * puiLen )
 {
    int ret;
 
-#if defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) && ( __WATCOMC__ <= 1290 )
-   /* it's still not supported by Linux OpenWatcom port :-( */
-   ret = -1;
-   zh_socketSetError( ZH_SOCKET_ERR_NOSUPPORT );
-#else
    ZH_SOCKADDR_STORAGE st;
    socklen_t len = sizeof( st );
 
@@ -2218,7 +2213,6 @@ int zh_socketGetPeerName( ZH_SOCKET sd, void ** pSockAddr, unsigned * puiLen )
       *puiLen = ( unsigned ) len;
    }
    else
-#endif
    {
       *pSockAddr = NULL;
       *puiLen = 0;
@@ -2307,19 +2301,11 @@ int zh_socketShutdown( ZH_SOCKET sd, int iMode )
       return -1;
    }
 
-#if defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) && ( __WATCOMC__ <= 1290 )
-{
-   int iTODO;
-   /* it's still not supported by Linux OpenWatcom port :-( */
-   ret = -1;
-   zh_socketSetError( ZH_SOCKET_ERR_NOSUPPORT );
-}
-#else
    zh_vmUnlock();
    ret = shutdown( sd, iMode );
    zh_socketSetOsError( ret == 0 ? 0 : ZH_SOCK_GETERROR() );
    zh_vmLock();
-#endif
+
    return ret;
 }
 
@@ -2327,11 +2313,7 @@ int zh_socketBind( ZH_SOCKET sd, const void * pSockAddr, unsigned uiLen )
 {
    int ret;
 
-#if defined( ZH_OS_LINUX ) && defined( __WATCOMC__ ) && ( __WATCOMC__ <= 1290 )
-   ret = bind( sd, ( struct sockaddr * ) pSockAddr, ( socklen_t ) uiLen );
-#else
    ret = bind( sd, ( const struct sockaddr * ) pSockAddr, ( socklen_t ) uiLen );
-#endif
    zh_socketSetOsError( ret == 0 ? 0 : ZH_SOCK_GETERROR() );
 
    return ret;
