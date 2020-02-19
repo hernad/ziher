@@ -70,14 +70,11 @@
    #include "zh_win_uni.h"
 #endif
 
-#if defined( ZH_OS_LINUX )  || \
-    defined( ZH_OS_BSD ) || defined( ZH_OS_DARWIN ) || defined( ZH_OS_SUNOS )
+#if defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN )
 #  define ZH_HAS_MKSTEMP
-#  if ( defined( ZH_OS_BSD ) && ! defined( __NetBSD__ ) ) || defined( ZH_OS_DARWIN )
+#  if defined( ZH_OS_DARWIN )
 #     define ZH_HAS_MKSTEMPS
-#  elif defined( ZH_OS_LINUX ) && \
-        ( defined( _BSD_SOURCE ) || defined( _SVID_SOURCE ) ) && \
-        defined( __GLIBC_PREREQ )
+#  elif defined( ZH_OS_LINUX ) && defined( _SVID_SOURCE ) && defined( __GLIBC_PREREQ )
 #     if __GLIBC_PREREQ( 2, 12 )
 #        define ZH_HAS_MKSTEMPS
 #     endif

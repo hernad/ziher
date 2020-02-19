@@ -51,7 +51,6 @@
 
 #include "../directory.zhh"
 
-
 PZH_ITEM zh_fsDirectory( const char * pszDirSpec, const char * pszAttributes, ZH_BOOL fDateTime )
 {
    PZH_ITEM  pDir = zh_itemArrayNew( 0 );

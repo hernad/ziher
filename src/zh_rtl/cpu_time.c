@@ -71,7 +71,7 @@ double zh_secondsCPU( int n )
 {
    double d = 0.0;
 
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE ) && ! defined( ZH_OS_UNIX )
+#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_UNIX )
    FILETIME Create, Exit, Kernel, User;
 #endif
 
@@ -107,7 +107,6 @@ if( ( n < 1 || n > 3 ) && ( n < 11 || n > 13 ) )
 #else
    if( n > 10 )
       n -= 10;
-#if defined( ZH_OS_WIN )
    if( zh_iswinnt() &&
        GetProcessTimes( GetCurrentProcess(), &Create, &Exit, &Kernel, &User ) )
    {
@@ -122,15 +121,6 @@ if( ( n < 1 || n > 3 ) && ( n < 11 || n > 13 ) )
                              ( ZH_MAXINT ) Kernel.dwLowDateTime );
       }
       d /= 10000000.0;
-   }
-   else
-#endif
-   {
-      /* TODO: this code is only for DOS and other platforms which cannot
-               calculate process time */
-
-      if( n & 1 )
-         d = zh_dateSeconds();
    }
 #endif
    return d;

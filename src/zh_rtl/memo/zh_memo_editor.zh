@@ -49,7 +49,7 @@
 #include "class.zhh"
 
 #include "inkey.zhh"
-#include "memoedit.zhh"
+#include "memo_edit.zhh"
 #include "set_curs.zhh"
 #include "gt_info.zhh"
 
