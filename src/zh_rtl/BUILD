@@ -5,12 +5,13 @@ load("//bazel:variables.bzl", "ZH_COMP_OPTS")
 cc_library(
     name = "zh_rtl",
     srcs = glob( [
-        "*.c", 
+        "*.c",
         "zlib/*.c",
         "codepage/*.c",
         "crypto/*.c", 
         "string/*.c", 
         "file/*.c",
+        "language/*.c",
         "date/*.c",
         "memo/*.c",
         "gt/*.c",
@@ -21,6 +22,7 @@ cc_library(
         "zlib/*.h", 
         "zlib/*.zhh",
         "codepage/*.h",
+        "language/*.h",
         "codepage/*.zhh",
         "crypto/*.h", 
         "crypto/*.zhh",
@@ -29,7 +31,7 @@ cc_library(
         "string/*.h",
         "string/*.zhh",
         "gt/*.h",
-        "gt/*.zhh"
+        "gt/*.zhh",
     ]),
     alwayslink = 1,
     deps = [ 

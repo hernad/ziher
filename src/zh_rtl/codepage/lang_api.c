@@ -62,7 +62,6 @@ static ZH_LANG s_lang_en =
       "",                          /* Version */
 
       /* Month names */
-
       "January",
       "February",
       "March",
@@ -85,8 +84,6 @@ static ZH_LANG s_lang_en =
       "Thursday",
       "Friday",
       "Saturday",
-
-      /* CA-Cl*pper compatible natmsg items */
 
       "Database Files    # Records    Last Update     Size",
       "Do you want more samples?",
@@ -195,10 +192,6 @@ static ZH_LANG s_lang_en =
 
 ZH_LANG_ANNOUNCE( EN )
 
-/* Always link in the default language */
-#if 0
-ZH_LANG_REQUEST( ZH_LANG_DEFAULT );
-#endif
 
 /* NOTE: This is the maximum number of registered languages, later this can be
          made dynamic. */

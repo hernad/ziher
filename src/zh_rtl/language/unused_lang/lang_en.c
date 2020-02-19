@@ -13,7 +13,6 @@ static ZH_LANG s_lang =
       "",                          /* Version */
 
       /* Month names */
-
       "January",
       "February",
       "March",
@@ -28,7 +27,6 @@ static ZH_LANG s_lang =
       "December",
 
       /* Day names */
-
       "Sunday",
       "Monday",
       "Tuesday",

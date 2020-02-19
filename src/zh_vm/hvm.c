@@ -67,8 +67,9 @@
 #include "zh_set.h"
 #include "zh_date.h"
 #include "zh_math.h"
-#include "debug.zhh"
 #include "zh_thread.h"
+
+#include "debug.zhh"
 #include "memory.zhh"
 
 #ifndef ZH_NO_PROFILER
@@ -11909,22 +11910,14 @@ ZH_FUNC( __DBGPROCLEVEL )
  */
 ZH_ULONG zh_dbg_vmVarGCount( void )
 {
-#if 0
-   return zh_arrayLen( &s_aGlobals );
-#else
    return 0;
-#endif
 }
 
 PZH_ITEM zh_dbg_vmVarGGet( int nGlobal, int nOffset )
 {
-#if 0
-   return zh_arrayGetItemPtr( &s_aGlobals, nGlobal + nOffset );
-#else
    ZH_SYMBOL_UNUSED( nGlobal );
    ZH_SYMBOL_UNUSED( nOffset );
    return NULL;
-#endif
 }
 
 /*
@@ -11935,11 +11928,7 @@ ZH_FUNC( __DBGVMVARGLIST )
 {
    if( zh_vmInternalsEnabled() )
    {
-#if 0
-      PZH_ITEM pGlobals = zh_itemClone( &s_aGlobals );
-#else
       PZH_ITEM pGlobals = zh_itemArrayNew( 0 );
-#endif
 
       zh_itemReturnRelease( pGlobals );
    }
