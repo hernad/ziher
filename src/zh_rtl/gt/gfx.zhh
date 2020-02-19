@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _HBGFX_ZH_
-#define _HBGFX_ZH_
+#ifndef _ZHGFX_ZH_
+#define _ZHGFX_ZH_
 
 #include "hbgfxdef.ch"
 
@@ -78,4 +78,4 @@
 #xtranslate zh_gfxFilledEllipse( <nY>, <nX>, <nRadY>, <nRadX>, <nColor> ) => zh_gfxPrimitive( ZH_GFX_FILLEDELLIPSE, <nY>, <nX>, <nRadY>, <nRadX>, <nColor> )
 #xtranslate zh_gfxFloodFill( <nY>, <nX>, <nColor> ) => zh_gfxPrimitive( ZH_GFX_FLOODFILL, <nY>, <nX>, <nColor> )
 
-#endif  /* _HBZH_GFX_ZH_ */
+#endif  /* _ZHZH_GFX_ZH_ */

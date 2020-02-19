@@ -1377,7 +1377,7 @@ static void zh_sdfRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "SDF", RDT_TRANSFER ) > 1 )
+   if( zh_rddRegister( "SDF", RDD_REGISTER_TYPE_TRANSFER ) > 1 )
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 

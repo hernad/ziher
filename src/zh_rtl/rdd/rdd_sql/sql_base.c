@@ -792,7 +792,7 @@ static ZH_ERRCODE sqlbaseOpen( SQLBASEAREAP pArea, LPDBOPENINFO pOpenInfo )
    }
 
    if( pArea->area.uiFieldCount )
-      /* This should not happen (in __dbTrans()), because RDD is registered with RDT_FULL */
+      /* This should not happen (in __dbTrans()), because RDD is registered with RDD_REGISTER_TYPE_FULL */
       return ZH_FAILURE;
 
    pArea->pConnection = s_pConnection[ pArea->ulConnection - 1 ];
@@ -1230,7 +1230,7 @@ static void zh_sqlbaseInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "SQLBASE", RDT_FULL ) > 1 )
+   if( zh_rddRegister( "SQLBASE", RDD_REGISTER_TYPE_FULL ) > 1 )
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 

@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _HBIOUSR_CH
-#define _HBIOUSR_CH
+#ifndef _ZHIOUSR_ZH
+#define _ZHIOUSR_ZH
 
 /* method numbers */
 #define IOUSR_ACCEPT                 1
@@ -88,4 +88,4 @@
 
 #define IOUSR_METHODCOUNT           33
 
-#endif /* _HBIOUSR_CH */
+#endif /* _ZHIOUSR_CH */

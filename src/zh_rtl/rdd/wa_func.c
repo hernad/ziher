@@ -1109,7 +1109,7 @@ ZH_ERRCODE zh_rddTransRecords( AREAP pArea,
          return ZH_FAILURE;
       }
 
-      if( pRddNode->uiType == RDT_TRANSFER )
+      if( pRddNode->uiType == RDD_REGISTER_TYPE_TRANSFER )
       {
          ZH_USHORT uiCount;
 

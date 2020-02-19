@@ -51,7 +51,7 @@
  */
 
 #include "db_info.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 #include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
@@ -235,7 +235,7 @@ FUNCTION LOGRDD_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSupe
 
 INIT PROCEDURE _LOGRDD_INIT()
 
-   rddRegister( "LOGRDD", RDT_FULL )
+   rddRegister( "LOGRDD", RDD_REGISTER_TYPE_FULL )
 
    RETURN
 

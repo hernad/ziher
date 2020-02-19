@@ -217,6 +217,6 @@ FUNCTION RLCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSuper
 
 INIT PROCEDURE RLCDX_INIT()
 
-   rddRegister( "RLCDX", RDT_FULL )
+   rddRegister( "RLCDX", RDD_REGISTER_TYPE_FULL )
 
    RETURN

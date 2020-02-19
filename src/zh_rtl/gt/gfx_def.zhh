@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _HBGFXDEF_ZH_
-#define _HBGFXDEF_ZH_
+#ifndef _ZHGFXDEF_ZH_
+#define _ZHGFXDEF_ZH_
 
 /*
  * NOTE: ACQUIRE / RELEASE screen pair must work same way DispBegin()/DispEnd() pair does
@@ -89,4 +89,4 @@
 #define ZH_GFX_MODE_ALPHA      3  /* Use alpha for translucent effect (SLOW) */
 /* TODO: add patterned mode drawings */
 
-#endif /* _HBGFXDEF_ZH_ */
+#endif /* _ZHGFXDEF_ZH_ */

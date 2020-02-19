@@ -67,7 +67,7 @@ FUNCTION FPTCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSupe
 
 INIT PROCEDURE FPTCDX_INIT()
 
-   rddRegister( "FPTCDX", RDT_FULL )
+   rddRegister( "FPTCDX", RDD_REGISTER_TYPE_FULL )
    rddInfo( RDDI_MEMOTYPE, DB_MEMO_FPT, "FPTCDX" )
 
    RETURN

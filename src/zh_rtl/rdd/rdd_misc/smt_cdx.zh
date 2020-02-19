@@ -67,7 +67,7 @@ FUNCTION SMTCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSupe
 
 INIT PROCEDURE SMTCDX_INIT()
 
-   rddRegister( "SMTCDX", RDT_FULL )
+   rddRegister( "SMTCDX", RDD_REGISTER_TYPE_FULL )
    rddInfo( RDDI_MEMOTYPE, DB_MEMO_SMT, "SMTCDX" )
 
    RETURN

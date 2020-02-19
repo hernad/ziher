@@ -35,7 +35,7 @@ cc_library(
         "rdd_usr/*.h",
         "rdd_usr/*.zhh"
     ]),
-    #alwayslink = 1,
+    alwayslink = 1,
     deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm", "//zh_rtl:zh_rtl" ],
     visibility = ["//visibility:public"],
 )

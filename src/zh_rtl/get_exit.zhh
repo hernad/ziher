@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _GETEXIT_CH
-#define _GETEXIT_CH
+#ifndef _GETEXIT_ZH
+#define _GETEXIT_ZH
 
 /* get:exitState values */
 #define GE_NOEXIT       0       /* no exit attempted (blank) */

@@ -6639,12 +6639,6 @@ static ZH_ERRCODE zh_nsxOpen( NSXAREAP pArea, LPDBOPENINFO pOpenInfo )
       char szFileName[ ZH_PATH_MAX ];
 
       zh_nsxCreateFName( pArea, NULL, NULL, szFileName, NULL );
-      /* CL5.2 DBFCDX and Six3 CDX/NSX RDDs looking for
-         production indexes respect SET PATH but Ziher in
-         core DBF* index RDDs is CL5.3/COMIX compatible and
-         looks for production indexes only in the directory
-         where DBF file is located and only SIXCDX Ziher
-         RDD is CL5.2/Six3 compatible [druzus] */
       if( zh_fileExists( szFileName, NULL ) ||
           DBFAREA_DATA( &pArea->dbfarea )->fStrictStruct )
       {
@@ -8242,10 +8236,10 @@ static void zh_dbfnsxRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "DBF", RDT_FULL ) <= 1 )
+   if( zh_rddRegister( "DBF", RDD_REGISTER_TYPE_FULL ) <= 1 )
    {
-      zh_rddRegister( "DBFFPT", RDT_FULL );
-      if( zh_rddRegister( "DBFNSX", RDT_FULL ) <= 1 )
+      zh_rddRegister( "DBFFPT", RDD_REGISTER_TYPE_FULL );
+      if( zh_rddRegister( "DBFNSX", RDD_REGISTER_TYPE_FULL ) <= 1 )
          return;
    }
 

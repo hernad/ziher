@@ -45,7 +45,7 @@
  *    To Many enhancement and correction to give a full list :-)
  *    Improved Class(y) compatibility
  *    Improved TopClass compatibility
- *    __CLS_PAR00() (Allow the creation of class which not autoinherit of the default HBObject())
+ *    __CLS_PAR00() (Allow the creation of class which not autoinherit of the default ZHObject())
  *    Adding ZH_CLS_ENFORCERO FLAG to disable Write access to RO VAR
  *    outside of Constructors /!\ Could be related to some incompatibility
  *    Added zh_objGetRealClsName() to keep a full class tree (for 99% cases)
@@ -1144,10 +1144,10 @@ void zh_clsDoInit( void )
 {
    static const char * s_pszFuncNames[] =
       { "HBARRAY", "HBBLOCK", "HBCHARACTER",
-        "HBDATE", "HBTIMESTAMP",
+        "ZHDATE", "HBTIMESTAMP",
         "HBHASH", "HBLOGICAL", "HBNIL", "HBNUMERIC",
         "HBSYMBOL", "HBPOINTER",
-        "HBOBJECT" };
+        "ZHObject" };
    static ZH_USHORT * s_puiHandles[] =
       { &s_uiArrayClass, &s_uiBlockClass, &s_uiCharacterClass,
         &s_uiDateClass, &s_uiTimeStampClass,

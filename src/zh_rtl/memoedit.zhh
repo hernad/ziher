@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _MEMOEDIT_CH
-#define _MEMOEDIT_CH
+#ifndef _MEMOEDIT_ZH
+#define _MEMOEDIT_ZH
 
 /* User callback status modes */
 #define ME_IDLE         0       /* Idle, all keys processed */

@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _TBROWSE_CH
-#define _TBROWSE_CH
+#ifndef _TBROWSE_ZH
+#define _TBROWSE_ZH
 
 /* TBrowse ApplyKey() method return codes */
 #define TBR_EXIT         -1

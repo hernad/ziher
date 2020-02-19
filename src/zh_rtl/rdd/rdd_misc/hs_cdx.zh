@@ -53,7 +53,7 @@
  */
 
 #include "db_info.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 #include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
 
@@ -277,6 +277,6 @@ FUNCTION HSCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSuper
 
 INIT PROCEDURE HSCDX_INIT()
 
-   rddRegister( "HSCDX", RDT_FULL )
+   rddRegister( "HSCDX", RDD_REGISTER_TYPE_FULL )
 
    RETURN

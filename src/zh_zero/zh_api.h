@@ -1067,8 +1067,6 @@ extern ZH_EXPORT const char * zh_verCommitInfo( void );      /* retrieves a stat
 extern ZH_EXPORT const char * zh_verFlagsC( void );          /* retrieves a static buffer containing build time C compiler flags in ZH_USER_CFLAGS envvar */
 extern ZH_EXPORT const char * zh_verFlagsL( void );          /* retrieves a static buffer containing build time linker flags in ZH_USER_LDFLAGS envvar */
 extern ZH_EXPORT const char * zh_verFlagsPRG( void );        /* retrieves a static buffer containing build time Ziher compiler flags in ZH_USER_PRGFLAGS envvar */
-extern ZH_EXPORT const char * zh_verZH_PLAT( void );         /* retrieves a static buffer containing build time ZH_PLATFORM setting */
-extern ZH_EXPORT const char * zh_verZH_COMP( void );         /* retrieves a static buffer containing build time ZH_COMPILER setting */
 
 extern ZH_EXPORT int     zh_iswine( void );     /* return non-zero if OS == Wine */
 extern ZH_EXPORT int     zh_iswin9x( void );    /* return non-zero if OS == Windows 9x, ME */

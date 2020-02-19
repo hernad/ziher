@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _DIRECTRY_CH
-#define _DIRECTRY_CH
+#ifndef _DIRECTRY_ZH
+#define _DIRECTRY_ZH
 
 /* Positions for Directory() array */
 #define F_NAME          1       /* File name */

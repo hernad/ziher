@@ -4,7 +4,7 @@ load("//bazel:variables.bzl", "ZH_COMP_OPTS")
 
 cc_library(
     name = "zh_vm",
-    srcs = glob( ["*.c"]),
+    srcs = glob( ["*.c"] + [ "zh_runtime_symbols/init_runtime_symbols.c"]),
     hdrs = glob( ["*.h", "*.zhh"]) ,
     #alwayslink = 1,
     deps = [ 

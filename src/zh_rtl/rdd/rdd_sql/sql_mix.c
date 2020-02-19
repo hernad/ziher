@@ -2100,8 +2100,8 @@ static void zh_sqlmixRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "SQLBASE", RDT_FULL ) > 1 ||
-       zh_rddRegister( "SQLMIX", RDT_FULL ) > 1 )
+   if( zh_rddRegister( "SQLBASE", RDD_REGISTER_TYPE_FULL ) > 1 ||
+       zh_rddRegister( "SQLMIX", RDD_REGISTER_TYPE_FULL ) > 1 )
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 

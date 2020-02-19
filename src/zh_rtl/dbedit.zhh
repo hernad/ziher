@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _DBEDIT_CH
-#define _DBEDIT_CH
+#ifndef _DBEDIT_ZH
+#define _DBEDIT_ZH
 
 /* User function entry modes */
 #define DE_IDLE         0       /* Idle */

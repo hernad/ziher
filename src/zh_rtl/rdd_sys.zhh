@@ -46,12 +46,12 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _RDDSYS_CH
-#define _RDDSYS_CH
+#ifndef _RDD_SYS_ZH
+#define _RDD_SYS_ZH
 
 /* rddRegister() types */
-#define RDT_FULL        1
-#define RDT_TRANSFER    2
-#define RDT_HIDDEN      255
+#define RDD_REGISTER_TYPE_FULL        1
+#define RDD_REGISTER_TYPE_TRANSFER    2
+#define RDD_REGISTER_TYPE_HIDDEN      255
 
-#endif /* _RDDSYS_CH */
+#endif /* _RDD_SYS_ZH */

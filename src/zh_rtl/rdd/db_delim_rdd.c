@@ -1757,7 +1757,7 @@ static void zh_delimRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "DELIM", RDT_TRANSFER ) > 1 )
+   if( zh_rddRegister( "DELIM", RDD_REGISTER_TYPE_TRANSFER ) > 1 )
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 

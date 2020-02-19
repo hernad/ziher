@@ -121,11 +121,9 @@ void zh_rddShutDown( void ) {}
 
 ZH_FUNC( RDDSYS ) {}
 
-
 ZH_FUNC( RDDNAME ) { zh_retc_null(); }
 
 ZH_FUNC( RDDLIST ) { zh_reta( 0 ); }
-
 
 ZH_FUNC( FIELDGET ) { zh_retc_null(); }
 
@@ -134,7 +132,6 @@ ZH_FUNC( FIELDPUT ) { zh_retc_null(); }
 ZH_FUNC( FIELDPOS ) { zh_retni( 0 ); }
 
 ZH_FUNC( FIELDNAME ) { zh_retc_null(); }
-
 
 ZH_FUNC( DBCREATE ) {}
 

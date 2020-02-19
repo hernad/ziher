@@ -52,7 +52,7 @@
 #include "db_info.zhh"
 #include "db_struct.zhh"
 #include "error.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 #include "trace.zhh"
 #include "rdd_usr.zhh"
 #include "rdd_sys.zhh"
@@ -1610,7 +1610,7 @@ FUNCTION ARRAYRDD_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSu
 
 INIT PROCEDURE ARRAYRDD_INIT()
 
-   rddRegister( "ARRAYRDD", RDT_FULL )
+   rddRegister( "ARRAYRDD", RDD_REGISTER_TYPE_FULL )
 
    RETURN
 

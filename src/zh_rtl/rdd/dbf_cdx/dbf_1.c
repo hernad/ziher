@@ -6098,11 +6098,11 @@ static ZH_ERRCODE zh_dbfReadDBHeader( DBFAREAP pArea )
                break;
 
             case 0x03:
-            case 0x07:  /* CA-VO DBFNTX and ANSI CP */
+            case 0x07:  /* DBFNTX and ANSI CP */
                break;
 
             case 0x83:
-            case 0x87:  /* CA-VO DBFNTX+MEMO and ANSI CP */
+            case 0x87:  /* DBFNTX+MEMO and ANSI CP */
                pArea->fHasMemo = ZH_TRUE;
                pArea->bMemoType = DB_MEMO_DBT;
                break;
@@ -6884,7 +6884,7 @@ static void zh_dbfRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "DBF", RDT_FULL ) > 1 )
+   if( zh_rddRegister( "DBF", RDD_REGISTER_TYPE_FULL ) > 1 )
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 

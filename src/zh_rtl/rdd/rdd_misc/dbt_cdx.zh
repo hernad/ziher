@@ -67,7 +67,7 @@ FUNCTION DBTCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSupe
 
 INIT PROCEDURE DBTCDX_INIT()
 
-   rddRegister( "DBTCDX", RDT_FULL )
+   rddRegister( "DBTCDX", RDD_REGISTER_TYPE_FULL )
    rddInfo( RDDI_MEMOTYPE, DB_MEMO_DBT, "DBTCDX" )
 
    RETURN

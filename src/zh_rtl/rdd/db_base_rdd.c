@@ -1179,7 +1179,6 @@ ZH_FUNC( ORDCONDSET )
       lpdbOrdCondInfo->itmRecID      = ZH_ISNIL( 9 ) ? NULL : zh_itemNew( zh_param( 9, ZH_IT_ANY ) );
       lpdbOrdCondInfo->fRest         = zh_parl( 10 );
       lpdbOrdCondInfo->fDescending   = zh_parl( 11 );
-      /* 12th parameter is always nil in CL5.3, in CL5.2 it's compound flag */
       lpdbOrdCondInfo->fCompound     = zh_parl( 12 );
       lpdbOrdCondInfo->fAdditive     = zh_parl( 13 );
       lpdbOrdCondInfo->fUseCurrent   = zh_parl( 14 );
@@ -1194,11 +1193,9 @@ ZH_FUNC( ORDCONDSET )
          it can make it fully in memory or in temporary file which will
          be removed on index close operation */
       lpdbOrdCondInfo->fTemporary    = zh_parl( 18 );
-      /* 19th parameter is CL5.2 USEFILTER parameter which means
-         that RDD should respect SET FILTER and SET DELETED flag */
+      /* 19th parameter USEFILTER parameter which means that RDD should respect SET FILTER and SET DELETED flag */
       lpdbOrdCondInfo->fUseFilter    = zh_parl( 19 );
-      /* 20th parameter is Ziher extension and informs RDD that
-         index is not shared between other clients */
+      /* 20th parameter informs RDD that index is not shared between other clients */
       lpdbOrdCondInfo->fExclusive    = zh_parl( 20 );
 
       if( lpdbOrdCondInfo->itmCobWhile )

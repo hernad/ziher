@@ -7914,10 +7914,10 @@ static void zh_dbfntxRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "DBF", RDT_FULL ) <= 1 )
+   if( zh_rddRegister( "DBF", RDD_REGISTER_TYPE_FULL ) <= 1 )
    {
-      zh_rddRegister( "DBFFPT", RDT_FULL );
-      if( zh_rddRegister( "DBFNTX", RDT_FULL ) <= 1 )
+      zh_rddRegister( "DBFFPT", RDD_REGISTER_TYPE_FULL );
+      if( zh_rddRegister( "DBFNTX", RDD_REGISTER_TYPE_FULL ) <= 1 )
          return;
    }
 

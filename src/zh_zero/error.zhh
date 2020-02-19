@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _ERROR_CH
-#define _ERROR_CH
+#ifndef _ERROR_ZH
+#define _ERROR_ZH
 
 /* Severity levels (oError:severity) */
 #define ES_WHOCARES     0

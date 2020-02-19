@@ -87,8 +87,6 @@ ZH_FUNC( ZH_VERSION )
       case ZH_VERSION_ID_SHORT:       zh_retc_const( zh_verCommitIDShort() ); break;
       case ZH_VERSION_PCODE_VER:      zh_retni( ZH_PCODE_VER ); break;
       case ZH_VERSION_PCODE_VER_STR:  zh_retc_buffer( zh_verPCode() ); break;
-      case ZH_VERSION_BUILD_PLAT:     zh_retc_const( zh_verZH_PLAT() ); break;
-      case ZH_VERSION_BUILD_COMP:     zh_retc_const( zh_verZH_COMP() ); break;
       case ZH_VERSION_BUILD_DATE_STR: zh_retc_const( zh_verCommitInfo() ); break;
       case ZH_VERSION_BUILD_DATE:
       {

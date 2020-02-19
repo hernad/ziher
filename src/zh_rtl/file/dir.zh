@@ -47,7 +47,7 @@
 #pragma -gc0
 
 #include "directory.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 
 #define _DIR_HEADER  1
 

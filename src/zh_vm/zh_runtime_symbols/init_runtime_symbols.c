@@ -173,7 +173,7 @@ static ZH_SYMB symbols[] = {
    { "TYPE",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( TYPE )      }, NULL },
    { "UPPER",     { ZH_FS_PUBLIC }, { ZH_FUNCNAME( UPPER )     }, NULL },
    { "VAL",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( VAL )       }, NULL },
-   { "WORD",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( WORD )      }, NULL },
+   //{ "WORD",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( WORD )      }, NULL },
    { "YEAR",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( YEAR )      }, NULL }
 };
 

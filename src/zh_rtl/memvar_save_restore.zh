@@ -48,7 +48,7 @@
 
 #include "memvar.zhh"
 #include "error.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 
 /*
  * 0xC0, 'H', 'B', 'V' followed two-byte version number in Little Endian order.
@@ -62,10 +62,10 @@
  * version 1 is taken.
  */
 
-#define _HBMEM_EXT       ".hbv"
+#define _ZHMEM_EXT       ".hbv"
 
-#define _HBMEM_SIG_LEN   6
-#define _HBMEM_SIGNATURE ( ;
+#define _ZHMEM_SIG_LEN   6
+#define _ZHMEM_SIGNATURE ( ;
    zh_BChar( 0xC0 ) + ;
    zh_BChar( 0x48 ) + ;
    zh_BChar( 0x42 ) + ;
@@ -91,7 +91,7 @@ PROCEDURE zh_mvSave( cFileName, cMask, lIncludeMask )
    IF ZH_ISSTRING( cFileName )
 
       IF Set( _SET_DEFEXTENSIONS )
-         cFileName := zh_FNameExtSetDef( cFileName, _HBMEM_EXT )
+         cFileName := zh_FNameExtSetDef( cFileName, _ZHMEM_EXT )
       ENDIF
 
       IF ! ZH_ISSTRING( cMask ) .OR. ;
@@ -139,7 +139,7 @@ PROCEDURE zh_mvSave( cFileName, cMask, lIncludeMask )
       ENDDO
 
       IF hFile != NIL
-         zh_vfWrite( hFile, _HBMEM_SIGNATURE )
+         zh_vfWrite( hFile, _ZHMEM_SIGNATURE )
          zh_vfWrite( hFile, zh_Serialize( aVars ) )
          zh_vfClose( hFile )
       ENDIF
@@ -182,7 +182,7 @@ FUNCTION zh_mvRestore( cFileName, lAdditive, cMask, lIncludeMask )
       ENDIF
 
       IF Set( _SET_DEFEXTENSIONS )
-         cFileName := zh_FNameExtSetDef( cFileName, _HBMEM_EXT )
+         cFileName := zh_FNameExtSetDef( cFileName, _ZHMEM_EXT )
       ENDIF
 
       IF ! ZH_ISSTRING( cFileName ) .OR. ;
@@ -221,10 +221,10 @@ FUNCTION zh_mvRestore( cFileName, lAdditive, cMask, lIncludeMask )
 
       xValue := NIL
 
-      IF zh_vfReadLen( hFile, _HBMEM_SIG_LEN ) == _HBMEM_SIGNATURE
+      IF zh_vfReadLen( hFile, _ZHMEM_SIG_LEN ) == _ZHMEM_SIGNATURE
 
-         cBuffer := Space( zh_vfSize( hFile ) - _HBMEM_SIG_LEN )
-         zh_vfSeek( hFile, _HBMEM_SIG_LEN, FS_SET )
+         cBuffer := Space( zh_vfSize( hFile ) - _ZHMEM_SIG_LEN )
+         zh_vfSeek( hFile, _ZHMEM_SIG_LEN, FS_SET )
          zh_vfRead( hFile, @cBuffer, zh_BLen( cBuffer ) )
          zh_vfClose( hFile )
 

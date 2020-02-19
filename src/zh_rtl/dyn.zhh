@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef HBDYN_ZH_
-#define HBDYN_ZH_
+#ifndef ZHDYN_ZH_
+#define ZHDYN_ZH_
 
 /* C calling conventions */
 #define ZH_DYN_CALLCONV_CDECL               0x0000000  /* C default */
@@ -97,4 +97,4 @@
 #define ZH_DYN_CTYPE_STRUCTURE              0x000000A
 #define ZH_DYN_CTYPE_STRUCTURE_PTR          0x000010A
 
-#endif /* HBDYN_ZH_ */
+#endif /* ZHDYN_ZH_ */

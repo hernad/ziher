@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _ACHOICE_CH
-#define _ACHOICE_CH
+#ifndef _ACHOICE_ZH
+#define _ACHOICE_ZH
 
 /* User callback calling mode values */
 #define AC_IDLE         0       /* Idle */

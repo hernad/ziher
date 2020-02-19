@@ -67,12 +67,12 @@
 /* four different include files (what I would not see in fact ) */
 
 /* There is also two compatibility define you can use */
-/* ZH_CLS_NOTOBJECT which IF DEFINED, disable the auto inherit of HBObject */
+/* ZH_CLS_NOTOBJECT which IF DEFINED, disable the auto inherit of ZHObject */
 /* (which in fact also disable the classy compatibility :new(...) => :Init(...) */
 /* ZH_CLS_NOAUTOINIT which disable the (VO like) AutoInit for Logical, Numeric, */
 /* Date and Timestamp when not specifically initiated */
 /* These two are disabled by default */
-/* So Each class _inherit_ of HBObject by default and */
+/* So Each class _inherit_ of ZHObject by default and */
 /*    Each logical, numeric, date and timestamp typed variable is initiated to */
 /*    .F., 0, CToD( "" ) and t"00:00" by default */
 
@@ -83,22 +83,22 @@
 /* #define ZH_CLS_NO_OO_ERR       */ /* disable all code validation */
 /* #define ZH_CLS_NO_DECLARATIONS */ /* disable value type declarations */
 
-#ifndef ZH_CLS_FWO
-#ifndef ZH_CLS_CSY
-#ifndef ZH_CLS_VO
-#ifndef ZH_CLS_TOP
+//#ifndef ZH_CLS_FWO
+//#ifndef ZH_CLS_CSY
+//#ifndef ZH_CLS_VO
+//#ifndef ZH_CLS_TOP
 
 /* IF NOTHING DECIDED BY THE PROGRAMMER USE ALL */
-#define ZH_CLS_FWO
-#define ZH_CLS_CSY
-#define ZH_CLS_VO
-#define ZH_CLS_TOP
-#define ZH_CLS_XPP
+//#define ZH_CLS_FWO
+//#define ZH_CLS_CSY
+//#define ZH_CLS_VO
+//#define ZH_CLS_TOP
+//#define ZH_CLS_XPP
 
-#endif
-#endif
-#endif
-#endif
+//#endif
+//#endif
+//#endif
+//#endif
 
 
 /* disable strict parameters validation in method declaration and
@@ -131,11 +131,11 @@
    #xtranslate AS CLASS <name>        =>
 #endif
 
-/* should we inherit from HBObject class by default ? */
+/* should we inherit from ZHObject class by default ? */
 #ifdef ZH_CLS_NOTOBJECT
    #xtranslate __ZH_CLS_PAR([<cls,...>])  => { <cls> }
 #else
-   #xtranslate __ZH_CLS_PAR([<cls,...>])  => iif( <.cls.>, { <cls> }, { @HBObject() } )
+   #xtranslate __ZH_CLS_PAR([<cls,...>])  => iif( <.cls.>, { <cls> }, { @ZHObject() } )
 #endif
 
 /* Should we initialize typed instance variables? */
@@ -161,19 +161,6 @@
    #xtranslate __ZH_CLS_WARN([<msg,...>]) => ;#warning [ <msg>] ; #line
 #endif
 
-/* disabled by default to not generate ignored by compiler noise in .ppo files */
-#if 0
-DECLARE HBClass ;
-        New( cName AS String, OPTIONAL SuperParams ) AS CLASS HBClass ;
-        Create() AS Object ;
-        Instance() AS Object ;
-        AddClsMethod( cName AS String, @MethodName(), nScope AS Numeric, n2 AS Numeric, n3 AS Numeric ) ;
-        AddMultiClsData( cType AS String, uVal, nScope AS Numeric, aDatas AS Array OF String ) ;
-        AddMultiData( cType AS String, uVal, nScope AS Numeric, aDatas AS Array OF String, x AS LOGICAL, lPer AS LOGICAL ) ;
-        AddMethod( cName AS String, @MethodName(), nScope AS Numeric ) ;
-        AddInLine( cName AS String, bBlock AS CodeBlock, nScope AS Numeric ) ;
-        AddVirtual( cName AS String )
-#endif
 
 /*
  * Class(y) like non virtual send operator but instead of using early
@@ -200,12 +187,6 @@ DECLARE HBClass ;
 #xtranslate __ZH_CLS_ASARGSOPT( <FuncName> )                =>
 #xtranslate __ZH_CLS_ASARGSOPT( <FuncName>([<Args,...>]) )  => [, <Args>]
 
-/*
-#xtranslate __ZH_CLS_VARERR(<var>)                    => __ZH_CLS_ERR( Invalid instance variable name \<<var>> )
-#xtranslate __ZH_CLS_ISVAR( <var> )                   => __ZH_CLS_VARERR(<var>)
-#xtranslate __ZH_CLS_ISVAR( <!var!> )                 =>
-#xcommand __ZH_CLS_CHECKVAR( <param1> [,<paramN>] )   => __ZH_CLS_ISVAR( <param1> ) [;__ZH_CLS_ISVAR( <paramN> )]
-*/
 
 /* #xtranslate __ZH_CLS_SCOPE( <export>, <protect>, <hidde> ) => ;
       iif( <export>, ZH_OO_CLSTP_EXPORTED , ;
@@ -429,7 +410,7 @@ DECLARE HBClass ;
 /* Definitions of instance variables */
 
 /* CLASSY SYNTAX */
-#ifdef ZH_CLS_CSY
+//#ifdef ZH_CLS_CSY
 
    #xcommand CREATE CLASS <!ClassName!> [<*more*>] => CLASS <ClassName> <more>
    #xcommand END CLASS [<*more*>]   => ENDCLASS <more>
@@ -487,10 +468,10 @@ DECLARE HBClass ;
       oClass:AddInline( <(DataName1)>, {|Self| Self:<oObject>:<DataName2> }, ZH_OO_CLSTP_EXPORTED + ZH_OO_CLSTP_READONLY ) ;;
       oClass:AddInline( "_" + <(DataName1)>, {|Self, param| Self:<oObject>:<DataName2> := param }, ZH_OO_CLSTP_EXPORTED )
 
-#endif /* ZH_CLS_CSY */
+//#endif /* ZH_CLS_CSY */
 
 /* FWOBJECT SYNTAX */
-#ifdef ZH_CLS_FWO
+//#ifdef ZH_CLS_FWO
 
    #xcommand DATA <!DataName1!> [, <!DataNameN!>] [ AS <type> ] [ INIT <uValue> ] [ <export: EXPORTED, VISIBLE>] [<protect: PROTECTED>] [<hidde: HIDDEN>] [<ro: READONLY, RO>] [<persistent: PERSISTENT, PROPERTY>] [<sync: SYNC>] => ;
       _ZH_MEMBER {[ AS <type>] <DataName1> [, <DataNameN>] } ;;
@@ -502,10 +483,10 @@ DECLARE HBClass ;
       _ZH_MEMBER {[ AS <type>] <DataName1> [, <DataNameN>] } ;;
       oClass:AddMultiClsData( <(type)>, <uValue>, __ZH_CLS_SCOPE( <.export.>, <.protect.>, <.hidde.> ) + iif( <.ro.>, ZH_OO_CLSTP_READONLY, 0 ) + iif( /* <.share.> */ .T., ZH_OO_CLSTP_SHARED, 0 ) + iif( <.persistent.>, ZH_OO_CLSTP_PERSIST, 0 ) + iif( <.sync.>, ZH_OO_CLSTP_SYNC, 0 ), {<(DataName1)> [, <(DataNameN)>]}, __ZH_CLS_NOINI )
 
-#endif /* ZH_CLS_FWO */
+//#endif /* ZH_CLS_FWO */
 
 /* VO SYNTAX */
-#ifdef ZH_CLS_VO
+//#ifdef ZH_CLS_VO
 
 #ifdef ZH_VO_CONSTRUCTOR
    #xtranslate  ( <!name!>{ [<p,...>] }        =>  ( <name>():New( <p> )
@@ -526,10 +507,9 @@ DECLARE HBClass ;
    _ZH_MEMBER {[ AS <type>] <DataName1> [, <DataNameN>] } ;;
    oClass:AddMultiData( <(type)>, <uValue>, ZH_OO_CLSTP_HIDDEN + iif( <.ro.>, ZH_OO_CLSTP_READONLY, 0 ) + iif( <.persistent.>, ZH_OO_CLSTP_PERSIST, 0 ), {<(DataName1)> [, <(DataNameN)>]}, __ZH_CLS_NOINI )
 
-#endif /* ZH_CLS_VO */
+//#endif /* ZH_CLS_VO */
 
-/* Xbase++ syntax */
-#ifdef ZH_CLS_XPP
+//#ifdef ZH_CLS_XPP
 
    #xcommand SYNC METHOD <MethodName> [<decl,...>] => METHOD <MethodName> [<decl>] SYNC
    #xcommand SYNC CLASS METHOD <MethodName> [<decl,...>] => CLASSMETHOD <MethodName> [<decl>] SYNC
@@ -543,7 +523,7 @@ DECLARE HBClass ;
    #xcommand METHOD [<type: FUNCTION, PROCEDURE>] <!className!>:<!methodName!>[([<params,...>])] => ;
              METHOD <type> <methodName>( <params> ) CLASS <className>
 
-#endif /* ZH_CLS_XPP */
+//#endif /* ZH_CLS_XPP */
 
 /* Class datas and messages - we do not support real class messages yet */
 #xcommand CLASSMETHOD <MethodName> [ AS <type> ] [<ctor: CONSTRUCTOR>] [<export: EXPORTED, VISIBLE>] [<protect: PROTECTED>] [<hidde: HIDDEN>] [<share: SHARED>] [<persistent: PERSISTENT, PROPERTY>] [<sync: SYNC>] => ;
@@ -568,7 +548,7 @@ DECLARE HBClass ;
       REQUEST HB<type> [, HB<typeN>]
 
 #command ENABLE TYPE CLASS ALL => ;
-      REQUEST HBArray, HBBlock, HBCharacter, HBDate, HBHash, ;
-              HBLogical, HBNil, HBNumeric, HBSymbol, HBTimeStamp, HBPointer
+      REQUEST HBArray, HBBlock, HBCharacter, ZHDate, HBHash, ;
+              HBLogical, HBNil, HBNumeric, HBSymbol, ZHTimeStamp, HBPointer
 
 #endif /* ZH_CLASS_ZH_ */

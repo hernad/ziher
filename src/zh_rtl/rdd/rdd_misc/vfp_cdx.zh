@@ -60,7 +60,7 @@ FUNCTION VFPCDX_GETFUNCTABLE( pFuncCount, pFuncTable, pSuperTable, nRddID, pSupe
 
 INIT PROCEDURE VFPCDX_INIT()
 
-   rddRegister( "VFPCDX", RDT_FULL )
+   rddRegister( "VFPCDX", RDD_REGISTER_TYPE_FULL )
 
    rddInfo( RDDI_TABLETYPE, DB_DBF_VFP, "VFPCDX" )
    rddInfo( RDDI_MEMOTYPE, DB_MEMO_FPT, "VFPCDX" )

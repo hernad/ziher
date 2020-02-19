@@ -5435,9 +5435,9 @@ static void zh_dbffptRddInit( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
-   if( zh_rddRegister( "DBF",     RDT_FULL ) > 1 ||
-       zh_rddRegister( "DBFFPT",  RDT_FULL ) > 1 ||
-       zh_rddRegister( "DBFBLOB", RDT_FULL ) > 1 )
+   if( zh_rddRegister( "DBF",     RDD_REGISTER_TYPE_FULL ) > 1 ||
+       zh_rddRegister( "DBFFPT",  RDD_REGISTER_TYPE_FULL ) > 1 ||
+       zh_rddRegister( "DBFBLOB", RDD_REGISTER_TYPE_FULL ) > 1 )
    {
       zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
    }

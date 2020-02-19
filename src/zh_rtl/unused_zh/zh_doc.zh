@@ -45,13 +45,13 @@
  */
 
 #include "directory.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 #include "serialization.zhh"
 
-#define _HBDOC_SRC_SUBDIR       "doc"
-#define _HBDOC_SRC_EXT          ".txt"
+#define _ZHDOC_SRC_SUBDIR       "doc"
+#define _ZHDOC_SRC_EXT          ".txt"
 
-#define _HBDOC_ADD_MSG( a, m )  IF ZH_ISARRAY( a ); AAdd( a, m ); ENDIF
+#define _ZHDOC_ADD_MSG( a, m )  IF ZH_ISARRAY( a ); AAdd( a, m ); ENDIF
 
 REQUEST zh_ZCompress
 
@@ -79,15 +79,15 @@ FUNCTION __zhdoc_DirLastModified( cDir )
 
       cDir := zh_DirSepAdd( cDir )
 
-      IF zh_vfDirExists( cDir + _HBDOC_SRC_SUBDIR )
+      IF zh_vfDirExists( cDir + _ZHDOC_SRC_SUBDIR )
 
-         FOR EACH aFile IN zh_vfDirectory( cDir + _HBDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" )
+         FOR EACH aFile IN zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" )
             IF "D" $ aFile[ F_ATTR ] .AND. ;
                !( aFile[ F_NAME ] == "." .OR. aFile[ F_NAME ] == ".." )
 
-               cDocDir := cDir + _HBDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ]
+               cDocDir := cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ]
 
-               FOR EACH aDocFile IN zh_vfDirectory( cDocDir + zh_ps() + "*" + _HBDOC_SRC_EXT )
+               FOR EACH aDocFile IN zh_vfDirectory( cDocDir + zh_ps() + "*" + _ZHDOC_SRC_EXT )
                   IF zh_vfTimeGet( cDocDir + zh_ps() + aDocFile[ F_NAME ], @tDoc ) .AND. ;
                      tLast < tDoc
                      tLast := tDoc
@@ -110,7 +110,7 @@ FUNCTION __zhdoc_LoadDir( cDir, cName, aErrMsg )
 
       cDir := zh_DirSepAdd( cDir )
 
-      IF zh_vfDirExists( cDir + _HBDOC_SRC_SUBDIR )
+      IF zh_vfDirExists( cDir + _ZHDOC_SRC_SUBDIR )
 
          aEntry := {}
          hMeta := { => }
@@ -119,11 +119,11 @@ FUNCTION __zhdoc_LoadDir( cDir, cName, aErrMsg )
             hMeta[ "_COMPONENT" ] := cName
          ENDIF
 
-         FOR EACH aFile IN ASort( zh_vfDirectory( cDir + _HBDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
+         FOR EACH aFile IN ASort( zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
             IF "D" $ aFile[ F_ATTR ] .AND. ;
                !( aFile[ F_NAME ] == "." .OR. aFile[ F_NAME ] == ".." )
 
-               __zhdoc__read_langdir( aEntry, cDir + _HBDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ], hMeta, aErrMsg )
+               __zhdoc__read_langdir( aEntry, cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ], hMeta, aErrMsg )
             ENDIF
          NEXT
       ENDIF
@@ -139,13 +139,13 @@ STATIC PROCEDURE __zhdoc__read_langdir( aEntry, cDir, hMeta, aErrMsg )
    hMeta[ "_LANG" ] := zh_FNameName( zh_DirSepDel( cDir ) )
 
    nCount := 0
-   FOR EACH aFile IN ASort( zh_vfDirectory( cDir + zh_ps() + "*" + _HBDOC_SRC_EXT ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
+   FOR EACH aFile IN ASort( zh_vfDirectory( cDir + zh_ps() + "*" + _ZHDOC_SRC_EXT ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
       __zhdoc__read_file( aEntry, cDir + zh_ps() + aFile[ F_NAME ], hMeta, aErrMsg )
       ++nCount
    NEXT
 
    IF nCount == 0
-      _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: Component (%1$s) has no documentation files", cDir ) )
+      _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: Component (%1$s) has no documentation files", cDir ) )
    ENDIF
 
    RETURN
@@ -189,7 +189,7 @@ STATIC PROCEDURE __zhdoc__read_stream( aEntry, cFile, cFileName, hMeta, aErrMsg 
 
    IF zh_UChar( 9 ) $ cFile .OR. ;
       zh_UChar( 160 ) $ cFile
-      _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: Tab/non-breaking space found. Use normal space instead.", cFileName ) )
+      _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: Tab/non-breaking space found. Use normal space instead.", cFileName ) )
    ENDIF
 
    nLine := 0
@@ -201,7 +201,7 @@ STATIC PROCEDURE __zhdoc__read_stream( aEntry, cFile, cFileName, hMeta, aErrMsg 
       SWITCH AllTrim( cLine )
       CASE "$DOC$"
          IF hEntry != NIL
-            _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $DOC$ without $END$", cFileName, nLine ) )
+            _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $DOC$ without $END$", cFileName, nLine ) )
          ELSEIF ! Empty( hEntry )
             AAdd( aEntry, hEntry )
          ENDIF
@@ -215,7 +215,7 @@ STATIC PROCEDURE __zhdoc__read_stream( aEntry, cFile, cFileName, hMeta, aErrMsg 
          EXIT
       CASE "$END$"
          IF hEntry == NIL
-            _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $END$ without $DOC$", cFileName, nLine ) )
+            _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $END$ without $DOC$", cFileName, nLine ) )
          ELSEIF ! Empty( hEntry )
             AAdd( aEntry, hEntry )
          ENDIF
@@ -229,9 +229,9 @@ STATIC PROCEDURE __zhdoc__read_stream( aEntry, cFile, cFileName, hMeta, aErrMsg 
             cLine := AllTrim( cLine )
             cSection := zh_USubStr( cLine, 2, zh_ULen( cLine ) - 2 )
             IF Empty( cSection )
-               _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Empty section name", cFileName, nLine ) )
+               _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Empty section name", cFileName, nLine ) )
             ELSEIF cSection $ hEntry
-               _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Duplicate sections inside the same entry", cFileName, nLine ) )
+               _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Duplicate sections inside the same entry", cFileName, nLine ) )
             ELSE
                hEntry[ cSection ] := ""
             ENDIF
@@ -246,13 +246,13 @@ STATIC PROCEDURE __zhdoc__read_stream( aEntry, cFile, cFileName, hMeta, aErrMsg 
             ENDIF
             hEntry[ cSection ] += zh_USubStr( cLine, nStartCol )
          ELSEIF ! Empty( cLine )
-            _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Content outside section", cFileName, nLine ) )
+            _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: Content outside section", cFileName, nLine ) )
          ENDIF
       ENDSWITCH
    NEXT
 
    IF hEntry != NIL
-      _HBDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $DOC$ without $END$", cFileName, nLine ) )
+      _ZHDOC_ADD_MSG( aErrMsg, zh_StrFormat( "Warning: %1$s: %2$d: $DOC$ without $END$", cFileName, nLine ) )
    ENDIF
 
    RETURN
@@ -335,7 +335,7 @@ FUNCTION __zhdoc_FilterOut( cFile )
  * 0xC0, 'H', 'B', 'D' followed two-byte version number in Little Endian order.
  * Corresponding magic(5) rule:
  *
- *    0       string          \xc0HBD         Ziher Documentation
+ *    0       string          \xc0ZHD         Ziher Documentation
  *    >4      leshort         x               version %d
  *
  * Until such time that the serialized format changes, and handling of
@@ -343,10 +343,10 @@ FUNCTION __zhdoc_FilterOut( cFile )
  * version 1 is taken.
  */
 
-#define _HBDOC_EXT       ".hbd"
+#define _ZHDOC_EXT       ".zhd"
 
-#define _HBDOC_SIG_LEN   6
-#define _HBDOC_SIGNATURE ( ;
+#define _ZHDOC_SIG_LEN   6
+#define _ZHDOC_SIGNATURE ( ;
    zh_BChar( 0xC0 ) + ;
    zh_BChar( 0x48 ) + ;
    zh_BChar( 0x42 ) + ;
@@ -354,7 +354,7 @@ FUNCTION __zhdoc_FilterOut( cFile )
    zh_BChar( 0x01 ) + ;
    zh_BChar( 0x00 ) )
 
-FUNCTION __zhdoc_SaveHBD( cFileName, aEntry, cFormat )
+FUNCTION __zhdoc_SaveZHD( cFileName, aEntry, cFormat )
 
    LOCAL hFile, cEOL
 
@@ -362,13 +362,13 @@ FUNCTION __zhdoc_SaveHBD( cFileName, aEntry, cFormat )
       ZH_ISARRAY( aEntry )
 
       IF Set( _SET_DEFEXTENSIONS )
-         cFileName := zh_FNameExtSetDef( cFileName, _HBDOC_EXT )
+         cFileName := zh_FNameExtSetDef( cFileName, _ZHDOC_EXT )
       ENDIF
 
       IF ( hFile := zh_vfOpen( cFileName, FO_CREAT + FO_TRUNC + FO_WRITE + FO_EXCLUSIVE ) ) != NIL
          SWITCH zh_defaultValue( cFormat, "" )
          CASE "binary"
-            zh_vfWrite( hFile, _HBDOC_SIGNATURE )
+            zh_vfWrite( hFile, _ZHDOC_SIGNATURE )
             zh_vfWrite( hFile, zh_Serialize( aEntry, ZH_SERIALIZE_COMPRESS ) )
          CASE "json-dense"
             zh_vfWrite( hFile, zh_jsonEncode( aEntry ) )
@@ -386,7 +386,7 @@ FUNCTION __zhdoc_SaveHBD( cFileName, aEntry, cFormat )
 
    RETURN .F.
 
-FUNCTION __zhdoc_LoadHBD( cFileName )
+FUNCTION __zhdoc_LoadZHD( cFileName )
 
    LOCAL hFile
    LOCAL aEntry := NIL
@@ -396,15 +396,15 @@ FUNCTION __zhdoc_LoadHBD( cFileName )
    IF ZH_ISSTRING( cFileName )
 
       IF Set( _SET_DEFEXTENSIONS )
-         cFileName := zh_FNameExtSetDef( cFileName, _HBDOC_EXT )
+         cFileName := zh_FNameExtSetDef( cFileName, _ZHDOC_EXT )
       ENDIF
 
       IF ( hFile := zh_vfOpen( cFileName, FO_READ ) ) != NIL
 
-         IF zh_vfReadLen( hFile, _HBDOC_SIG_LEN ) == _HBDOC_SIGNATURE
+         IF zh_vfReadLen( hFile, _ZHDOC_SIG_LEN ) == _ZHDOC_SIGNATURE
 
-            cBuffer := Space( zh_vfSize( hFile ) - _HBDOC_SIG_LEN )
-            zh_vfSeek( hFile, _HBDOC_SIG_LEN, FS_SET )
+            cBuffer := Space( zh_vfSize( hFile ) - _ZHDOC_SIG_LEN )
+            zh_vfSeek( hFile, _ZHDOC_SIG_LEN, FS_SET )
             zh_vfRead( hFile, @cBuffer, zh_BLen( cBuffer ) )
             zh_vfClose( hFile )
 

@@ -136,8 +136,5 @@ ZH_FUNC( __NATMSG )
 
 ZH_FUNC( __NATMSGVER )
 {
-   /* NOTE: CA-Cl*pper 5.2e Intl. will return: "NATMSGS v1.2i x14 19/Mar/93" */
-   /* NOTE: CA-Cl*pper 5.3  Intl. will return: "NATMSGS v1.3i x19 06/Mar/95" */
-
    zh_retc_const( "NATMSGS (Ziher)" );
 }

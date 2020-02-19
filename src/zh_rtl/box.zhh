@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _BOX_CH
-#define _BOX_CH
+#ifndef _BOX_ZH
+#define _BOX_ZH
 
 /* #defines for DispBox() */
 

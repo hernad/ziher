@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _SET_CH
-#define _SET_CH
+#ifndef _SET_ZH
+#define _SET_ZH
 
 #define _SET_EXACT            1
 #define _SET_FIXED            2

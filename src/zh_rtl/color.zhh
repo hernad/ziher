@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _COLOR_CH
-#define _COLOR_CH
+#ifndef _COLOR_ZH
+#define _COLOR_ZH
 
 /* attributes for color strings */
 #define CLR_STANDARD    0
@@ -54,4 +54,4 @@
 #define CLR_BACKGROUND  3
 #define CLR_UNSELECTED  4
 
-#endif /* _COLOR_CH */
+#endif /* _COLOR_ZH */

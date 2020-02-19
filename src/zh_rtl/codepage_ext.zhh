@@ -47,7 +47,7 @@
 #ifndef ZH_EXTCDP_ZH_
 #define ZH_EXTCDP_ZH_
 
-#define __HBEXTERN__HBCPAGE__REQUEST
+#define __ZHEXTERN__ZH_CODE_PAGE__REQUEST
 #include "codepage_symbols.zhh"
 
 #endif /* ZH_EXTCDP_ZH_ */

@@ -49,7 +49,7 @@
 #include "class.zhh"
 
 #include "error.zhh"
-#include "fileio.zhh"
+#include "file_io.zhh"
 #include "inkey.zhh"
 
 #define F_OK            0       // No error

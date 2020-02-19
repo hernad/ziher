@@ -46,8 +46,8 @@
 
 /* NOTE: This file is also used by C code. */
 
-#ifndef _DBSTRUCT_CH
-#define _DBSTRUCT_CH
+#ifndef _DBSTRUCT_ZH
+#define _DBSTRUCT_ZH
 
 /* Positions for field structure array */
 #define DBS_NAME        1
