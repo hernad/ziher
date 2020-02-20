@@ -134,4 +134,4 @@
 #define ZH_SET_CASE_LOWER     1
 #define ZH_SET_CASE_UPPER     2
 
-#endif /* _SET_CH */
+#endif /* _SET_ZH */

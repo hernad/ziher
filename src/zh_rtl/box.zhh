@@ -70,4 +70,4 @@
 #define ZH_B_SINGLE_DOUBLE_UNI zh_UTF8ToStrBox( "╓─╖║╜─╙║" )
 #define ZH_B_DOUBLE_SINGLE_UNI zh_UTF8ToStrBox( "╒═╕│╛═╘│" )
 
-#endif /* _BOX_CH */
+#endif /* _BOX_ZH */

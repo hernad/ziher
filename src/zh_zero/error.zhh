@@ -133,4 +133,4 @@
 #define ZH_EI_COMPBADOPCODE     9100 /* "Unsupported VM opcode" */
 #define ZH_EI_COMPBADOPSIZE     9101 /* "Invalid opcode size" */
 
-#endif /* _ERROR_CH */
+#endif /* _ERROR_ZH */

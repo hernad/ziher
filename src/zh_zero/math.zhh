@@ -73,4 +73,4 @@
 #define ZH_MATHERRORBLOCK_RETVAL   1
 #define ZH_MATHERRORBLOCK_HANDLED  2
 
-#endif /* ZH_MATH_CH */
+#endif /* ZH_MATH_ZH */
