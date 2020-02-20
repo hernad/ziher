@@ -18,6 +18,8 @@ PROCEDURE Main()
 
     LOCAL GetList := {}
     LOCAL cString
+    LOCAL dDate := Date()
+
     init_language()
 
     cString := PadR( zh_UTF8ToStr("šŠ ćĆ čČ đĐ žŽ"), 100)
@@ -26,10 +28,11 @@ PROCEDURE Main()
     SET CURSOR ON
 
     @ 1, 2 SAY "Enter string:" GET cString PICTURE "@S40"
+    @ 2, 2 SAY "        date:" GET dDate
     READ
 
     Alert( zh_UTF8ToStr( "Bosnian diacritics: šŠ ćĆ čČ đĐ žŽ; string=" ) +;
-       Trim(cString) ;
+       Trim(cString) + " date=" + DTOC( dDate ) ;
     )
 
     RETURN
