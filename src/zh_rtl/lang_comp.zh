@@ -53,7 +53,7 @@ FUNCTION zh_langSelect( cLangID, cCP )
 
    IF ZH_ISSTRING( cLangID )
 
-      cCPDef := zh_codepageSelect()
+      cCPDef := codepageSelect()
 
 
       IF ! ZH_ISSTRING( cCP )

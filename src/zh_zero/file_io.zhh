@@ -105,9 +105,9 @@
 
 /* Constants breaking Cl*pper namespace.
    Leaving it here for compatibility */
-#define FO_CREAT           ZH_FO_CREAT     /* Ziher extension */
-#define FO_TRUNC           ZH_FO_TRUNC     /* Ziher extension */
-#define FO_EXCL            ZH_FO_EXCL      /* Ziher extension */
+#define FO_CREAT           ZH_FO_CREAT     
+#define FO_TRUNC           ZH_FO_TRUNC     
+#define FO_EXCL            ZH_FO_EXCL      
 #define FO_DEFAULTS        ZH_FO_DEFAULTS  /* Use SET command defaults */
 
 /* File sharing flags */

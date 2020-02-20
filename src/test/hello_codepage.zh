@@ -1,0 +1,35 @@
+#include "set.zhh"
+
+
+PROCEDURE init_language()
+
+    SET CENTURY OFF
+    SET EPOCH TO 1980  // 81 - 1981,  79-2079
+    SET DATE TO GERMAN
+
+    Set( _SET_OSCODEPAGE, codepageOS() )
+
+    codepageSelect( "SL852" )
+
+    RETURN
+
+
+PROCEDURE Main()
+
+    LOCAL GetList := {}
+    LOCAL cString
+    init_language()
+
+    cString := PadR( zh_UTF8ToStr("šŠ ćĆ čČ đĐ žŽ"), 100)
+
+    CLEAR SCREEN
+    SET CURSOR ON
+
+    @ 1, 2 SAY "Enter string:" GET cString PICTURE "@S40"
+    READ
+
+    Alert( zh_UTF8ToStr( "Bosnian diacritics: šŠ ćĆ čČ đĐ žŽ; string=" ) +;
+       Trim(cString) ;
+    )
+
+    RETURN

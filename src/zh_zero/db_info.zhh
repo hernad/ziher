@@ -226,10 +226,10 @@
 #define DBRI_RECSIZE              3
 #define DBRI_RECNO                4
 #define DBRI_UPDATED              5
-#define DBRI_ENCRYPTED            6  /* Ziher extension */
-#define DBRI_RAWRECORD            7  /* Ziher extension */
-#define DBRI_RAWMEMOS             8  /* Ziher extension */
-#define DBRI_RAWDATA              9  /* Ziher extension */
+#define DBRI_ENCRYPTED            6  
+#define DBRI_RAWRECORD            7  
+#define DBRI_RAWMEMOS             8  
+#define DBRI_RAWDATA              9  
 
 /* constants for dbInfo() */
 #define DBI_ISDBF                 1  /* Does this RDD support DBFs? */
@@ -264,7 +264,7 @@
 #define DBI_DB_VERSION          101  /* Version of the Host driver */
 #define DBI_RDD_VERSION         102  /* current RDD's version */
 
-/* Ziher extension */
+
 #define DBI_LOCKSCHEME          128  /* Locking scheme used by RDD */
 #define DBI_ISREADONLY          129  /* Was the file opened readonly? */
 #define DBI_ROLLBACK            130  /* Rollback changes made to current record */

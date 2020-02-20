@@ -385,10 +385,10 @@ static char * zh_macroTextSubst( const char * szString, ZH_SIZE * pnStringLen )
  * a parameter.
  * PUSH operation
  * iContext contains additional info when ZH_SM_XBASE is enabled
- *  = ZH_P_MACROPUSHLIST
- *  = ZH_P_MACROPUSHPARE
+ *  = ZH_P_MACRO_PUSHLIST
+ *  = ZH_P_MACRO_PUSHPARE
  *
- * iContext contains ZH_P_MACROPUSHPARE if a macro is used inside a codeblock
+ * iContext contains ZH_P_MACRO_PUSHPARE if a macro is used inside a codeblock
  * Eval( {|| &macro } )
  *
  */
@@ -434,7 +434,7 @@ void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
           *
           */
          struMacro.Flags |= ZH_MACRO_GEN_LIST;
-         if( iContext == ZH_P_MACROPUSHPARE )
+         if( iContext == ZH_P_MACRO_PUSHPARE )
          {
             struMacro.Flags |= ZH_MACRO_GEN_PARE;
          }
@@ -447,7 +447,7 @@ void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
          zh_stackPop();    /* remove compiled string */
          zh_macroRun( &struMacro );
 
-         if( iContext == ZH_P_MACROPUSHLIST )
+         if( iContext == ZH_P_MACRO_PUSHLIST )
             zh_vmPushLong( struMacro.uiListElements + 1 );
       }
       else
@@ -458,7 +458,7 @@ void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
 
       zh_macroClear( &struMacro );
    }
-   else if( iContext == ZH_P_MACROPUSHLIST && zh_vmRequestQuery() == 0 )
+   else if( iContext == ZH_P_MACRO_PUSHLIST && zh_vmRequestQuery() == 0 )
    {
       zh_vmPushInteger( 1 );
    }

@@ -50,17 +50,17 @@
 #include "zh_api_error.h"
 #include "zh_codepage_api.h"
 
-ZH_FUNC( ZH_CODEPAGESELECT )
+ZH_FUNC( CODEPAGESELECT )
 {
    const char * id = zh_parc( 1 );
 
    zh_retc( zh_cdpID() );
 
    if( id )
-      zh_codepageSelectID( id );
+      codepageSelectID( id );
 }
 
-ZH_FUNC( ZH_CDPEXISTS )
+ZH_FUNC( CODEPAGE_EXISTS )
 {
    const char * id = zh_parc( 1 );
 

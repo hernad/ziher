@@ -103,7 +103,7 @@ CREATE CLASS PopupMenu FUNCTION ZHPopupMenu
    VAR aItems     INIT {}
    VAR aSaveScr
 
-   VAR lShadowed  INIT .F. /* Ziher extension */
+   VAR lShadowed  INIT .F. 
 
    METHOD setMetrics()
 

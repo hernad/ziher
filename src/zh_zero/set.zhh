@@ -93,39 +93,39 @@
 #define _SET_MCENTER          37
 #define _SET_SCROLLBREAK      38
 
-#define _SET_EVENTMASK        39  /* CA-Cl*pper 5.3 compatible */
+#define _SET_EVENTMASK        39  
 
-#define _SET_VIDEOMODE        40  /* CA-Cl*pper 5.3 compatible */
+#define _SET_VIDEOMODE        40  
 
-#define _SET_MBLOCKSIZE       41  /* CA-Cl*pper 5.3 compatible */
-#define _SET_MFILEEXT         42  /* CA-Cl*pper 5.3 compatible */
+#define _SET_MBLOCKSIZE       41  
+#define _SET_MFILEEXT         42  
 
-#define _SET_STRICTREAD       43  /* CA-Cl*pper 5.3 compatible */
-#define _SET_OPTIMIZE         44  /* CA-Cl*pper 5.3 compatible */
-#define _SET_AUTOPEN          45  /* CA-Cl*pper 5.3 compatible */
-#define _SET_AUTORDER         46  /* CA-Cl*pper 5.3 compatible */
-#define _SET_AUTOSHARE        47  /* CA-Cl*pper 5.3 compatible */
+#define _SET_STRICTREAD       43  
+#define _SET_OPTIMIZE         44  
+#define _SET_AUTOPEN          45  
+#define _SET_AUTORDER         46  
+#define _SET_AUTOSHARE        47  
 
 #define _SET_COUNT            47
 
-#define _SET_LANGUAGE         100 /* Ziher extension */
-#define _SET_IDLEREPEAT       101 /* Ziher extension */
-#define _SET_FILECASE         102 /* Ziher extension */
-#define _SET_DIRCASE          103 /* Ziher extension */
-#define _SET_DIRSEPARATOR     104 /* Ziher extension */
-#define _SET_EOF              105 /* Ziher extension */
-#define _SET_HARDCOMMIT       106 /* Ziher extension */
-#define _SET_FORCEOPT         107 /* Ziher extension */
-#define _SET_DBFLOCKSCHEME    108 /* Ziher extension */
-#define _SET_DEFEXTENSIONS    109 /* Ziher extension */
-#define _SET_EOL              110 /* Ziher extension */
-#define _SET_TRIMFILENAME     111 /* Ziher extension */
-#define _SET_HBOUTLOG         112 /* Ziher extension */
-#define _SET_HBOUTLOGINFO     113 /* Ziher extension */
-#define _SET_CODEPAGE         114 /* Ziher extension */
-#define _SET_OSCODEPAGE       115 /* Ziher extension */
-#define _SET_TIMEFORMAT       116 /* Ziher extension */
-#define _SET_DBCODEPAGE       117 /* Ziher extension */
+#define _SET_LANGUAGE         100 
+#define _SET_IDLEREPEAT       101 
+#define _SET_FILECASE         102 
+#define _SET_DIRCASE          103 
+#define _SET_DIRSEPARATOR     104 
+#define _SET_EOF              105 
+#define _SET_HARDCOMMIT       106 
+#define _SET_FORCEOPT         107 
+#define _SET_DBFLOCKSCHEME    108 
+#define _SET_DEFEXTENSIONS    109 
+#define _SET_EOL              110 
+#define _SET_TRIMFILENAME     111 
+#define _SET_HBOUTLOG         112 
+#define _SET_HBOUTLOGINFO     113 
+#define _SET_CODEPAGE         114 
+#define _SET_OSCODEPAGE       115 
+#define _SET_TIMEFORMAT       116 
+#define _SET_DBCODEPAGE       117 
 
 #define ZH_SET_BASE           100
 #define ZH_SET_COUNT          ( _SET_DBCODEPAGE - ZH_SET_BASE + 1 )

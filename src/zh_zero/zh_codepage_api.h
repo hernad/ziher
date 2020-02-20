@@ -418,8 +418,8 @@ extern ZH_EXPORT void         zh_cdpBuildTransTable( PZH_UNITABLE uniTable );
 extern ZH_EXPORT void         zh_cdpReleaseAll( void );
 extern ZH_EXPORT const char * zh_cdpID( void );
 extern ZH_EXPORT ZH_BOOL      zh_cdpIsUTF8( PZH_CODEPAGE cdp );
-extern ZH_EXPORT PZH_CODEPAGE zh_codepageSelect( PZH_CODEPAGE cdp );
-extern ZH_EXPORT const char * zh_codepageSelectID( const char * id );
+extern ZH_EXPORT PZH_CODEPAGE codepageSelect( PZH_CODEPAGE cdp );
+extern ZH_EXPORT const char * codepageSelectID( const char * id );
 extern ZH_EXPORT PZH_CODEPAGE zh_cdpFind( const char * id );
 extern ZH_EXPORT PZH_CODEPAGE zh_cdpFindExt( const char * id );
 extern ZH_EXPORT const char ** zh_cdpList( void ); /* Caller must release the pointer */

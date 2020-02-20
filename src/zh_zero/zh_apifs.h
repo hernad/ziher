@@ -75,7 +75,7 @@ ZH_EXTERN_BEGIN
 #define FXO_FORCEEXT  0x0800   /* Force default extension */
 #define FXO_DEFAULTS  0x1000   /* Use SET command defaults */
 #define FXO_DEVICERAW 0x2000   /* Open devices in raw mode */
-/* Ziher extension */
+
 #define FXO_NOSEEKPOS FXO_DEVICERAW /* seek pos not needed in regular file */
 #define FXO_SHARELOCK 0x4000        /* emulate MS-DOS SH_DENY* mode in POSIX OS */
 #define FXO_COPYNAME  0x8000        /* copy final szPath into pszFileName */

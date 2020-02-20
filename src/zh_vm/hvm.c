@@ -860,7 +860,7 @@ void zh_vmThreadInit( void * Cargo )
    {
       ZH_STACK_TLS_PRELOAD
 
-      zh_codepageSelectID( pState->pszCDP );
+      codepageSelectID( pState->pszCDP );
       zh_langSelectID( pState->pszLang );
 
       zh_vmSetI18N( pState->pI18N );
@@ -1031,7 +1031,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
    zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
-   zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
+   codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
    {
       ZH_STACK_TLS_PRELOAD
       s_main_thread = zh_stackId();
@@ -2521,7 +2521,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += 2;
             break;
 
-         case ZH_P_MACROPUSH:
+         case ZH_P_MACRO_PUSH:
             /* compile and run - leave the result on the stack */
             /* the topmost element on the stack contains a macro
              * string for compilation
@@ -2530,21 +2530,21 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += 2;
             break;
 
-         case ZH_P_MACROPUSHLIST:
+         case ZH_P_MACRO_PUSHLIST:
             /* compile and run - leave the result on the stack */
             /* the topmost element on the stack contains a macro
              * string for compilation
              */
-            zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACROPUSHLIST, pCode[ 1 ] );
+            zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACRO_PUSHLIST, pCode[ 1 ] );
             pCode += 2;
             break;
 
-         case ZH_P_MACROPUSHINDEX:
+         case ZH_P_MACRO_PUSHINDEX:
             zh_vmMacroPushIndex();
             pCode++;
             break;
 
-         case ZH_P_MACROARRAYGEN:
+         case ZH_P_MACRO_ARRAY_GEN:
             zh_vmMacroArrayGen( ZH_PCODE_MKUSHORT( &pCode[ 1 ] ) );
             pCode += 3;
             break;
@@ -2554,7 +2554,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += 3;
             break;
 
-         case ZH_P_MACROFUNC:
+         case ZH_P_MACRO_FUNC:
             zh_vmMacroFunc( ZH_PCODE_MKUSHORT( &pCode[ 1 ] ) );
             pCode += 3;
             break;
@@ -2564,22 +2564,22 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
             pCode += 3;
             break;
 
-         case ZH_P_MACROPUSHPARE:
+         case ZH_P_MACRO_PUSHPARE:
             /* compile and run - leave the result on the stack */
             /* the topmost element on the stack contains a macro
              * string for compilation
              */
-            zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACROPUSHPARE, pCode[ 1 ] );
+            zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACRO_PUSHPARE, pCode[ 1 ] );
             pCode += 2;
             break;
 
-         case ZH_P_MACROPUSHALIASED:
+         case ZH_P_MACRO_PUSHALIASED:
             /* compile and run - leave an aliased variable on the stack */
             zh_macroPushAliasedValue( zh_stackItemFromTop( -2 ), zh_stackItemFromTop( -1 ), pCode[ 1 ] );
             pCode += 2;
             break;
 
-         case ZH_P_MACROPUSHREF:
+         case ZH_P_MACRO_PUSHREF:
             {
                PZH_ITEM pMacro = zh_stackItemFromTop( -1 );
                zh_macroPushReference( pMacro );
@@ -11648,7 +11648,7 @@ ZH_BOOL zh_xvmMacroPushList( int iFlags )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushList(%d)", iFlags ) );
 
-   zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACROPUSHLIST, iFlags );
+   zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACRO_PUSHLIST, iFlags );
 
    ZH_XVM_RETURN
 }
@@ -11659,7 +11659,7 @@ ZH_BOOL zh_xvmMacroPushPare( int iFlags )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushPare(%d)", iFlags ) );
 
-   zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACROPUSHPARE, iFlags );
+   zh_macroGetValue( zh_stackItemFromTop( -1 ), ZH_P_MACRO_PUSHPARE, iFlags );
 
    ZH_XVM_RETURN
 }

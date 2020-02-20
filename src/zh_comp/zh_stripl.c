@@ -135,12 +135,12 @@ static const PZH_STRIP_FUNC s_stripLines_table[] =
    NULL,                       /* ZH_P_LOCALNAME             */
    NULL,                       /* ZH_P_MACROPOP              */
    NULL,                       /* ZH_P_MACROPOPALIASED       */
-   NULL,                       /* ZH_P_MACROPUSH             */
-   NULL,                       /* ZH_P_MACROARRAYGEN         */
-   NULL,                       /* ZH_P_MACROPUSHLIST         */
-   NULL,                       /* ZH_P_MACROPUSHINDEX        */
-   NULL,                       /* ZH_P_MACROPUSHPARE         */
-   NULL,                       /* ZH_P_MACROPUSHALIASED      */
+   NULL,                       /* ZH_P_MACRO_PUSH             */
+   NULL,                       /* ZH_P_MACRO_ARRAY_GEN         */
+   NULL,                       /* ZH_P_MACRO_PUSHLIST         */
+   NULL,                       /* ZH_P_MACRO_PUSHINDEX        */
+   NULL,                       /* ZH_P_MACRO_PUSHPARE         */
+   NULL,                       /* ZH_P_MACRO_PUSHALIASED      */
    NULL,                       /* ZH_P_MACROSYMBOL           */
    NULL,                       /* ZH_P_MACROTEXT             */
    NULL,                       /* ZH_P_MESSAGE               */
@@ -220,11 +220,11 @@ static const PZH_STRIP_FUNC s_stripLines_table[] =
    NULL,                       /* ZH_P_TRUE                  */
    NULL,                       /* ZH_P_ZERO                  */
    NULL,                       /* ZH_P_ONE                   */
-   NULL,                       /* ZH_P_MACROFUNC             */
+   NULL,                       /* ZH_P_MACRO_FUNC             */
    NULL,                       /* ZH_P_MACRODO               */
    NULL,                       /* ZH_P_MPUSHSTR              */
    NULL,                       /* ZH_P_LOCALNEARADDINT       */
-   NULL,                       /* ZH_P_MACROPUSHREF          */
+   NULL,                       /* ZH_P_MACRO_PUSHREF          */
    NULL,                       /* ZH_P_PUSHLONGLONG          */
    NULL,                       /* ZH_P_ENUMSTART             */
    NULL,                       /* ZH_P_ENUMNEXT              */

@@ -102,12 +102,12 @@ typedef enum
    ZH_P_LOCALNAME,             /*  37 sets the name of local variable */
    ZH_P_MACROPOP,              /*  38 compile and run - pop a value from the stack */
    ZH_P_MACROPOPALIASED,       /*  39 compile and run - pop a field value from the stack */
-   ZH_P_MACROPUSH,             /*  40 compile and run - leave the result on the stack */
-   ZH_P_MACROARRAYGEN,         /*  41 generate array from arguments set on ZHVM stack { &var } */
-   ZH_P_MACROPUSHLIST,         /*  42 compile and run - leave the result on the stack */
-   ZH_P_MACROPUSHINDEX,        /*  43 push array items using macro array index */
-   ZH_P_MACROPUSHPARE,         /*  44 compile and run - leave the result on the stack */
-   ZH_P_MACROPUSHALIASED,      /*  45 compile and run - leave the field value on the stack */
+   ZH_P_MACRO_PUSH,             /*  40 compile and run - leave the result on the stack */
+   ZH_P_MACRO_ARRAY_GEN,         /*  41 generate array from arguments set on ZHVM stack { &var } */
+   ZH_P_MACRO_PUSHLIST,         /*  42 compile and run - leave the result on the stack */
+   ZH_P_MACRO_PUSHINDEX,        /*  43 push array items using macro array index */
+   ZH_P_MACRO_PUSHPARE,         /*  44 compile and run - leave the result on the stack */
+   ZH_P_MACRO_PUSHALIASED,      /*  45 compile and run - leave the field value on the stack */
    ZH_P_MACROSYMBOL,           /*  46 compile into a symbol name (used in function calls) */
    ZH_P_MACROTEXT,             /*  47 macro text substitution */
    ZH_P_MESSAGE,               /*  48 sends a message to an object */
@@ -187,11 +187,11 @@ typedef enum
    ZH_P_TRUE,                  /* 120 pushes true on the virtual machine stack */
    ZH_P_ZERO,                  /* 121 places a ZERO on the virtual machine stack */
    ZH_P_ONE,                   /* 122 places a ONE on the virtual machine stack */
-   ZH_P_MACROFUNC,             /* 123 execute a function saving its result */
+   ZH_P_MACRO_FUNC,             /* 123 execute a function saving its result */
    ZH_P_MACRODO,               /* 124 execute a function discarding its result */
    ZH_P_MPUSHSTR,              /* 125 Macro compiled pushed string */
    ZH_P_LOCALNEARADDINT,       /* 126 Add/Subtract specified int into specified local without using the stack. */
-   ZH_P_MACROPUSHREF,          /* 127 Reference to macro variable @&mvar */
+   ZH_P_MACRO_PUSHREF,          /* 127 Reference to macro variable @&mvar */
    ZH_P_PUSHLONGLONG,          /* 128 places an integer number on the virtual machine stack */
    ZH_P_ENUMSTART,             /* 129 Start of FOR EACH loop */
    ZH_P_ENUMNEXT,              /* 130 Next item of FOR EACH loop */

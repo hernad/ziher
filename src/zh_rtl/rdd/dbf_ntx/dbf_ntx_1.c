@@ -643,7 +643,7 @@ static LPKEYINFO zh_ntxEvalKey( LPKEYINFO pKey, LPTAGINFO pTag )
 {
    NTXAREAP pArea = pTag->pIndex->pArea;
    PZH_ITEM pItem;
-   PZH_CODEPAGE cdpTmp = zh_codepageSelect( pArea->dbfarea.area.cdPage );
+   PZH_CODEPAGE cdpTmp = codepageSelect( pArea->dbfarea.area.cdPage );
 
    if( pTag->nField )
    {
@@ -668,7 +668,7 @@ static LPKEYINFO zh_ntxEvalKey( LPKEYINFO pKey, LPTAGINFO pTag )
          zh_rddSelectWorkAreaNumber( iCurrArea );
    }
 
-   zh_codepageSelect( cdpTmp );
+   codepageSelect( cdpTmp );
 
    return pKey;
 }
@@ -5346,7 +5346,7 @@ static ZH_ERRCODE zh_ntxTagCreate( LPTAGINFO pTag, ZH_BOOL fReindex )
       ZH_BYTE * pSaveRecBuff = pArea->dbfarea.pRecord;
       char szBuffer[ NTX_MAX_KEY ];
       int iRecBuff = 0, iRecBufSize, iRec;
-      PZH_CODEPAGE cdpTmp = zh_codepageSelect( pArea->dbfarea.area.cdPage );
+      PZH_CODEPAGE cdpTmp = codepageSelect( pArea->dbfarea.area.cdPage );
       PZH_ITEM pForItem, pItem = NULL;
 
       pForItem = pTag->pForItem;
@@ -5570,7 +5570,7 @@ static ZH_ERRCODE zh_ntxTagCreate( LPTAGINFO pTag, ZH_BOOL fReindex )
          zh_itemRelease( pItem );
 
       pArea->lpCurTag = pSaveTag;
-      zh_codepageSelect( cdpTmp );
+      codepageSelect( cdpTmp );
    }
 
    zh_ntxSortFree( pSort, ZH_TRUE );

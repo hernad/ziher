@@ -697,7 +697,7 @@ static ZH_OPT_FUNC( zh_p_functionshort )
    return 2;
 }
 
-static ZH_OPT_FUNC( zh_p_macrofunc )
+static ZH_OPT_FUNC( zh_p_macro_func )
 {
    ZH_SYMBOL_UNUSED( cargo );
 
@@ -778,12 +778,12 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_LOCALNAME             */
    NULL,                       /* ZH_P_MACROPOP              */
    NULL,                       /* ZH_P_MACROPOPALIASED       */
-   NULL,                       /* ZH_P_MACROPUSH             */
-   NULL,                       /* ZH_P_MACROARRAYGEN         */
-   NULL,                       /* ZH_P_MACROPUSHLIST         */
-   NULL,                       /* ZH_P_MACROPUSHINDEX        */
-   NULL,                       /* ZH_P_MACROPUSHPARE         */
-   NULL,                       /* ZH_P_MACROPUSHALIASED      */
+   NULL,                       /* ZH_P_MACRO_PUSH             */
+   NULL,                       /* ZH_P_MACRO_ARRAY_GEN         */
+   NULL,                       /* ZH_P_MACRO_PUSHLIST         */
+   NULL,                       /* ZH_P_MACRO_PUSHINDEX        */
+   NULL,                       /* ZH_P_MACRO_PUSHPARE         */
+   NULL,                       /* ZH_P_MACRO_PUSHALIASED      */
    NULL,                       /* ZH_P_MACROSYMBOL           */
    NULL,                       /* ZH_P_MACROTEXT             */
    NULL,                       /* ZH_P_MESSAGE               */
@@ -863,11 +863,11 @@ static const PZH_OPT_FUNC s_opt_table[] =
    zh_p_true,                  /* ZH_P_TRUE                  */
    NULL,                       /* ZH_P_ZERO                  */
    NULL,                       /* ZH_P_ONE                   */
-   zh_p_macrofunc,             /* ZH_P_MACROFUNC             */
+   zh_p_macro_func,             /* ZH_P_MACRO_FUNC             */
    NULL,                       /* ZH_P_MACRODO               */
    NULL,                       /* ZH_P_MPUSHSTR              */
    NULL,                       /* ZH_P_LOCALNEARADDINT       */
-   NULL,                       /* ZH_P_MACROPUSHREF          */
+   NULL,                       /* ZH_P_MACRO_PUSHREF          */
    NULL,                       /* ZH_P_PUSHLONGLONG          */
    NULL,                       /* ZH_P_ENUMSTART             */
    NULL,                       /* ZH_P_ENUMNEXT              */
@@ -1277,7 +1277,7 @@ static int zh_compPCodeTraceAssignedUnused( PZH_ZFUNC pFunc, ZH_SIZE nPos, ZH_BY
           pFunc->pCode[ nPos ] == ZH_P_SEND ||
           pFunc->pCode[ nPos ] == ZH_P_SENDSHORT ||
           pFunc->pCode[ nPos ] == ZH_P_MACRODO ||
-          pFunc->pCode[ nPos ] == ZH_P_MACROFUNC ||
+          pFunc->pCode[ nPos ] == ZH_P_MACRO_FUNC ||
           pFunc->pCode[ nPos ] == ZH_P_MACRO_SEND )
       {
          fCanBreak = ZH_TRUE;

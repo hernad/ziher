@@ -95,12 +95,12 @@
 #define EG_APPENDLOCK   40
 #define EG_LOCK         41
 
-#define EG_DESTRUCTOR   45      /* Ziher extension */
-#define EG_ARRACCESS    46      /* Ziher extension */
-#define EG_ARRASSIGN    47      /* Ziher extension */
-#define EG_ARRDIMENSION 48      /* Ziher extension */
-#define EG_NOTARRAY     49      /* Ziher extension */
-#define EG_CONDITION    50      /* Ziher extension */
+#define EG_DESTRUCTOR   45      
+#define EG_ARRACCESS    46      
+#define EG_ARRASSIGN    47      
+#define EG_ARRDIMENSION 48      
+#define EG_NOTARRAY     49      
+#define EG_CONDITION    50      
 
 /* Internal errors */
 #define ZH_EI_ERRUNRECOV        9000 /* "Unrecoverable error %lu: " */

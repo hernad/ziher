@@ -3251,11 +3251,11 @@ ZH_BOOL zh_cdpIsUTF8( PZH_CODEPAGE cdp )
    return ZH_CODEPAGE_ISUTF8( cdp );
 }
 
-PZH_CODEPAGE zh_codepageSelect( PZH_CODEPAGE cdp )
+PZH_CODEPAGE codepageSelect( PZH_CODEPAGE cdp )
 {
    PZH_CODEPAGE cdpOld;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_codepageSelect(%p)", ( void * ) cdp ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "codepageSelect(%p)", ( void * ) cdp ) );
 
    cdpOld = zh_vmCDP();
    if( cdp )
@@ -3275,13 +3275,13 @@ const char * zh_cdpID( void )
    return cdp ? cdp->id : NULL;
 }
 
-const char * zh_codepageSelectID( const char * id )
+const char * codepageSelectID( const char * id )
 {
    PZH_CODEPAGE cdp;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_codepageSelectID(%s)", id ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "codepageSelectID(%s)", id ) );
 
-   cdp = zh_codepageSelect( zh_cdpFindExt( id ) );
+   cdp = codepageSelect( zh_cdpFindExt( id ) );
 
    return cdp ? cdp->id : NULL;
 }

@@ -153,12 +153,12 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    0,        /* ZH_P_LOCALNAME             */
    2,        /* ZH_P_MACROPOP              */
    2,        /* ZH_P_MACROPOPALIASED       */
-   2,        /* ZH_P_MACROPUSH             */
-   3,        /* ZH_P_MACROARRAYGEN         */
-   2,        /* ZH_P_MACROPUSHLIST         */
-   1,        /* ZH_P_MACROPUSHINDEX        */
-   2,        /* ZH_P_MACROPUSHPARE         */
-   2,        /* ZH_P_MACROPUSHALIASED      */
+   2,        /* ZH_P_MACRO_PUSH             */
+   3,        /* ZH_P_MACRO_ARRAY_GEN         */
+   2,        /* ZH_P_MACRO_PUSHLIST         */
+   1,        /* ZH_P_MACRO_PUSHINDEX        */
+   2,        /* ZH_P_MACRO_PUSHPARE         */
+   2,        /* ZH_P_MACRO_PUSHALIASED      */
    1,        /* ZH_P_MACROSYMBOL           */
    1,        /* ZH_P_MACROTEXT             */
    3,        /* ZH_P_MESSAGE               */
@@ -238,11 +238,11 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    1,        /* ZH_P_TRUE                  */
    1,        /* ZH_P_ZERO                  */
    1,        /* ZH_P_ONE                   */
-   3,        /* ZH_P_MACROFUNC             */
+   3,        /* ZH_P_MACRO_FUNC             */
    3,        /* ZH_P_MACRODO               */
    0,        /* ZH_P_MPUSHSTR              */
    4,        /* ZH_P_LOCALNEARADDINT       */
-   1,        /* ZH_P_MACROPUSHREF          */
+   1,        /* ZH_P_MACRO_PUSHREF          */
    9,        /* ZH_P_PUSHLONGLONG          */
    3,        /* ZH_P_ENUMSTART             */
    1,        /* ZH_P_ENUMNEXT              */
@@ -345,12 +345,12 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    zh_p_localname,             /* ZH_P_LOCALNAME             */
    NULL,                       /* ZH_P_MACROPOP              */
    NULL,                       /* ZH_P_MACROPOPALIASED       */
-   NULL,                       /* ZH_P_MACROPUSH             */
-   NULL,                       /* ZH_P_MACROARRAYGEN         */
-   NULL,                       /* ZH_P_MACROPUSHLIST         */
-   NULL,                       /* ZH_P_MACROPUSHINDEX        */
-   NULL,                       /* ZH_P_MACROPUSHPARE         */
-   NULL,                       /* ZH_P_MACROPUSHALIASED      */
+   NULL,                       /* ZH_P_MACRO_PUSH             */
+   NULL,                       /* ZH_P_MACRO_ARRAY_GEN         */
+   NULL,                       /* ZH_P_MACRO_PUSHLIST         */
+   NULL,                       /* ZH_P_MACRO_PUSHINDEX        */
+   NULL,                       /* ZH_P_MACRO_PUSHPARE         */
+   NULL,                       /* ZH_P_MACRO_PUSHALIASED      */
    NULL,                       /* ZH_P_MACROSYMBOL           */
    NULL,                       /* ZH_P_MACROTEXT             */
    NULL,                       /* ZH_P_MESSAGE               */
@@ -430,11 +430,11 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_TRUE                  */
    NULL,                       /* ZH_P_ZERO                  */
    NULL,                       /* ZH_P_ONE                   */
-   NULL,                       /* ZH_P_MACROFUNC             */
+   NULL,                       /* ZH_P_MACRO_FUNC             */
    NULL,                       /* ZH_P_MACRODO               */
    NULL,                       /* ZH_P_MPUSHSTR              */
    NULL,                       /* ZH_P_LOCALNEARADDINT       */
-   NULL,                       /* ZH_P_MACROPUSHREF          */
+   NULL,                       /* ZH_P_MACRO_PUSHREF          */
    NULL,                       /* ZH_P_PUSHLONGLONG          */
    NULL,                       /* ZH_P_ENUMSTART             */
    NULL,                       /* ZH_P_ENUMNEXT              */

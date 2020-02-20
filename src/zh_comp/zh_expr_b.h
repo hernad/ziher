@@ -595,7 +595,7 @@ static ZH_EXPR_FUNC( zh_compExprUseArray )
             }
             else
             {
-               ZH_GEN_FUNC3( PCode3, ZH_P_MACROARRAYGEN,
+               ZH_GEN_FUNC3( PCode3, ZH_P_MACRO_ARRAY_GEN,
                              ZH_LOBYTE( usItems ), ZH_HIBYTE( usItems ) );
             }
          }
@@ -1423,7 +1423,7 @@ static ZH_EXPR_FUNC( zh_compExprUseArrayAt )
             ZH_EXPR_USE( pSelf->value.asList.pExprList, ZH_EA_PUSH_PCODE );
          ZH_EXPR_USE( pSelf->value.asList.pIndex, ZH_EA_PUSH_PCODE );
          if( fMacroIndex )
-            ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHINDEX );
+            ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHINDEX );
          if( pSelf->value.asList.reference )
             ZH_GEN_FUNC1( PCode1, ZH_P_ARRAYPUSHREF );
          else
@@ -1504,7 +1504,7 @@ static ZH_EXPR_FUNC( zh_compExprUseArrayAt )
             ZH_EXPR_USE( pSelf->value.asList.pExprList, ZH_EA_PUSH_PCODE );
          ZH_EXPR_USE( pSelf->value.asList.pIndex, ZH_EA_PUSH_PCODE );
          if( fMacroIndex )
-            ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHINDEX );
+            ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHINDEX );
          ZH_GEN_FUNC1( PCode1, ZH_P_ARRAYPOP );
          break;
       }
@@ -1599,7 +1599,7 @@ static ZH_EXPR_FUNC( zh_compExprUseMacro )
             ZH_GEN_FUNC1( PCode1, ZH_P_MACROSYMBOL );
 
          else if( pSelf->value.asMacro.SubType & ZH_ET_MACRO_REFER )
-            ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHREF );
+            ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHREF );
 
          else if( pSelf->value.asMacro.SubType & ZH_ET_MACRO_ALIASED )
          {
@@ -1614,24 +1614,24 @@ static ZH_EXPR_FUNC( zh_compExprUseMacro )
                if( pSelf->value.asMacro.SubType & ZH_ET_MACRO_LIST )
                {
                   /* { &macro }, funCall( &macro ) or var[ &macro ] */
-                  ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHLIST );
+                  ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHLIST );
                }
                else if( pSelf->value.asMacro.SubType & ZH_ET_MACRO_PARE )
                {
                   /* var := (somevalue, &macro) - in Xbase++ compatibility mode
                    * Eval( {|| &macro} ) - in all cases
                    */
-                  ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHPARE );
+                  ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHPARE );
                }
                else
                {
                   /* usual &macro */
-                  ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSH );
+                  ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSH );
                }
             }
             else
                /* usual &macro */
-               ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSH );
+               ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSH );
 
             /* Always add byte to pcode indicating requested macro compiler flag. */
             ZH_GEN_FUNC1( PCode1, ( ZH_BYTE ) ZH_MACRO_GENFLAGS );
@@ -2129,7 +2129,7 @@ static ZH_EXPR_FUNC( zh_compExprUseFunCall )
 
          if( fArgsList )
          {
-            ZH_GEN_FUNC3( PCode3, ZH_P_MACROFUNC, ZH_LOBYTE( usCount ), ZH_HIBYTE( usCount ) );
+            ZH_GEN_FUNC3( PCode3, ZH_P_MACRO_FUNC, ZH_LOBYTE( usCount ), ZH_HIBYTE( usCount ) );
             /* restore original expression type */
             pSelf->value.asFunCall.pParms->ExprType = ZH_ET_ARGLIST;
          }
@@ -5386,7 +5386,7 @@ static void zh_compExprUseAliasMacro( PZH_EXPR pAliasedVar, ZH_BYTE bAction, ZH_
    }
 
    if( bAction == ZH_EA_PUSH_PCODE )
-      ZH_GEN_FUNC1( PCode1, ZH_P_MACROPUSHALIASED );
+      ZH_GEN_FUNC1( PCode1, ZH_P_MACRO_PUSHALIASED );
    else
       ZH_GEN_FUNC1( PCode1, ZH_P_MACROPOPALIASED );
 

@@ -394,12 +394,12 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_LOCALNAME             */
    zh_p_default,               /* ZH_P_MACROPOP              */
    zh_p_default,               /* ZH_P_MACROPOPALIASED       */
-   zh_p_default,               /* ZH_P_MACROPUSH             */
-   zh_p_default,               /* ZH_P_MACROARRAYGEN         */
-   zh_p_default,               /* ZH_P_MACROPUSHLIST         */
-   zh_p_default,               /* ZH_P_MACROPUSHINDEX        */
-   zh_p_default,               /* ZH_P_MACROPUSHPARE         */
-   zh_p_default,               /* ZH_P_MACROPUSHALIASED      */
+   zh_p_default,               /* ZH_P_MACRO_PUSH             */
+   zh_p_default,               /* ZH_P_MACRO_ARRAY_GEN         */
+   zh_p_default,               /* ZH_P_MACRO_PUSHLIST         */
+   zh_p_default,               /* ZH_P_MACRO_PUSHINDEX        */
+   zh_p_default,               /* ZH_P_MACRO_PUSHPARE         */
+   zh_p_default,               /* ZH_P_MACRO_PUSHALIASED      */
    zh_p_default,               /* ZH_P_MACROSYMBOL           */
    zh_p_default,               /* ZH_P_MACROTEXT             */
    zh_p_default,               /* ZH_P_MESSAGE               */
@@ -479,11 +479,11 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_TRUE                  */
    zh_p_default,               /* ZH_P_ZERO                  */
    zh_p_default,               /* ZH_P_ONE                   */
-   zh_p_default,               /* ZH_P_MACROFUNC             */
+   zh_p_default,               /* ZH_P_MACRO_FUNC             */
    zh_p_default,               /* ZH_P_MACRODO               */
    zh_p_default,               /* ZH_P_MPUSHSTR              */
    zh_p_default,               /* ZH_P_LOCALNEARADDINT       */
-   zh_p_default,               /* ZH_P_MACROPUSHREF          */
+   zh_p_default,               /* ZH_P_MACRO_PUSHREF          */
    zh_p_default,               /* ZH_P_PUSHLONGLONG          */
    zh_p_default,               /* ZH_P_ENUMSTART             */
    zh_p_default,               /* ZH_P_ENUMNEXT              */

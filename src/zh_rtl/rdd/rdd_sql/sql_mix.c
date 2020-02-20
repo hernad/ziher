@@ -183,7 +183,7 @@ static PMIXKEY zh_mixKeyEval( PMIXKEY pKey, PMIXTAG pTag )
    PZH_ITEM     pItem;
    SQLMIXAREAP  pArea     = pTag->pArea;
    int          iCurrArea = zh_rddGetCurrentWorkAreaNumber();
-   PZH_CODEPAGE pCodepage = zh_codepageSelect( pArea->sqlarea.area.cdPage );
+   PZH_CODEPAGE pCodepage = codepageSelect( pArea->sqlarea.area.cdPage );
 
    if( iCurrArea != pArea->sqlarea.area.uiArea )
       zh_rddSelectWorkAreaNumber( pArea->sqlarea.area.uiArea );
@@ -197,7 +197,7 @@ static PMIXKEY zh_mixKeyEval( PMIXKEY pKey, PMIXTAG pTag )
    if( iCurrArea )
       zh_rddSelectWorkAreaNumber( iCurrArea );
 
-   zh_codepageSelect( pCodepage );
+   codepageSelect( pCodepage );
 
    return pKey;
 }

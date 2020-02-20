@@ -64,9 +64,9 @@
 #define INKEY_KEYBOARD          128
 #define INKEY_ALL               ( INKEY_KEYBOARD + INKEY_MOVE + INKEY_LDOWN + INKEY_LUP + INKEY_RDOWN + INKEY_RUP + INKEY_MMIDDLE + INKEY_MWHEEL )
 
-#define ZH_INKEY_RAW            256 /* Ziher extension */
-#define ZH_INKEY_GTEVENT        1024 /* Ziher extension */
-#define ZH_INKEY_EXT            2048 /* Ziher extension */
+#define ZH_INKEY_RAW            256 
+#define ZH_INKEY_GTEVENT        1024 
+#define ZH_INKEY_EXT            2048 
 
 #define ZH_INKEY_ALL            ( INKEY_ALL + ZH_INKEY_GTEVENT )
 

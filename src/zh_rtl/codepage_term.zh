@@ -59,17 +59,11 @@ FUNCTION zh_cdpTerm()
    LOCAL tmp
    cCP := __UnixParseLangCP( iif( ( tmp := GetEnv( "LANG" ) ) == "", ;
                                   GetEnv( "LC_CTYPE" ), tmp ), @cLang )
-#elif defined( __PLATFORM__DOS )
-   /* TODO */
-   cCP := cLang := NIL
-#elif defined( __PLATFORM__OS2 )
-   /* TODO */
-   cCP := cLang := NIL
 #endif
 
    RETURN __CPStdToHb( cCP, cLang )
 
-FUNCTION zh_cdpOS()
+FUNCTION codepageOS()
 
    LOCAL cCP
    LOCAL cLang
@@ -81,12 +75,6 @@ FUNCTION zh_cdpOS()
    LOCAL tmp
    cCP := __UnixParseLangCP( iif( ( tmp := GetEnv( "LANG" ) ) == "", ;
                                   GetEnv( "LC_CTYPE" ), tmp ), @cLang )
-#elif defined( __PLATFORM__DOS )
-   /* TODO */
-   cCP := cLang := NIL
-#elif defined( __PLATFORM__OS2 )
-   /* TODO */
-   cCP := cLang := NIL
 #endif
 
    RETURN __CPStdToHb( cCP, cLang )
@@ -497,4 +485,4 @@ STATIC FUNCTION __LangStdToCPCtryZh( cCtryStd )
 #endif
    ENDSWITCH
 
-   RETURN Left( zh_codepageSelect(), 2 )  /* Caller assumes this never returns strings shorter than two chars */
+   RETURN Left( codepageSelect(), 2 )  /* Caller assumes this never returns strings shorter than two chars */

@@ -214,7 +214,7 @@ ZH_EXTERN_BEGIN
 #define NSX_TYPE_LNUM      0x0002
 #define NSX_TYPE_DNUM      0x0008
 #define NSX_TYPE_LDATE     0x0020
-#define NSX_TYPE_TIMESTAMP 0x0040   /* Ziher extension */
+#define NSX_TYPE_TIMESTAMP 0x0040   
 #define NSX_TYPE_LOG       0x0080
 #define NSX_TYPE_CHAR      0x0400
 #define NSX_TYPE_ANYNUM    ( NSX_TYPE_LNUM | NSX_TYPE_DNUM )
