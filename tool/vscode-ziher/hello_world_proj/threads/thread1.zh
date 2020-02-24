@@ -1,0 +1,19 @@
+MEMVAR g_cPublic1
+
+procedure thread_proc_1()
+
+   //? "thread1 started"
+   PUBLIC g_cPublic1 := "thread1"
+
+   //OutStd("start ....")
+   altd()
+   @ 1, maxcol() - 5 SAY "START"
+   
+   // sleep 2 sec
+   zh_idleSleep(2)
+   
+   @ 2, maxcol() - 5 SAY "END"
+
+   Alert( "g_cPublic1: " + g_cPublic1 )
+
+   RETURN

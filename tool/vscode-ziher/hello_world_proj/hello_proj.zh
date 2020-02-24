@@ -1,0 +1,94 @@
+#include "inkey.zhh"
+
+REQUEST ZH_CODEPAGE_UTF8
+REQUEST ZH_CODEPAGE_SL852
+REQUEST ZH_CODEPAGE_SLISO
+REQUEST ZH_CODEPAGE_SLWIN
+
+STATIC s_hState := NIL
+STATIC s_mtxMutex
+
+MEMVAR g_cPublic1, p_cVariable
+
+FUNCTION MaxRow2()
+   
+    RETURN 101
+
+
+PROCEDURE Main()
+
+   LOCAL cLoco1
+   LOCAL GetList := {}
+
+   PUBLIC g_cPublic1 := "main"
+
+   p_cVariable := 1
+  
+   initial_settings()
+
+   IF zh_mutexLock( s_mtxMutex )
+      s_hState := zh_Hash()
+      zh_mutexUnlock( s_mtxMutex )
+   ENDIF
+
+   cLoco1 := zh_UTF8ToStr( "Ernad Husremović" )
+   
+   CLEAR SCREEN
+   
+   //AltD()
+   ? "hello world", p_cVariable, Round( 2, 2 ), AllTrim( cLoco1 )
+   
+   zh_threadStart(  @thread_proc_1() )
+   
+
+   //? "Press any key .."
+   //Inkey( 0 )
+
+
+   //CLEAR SCREEN
+
+   @ 5, 2 SAY "Get value:" GET cLoco1
+   READ
+
+   IF LastKey() == K_ESC
+      Alert( "ESC pressed!" )
+      QUIT
+   ENDIF
+
+   Alert( "Value taken: " + cLoco1 )
+   ? "END ... (3sec)"
+   Inkey( 3 )
+
+   Alert("MAIN THREAD g_cPublic1: " + g_cPublic1)
+
+   RETURN
+
+
+PROCEDURE initial_settings()
+
+   SET CENTURY OFF
+   SET EPOCH TO 1980  // 81 - 1981,  79-2079
+   SET DATE TO GERMAN
+
+   Set( _SET_OSCODEPAGE, zh_cdpOS() )
+
+   zh_cdpSelect( "SL852" )
+
+   SET DELETED ON
+
+   SetCancel( .F. )
+
+   MSetCursor( .T. )
+   Set( _SET_EVENTMASK, ZH_INKEY_ALL )
+
+   SET DATE GERMAN
+   SET SCOREBOARD OFF
+   Set( _SET_CONFIRM, .T. )
+   SET WRAP ON
+   SET ESCAPE ON
+   SET SOFTSEEK ON
+   CLEAR TYPEAHEAD
+
+   RETURN
+
+

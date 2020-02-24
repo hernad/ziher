@@ -1,0 +1,288 @@
+{
+    "name": "ziher",
+    "displayName": "Ziher",
+    "description": "Ziher support",
+    "version": "1.0.0",
+    "publisher": "bringout",
+    "license": "GPL",
+    "main": "./dist/extension",
+    "repository": {
+        "url": "https://github.com/hernad/ziher"
+    },
+    "activationEvents": [
+        "onLanguage:ziher",
+        "onCommand:ziher.getdbgcode",
+        "workspaceContains:**/*.zh"
+    ],
+    "engines": {
+        "vscode": "^1.41.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Linters",
+        "Debuggers",
+        "Snippets"
+    ],
+    "dependencies": {
+        "vscode-debugadapter": "^1.35.0",
+        "vscode-debugprotocol": "^1.35.0",
+        "vscode-languageclient": "^5.2.1",
+        "vscode-nls": "^4.1.1",
+        "vscode-languageserver": "^5.2.1",
+        "vscode-uri": "^1.0.8"
+    },
+    "scripts": {
+        "vscode:prepublish": "webpack --mode development; webpack --config webpack.server.config.js --mode development",
+        "build-client": "webpack --mode development",
+        "build-client-prod": "webpack --mode production",
+        "build-server": "webpack --config webpack.server.config.js --mode development",
+        "build-server-prod": "webpack --config webpack.server.config.js --mode production"
+    },
+    "contributes": {
+        "problemMatchers": [
+            {
+                "name": "ziher",
+                "owner": "ziher",
+                "fileLocation": "relative",
+                "pattern": {
+                    "regexp": "^(?:([^\\(]*)\\((\\d+)\\)\\s+)(Warning|Error)\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "severity": 3,
+                    "message": 4
+                }
+            }
+        ],
+        "commands": [
+            {
+                "command": "ziher.getdbgcode",
+                "title": "%ziher.dbgCodeCmd%"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Ziher compiler",
+            "properties": {
+                "ziher.validating": {
+                    "type": "boolean",
+                    "description": "%ziher.validating%",
+                    "default": true
+                },
+                "ziher.compilerExecutable": {
+                    "type": "string",
+                    "description": "%ziher.compilerExecutable%",
+                    "default": "zhcomp"
+                },
+                "ziher.extraOptions": {
+                    "type": "string",
+                    "description": "%ziher.extraOptions%",
+                    "default": ""
+                },
+                "ziher.extraIncludePaths": {
+                    "type": "array",
+                    "description": "%ziher.extraIncludePaths%",
+                    "items": {
+                        "type": "string",
+                        "default": ""
+                    }
+                },
+                "ziher.warningLevel": {
+                    "type": "number",
+                    "default": 1,
+                    "maximum": 3,
+                    "minimum": 0,
+                    "description": "%ziher.warningLevel%"
+                },
+                "ziher.decorator": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "%ziher.decorator%"
+                },
+                "ziher.workspaceDepth": {
+                    "type": "number",
+                    "default": 0,
+                    "minimum": 0,
+                    "description": "%ziher.workspaceDepth%"
+                }
+            }
+        },
+        "languages": [
+            {
+                "id": "ziher",
+                "aliases": [
+                    "Ziher"
+                ],
+                "extensions": [
+                    ".zh",
+                    ".zhh"
+                ],
+                "configuration": "./syntaxes/language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "ziher",
+                "scopeName": "source.ziher",
+                "path": "./syntaxes/ziher.tmLanguage.json",
+                "embeddedLanguages": {
+                    "source.c": "c"
+                }
+            }
+        ],
+        "breakpoints": [
+            {
+                "language": "ziher"
+            }
+        ],
+        "debuggers": [
+            {
+                "type": "ziher-dbg",
+                "label": "Ziher",
+                "program": "./dist/zh_debugger.js",
+                "runtime": "node",
+                "languages": [
+                    "ziher"
+                ],
+                "initialConfigurations": [
+                    {
+                        "name": "%ziher.initialConfigurations%",
+                        "type": "ziher-dbg",
+                        "request": "launch",
+                        "program": "${workspaceFolder}/ProgramName",
+                        "workingDir": "${workspaceFolder}/",
+                        "sourcePaths": [
+                            "${workspaceFolder}"
+                        ]
+                    }
+                ],
+                "configurationSnippets": [
+                    {
+                        "label": "Ziher launch",
+                        "description": "%ziher.configurationSnippetsDesc%",
+                        "body": {
+                            "name": "%ziher.configurationSnippets%",
+                            "type": "ziher-dbg",
+                            "request": "launch",
+                            "program": "^\"\\${workspaceFolder}/${2:ProgramName}\"",
+                            "workingDir": "${workspaceFolder}/",
+                            "sourcePaths": "^[\"\\${workspaceFolder}\"]"
+                        }
+                    },
+                    {
+                        "label": "Ziher attach",
+                        "description": "%ziher.configurationSnippetsDesc2%",
+                        "body": {
+                            "name": "%ziher.configurationSnippets2%",
+                            "type": "ziher-dbg",
+                            "request": "attach",
+                            "program": "^\"\\${workspaceFolder}/${2:ProgramName}\"",
+                            "sourcePaths": "^[\"\\${workspaceFolder}\"]"
+                        }
+                    }
+                ],
+                "configurationAttributes": {
+                    "launch": {
+                        "required": [
+                            "program"
+                        ],
+                        "properties": {
+                            "workspaceRoot": {
+                                "type": "string",
+                                "default": "${workspaceFolder}",
+                                "deprecationMessage": "%ziher.launch.workspaceRoot%"
+                            },
+                            "program": {
+                                "type": "string",
+                                "description": "%ziher.launch.program%"
+                            },
+                            "workingDir": {
+                                "type": "string",
+                                "description": "%ziher.launch.workingDir%",
+                                "default": "${workspaceFolder}/"
+                            },
+                            "arguments": {
+                                "type": "array",
+                                "description": "%ziher.launch.arguments%",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "stopOnEntry": {
+                                "type": "boolean",
+                                "description": "%ziher.launch.stopOnEntry%",
+                                "default": false
+                            },
+                            "sourcePaths": {
+                                "type": "array",
+                                "description": "%ziher.launch.sourcePaths%",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": [
+                                    "${workspaceFolder}"
+                                ]
+                            },
+                            "terminalType": {
+                                "type": "string",
+                                "description": "%ziher.launch.terminalType%",
+                                "default": "none",
+                                "enum": [
+                                    "none",
+                                    "external",
+                                    "integrated"
+                                ]
+                            },
+                            "port": {
+                                "type": "number",
+                                "description": "%ziher.launch.port%",
+                                "default": "6110"
+                            }
+                        }
+                    },
+                    "attach": {
+                        "required": [
+                            "program"
+                        ],
+                        "properties": {
+                            "workspaceRoot": {
+                                "type": "string",
+                                "default": "${workspaceFolder}",
+                                "deprecationMessage": "%ziher.launch.workspaceRoot%"
+                            },
+                            "program": {
+                                "type": "string",
+                                "description": "%ziher.launch.program%"
+                            },
+                            "sourcePaths": {
+                                "type": "array",
+                                "description": "%ziher.launch.sourcePaths%",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "default": [
+                                    "${workspaceFolder}"
+                                ]
+                            },
+                            "port": {
+                                "type": "number",
+                                "description": "%ziher.launch.port%",
+                                "default": "6110"
+                            }
+                        }
+                    }
+                }
+            }
+        ],
+        "snippets": [
+            {
+                "language": "ziher",
+                "path": "ziher.code-snippets"
+            }
+        ]
+    },
+    "devDependencies": {
+        "webpack": "^4.41.2",
+        "webpack-cli": "^3.3.10",
+        "copy-webpack-plugin": "^5.1.1"
+    }
+}

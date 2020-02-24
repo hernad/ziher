@@ -1,0 +1,1696 @@
+
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Ziher",
+
+	"patterns": [{
+			"include": "#directives"
+		},{
+			"include": "#function-declaration"
+		},{
+			"include": "#class-declaration"
+		},{
+			"include": "#method-declaration"
+		},{
+			"include": "#variable-declaration"
+		},{
+			"include": "#inline-staments"
+		}
+	],
+	"repository": {
+		"inline-staments": {
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#codeblock"
+				},
+				{
+					"include": "#constants"
+				},
+				{
+					"include": "#array"
+				},
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#method-call"
+				},
+				{
+					"match": "(?i)([a-z_]\\w*)(?=\\s*\\(\\s*\\)\\s*:\\s*new\\s*\\()",
+					"captures": {
+						"1": {
+							"name": "support.class.ziher"
+						}
+					}
+				},
+				{
+					"include": "#builtin-class-call"
+				},
+				{
+					"include": "#function-call"
+				},
+				{
+					"include": "#round-braces"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#macro-var"
+				},
+				{
+					"include": "#macro-exp"
+				},
+				{
+					"include": "#identifiers"
+				},
+				{
+					"include": "#numbers"
+				}
+			]
+		},
+		"function-staments": {
+			"patterns": [{
+					"include": "#variable-declaration"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [{
+					"match": "\\b[0-9]+(\\.[0-9]+)?\\b",
+					"name": "constant.numeric.ziher"
+				},
+				{
+					"match": "(?i)\\b0x[0-9a-f]+\\b",
+					"name": "constant.numeric.exadecimal.ziher"
+				}
+			]
+		},
+		"comments": {
+			"patterns": [
+				{
+					"name": "comment.block.ziher",
+					"begin": "/\\*",
+					"end": "\\*/",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.comment.ziher"
+						}},
+					"patterns":[{
+						"begin": "(\\$)DOC(\\$)",
+						"end": "(\\$)END(\\$)",
+						"captures": {
+							"0": {"name": "storage.type.ziherdoc" },
+							"1": {"name": "punctuation.definition.ziherdoc" },
+							"2": {"name": "punctuation.definition.ziherdoc" }
+						},
+						"patterns": [{
+							"match": "(\\$)[A-Z]+(\\$)",
+							"name": "storage.type.ziherdoc",
+							"captures": {
+								"1": {"name": "punctuation.definition.ziherdoc"},
+								"2": {"name": "punctuation.definition.ziherdoc"}
+							}
+						},{
+							"match": "<[\\w\\s]+>",
+							"name": "variable.other.ziherdoc"
+						},{
+							"match": "\\[[\\s,]*<\\w+>[\\s\\.]*\\]",
+							"name": "variable.optional.other.ziherdoc"
+						}]
+					}]
+				},
+				{
+					"name": "comment.line.double-slash.ziher",
+					"match": "(^[ \\t]+)?((//).*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.whitespace.comment.leading.ziher"
+						},
+						"2": {
+							"name": "comment.line.double-slash.ziher"
+						},
+						"3": {
+							"name": "punctuation.definition.comment.ziher"
+						}
+					}
+				},
+				{
+					"name": "comment.line.double-ampersand.ziher",
+					"match": "(^[ \\t]+)?((&&).*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.whitespace.comment.leading.ziher"
+						},
+						"2": {
+							"name": "comment.line.double-ampersand.ziher"
+						},
+						"3": {
+							"name": "punctuation.definition.comment.ziher"
+						}
+					}
+				},
+				{
+					"name": "comment.line.note.ziher",
+					"match": "(^[ \\t]*)(((?i:NOTE)).*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.whitespace.comment.leading.ziher"
+						},
+						"2": {
+							"name": "comment.line.note.ziher"
+						},
+						"3": {
+							"name": "punctuation.definition.comment.ziher"
+						}
+					}
+				},
+				{
+					"name": "comment.line.asterisk.ziher",
+					"match": "(^[ \\t]*)((\\*).*)",
+					"captures": {
+						"1": {
+							"name": "punctuation.whitespace.comment.leading.ziher"
+						},
+						"2": {
+							"name": "comment.line.asterisk.ziher"
+						},
+						"3": {
+							"name": "punctuation.definition.comment.ziher"
+						}
+					}
+				},
+				{
+					"match": "\\*/.*(\\r|\\n)",
+					"name": "invalid.illegal.stray-comment-end.ziher"
+				}
+			]
+		},
+		"continue-expression": {
+			"patterns": [{
+				"begin": "(;)\\s*(?=(?:\\/\\/.*|&&.*|(?:\\/\\*.*\\*\\/)+)?(?m:$))",
+				"beginCaptures": {
+					"1": {
+						"name": "constant.character.escape.line-continuation.ziher"
+					}
+				},
+				"end": "^",
+				"patterns": [{
+					"include": "#comments"
+				}]
+			}]
+		},
+		"punctuation-comma": {
+			"patterns": [{
+				"name": "punctuation.separator.comma.ziher",
+				"match": ","
+			}]
+		},
+		"parameter-comma": {
+			"patterns": [{
+				"name": "punctuation.separator.parameters.ziher",
+				"match": ","
+			}]
+		},
+		"function-parameters": {
+			"name": "meta.parameters.ziher",
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.begin.ziher"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"name": "variable.parameter.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				},
+				{
+					"include": "#parameter-comma"
+				},
+				{
+					"name": "keyword.operator.epsilon.ziher",
+					"match": "\\.\\.\\."
+				}
+			]
+		},
+		"function-header": {
+			"patterns": [{
+					"name": "meta.definition.function.ziher entity.name.function.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)"
+				},
+				{
+					"include": "#function-parameters"
+				}
+			]
+		},
+		"function-declaration": {
+			"patterns": [{
+				"name": "meta.function.ziher",
+				"begin": "(?i)^\\s*(stat(?:i(?:c)?)?\\s+)?(proc(?:e(?:d(?:u(?:re?)?)?)?)?|func(?:t(?:i(?:on?)?)?)?)\\b",
+				"beginCaptures": {
+					"1": {
+						"name": "keyword.modifier.ziher"
+					},
+					"2": {
+						"name": "keyword.type.function.ziher"
+					}
+				},
+				"end": "(?m:$)",
+				"patterns": [{
+						"include": "#continue-expression"
+					},
+					{
+						"include": "#comments"
+					},
+					{
+						"include": "#function-header"
+					}
+				]
+			}]
+		},
+		"variable-name": {
+			"patterns": [
+				{
+					"name": "variable.other.readwrite.ziher",
+					"match": "(?i)\\b([a-z_]\\w*)\\b"
+				}
+			]
+		},
+		"variable-initializer": {
+			"begin": ":=",
+			"beginCaptures": {
+				"0": {
+					"name": "keyword.operator.assignment.ziher"
+				}
+			},
+			"end": "(?=(?m:$)|,)",
+			"patterns": [{
+					"begin": "(?i)([a-z_]\\w*)\\s*(:=)",
+					"beginCaptures": {
+						"1": {
+							"name": "variable.other.readwrite.ziher"
+						},
+						"2": {
+							"name": "keyword.operator.assignment.ziher"
+						}
+					},
+					"end": "(?=(?m:$)|,)",
+					"patterns": [{
+							"include": "#variable-initializer"
+						},
+						{
+							"include": "#inline-staments"
+						}
+					]
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"variable-type-definition": {
+			"patterns": [
+				{
+					"name": "keyword.type.ziher",
+					"match": "\\b(?i:as\\s+((?:anyt(?:y(?:pe?)?)?)|(?:array?)|(?:block?)|(?:char(?:a(?:c(?:t(?:er?)?)?)?)?)|(?:class?)|(?:code(?:b(?:l(?:o(?:ck?)?)?)?)?)|(?:date)|(?:datet(?:i(?:me?)?)?)|(?:hash)|(?:logi(?:c(?:al?)?)?)|(?:nume(?:r(?:ic?)?)?)|(?:obje(?:ct?)?)|(?:poin(?:t(?:er?)?)?)|(?:stri(?:ng?)?)|(?:symb(?:ol?)?)|(?:time(?:s(?:t(?:a(?:mp?)?)?)?)?)|(?:usual?)))\\b"
+				}
+			]
+		},
+		"variable-parameters-declaration": {
+			"name": "meta.parameters.ziher",
+			"begin": "(?i)^\\s*para(?:m(?:e(?:t(?:e(?:r(?:s)?)?)?)?)?)?\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.parameters.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"name": "variable.parameter.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				},
+				{
+					"include": "#parameter-comma"
+				}
+			]
+		},
+		"variable-memvar-declaration": {
+			"name": "meta.definition.variable.memvar.ziher",
+			"begin": "(?i)^\\s*memv(?:a(?:r)?)?\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.memvar.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"name": "variable.other.readwrite.memvar.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				},
+				{
+					"include": "#punctuation-comma"
+				}
+			]
+		},
+		"variable-field-declaration": {
+			"match": "(?i)^\\s*(_?field?)\\s*(->)\\s*([a-z0-9_]+)",
+			"captures": {
+				"1": {
+					"name": "storage.type.field.ziher"
+				},
+				"2": {
+					"name": "keyword.accessor.ziher"
+				},
+				"3": {
+					"name": "meta.definition.variable.field.ziher"
+				}
+			}
+		},
+		"variable-local-declaration": {
+			"name": "meta.definition.variable.local.ziher",
+			"begin": "(?i)^\\s*(loca(?:l)?)\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.local.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#variable-initializer"
+				},
+				{
+					"include": "#variable-type-definition"
+				},
+				{
+					"name": "variable.other.readwrite.local.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				}
+			]
+		},
+		"variable-static-declaration": {
+			"name": "meta.definition.variable.static.ziher",
+			"begin": "(?i)^\\s*(stat(?:i(?:c)?)?)\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.static.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#variable-initializer"
+				},
+				{
+					"include": "#variable-type-definition"
+				},
+				{
+					"name": "variable.other.readwrite.static.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				}
+			]
+		},
+		"variable-private-declaration": {
+			"name": "meta.definition.variable.private.ziher",
+			"begin": "(?i)^\\s*(priv(?:a(?:t(?:e)?)?)?)\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.private.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#variable-initializer"
+				},
+				{
+					"include": "#variable-type-definition"
+				},
+				{
+					"name": "variable.other.readwrite.private.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				}
+			]
+		},
+		"variable-public-declaration": {
+			"name": "meta.definition.variable.public.ziher",
+			"begin": "(?i)^\\s*(publ(?:i(?:c)?)?)\\b",
+			"beginCaptures": {
+				"0": {
+					"name": "storage.type.public.ziher"
+				}
+			},
+			"end": "(?m:$)",
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#variable-initializer"
+				},
+				{
+					"include": "#variable-type-definition"
+				},
+				{
+					"name": "variable.other.readwrite.public.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				}
+			]
+		},
+		"variable-declaration": {
+			"patterns": [{
+					"include": "#variable-parameters-declaration"
+				},
+				{
+					"include": "#variable-memvar-declaration"
+				},
+				{
+					"include": "#variable-field-declaration"
+				},
+				{
+					"include": "#variable-local-declaration"
+				},
+				{
+					"include": "#variable-static-declaration"
+				},
+				{
+					"include": "#variable-private-declaration"
+				},
+				{
+					"include": "#variable-public-declaration"
+				}
+			]
+		},
+		"class-declaration": {
+			"patterns": [{
+				"name": "meta.class.ziher",
+				"begin": "(?i)(?=^\\s*(?:CREATE\\s*)?CLASS\\b)",
+				"end": "(?i)END[\\t ]*CLASS",
+				"endCaptures": {
+					"0": {
+						"name": "keyword.end.class.ziher"
+					}
+				},
+				"patterns": [{
+						"include": "#continue-expression"
+					},
+					{
+						"include": "#comments"
+					},
+					{
+						"begin": "(?i)^\\s*((?:create\\s*)?class)\\s+([a-z_]\\w*)\\b",
+						"beginCaptures": {
+							"1": {
+								"name": "keyword.class.class.ziher"
+							},
+							"2": {
+								"name": "entity.name.type.ziher"
+							}
+						},
+						"end": "(?m:$)",
+						"patterns": [{
+								"include": "#continue-expression"
+							},
+							{
+								"include": "#comments"
+							},
+							{
+								"match": "(?i)(function)\\s+([a-z_]\\w*)",
+								"captures": {
+									"1": {
+										"name": "keyword.control.function.ziher"
+									},
+									"2": {
+										"name": "entity.name.function.ziher"
+									}
+								}
+							},
+							{
+								"name": "keyword.control.static.ziher",
+								"match": "(?i)static"
+							},
+							{
+								"name": "keyword.control.metaclass.ziher",
+								"match": "(?i)metaclass"
+							},
+							{
+								"name": "keyword.control.module.ziher",
+								"match": "(?i)module\\s+friendly"
+							},
+							{
+								"name": "keyword.inherit.ziher",
+								"match": "(?i)from|inherit"
+							},
+							{
+								"include": "#punctuation-comma"
+							},
+							{
+								"name": "support.class.ziher",
+								"match": "(?i)[a-z_]\\w*"
+							}
+						]
+					},
+					{
+						"include": "#method-declaration"
+					},
+					{
+						"match": "^\\s*(export(?:ed)?|visible|hidden|protected):",
+						"captures": {
+							"1": {
+								"name": "storage.modifier.ziher"
+							}
+						}
+					},
+					{
+						"name": "meta.field.declaration.ziher",
+						"begin": "(?i)^\\s*(?:class)?(data|var)\\b",
+						"beginCaptures": {
+							"0": {
+								"name": "storage.type.field.ziher"
+							}
+						},
+						"end": "(?m:$)",
+						"patterns": [{
+								"include": "#continue-expression"
+							},
+							{
+								"include": "#comments"
+							},
+							{
+								"name": "storage.modifier.ziher",
+								"match": "(?i)\\b(exported|visible|protected|hidden|readonly|ro|persistent|property|sync)\\b"
+							},
+							{
+								"match": "(?i)\\b(type|as)\\s+([a-z_]\\w*)",
+								"captures": {
+									"1": {
+										"name": "keyword.control.${1:/downcase}.ziher"
+									},
+									"2": {
+										"name": "storage.type.${2:/downcase}.ziher"
+									}
+								}
+							},
+							{
+								"begin": "(?i)(assign|init)\\s+",
+								"beginCaptures": {
+									"1": {
+										"name": "keyword.control.${1:/downcase}.ziher"
+									}
+								},
+								"end": "(?i)(?m:$)|(?=\\b(?:exported|visible|protected|hidden|readonly|ro|persistent|property|sync)\\b)",
+								"patterns": [{
+									"include": "#inline-staments"
+								}]
+							},
+							{
+								"include": "#punctuation-comma"
+							},
+							{
+								"name": "meta.definition.property.ziher variable.object.property.ziher",
+								"match": "(?i)\\b[a-z_]\\w*\\b"
+							}
+						]
+					}
+				]
+			}]
+		},
+		"method-declaration": {
+			"patterns": [{
+				"name": "meta.method.declaration.ziher",
+				"begin": "(?i)^\\s*(method)\\b",
+				"beginCaptures": {
+					"1": {
+						"name": "keyword.type.method.ziher"
+					}
+				},
+				"end": "(?m:$)",
+				"patterns": [{
+						"include": "#continue-expression"
+					},
+					{
+						"include": "#comments"
+					},
+					{
+						"begin": "(?i)\\bclass\\b",
+						"beginCaptures": {
+							"0": {
+								"name": "storage.modifier.class.ziher"
+							}
+						},
+						"end": "(?i)[a-z_]\\w*",
+						"endCaptures": {
+							"0": {
+								"name": "support.class.ziher"
+							}
+						},
+						"patterns": [{
+								"include": "#continue-expression"
+							},
+							{
+								"include": "#comments"
+							}
+						]
+					},
+					{
+						"name": "meta.definition.function.ziher entity.name.function.ziher",
+						"match": "(?i)\\b([A-Z_]\\w*)(?=\\s*\\()"
+					},
+					{
+						"begin": "(?i)\\bINLINE\\b",
+						"beginCaptures": {
+							"0": {
+								"name": "constant.language.inline.ziher"
+							}
+						},
+						"end": "(?m:$)",
+						"patterns": [{
+							"include": "#inline-staments"
+						}]
+					},
+					{
+						"begin": "(?i)\\bBLOCK\\b",
+						"beginCaptures": {
+							"0": {
+								"name": "constant.language.block.ziher"
+							}
+						},
+						"end": "(?m:$)",
+						"patterns": [{
+							"include": "#codeblock"
+						}]
+					},
+					{
+						"include": "#function-parameters"
+					},
+					{
+						"name": "constant.language.${1:/downcase}.ziher",
+						"match": "(?i)(CONSTRUCTOR|EXTERN|SETGET|VIRTUAL|OPERATOR)"
+					}
+				]
+			}]
+		},
+		"on-off-macro": {
+			"patterns": [{
+				"name": "constant.language.logical.ziher",
+				"match": "(?i)\\b(ON|OFF)\\b"
+			}, {
+				"include": "#macro-var"
+			}]
+		},
+		"codeblock-parameters": {
+			"name": "meta.parameters.ziher",
+			"begin": "\\|",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.begin.ziher"
+				}
+			},
+			"end": "\\|",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#continue-expression"
+				},
+				{
+					"include": "#comments"
+				},
+				{
+					"include": "#parameter-comma"
+				},
+				{
+					"name": "variable.parameter.ziher",
+					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+				}
+			]
+		},
+		"codeblock": {
+			"name": "meta.function.codeblock.ziher",
+			"begin": "\\{(?=\\s*\\|)",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.begin.ziher"
+				}
+			},
+			"end": "\\}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.block.end.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#codeblock-parameters"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"array": {
+			"name": "meta.array.ziher",
+			"begin": "{",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.section.array.begin.ziher"
+				}
+			},
+			"end": "}",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.section.array.end.ziher"
+				}
+			},
+			"patterns": [{
+					"match": "=>",
+					"name": "keyword.operator.key-value.ziher"
+				},
+				{
+					"match": ",",
+					"name": "punctuation.separator.array"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"method-call": {
+			"name": "meta.method-call.ziher",
+			"contentName": "meta.method-call.arguments.ziher",
+			"begin": "(?i)(?:(::)|(:))\\s*([a-z_]\\w*)\\s*(\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.operator.self.ziher"
+				},
+				"2": {
+					"name": "keyword.operator.class.ziher"
+				},
+				"3": {
+					"name": "entity.name.function.ziher"
+				},
+				"4": {
+					"name": "punctuation.definition.parameters.begin.bracket.round.ziher"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.bracket.round.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"builtin-class-call": {
+			"name": "meta.class-call.ziher",
+			"contentName": "meta.class-call.arguments.ziher",
+			"begin": "(?i)(CheckBox|ErrorNew|GetNew|ListBox|MenuItem|Popup|PushButton|RadioButto|RadioGroup|ScrollBar|TBColumnNew|TBrowseDB|TopBar)\\s*(\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "support.class.builtin.ziher"
+				},
+				"2": {
+					"name": "punctuation.definition.parameters.begin.bracket.round.ziher"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.bracket.round.ziher"
+				}
+			},
+			"patterns": [{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"function-call": {
+			"name": "meta.function-call.ziher",
+			"contentName": "meta.function-call.arguments.ziher",
+			"begin": "(?i)([a-z_]\\w*)\\s*(\\()",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.function.ziher"
+				},
+				"2": {
+					"name": "punctuation.definition.parameters.begin.bracket.round.ziher"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.parameters.end.bracket.round.ziher"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#punctuation-comma"
+				},
+				{
+					"include": "#inline-staments"
+				}
+			]
+		},
+		"round-braces": {
+			"begin": "\\(",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.begin.bracket.round.ziher"
+				}
+			},
+			"end": "\\)",
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.end.bracket.round.ziher"
+				}
+			},
+			"patterns": [{
+				"include": "#inline-staments"
+			}]
+		},
+		"macro-var": {
+			"patterns": [{
+				"name": "meta.macro-var.ziher",
+				"match": "(?i)(&)([a-zA-Z_][a-zA-Z0-9_]*)(\\.)?",
+				"captures": {
+					"1": {
+						"name": "punctuation.definition.macro.begin.ziher"
+					},
+					"3": {
+						"name": "punctuation.definition.macro.end.ziher"
+					}
+				}
+			}]
+		},
+		"macro-exp": {
+			"patterns": [{
+				"name": "punctuation.definition.macro.ziher",
+				"match": "(?i)(&)(?=\\()"
+			}]
+		},
+		"keywords": {
+			"patterns": [
+				{ "name": "keyword.always.ziher", "match": "\\b(?i:alwa(?:ys?)?)\\b" },
+				{ "name": "keyword.announce.ziher", "match": "\\b(?i:anno(?:u(?:n(?:ce?)?)?)?)\\b" },
+				{ "name": "keyword.begin.ziher", "match": "\\b(?i:begin?)\\b" },
+				{ "name": "keyword.break.ziher", "match": "\\b(?i:break?)\\b" },
+				{ "name": "keyword.case.ziher", "match": "\\b(?i:case)\\b" },
+				{ "name": "keyword.declare.ziher", "match": "\\b(?i:decl(?:a(?:re?)?)?)\\b" },
+				{ "name": "keyword.descend.ziher", "match": "\\b(?i:descend)\\b" },
+				{ "name": "keyword.do.ziher", "match": "\\b(?i:do)\\b" },
+				{ "name": "keyword.dynamic.ziher", "match": "\\b(?i:dynamic)\\b" },
+				{ "name": "keyword.else.ziher", "match": "\\b(?i:else)\\b" },
+				{ "name": "keyword.elseif.ziher", "match": "\\b(?i:elseif?)\\b" },
+				{ "name": "keyword.endcase.ziher", "match": "\\b(?i:end(?:\\s+case|c(?:a(?:se?)?)?))\\b" },
+				{ "name": "keyword.enddo.ziher", "match": "\\b(?i:end(?:\\s+do|do?))\\b" },
+				{ "name": "keyword.endif.ziher", "match": "\\b(?i:end(?:\\s+if|if?))\\b" },
+				{ "name": "keyword.endsequence.ziher", "match": "\\b(?i:end(?:\\s+sequ(?:e(?:n(?:ce?)?)?)?|seq(?:u(?:e(?:n(?:ce?)?)?)?)?))\\b" },
+				{ "name": "keyword.endswitch.ziher", "match": "\\b(?i:end(?:\\s+swit(?:ch?)?|sw(?:i(?:t(?:ch?)?)?)?))\\b" },
+				{ "name": "keyword.endwith.ziher", "match": "\\b(?i:end(?:\\s+with|w(?:i(?:th?)?)?))\\b" },
+				{ "name": "keyword.end.ziher", "match": "\\b(?i:end)\\b" },
+				{ "name": "keyword.exit.ziher", "match": "\\b(?i:exit)\\b" },
+				{ "name": "keyword.external.ziher", "match": "\\b(?i:exte(?:r(?:n(?:al?)?)?)?)\\b" },
+				{ "name": "keyword.for.ziher", "match": "\\b(?i:for)\\b" },
+				{ "name": "keyword.function.ziher", "match": "\\b(?i:func(?:t(?:i(?:on?)?)?)?)\\b" },
+				{ "name": "keyword.if.ziher", "match": "\\b(?i:if)\\b" },
+				{ "name": "keyword.iif.ziher", "match": "\\b(?i:iif)\\b" },
+				{ "name": "keyword.in.ziher", "match": "\\b(?i:in)\\b" },
+				{ "name": "keyword.init.ziher", "match": "\\b(?i:init)\\b" },
+				{ "name": "keyword.local.ziher", "match": "\\b(?i:local?)\\b" },
+				{ "name": "keyword.loop.ziher", "match": "\\b(?i:loop)\\b" },
+				{ "name": "keyword.memvar.ziher", "match": "\\b(?i:memv(?:ar?)?)\\b" },
+				{ "name": "keyword.next.ziher", "match": "\\b(?i:next)\\b" },
+				{ "name": "keyword.nil.ziher", "match": "\\b(?i:nil)\\b" },
+				{ "name": "keyword.optional.ziher", "match": "\\b(?i:opti(?:o(?:n(?:al?)?)?)?)\\b" },
+				{ "name": "keyword.otherwise.ziher", "match": "\\b(?i:othe(?:r(?:w(?:i(?:se?)?)?)?)?)\\b" },
+				{ "name": "keyword.parameters.ziher", "match": "\\b(?i:para(?:m(?:e(?:t(?:e(?:rs?)?)?)?)?)?)\\b" },
+				{ "name": "keyword.private.ziher", "match": "\\b(?i:priv(?:a(?:te?)?)?)\\b" },
+				{ "name": "keyword.procedure.ziher", "match": "\\b(?i:proc(?:e(?:d(?:u(?:re?)?)?)?)?)\\b" },
+				{ "name": "keyword.public.ziher", "match": "\\b(?i:publ(?:ic?)?)\\b" },
+				{ "name": "keyword.qself.ziher", "match": "\\b(?i:qself)\\b" },
+				{ "name": "keyword.recover.ziher", "match": "\\b(?i:reco(?:v(?:er?)?)?)\\b" },
+				{ "name": "keyword.return.ziher", "match": "\\b(?i:retu(?:rn?)?)\\b" },
+				{ "name": "keyword.static.ziher", "match": "\\b(?i:stat(?:ic?)?)\\b" },
+				{ "name": "keyword.step.ziher", "match": "\\b(?i:step)\\b" },
+				{ "name": "keyword.switch.ziher", "match": "\\b(?i:swit(?:ch?)?)\\b" },
+				{ "name": "keyword.thread.ziher", "match": "\\b(?i:thre(?:ad?)?)\\b" },
+				{ "name": "keyword.to.ziher", "match": "\\b(?i:to)\\b" },
+				{ "name": "keyword.while.ziher", "match": "\\b(?i:while?)\\b" },
+				{ "name": "keyword.with.ziher", "match": "\\b(?i:with)\\b" },
+				{ "name": "keyword._zh_class.ziher", "match": "\\b(?i:_zh_class)\\b" },
+				{ "name": "keyword._zh_member.ziher", "match": "\\b(?i:_zh_member)\\b" },
+				{ "name": "keyword._procreq_.ziher", "match": "\\b(?i:_procreq_)\\b" },
+							{
+					"name": "variable.language.self.ziher",
+					"match": "(?i)\\b(self)\\b"
+				},
+				{
+					"name": "keyword.classes.ziher",
+					"match": "\\b(?i:(end)?class(data)?|method|data|message|init|constructor|destructor|hidden:|exported:)\\b"
+				},
+				{
+					"name": "keyword.operator.logical.ziher",
+					"match": "(?i)(\\.(and|or|not)\\.|!)"
+				},
+				{
+					"name": "keyword.getters.ziher",
+					"match": "\\b(?i:replace|with)\\b"
+				},
+				{
+					"name": "keyword.accessor.ziher",
+					"match": "->"
+				},
+				{
+					"name": "keyword.operator.logical.ziher",
+					"match": "!"
+				},
+				{
+					"name": "keyword.operator.assignment.ziher",
+					"match": ":="
+				},
+				{
+					"name": "keyword.operator.assignment.augmented.ziher",
+					"match": "(?:[\\+\\-\\*/%^]|\\*\\*)="
+				},
+				{
+					"name": "keyword.operator.comparison.ziher",
+					"match": "[=!<>]?=|<>|<|>|\\#|\\$"
+				},
+				{
+					"name": "constant.character.format.placeholder.other.ziher",
+					"match": "%s\\b"
+				},
+				{
+					"name": "keyword.operator.arithmetic.ziher",
+					"match": "\\-\\-?|\\+\\+?|\\*\\*?|[\\/%^]"
+				},
+				{
+					"match": ";",
+					"name": "punctuation.terminator.statement.ziher"
+				}
+			]
+		},
+		"identifiers": {
+			"patterns": [{
+					"match": "(?<=:)\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
+					"captures": {
+						"1": {
+							"name": "entity.name.function.ziher"
+						}
+					}
+				},
+				{
+					"match": "(?<=:)\\s*([a-zA-Z_][a-zA-Z0-9_]*)",
+					"captures": {
+						"1": {
+							"name": "variable.other.property.ziher"
+						}
+					}
+				},
+				{
+					"name": "variable.values.field.ziher",
+					"match": "(?<=->)(?i:\\s*[a-z_][a-z0-9_]*)"
+				},
+				{
+					"match": "(::)\\s*(?=[a-zA-Z_])",
+					"captures": {
+						"1": {
+							"name": "keyword.operator.self.ziher"
+						}
+					}
+				},
+				{
+					"match": "(?<=\\w)\\s*(:)\\s*(?=[a-zA-Z_])",
+					"captures": {
+						"1": {
+							"name": "keyword.operator.class.ziher"
+						}
+					}
+				},
+				{
+					"name": "variable.other.object.ziher",
+					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*\\s*)(?=:[^=])"
+				},
+				{
+					"name": "storage.modifier.reference.ziher",
+					"match": "(?i)(@)(?=[a-zA-Z_][a-zA-Z0-9_]*)"
+				}
+			]
+		},
+		"constants": {
+			"patterns": [{
+					"name": "constant.language.logical.ziher",
+					"match": "(?i)(\\.(t|f|y|n)\\.)"
+				},
+				{
+					"name": "constant.language.nil.ziher",
+					"match": "(?i)\\b(nil)\\b"
+				},
+				{
+					"name": "constant.other.date.quoted.ziher",
+					"match": "[dD]\"\\d{4}[-/\\.](?:0\\d|1[0-2])[-/\\.](?:[0-2]\\d|3[0-1])\""
+				},
+				{
+					"name": "constant.other.date.numeric.ziher",
+					"match": "(?i)\\b0d\\d{8}\\b"
+				},
+				{
+					"name": "constant.other.time.quoted.ziher",
+					"match": "[tT]\"\\d{1,4}[-/\\.](0\\d|1[0-2])[-/\\.]([0-2]\\d|3[0-1])(\\s([0-1]?\\d|2[0-3])(:[0-5]?\\d(:[0-5]?\\d(\\.\\d{1,3})?)?)?)?\""
+				},
+				{
+					"name": "constant.other.time.curly.ziher",
+					"match": "{\\s*\\^\\s*(\\d+[-/]\\d+[-/]\\d+\\s?)?(\\d+(:\\d+(:\\d+(\\.\\d+)?)?)?)?\\s+}"
+				}
+			]
+		},
+		"escapes": {
+			"patterns": [{
+					"name": "constant.character.escape.ziher",
+					"match": "\\\\u\\h{4}|\\\\U\\h{8}"
+				},
+				{
+					"name": "constant.character.escape.ziher",
+					"match": "\\\\['\"?\\\\abfnrtv]"
+				},
+				{
+					"name": "constant.character.escape.ziher",
+					"match": "\\\\[0-7]{1,3}"
+				},
+				{
+					"name": "constant.character.escape.ziher",
+					"match": "\\\\x\\h+"
+				}
+			]
+		},
+		"multiline-strings": {
+			"patterns": [
+				{
+					"begin": "(?i)^\\s*((#)\\s*pragma)\\s+(__c?streaminclude)\\b",
+					"end": "(?=(?m:$))",
+					"contentName": "string.multiline.ziher",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#strings"
+						},
+						{
+							"begin": "\\s*(\\|)",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.operator.bitwise.ziher"
+								}
+							},
+							"end": "(?=\\||(?m:$))",
+							"patterns": [
+								{
+									"include": "#inline-staments"
+								}
+							]
+						}
+					]
+				},
+				{
+					"begin": "(?i)^\\s*((#)\\s*pragma)\\s+(__text|__stream)\\b",
+					"end": "(?i)^\\s*(?:((#)\\s*pragma)\\s+(__endtext)|(endtext))",
+					"contentName": "string.multiline.ziher",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						},
+						"4": {
+							"name": "keyword.text.ziher"
+						}
+					},
+					"patterns": [
+						{
+							"begin": "\\s*(\\|)",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.operator.bitwise.ziher"
+								}
+							},
+							"end": "(?=\\||(?m:$))",
+							"patterns": [
+								{
+									"include": "#inline-staments"
+								},
+								{
+									"include": "#variable-name"
+								}
+							]
+						}
+					]
+				},
+				{
+					"begin": "(?i)^\\s*((#)\\s*pragma)\\s+(__cstream)\\b",
+					"end": "(?i)^\\s*(?:((#)\\s*pragma)\\s+(__endtext)|(endtext))",
+					"contentName": "string.multiline.ziher",
+					"beginCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"2": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						},
+						"4": {
+							"name": "keyword.text.ziher"
+						}
+					},
+					"patterns": [
+						{
+							"begin": "\\s*(\\|)",
+							"beginCaptures": {
+								"1": {
+									"name": "keyword.operator.bitwise.ziher"
+								}
+							},
+							"end": "(?=\\||(?m:$))",
+							"patterns": [
+								{
+									"include": "#inline-staments"
+								}
+							]
+						},
+						{
+							"include": "#escapes"
+						}
+					]
+				},
+				{
+					"begin": "(?i)^\\s*([cx]?text)(?:\\s+(into|to\\s+var)\\s+([a-z_]\\w*))?$\\b",
+					"end": "(?i)^\\s*(?:((#)\\s*pragma)\\s+(__endtext)|(endtext))",
+					"contentName": "string.multiline.ziher",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.text.ziher"
+						},
+						"2": {
+							"name": "keyword.operator.into.ziher"
+						},
+						"3": {
+							"name": "variable.other.readwrite.ziher"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "meta.preprocessor.string.ziher"
+						},
+						"1": {
+							"name": "keyword.control.directive.pragma.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						},
+						"3": {
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						},
+						"4": {
+							"name": "keyword.text.ziher"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#escapes"
+						}
+					]
+				}
+			]
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.escaped.ziher",
+					"begin": "[eE]\"",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.ziher"
+						}
+					},
+					"end": "(\")|(\\n|\\r)",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.string.end.ziher"
+						},
+						"2": {
+							"name": "invalid.illegal.newline.ziher"
+						}
+					},
+					"patterns": [{
+							"include": "#escapes"
+						},
+						{
+							"include": "#macro-var"
+						}
+					]
+				},
+				{
+					"name": "string.quoted.double.ziher",
+					"begin": "\"",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.ziher"
+						}
+					},
+					"end": "(\")|(\\n|\\r)",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.string.end.ziher"
+						},
+						"2": {
+							"name": "invalid.illegal.newline.ziher"
+						}
+					},
+					"patterns": [{
+						"include": "#macro-var"
+					}]
+				},
+				{
+					"name": "string.quoted.single.ziher",
+					"begin": "('|`)",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.ziher"
+						}
+					},
+					"end": "(')|(\\n|\\r)",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.string.end.ziher"
+						},
+						"2": {
+							"name": "invalid.illegal.newline.ziher"
+						}
+					},
+					"patterns": [{
+						"include": "#macro-var"
+					}]
+				},
+				{
+					"name": "string.square.ziher",
+					"begin": "(?<![a-zA-Z0-9_\\]\\)])\\s*\\[",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.string.begin.ziher"
+						}
+					},
+					"end": "(\\])|(\\n|\\r)",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.definition.string.end.ziher"
+						},
+						"2": {
+							"name": "invalid.illegal.newline.ziher"
+						}
+					},
+					"patterns": [{
+						"include": "#macro-var"
+					}]
+				}
+			]
+		},
+		"match-markers": {
+			"patterns": [{
+					"name": "variable.name.match.ziher",
+					"match": "(<[\\(\\*!]?)(\\w+)(,\\.\\.\\.)?([!\\*\\)]?>)"
+				},
+				{
+					"name": "meta.command.match.ziher",
+					"begin": "(?i)(<)(\\w+)(:)",
+					"beginCaptures": {
+						"0": { "name": "entity.name.match.ziher" }
+					},
+					"end": ">",
+					"endCaptures": {
+						"0": { "name": "punctuation.definition.tag.end.ziher" }
+					},
+					"patterns": [{
+							"include": "#punctuation-comma"
+						},
+						{
+							"name": "entity.other.attribute-name.ziher",
+							"match": "\\w[\\w ]+\\b|&"
+						}
+					]
+				}
+			]
+		},
+		"result-markers": {
+			"patterns": [{
+				"name": "meta.command.result.ziher",
+				"match": "(?i)(#)?(<[\"\\(\\{\\.)]?)(\\w+)([\"\\)\\}\\.)]?>)",
+				"captures": {
+					"1": {
+						"name": "punctuation.definition.tag.ziher"
+					},
+					"2": {
+						"name": "punctuation.definition.tag.begin.ziher"
+					},
+					"3": {
+						"name": "entity.name.tag.ziher"
+					},
+					"4": {
+						"name": "punctuation.definition.tag.end.ziher"
+					}
+				}
+			}]
+		},
+		"directives": {
+			"patterns": [{
+					"begin": "(?i)^\\s*((#)\\s*(x?command|x?translate))\\b",
+					"beginCaptures": {
+						"1": {
+							"name": "keyword.control.directive.$3.ziher"
+						},
+						"2": {
+							"name": "punctuation.definition.directive.ziher"
+						}
+					},
+					"end": "(?<!;)\\s*[\\r\\n]{1,2}",
+					"name": "meta.preprocessor.command.ziher",
+					"patterns": [
+						{
+							"include": "#match-markers"
+						},
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#continue-expression"
+						},
+						{
+							"begin": "=>",
+							"beginCaptures": {
+								"0": {
+									"name": "keyword.operator.key.ziher"
+								}
+							},
+							"end": "(?<!;)\\s*(?=[\\r\\n]{1,2})",
+							"patterns": [
+								{ "include": "source.ziher" }
+							]
+						}
+					]
+				},
+				{
+					"begin": "^\\s*#\\s*stdout\\b",
+					"begincaptures": {
+						"0": { "name": "keyword.control.directive.stdout.ziher" }
+					},
+					"end": "(?=//|&&|/\\*)|(?<!;)(?=\\r|\\n)",
+					"name": "meta.preprocessor.stdout.ziher",
+					"contentName": "string.stdout.ziher"
+				},{
+					"include": "#c_code"
+				},{
+					"include": "#multiline-strings"
+				},{
+					"begin": "(?i:^\\s*((#)\\s*pragma))",
+					"beginCaptures": {
+						"1": { "name": "keyword.control.directive.pragma.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" }
+					},
+					"end": "(?=(?m:$))",
+					"name": "meta.preprocessor.pragma.ziher",
+					"patterns": [
+						{
+							"include": "#comments"
+						},
+						{
+							"include": "#strings"
+						},
+						{
+							"match": "(?i)\\b(on|off)\\b",
+							"name": "constant.other.ziher"
+						},
+						{
+							"match": "(?i)[\\/+-=]",
+							"name": "punctuation.definition.pragma.ziher"
+						},
+						{
+							"match": "[a-zA-Z_$][\\w\\-$]*",
+							"name": "entity.other.attribute-name.pragma.preprocessor.ziher"
+						},
+						{
+							"include": "#numbers"
+						},
+						{
+							"include": "#continue-expression"
+						}
+					]
+				},
+				{
+					"name": "meta.preprocessor.include.ziher",
+					"begin": "(?i:^\\s*((#)\\s*include)\\s)",
+					"end": "(?=//|&&|/\\*)|(?<!;)(?=(?m:$))",
+					"beginCaptures": {
+						"0": { "name": "meta.preprocessor.ziher" },
+						"1": { "name": "keyword.control.directive.conditional.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" }
+					},
+					"patterns": [{
+							"include": "#strings"
+						},
+						{
+							"name": "string.quoted.angle.ziher",
+							"begin": "<",
+							"end": "(?:>|(?m:$))"
+						}
+					]
+				},
+				{
+					"name": "meta.preprocessor.define.ziher",
+					"begin": "(?i:^\\s*((#)\\s*define)\\s+([_a-z][_a-z0-9]*))",
+					"end": "(?=//|&&|/\\*)|(?<!;)(?=(?m:$))",
+					"beginCaptures": {
+						"0": { "name": "meta.preprocessor.ziher" },
+						"1": { "name": "keyword.control.directive.define.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" },
+						"3": { "name": "entity.name.define.ziher" }
+					},
+					"patterns": [
+						{ "include": "#continue-expression" },
+						{ "include": "source.ziher" }
+					]
+				},{
+					"name": "meta.preprocessor.generic.ziher",
+					"begin": "(?mi:^\\s*((#)\\s*[_a-z][_a-z0-9]*))",
+					"end": "(?=//|&&|/\\*)|(?<!;)(?=(?m:$))",
+					"beginCaptures": {
+						"0": { "name": "meta.preprocessor.ziher" },
+						"1": { "name": "keyword.control.directive.generic.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" }
+					},
+					"patterns": [
+						{ "include": "#continue-expression" },
+						{ "include": "source.ziher" }
+					]
+				}
+			]
+		},
+		"c_code": {
+			"patterns": [{
+					"begin": "(?i:^\\s*((#)\\s*pragma)\\s+(BEGINDUMP))",
+					"end": "(?i:^\\s*((#)\\s*pragma)\\s+(ENDDUMP))",
+					"contentName": "source.c.embedded.ziher",
+					"beginCaptures": {
+						"0": { "name": "meta.preprocessor.pragma.ziher" },
+						"1": { "name": "keyword.control.directive.pragma.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" },
+						"3": { "name": "keyword.dump.ziher" }
+					},
+					"endCaptures": {
+						"0": { "name": "meta.preprocessor.pragma.ziher" },
+						"1": { "name": "keyword.control.directive.pragma.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" },
+						"3": { "name": "keyword.dump.ziher" }
+					},
+					"patterns": [
+						{
+							"include": "source.c"
+						},
+						{
+							"match": "\\b(ZH_FUNC|zh_ret[a-z]+|zh_par[a-z]+)\\s*\\(",
+							"name": "keyword.connection.ziher"
+						}
+					]
+				},
+				{
+					"begin": "(?i:^\\s*((#)\\s*if(?:(?:n)?def)?)\\s+)",
+					"end": "(?i:^\\s*((#)\\s*endif))",
+					"beginCaptures": {
+						"0": { "name": "meta.preprocessor.ziher" },
+						"1": { "name": "keyword.control.directive.conditional.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" }
+					},
+					"endCaptures": {
+						"0": { "name": "meta.preprocessor.ziher" },
+						"1": { "name": "keyword.control.directive.conditional.ziher" },
+						"2": { "name": "punctuation.definition.directive.ziher" }
+					},
+					"patterns": [
+						{
+							"begin": "(?i:^\\s*((#)\\s*elif)\\s+)",
+							"end": "(?=(?m:$))",
+							"beginCaptures": {
+								"0": { "name": "meta.preprocessor.ziher" },
+								"1": { "name": "keyword.control.directive.conditional.ziher" },
+								"2": { "name": "punctuation.definition.directive.ziher" }
+							},
+							"patterns": [
+								{
+									"include": "#inline-staments"
+								}
+							]
+						},
+						{
+							"begin": "(?i:^\\s*((#)\\s*else)\\s+)",
+							"end": "(?=(?m:$))",
+							"beginCaptures": {
+								"0": { "name": "meta.preprocessor.ziher" },
+								"1": { "name": "keyword.control.directive.conditional.ziher" },
+								"2": { "name": "punctuation.definition.directive.ziher" }
+							}
+						},
+						{
+							"include": "source.ziher"
+						}
+					]
+				}
+			]
+		}
+	},
+	"scopeName": "source.ziher"
+}
