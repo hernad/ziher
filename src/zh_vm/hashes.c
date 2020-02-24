@@ -51,7 +51,7 @@
 #include "zh_vm_opt.h"
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_lang_api.h"
 #include "zh_vm.h"
 #include "zh_xvm.h"

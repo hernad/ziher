@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 /* NOTE: Use as minimal calls from here, as possible.
          Don't allocate memory from this function. [vszakats] */

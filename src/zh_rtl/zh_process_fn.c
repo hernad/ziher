@@ -47,8 +47,8 @@
  */
 
 #include "zh_api.h"
-#include "zh_apifs.h"
-#include "zh_api_error.h"
+#include "zh_fs_api.h"
+#include "zh_error_api.h"
 
 ZH_FUNC( ZH_PROCESSOPEN )
 {

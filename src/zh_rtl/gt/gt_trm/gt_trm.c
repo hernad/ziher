@@ -68,7 +68,7 @@
 #include "zh_codepage_api.h"
 #include "zh_string_api.h"
 #include "zh_item_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_date.h"
 #include "inkey.zhh"
 

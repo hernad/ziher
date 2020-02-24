@@ -50,8 +50,8 @@
 #include "zh_vm_opt.h"
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
-#include "zh_apifs.h" /* for __mvSave()/__mvRestore() */
+#include "zh_error_api.h"
+#include "zh_fs_api.h" /* for __mvSave()/__mvRestore() */
 #include "zh_date.h"  /* for __mvSave()/__mvRestore() */
 #include "zh_comp.h"  /* for ZH_VSCOMP_* macros */
 #include "error.zhh"

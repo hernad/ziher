@@ -45,7 +45,7 @@
  *
  */
 
-/* this has to be declared before zh_apifs.h is included */
+/* this has to be declared before zh_fs_api.h is included */
 #define _ZH_FILE_INTERNAL_
 
 #if ! defined( _LARGEFILE64_SOURCE )
@@ -53,8 +53,8 @@
 #endif
 
 #include "zh_api.h"
-#include "zh_apifs.h"
-#include "zh_api_error.h"
+#include "zh_fs_api.h"
+#include "zh_error_api.h"
 #include "zh_item_api.h"
 #include "zh_thread.h"
 #include "zh_vm.h"

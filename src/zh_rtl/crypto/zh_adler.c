@@ -46,7 +46,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_chksum.h"
 
 #define BASE  65521  /* largest prime smaller than 65536 */

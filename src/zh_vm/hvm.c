@@ -53,7 +53,7 @@
 #include "zh_vm_opt.h"
 #include "zh_api.h"
 #include "zh_stack.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_class_api.h"
 #include "zh_debug_api.h"
 #include "zh_item_api.h"

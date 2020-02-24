@@ -47,7 +47,7 @@
 #ifndef ZH_APIRDD_H_
 #define ZH_APIRDD_H_
 
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "db_info.zhh"   /* Constants for SELF_ORDINFO, SELF_INFO(), SELF_RECINFO() */
 #include "db_struct.zhh" /* Constants for SELF_FIELDINFO() */
 #include "zh_codepage_api.h"

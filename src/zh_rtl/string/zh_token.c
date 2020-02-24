@@ -46,7 +46,7 @@
 
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 #define _ZH_TOK_QUOTE_MASK       0x07
 #define _ZH_TOK_RESPECT_DQUOTE   0x01

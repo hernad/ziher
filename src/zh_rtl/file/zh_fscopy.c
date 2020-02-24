@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 
 #define ZH_FSCOPY_BUFFERSIZE  65536
 

@@ -48,7 +48,7 @@
 #include "zh_api.h"
 #include "zh_item_api.h"
 #include "zh_codepage_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 /* returns l characters from n characters into string */
 

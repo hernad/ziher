@@ -45,10 +45,10 @@
  */
 
 #include "zh_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_gt_api.h"
 #include "zh_item_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 
 #if defined( ZH_OS_WIN )
    #include "zh_win_uni.h"

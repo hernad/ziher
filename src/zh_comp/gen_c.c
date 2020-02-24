@@ -145,7 +145,7 @@ static void zh_compGenCStdHeaders( ZH_COMP_DECL, FILE * yyc, ZH_BOOL fHbInLine )
    {
       fprintf( yyc, "#include \"zh_api.h\"\n" );
       fprintf( yyc, "#include \"zh_stack.h\"\n" );
-      fprintf( yyc, "#include \"zh_api_error.h\"\n" );
+      fprintf( yyc, "#include \"zh_error_api.h\"\n" );
       fprintf( yyc, "#include \"zh_item_api.h\"\n" );
       fprintf( yyc, "#include \"zh_vm.h\"\n" );
       fprintf( yyc, "#include \"zh_class_api.h\"\n" );

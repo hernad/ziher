@@ -46,7 +46,7 @@
 
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 
 /* NOTE: CA-Cl*pper has ~64 KiB (65516 bytes exactly) limit on read, in Ziher
          this limit is extended, so we are not *strictly* compatible here.

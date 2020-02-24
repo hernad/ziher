@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 static ZH_BOOL zh_numParam( int iParam, ZH_MAXINT * plNum )
 {

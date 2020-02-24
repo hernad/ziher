@@ -51,7 +51,7 @@
 #include "zh_api.h"
 #include "zh_rdd_api.h"
 #include "../dbf_cdx/zh_dbf_error.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_lang_api.h"
 #include "rdd_sql.zhh"
 

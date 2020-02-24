@@ -49,7 +49,7 @@
 #include "zh_stack.h"
 #include "zh_class_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_gt_api.h"
 #include "zh_vm.h"
 #include "error.zhh"

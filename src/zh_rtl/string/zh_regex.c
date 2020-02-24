@@ -50,7 +50,7 @@
 #include "zh_regex.h"
 #include "zh_codepage_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_init.h"
 #if defined( ZH_HAS_PCRE2 )
 #include "zh_vm.h"

@@ -48,7 +48,7 @@
 #include "zh_api.h"
 #include "zh_regex.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 static void zh_regfree( PZH_REGEX pRegEx )
 {

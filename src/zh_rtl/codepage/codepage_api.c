@@ -47,7 +47,7 @@
 
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_codepage_api.h"
 
 static ZH_SIZE utf8pos( const char * szUTF8, ZH_SIZE nLen, ZH_SIZE nUTF8Pos )

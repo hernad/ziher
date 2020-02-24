@@ -44,11 +44,11 @@
  *
  */
 
-/* this has to be declared before zh_apifs.h is included */
+/* this has to be declared before zh_fs_api.h is included */
 #define _ZH_FILE_IMPLEMENTATION_
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 
 static ZH_BOOL s_fileAccept( PZH_FILE_FUNCS pFuncs, const char * pszFileName )
 {

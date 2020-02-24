@@ -50,7 +50,7 @@
 #include "zh_api.h"
 #include "zh_compdf.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_vm.h"
 #include "zh_expr_op.h"
 #include "zh_pcode.h"

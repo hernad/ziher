@@ -50,7 +50,7 @@
 #endif
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_vm.h"
 
 #if defined( ZH_OS_WIN )

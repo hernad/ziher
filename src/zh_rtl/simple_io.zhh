@@ -1,7 +1,7 @@
 /*
- * Space() function
+ * Header file for stream I/O helper commands
  *
- * Copyright 1999 Antonio Linares <alinares@fivetech.com>
+ * Copyright 1999 {list of individual authors and e-mail addresses}
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,37 +44,13 @@
  *
  */
 
-#include "zh_api.h"
-#include "zh_item_api.h"
-#include "zh_error_api.h"
+#ifndef _SIMPLEIO_CH
+#define _SIMPLEIO_CH
 
-/* returns n copies of a single space */
+#command ?  [ <xList,...> ] => ( OutStd( zh_eol() ) [, OutStd( <xList> ) ] )
+#command ?? [ <xList,...> ] => OutStd( <xList> )
 
-ZH_FUNC( SPACE )
-{
-   PZH_ITEM pItem = zh_param( 1, ZH_IT_NUMERIC );
+#command ACCEPT TO <idVar> => <idVar> := StrTran( FReadStr( zh_GetStdIn(), 256 ), zh_eol() )
+#command ACCEPT <cPrompt> TO <idVar> => ? <cPrompt> ; ACCEPT TO <idVar>
 
-   if( pItem )
-   {
-      ZH_ISIZ nLen = zh_itemGetNS( pItem );
-
-      if( nLen > 0 )
-      {
-         char * szResult = ( char * ) zh_xgrab( nLen + 1 );
-
-         /* NOTE: String overflow could never occur since a string can
-                  be as large as ULONG_MAX, and the maximum length that
-                  can be specified is LONG_MAX here. [vszakats] */
-         #if 0
-         zh_errRT_BASE( EG_STROVERFLOW, 1233, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
-         #endif
-
-         zh_xmemset( szResult, ' ', nLen );
-         zh_retclen_buffer( szResult, nLen );
-      }
-      else
-         zh_retc_null();
-   }
-   else
-      zh_errRT_BASE_SubstR( EG_ARG, 1105, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
-}
+#endif /* _SIMPLEIO_CH */

@@ -55,7 +55,7 @@
 
 #include "zh_api.h"
 #include "zh_codepage_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_vm.h"
 #include "zh_math.h"
 #include "zh_set.h"

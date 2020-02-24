@@ -88,7 +88,7 @@
 #  include "zh_winuni.h"
 #endif
 
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_item_api.h"
 #include "zh_apicom.h"
 #include "zh_vm.h"

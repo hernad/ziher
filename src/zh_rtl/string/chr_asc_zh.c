@@ -47,7 +47,7 @@
 
 #include "zh_api.h"
 #include "zh_codepage_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 /* converts an ASCII code to a character value */
 ZH_FUNC( CHR )

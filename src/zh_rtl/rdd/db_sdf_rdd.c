@@ -52,7 +52,7 @@
 #include "zh_rdd_api.h"
 #include "zh_item_api.h"
 #include "zh_lang_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_rdd_sdf.h"
 #include "zh_rtl/rdd_sys.zhh"
 

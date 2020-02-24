@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 /* NOTE: IMPORTANT:
          zh_bit*() Ziher level function names and logic are embedded

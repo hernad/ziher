@@ -47,11 +47,11 @@
 #define ZH_TRIGVAR_BYREF
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_rdd_dbf.h"
 #include "zh_item_api.h"
 #include "zh_string_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_lang_api.h"
 #include "zh_set.h"
 #include "zh_date.h"

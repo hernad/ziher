@@ -45,7 +45,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_set.h"
 
 ZH_BOOL zh_spFile( const char * pszFileName, char * pszRetPath )

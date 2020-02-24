@@ -78,7 +78,7 @@
 
 #include "zh_api.h"
 #include "zh_item_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_rdd_api.h"
 
 static ZH_BOOL zh_sxOrdParam( LPDBORDERINFO pInfo )

@@ -50,7 +50,7 @@
  */
 
 #include "zh_api.h"
-#include "zh_apifs.h"
+#include "zh_fs_api.h"
 #include "zh_date.h"
 #include "zh_sx_func.h"
 

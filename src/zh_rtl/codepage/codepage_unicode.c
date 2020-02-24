@@ -49,7 +49,7 @@
 #include "zh_api.h"
 #include "zh_codepage_api.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 /* zh_UChar( <nCode> ) --> <cText>
  * return string with U+nCode character in ZHVM CP encoding

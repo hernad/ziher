@@ -49,7 +49,7 @@
 #include "zh_api.h"
 #include "zh_item_api.h"
 #include "zh_codepage_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 
 static ZH_SIZE s_strAtI( PZH_CODEPAGE cdp, const char * szSub, ZH_SIZE nSubLen, const char * szText, ZH_SIZE nLen )
 {

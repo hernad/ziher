@@ -49,7 +49,7 @@
 #include "zh_api.h"
 #include "zh_stack.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_vm.h"
 
 ZH_BOOL zh_evalNew( PZH_EVALINFO pEvalInfo, PZH_ITEM pItem )

@@ -85,7 +85,7 @@
 #include "zh_thread.h"
 #include "zh_atomic.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_codepage_api.h"
 #include "zh_lang_api.h"
 #include "zh_vm.h"

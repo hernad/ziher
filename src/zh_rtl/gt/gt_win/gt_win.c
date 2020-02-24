@@ -71,7 +71,7 @@
 #include "zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_item_api.h"
-#include "zh_api_error.h"
+#include "zh_error_api.h"
 #include "zh_win_uni.h"
 #include "zh_date.h"
 
