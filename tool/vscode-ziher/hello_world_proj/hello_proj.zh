@@ -10,10 +10,6 @@ STATIC s_mtxMutex
 
 MEMVAR g_cPublic1, p_cVariable
 
-FUNCTION MaxRow2()
-   
-    RETURN 101
-
 
 PROCEDURE Main()
 

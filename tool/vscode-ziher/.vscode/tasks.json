@@ -4,7 +4,7 @@
         {
             "label": "prelanch",
             "type": "npm",
-            "script": "vscode:prepublish",
+            "script": "build-all",
             "problemMatcher": []
         }
     ]
