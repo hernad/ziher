@@ -1,4 +1,5 @@
 // Inserire le impostazioni in questo file per sovrascrivere quelle utente e predefinite.
 {
-    "svg.preview.background": "black"
+    "svg.preview.background": "black",
+    "git.ignoreLimitWarning": true
 }
