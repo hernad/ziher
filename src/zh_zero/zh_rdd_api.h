@@ -49,7 +49,7 @@
 
 #include "zh_fs_api.h"
 #include "db_info.zhh"   /* Constants for SELF_ORDINFO, SELF_INFO(), SELF_RECINFO() */
-#include "db_struct.zhh" /* Constants for SELF_FIELDINFO() */
+#include "db_struct.zhh"
 #include "zh_codepage_api.h"
 
 ZH_EXTERN_BEGIN

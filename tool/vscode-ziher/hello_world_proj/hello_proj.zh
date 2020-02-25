@@ -66,9 +66,9 @@ PROCEDURE initial_settings()
    SET EPOCH TO 1980  // 81 - 1981,  79-2079
    SET DATE TO GERMAN
 
-   Set( _SET_OSCODEPAGE, zh_cdpOS() )
+   Set( _SET_OSCODEPAGE, codepageOS() )
 
-   zh_cdpSelect( "SL852" )
+   codepageSelect( "SL852" )
 
    SET DELETED ON
 

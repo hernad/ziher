@@ -233,7 +233,7 @@
       All
    $FILES$
    $SEEALSO$
-      zh_langName(), zh_cdpSelect(), NationMsg(), REQUEST
+      zh_langName(), codepageSelect(), NationMsg(), REQUEST
    $END$
  */
 
@@ -243,7 +243,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      zh_cdpSelect()
+      codepageSelect()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -251,7 +251,7 @@
    $ONELINER$
       Select the active code page by language ID
    $SYNTAX$
-      zh_cdpSelect( [<cNewLang>] ) --> cOldLang
+      codepageSelect( [<cNewLang>] ) --> cOldLang
    $ARGUMENTS$
       <cNewLang>  The optional ID of the language module.
       Possible values for <cNewLang> are below as defined in the
@@ -320,7 +320,7 @@
    $RETURNS$
       <cOldLang>   The old language identifier
    $DESCRIPTION$
-      zh_cdpSelect() set the active code page use by Harbour for
+      codepageSelect() set the active code page use by Harbour for
       sorting and comparing strings. The default code page use ASCII
       order (cLang == "EN").
 
@@ -329,11 +329,11 @@
       following to your program: `REQUEST ZH_CODEPAGE_FR850`
    $EXAMPLES$
       REQUEST ZH_CODEPAGE_FR850
-      zh_cdpSelect( "EN" )
-      ? zh_cdpSelect()
+      codepageSelect( "EN" )
+      ? codepageSelect()
       ? zh_UTF8ToStr( "É < G is" ), zh_BChar( 144 ) < "G"  // --> É < G is .F.
-      zh_cdpSelect( "FR850" )
-      ? zh_cdpSelect()
+      codepageSelect( "FR850" )
+      ? codepageSelect()
       ? zh_UTF8ToStr( "É < G is" ), zh_BChar( 144 ) < "G"  // --> É < G is .T.
    $STATUS$
       R
@@ -400,6 +400,6 @@
       All
    $FILES$
    $SEEALSO$
-      zh_langSelect(), zh_cdpSelect(), NationMsg(), REQUEST
+      zh_langSelect(), codepageSelect(), NationMsg(), REQUEST
    $END$
  */

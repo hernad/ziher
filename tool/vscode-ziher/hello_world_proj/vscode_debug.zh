@@ -1371,7 +1371,7 @@ static proc dbgQOut(...)
 	IF nPar == 0 .or. empty(oSocket)
    		RETURN
 	ENDIF
-	aEval(ZH_APARAMS(), {|x| cMsg += zh_ValToStr(x)+" " })
+	aEval(ZH_APARAMS(), {|x| cMsg += ValToStr(x)+" " })
 	zh_inetSend(oSocket,"LOG:"+cMsg+CRLF)
 RETURN
 #endif

@@ -2557,7 +2557,7 @@
   "name": "zh_At"
  },
  {
-  "label": "zh_cdpSelect( [<cNewLang>] ) --> cOldLang",
+  "label": "codepageSelect( [<cNewLang>] ) --> cOldLang",
   "documentation": "Select the active code page by language ID",
   "arguments": [
    {
@@ -2581,7 +2581,7 @@
     "documentation": "</table>"
    }
   ],
-  "name": "zh_cdpSelect",
+  "name": "codepageSelect",
   "return": {
    "name": "<cOldLang>",
    "help": "The old language indentifier"
@@ -4013,7 +4013,7 @@
   "name": "zh_Translate"
  },
  {
-  "label": "zh_ValToStr( <xValue> ) --> cString",
+  "label": "ValToStr( <xValue> ) --> cString",
   "documentation": "Converts any scalar type to a string.",
   "arguments": [
    {
@@ -4021,7 +4021,7 @@
     "documentation": "<xValue> is any scalar argument."
    }
   ],
-  "name": "zh_ValToStr",
+  "name": "ValToStr",
   "return": {
    "name": "<cString>",
    "help": "A string representation of <xValue> using default conversions."

@@ -409,7 +409,7 @@ zh_cdpInfo
 zh_cdpIsCharIdx
 zh_cdpIsUTF8
 zh_cdpList
-zh_cdpOS
+codepageOS
 zh_cdpTerm
 zh_cdpUniID
 zh_Clocks2Secs
@@ -943,7 +943,7 @@ zh_ZUncompress
 zh_ZUncompressLen
 HBCheckBox
 HBClass
-HBEditor
+ZHEditor
 HBGetList
 HBHash
 HBLabelForm

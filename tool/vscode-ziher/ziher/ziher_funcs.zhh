@@ -248,7 +248,7 @@ DYNAMIC GUIReader
 DYNAMIC HardCR
 DYNAMIC HBCheckBox
 DYNAMIC HBClass
-DYNAMIC HBEditor
+DYNAMIC ZHEditor
 DYNAMIC HBGetList
 DYNAMIC HBHash
 DYNAMIC HBLabelForm
@@ -345,8 +345,8 @@ DYNAMIC zh_cdpInfo
 DYNAMIC zh_cdpIsCharIdx
 DYNAMIC zh_cdpIsUTF8
 DYNAMIC zh_cdpList
-DYNAMIC zh_cdpOS
-DYNAMIC zh_cdpSelect
+DYNAMIC codepageOS
+DYNAMIC codepageSelect
 DYNAMIC zh_cdpTerm
 DYNAMIC zh_cdpUniID
 DYNAMIC zh_Clocks2Secs
@@ -932,7 +932,7 @@ DYNAMIC zh_UTF8ToStr
 DYNAMIC zh_UTF8ToStrBox
 DYNAMIC zh_Val
 DYNAMIC zh_ValToExp
-DYNAMIC zh_ValToStr
+DYNAMIC ValToStr
 DYNAMIC zh_Version
 DYNAMIC zh_vfAttrGet
 DYNAMIC zh_vfAttrSet

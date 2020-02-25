@@ -683,7 +683,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      zh_ValToStr()
+      ValToStr()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -691,23 +691,23 @@
    $ONELINER$
       Converts any scalar type to a string.
    $SYNTAX$
-      zh_ValToStr( <xValue> ) --> cString
+      ValToStr( <xValue> ) --> cString
    $ARGUMENTS$
       <xValue> is any scalar argument.
    $RETURNS$
       <cString> A string representation of <xValue> using default
       conversions.
    $DESCRIPTION$
-      zh_ValToStr() can be used to convert any scalar value to a string.
+      ValToStr() can be used to convert any scalar value to a string.
    $EXAMPLES$
       Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
-      ? zh_ValToStr( 4 ) == "         4"
-      ? zh_ValToStr( 4.0 / 2 ) == "         2.00"
-      ? zh_ValToStr( "String" ) == "String"
-      ? zh_ValToStr( 0d20010101 ) == "2001-01-01"
-      ? zh_ValToStr( NIL ) == "NIL"
-      ? zh_ValToStr( .F. ) == ".F."
-      ? zh_ValToStr( .T. ) == ".T."
+      ? ValToStr( 4 ) == "         4"
+      ? ValToStr( 4.0 / 2 ) == "         2.00"
+      ? ValToStr( "String" ) == "String"
+      ? ValToStr( 0d20010101 ) == "2001-01-01"
+      ? ValToStr( NIL ) == "NIL"
+      ? ValToStr( .F. ) == ".F."
+      ? ValToStr( .T. ) == ".T."
    $STATUS$
       R
    $COMPLIANCE$
