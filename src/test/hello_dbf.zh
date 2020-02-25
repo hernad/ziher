@@ -1,3 +1,5 @@
+FIELD id
+
 PROCEDURE Main()
 
    LOCAL aDbf
