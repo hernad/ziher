@@ -22,7 +22,7 @@
       treated as if it were not present.
 
       <nEvents> is an optional mask of input events that are to be enabled.
-      If omitted, defaults to `hb_set.HB_SET_EVENTMASK`. Valid input masks are
+      If omitted, defaults to `zh_set.ZH_SET_EVENTMASK`. Valid input masks are
       in inkey.ch and are explained below. It is recommended that the mask
       names be used rather than their numeric values, in case the numeric
       values change in future releases of Harbour. To allow more than one
@@ -38,11 +38,11 @@
        INKEY_RUP           The mouse right click up event is allowed
        INKEY_KEYBOARD      All keyboard events are allowed
        INKEY_ALL           All mouse and keyboard events are allowed
-       HB_INKEY_EXTENDED   Extended keyboard codes are used.
+       ZH_INKEY_EXTENDED   Extended keyboard codes are used.
       </table>
 
       If the parameter is not numeric, it will be treated as if it were set
-      to `hb_set.HB_SET_EVENTMASK`.
+      to `zh_set.ZH_SET_EVENTMASK`.
    $RETURNS$
       0 in case of timeout with no input event, otherwise returns a value
       in the range -47 to 386 for keyboard events or the range 1001 to 1007
@@ -51,20 +51,20 @@
       event return codes in the range 32 through 127 are equivalent to the
       printable ASCII character set. Keyboard event return codes in the
       range 128 through 255 are assumed to be printable, but results may
-      vary based on hardware and nationality. If HB_INKEY_EXTENDED mode is
+      vary based on hardware and nationality. If ZH_INKEY_EXTENDED mode is
       used, then the return value for keyboard events ranges from 1 through
       767 and 1077 through 1491, although not all codes are used.
 
       Extended key codes consist of the PC keyboard scan code and one
       or more offset values. If no keyboard modifier was used, then
-      HB_INKEY_NONE is added. The <Alt> key adds HB_INKEY_ALT, the <Ctrl>
-      key adds HB_INKEY_CTRL, the <Shift> key adds HB_INKEY_SHIFT, and
-      enhanced keys (<KeyPad+/> and <CursorPad> keys) add HB_INKEY_ENHANCED.
+      ZH_INKEY_NONE is added. The <Alt> key adds ZH_INKEY_ALT, the <Ctrl>
+      key adds ZH_INKEY_CTRL, the <Shift> key adds ZH_INKEY_SHIFT, and
+      enhanced keys (<KeyPad+/> and <CursorPad> keys) add ZH_INKEY_ENHANCED.
       For example, <F1> is scan code 59, so if you just press <F1>, you get
       key code 315, but <Alt+F1> gives 443, <Ctrl+F1> gives 571, and <Shift+F1>
       gives 699. And <NumPad+/> gives 1077, 1205, 1333, and 1461. At
       this time, the only value that can combine with other values is
-      HB_INKEY_ENHANCED (i.e., there are no <Alt+Ctrl> combinations, etc.)
+      ZH_INKEY_ENHANCED (i.e., there are no <Alt+Ctrl> combinations, etc.)
 
       Note: The extended key code set is larger than the normal key code
       set. As a result, if you switch between the normal and extended
@@ -77,7 +77,7 @@
       Inkey() can be used to detect input events, such as key-press, mouse
       movement, or mouse key clicks (up and/or down).
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       // Wait for the user to press the <Esc> key
       ? "Please press the <Esc> key."
       DO WHILE Inkey( 0.1 ) != K_ESC
@@ -110,7 +110,7 @@
    $SUBCATEGORY$
       User interface
    $ONELINER$
-      Use hb_keyPut() instead
+      Use zh_keyPut() instead
    $SYNTAX$
       KEYBOARD <cString>
       CLEAR TYPEAHEAD
@@ -147,7 +147,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_keyPut()
+      zh_keyPut()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -155,7 +155,7 @@
    $ONELINER$
       Put an inkey code to the keyboard buffer.
    $SYNTAX$
-      hb_keyPut( <nInkeyCode> )
+      zh_keyPut( <nInkeyCode> )
    $ARGUMENTS$
       <nInkeyCode> is the inkey code, which should be inserted into the
       keyboard buffer.
@@ -168,10 +168,10 @@
       than one code, call the function repeatedly. The zero code cannot
       be inserted.
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       // Stuff an <Alt+PgDn> key into the keyboard buffer
-      hb_keyPut( K_ALT_PGDN ); ? Inkey()  // --> 417
-      hb_keyPut( K_F11 ); ? Inkey()  // --> -40
+      zh_keyPut( K_ALT_PGDN ); ? Inkey()  // --> 417
+      zh_keyPut( K_F11 ); ? Inkey()  // --> -40
    $STATUS$
       R
    $COMPLIANCE$
@@ -198,8 +198,8 @@
       NextKey( [<nInputMask>] ) --> nKey
    $ARGUMENTS$
       <nInputMask> is an optional integer value composed of one or more
-      INKEY_ or HB_INKEY_ constants. The sole purpose of this argument
-      is to allow switching between using HB_INKEY_EXTENDED key codes
+      INKEY_ or ZH_INKEY_ constants. The sole purpose of this argument
+      is to allow switching between using ZH_INKEY_EXTENDED key codes
       and using the normal CA-Cl*pper-compatible key codes
    $RETURNS$
       <nKey>  The value of the next key in the Harbour keyboard buffer.
@@ -207,7 +207,7 @@
       Returns the value of the next key in the Harbour keyboard buffer
       without extracting it.
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       // Use NextKey() with Inkey() to change display characters, or by
       // itself to exit the loop, so that the caller can detect the <Esc>.
       LOCAL nKey, cChar := "+"
@@ -218,7 +218,7 @@
          CASE nKey == K_ESC
             EXIT
          CASE nKey != 0
-            cChar := hb_keyChar( nKey )
+            cChar := zh_keyChar( nKey )
          ENDCASE
       ENDDO
 
@@ -250,8 +250,8 @@
       LastKey( [<nInputMask>] ) --> nKey
    $ARGUMENTS$
       <nInputMask> is an optional integer value composed of one or more
-      INKEY_ or HB_INKEY_ constants. The sole purpose of this argument
-      is to allow switching between using HB_INKEY_EXTENDED key codes
+      INKEY_ or ZH_INKEY_ constants. The sole purpose of this argument
+      is to allow switching between using ZH_INKEY_EXTENDED key codes
       and using the normal CA-Cl*pper-compatible key codes
    $RETURNS$
       <nKey>  The last key extracted from the keyboard buffer.
@@ -259,7 +259,7 @@
       Returns the value of the last key extracted from the Harbour
       keyboard buffer
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       // Continue looping unless the <Esc> key was pressed in MainFunc()
       DO WHILE .T.
          MainFunc()

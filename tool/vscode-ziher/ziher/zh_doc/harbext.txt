@@ -64,7 +64,7 @@
       <b>RTL enhanced functionality:</b>
       ---------------------------
 
-      - `hb_vfDirSpace( <nDir>, <nType> )`
+      - `zh_vfDirSpace( <nDir>, <nType> )`
 
         The second parameter is a Harbour (optional) parameter and indicates the
         type of disk info being requested. See doc/en/diskspac.txt for info.

@@ -451,7 +451,7 @@
       `SET FUNCTION` command is preprocessed into __SetFunction() function
       during compile time.
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       LOCAL cTest, GetList := {}
       // Associate <F1> with a string
       __SetFunction( 1, "I Am Lazy" + Chr( K_ENTER ) )
@@ -514,7 +514,7 @@
       `SET FUNCTION` command is preprocessed into __SetFunction() function
       during compile time.
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       LOCAL cTest, GetList := {}
       // Associate <F1> with a string
       SET FUNCTION 1 TO "I Am Lazy" + Chr( K_ENTER )
@@ -566,8 +566,8 @@
       A group of keys may be assigned the same code block/condition block
       by using an array of key values in place on the first parameter.
    $EXAMPLES$
-      #include "getexit.ch"
-      #include "inkey.ch"
+      #include "get_exit.zhh"
+      #include "inkey.zhh"
       LOCAL bOldF10 := SetKey( K_F10, {|| Yahoo() } )
       LOCAL bBlock
       // some other processing ...
@@ -587,11 +587,11 @@
       SetKey() is mostly CA-Cl*pper compliant. The only difference is the
       addition of the condition code-block parameter, allowing set-keys to
       be conditionally turned off or on.  This condition-block cannot be
-      returned once set - see hb_SetKeyGet()
+      returned once set - see zh_SetKeyGet()
    $FILES$
       Library is core
    $SEEALSO$
-      hb_SetKeySave(), hb_SetKeyGet()
+      zh_SetKeySave(), zh_SetKeyGet()
    $END$
  */
 
@@ -601,7 +601,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_SetKeyGet()
+      zh_SetKeyGet()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -609,7 +609,7 @@
    $ONELINER$
       Determine a set-key code block and condition-block
    $SYNTAX$
-      hb_SetKeyGet( <nKey> [, <bConditionByRef> ] )
+      zh_SetKeyGet( <nKey> [, <bConditionByRef> ] )
    $ARGUMENTS$
       <anKey> is an numeric key value
 
@@ -617,13 +617,13 @@
    $RETURNS$
       Current assigned action-block
    $DESCRIPTION$
-      The hb_SetKeyGet() function returns the current code-block assigned to
+      The zh_SetKeyGet() function returns the current code-block assigned to
       a key, and optionally assigns the condition-block to the
       return-parameter
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       LOCAL bOldF10, bOldF10Cond
-      bOldF10 := hb_SetKeyGet( K_F10, @bOldF10Cond )
+      bOldF10 := zh_SetKeyGet( K_F10, @bOldF10Cond )
       // some other processing ...
       SetKey( K_F10, bOldF10, bOldF10Cond )
    $STATUS$
@@ -633,7 +633,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      SetKey(), hb_SetKeySave(), hb_SetKeyCheck()
+      SetKey(), zh_SetKeySave(), zh_SetKeyCheck()
    $END$
  */
 
@@ -643,7 +643,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_SetKeySave()
+      zh_SetKeySave()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -651,23 +651,23 @@
    $ONELINER$
       Returns a copy of internal set-key list, optionally overwriting
    $SYNTAX$
-      hb_SetKeySave( [ <OldKeys> ] )
+      zh_SetKeySave( [ <OldKeys> ] )
    $ARGUMENTS$
       <OldKeys> is an optional set-key list from a previous call to
-      hb_SetKeySave(), or NIL to clear current set-key list
+      zh_SetKeySave(), or NIL to clear current set-key list
    $RETURNS$
       Current set-key list
    $DESCRIPTION$
-      hb_SetKeySave() is designed to act like the Set() function which
+      zh_SetKeySave() is designed to act like the Set() function which
       returns the current state of an environment setting, and optionally
       assigning a new value.  In this case, the "environment setting" is the
       internal set-key list, and the optional new value is either a value
-      returned from a previous call to hb_SetKeySave() - to restore that list,
+      returned from a previous call to zh_SetKeySave() - to restore that list,
       or the value of NIL to clear the current list.
    $EXAMPLES$
-      LOCAL aKeys := hb_SetKeySave( NIL )  // removes all current set=keys
+      LOCAL aKeys := zh_SetKeySave( NIL )  // removes all current set=keys
       // some other processing ...
-      hb_SetKeySave( aKeys )
+      zh_SetKeySave( aKeys )
    $STATUS$
       R
    $COMPLIANCE$
@@ -685,7 +685,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_SetKeyCheck()
+      zh_SetKeyCheck()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -693,7 +693,7 @@
    $ONELINER$
       Implements common hot-key activation code
    $SYNTAX$
-      hb_SetKeyCheck( <nKey> [, <p1> ][, <p2> ][, <p3> ] )
+      zh_SetKeyCheck( <nKey> [, <p1> ][, <p2> ][, <p3> ] )
    $ARGUMENTS$
       <nKey> is a numeric key value to be tested code-block, if executed
 
@@ -704,22 +704,22 @@
       If there is a hot-key association (before checking any condition):
       - if there is a condition-block, it is passed one parameter - <nKey>
       - when the hot-key code-block is called, it is passed 1 to 4 parameters,
-      depending on the parameters passed to hb_SetKeyCheck().  Any
+      depending on the parameters passed to zh_SetKeyCheck().  Any
       parameters so passed are directly passed to the code-block, with an
       additional parameter being <nKey>
    $DESCRIPTION$
-      hb_SetKeyCheck() is intended as a common interface to the SetKey()
+      zh_SetKeyCheck() is intended as a common interface to the SetKey()
       functionality for such functions as AChoice(), dbEdit(), MemoEdit(),
       ACCEPT, INPUT, READ, and WAIT
    $EXAMPLES$
       // FIXME
-      #include "inkey.ch"
+      #include "inkey.zhh"
       // within ReadModal()
-      IF hb_SetKeyCheck( K_ALT_X, GetActive() )
+      IF zh_SetKeyCheck( K_ALT_X, GetActive() )
          // some other processing ...
       ENDIF
       // within TBrowse handler
-      CASE hb_SetKeyCheck( nInkey, oTBrowse )
+      CASE zh_SetKeyCheck( nInkey, oTBrowse )
          RETURN
       CASE nInKey == K_ESC
          // some other processing ...
@@ -730,7 +730,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      SetKey(), hb_SetKeySave()
+      SetKey(), zh_SetKeySave()
    $END$
  */
 
@@ -764,8 +764,8 @@
       A group of keys may be assigned the same code block/condition block
       by using an array of key values in place on the first parameter.
    $EXAMPLES$
-      #include "getexit.ch"
-      #include "inkey.ch"
+      #include "get_exit.zhh"
+      #include "inkey.zhh"
       LOCAL bOldF10 := SetKey( K_F10, {|| Yahoo() } )
       LOCAL bBlock
       // some other processing ...
@@ -785,9 +785,9 @@
       `SET KEY` is mostly CA-Cl*pper compliant. The only difference is the
       addition of the condition code-block parameter, allowing set-keys to
       be conditionally turned off or on.  This condition-block cannot be
-      returned once set - see hb_SetKeyGet()
+      returned once set - see zh_SetKeyGet()
    $SEEALSO$
-      hb_SetKeySave(), hb_SetKeyGet()
+      zh_SetKeySave(), zh_SetKeyGet()
    $END$
  */
 
@@ -884,7 +884,7 @@
       current logged drive and directory.
    $EXAMPLES$
       SET DEFAULT TO /hb/tests
-      Set( _SET_DEFAULT, hb_DirSepToOS( "/hb/tests" ) )
+      Set( _SET_DEFAULT, zh_DirSepToOS( "/hb/tests" ) )
    $STATUS$
       R
    $COMPLIANCE$
@@ -998,7 +998,7 @@
       path; 3 The `SET PATH` path.
    $EXAMPLES$
       SET PATH TO /hb/tests
-      Set( _SET_PATH, hb_DirSepToOS( "/hb/tests" ) )
+      Set( _SET_PATH, zh_DirSepToOS( "/hb/tests" ) )
    $STATUS$
       R
    $COMPLIANCE$
@@ -1480,7 +1480,7 @@
    $TEMPLATE$
       C Function
    $NAME$
-      hb_setListenerAdd()
+      zh_setListenerAdd()
    $CATEGORY$
       C level API
    $SUBCATEGORY$
@@ -1491,7 +1491,7 @@
       C Prototype
 
       #include "hbset.h"
-      hb_setListenerAdd( PHB_SET_LISTENER_CALLBACK callback ) --> int
+      zh_setListenerAdd( PZH_SET_LISTENER_CALLBACK callback ) --> int
    $ARGUMENTS$
       <callback>
       A pointer to a function taking two enum parameters and returning
@@ -1510,12 +1510,12 @@
       of some SET parameters to be notified whenever a SET parameter gets
       changed.
    $EXAMPLES$
-      void callback_function( HB_set_enum set, HB_set_listener_enum when )
+      void callback_function( ZH_set_enum set, ZH_set_listener_enum when )
       {
          printf("\nCalled for SET parameter %d %s changing.",
             set, (when ? "after" : "before"));
       }
-      int handle = hb_setListenerAdd( callback_function );
+      int handle = zh_setListenerAdd( callback_function );
    $STATUS$
       R
    $COMPLIANCE$
@@ -1525,7 +1525,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_setListenerRemove()
+      zh_setListenerRemove()
    $END$
  */
 
@@ -1533,7 +1533,7 @@
    $TEMPLATE$
       C Function
    $NAME$
-      hb_setListenerNotify()
+      zh_setListenerNotify()
    $CATEGORY$
       C level API
    $SUBCATEGORY$
@@ -1544,15 +1544,15 @@
       C Prototype
 
       #include "hbset.h"
-      hb_setListenerNotify( HB_set_enum set, HB_set_listener_enum
+      zh_setListenerNotify( ZH_set_enum set, ZH_set_listener_enum
       when ) --> int
    $ARGUMENTS$
       <set>
       The number of the SET parameter that is to be or was changed.
 
       <when>
-      Set to HB_SET_LISTENER_BEFORE when called before the SET parameter
-      is to be changed and set to HB_SET_LISTENER_AFTER when called
+      Set to ZH_SET_LISTENER_BEFORE when called before the SET parameter
+      is to be changed and set to ZH_SET_LISTENER_AFTER when called
       after the SET parameter has been changed.
    $RETURNS$
       <int>
@@ -1562,9 +1562,9 @@
       directly instead of using the Harbour SET function. Both before
       and after the change.
    $EXAMPLES$
-      hb_setListenerNotify( HB_SET_DECIMALS, HB_SET_LISTENER_BEFORE );
-      hb_set.HB_SET_DECIMALS = 3;
-      hb_setListenerNotify( HB_SET_DECIMALS, HB_SET_LISTENER_AFTER );
+      zh_setListenerNotify( ZH_SET_DECIMALS, ZH_SET_LISTENER_BEFORE );
+      zh_set.ZH_SET_DECIMALS = 3;
+      zh_setListenerNotify( ZH_SET_DECIMALS, ZH_SET_LISTENER_AFTER );
    $STATUS$
       R
    $COMPLIANCE$
@@ -1574,7 +1574,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_setListenerAdd()
+      zh_setListenerAdd()
    $END$
  */
 
@@ -1582,7 +1582,7 @@
    $TEMPLATE$
       C Function
    $NAME$
-      hb_setListenerRemove()
+      zh_setListenerRemove()
    $CATEGORY$
       C level API
    $SUBCATEGORY$
@@ -1593,7 +1593,7 @@
       C Prototype
 
       #include "hbset.h"
-      hb_setListenerRemove( int handle ) --> int
+      zh_setListenerRemove( int handle ) --> int
    $ARGUMENTS$
       <handle>
       The handle for the SET listener callback function to be removed.
@@ -1603,9 +1603,9 @@
    $DESCRIPTION$
       This function removes a SET listener callback function.
    $EXAMPLES$
-      int handle = hb_setListenerAdd( callback_function );
+      int handle = zh_setListenerAdd( callback_function );
       /* ... */
-      hb_setListenerRemove( handle );
+      zh_setListenerRemove( handle );
    $STATUS$
       R
    $COMPLIANCE$
@@ -1615,6 +1615,6 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_setListenerAdd()
+      zh_setListenerAdd()
    $END$
  */

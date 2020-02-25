@@ -47,7 +47,7 @@
       If an error has occurred, see the returns values from FError() for
       possible reasons for the error.
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       IF ( nH := FOpen( "test.txt", FO_READWRITE + FO_DENYNONE ) ) == F_ERROR
          ? "File can't be opened"
       ENDIF
@@ -107,7 +107,7 @@
        FC_SYSTEM     Create, Excluded from normal DIR search
       </table>
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       IF ( nh := FCreate( "test.txt" ) ) == F_ERROR
           ? "Cannot create file"
       ENDIF
@@ -170,7 +170,7 @@
       bytes read matches neither the length of <cBuffer> nor the specified
       value in <nBytes> an end-of-file condition has been reached.
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       cBuffer := Space( 500 )
       IF ( nH := FOpen( "test.txt" ) ) == F_ERROR
          FRead( nH, @cBuffer, 500 )
@@ -234,7 +234,7 @@
    $EXAMPLES$
       nHandle := FCreate( "test.txt" )
       FOR x := 1 TO 10
-         FWrite( nHandle, hb_ntos( x ) )
+         FWrite( nHandle, zh_ntos( x ) )
       NEXT
       FClose( nHandle )
    $STATUS$
@@ -336,7 +336,7 @@
       disk. The <nHandle> value is derived from the FCreate()
       or FOpen() function.
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       nHandle := FOpen( "test.txt" )
       ? FSeek( nHandle, 0, FS_END )
       FClose( nHandle )
@@ -384,7 +384,7 @@
       Note: Any file to be removed by FErase() must still be closed.
 
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       IF FErase( "test.txt" ) != F_ERROR
          ? "File successfully erased"
       ELSE
@@ -445,7 +445,7 @@
       will be 0. A call to FError() function will give additional
       information about any error found.
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       nResult := FRename( "test.txt", "test1.txt" )
       IF nResult != 0
          ? "File could not be renamed"
@@ -524,10 +524,10 @@
          cB := ""
          nSavePos := FSeek( nH, 0, FS_RELATIVE )
          nNumRead := FRead( nH, @cLine, nMaxLine )
-         IF ( nEol := hb_BAt( hb_eol(), hb_BLeft( cLine, nNumRead ) ) ) == 0
+         IF ( nEol := zh_BAt( zh_eol(), zh_BLeft( cLine, nNumRead ) ) ) == 0
             cB := cLine
          ELSE
-            cB := hb_BLeft( cLine, nEol - 1 )
+            cB := zh_BLeft( cLine, nEol - 1 )
             FSeek( nH, nSavePos + nEol + 1, FS_SET )
          ENDIF
          RETURN nNumRead != 0
@@ -575,7 +575,7 @@
       searched and the current drive/directory is only searched if
       `SET DEFAULT` is blank.
    $EXAMPLES$
-      ? File( hb_DirSepToOS( "/hb/doc/pp.txt" ) )
+      ? File( zh_DirSepToOS( "/hb/doc/pp.txt" ) )
       ? File( "*.txt" )
    $STATUS$
       S (wild card support is missing)
@@ -620,7 +620,7 @@
       The returned string will be the number of characters specified in
       <nBytes> or the number of bytes read before a zero byte is found.
    $EXAMPLES$
-      #include "fileio.ch"
+      #include "file_io.zhh"
       LOCAL cStr
       IF ( nH := FOpen( "test.txt" ) ) != F_ERROR
          cStr := FReadStr( nH, 100 )
@@ -837,7 +837,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_FEof()
+      zh_FEof()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -845,7 +845,7 @@
    $ONELINER$
       Check for end-of-file.
    $SYNTAX$
-      hb_FEof( <nHandle> ) --> lIsEof
+      zh_FEof( <nHandle> ) --> lIsEof
    $ARGUMENTS$
       <nHandle> The handle of an open file.
    $RETURNS$
@@ -859,7 +859,7 @@
    $EXAMPLES$
       LOCAL nH := FOpen( "test.txt" )
       ? FReadStr( nH, 80 )
-      IF hb_FEof( nH )
+      IF zh_FEof( nH )
          ? "End-of-file reached"
       ELSE
          ? FReadStr( nH, 80 )

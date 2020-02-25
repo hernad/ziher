@@ -106,7 +106,7 @@ ZH_FUNC( ZH_CDPISCHARIDX )
    zh_retl( fResult );
 }
 
-ZH_FUNC( ZH_CDPCHARMAX )
+ZH_FUNC( ZH_CODEPAGE_CHARMAX )
 {
    zh_retnl( ( 1 << ( ( int ) ( zh_cdpIsUTF8( zh_cdpFindExt( zh_parc( 1 ) ) ) ? sizeof( ZH_WCHAR ) : sizeof( ZH_UCHAR ) ) * 8 ) ) - 1 );
 }

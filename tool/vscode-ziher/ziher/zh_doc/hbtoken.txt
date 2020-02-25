@@ -4,7 +4,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ATokens()
+      zh_ATokens()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -13,7 +13,7 @@
       Parses a complex string (e.g. a sentence or multi-line text) into individual
       tokens (words or other string chunks depending on delimiter used).
    $SYNTAX$
-      hb_ATokens( <cString>, [<cDelim>|<lEOL>], [<lSkipStrings>], ;
+      zh_ATokens( <cString>, [<cDelim>|<lEOL>], [<lSkipStrings>], ;
                   [<lDoubleQuoteOnly>] ) --> aTokens
    $ARGUMENTS$
       <cString> Complex string to be parsed.
@@ -49,11 +49,11 @@
       2) The delimiters are removed (trimmed) from tokens.
    $EXAMPLES$
       LOCAL cString := "Harbour is proven to be stable, robust and efficient."
-      LOCAL aTokens := hb_ATokens( cString )
-      AEval( aTokens, {| token, n | QOut( hb_ntos(n), token ) } )
+      LOCAL aTokens := zh_ATokens( cString )
+      AEval( aTokens, {| token, n | QOut( zh_ntos(n), token ) } )
       ?
-      aTokens := hb_ATokens( cString, "," )
-      AEval( aTokens, {| token, n | QOut( hb_ntos(n), token ) } )
+      aTokens := zh_ATokens( cString, "," )
+      AEval( aTokens, {| token, n | QOut( zh_ntos(n), token ) } )
    $STATUS$
       R
    $COMPLIANCE$

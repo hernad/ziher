@@ -4,7 +4,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_Hash()
+      zh_Hash()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -12,7 +12,7 @@
    $ONELINER$
       Returns a hash table
    $SYNTAX$
-      hb_Hash( [ <Key1>, <Value1> ], [ <KeyN>, <ValueN> ], ... ) -> hTable
+      zh_Hash( [ <Key1>, <Value1> ], [ <KeyN>, <ValueN> ], ... ) -> hTable
    $ARGUMENTS$
       <Key1> entry key;
       can be of type: number, date, datetime, string, pointer
@@ -49,7 +49,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HHasKey()
+      zh_HHasKey()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -57,7 +57,7 @@
    $ONELINER$
       Determines whether a hash table has an entry with a give key
    $SYNTAX$
-      hb_HHasKey( <hTable>, <Key> ) -> lExists
+      zh_HHasKey( <hTable>, <Key> ) -> lExists
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -88,7 +88,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HPos()
+      zh_HPos()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -96,7 +96,7 @@
    $ONELINER$
       Locates the index of a key within a hash table
    $SYNTAX$
-      hb_HPos( <hTable>, <Key> ) -> nPosition
+      zh_HPos( <hTable>, <Key> ) -> nPosition
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -129,7 +129,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HGet()
+      zh_HGet()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -137,7 +137,7 @@
    $ONELINER$
       Returns a hash value
    $SYNTAX$
-      hb_HGet( <hTable>, <Key> ) -> <Value>
+      zh_HGet( <hTable>, <Key> ) -> <Value>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -170,7 +170,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HGetDef()
+      zh_HGetDef()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -178,7 +178,7 @@
    $ONELINER$
       Returns a hash value, or a default value if the key is not present
    $SYNTAX$
-      hb_HGetDef( <hTable>, <Key>, [<DefaultValue>] ) -> <Value>
+      zh_HGetDef( <hTable>, <Key>, [<DefaultValue>] ) -> <Value>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -213,7 +213,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HSet()
+      zh_HSet()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -221,7 +221,7 @@
    $ONELINER$
       Sets a hash value
    $SYNTAX$
-      hb_HSet( <hTable>, <Key>, <Value> ) -> <hTable>
+      zh_HSet( <hTable>, <Key>, <Value> ) -> <hTable>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -254,7 +254,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HDel()
+      zh_HDel()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -262,7 +262,7 @@
    $ONELINER$
       Removes a key/value pair from a hash table
    $SYNTAX$
-      hb_HDel( <hTable>, <Key> ) -> <hTable>
+      zh_HDel( <hTable>, <Key> ) -> <hTable>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -293,7 +293,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HKeyAt()
+      zh_HKeyAt()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -301,7 +301,7 @@
    $ONELINER$
       Gets a hash table key at a given position
    $SYNTAX$
-      hb_HKeyAt( <hTable>, <nPosition> ) -> <Key>
+      zh_HKeyAt( <hTable>, <nPosition> ) -> <Key>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -333,7 +333,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HValueAt()
+      zh_HValueAt()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -341,7 +341,7 @@
    $ONELINER$
       Gets/sets a hash value at a given position
    $SYNTAX$
-      hb_HValueAt( <hTable>, <nPosition>, [<NewValue>] ) -> <Value>
+      zh_HValueAt( <hTable>, <nPosition>, [<NewValue>] ) -> <Value>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -375,7 +375,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HPairAt()
+      zh_HPairAt()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -383,7 +383,7 @@
    $ONELINER$
       Returns a two-dimensional array of a hash table entry key/value pair
    $SYNTAX$
-      hb_HPairAt( <hTable>, <nPosition> ) -> <aKeyValue>
+      zh_HPairAt( <hTable>, <nPosition> ) -> <aKeyValue>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -414,7 +414,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HDelAt()
+      zh_HDelAt()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -422,7 +422,7 @@
    $ONELINER$
       Removes an entry from a hash table based on its index position
    $SYNTAX$
-      hb_HDelAt( <hTable>, <nPosition> ) -> <hTable>
+      zh_HDelAt( <hTable>, <nPosition> ) -> <hTable>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -453,7 +453,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HKeys()
+      zh_HKeys()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -461,7 +461,7 @@
    $ONELINER$
       Returns an array of the keys of a hash table
    $SYNTAX$
-      hb_HKeys( <hTable> ) -> <aKeys>
+      zh_HKeys( <hTable> ) -> <aKeys>
    $ARGUMENTS$
       <hTable> a hash table
    $RETURNS$
@@ -489,7 +489,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HValues()
+      zh_HValues()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -497,7 +497,7 @@
    $ONELINER$
       Returns an array of the values of a hash table
    $SYNTAX$
-      hb_HValues( <hTable> ) -> <aValues>
+      zh_HValues( <hTable> ) -> <aValues>
    $ARGUMENTS$
       <hTable> a hash table
    $RETURNS$
@@ -525,7 +525,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HFill()
+      zh_HFill()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -533,7 +533,7 @@
    $ONELINER$
       Fills a hash table with a value
    $SYNTAX$
-      hb_HFill( <hTable>, <Value> ) -> <hTable>
+      zh_HFill( <hTable>, <Value> ) -> <hTable>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -563,7 +563,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HClone()
+      zh_HClone()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -571,7 +571,7 @@
    $ONELINER$
       Creates a copy of a hash table
    $SYNTAX$
-      hb_HClone( <hTable> ) -> <hsDestination>
+      zh_HClone( <hTable> ) -> <hsDestination>
    $ARGUMENTS$
       <hTable> a hash table
    $RETURNS$
@@ -599,7 +599,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HCopy()
+      zh_HCopy()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -607,7 +607,7 @@
    $ONELINER$
       Adds entries from the source hash table to the destination hash table
    $SYNTAX$
-      hb_HCopy( <hsDestination>, <hsSource>, [<nStart>], [<nCount>] ) -> <hsDestination>
+      zh_HCopy( <hsDestination>, <hsSource>, [<nStart>], [<nCount>] ) -> <hsDestination>
    $ARGUMENTS$
       <hsDestination> a destination hash table
 
@@ -641,7 +641,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HMerge()
+      zh_HMerge()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -649,7 +649,7 @@
    $ONELINER$
       Merges a source hash table into a destination hash table
    $SYNTAX$
-      hb_HMerge( <hsDestination>, <hsSource>, <bBlock>|<nPosition> ) -> <hsDestination>
+      zh_HMerge( <hsDestination>, <hsSource>, <bBlock>|<nPosition> ) -> <hsDestination>
    $ARGUMENTS$
       <hsDestination> a destination hash table
 
@@ -663,7 +663,7 @@
       <nPosition> the position of an entry within the source hash table that will
       be appended to the destination hash table
 
-      TODO: the source code passes either a number or HB_HASH_UNION; research this
+      TODO: the source code passes either a number or ZH_HASH_UNION; research this
    $RETURNS$
       The destination hash table with the contents of the source hash table merged
    $DESCRIPTION$
@@ -689,7 +689,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HEval()
+      zh_HEval()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -697,7 +697,7 @@
    $ONELINER$
       Evaluate a code block across the contents of a hash table
    $SYNTAX$
-      hb_HEval( <hTable>, <bBlock>, [<nStart>], [<nCount>] ) -> <hTable>
+      zh_HEval( <hTable>, <bBlock>, [<nStart>], [<nCount>] ) -> <hTable>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -734,7 +734,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HScan()
+      zh_HScan()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -742,7 +742,7 @@
    $ONELINER$
       Scans a hash table
    $SYNTAX$
-      hb_HScan( <hTable>, <Value>, [<nStart>], [<nCount>, [<lExact>] ) -> nPosition
+      zh_HScan( <hTable>, <Value>, [<nStart>], [<nCount>, [<lExact>] ) -> nPosition
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -779,7 +779,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HSort()
+      zh_HSort()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -787,7 +787,7 @@
    $ONELINER$
       Reorganizes the internal list of the hash table to be sorted
    $SYNTAX$
-      hb_HSort( <hTable> ) -> <hsSortedTable>
+      zh_HSort( <hTable> ) -> <hsSortedTable>
    $ARGUMENTS$
       <hTable> a hash table
    $RETURNS$
@@ -817,7 +817,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HCaseMatch()
+      zh_HCaseMatch()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -825,7 +825,7 @@
    $ONELINER$
       Sets the 'case match' flag for the hash table
    $SYNTAX$
-      hb_HCaseMatch( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
+      zh_HCaseMatch( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -839,7 +839,7 @@
       LOCAL hsTable, lFlag
       hsTable := { "one" => 1, "two" => 2 }
       // turn 'case match' on for a new hash table, storing old flag
-      lFlag := hb_HCaseMatch( hsTable, .T. )
+      lFlag := zh_HCaseMatch( hsTable, .T. )
    $STATUS$
       R
    $COMPLIANCE$
@@ -858,7 +858,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HBinary()
+      zh_HBinary()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -866,7 +866,7 @@
    $ONELINER$
       Sets the 'binary' flag for the hash table
    $SYNTAX$
-      hb_HBinary( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
+      zh_HBinary( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -875,13 +875,13 @@
    $RETURNS$
       The previous value of the 'binary' flag
    $DESCRIPTION$
-      This function is equivalent to hb_HBinary() but it returns
+      This function is equivalent to zh_HBinary() but it returns
       the old flag value rather than the hash table
    $EXAMPLES$
       LOCAL hsTable, lFlag
       hsTable := { "one" => 1, "two" => 2 }
       // turn 'binary' on for a new hash table, storing old flag
-      lFlag := hb_HBinary( hsTable, .T. )
+      lFlag := zh_HBinary( hsTable, .T. )
    $STATUS$
       R
    $COMPLIANCE$
@@ -900,7 +900,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HAutoAdd()
+      zh_HAutoAdd()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -908,7 +908,7 @@
    $ONELINER$
       Sets the 'auto add' flag for the hash table
    $SYNTAX$
-      hb_HAutoAdd( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
+      zh_HAutoAdd( <hTable>, [<lFlag>] ) -> <lPreviousFlag>
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -917,13 +917,13 @@
    $RETURNS$
       The previous value of the 'auto add' flag
    $DESCRIPTION$
-      This function is equivalent to hb_HAutoAdd() but it returns
+      This function is equivalent to zh_HAutoAdd() but it returns
       the old flag value rather than the hash table
    $EXAMPLES$
       LOCAL hsTable, lFlag
       hsTable := { "one" => 1, "two" => 2 }
       // turn 'auto add' on for a new hash table, storing old flag
-      lFlag := hb_HAutoAdd( hsTable, .T. )
+      lFlag := zh_HAutoAdd( hsTable, .T. )
    $STATUS$
       R
    $COMPLIANCE$
@@ -942,7 +942,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_HAllocate()
+      zh_HAllocate()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -950,7 +950,7 @@
    $ONELINER$
       Preallocates a hash table
    $SYNTAX$
-      hb_HAllocate( <hTable>, <nItems> )
+      zh_HAllocate( <hTable>, <nItems> )
    $ARGUMENTS$
       <hTable> a hash table
 
@@ -978,7 +978,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_HDefault()
+      zh_HDefault()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -986,7 +986,7 @@
    $ONELINER$
       Returns/sets a default value for a hash table.
    $SYNTAX$
-      hb_HDefault( <hTable>, <DefaultValue> ) -> <OldDefaultValue>
+      zh_HDefault( <hTable>, <DefaultValue> ) -> <OldDefaultValue>
    $ARGUMENTS$
       <hTable> a hash table
 

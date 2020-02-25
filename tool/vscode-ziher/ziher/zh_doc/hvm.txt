@@ -2,7 +2,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_PValue()
+      zh_PValue()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -10,7 +10,7 @@
    $ONELINER$
       Retrieves the value of an argument.
    $SYNTAX$
-      hb_PValue( <nArg> ) --> xExp
+      zh_PValue( <nArg> ) --> xExp
    $ARGUMENTS$
       A number that indicates the argument to check.
    $RETURNS$
@@ -21,8 +21,8 @@
       Test( 123, "abc" )
       STATIC PROCEDURE Test( nValue, cString )
          IF PCount() == 2
-            ? hb_PValue( 1 ), nValue
-            ? hb_PValue( 2 ), cString
+            ? zh_PValue( 1 ), nValue
+            ? zh_PValue( 2 ), cString
          ENDIF
          RETURN
    $STATUS$
@@ -74,7 +74,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_PValue()
+      zh_PValue()
    $END$
  */
 
@@ -240,7 +240,7 @@
       <xRetVal> A value that was returned from called function.
    $DESCRIPTION$
       This function can be called either by the Harbour compiler or by user.
-      The compiler always passes the item of HB_IT_SYMBOL type that stores the
+      The compiler always passes the item of ZH_IT_SYMBOL type that stores the
       name of procedure specified in `DO <proc> WITH ...` statement.
 
       If called procedure/function doesn't exist then a runtime error
@@ -248,7 +248,7 @@
 
       This function can be used as replacement of macro operator.
       It is also used internally to implement `DO <proc> WITH <args...>`
-      In this case <xFuncProc> is of type HB_SYMB.
+      In this case <xFuncProc> is of type ZH_SYMB.
    $EXAMPLES$
       LOCAL cFunction := "MyFunc"
 

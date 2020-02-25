@@ -26,7 +26,7 @@
       variable when executing a VALID or WHEN clause, or during `SET KEY`
       execution and you are inside a READ or `MENU TO`.
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       LOCAL What_Is_Bug
       // display a menu, press <F1> to view the MENU TO variable name
       CLS

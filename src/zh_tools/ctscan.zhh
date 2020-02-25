@@ -1,0 +1,325 @@
+/*
+ * CT keyboard codes
+ *
+ * Copyright 2012 {list of individual authors and e-mail addresses}
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#define KS_DISABLE          zh_BChar( 255 ) + zh_BChar( 255 )
+
+#define KS_A                zh_BChar( 65 )  + zh_BChar( 16 )
+#define KS_B                zh_BChar( 66 )  + zh_BChar( 48 )
+#define KS_C                zh_BChar( 67 )  + zh_BChar( 46 )
+#define KS_D                zh_BChar( 68 )  + zh_BChar( 32 )
+#define KS_E                zh_BChar( 69 )  + zh_BChar( 18 )
+#define KS_F                zh_BChar( 70 )  + zh_BChar( 33 )
+#define KS_G                zh_BChar( 71 )  + zh_BChar( 34 )
+#define KS_H                zh_BChar( 72 )  + zh_BChar( 35 )
+#define KS_I                zh_BChar( 73 )  + zh_BChar( 23 )
+#define KS_J                zh_BChar( 74 )  + zh_BChar( 36 )
+#define KS_K                zh_BChar( 75 )  + zh_BChar( 37 )
+#define KS_L                zh_BChar( 76 )  + zh_BChar( 38 )
+#define KS_M                zh_BChar( 77 )  + zh_BChar( 39 )
+#define KS_N                zh_BChar( 78 )  + zh_BChar( 49 )
+#define KS_O                zh_BChar( 79 )  + zh_BChar( 24 )
+#define KS_P                zh_BChar( 80 )  + zh_BChar( 25 )
+#define KS_Q                zh_BChar( 81 )  + zh_BChar( 30 )
+#define KS_R                zh_BChar( 82 )  + zh_BChar( 19 )
+#define KS_S                zh_BChar( 83 )  + zh_BChar( 31 )
+#define KS_T                zh_BChar( 84 )  + zh_BChar( 20 )
+#define KS_U                zh_BChar( 85 )  + zh_BChar( 22 )
+#define KS_V                zh_BChar( 86 )  + zh_BChar( 47 )
+#define KS_W                zh_BChar( 87 )  + zh_BChar( 44 )
+#define KS_X                zh_BChar( 88 )  + zh_BChar( 45 )
+#define KS_Y                zh_BChar( 89 )  + zh_BChar( 21 )
+#define KS_Z                zh_BChar( 90 )  + zh_BChar( 17 )
+
+#define KS_a                zh_BChar( 97 )  + zh_BChar( 16 )
+#define KS_b                zh_BChar( 98 )  + zh_BChar( 48 )
+#define KS_c                zh_BChar( 99 )  + zh_BChar( 46 )
+#define KS_d                zh_BChar( 100 ) + zh_BChar( 32 )
+#define KS_e                zh_BChar( 101 ) + zh_BChar( 18 )
+#define KS_f                zh_BChar( 102 ) + zh_BChar( 33 )
+#define KS_g                zh_BChar( 103 ) + zh_BChar( 34 )
+#define KS_h                zh_BChar( 104 ) + zh_BChar( 35 )
+#define KS_i                zh_BChar( 105 ) + zh_BChar( 23 )
+#define KS_j                zh_BChar( 106 ) + zh_BChar( 36 )
+#define KS_k                zh_BChar( 107 ) + zh_BChar( 37 )
+#define KS_l                zh_BChar( 108 ) + zh_BChar( 38 )
+#define KS_m                zh_BChar( 109 ) + zh_BChar( 39 )
+#define KS_n                zh_BChar( 110 ) + zh_BChar( 49 )
+#define KS_o                zh_BChar( 111 ) + zh_BChar( 24 )
+#define KS_p                zh_BChar( 112 ) + zh_BChar( 25 )
+#define KS_q                zh_BChar( 113 ) + zh_BChar( 30 )
+#define KS_r                zh_BChar( 114 ) + zh_BChar( 19 )
+#define KS_s                zh_BChar( 115 ) + zh_BChar( 31 )
+#define KS_t                zh_BChar( 116 ) + zh_BChar( 20 )
+#define KS_u                zh_BChar( 117 ) + zh_BChar( 22 )
+#define KS_v                zh_BChar( 118 ) + zh_BChar( 47 )
+#define KS_w                zh_BChar( 119 ) + zh_BChar( 44 )
+#define KS_x                zh_BChar( 120 ) + zh_BChar( 45 )
+#define KS_y                zh_BChar( 121 ) + zh_BChar( 21 )
+#define KS_z                zh_BChar( 122 ) + zh_BChar( 17 )
+
+#define KS_1                zh_BChar( 49 )  + zh_BChar( 2 )
+#define KS_2                zh_BChar( 50 )  + zh_BChar( 3 )
+#define KS_3                zh_BChar( 51 )  + zh_BChar( 4 )
+#define KS_4                zh_BChar( 52 )  + zh_BChar( 5 )
+#define KS_5                zh_BChar( 53 )  + zh_BChar( 6 )
+#define KS_6                zh_BChar( 54 )  + zh_BChar( 7 )
+#define KS_7                zh_BChar( 55 )  + zh_BChar( 8 )
+#define KS_8                zh_BChar( 56 )  + zh_BChar( 9 )
+#define KS_9                zh_BChar( 57 )  + zh_BChar( 10 )
+#define KS_0                zh_BChar( 48 )  + zh_BChar( 11 )
+
+#define KS_DOT              zh_BChar( 46 )  + zh_BChar( 52 )
+#define KS_COMMA            zh_BChar( 44 )  + zh_BChar( 51 )
+
+#define KS_CTRL_A           zh_BChar( 1 )   + zh_BChar( 30 )
+#define KS_CTRL_B           zh_BChar( 2 )   + zh_BChar( 48 )
+#define KS_CTRL_C           zh_BChar( 3 )   + zh_BChar( 46 )
+#define KS_CTRL_D           zh_BChar( 4 )   + zh_BChar( 32 )
+#define KS_CTRL_E           zh_BChar( 5 )   + zh_BChar( 18 )
+#define KS_CTRL_F           zh_BChar( 6 )   + zh_BChar( 33 )
+#define KS_CTRL_G           zh_BChar( 7 )   + zh_BChar( 34 )
+#define KS_CTRL_H           zh_BChar( 8 )   + zh_BChar( 35 )
+#define KS_CTRL_I           zh_BChar( 9 )   + zh_BChar( 23 )
+#define KS_CTRL_M           zh_BChar( 13 )  + zh_BChar( 50 )
+#define KS_CTRL_N           zh_BChar( 14 )  + zh_BChar( 49 )
+#define KS_CTRL_R           zh_BChar( 18 )  + zh_BChar( 19 )
+#define KS_CTRL_S           zh_BChar( 19 )  + zh_BChar( 31 )
+#define KS_CTRL_T           zh_BChar( 20 )  + zh_BChar( 20 )
+#define KS_CTRL_U           zh_BChar( 21 )  + zh_BChar( 22 )
+#define KS_CTRL_V           zh_BChar( 22 )  + zh_BChar( 47 )
+#define KS_CTRL_W           zh_BChar( 23 )  + zh_BChar( 17 )
+#define KS_CTRL_X           zh_BChar( 24 )  + zh_BChar( 45 )
+#define KS_CTRL_Y           zh_BChar( 25 )  + zh_BChar( 21 )
+#define KS_CTRL_Z           zh_BChar( 26 )  + zh_BChar( 44 )
+
+#define KS_ALT_A            zh_BChar( 0 )   + zh_BChar( 30 )
+#define KS_ALT_B            zh_BChar( 0 )   + zh_BChar( 48 )
+#define KS_ALT_C            zh_BChar( 0 )   + zh_BChar( 46 )
+#define KS_ALT_D            zh_BChar( 0 )   + zh_BChar( 32 )
+#define KS_ALT_E            zh_BChar( 0 )   + zh_BChar( 18 )
+#define KS_ALT_F            zh_BChar( 0 )   + zh_BChar( 33 )
+#define KS_ALT_G            zh_BChar( 0 )   + zh_BChar( 34 )
+#define KS_ALT_H            zh_BChar( 0 )   + zh_BChar( 35 )
+#define KS_ALT_I            zh_BChar( 0 )   + zh_BChar( 23 )
+#define KS_ALT_J            zh_BChar( 0 )   + zh_BChar( 36 )
+#define KS_ALT_K            zh_BChar( 0 )   + zh_BChar( 37 )
+#define KS_ALT_L            zh_BChar( 0 )   + zh_BChar( 38 )
+#define KS_ALT_M            zh_BChar( 0 )   + zh_BChar( 50 )
+#define KS_ALT_N            zh_BChar( 0 )   + zh_BChar( 49 )
+#define KS_ALT_O            zh_BChar( 0 )   + zh_BChar( 24 )
+#define KS_ALT_P            zh_BChar( 0 )   + zh_BChar( 25 )
+#define KS_ALT_Q            zh_BChar( 0 )   + zh_BChar( 16 )
+#define KS_ALT_R            zh_BChar( 0 )   + zh_BChar( 19 )
+#define KS_ALT_S            zh_BChar( 0 )   + zh_BChar( 31 )
+#define KS_ALT_T            zh_BChar( 0 )   + zh_BChar( 20 )
+#define KS_ALT_U            zh_BChar( 0 )   + zh_BChar( 22 )
+#define KS_ALT_V            zh_BChar( 0 )   + zh_BChar( 47 )
+#define KS_ALT_W            zh_BChar( 0 )   + zh_BChar( 17 )
+#define KS_ALT_X            zh_BChar( 0 )   + zh_BChar( 45 )
+#define KS_ALT_Y            zh_BChar( 0 )   + zh_BChar( 21 )
+#define KS_ALT_Z            zh_BChar( 0 )   + zh_BChar( 44 )
+
+#define KS_ALT_1            zh_BChar( 0 )   + zh_BChar( 120 )
+#define KS_ALT_2            zh_BChar( 0 )   + zh_BChar( 121 )
+#define KS_ALT_3            zh_BChar( 0 )   + zh_BChar( 122 )
+#define KS_ALT_4            zh_BChar( 0 )   + zh_BChar( 123 )
+#define KS_ALT_5            zh_BChar( 0 )   + zh_BChar( 124 )
+#define KS_ALT_6            zh_BChar( 0 )   + zh_BChar( 125 )
+#define KS_ALT_7            zh_BChar( 0 )   + zh_BChar( 126 )
+#define KS_ALT_8            zh_BChar( 0 )   + zh_BChar( 127 )
+#define KS_ALT_9            zh_BChar( 0 )   + zh_BChar( 128 )
+#define KS_ALT_0            zh_BChar( 0 )   + zh_BChar( 129 )
+
+#define KS_F1               zh_BChar( 0 )   + zh_BChar( 59 )
+#define KS_F2               zh_BChar( 0 )   + zh_BChar( 60 )
+#define KS_F3               zh_BChar( 0 )   + zh_BChar( 61 )
+#define KS_F4               zh_BChar( 0 )   + zh_BChar( 62 )
+#define KS_F5               zh_BChar( 0 )   + zh_BChar( 63 )
+#define KS_F6               zh_BChar( 0 )   + zh_BChar( 64 )
+#define KS_F7               zh_BChar( 0 )   + zh_BChar( 65 )
+#define KS_F8               zh_BChar( 0 )   + zh_BChar( 66 )
+#define KS_F9               zh_BChar( 0 )   + zh_BChar( 67 )
+#define KS_F10              zh_BChar( 0 )   + zh_BChar( 68 )
+#define KS_F11              zh_BChar( 0 )   + zh_BChar( 133 )
+#define KS_F12              zh_BChar( 0 )   + zh_BChar( 134 )
+
+#define KS_SH_F1            zh_BChar( 0 )   + zh_BChar( 84 )
+#define KS_SH_F2            zh_BChar( 0 )   + zh_BChar( 85 )
+#define KS_SH_F3            zh_BChar( 0 )   + zh_BChar( 86 )
+#define KS_SH_F4            zh_BChar( 0 )   + zh_BChar( 87 )
+#define KS_SH_F5            zh_BChar( 0 )   + zh_BChar( 88 )
+#define KS_SH_F6            zh_BChar( 0 )   + zh_BChar( 89 )
+#define KS_SH_F7            zh_BChar( 0 )   + zh_BChar( 90 )
+#define KS_SH_F8            zh_BChar( 0 )   + zh_BChar( 91 )
+#define KS_SH_F9            zh_BChar( 0 )   + zh_BChar( 92 )
+#define KS_SH_F10           zh_BChar( 0 )   + zh_BChar( 93 )
+#define KS_SH_F11           zh_BChar( 0 )   + zh_BChar( 135 )
+#define KS_SH_F12           zh_BChar( 0 )   + zh_BChar( 136 )
+
+#define KS_CTRL_F1          zh_BChar( 0 )   + zh_BChar( 94 )
+#define KS_CTRL_F2          zh_BChar( 0 )   + zh_BChar( 95 )
+#define KS_CTRL_F3          zh_BChar( 0 )   + zh_BChar( 96 )
+#define KS_CTRL_F4          zh_BChar( 0 )   + zh_BChar( 97 )
+#define KS_CTRL_F5          zh_BChar( 0 )   + zh_BChar( 98 )
+#define KS_CTRL_F6          zh_BChar( 0 )   + zh_BChar( 99 )
+#define KS_CTRL_F7          zh_BChar( 0 )   + zh_BChar( 100 )
+#define KS_CTRL_F8          zh_BChar( 0 )   + zh_BChar( 101 )
+#define KS_CTRL_F9          zh_BChar( 0 )   + zh_BChar( 102 )
+#define KS_CTRL_F10         zh_BChar( 0 )   + zh_BChar( 103 )
+#define KS_CTRL_F11         zh_BChar( 0 )   + zh_BChar( 137 )
+#define KS_CTRL_F12         zh_BChar( 0 )   + zh_BChar( 138 )
+
+#define KS_ALT_F1           zh_BChar( 0 )   + zh_BChar( 104 )
+#define KS_ALT_F2           zh_BChar( 0 )   + zh_BChar( 105 )
+#define KS_ALT_F3           zh_BChar( 0 )   + zh_BChar( 106 )
+#define KS_ALT_F4           zh_BChar( 0 )   + zh_BChar( 107 )
+#define KS_ALT_F5           zh_BChar( 0 )   + zh_BChar( 108 )
+#define KS_ALT_F6           zh_BChar( 0 )   + zh_BChar( 109 )
+#define KS_ALT_F7           zh_BChar( 0 )   + zh_BChar( 110 )
+#define KS_ALT_F8           zh_BChar( 0 )   + zh_BChar( 111 )
+#define KS_ALT_F9           zh_BChar( 0 )   + zh_BChar( 112 )
+#define KS_ALT_F10          zh_BChar( 0 )   + zh_BChar( 113 )
+#define KS_ALT_F11          zh_BChar( 0 )   + zh_BChar( 139 )
+#define KS_ALT_F12          zh_BChar( 0 )   + zh_BChar( 140 )
+
+#define KS_BS               zh_BChar( 8 )   + zh_BChar( 14 )
+#define KS_ESC              zh_BChar( 27 )  + zh_BChar( 1 )
+#define KS_TAB              zh_BChar( 9 )   + zh_BChar( 15 )
+#define KS_SH_TAB           zh_BChar( 0 )   + zh_BChar( 15 )
+
+#define KS_ALT_BS           zh_BChar( 0 )   + zh_BChar( 14 )
+#define KS_ALT_ESC          zh_BChar( 0 )   + zh_BChar( 1 )
+#define KS_ALT_TAB          zh_BChar( 0 )   + zh_BChar( 165 )
+
+#define KS_ENTER            zh_BChar( 13 )  + zh_BChar( 28 )
+#define KS_CTRL_ENTER       zh_BChar( 10 )  + zh_BChar( 28 )
+#define KS_ALT_ENTER        zh_BChar( 0 )   + zh_BChar( 28 )
+#define KS_PAD_ENTER        zh_BChar( 13 )  + zh_BChar( 224 )
+#define KS_PAD_CTRL_ENTER   zh_BChar( 10 )  + zh_BChar( 224 )
+#define KS_PAD_ALT_ENTER    zh_BChar( 0 )   + zh_BChar( 166 )
+
+#define KS_INS              zh_BChar( 224 ) + zh_BChar( 82 )
+#define KS_DEL              zh_BChar( 224 ) + zh_BChar( 83 )
+#define KS_HOME             zh_BChar( 224 ) + zh_BChar( 71 )
+#define KS_END              zh_BChar( 224 ) + zh_BChar( 79 )
+#define KS_PGUP             zh_BChar( 224 ) + zh_BChar( 73 )
+#define KS_PGDN             zh_BChar( 224 ) + zh_BChar( 81 )
+#define KS_UP               zh_BChar( 224 ) + zh_BChar( 72 )
+#define KS_LEFT             zh_BChar( 224 ) + zh_BChar( 75 )
+#define KS_DOWN             zh_BChar( 224 ) + zh_BChar( 80 )
+#define KS_RIGHT            zh_BChar( 224 ) + zh_BChar( 77 )
+
+#define KS_CTRL_INS         zh_BChar( 224 ) + zh_BChar( 146 )
+#define KS_CTRL_DEL         zh_BChar( 224 ) + zh_BChar( 147 )
+#define KS_CTRL_HOME        zh_BChar( 224 ) + zh_BChar( 119 )
+#define KS_CTRL_END         zh_BChar( 224 ) + zh_BChar( 117 )
+#define KS_CTRL_PGUP        zh_BChar( 224 ) + zh_BChar( 132 )
+#define KS_CTRL_PGDN        zh_BChar( 224 ) + zh_BChar( 118 )
+#define KS_CTRL_UP          zh_BChar( 224 ) + zh_BChar( 141 )
+#define KS_CTRL_LEFT        zh_BChar( 224 ) + zh_BChar( 115 )
+#define KS_CTRL_DOWN        zh_BChar( 224 ) + zh_BChar( 145 )
+#define KS_CTRL_RIGHT       zh_BChar( 224 ) + zh_BChar( 116 )
+
+#define KS_ALT_INS          zh_BChar( 0 )   + zh_BChar( 162 )
+#define KS_ALT_DEL          zh_BChar( 0 )   + zh_BChar( 163 )
+#define KS_ALT_HOME         zh_BChar( 0 )   + zh_BChar( 151 )
+#define KS_ALT_END          zh_BChar( 0 )   + zh_BChar( 159 )
+#define KS_ALT_PGUP         zh_BChar( 0 )   + zh_BChar( 153 )
+#define KS_ALT_PGDN         zh_BChar( 0 )   + zh_BChar( 161 )
+#define KS_ALT_UP           zh_BChar( 0 )   + zh_BChar( 152 )
+#define KS_ALT_LEFT         zh_BChar( 0 )   + zh_BChar( 155 )
+#define KS_ALT_DOWN         zh_BChar( 0 )   + zh_BChar( 160 )
+#define KS_ALT_RIGHT        zh_BChar( 0 )   + zh_BChar( 157 )
+
+#define KS_PAD_INS          zh_BChar( 0 )   + zh_BChar( 82 )
+#define KS_PAD_DEL          zh_BChar( 0 )   + zh_BChar( 83 )
+#define KS_PAD_HOME         zh_BChar( 0 )   + zh_BChar( 71 )
+#define KS_PAD_END          zh_BChar( 0 )   + zh_BChar( 79 )
+#define KS_PAD_PGUP         zh_BChar( 0 )   + zh_BChar( 73 )
+#define KS_PAD_PGDN         zh_BChar( 0 )   + zh_BChar( 81 )
+#define KS_PAD_UP           zh_BChar( 0 )   + zh_BChar( 72 )
+#define KS_PAD_LEFT         zh_BChar( 0 )   + zh_BChar( 75 )
+#define KS_PAD_DOWN         zh_BChar( 0 )   + zh_BChar( 80 )
+#define KS_PAD_RIGHT        zh_BChar( 0 )   + zh_BChar( 77 )
+
+#define KS_CTRL_PAD_INS     zh_BChar( 0 )   + zh_BChar( 146 )
+#define KS_CTRL_PAD_DEL     zh_BChar( 0 )   + zh_BChar( 147 )
+#define KS_CTRL_PAD_HOME    zh_BChar( 0 )   + zh_BChar( 119 )
+#define KS_CTRL_PAD_END     zh_BChar( 0 )   + zh_BChar( 117 )
+#define KS_CTRL_PAD_PGUP    zh_BChar( 0 )   + zh_BChar( 132 )
+#define KS_CTRL_PAD_PGDN    zh_BChar( 0 )   + zh_BChar( 118 )
+#define KS_CTRL_PAD_UP      zh_BChar( 0 )   + zh_BChar( 141 )
+#define KS_CTRL_PAD_LEFT    zh_BChar( 0 )   + zh_BChar( 115 )
+#define KS_CTRL_PAD_DOWN    zh_BChar( 0 )   + zh_BChar( 145 )
+#define KS_CTRL_PAD_RIGHT   zh_BChar( 0 )   + zh_BChar( 116 )
+
+#define KS_PAD_DIV          zh_BChar( 47 )  + zh_BChar( 224 )
+#define KS_PAD_MUL          zh_BChar( 42 )  + zh_BChar( 55 )
+#define KS_PAD_MINUS        zh_BChar( 45 )  + zh_BChar( 74 )
+#define KS_PAD_PLUS         zh_BChar( 43 )  + zh_BChar( 78 )
+
+#define KS_CTRL_PAD_DIV     zh_BChar( 0 )   + zh_BChar( 149 )
+#define KS_CTRL_PAD_MUL     zh_BChar( 0 )   + zh_BChar( 150 )
+#define KS_CTRL_PAD_MINUS   zh_BChar( 0 )   + zh_BChar( 142 )
+#define KS_CTRL_PAD_PLUS    zh_BChar( 0 )   + zh_BChar( 144 )
+
+#define KS_ALT_PAD_DIV      zh_BChar( 0 )   + zh_BChar( 164 )
+#define KS_ALT_PAD_MUL      zh_BChar( 0 )   + zh_BChar( 55 )
+#define KS_ALT_PAD_MINUS    zh_BChar( 0 )   + zh_BChar( 74 )
+#define KS_ALT_PAD_PLUS     zh_BChar( 0 )   + zh_BChar( 78 )
+
+#define KS_PAD_1            zh_BChar( 49 )  + zh_BChar( 79 )
+#define KS_PAD_2            zh_BChar( 50 )  + zh_BChar( 80 )
+#define KS_PAD_3            zh_BChar( 51 )  + zh_BChar( 81 )
+#define KS_PAD_4            zh_BChar( 52 )  + zh_BChar( 75 )
+#define KS_PAD_5            zh_BChar( 53 )  + zh_BChar( 76 )
+#define KS_PAD_6            zh_BChar( 54 )  + zh_BChar( 77 )
+#define KS_PAD_7            zh_BChar( 55 )  + zh_BChar( 71 )
+#define KS_PAD_8            zh_BChar( 56 )  + zh_BChar( 72 )
+#define KS_PAD_9            zh_BChar( 57 )  + zh_BChar( 73 )
+#define KS_PAD_0            zh_BChar( 48 )  + zh_BChar( 82 )
+
+#define KS_PAD_DECIMAL      zh_BChar( 46 )  + zh_BChar( 83 )

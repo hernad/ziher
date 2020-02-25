@@ -69,7 +69,7 @@
          ? "You did not choose an item"
       ELSE
          ? ;
-            "You chose element", hb_ntos( nChoice ), ;
+            "You chose element", zh_ntos( nChoice ), ;
             "which has a value of", aItems[ nChoice ]
       ENDIF
    $FILES$

@@ -50,7 +50,7 @@
       and Delegating, and is largely compatible with Class(y)(tm), TopClass(tm)
       and Visual Objects(tm).
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
 
       CREATE CLASS TBColumn
 
@@ -138,7 +138,7 @@
       VAR can be a synonym for VAR, or it can use a slightly different
       syntax for compatibility with other dialects.
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
 
       CREATE CLASS TBColumn
 
@@ -207,7 +207,7 @@
       Use the `INIT <uValue>` clause to initialize that `VAR` to <uValue>
       whenever the class is first used.
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
       CREATE CLASS TWindow
          VAR   hWnd, nOldProc
          CLASS VAR lRegistered AS LOGICAL
@@ -301,7 +301,7 @@
                    the ENDCLASS command.
    $EXAMPLES$
       // FIXME
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
       CREATE CLASS TWindow
          VAR    hWnd, nOldProc
          METHOD New() CONSTRUCTOR
@@ -371,7 +371,7 @@
       function BeginPaint().
    $EXAMPLES$
       // FIXME
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
       CREATE CLASS TWindow
          VAR    hWnd, nOldProc
          METHOD New() CONSTRUCTOR
@@ -411,7 +411,7 @@
       `ERROR HANDLER` names the method that should handle errors for the
       class being defined.
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
 
       CREATE CLASS TWindow
          ERROR HANDLER MyErrHandler()
@@ -454,7 +454,7 @@
       It names the method that should handle errors for the
       class being defined.
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
 
       CREATE CLASS TWindow
          ON ERROR MyErrHandler()
@@ -494,7 +494,7 @@
       ENDCLASS marks the end of a class declaration.
       It is usually followed by the class methods that are not INLINE.
    $EXAMPLES$
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
       CREATE CLASS TWindow
          VAR hWnd, nOldProc
       ENDCLASS

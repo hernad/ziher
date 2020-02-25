@@ -5654,7 +5654,7 @@ void zh_pp_readRules( PZH_PP_STATE pState, const char * szRulesFile )
 
    pFileName = zh_fsFNameSplit( szRulesFile );
    if( ! pFileName->szExtension )
-      pFileName->szExtension = ".ch";
+      pFileName->szExtension = ".zhh";
    zh_fsFNameMerge( szFileName, pFileName );
    zh_xfree( pFileName );
 

@@ -611,7 +611,7 @@
       function to use.
 
       This function is only visible if src/rdd/dbstrux.prg was compiled
-      with the HB_CLP_UNDOC flag.
+      with the ZH_CLP_UNDOC flag.
    $PLATFORMS$
       All
    $FILES$

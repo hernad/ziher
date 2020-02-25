@@ -468,7 +468,7 @@
       USE test NEW
       INDEX ON field->first TO test
       IF IndexOrd() > 0
-         ? "Current order is", hb_ntos( IndexOrd() )
+         ? "Current order is", zh_ntos( IndexOrd() )
       ENDIF
    $STATUS$
       R

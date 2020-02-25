@@ -27,7 +27,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_SetMacro()
+      zh_SetMacro()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -35,13 +35,13 @@
    $ONELINER$
       Enable/disable the macro compiler runtime features.
    $SYNTAX$
-      hb_SetMacro( <nOption>, [<lOnOff>] ) --> lOldSetting
+      zh_SetMacro( <nOption>, [<lOnOff>] ) --> lOldSetting
    $ARGUMENTS$
-      <nOption> One of the `HB_SM_*` constants defined in set.ch.
+      <nOption> One of the `ZH_SM_*` constants defined in set.ch.
 
       <lOnOff> .T. to enable or .F. to disable a feature
    $RETURNS$
-      hb_SetMacro() return the old state of requested feature.
+      zh_SetMacro() return the old state of requested feature.
    $DESCRIPTION$
       This function enables or disables some features of the macro
       compiler. The Harbour is extending the macro features compared
@@ -50,25 +50,25 @@
 
       Available features are:
 
-      `HB_SM_HARBOUR` - enables Harbour extensions:
+      `ZH_SM_HARBOUR` - enables Harbour extensions:
             operators: `++`, `--`, `+=`, `-=`, `*=`, `/=`, `^=`
             objects: assignments to an instance variable
 
-      `HB_SM_XBASE` - enables other Xbase++ dialects extensions:
+      `ZH_SM_XBASE` - enables other Xbase++ dialects extensions:
             expanding of expressions lists
 
-      `HB_SM_SHORTCUTS` - enables optimized evaluation of
+      `ZH_SM_SHORTCUTS` - enables optimized evaluation of
             logical operators (`.AND.`, `.OR.`)
 
-      `HB_SM_PREPROC` - enables preprocessing of commands
+      `ZH_SM_PREPROC` - enables preprocessing of commands
             This is meaningful if Harbour is compiled with
-            HB_MACRO_STATEMENTS flag
+            ZH_MACRO_STATEMENTS flag
 
    $EXAMPLES$
-      #include "hbmacro.ch"
+      #include "hbmacro.zhh"
       INIT PROCEDURE IWANTCLIPPER()
-         ? hb_SetMacro( HB_SM_HARBOUR, .F. )
-         ? hb_SetMacro( HB_SM_XBASE, .F. )
+         ? zh_SetMacro( ZH_SM_HARBOUR, .F. )
+         ? zh_SetMacro( ZH_SM_XBASE, .F. )
          RETURN
    $STATUS$
       R

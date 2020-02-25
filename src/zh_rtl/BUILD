@@ -48,7 +48,9 @@ filegroup(
         "*.h",
         "*.zhh",
         "zh/*.zhh",
-        "file/*.zhh"
+        "file/*.zhh",
+        "crypto/*.h",
+        "crypto/*.zhh"
     ]),
     visibility = ["//visibility:public"],
 )

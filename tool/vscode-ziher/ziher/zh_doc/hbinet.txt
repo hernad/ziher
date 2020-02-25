@@ -4,7 +4,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetInit()
+      zh_inetInit()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -12,7 +12,7 @@
    $ONELINER$
       Activate Harbour INET support
    $SYNTAX$
-      hb_inetInit() --> lResult
+      zh_inetInit() --> lResult
    $ARGUMENTS$
       (This function has no arguments)
    $RETURNS$
@@ -42,7 +42,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_inetCleanup()
+      zh_inetCleanup()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -50,7 +50,7 @@
    $ONELINER$
       Terminate Harbour INET support
    $SYNTAX$
-      hb_inetCleanup()
+      zh_inetCleanup()
    $ARGUMENTS$
       (This function has no arguments)
    $DESCRIPTION$
@@ -77,7 +77,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetCreate()
+      zh_inetCreate()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -85,14 +85,14 @@
    $ONELINER$
       Create an INET socket
    $SYNTAX$
-      hb_inetCreate( [ <nTimeout> ] ) --> <SOCKET>
+      zh_inetCreate( [ <nTimeout> ] ) --> <SOCKET>
    $ARGUMENTS$
       <nTimeout> Socket timeout (optional) TODO: what is the scale (seconds, milliseconds?)
    $RETURNS$
       An INET socket
    $DESCRIPTION$
       Creates the raw data of the socket, that can be passed to a asynchronous
-      connection function (hb_inetConnect() or hb_inetConnectIP()). This will prevent the
+      connection function (zh_inetConnect() or zh_inetConnectIP()). This will prevent the
       connection function from allocating some data that could be never used in
       certain cases, i.e. an asynchronously detected timeout.
    $EXAMPLES$
@@ -116,7 +116,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetClose()
+      zh_inetClose()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -124,7 +124,7 @@
    $ONELINER$
       Close an INET socket
    $SYNTAX$
-      hb_inetClose( <socket> ) --> nResult
+      zh_inetClose( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -163,7 +163,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetFD()
+      zh_inetFD()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -171,7 +171,7 @@
    $ONELINER$
       ?
    $SYNTAX$
-      hb_inetFD( <socket> [, <lNoSocket> ] ) --> nResult
+      zh_inetFD( <socket> [, <lNoSocket> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -201,7 +201,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetstatus()
+      zh_inetstatus()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -209,7 +209,7 @@
    $ONELINER$
       Get the status of a socket
    $SYNTAX$
-      hb_inetstatus( <socket> ) --> nResult
+      zh_inetstatus( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -237,7 +237,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetErrorCode()
+      zh_inetErrorCode()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -245,7 +245,7 @@
    $ONELINER$
       Get the last INET error code
    $SYNTAX$
-      hb_inetErrorCode( <socket> ) --> nResult
+      zh_inetErrorCode( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -277,7 +277,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetErrorDesc()
+      zh_inetErrorDesc()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -285,7 +285,7 @@
    $ONELINER$
       Get the last INET error code description
    $SYNTAX$
-      hb_inetErrorDesc( <socket> ) --> cResult
+      zh_inetErrorDesc( <socket> ) --> cResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -315,7 +315,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_inetClearError()
+      zh_inetClearError()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -323,7 +323,7 @@
    $ONELINER$
       Clear the socket error value
    $SYNTAX$
-      hb_inetClearError( <socket> )
+      zh_inetClearError( <socket> )
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $DESCRIPTION$
@@ -349,7 +349,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetCount()
+      zh_inetCount()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -357,7 +357,7 @@
    $ONELINER$
       Get the number of bytes last read or sent
    $SYNTAX$
-      hb_inetCount( <socket> ) --> nResult
+      zh_inetCount( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -386,7 +386,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetAddress()
+      zh_inetAddress()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -394,7 +394,7 @@
    $ONELINER$
       Get a remote server address
    $SYNTAX$
-      hb_inetAddress( <socket> ) --> cResult
+      zh_inetAddress( <socket> ) --> cResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -426,7 +426,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetPort()
+      zh_inetPort()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -434,7 +434,7 @@
    $ONELINER$
       Get the port a socket is bound to.
    $SYNTAX$
-      hb_inetPort( <socket> ) --> cResult
+      zh_inetPort( <socket> ) --> cResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -463,7 +463,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetTimeout()
+      zh_inetTimeout()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -471,7 +471,7 @@
    $ONELINER$
       Get or change the timeout value of a socket
    $SYNTAX$
-      hb_inetTimeout( <socket> [, <nTimeout> ] ) --> nPreviousTimeout
+      zh_inetTimeout( <socket> [, <nTimeout> ] ) --> nPreviousTimeout
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -501,7 +501,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_inetClearTimeout()
+      zh_inetClearTimeout()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -509,7 +509,7 @@
    $ONELINER$
       Clear the timeout value of a socket
    $SYNTAX$
-      hb_inetClearTimeout( <socket> )
+      zh_inetClearTimeout( <socket> )
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $DESCRIPTION$
@@ -536,7 +536,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetTimeLimit()
+      zh_inetTimeLimit()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -544,7 +544,7 @@
    $ONELINER$
       Get or change the time limit value of a socket
    $SYNTAX$
-      hb_inetTimeLimit( <socket> [, <nTimeLimit> ) --> NIL
+      zh_inetTimeLimit( <socket> [, <nTimeLimit> ) --> NIL
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -574,7 +574,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_inetClearTimeLimit()
+      zh_inetClearTimeLimit()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -582,7 +582,7 @@
    $ONELINER$
       Clear the time limit value of a socket
    $SYNTAX$
-      hb_inetClearTimeLimit( <socket> )
+      zh_inetClearTimeLimit( <socket> )
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $DESCRIPTION$
@@ -608,7 +608,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetPeriodCallback()
+      zh_inetPeriodCallback()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -616,7 +616,7 @@
    $ONELINER$
       Get or change the periodic callback value of a socket
    $SYNTAX$
-      hb_inetPeriodCallback( <socket> [, <xCallback> ] ) --> xPreviousCallback
+      zh_inetPeriodCallback( <socket> [, <xCallback> ] ) --> xPreviousCallback
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -649,7 +649,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_inetClearPeriodCallback()
+      zh_inetClearPeriodCallback()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -657,7 +657,7 @@
    $ONELINER$
       Clear the periodic callback value of a socket
    $SYNTAX$
-      hb_inetClearPeriodCallback( <socket> )
+      zh_inetClearPeriodCallback( <socket> )
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $DESCRIPTION$
@@ -683,7 +683,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetGetSndBufSize()
+      zh_inetGetSndBufSize()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -691,7 +691,7 @@
    $ONELINER$
       Get the socket send buffer size
    $SYNTAX$
-      hb_inetGetSndBufSize( <socket> ) --> nResult
+      zh_inetGetSndBufSize( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -719,7 +719,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetGetRcvBufSize()
+      zh_inetGetRcvBufSize()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -727,7 +727,7 @@
    $ONELINER$
       Get the socket receive buffer size
    $SYNTAX$
-      hb_inetGetRcvBufSize( <socket> ) --> nResult
+      zh_inetGetRcvBufSize( <socket> ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$
@@ -755,7 +755,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetSetSndBufSize()
+      zh_inetSetSndBufSize()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -763,7 +763,7 @@
    $ONELINER$
       Set the send buffer size of a socket
    $SYNTAX$
-      hb_inetSetSndBufSize( <socket>, <nSize> ) --> nSize
+      zh_inetSetSndBufSize( <socket>, <nSize> ) --> nSize
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -793,7 +793,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetSetRcvBufSize()
+      zh_inetSetRcvBufSize()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -801,7 +801,7 @@
    $ONELINER$
       Set the receive buffer size of a socket
    $SYNTAX$
-      hb_inetSetRcvBufSize( <socket>, <nSize> ) --> nSize
+      zh_inetSetRcvBufSize( <socket>, <nSize> ) --> nSize
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -831,7 +831,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetRecv()
+      zh_inetRecv()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -839,7 +839,7 @@
    $ONELINER$
       Read from a socket
    $SYNTAX$
-      hb_inetRecv( <socket>, @<cResult>, [ <nAmount> ] ) --> nResult
+      zh_inetRecv( <socket>, @<cResult>, [ <nAmount> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -860,10 +860,10 @@
       received until premature end of communications are returned.
 
       Notice that there is no guarantee that all the available bytes will be
-      read before the function returns, in fact, hb_inetRecv() returns as soon it
+      read before the function returns, in fact, zh_inetRecv() returns as soon it
       is able to fill <cString> with one or more bytes. To block the current
       process until the whole <cString> is filled (or <nAmount> bytes are read),
-      use the hb_inetRecvAll().
+      use the zh_inetRecvAll().
    $EXAMPLES$
 
    $STATUS$
@@ -885,7 +885,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetRecvAll()
+      zh_inetRecvAll()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -893,7 +893,7 @@
    $ONELINER$
       Read from a socket without blocking
    $SYNTAX$
-      hb_inetRecvAll( <socket>, @<cResult>, [ <nAmount> ] ) --> nResult
+      zh_inetRecvAll( <socket>, @<cResult>, [ <nAmount> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -905,7 +905,7 @@
       The number of the characters read from the socket. Might be
       less than <nAmount> on premature socket closing or on network error.
    $DESCRIPTION$
-      This function works exactly as hb_inetRecv() except that it
+      This function works exactly as zh_inetRecv() except that it
       blocks until <nAmount> bytes are read, if <nAmount> is given, or
       <cString> is filled for its whole length.
    $EXAMPLES$
@@ -929,7 +929,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetRecvLine()
+      zh_inetRecvLine()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -937,7 +937,7 @@
    $ONELINER$
       Read a line from a socket
    $SYNTAX$
-      hb_inetRecvLine( <socket> [, @<nBytesRead>, [, <nMaxLength> [, <nBufSize> ]]] ) --> cResult
+      zh_inetRecvLine( <socket> [, @<nBytesRead>, [, <nMaxLength> [, <nBufSize> ]]] ) --> cResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -995,7 +995,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetRecvEndblock()
+      zh_inetRecvEndblock()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1003,7 +1003,7 @@
    $ONELINER$
       Read a block from a socket
    $SYNTAX$
-      hb_inetRecvEndblock( <socket> [, <cBlock >[, @<nBytesRead> [, <nMaxLength> [, <nBufSize> ]]]] ) --> cResult
+      zh_inetRecvEndblock( <socket> [, <cBlock >[, @<nBytesRead> [, <nMaxLength> [, <nBufSize> ]]]] ) --> cResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1017,7 +1017,7 @@
    $RETURNS$
       Block read
    $DESCRIPTION$
-      This function operates exactly the same way as hb_inetRecvLine(), but
+      This function operates exactly the same way as zh_inetRecvLine(), but
       the "record termination" is customizable through the <cBlock> parameter.
       If not given, this parameter defaults to the CRLF sequence.
    $EXAMPLES$
@@ -1041,7 +1041,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetDataReady()
+      zh_inetDataReady()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1049,7 +1049,7 @@
    $ONELINER$
       Get whether there is data ready in a socket
    $SYNTAX$
-      hb_inetDataReady( <socket>, [ <nMillisec> ] ) --> nResult
+      zh_inetDataReady( <socket>, [ <nMillisec> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1069,10 +1069,10 @@
       amount of milliseconds for data to be available; if some data arrives in the
       meanwhile, the wait is immediately interrupted.
 
-      The next hb_inetRecv() function will read all the available data (up to the
+      The next zh_inetRecv() function will read all the available data (up to the
       required length) without blocking.
 
-      On error, hb_inetErrorCode() and hb_inetErrorDesc() can be use to determine what kind
+      On error, zh_inetErrorCode() and zh_inetErrorDesc() can be use to determine what kind
       of error happened.
    $EXAMPLES$
 
@@ -1095,7 +1095,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetSend()
+      zh_inetSend()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1103,7 +1103,7 @@
    $ONELINER$
       Sent data through a socket
    $SYNTAX$
-      hb_inetSend( <socket>, <cBuffer> [, <nLength> ] ) --> nResult
+      zh_inetSend( <socket>, <cBuffer> [, <nLength> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1124,7 +1124,7 @@
       the returned number and send the part that has not been sent.
 
       To ensure that all the data is sent before the function returns, use the
-      hb_inetSendAll() function.
+      zh_inetSendAll() function.
 
       On error, the error in the socket is set.
    $EXAMPLES$
@@ -1148,7 +1148,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetSendAll()
+      zh_inetSendAll()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1156,7 +1156,7 @@
    $ONELINER$
       Send data through a socket with blocking
    $SYNTAX$
-      hb_inetSendAll( <socket>, <cBuffer> [, <nLength> ] ) --> nResult
+      zh_inetSendAll( <socket>, <cBuffer> [, <nLength> ] ) --> nResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1166,7 +1166,7 @@
    $RETURNS$
       The amount of data written, 0 (zero) if the socket is closed, or -1 on an error
    $DESCRIPTION$
-      This function works exactly as hb_inetSend() but it ensures that all the
+      This function works exactly as zh_inetSend() but it ensures that all the
       data to be sent is written before returning.
    $EXAMPLES$
 
@@ -1189,7 +1189,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetGetHosts()
+      zh_inetGetHosts()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1197,7 +1197,7 @@
    $ONELINER$
       Get an array of IP addresses of a host
    $SYNTAX$
-      hb_inetGetHosts( <cName> ) --> aHosts
+      zh_inetGetHosts( <cName> ) --> aHosts
    $ARGUMENTS$
       <cName>
    $RETURNS$
@@ -1206,7 +1206,7 @@
       Returns an array containing all the IP addresses associated with a given
       host name. The IP addresses returned by this function are strings in
       quad dot notations, e.g. "127.0.0.1", and can be directly used into
-      hb_inetConnectIP().
+      zh_inetConnectIP().
 
       <cName> can be any string: valid DNS names (e.g.
       "example.org"), locally available names (e.g. "localhost" or
@@ -1215,7 +1215,7 @@
 
       NOTE: This function is not thread safe (by design), and programmers
       must be sure not to use it at the same time in two different threads,
-      or not to use it together with a hb_inetConnect(). If this kind of situation
+      or not to use it together with a zh_inetConnect(). If this kind of situation
       should ever arise, you are advised to use a thread MUTEX.
 
       On error, and if the server can't be found, the function returns NIL.
@@ -1240,7 +1240,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetGetAlias()
+      zh_inetGetAlias()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1248,7 +1248,7 @@
    $ONELINER$
       Get an array of aliases of a server
    $SYNTAX$
-      hb_inetGetAlias( <cName> ) --> aHosts
+      zh_inetGetAlias( <cName> ) --> aHosts
    $ARGUMENTS$
       <cName>
    $RETURNS$
@@ -1281,7 +1281,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetServer()
+      zh_inetServer()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1289,7 +1289,7 @@
    $ONELINER$
       Create a socket bound to a port
    $SYNTAX$
-      hb_inetServer( <port> [, <cBindAddr> [, <nListenLimit> ]]  ) --> <SOCKET>
+      zh_inetServer( <port> [, <cBindAddr> [, <nListenLimit> ]]  ) --> <SOCKET>
    $ARGUMENTS$
       <port>
 
@@ -1301,7 +1301,7 @@
    $DESCRIPTION$
       Creates a server that can accept connections from client on a certain port.
 
-      If the computer on which hb_inetServer() is called has more than one logical
+      If the computer on which zh_inetServer() is called has more than one logical
       interface (e.g. one network card, one loopback and one PPP address),
       <cBindAddr> can be specified to select only one of these interfaces to accept
       connections for this process. This is useful when a server is present on
@@ -1341,7 +1341,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetAccept()
+      zh_inetAccept()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1349,18 +1349,18 @@
    $ONELINER$
       Wait until a socket is ready
    $SYNTAX$
-      hb_inetAccept( <socket> ) --> <SOCKET>
+      zh_inetAccept( <socket> ) --> <SOCKET>
    $ARGUMENTS$
       An INET socket
    $RETURNS$
       <socket> a socket previously created / opened
    $DESCRIPTION$
-      Waits until a connection is available on a socket created with hb_inetServer(),
+      Waits until a connection is available on a socket created with zh_inetServer(),
       returns a socket that can be used to communicate with the incoming client.
 
       On error, NIL is returned and error code sets in the passed <SOCKET>.
 
-      This error can be accessed using hb_inetErrorCode() function.
+      This error can be accessed using zh_inetErrorCode() function.
    $EXAMPLES$
 
    $STATUS$
@@ -1382,7 +1382,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetConnect()
+      zh_inetConnect()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1390,9 +1390,9 @@
    $ONELINER$
       Connect a socket to a remote server by IP address or name
    $SYNTAX$
-      hb_inetConnect( <cAddress>, <nPort> ) --> <SOCKET>
+      zh_inetConnect( <cAddress>, <nPort> ) --> <SOCKET>
 
-      hb_inetConnect( <cAddress>, <nPort>, <socket> ) --> NIL
+      zh_inetConnect( <cAddress>, <nPort>, <socket> ) --> NIL
    $ARGUMENTS$
       <cAddress>
 
@@ -1408,21 +1408,21 @@
       quad dot notation (e.g. "127.0.0.1") or in DNS name (e.g.
       "example.org"), using the desired port.
 
-      hb_inetConnect() uses "gethostbyname" C system call to
+      zh_inetConnect() uses "gethostbyname" C system call to
       find the network address of the specified server; this means that
       this call is an hybrid function doing both a DNS scan and a TCP/IP
-      connection. hb_inetConnect() is not thread safe, and the
-      program must take care that two hb_inetConnect() functions are never
+      connection. zh_inetConnect() is not thread safe, and the
+      program must take care that two zh_inetConnect() functions are never
       called at the same moment from two different threads (or that
-      hb_inetGetHosts() is not called in the same moment as an hb_inetConnect()).
+      zh_inetGetHosts() is not called in the same moment as an zh_inetConnect()).
 
       The second version of this function accepts a pre-built socket
       as a parameter. This allows to kill asynchronously a thread waiting
-      for hb_inetConnect() to connect, and then cleaning up the leftover
+      for zh_inetConnect() to connect, and then cleaning up the leftover
       socket data. Also, it is possible to give timeout to the given <SOCKET>,
       but this timeout will be used only in the connection phase, after that
-      the network address resolution is completed. Use hb_inetGetHosts() and
-      hb_inetConnectIP() for a finer timeout control.
+      the network address resolution is completed. Use zh_inetGetHosts() and
+      zh_inetConnectIP() for a finer timeout control.
       On error, the error of the returned socket is set. The error could
       be due to unavailable name resolving service, host name not valid,
       host address not reachable and host reachable but port not open.
@@ -1447,7 +1447,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetConnectIP()
+      zh_inetConnectIP()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1455,9 +1455,9 @@
    $ONELINER$
       Connect to a remote server by IP address
    $SYNTAX$
-      hb_inetConnectIP( <cAddress>, <nPort> ) --> <SOCKET>
+      zh_inetConnectIP( <cAddress>, <nPort> ) --> <SOCKET>
 
-      hb_inetConnectIP( <cAddress>, <nPort>, <socket> ) --> NIL
+      zh_inetConnectIP( <cAddress>, <nPort>, <socket> ) --> NIL
    $ARGUMENTS$
       <cAddress>
 
@@ -1471,13 +1471,13 @@
    $DESCRIPTION$
       Connects to a remote server described by <cAddress>, that can be specified
       only in quad dot IPv4 notation (e.g. "127.0.0.1"), using the desired port.
-      This version of hb_inetConnect() does not use gethostbyname(), and thus is thread
-      safe and can be used in combination with hb_inetGetHosts() to have a finer
+      This version of zh_inetConnect() does not use gethostbyname(), and thus is thread
+      safe and can be used in combination with zh_inetGetHosts() to have a finer
       timeout control while connecting to a server, and a finer error control.
 
       The second version of this function accepts a pre-built socket
       as a parameter. This allows to kill asynchronously a thread waiting
-      for hb_inetConnectIP() to connect, and then cleaning up the leftover
+      for zh_inetConnectIP() to connect, and then cleaning up the leftover
       socket data. Also, it is possible to give timeout at the given <SOCKET>.
 
       On error, the error of the returned socket is set.
@@ -1502,7 +1502,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetDGram()
+      zh_inetDGram()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1510,7 +1510,7 @@
    $ONELINER$
       Create a datagram socket
    $SYNTAX$
-      hb_inetDGram( [<lBroadcast>] ) --> <SOCKET>
+      zh_inetDGram( [<lBroadcast>] ) --> <SOCKET>
    $ARGUMENTS$
       <lBroadcast>
    $RETURNS$
@@ -1549,7 +1549,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetDGramBind()
+      zh_inetDGramBind()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1557,7 +1557,7 @@
    $ONELINER$
       Create a bound datagram socket
    $SYNTAX$
-      hb_inetDGramBind( <nPort>, [<cAddress> [, <lBroadcast>] ] ) --> <SOCKET>
+      zh_inetDGramBind( <nPort>, [<cAddress> [, <lBroadcast>] ] ) --> <SOCKET>
    $ARGUMENTS$
       <nPort>
 
@@ -1599,7 +1599,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetDGramSend()
+      zh_inetDGramSend()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1607,7 +1607,7 @@
    $ONELINER$
       Send data to a datagram socket
    $SYNTAX$
-      hb_inetDGramSend( <socket>, <cAddress>, <nPort>, <cBuffer> [, <nSize> ] ) --> nBytesSent
+      zh_inetDGramSend( <socket>, <cAddress>, <nPort>, <cBuffer> [, <nSize> ] ) --> nBytesSent
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1662,7 +1662,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetDGramRecv()
+      zh_inetDGramRecv()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1670,7 +1670,7 @@
    $ONELINER$
       Get data from a datagram socket
    $SYNTAX$
-      hb_inetDGramRecv( <socket>, @<cBuffer> [, <nSize> ] ) --> nBytesRead
+      zh_inetDGramRecv( <socket>, @<cBuffer> [, <nSize> ] ) --> nBytesRead
    $ARGUMENTS$
       <socket> a socket previously created / opened
 
@@ -1708,7 +1708,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetCRLF()
+      zh_inetCRLF()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1716,7 +1716,7 @@
    $ONELINER$
       Get a CRLF sequence for internet protocols
    $SYNTAX$
-      hb_inetCRLF() --> cResult
+      zh_inetCRLF() --> cResult
    $ARGUMENTS$
       (This function has no arguments)
    $RETURNS$
@@ -1744,7 +1744,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_inetIsSocket()
+      zh_inetIsSocket()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1752,7 +1752,7 @@
    $ONELINER$
       Get whether a variable is a socket
    $SYNTAX$
-      hb_inetIsSocket( <socket> ) --> lResult
+      zh_inetIsSocket( <socket> ) --> lResult
    $ARGUMENTS$
       <socket> a socket previously created / opened
    $RETURNS$

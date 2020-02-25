@@ -104,7 +104,7 @@
       is .T.
 
       <nClassType> is on optional numeric code for selecting which class
-      type to return. Default value is HB_MSGLISTALL, returning the whole
+      type to return. Default value is ZH_MSGLISTALL, returning the whole
       list.
    $RETURNS$
       __objGetMsgList() return an array of character stings with all VAR
@@ -121,9 +121,9 @@
       <table>
        hboo.ch           Meaning
 
-       HB_MSGLISTALL     All types
-       HB_MSGLISTCLASS   CLASS VAR only
-       HB_MSGLISTPURE    VAR only
+       ZH_MSGLISTALL     All types
+       ZH_MSGLISTCLASS   CLASS VAR only
+       ZH_MSGLISTPURE    VAR only
       </table>
 
       VAR are instance variable usable within each object from a class,
@@ -133,13 +133,13 @@
       value within Object1 will be reflected when accessing the CLASS VAR
       from Object2.
    $EXAMPLES$
-      #include "hboo.ch"
+      #include "hboo.zhh"
       // show information about TBrowse class
       LOCAL oB := TBrowseNew( 0, 0, 24, 79 ), tmp
       FOR EACH tmp IN __objGetMsgList( oB, .T. )
          ? "VAR name:", tmp
       NEXT
-      FOR EACH tmp IN __objGetMsgList( oB, .T., HB_MSGLISTCLASS )
+      FOR EACH tmp IN __objGetMsgList( oB, .T., ZH_MSGLISTCLASS )
          ? "CLASS VAR name:", tmp
       NEXT
       FOR EACH tmp IN __objGetMsgList( oB, .F. )
@@ -227,17 +227,17 @@
    $DESCRIPTION$
       __objGetValueList() is a low-level class support function that
       return an array with VAR names and value, each array element is a
-      pair of: `aData[ i ][ HB_OO_DATA_SYMBOL ]` contain the symbol name
-               `aData[ i ][ HB_OO_DATA_VALUE  ]` contain the value of VAR
+      pair of: `aData[ i ][ ZH_OO_DATA_SYMBOL ]` contain the symbol name
+               `aData[ i ][ ZH_OO_DATA_VALUE  ]` contain the value of VAR
    $EXAMPLES$
       // FIXME
       // show information about TBrowse class
-      #include "hboo.ch"
+      #include "hboo.zhh"
       LOCAL oB := TBrowseNew( 0, 0, 24, 79 ), tmp
       FOR EACH tmp IN __objGetValueList( oB )
          ? ;
-           "VAR name:", tmp[ HB_OO_DATA_SYMBOL ], ;
-           "   value=", tmp[ HB_OO_DATA_VALUE ]
+           "VAR name:", tmp[ ZH_OO_DATA_SYMBOL ], ;
+           "   value=", tmp[ ZH_OO_DATA_VALUE ]
       NEXT
    $STATUS$
       R
@@ -277,21 +277,21 @@
       __objSetValueList() is a low-level class support function that let
       you set a group of instance variables with values. each array
       element in <aData> is a pair of:
-      aData[ i ][ HB_OO_DATA_SYMBOL ] which contain the variable name to set
-      aData[ i ][ HB_OO_DATA_VALUE  ] contain the new variable value.
+      aData[ i ][ ZH_OO_DATA_SYMBOL ] which contain the variable name to set
+      aData[ i ][ ZH_OO_DATA_VALUE  ] contain the new variable value.
    $EXAMPLES$
       // set some TBrowse instance variable
-      #include "hboo.ch"
+      #include "hboo.zhh"
       LOCAL oB := TBrowse():New()
       LOCAL aData := Array( 4, 2 )
-      aData[ 1 ][ HB_OO_DATA_SYMBOL ] := "nTop"
-      aData[ 1 ][ HB_OO_DATA_VALUE  ] := 1
-      aData[ 2 ][ HB_OO_DATA_SYMBOL ] := "nLeft"
-      aData[ 2 ][ HB_OO_DATA_VALUE  ] := 10
-      aData[ 3 ][ HB_OO_DATA_SYMBOL ] := "nBottom"
-      aData[ 3 ][ HB_OO_DATA_VALUE  ] := 20
-      aData[ 4 ][ HB_OO_DATA_SYMBOL ] := "nRight"
-      aData[ 4 ][ HB_OO_DATA_VALUE  ] := 70
+      aData[ 1 ][ ZH_OO_DATA_SYMBOL ] := "nTop"
+      aData[ 1 ][ ZH_OO_DATA_VALUE  ] := 1
+      aData[ 2 ][ ZH_OO_DATA_SYMBOL ] := "nLeft"
+      aData[ 2 ][ ZH_OO_DATA_VALUE  ] := 10
+      aData[ 3 ][ ZH_OO_DATA_SYMBOL ] := "nBottom"
+      aData[ 3 ][ ZH_OO_DATA_VALUE  ] := 20
+      aData[ 4 ][ ZH_OO_DATA_SYMBOL ] := "nRight"
+      aData[ 4 ][ ZH_OO_DATA_VALUE  ] := 70
       __objSetValueList( oB, aData )
       ? oB:nTop     // --> 1
       ? oB:nLeft    // --> 10
@@ -348,7 +348,7 @@
       ? oHappy:Smile( 3 )       // --> *SMILE*
 
       STATIC FUNCTION MySmile( nType )
-         IF HB_ISNUMERIC( nType )
+         IF ZH_ISNUMERIC( nType )
             SWITCH nType
             CASE 1 ; RETURN ":)"
             CASE 2 ; RETURN ";)"
@@ -397,7 +397,7 @@
    $EXAMPLES$
       // create a new THappy class and add a Smile INLINE method
       LOCAL oHappy := HBClass():New( "THappy" )
-      LOCAL bInline := {| Self, nType | HB_SYMBOL_UNUSED( Self ), ;
+      LOCAL bInline := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
          { ":)", ";)", "*SMILE*" }[ nType ] }
       __objAddInline( oHappy, "Smile", bInline )
       ? oHappy:Smile( 1 )       // --> :)
@@ -563,9 +563,9 @@
    $EXAMPLES$
       // create a new THappy class and add a Smile INLINE method
       LOCAL oHappy := HBClass():New( "THappy" )
-      LOCAL bMyInline   := {| Self, nType | HB_SYMBOL_UNUSED( Self ), ;
+      LOCAL bMyInline   := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
          { ":)", ";)" }[ nType ] }
-      LOCAL bYourInline := {| Self, nType | HB_SYMBOL_UNUSED( Self ), ;
+      LOCAL bYourInline := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
          { "*SMILE*", "*WINK*" }[ nType ] }
       __objAddInline( oHappy, "Smile", bMyInline )
       ? oHappy:Smile( 1 )       // --> :)
@@ -772,7 +772,7 @@
    $EXAMPLES$
       // Create three classes and check their relations
 
-      #include "hbclass.ch"
+      #include "hbclass.zhh"
       PROCEDURE Main()
          LOCAL oSuper  := TMood():New()
          LOCAL oObject := THappy():New()

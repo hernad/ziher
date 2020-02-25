@@ -33,6 +33,15 @@ cc_library(
 )
 
 
+filegroup(
+    name = "headers",
+    srcs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "zh_rtl_gt_zh_c",
     srcs = [ ":zh_rtl_gt_zh" ],

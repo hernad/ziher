@@ -44,8 +44,8 @@
  *
  */
 
-#ifndef _SIMPLEIO_CH
-#define _SIMPLEIO_CH
+#ifndef _SIMPLEIO_ZH
+#define _SIMPLEIO_ZH
 
 #command ?  [ <xList,...> ] => ( OutStd( zh_eol() ) [, OutStd( <xList> ) ] )
 #command ?? [ <xList,...> ] => OutStd( <xList> )

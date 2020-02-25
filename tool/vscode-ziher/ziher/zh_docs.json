@@ -3743,7 +3743,7 @@
   "arguments": [
    {
     "label": "<nErrorCode>",
-    "documentation": "<nErrorCode> is one of the generic error codes (EG_...) defined in error.ch"
+    "documentation": "<nErrorCode> is one of the generic error codes (EG_...) defined in error.zhh"
    }
   ],
   "name": "zh_langErrMsg",

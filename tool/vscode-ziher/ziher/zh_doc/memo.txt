@@ -140,7 +140,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      MemoEdit(), MemoWrit(), REPLACE, hb_MemoRead()
+      MemoEdit(), MemoWrit(), REPLACE, zh_MemoRead()
    $END$
  */
 
@@ -150,7 +150,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_MemoRead()
+      zh_MemoRead()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -158,7 +158,7 @@
    $ONELINER$
       Return the text file's contents as a character string
    $SYNTAX$
-      hb_MemoRead( <cFileName> ) --> cString
+      zh_MemoRead( <cFileName> ) --> cString
    $ARGUMENTS$
       <cFileName> is the file name to read from disk.
                   It must include the file extension. If file to be read
@@ -166,42 +166,42 @@
    $RETURNS$
       Returns the contents of a text file as a character string.
 
-      If <cFileName> cannot be found or read hb_MemoRead() returns an empty
+      If <cFileName> cannot be found or read zh_MemoRead() returns an empty
       string ("").
    $DESCRIPTION$
-      hb_MemoRead() is a function that reads the content of a text file
+      zh_MemoRead() is a function that reads the content of a text file
       (till now) from disk (floppy, HDD, CD-ROM, etc.) into a memory string.
       In that way you can manipulate as any character string or assigned
       to a memo field to be saved in a database.
 
-      hb_MemoRead() function is used together with MemoEdit() and hb_MemoWrit()
+      zh_MemoRead() function is used together with MemoEdit() and zh_MemoWrit()
       to get from disk text from several sources that would be edited,
       searched, replaced, displayed, etc.
 
       It is used to import data from other sources to our database.
 
       Note:
-      hb_MemoRead() does not use the settings SET DEFAULT or SET PATH to
+      zh_MemoRead() does not use the settings SET DEFAULT or SET PATH to
       search for <cFileName>.
       It searches for <cFileName> in the current directory.
 
-      Over a network, hb_MemoRead() attempts to open <cFileName> in read-only
+      Over a network, zh_MemoRead() attempts to open <cFileName> in read-only
       mode and shared.  If the file is used in mode exclusive by another
       process, the function will returns a null string ("").
 
-      hb_MemoRead() vs MemoRead():
-      hb_MemoRead() is identical to MemoRead() except it won't truncate the
+      zh_MemoRead() vs MemoRead():
+      zh_MemoRead() is identical to MemoRead() except it won't truncate the
       last byte (on non-Unix compatible systems) if it's a EOF char.
    $EXAMPLES$
-      // This example uses hb_MemoRead() to assign the contents of a text
+      // This example uses zh_MemoRead() to assign the contents of a text
       // file to a character variable for later search
 
       LOCAL cFile := "account.prg"
-      LOCAL cString := hb_MemoRead( cFile )
+      LOCAL cString := zh_MemoRead( cFile )
       LOCAL cCopyright := "Melina"
 
       IF ! cCopyright $ cString                        // check for copyright
-         ? hb_MemoWrit( cFile, cCopyright + cString )  // if not, add it!
+         ? zh_MemoWrit( cFile, cCopyright + cString )  // if not, add it!
       ENDIF
    $STATUS$
       R
@@ -212,7 +212,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      MemoEdit(), hb_MemoWrit(), REPLACE, MemoRead()
+      MemoEdit(), zh_MemoWrit(), REPLACE, MemoRead()
    $END$
  */
 
@@ -272,7 +272,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      MemoEdit(), MemoRead(), hb_MemoWrit()
+      MemoEdit(), MemoRead(), zh_MemoWrit()
    $END$
  */
 
@@ -282,7 +282,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_MemoWrit()
+      zh_MemoWrit()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -290,7 +290,7 @@
    $ONELINER$
       Write a memo field or character string to a text file on disk
    $SYNTAX$
-      hb_MemoWrit( <cFileName>, <cString> ) --> lSuccess
+      zh_MemoWrit( <cFileName>, <cString> ) --> lSuccess
    $ARGUMENTS$
       <cFileName> is the file name to be written to disk.
                   It must include the file extension. If file to be read
@@ -304,27 +304,27 @@
    $DESCRIPTION$
       This a function that writes a memo field or character string to a
       text file on disk (floppy, HDD, CD-ROM, etc.)
-      If you not specified a path, hb_MemoWrit() writes <cFileName> to the
+      If you not specified a path, zh_MemoWrit() writes <cFileName> to the
       current directory. If <cFileName> exists, it is overwritten.
 
-      hb_MemoWrit() function is used together with hb_MemoRead() and
+      zh_MemoWrit() function is used together with zh_MemoRead() and
       MemoEdit() to save to disk text from several sources that was edited,
       searched, replaced, displayed, etc.
 
-      Note that hb_MemoWrit() do not use the directory settings SET DEFAULT.
+      Note that zh_MemoWrit() do not use the directory settings SET DEFAULT.
 
-      hb_MemoWrit() vs MemoWrit():
-      hb_MemoWrit() never writes the obsolete EOF char at the end of the file.
+      zh_MemoWrit() vs MemoWrit():
+      zh_MemoWrit() never writes the obsolete EOF char at the end of the file.
    $EXAMPLES$
-      //  This example uses hb_MemoWrit() to write the contents of a character
+      //  This example uses zh_MemoWrit() to write the contents of a character
       //  variable to a text file.
 
       LOCAL cFile := "account.prg"
-      LOCAL cString := hb_MemoRead( cFile )
+      LOCAL cString := zh_MemoRead( cFile )
       LOCAL cCopyright := "Melina"
 
       IF ! cCopyright $ cString                        // check for copyright
-         ? hb_MemoWrit( cFile, cCopyright + cString )  // if not, add it!
+         ? zh_MemoWrit( cFile, cCopyright + cString )  // if not, add it!
       ENDIF
    $STATUS$
       R
@@ -335,6 +335,6 @@
    $FILES$
       Library is core
    $SEEALSO$
-      MemoEdit(), MemoRead(), hb_MemoWrit()
+      MemoEdit(), MemoRead(), zh_MemoWrit()
    $END$
  */

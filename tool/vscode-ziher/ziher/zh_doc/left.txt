@@ -4,7 +4,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_LeftEq()
+      zh_LeftEq()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -12,7 +12,7 @@
    $ONELINER$
       Checks if a sub-string matches to leftmost part of a string.
    $SYNTAX$
-      hb_LeftEq( <cString>, <cSubString> ) --> lMatch
+      zh_LeftEq( <cString>, <cSubString> ) --> lMatch
    $ARGUMENTS$
       <cString> Main string of comparison.
 
@@ -31,8 +31,8 @@
 
       NOTE: Case sensitive!
    $EXAMPLES$
-      ? hb_LeftEq( "Harbour", "Ha" )  // --> .T.
-      ? hb_LeftEq( "Harbour", "ha" )  // --> .F.
+      ? zh_LeftEq( "Harbour", "Ha" )  // --> .T.
+      ? zh_LeftEq( "Harbour", "ha" )  // --> .F.
    $STATUS$
       R
    $COMPLIANCE$
@@ -42,7 +42,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_LeftEqI(), Left(), At()
+      zh_LeftEqI(), Left(), At()
    $END$
  */
 
@@ -52,7 +52,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_LeftEqI()
+      zh_LeftEqI()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -60,7 +60,7 @@
    $ONELINER$
       Checks if a sub-string matches to leftmost part of a string.
    $SYNTAX$
-      hb_LeftEqI( <cString>, <cSubString> ) --> lMatch
+      zh_LeftEqI( <cString>, <cSubString> ) --> lMatch
    $ARGUMENTS$
       <cString> Main string of comparison.
 
@@ -68,12 +68,12 @@
    $RETURNS$
       <lMatch> Boolean flag indicating if the matching was successful.
    $DESCRIPTION$
-      This function is identical to hb_LeftEq() (see above for details)
+      This function is identical to zh_LeftEq() (see above for details)
       but it is case *insensitive*!
    $EXAMPLES$
-      ? hb_LeftEqI( "Harbour", "HA" )  // --> .T.
-      ? hb_LeftEqI( "Harbour", "ha" )  // --> .T.
-      ? hb_LeftEq( "Harbour", "HA" )   // --> .F.
+      ? zh_LeftEqI( "Harbour", "HA" )  // --> .T.
+      ? zh_LeftEqI( "Harbour", "ha" )  // --> .T.
+      ? zh_LeftEq( "Harbour", "HA" )   // --> .F.
    $STATUS$
       R
    $COMPLIANCE$
@@ -83,6 +83,6 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_LeftEqI(), Left(), At()
+      zh_LeftEqI(), Left(), At()
    $END$
  */

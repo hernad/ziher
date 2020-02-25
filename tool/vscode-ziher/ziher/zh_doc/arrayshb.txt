@@ -36,7 +36,7 @@
       FOR tmp := 1 TO Len( aArray )
          aArray[ tmp ] := Array( tmp )
       NEXT
-      ? hb_ValToExp( aArray )  // --> { { NIL }, { NIL, NIL }, ... }
+      ? zh_ValToExp( aArray )  // --> { { NIL }, { NIL, NIL }, ... }
    $STATUS$
       R
    $COMPLIANCE$
@@ -83,7 +83,7 @@
       FOR tmp := 1 TO 10
          AAdd( aArray, tmp )
       NEXT
-      ? hb_ValToExp( aArray )  // --> { 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+      ? zh_ValToExp( aArray )  // --> { 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
    $STATUS$
       R
    $COMPLIANCE$
@@ -127,15 +127,15 @@
       the new elements are added to the end of array and they are assigned a NIL value.
    $EXAMPLES$
       LOCAL aArray := { 1 }
-      ? hb_ValToExp( aArray )  // --> { 1 }
+      ? zh_ValToExp( aArray )  // --> { 1 }
       ASize( aArray, 3 )
-      ? hb_ValToExp( aArray )  // --> { 1, NIL, NIL }
+      ? zh_ValToExp( aArray )  // --> { 1, NIL, NIL }
       ASize( aArray, 1 )
-      ? hb_ValToExp( aArray )  // --> { 1 }
+      ? zh_ValToExp( aArray )  // --> { 1 }
    $STATUS$
       R
    $COMPLIANCE$
-      If HB_COMPAT_C53 is defined, the function generates an Error,
+      If ZH_COMPAT_C53 is defined, the function generates an Error,
       else it will return the array itself.
    $FILES$
       Library is core
@@ -213,12 +213,12 @@
       be located at the sixth position. The length of the array <aArray>
       will remain unchanged.
 
-      Note: To avoid loosing last element, you can use hb_AIns()
+      Note: To avoid loosing last element, you can use zh_AIns()
       which supports auto-sizing of array.
    $EXAMPLES$
       LOCAL aArray := { "Harbour", "is", "Power!", "!!!" }
       AIns( aArray, 4 )
-      ? hb_ValToExp( aArray )
+      ? zh_ValToExp( aArray )
    $STATUS$
       R
    $COMPLIANCE$
@@ -226,7 +226,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_AIns(), AAdd(), ACopy(), ADel(), AEval(), AFill(), ASize()
+      zh_AIns(), AAdd(), ACopy(), ADel(), AEval(), AFill(), ASize()
    $END$
  */
 
@@ -236,7 +236,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_AIns()
+      zh_AIns()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -245,7 +245,7 @@
       Inserts a value at an array subscript position and optionally increases
       the length of array.
    $SYNTAX$
-      hb_AIns( <aArray>, [<nPos>], [<xValue>], [<lAutoSize>] ) --> aArray
+      zh_AIns( <aArray>, [<nPos>], [<xValue>], [<lAutoSize>] ) --> aArray
    $ARGUMENTS$
       <aArray> The array name into which the value <xValue> will be inserted.
 
@@ -269,10 +269,10 @@
       will be lost.
    $EXAMPLES$
       LOCAL aArray := { "Harbour", "Power!" }
-      hb_AIns( aArray, 2, "is", .F. )
-      ? hb_ValToExp( aArray )  // --> { "Harbour", "is" }
-      hb_AIns( aArray, 2, "is", .T. )
-      ? hb_ValToExp( aArray )  // --> { "Harbour", "is", "Power!" }
+      zh_AIns( aArray, 2, "is", .F. )
+      ? zh_ValToExp( aArray )  // --> { "Harbour", "is" }
+      zh_AIns( aArray, 2, "is", .T. )
+      ? zh_ValToExp( aArray )  // --> { "Harbour", "is", "Power!" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -316,11 +316,11 @@
       become a NIL data type.
 
       Note: To completely remove an element and decrease the length of array
-      you can use hb_ADel() that supports auto-sizing.
+      you can use zh_ADel() that supports auto-sizing.
    $EXAMPLES$
       LOCAL aArray := { "Harbour", "is", "Power" }
       ADel( aArray, 2 )
-      ? hb_ValToExp( aArray )  // --> { "Harbour", "Power", NIL }
+      ? zh_ValToExp( aArray )  // --> { "Harbour", "Power", NIL }
    $STATUS$
       R
    $COMPLIANCE$
@@ -328,7 +328,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_ADel(), ACopy(), AIns(), AFill()
+      zh_ADel(), ACopy(), AIns(), AFill()
    $END$
  */
 
@@ -338,7 +338,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ADel()
+      zh_ADel()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -346,7 +346,7 @@
    $ONELINER$
       Delete an element from an array.
    $SYNTAX$
-      hb_ADel( <aArray>, [<nPos>], [<lAutoSize>] ) --> aArray
+      zh_ADel( <aArray>, [<nPos>], [<lAutoSize>] ) --> aArray
    $ARGUMENTS$
       <aArray> Name of array from which an element is to be removed.
 
@@ -367,10 +367,10 @@
       just like in ADel().
    $EXAMPLES$
       LOCAL aArray := { "Harbour", "is", "Power" }
-      hb_ADel( aArray, 2 )
-      ? hb_ValToExp( aArray )  // --> { "Harbour", "Power", NIL } - length unchanged
-      hb_ADel( aArray, 2, .T. )
-      ? hb_ValToExp( aArray )  // --> a{ "Harbour", "Power" } - length decreased
+      zh_ADel( aArray, 2 )
+      ? zh_ValToExp( aArray )  // --> { "Harbour", "Power", NIL } - length unchanged
+      zh_ADel( aArray, 2, .T. )
+      ? zh_ValToExp( aArray )  // --> a{ "Harbour", "Power" } - length decreased
    $STATUS$
       R
    $COMPLIANCE$
@@ -425,7 +425,7 @@
    $EXAMPLES$
       LOCAL aArray := { NIL, 0, 1, 2 }
       AFill( aArray, 5 )
-      ? hb_ValToExp( aArray )
+      ? zh_ValToExp( aArray )
    $STATUS$
       R
    $COMPLIANCE$
@@ -480,10 +480,10 @@
       will continue until the value obtained from the code block is a
       logical true (.T.) or until the end of the array has been reached.
    $EXAMPLES$
-      #include "directry.ch"
-      LOCAL aDir := hb_vfDirectory( "*.prg" )
+      #include "directry.zhh"
+      LOCAL aDir := zh_vfDirectory( "*.prg" )
       ? AScan( aDir,,, ;
-         {| aFile, nPos | HB_SYMBOL_UNUSED( nPos ), aFile[ F_NAME ] == "test.prg" } )
+         {| aFile, nPos | ZH_SYMBOL_UNUSED( nPos ), aFile[ F_NAME ] == "test.prg" } )
    $STATUS$
       R
    $COMPLIANCE$
@@ -502,7 +502,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_AScan()
+      zh_AScan()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -510,7 +510,7 @@
    $ONELINER$
       Scan array elements for a specified condition
    $SYNTAX$
-      hb_AScan( <aArray>, <xSearch>, [<nStart>], [<nCount>], [<lExact>] ) --> nPosition
+      zh_AScan( <aArray>, <xSearch>, [<nStart>], [<nCount>], [<lExact>] ) --> nPosition
    $ARGUMENTS$
       <aArray>    Array to be scanned.
 
@@ -539,8 +539,8 @@
       LOCAL a := { "there", "here" }
       Set( _SET_EXACT, .F. )
       ? AScan( a, "he" )            // --> 2
-      ? hb_AScan( a, "he",,, .F. )  // --> 2
-      ? hb_AScan( a, "he",,, .T. )  // --> 0
+      ? zh_AScan( a, "he",,, .F. )  // --> 2
+      ? zh_AScan( a, "he",,, .T. )  // --> 0
    $STATUS$
       R
    $COMPLIANCE$
@@ -667,7 +667,7 @@
       LOCAL aOne := { "Harbour", " is ", "Power" }
       LOCAL aTwo := { "Clipper", " was ", "Power" }
       ACopy( aOne, aTwo, nStart, nCount )
-      ? hb_ValToExp( aTwo )  // --> { "Harbour", " is ", "Power" }
+      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "Power" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -707,10 +707,10 @@
    $EXAMPLES$
       LOCAL aOne := { "Harbour", " is ", "POWER" }
       LOCAL aTwo := AClone( aOne )
-      ? hb_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
+      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
       aOne[ 1 ] := "The Harbour Compiler"
-      ? hb_ValToExp( aOne )  // --> { "The Harbour Compiler", " is ", "POWER" }
-      ? hb_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
+      ? zh_ValToExp( aOne )  // --> { "The Harbour Compiler", " is ", "POWER" }
+      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -774,18 +774,18 @@
       // Sort numeric values in ascending order
       aKeys := { 3, 1, 4, 42, 5, 9 }
       ASort( aKeys )
-      ? hb_ValToExp( aKeys )  // --> { 1, 3, 4, 5, 9, 42 }
+      ? zh_ValToExp( aKeys )  // --> { 1, 3, 4, 5, 9, 42 }
 
       // Sort character strings in descending lexical order
       aKeys := { "Ctrl", "Alt", "Delete" }
       bSort := {| x, y | Upper( x ) > Upper( y ) }
       ASort( aKeys,,, bSort )
-      ? hb_ValToExp( aKeys )  // --> { "Delete", "Ctrl", "Alt" }
+      ? zh_ValToExp( aKeys )  // --> { "Delete", "Ctrl", "Alt" }
 
       // Sort two-dimensional array according to 2nd element of each pair
       aPair := { { "Sun", 8 }, { "Mon", 1 }, { "Tue", 57 }, { "Wed", -6 } }
       ASort( aPair,,, {| x, y | x[ 2 ] < y[ 2 ] } )
-      ? hb_ValToExp( aPair )  // --> { { "Wed", -6 }, { "Mon", 1 }, { "Sun", 8 }, { "Tue", 57 } }
+      ? zh_ValToExp( aPair )  // --> { { "Wed", -6 }, { "Mon", 1 }, { "Sun", 8 }, { "Tue", 57 } }
    $STATUS$
       R
    $COMPLIANCE$

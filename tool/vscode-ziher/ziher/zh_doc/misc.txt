@@ -145,7 +145,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_GetEnv()
+      zh_GetEnv()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -153,7 +153,7 @@
    $ONELINER$
       Obtains a system environmental setting.
    $SYNTAX$
-      hb_GetEnv( <cEnviroment>, [<cDefaultValue>] ) --> cReturn
+      zh_GetEnv( <cEnviroment>, [<cDefaultValue>] ) --> cReturn
    $ARGUMENTS$
       <cEnviroment> Environmental variable to obtain.
 
@@ -169,9 +169,9 @@
       can be found, the value of the function will be <cDefaultValue>
       if it is passed, else an empty string.
    $EXAMPLES$
-      ? hb_GetEnv( "PATH" )
-      ? hb_GetEnv( "CONFIG" )
-      ? hb_GetEnv( "HARBOURCMD", "-n -l -es2" )
+      ? zh_GetEnv( "PATH" )
+      ? zh_GetEnv( "CONFIG" )
+      ? zh_GetEnv( "HARBOURCMD", "-n -l -es2" )
    $STATUS$
       R
    $COMPLIANCE$
@@ -221,7 +221,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      RUN, hb_run()
+      RUN, zh_run()
    $END$
  */
 
@@ -263,7 +263,7 @@
       Tone(  499, 5 )
       Tone(  700, 5 )
 
-      Tone( 800, 1 )      // same as hb_BChar( 7 )
+      Tone( 800, 1 )      // same as zh_BChar( 7 )
       Tone( 32000, 200 )  // any dogs around yet?
       Tone( 130.80, 1 )   // musical note - C
       Tone( 400, 0 )      // short beep

@@ -31,13 +31,13 @@
       be not able to scan such values since it doesn't know their location. This
       could cause some memory blocks to be released prematurely. To prevent the
       premature deallocation of such memory blocks the static data have to store
-      a pointer to the value created with hb_itemNew() function.
+      a pointer to the value created with zh_itemNew() function.
       Example:
         ```c
-        static HB_ITEM s_item; /* this item can be released by the GC */
+        static ZH_ITEM s_item; /* this item can be released by the GC */
 
-        static PHB_ITEM pItem; /* this item will be maintained correctly */
-        pItem = hb_itemNew( hb_param( 1, IT_BLOCK ) );
+        static PZH_ITEM pItem; /* this item will be maintained correctly */
+        pItem = zh_itemNew( zh_param( 1, IT_BLOCK ) );
         ```
 
       However, scanning of all variables can be a time consuming operation. It
@@ -56,9 +56,9 @@
       Allocating memory
       -----------------
 
-      The garbage collector collects memory blocks allocated with hb_gcAlloc()
-      function calls. Memory allocated by hb_gcAlloc() should be released with
-      hb_gcFree() function.
+      The garbage collector collects memory blocks allocated with zh_gcAlloc()
+      function calls. Memory allocated by zh_gcAlloc() should be released with
+      zh_gcFree() function.
 
       The garbage collecting
       ----------------------
@@ -81,7 +81,7 @@
       All new or unlocked memory blocks are automatically marked as 'unused'
       using the current flag, which assures that all memory blocks are marked
       with the same flag before the sweep step will start.
-      See hb_gcCollectAll() and hb_gcItemRef()
+      See zh_gcCollectAll() and zh_gcItemRef()
 
       Calling the garbage collector from Harbour code
       -----------------------------------------------
@@ -90,10 +90,10 @@
       This is useful in situations where there is no idle states available
       or the application is working in the loop with no user interaction
       and there is many memory allocations.
-      See hb_gcAll() for explanation of how to call this function from your
+      See zh_gcAll() for explanation of how to call this function from your
       Harbour code.
    $SEEALSO$
-      hb_gcAlloc(), hb_gcFree(), hb_gcCollectAll(), hb_gcItemRef(), hb_gcAll(), hb_idleState()
+      zh_gcAlloc(), zh_gcFree(), zh_gcCollectAll(), zh_gcItemRef(), zh_gcAll(), zh_idleState()
    $END$
  */
 
@@ -101,7 +101,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_gcAlloc()
+      zh_gcAlloc()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -110,27 +110,27 @@
       Allocates memory that will be collected by the garbage collector.
    $SYNTAX$
       #include "hbapi.h"
-      void * hb_gcAlloc( HB_SIZE nSize,
-                         PHB_GARBAGE_FUNC pCleanupFunc );
+      void * zh_gcAlloc( ZH_SIZE nSize,
+                         PZH_GARBAGE_FUNC pCleanupFunc );
    $ARGUMENTS$
       <ulSize> Requested size of memory block
 
-      <pCleanupFunc> Pointer to HB_GARBAGE_FUNC function that will be called
+      <pCleanupFunc> Pointer to ZH_GARBAGE_FUNC function that will be called
       directly before releasing the garbage memory block or NULL. This
       function should release all other memory allocated and stored inside
       the memory block. For example, it releases all items stored inside
       the array. The functions receives a single parameter: the pointer
-      to memory allocated by hb_gcAlloc().
+      to memory allocated by zh_gcAlloc().
    $RETURNS$
       The pointer to allocated memory or it generates an internal
       unrecoverable error.
    $DESCRIPTION$
-      hb_gcAlloc() is used to allocate the memory that will be tracked
+      zh_gcAlloc() is used to allocate the memory that will be tracked
       by the garbage collector. It allows to properly release memory
       in case of self-referencing or cross-referencing Harbour level
       variables.
       Memory allocated with this function should be released with
-      hb_gcFree() function or it will be automatically deallocated
+      zh_gcFree() function or it will be automatically deallocated
       by the GC if it is not locked or if it is not referenced by some
       Harbour level variable.
    $STATUS$
@@ -140,7 +140,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_gcFree()
+      zh_gcFree()
    $END$
  */
 
@@ -148,23 +148,23 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_gcFree()
+      zh_gcFree()
    $CATEGORY$
       API
    $SUBCATEGORY$
       Garbage Collector
    $ONELINER$
-      Releases the memory that was allocated with hb_gcAlloc().
+      Releases the memory that was allocated with zh_gcAlloc().
    $SYNTAX$
-      void hb_gcFree( void * pMemoryPtr );
+      void zh_gcFree( void * pMemoryPtr );
    $ARGUMENTS$
       <pMemoryPtr> The pointer to memory for release. This memory
-        pointer have to be allocated with hb_gcAlloc() function.
+        pointer have to be allocated with zh_gcAlloc() function.
    $RETURNS$
       Nothing.
    $DESCRIPTION$
-      hb_gcFree() is used to deallocate the memory that was
-      allocated with the hb_gcAlloc() function.
+      zh_gcFree() is used to deallocate the memory that was
+      allocated with the zh_gcAlloc() function.
    $STATUS$
       R
    $COMPLIANCE$
@@ -172,7 +172,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_gcAlloc()
+      zh_gcAlloc()
    $END$
  */
 
@@ -180,7 +180,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_gcCollectAll()
+      zh_gcCollectAll()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -188,7 +188,7 @@
    $ONELINER$
       Scans all memory blocks and releases the garbage memory.
    $SYNTAX$
-      void hb_gcCollectAll( void );
+      void zh_gcCollectAll( void );
    $ARGUMENTS$
       None.
    $RETURNS$
@@ -205,7 +205,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_gcAlloc(), hb_gcFree()
+      zh_gcAlloc(), zh_gcFree()
    $END$
  */
 
@@ -213,7 +213,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_gcItemRef()
+      zh_gcItemRef()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -221,7 +221,7 @@
    $ONELINER$
       Marks the memory to prevent deallocation by the garbage collector.
    $SYNTAX$
-      void hb_gcItemRef( PHB_ITEM pItem );
+      void zh_gcItemRef( PZH_ITEM pItem );
    $ARGUMENTS$
       <pItem>  The pointer to item structure that will be scanned. The
       passed item can be of any datatype although arrays, objects
@@ -230,7 +230,7 @@
    $RETURNS$
       Nothing.
    $DESCRIPTION$
-      The garbage collector uses hb_gcItemRef() function during
+      The garbage collector uses zh_gcItemRef() function during
       scanning of referenced memory pointers. This function checks the
       type of passed item and scans recursively all other memory blocks
       referenced by this item if it is an array, an object or a codeblock.
@@ -247,7 +247,7 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_gcAlloc(), hb_gcFree()
+      zh_gcAlloc(), zh_gcFree()
    $END$
  */
 
@@ -255,7 +255,7 @@
    $TEMPLATE$
       Procedure
    $NAME$
-      hb_gcAll()
+      zh_gcAll()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -263,7 +263,7 @@
    $ONELINER$
       Scans the memory and releases all garbage memory blocks.
    $SYNTAX$
-      hb_gcAll()
+      zh_gcAll()
    $ARGUMENTS$
       None
    $DESCRIPTION$
@@ -276,6 +276,6 @@
    $PLATFORMS$
       All
    $SEEALSO$
-      hb_gcCollectAll()
+      zh_gcCollectAll()
    $END$
  */

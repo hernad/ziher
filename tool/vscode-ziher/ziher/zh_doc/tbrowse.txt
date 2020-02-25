@@ -171,7 +171,7 @@
       S
    $COMPLIANCE$
       This functions is Compatible with CA-Cl*pper 5.2. The `:applykey()` and
-      `:SetKey()` methods are only visible if HB_COMPAT_C53 is defined.
+      `:SetKey()` methods are only visible if ZH_COMPAT_C53 is defined.
    $PLATFORMS$
       All
    $FILES$
@@ -244,7 +244,7 @@
       oTb:SetKey( K_ESC, NIL )
       ```
    $EXAMPLES$
-      #include "inkey.ch"
+      #include "inkey.zhh"
       LOCAL oTb := TBrowseNew( 0, 0, 10, 20 )
       oTb:SetKey( K_F10, {| oTb, nkey | ShowListByname( oTb ) } )
    $END$

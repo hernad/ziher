@@ -78,7 +78,7 @@
 #include "zh_item_api.h"
 #include "zh_error_api.h"
 #include "zh_vm.h"
-#include "zh_apicom.h"
+#include "zh_com_api.h"
 
 
 ZH_FUNC( ZH_COMCLOSE )

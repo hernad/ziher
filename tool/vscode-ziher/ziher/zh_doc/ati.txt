@@ -4,7 +4,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_AtI()
+      zh_AtI()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -12,7 +12,7 @@
    $ONELINER$
       Locates the position of a substring in a main string.
    $SYNTAX$
-      hb_AtI( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
+      zh_AtI( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
    $ARGUMENTS$
       <cSearch> the sub-string to search for
 
@@ -23,10 +23,10 @@
       <nEnd> Ending search position, default: Length of <cString> (i.e. entire <cString>)
 
    $RETURNS$
-      hb_AtI() returns the position (if any), into main string,
+      zh_AtI() returns the position (if any), into main string,
       where first time the substring appears.
    $DESCRIPTION$
-      This function has same functionality as hb_At() with the significant
+      This function has same functionality as zh_At() with the significant
       difference that it's case Insensitive.
 
       Optionally, with <nStart> can be defined the position into main string
@@ -34,8 +34,8 @@
       where it must stop. If neither of them is defined, <nStart> is 1st position
       and <nEnd> the ending of <cString>.
    $EXAMPLES$
-      ? hb_At( "AS", "as simple as possible", 5 )   // --> 0
-      ? hb_AtI( "AS", "as simple as possible", 5 )  // --> 11
+      ? zh_At( "AS", "as simple as possible", 5 )   // --> 0
+      ? zh_AtI( "AS", "as simple as possible", 5 )  // --> 11
    $STATUS$
       R
    $COMPLIANCE$
@@ -45,6 +45,6 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_At()
+      zh_At()
    $END$
  */

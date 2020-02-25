@@ -60,7 +60,7 @@
 #include "error.zhh"
 #include "zh_vm.h"
 #include "zh_thread.h"
-#include "hbgfxdef.ch"
+#include "hbgfxdef.zhh"
 #include "zh_win_uni.h"
 
 #include <windows.h>

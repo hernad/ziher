@@ -106,7 +106,7 @@
 
           `-ko`        allow operator optimizations
 
-          `-ki`        enable support for HB_INLINE (default)
+          `-ki`        enable support for ZH_INLINE (default)
 
           `-kr`        runtime settings enabled
 
@@ -255,7 +255,7 @@
       Note:
 
       If you want a 100% compatible runtime libraries then you have
-      to define HB_CLP_STRICT, using `HB_USER_CFLAGS=-DHB_CLP_STRICT`,
+      to define ZH_CLP_STRICT, using `ZH_USER_CFLAGS=-DZH_CLP_STRICT`,
       then rebuild.
 
       <b>Passing an undeclared variable by the reference</b>
@@ -274,7 +274,7 @@
       Handling of object messages
       ===========================
 
-      The HB_CLP_STRICT setting determines
+      The ZH_CLP_STRICT setting determines
       the way chained send messages are handled.
 
       For example, the following code:

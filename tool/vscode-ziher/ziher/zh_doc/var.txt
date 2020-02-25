@@ -21,7 +21,7 @@
       Nothing
    $DESCRIPTION$
       This function can be called either by the Harbour compiler or by user.
-      The compiler always passes the item of HB_IT_SYMBOL type that stores the
+      The compiler always passes the item of ZH_IT_SYMBOL type that stores the
       name of variable.
       If a variable with the same name exists already then the new
       variable is not created - the previous value remains unchanged.
@@ -61,7 +61,7 @@
       Nothing
    $DESCRIPTION$
       This function can be called either by the Harbour compiler or by user.
-      The compiler always passes the item of HB_IT_SYMBOL type that stores the
+      The compiler always passes the item of ZH_IT_SYMBOL type that stores the
       name of variable.
       If a variable with the same name exists already then the value of old
       variable is hidden until the new variable is  released. The new variable
@@ -202,15 +202,15 @@
    $RETURNS$
       The symbolic values are defined in hbmemvar.ch
       <table-noheader>
-       HB_MV_NOT_FOUND      variable is not declared (not found in symbol table)
-       HB_MV_UNKNOWN        if variable doesn't exist (but found in symbol table)
-       HB_MV_ERROR          if information cannot be obtained (memory error or argument error)
-       HB_MV_PUBLIC         for public variables
-       HB_MV_PRIVATE_GLOBAL for private variables declared outside of current function/procedure
-       HB_MV_PRIVATE_LOCAL  for private variables declared in current function/procedure
+       ZH_MV_NOT_FOUND      variable is not declared (not found in symbol table)
+       ZH_MV_UNKNOWN        if variable doesn't exist (but found in symbol table)
+       ZH_MV_ERROR          if information cannot be obtained (memory error or argument error)
+       ZH_MV_PUBLIC         for public variables
+       ZH_MV_PRIVATE_GLOBAL for private variables declared outside of current function/procedure
+       ZH_MV_PRIVATE_LOCAL  for private variables declared in current function/procedure
       </table>
    $EXAMPLES$
-      #include "hbmemvar.ch"
+      #include "hbmemvar.zhh"
 
       MEMVAR pPublic
       MEMVAR mPrivateGlobal
@@ -222,7 +222,7 @@
          PRIVATE mPrivateGlobal
 
          CallProc()
-         ? __mvScope( "mPrivateLocal" )   // --> HB_MV_UNKNOWN
+         ? __mvScope( "mPrivateLocal" )   // --> ZH_MV_UNKNOWN
 
          RETURN
 
@@ -230,12 +230,12 @@
 
          PRIVATE mPrivateLocal
 
-         ? __mvScope( "pPublic" )         // --> HB_MV_PUBLIC
-         ? __mvScope( "mPrivateGlobal" )  // --> HB_MV_PRIVATE_GLOBAL
-         ? __mvScope( "mPrivateLocal" )   // --> HB_MV_PRIVATE_LOCAL
-         ? __mvScope( "mFindMe" )         // --> HB_MV_NOT_FOUND
+         ? __mvScope( "pPublic" )         // --> ZH_MV_PUBLIC
+         ? __mvScope( "mPrivateGlobal" )  // --> ZH_MV_PRIVATE_GLOBAL
+         ? __mvScope( "mPrivateLocal" )   // --> ZH_MV_PRIVATE_LOCAL
+         ? __mvScope( "mFindMe" )         // --> ZH_MV_NOT_FOUND
 
-         IF __mvScope( "pPublic" ) > HB_MV_ERROR
+         IF __mvScope( "pPublic" ) > ZH_MV_ERROR
             ? "Variable exists"
          ELSE
             ? "Variable not created yet"
@@ -308,8 +308,8 @@
 
       Supported values (defined in hbmemvar.ch)
       <table-noheader>
-       HB_MV_PUBLIC
-       HB_MV_PRIVATE (or any other value)
+       ZH_MV_PUBLIC
+       ZH_MV_PRIVATE (or any other value)
       </table>
 
       <nPosition> = the position of asked variable on the list of variables
@@ -340,7 +340,7 @@
       successive calls to retrieve the value of Nth PUBLIC variable will
       return the value of the same variable.
    $EXAMPLES$
-      #include "hbmemvar.ch"
+      #include "hbmemvar.zhh"
 
       MEMVAR cPublic
       MEMVAR cPrivate
@@ -351,30 +351,30 @@
 
          LOCAL nCount, tmp, xValue, cName
 
-         nCount := __mvDbgInfo( HB_MV_PUBLIC )
+         nCount := __mvDbgInfo( ZH_MV_PUBLIC )
          FOR tmp := 1 TO nCount
-            xValue := __mvDbgInfo( HB_MV_PUBLIC, tmp, @cName )
+            xValue := __mvDbgInfo( ZH_MV_PUBLIC, tmp, @cName )
             ? tmp, cName, xValue
          NEXT
 
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
          PUBLIC cPublic := "cPublic in MAIN"
 
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
          PRIVATE cPrivate := "cPrivate in MAIN"
 
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
          CountMemvars()
 
          ? "Back in Main"
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
          RETURN
 
@@ -386,23 +386,23 @@
          PRIVATE ccPrivate := "ccPrivate"
 
          ? "In CountMemvars"
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
          PRIVATE cPublic := "cPublic"
 
-         ? "PUBLIC=", __mvDbgInfo( HB_MV_PUBLIC )
-         ? "PRIVATE=", __mvDbgInfo( HB_MV_PRIVATE )
+         ? "PUBLIC=", __mvDbgInfo( ZH_MV_PUBLIC )
+         ? "PRIVATE=", __mvDbgInfo( ZH_MV_PRIVATE )
 
-         nCount := __mvDbgInfo( HB_MV_PRIVATE ) + 1
+         nCount := __mvDbgInfo( ZH_MV_PRIVATE ) + 1
          FOR tmp := 1 TO nCount
-            xValue := __mvDbgInfo( HB_MV_PRIVATE, tmp, @cName )
+            xValue := __mvDbgInfo( ZH_MV_PRIVATE, tmp, @cName )
             ? tmp, "=", cName, xValue
          NEXT
 
-         nCount := __mvDbgInfo( HB_MV_PUBLIC ) + 1
+         nCount := __mvDbgInfo( ZH_MV_PUBLIC ) + 1
          FOR tmp := 1 TO nCount
-            xValue := __mvDbgInfo( HB_MV_PUBLIC, tmp, @cName )
+            xValue := __mvDbgInfo( ZH_MV_PUBLIC, tmp, @cName )
             ? tmp, "=", cName, xValue
          NEXT
 
@@ -853,7 +853,7 @@
       ? ValType( .T. )           // --> "L"
       ? ValType( 1 )             // --> "N"
       ? ValType( TBrowse() )     // --> "O"
-      ? ValType( hb_idleAdd() )  // --> "P" Harbour extension
+      ? ValType( zh_idleAdd() )  // --> "P" Harbour extension
       ? ValType( @QOut() )       // --> "S" Harbour extension
       ? ValType( NIL )           // --> "U"
    $STATUS$
@@ -874,7 +874,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_PIsByRef()
+      zh_PIsByRef()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -882,7 +882,7 @@
    $ONELINER$
       Determine if a parameter is passed by reference.
    $SYNTAX$
-      hb_PIsByRef( nParam ) --> lParamIsByRef
+      zh_PIsByRef( nParam ) --> lParamIsByRef
    $ARGUMENTS$
       <nParam> is the parameter number to test.
    $RETURNS$
@@ -912,10 +912,10 @@
          RETURN
 
       STATIC PROCEDURE Test( Arg1, Arg2, Arg3, Arg4 )
-         ? hb_PIsByRef( 1 )  // --> .T.
-         ? hb_PIsByRef( 2 )  // --> .T.
-         ? hb_PIsByRef( 3 )  // --> .F.
-         ? hb_PIsByRef( 4 )  // --> .F.
+         ? zh_PIsByRef( 1 )  // --> .T.
+         ? zh_PIsByRef( 2 )  // --> .T.
+         ? zh_PIsByRef( 3 )  // --> .F.
+         ? zh_PIsByRef( 4 )  // --> .F.
          RETURN
    $STATUS$
       S

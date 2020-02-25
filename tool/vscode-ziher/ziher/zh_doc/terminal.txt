@@ -215,7 +215,7 @@
 
       The return value is NIL
       if Alert() is called with no parameters, or if <xMessage> type is
-      not Character and HB_CLP_STRICT option was used. If <nDelay> seconds
+      not Character and ZH_CLP_STRICT option was used. If <nDelay> seconds
       had passed without user response, the return value is 1.
    $DESCRIPTION$
       Alert() display simple dialog box on screen and let the user select
@@ -256,7 +256,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      This function is sensitive to HB_CLP_STRICT settings during the
+      This function is sensitive to ZH_CLP_STRICT settings during the
       compilation of src/rtl/alert.prg
 
       <b>defined</b>: <xMessage> accept Character values only and return
@@ -270,12 +270,12 @@
 
       <b>undefined</b>: <aOptions> could contain as many as needed options.
 
-      If HB_COMPAT_C53 was define during compilation of
+      If ZH_COMPAT_C53 was define during compilation of
       src/rtl/alert.prg the Left-Mouse button could be used to select
       an option.
 
       The interpretation of the `//NOALERT` command-line switch is done only
-      if HB_CLP_UNDOC was define during compilation of src/rtl/alert.prg
+      if ZH_CLP_UNDOC was define during compilation of src/rtl/alert.prg
 
       <cColorNorm> is a Harbour extension, or at least undocumented
       in Clipper 5.2 NG.
@@ -325,7 +325,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_eol()
+      zh_eol()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -333,7 +333,7 @@
    $ONELINER$
       Returns the newline character(s) to use with the current OS
    $SYNTAX$
-      hb_eol() --> cString
+      zh_eol() --> cString
    $RETURNS$
       <cString> A character string containing the character or characters
       required to move the screen cursor or print head to the start of a
@@ -344,15 +344,15 @@
       new line for the operating system that the program is running on
       (or thinks it is running on, if an OS emulator is being used).
 
-      Under HB_OS_UNIX operating system the return value is the
+      Under ZH_OS_UNIX operating system the return value is the
       Line-Feed character (0x0a, `Chr( 10 )` ); with other operating systems
       (like DOS) the return value is the Carriage-Return plus Line-Feed
       characters (0x0d 0x0a, `Chr( 13 ) + Chr( 10 )`).
    $EXAMPLES$
       // Get the newline character(s) for the current OS.
-      OutStd( "Hello World!" + hb_eol() )
-      ? HB_ISSTRING( hb_eol() )
-      ? Len( hb_eol() ) <= 2
+      OutStd( "Hello World!" + zh_eol() )
+      ? ZH_ISSTRING( zh_eol() )
+      ? Len( zh_eol() ) <= 2
    $STATUS$
       R
    $COMPLIANCE$
@@ -372,7 +372,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ColorIndex()
+      zh_ColorIndex()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -380,7 +380,7 @@
    $ONELINER$
       Extract one color from a full color-spec string.
    $SYNTAX$
-      hb_ColorIndex( <cColorSpec>, <nIndex> ) --> cColor
+      zh_ColorIndex( <cColorSpec>, <nIndex> ) --> cColor
    $ARGUMENTS$
       <cColorSpec> is a color list
 
@@ -397,8 +397,8 @@
       a given item from this list. You may use the manifest constants
       defined in color.ch to identify and extract common colors.
    $EXAMPLES$
-      #include "color.ch"
-      ? hb_ColorIndex( "W/N, N/W", CLR_ENHANCED )  // --> "N/W"
+      #include "color.zhh"
+      ? zh_ColorIndex( "W/N, N/W", CLR_ENHANCED )  // --> "N/W"
    $STATUS$
       R
    $COMPLIANCE$
@@ -678,10 +678,10 @@
       OutErr() to output to the same file handle as OutStd(), `//STDERR:n`
       set output to file handle n. Like other undocumented features this
       switch is available only if src/rtl/console.c was compiled with
-      the HB_CLP_UNDOC flag.
+      the ZH_CLP_UNDOC flag.
    $EXAMPLES$
       // write error log information
-      OutErr( hb_DateTime(), "Core meltdown detected" )
+      OutErr( zh_DateTime(), "Core meltdown detected" )
    $STATUS$
       R
    $COMPLIANCE$

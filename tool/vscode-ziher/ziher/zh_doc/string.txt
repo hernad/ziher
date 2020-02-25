@@ -241,7 +241,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_At()
+      zh_At()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -249,7 +249,7 @@
    $ONELINER$
       Locates the position of a substring in a main string.
    $SYNTAX$
-      hb_At( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
+      zh_At( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
    $ARGUMENTS$
       <cSearch> Substring to search for
 
@@ -259,7 +259,7 @@
 
       <nEnd> End position to search, by default <cString> length
    $RETURNS$
-      hb_At() return the starting position of the first occurrence of the
+      zh_At() return the starting position of the first occurrence of the
       substring in the main string
    $DESCRIPTION$
       This function searches the string <cString> for the characters in
@@ -267,21 +267,21 @@
       the second expression, the function will return 0. The third and fourth
       parameters lets you indicate a starting and end offset to search in.
    $EXAMPLES$
-      ? hb_At( "cde", "abcdefgfedcba" )     // --> 3
-      ? hb_At( "cde", "abcdefgfedcba", 4 )  // --> 0
+      ? zh_At( "cde", "abcdefgfedcba" )     // --> 3
+      ? zh_At( "cde", "abcdefgfedcba", 4 )  // --> 0
    $STATUS$
       R
    $COMPLIANCE$
-      This function is sensitive to HB_CLP_STRICT settings during build.
+      This function is sensitive to ZH_CLP_STRICT settings during build.
 
       <nStart> and <nEnd> are Harbour extensions and do not exist if
-      HB_CLP_STRICT is defined. In that case, the whole string is searched.
+      ZH_CLP_STRICT is defined. In that case, the whole string is searched.
    $PLATFORMS$
       All
    $FILES$
       Library is core
    $SEEALSO$
-      hb_RAt()
+      zh_RAt()
    $END$
  */
 
@@ -323,7 +323,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      At(), SubStr(), Right(), hb_RAt()
+      At(), SubStr(), Right(), zh_RAt()
    $END$
  */
 
@@ -333,7 +333,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_RAt()
+      zh_RAt()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -341,7 +341,7 @@
    $ONELINER$
       Searches for last occurrence a substring of a string.
    $SYNTAX$
-      hb_RAt( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
+      zh_RAt( <cSearch>, <cString>, [<nStart>], [<nEnd>] ) --> nPos
    $ARGUMENTS$
       <cSearch> Substring to search for
 
@@ -351,14 +351,14 @@
 
       <nEnd> End position to search, by default <cString> length
    $RETURNS$
-      hb_RAt() return the location of beginning position of last occurrence
+      zh_RAt() return the location of beginning position of last occurrence
       a substring of a string.
    $DESCRIPTION$
       This function searches for last occurrence a <cSearch> in <cString>.
       If the function is unable to find any occurrence of <cSearch> in
       <cString>, the return value is 0. 3rd and 4th parameters define
       inclusive range for 2nd parameter on which operation is performed.
-      If 3rd and 4th parameters is not specified, then hb_RAt() is equal
+      If 3rd and 4th parameters is not specified, then zh_RAt() is equal
       to RAt().
    $EXAMPLES$
       LOCAL cString := "acdefcdeedcb"
@@ -368,14 +368,14 @@
 
       FOR y := 1 TO nLen
          FOR i := 1 TO nLen
-            IF ( r := hb_RAt( cSearch, cString, y, i ) ) > 0
-               ? 'hb_RAt( "' + cSearch + '", "' + cString + '",', hb_ntos( y ) + ",", hb_ntos( i ), ") =", ;
-                  hb_ntos( r )
+            IF ( r := zh_RAt( cSearch, cString, y, i ) ) > 0
+               ? 'zh_RAt( "' + cSearch + '", "' + cString + '",', zh_ntos( y ) + ",", zh_ntos( i ), ") =", ;
+                  zh_ntos( r )
             ENDIF
          NEXT
       NEXT
 
-      ? hb_RAt( cSearch, "abcdefgfedcba" )  // --> 3
+      ? zh_RAt( cSearch, "abcdefgfedcba" )  // --> 3
    $STATUS$
       R
    $COMPLIANCE$
@@ -385,7 +385,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      hb_At(), SubStr(), Right(), RAt()
+      zh_At(), SubStr(), Right(), RAt()
    $END$
  */
 
@@ -683,7 +683,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ValToStr()
+      zh_ValToStr()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -691,23 +691,23 @@
    $ONELINER$
       Converts any scalar type to a string.
    $SYNTAX$
-      hb_ValToStr( <xValue> ) --> cString
+      zh_ValToStr( <xValue> ) --> cString
    $ARGUMENTS$
       <xValue> is any scalar argument.
    $RETURNS$
       <cString> A string representation of <xValue> using default
       conversions.
    $DESCRIPTION$
-      hb_ValToStr() can be used to convert any scalar value to a string.
+      zh_ValToStr() can be used to convert any scalar value to a string.
    $EXAMPLES$
       Set( _SET_DATEFORMAT, "yyyy-mm-dd" )
-      ? hb_ValToStr( 4 ) == "         4"
-      ? hb_ValToStr( 4.0 / 2 ) == "         2.00"
-      ? hb_ValToStr( "String" ) == "String"
-      ? hb_ValToStr( 0d20010101 ) == "2001-01-01"
-      ? hb_ValToStr( NIL ) == "NIL"
-      ? hb_ValToStr( .F. ) == ".F."
-      ? hb_ValToStr( .T. ) == ".T."
+      ? zh_ValToStr( 4 ) == "         4"
+      ? zh_ValToStr( 4.0 / 2 ) == "         2.00"
+      ? zh_ValToStr( "String" ) == "String"
+      ? zh_ValToStr( 0d20010101 ) == "2001-01-01"
+      ? zh_ValToStr( NIL ) == "NIL"
+      ? zh_ValToStr( .F. ) == ".F."
+      ? zh_ValToStr( .T. ) == ".T."
    $STATUS$
       R
    $COMPLIANCE$
@@ -1345,7 +1345,7 @@
       This function is useful to declare the length of a character memory
       variable.
    $EXAMPLES$
-      #include "dbstruct.ch"
+      #include "dbstruct.zhh"
 
       PROCEDURE Main()
 
@@ -1371,10 +1371,10 @@
          IF ! Alias() == ""
             nRecord := RecNo()
             dbGoto( 0 )
-            IF HB_ISSTRING( xField )
+            IF ZH_ISSTRING( xField )
                xField := AScan( dbStruct(), {| aFields | aFields[ DBS_NAME ] == Upper( xField ) } )
             ELSE
-               hb_default( @xField, 0 )
+               zh_default( @xField, 0 )
                IF xField < 1 .OR. xField > FCount()
                   xField := 0
                ENDIF
@@ -1444,7 +1444,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ntoc()
+      zh_ntoc()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1452,7 +1452,7 @@
    $ONELINER$
       Converts a numeric value to string
    $SYNTAX$
-      hb_ntoc( <nValue>, [<nDecs>] ) --> cValue
+      zh_ntoc( <nValue>, [<nDecs>] ) --> cValue
    $ARGUMENTS$
       <nValue> is the numeric value to convert.
 
@@ -1480,17 +1480,17 @@
    $EXAMPLES$
       LOCAL n := ( 5 / 2 ) + 0.009
 
-      ? hb_ntoc( n )     // --> 2.509
+      ? zh_ntoc( n )     // --> 2.509
       ? Str( n )         // -->          2.51
-      ? hb_ntoc( n, 2 )  // --> 2.51
+      ? zh_ntoc( n, 2 )  // --> 2.51
       ? Str( n, 5, 2 )   // -->  2.51
-      ? hb_ntos( n )     // --> 2.51
+      ? zh_ntos( n )     // --> 2.51
       ? "--- decimals set to 7 ----"
       SET DECIMALS TO 7
       ? Str( n )         // -->          2.51
-      ? hb_ntoc( n )     // --> 2.509
+      ? zh_ntoc( n )     // --> 2.509
       ? Str( n, 10, 7 )  // -->  2.5090000
-      ? hb_ntoc( n, 7 )  // --> 2.509
+      ? zh_ntoc( n, 7 )  // --> 2.509
       ? "--- pass non numeric / NIL value ----"
       ? Str( "42" )      // --> RTE
    $STATUS$
@@ -1500,7 +1500,7 @@
    $FILES$
       Library is core
    $SEEALSO$
-      Str(), hb_ntos()
+      Str(), zh_ntos()
    $END$
  */
 
@@ -1510,7 +1510,7 @@
    $TEMPLATE$
       Function
    $NAME$
-      hb_ntos()
+      zh_ntos()
    $CATEGORY$
       API
    $SUBCATEGORY$
@@ -1518,7 +1518,7 @@
    $ONELINER$
       Converts a numeric value to string.
    $SYNTAX$
-      hb_ntos( <nValue> ) --> cValue
+      zh_ntos( <nValue> ) --> cValue
    $ARGUMENTS$
       <nValue> is the numeric value to convert.
    $RETURNS$
@@ -1528,13 +1528,13 @@
       trimming all the leading empty spaces. If `<nValue>` is NIL
       or not numeric, this function will return a null string.
 
-      Essentially, `hb_ntos()` function is equivalent to
+      Essentially, `zh_ntos()` function is equivalent to
       `LTrim( Str( <nValue> ) )` but quite simpler and faster.
    $EXAMPLES$
       LOCAL n := ( 5 / 2 ) + 0.009
 
       ? Str( n )      // -->          2.51
-      ? hb_ntos( n )  // --> 2.51
+      ? zh_ntos( n )  // --> 2.51
    $STATUS$
       R
    $COMPLIANCE$
@@ -1542,6 +1542,6 @@
    $FILES$
       Library is core
    $SEEALSO$
-      Str(), hb_ntoc(), LTrim()
+      Str(), zh_ntoc(), LTrim()
    $END$
  */

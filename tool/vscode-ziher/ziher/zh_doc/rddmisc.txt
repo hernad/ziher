@@ -300,7 +300,7 @@
       return 0.
    $EXAMPLES$
       USE test NEW
-      ? "This database has", hb_ntos( test->( FCount() ) ), "field(s)"
+      ? "This database has", zh_ntos( test->( FCount() ) ), "field(s)"
    $STATUS$
       R
    $COMPLIANCE$
