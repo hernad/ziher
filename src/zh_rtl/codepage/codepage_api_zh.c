@@ -60,7 +60,7 @@ ZH_FUNC( CODEPAGESELECT )
       codepageSelectID( id );
 }
 
-ZH_FUNC( CODEPAGE_EXISTS )
+ZH_FUNC( CODEPAGEEXISTS )
 {
    const char * id = zh_parc( 1 );
 

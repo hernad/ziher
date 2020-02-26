@@ -1,0 +1,206 @@
+/*
+ * OpenSSL API (PEM) - Ziher interface.
+ *
+ * Copyright 2009-2016 Viktor Szakats (vszakats.net/ziher)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; see the file LICENSE.txt.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
+ *
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
+ *
+ * The exception is that, if you link the Ziher libraries with other
+ * files to produce an executable, this does not by itself cause the
+ * resulting executable to be covered by the GNU General Public License.
+ * Your use of that executable is in no way restricted on account of
+ * linking the Ziher library code into it.
+ *
+ * This exception does not however invalidate any other reasons why
+ * the executable file might be covered by the GNU General Public License.
+ *
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
+ * not apply to the code that you add in this way.  To avoid misleading
+ * anyone as to the status of such modified files, you must delete
+ * this exception notice from them.
+ *
+ * If you write modifications of your own for Ziher, it is your choice
+ * whether to permit this exception to apply to your modifications.
+ * If you do not wish that, delete this exception notice.
+ *
+ */
+
+#include "zh_ssl.h"
+
+#include "zh_fs_api.h"
+#include "zh_item_api.h"
+#include "zh_vm.h"
+
+typedef enum
+{
+   zh_PEM_X509,
+   zh_PEM_EVP_PKEY,
+   zh_PEM_ANY
+} ZH_PEM_TYPES;
+
+/* Callback */
+
+static int zh_ssl_pem_password_cb( char * buf, int size, int rwflag, void * userdata )
+{
+   int retsize = 0;
+
+   if( size > 0 && userdata && zh_vmRequestReenter() )
+   {
+      zh_vmPushEvalSym();
+      zh_vmPush( ( PZH_ITEM ) userdata );
+      zh_vmPushLogical( rwflag );
+      zh_vmSend( 1 );
+
+      buf[ 0 ] = '\0';
+
+      retsize = ( int ) zh_parclen( -1 );
+
+      if( retsize > 0 )
+      {
+         if( retsize > size )
+            retsize = size;
+
+         memcpy( buf, zh_parc( -1 ), retsize );
+      }
+
+      zh_vmRequestRestore();
+   }
+
+   return retsize;
+}
+
+ZH_FUNC( ERR_LOAD_PEM_STRINGS )
+{
+   ERR_load_PEM_strings();
+}
+
+typedef void * PEM_READ_BIO ( BIO * bp, void ** x, pem_password_cb * cb, void * u );
+typedef void * PEM_WRITE_BIO ( BIO * bp, void ** x, pem_password_cb * cb, void * u );
+
+static void zh_PEM_read_bio( PEM_READ_BIO * func, ZH_PEM_TYPES type )
+{
+   BIO * bio = NULL;
+   ZH_BYTE * pBuffer = NULL;
+   ZH_SIZE nSize = 0;
+
+   if( zh_BIO_is( 1 ) )
+      bio = zh_BIO_par( 1 );
+   else if( ZH_ISCHAR( 1 ) )
+   {
+      pBuffer = zh_fileLoad( zh_parc( 1 ), 0, &nSize );
+      if( pBuffer )
+         bio = BIO_new_mem_buf( ( char * ) pBuffer, ( int ) nSize );
+   }
+   else if( ZH_IS_PARAM_NUM( 1 ) )
+      bio = BIO_new_fd( zh_parni( 1 ), BIO_NOCLOSE );
+
+   if( bio )
+   {
+      PZH_ITEM pPassCallback = zh_param( 2, ZH_IT_EVALITEM );
+      pem_password_cb * cb;
+      void * cargo, * result;
+
+      if( pPassCallback )
+      {
+         cb = zh_ssl_pem_password_cb;
+         cargo = pPassCallback;
+      }
+      else
+      {
+         cb = NULL;
+         cargo = ZH_UNCONST( zh_parc( 2 ) );  /* NOTE: Discarding 'const' qualifier, OpenSSL will memcpy() it */
+      }
+
+      result = ( *func )( bio, NULL, cb, cargo );
+
+      if( result )
+      {
+         switch( type )
+         {
+            case zh_PEM_X509:
+               zh_X509_ret( ( X509 * ) result, ZH_TRUE );
+               break;
+            case zh_PEM_EVP_PKEY:
+               zh_EVP_PKEY_ret( ( EVP_PKEY * ) result );
+               break;
+            case zh_PEM_ANY:
+               zh_retptr( NULL );
+               break;
+         }
+      }
+      else
+         zh_retptr( NULL );
+
+      if( ! zh_BIO_is( 1 ) )
+         BIO_free( bio );
+
+      if( pBuffer )
+      {
+         OPENSSL_cleanse( pBuffer, ( size_t ) nSize );
+         zh_xfree( pBuffer );
+      }
+   }
+   else
+      zh_errRT_BASE( EG_ARG, 2010, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
+}
+
+ZH_FUNC( PEM_READ_BIO_PRIVATEKEY    ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_PrivateKey   , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_PUBKEY        ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_PUBKEY       , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_RSAPRIVATEKEY ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_RSAPrivateKey, zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_RSAPUBLICKEY  ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_RSAPublicKey , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_RSA_PUBKEY    ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_RSA_PUBKEY   , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_DSAPRIVATEKEY ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_DSAPrivateKey, zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_DSA_PUBKEY    ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_DSA_PUBKEY   , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_DSAPARAMS     ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_DSAparams    , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_DHPARAMS      ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_DHparams     , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_X509          ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509         , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_X509_AUX      ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509_AUX     , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_X509_REQ      ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509_REQ     , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_X509_CRL      ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509_CRL     , zh_PEM_ANY ); }
+ZH_FUNC( PEM_READ_BIO_PKCS7         ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_PKCS7        , zh_PEM_ANY ); }
+
+ZH_FUNC( PEM_READ_X509              ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509         , zh_PEM_X509 ); }
+ZH_FUNC( PEM_READ_X509_AUX          ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_X509_AUX     , zh_PEM_X509 ); }
+ZH_FUNC( PEM_READ_PRIVATEKEY        ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_PrivateKey   , zh_PEM_EVP_PKEY ); }
+ZH_FUNC( PEM_READ_PUBKEY            ) { zh_PEM_read_bio( ( PEM_READ_BIO * ) PEM_read_bio_PUBKEY       , zh_PEM_EVP_PKEY ); }
+
+#if 0
+
+int PEM_write_bio_RSAPrivateKey(       BIO * bp, RSA      * x, const EVP_CIPHER * enc, unsigned char * kstr, int klen, pem_password_cb * cb, void * u );
+int PEM_write_bio_DSAPrivateKey(       BIO * bp, DSA      * x, const EVP_CIPHER * enc, unsigned char * kstr, int klen, pem_password_cb * cb, void * u );
+int PEM_write_bio_PrivateKey(          BIO * bp, EVP_PKEY * x, const EVP_CIPHER * enc, unsigned char * kstr, int klen, pem_password_cb * cb, void * u );
+int PEM_write_bio_PKCS8PrivateKey(     BIO * bp, EVP_PKEY * x, const EVP_CIPHER * enc, char * kstr, int klen, pem_password_cb * cb, void * u );
+int PEM_write_bio_PKCS8PrivateKey_nid( BIO * bp, EVP_PKEY * x, int nid, char * kstr, int klen, pem_password_cb * cb, void * u );
+int PEM_write_bio_PUBKEY(              BIO * bp, EVP_PKEY * x );
+int PEM_write_bio_RSAPublicKey(        BIO * bp, RSA * x );
+int PEM_write_bio_RSA_PUBKEY(          BIO * bp, RSA * x );
+int PEM_write_bio_DSA_PUBKEY(          BIO * bp, DSA * x );
+int PEM_write_bio_DSAparams(           BIO * bp, DSA * x );
+int PEM_write_bio_DHparams(            BIO * bp, DH * x );
+int PEM_write_bio_X509(                BIO * bp, X509 * x );
+int PEM_write_bio_X509_AUX(            BIO * bp, X509 * x );
+int PEM_write_bio_X509_REQ(            BIO * bp, X509_REQ * x );
+int PEM_write_bio_X509_REQ_NEW(        BIO * bp, X509_REQ * x );
+int PEM_write_bio_X509_CRL(            BIO * bp, X509_CRL * x );
+int PEM_write_bio_PKCS7(               BIO * bp, PKCS7 * x );
+
+#endif

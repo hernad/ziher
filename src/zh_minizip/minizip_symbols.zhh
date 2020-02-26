@@ -1,0 +1,55 @@
+/* --------------------------------------------------------------------
+ * NOTE: You can add manual override which functions to include or
+ *       exclude from automatically generated EXTERNAL/DYNAMIC list.
+ *          Syntax: // ZH_FUNC_INCLUDE <func>
+ *                  // ZH_FUNC_EXCLUDE <func>
+ */
+
+/* --------------------------------------------------------------------
+ * WARNING: Automatically generated code below. DO NOT EDIT! (except casing)
+ *          Regenerate using hbmk2 '-hbx=' option.
+ */
+
+#ifndef __HBEXTERN_ZH__HBMZIP__
+#define __HBEXTERN_ZH__HBMZIP__
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__HBMZIP__ANNOUNCE )
+   ANNOUNCE __HBEXTERN__HBMZIP__
+#endif
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__HBMZIP__REQUEST )
+   #command DYNAMIC <fncs,...> => EXTERNAL <fncs>
+#endif
+
+DYNAMIC zh_unzipClose
+DYNAMIC zh_unzipErrorStr
+DYNAMIC zh_unzipExtractCurrentFile
+DYNAMIC zh_unzipExtractCurrentFileToHandle
+DYNAMIC zh_unzipExtractCurrentFileToMem
+DYNAMIC zh_unzipFileClose
+DYNAMIC zh_unzipFileFirst
+DYNAMIC zh_unzipFileGoto
+DYNAMIC zh_unzipFileInfo
+DYNAMIC zh_unzipFileNext
+DYNAMIC zh_unzipFileOpen
+DYNAMIC zh_unzipFilePos
+DYNAMIC zh_unzipFileRead
+DYNAMIC zh_unzipGlobalInfo
+DYNAMIC zh_unzipOpen
+DYNAMIC zh_zipClose
+DYNAMIC zh_zipDeleteFile
+DYNAMIC zh_zipErrorStr
+DYNAMIC zh_zipFileClose
+DYNAMIC zh_zipFileCRC32
+DYNAMIC zh_zipFileCreate
+DYNAMIC zh_zipFileWrite
+DYNAMIC zh_zipOpen
+DYNAMIC zh_zipStoreFile
+DYNAMIC zh_zipStoreFileHandle
+DYNAMIC zh_zipStoreFileMem
+
+#if defined( __HBEXTREQ__ ) .OR. defined( __HBEXTERN__HBMZIP__REQUEST )
+   #uncommand DYNAMIC <fncs,...> => EXTERNAL <fncs>
+#endif
+
+#endif

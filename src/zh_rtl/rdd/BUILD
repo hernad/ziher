@@ -15,7 +15,14 @@ cc_library(
         "rdd_misc/*.c",
         "rdd_sql/*.c",
         "rdd_usr/*.c",
-    ]) + ["//zh_rtl:headers"],
+        "sdd_pgsql/*.c"
+    ]) + [
+        "//zh_rtl:headers",
+        "//zh_rtl/rdd:headers"
+    ],
+    copts = [
+        "-Izh_rtl/rdd/rdd_sql"
+    ],
     hdrs = glob( [
         "*.h", 
         "*.zhh",
@@ -33,12 +40,30 @@ cc_library(
         "rdd_sql/*.h",
         "rdd_sql/*.zhh",
         "rdd_usr/*.h",
-        "rdd_usr/*.zhh"
+        "rdd_usr/*.zhh",
+        "sdd_pgsql/*.h",
+        "sdd_pgsql/*.zhh"
     ]),
     alwayslink = 1,
-    deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm", "//zh_rtl:zh_rtl" ],
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_vm:zh_vm", 
+        "//zh_rtl:zh_rtl" 
+    ],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "headers",
+    srcs = glob([
+        "*.h",
+        "*.zhh",
+        "rdd_sql/*.h",
+        "rdd_sql/*.zhh"
+    ]),
+    visibility = ["//visibility:public"],
+)
+
 
 cc_library(
     name = "zh_rtl_rdd_zh_c",

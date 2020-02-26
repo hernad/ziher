@@ -3,3 +3,16 @@ ZH_COMP_OPTS=[
     "-izh_rtl",
     "-izh_rtl/gt"
 ]
+
+ZH_Z18_COMP_OPTS=[
+    "-iZ18/src/include",
+    "-izh_harupdf",
+    "-DGT_DEFAULT_CONSOLE"
+]
+
+ZH_Z18_HEADERS=[
+    "//zh_zero:headers", 
+    "//zh_rtl:headers",
+    "//Z18/src/include:headers",
+    "//zh_harupdf:headers"
+]
