@@ -11,10 +11,19 @@ import { DebugProtocol } from 'vscode-debugprotocol';
 //import { MockRuntime, MockBreakpoint } from './mockRuntime';
 
 //const { Subject } = require('await-notify');
-const { process } = require("process");
-const { path } = require("path");
-const { fs } = require("fs");
-const { cp } = require("child_process");
+//const { process } = require("process");
+import * as process from "process";
+
+//const { path } = require("path");
+import * as path from 'path';
+
+//const { fs } = require("fs");
+import * as fs from 'fs';
+
+
+//const { cp: childProcess } = require("child_process");
+import * as childProcess from "child_process";
+
 //const { localize } = require("./localize.js").localize;
 import * as net from "net";
 
@@ -72,46 +81,42 @@ interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
 
 }
 
+interface AttachRequestArguments extends DebugProtocol.AttachRequestArguments {
+
+    port: number;
+    noDebug: boolean;
+
+    //terminalType: string;
+    //workingDir: string;
+    //arguments: any;
+    workspaceRoot: string;
+    sourcePaths: any;
+
+}
 
 export class ZhDebugSession extends LoggingDebugSession {
 
     private socket: any;
 
-    //private Debbugging: boolean = true;
-
+    private Debugging: boolean;
     private sourcePaths: string[] = [];
-
     private processLine = undefined;
-
     private breakpoints = {};
-
     private variableCommands: string[] = [];
-
     private variableEvaluations: string[] = [];
-
     private stack: DebugProtocol.StackTraceResponse[] = [];
     private stackArgs: DebugProtocol.StackTraceArguments[] = [];
-
     private justStart = true;
-
     private queue: string = "";
-
     private evaluateResponses: any[] = [];
-
     private completionsResponse: DebugProtocol.CompletionsResponse;
-
     private processId: number;
-
     private currentStack: number;
-
     private scopeResponse: DebugProtocol.ScopesResponse;
-
     private varResp: any[] = [];
-
     private startGo: boolean;
-    private Debugging: boolean;
-
-
+    private tcpServer;
+  
     // we don't support multiple threads, so we can use a hardcoded ID for the default thread
     //private static THREAD_ID = 1;
 
@@ -223,7 +228,7 @@ export class ZhDebugSession extends LoggingDebugSession {
         */
 
         //if (args.locale) {
-            // require("./localize.js").reInit(args);
+        // require("./localize.js").reInit(args);
         //}
 
         response.body = response.body || {};
@@ -252,15 +257,21 @@ export class ZhDebugSession extends LoggingDebugSession {
         this.sendResponse(response);
     }
 
+    protected configurationDoneRequest(response: DebugProtocol.ConfigurationDoneResponse, args: DebugProtocol.ConfigurationDoneArguments, request?: DebugProtocol.Request) {
+
+        if (this.startGo) {
+            this.zh_command("GO\r\n");
+            this.sendEvent(new ContinuedEvent(1, true));
+        }
+        this.sendResponse(response);
+    }
+
     protected launchRequest(response: DebugProtocol.LaunchResponse, args: LaunchRequestArguments, request?: DebugProtocol.Request) {
 
 
-		logger.setup(args.trace ? Logger.LogLevel.Verbose : Logger.LogLevel.Stop, false);
-
-        var port = args.port ? args.port : 6110;
-        console.log(`launchRequest - starts the server listen ${port}`);
-
-        //var tc = this;
+        logger.setup(args.trace ? Logger.LogLevel.Verbose : Logger.LogLevel.Stop, false);
+        var port = args.port ? args.port : 60110;
+ 
         this.justStart = true;
         this.sourcePaths = []; //[path.dirname(args.program)];
 
@@ -272,17 +283,18 @@ export class ZhDebugSession extends LoggingDebugSession {
         }
 
         this.Debugging = !args.noDebug;
-
         this.startGo = args.stopOnEntry === false || args.noDebug === true;
 
-        // https://stackoverflow.com/questions/30545245/beginner-node-js-net-createserver-example
 
-        let server = net.createServer((socket: any) => {
-            this.zh_evaluateClient(socket, server, args)
-        }).listen(port);
+        this.sendEvent(new OutputEvent(`RUN tcpServer=${JSON.stringify(this.tcpServer)} ${port}\n`));
 
         let cbRunInTerminal = (response: DebugProtocol.RunInTerminalResponse) => {
 
+            this.sendEvent(new OutputEvent("RUN IN TERMINAL callback\n"));
+            this.tcpServer = net.createServer((socket: any) => {
+                this.sendEvent(new OutputEvent(`RUN socket=${JSON.stringify(socket)}\n`));
+                this.zh_evaluateClient(socket, this.tcpServer, args);
+            }).listen(port, "127.0.0.1");
         };
 
 
@@ -296,39 +308,76 @@ export class ZhDebugSession extends LoggingDebugSession {
                     "kind": args.terminalType,
                     "cwd": args.workingDir,
                     "args": [args.program].concat(args.arguments ? args.arguments : [])
-                }, 10000, cbRunInTerminal);
+                }, 100000, cbRunInTerminal);
                 break;
 
             case 'none':
             default:
-                var process;
+                let child;
                 if (args.arguments)
-                    process = cp.spawn(args.program, args.arguments, { cwd: args.workingDir });
+                    child = childProcess.spawn(args.program, args.arguments, { cwd: args.workingDir });
                 else
-                    process = cp.spawn(args.program, { cwd: args.workingDir });
+                    child = childProcess.spawn(args.program, { cwd: args.workingDir });
 
-                process.on("error", e => {
+                child.on("error", e => {
                     //this.sendEvent(new OutputEvent(localize("ziher.dbgError1", args.program, args.workingDir), "stderr"))
-                    this.sendEvent(new OutputEvent( `Unable to start ${args.program} in ${args.workingDir}, check that all path exists`, "stderr"));                   
+                    this.sendEvent(new OutputEvent(`Unable to start ${args.program} in ${args.workingDir}, check that all path exists`, "stderr"));
                     this.sendEvent(new TerminatedEvent());
                     return;
                 });
 
-                process.stderr.on('data', data =>
+                child.stderr.on('data', data =>
                     this.sendEvent(new OutputEvent(data.toString(), "stderr"))
                 );
 
-                process.stdout.on('data', data =>
+                child.stdout.on('data', data =>
                     this.sendEvent(new OutputEvent(data.toString(), "stdout"))
                 );
                 break;
         }
+
+        this.sendEvent(new OutputEvent("Debugger launchRequest - Sent response\n"));
         this.sendResponse(response);
     }
 
-    
 
-    private zh_evaluateClient(socket: any, server, args) {
+    protected attachRequest(response: DebugProtocol.AttachResponse, args: AttachRequestArguments, request?: DebugProtocol.Request): void {
+
+        var port = args.port ? args.port : 6110;
+        //var tc = this;
+        this.justStart = true;
+        this.sourcePaths = []; //[path.dirname(args.program)];
+
+        if ("workspaceRoot" in args) {
+            this.sourcePaths.push(args.workspaceRoot);
+        }
+
+        if ("sourcePaths" in args) {
+            this.sourcePaths = this.sourcePaths.concat(args.sourcePaths);
+        }
+
+        this.Debugging = !args.noDebug;
+        this.startGo = true;
+        console.log(`attachRequest - starts the server listen ${port}`);
+        var server = net.createServer(socket => {
+            this.zh_evaluateClient(socket, server, args)
+        }).listen(port);
+
+        this.sendResponse(response);
+    }
+
+    protected disconnectRequest(response: DebugProtocol.DisconnectResponse, args: DebugProtocol.DisconnectArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("DISCONNECT\r\n");
+        this.sendResponse(response);
+    }
+
+    protected terminateRequest(response: DebugProtocol.TerminateResponse, args: DebugProtocol.TerminateArguments, request?: DebugProtocol.Request) {
+        process.kill(this.processId, 'SIGKILL');
+        this.sendResponse(response);
+    }
+
+
+    private zh_evaluateClient(socket: any, server: any, args: any) {
 
         var nData = 0;
         //var tc = this;
@@ -347,6 +396,7 @@ export class ZhDebugSession extends LoggingDebugSession {
 
             // the client sent exe name and process ID		
             var lines = data.toString().split("\r\n");
+
             if (lines.length < 2) //todo: check if they arrive in 2 tranches.
                 return;
 
@@ -368,6 +418,7 @@ export class ZhDebugSession extends LoggingDebugSession {
             socket.on("data", data => {
                 this.zh_processInput(data.toString())
             });
+
             socket.write(this.queue);
             this.justStart = false;
             this.queue = "";
@@ -375,21 +426,11 @@ export class ZhDebugSession extends LoggingDebugSession {
     }
 
 
-    protected configurationDoneRequest(response: DebugProtocol.ConfigurationDoneResponse, args: DebugProtocol.ConfigurationDoneArguments, request?: DebugProtocol.Request) {
-
-        if (this.startGo) {
-            this.zh_command("GO\r\n");
-            this.sendEvent(new ContinuedEvent(1, true));
-        }
-        this.sendResponse(response);
-    }
-
-
     // line type ?
-    private zh_sendVariables(id, line: any) {
+    private zh_sendVariables(id: any, line: any) {
 
         var vars = [];
-        this.processLine = function (line: any) {
+        this.processLine = (line: any) => {
 
             if (line.startsWith("END")) {
                 this.varResp[id].body = {
@@ -618,8 +659,8 @@ export class ZhDebugSession extends LoggingDebugSession {
                 //dest.response.body.breakpoints[idBreak].message = localize('ziher.dbgNoModule')
                 dest.response.body.breakpoints[idBreak].message = "Module not found";
             else
-               // dest.response.body.breakpoints[idBreak].message = localize('ziher.dbgNoLine')
-               dest.response.body.breakpoints[idBreak].message = "Invalid line";
+                // dest.response.body.breakpoints[idBreak].message = localize('ziher.dbgNoLine')
+                dest.response.body.breakpoints[idBreak].message = "Invalid line";
 
             dest[aInfos[2]] = 1;
         }
@@ -699,6 +740,45 @@ export class ZhDebugSession extends LoggingDebugSession {
         }
     }
 
+
+    protected continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("GO\r\n");
+        this.sendResponse(response);
+    }
+
+    protected nextRequest(response: DebugProtocol.NextResponse, args: DebugProtocol.NextArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("NEXT\r\n");
+        this.sendResponse(response);
+    }
+
+
+    protected stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("STEP\r\n");
+        this.sendResponse(response);
+    }
+
+    protected stepOutRequest(response: DebugProtocol.StepOutResponse, args: DebugProtocol.StepOutArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("EXIT\r\n");
+        this.sendResponse(response);
+    }
+
+    protected pauseRequest(response: DebugProtocol.PauseResponse, args: DebugProtocol.PauseArguments, request?: DebugProtocol.Request): void {
+        this.zh_command("PAUSE\r\n");
+        this.sendResponse(response);
+    }
+
+    protected threadsRequest(response: DebugProtocol.ThreadsResponse, request?: DebugProtocol.Request): void {
+
+        response.body =
+        {
+            threads:
+                [ //TODO: suppport multi thread
+                    new Thread(1, "Main Thread")
+                ]
+        };
+        this.sendResponse(response);
+    }
+
     private zh_processCompletion(line: any) {
 
         this.processLine = function (line) {
@@ -739,6 +819,74 @@ export class ZhDebugSession extends LoggingDebugSession {
         }
     }
 
+
+    protected setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments, request?: DebugProtocol.Request): void {
+    
+        var message = "";
+        // prepare a response
+        response.body = { "breakpoints": [] };
+        response.body.breakpoints = [];
+        response.body.breakpoints.length = args.breakpoints.length;
+        // check if the source is already configurated for breakpoints
+        var src = args.source.name.toLowerCase();
+        var dest
+        if (!(src in this.breakpoints)) {
+            this.breakpoints[src] = {};
+        }
+        // mark all old breakpoints for deletion
+        dest = this.breakpoints[src];
+        for (var i in dest) {
+            if (dest.hasOwnProperty(i)) {
+                dest[i] = "-" + dest[i];
+            }
+        }
+        // check current breakpoints
+        dest.response = response;
+        for (let i: number = 0; i < args.breakpoints.length; i++) {
+
+            var breakpoint = args.breakpoints[i];
+            response.body.breakpoints[i] = new Breakpoint(false, breakpoint.line);
+            var thisBreakpoint = "BREAKPOINT\r\n";
+            thisBreakpoint += `+:${src}:${breakpoint.line}`;
+
+            if ('condition' in breakpoint && breakpoint.condition.length > 0) {
+                thisBreakpoint += `:?:${breakpoint.condition.replace(/:/g, ";")}`
+            }
+
+            if ('hitCondition' in breakpoint) {
+                thisBreakpoint += `:C:${breakpoint.hitCondition}`
+            }
+
+            if ('logMessage' in breakpoint) {
+                thisBreakpoint += `:L:${breakpoint.logMessage.replace(/:/g, ";")}`
+            }
+
+            if (dest.hasOwnProperty(breakpoint.line) && dest[breakpoint.line].substring(1) == thisBreakpoint) { // breakpoint already exists
+                dest[breakpoint.line] = thisBreakpoint
+                response.body.breakpoints[i].verified = true;
+            } else {
+                //require breakpoint
+                message += thisBreakpoint + "\r\n"
+                dest[breakpoint.line] = thisBreakpoint;
+            }
+        }
+
+        // require delete old breakpoints
+        var n1 = 0;
+        for (var i in dest) {
+            if (dest.hasOwnProperty(i) && i != "response") {
+                if (dest[i].substring(0, 1) == "-") {
+                    message += "BREAKPOINT\r\n";
+                    message += `-:${src}:${i}\r\n`;
+                    dest[i] = "-";
+                }
+            }
+        }
+        this.zh_checkBreakPoint(src);
+        this.sendEvent(new OutputEvent("send: " + message, "console"))
+        this.zh_command(message);
+        //this.sendResponse(response);
+    }
 
     protected setExceptionBreakPointsRequest(response: DebugProtocol.SetExceptionBreakpointsResponse, args: DebugProtocol.SetExceptionBreakpointsArguments, request?: DebugProtocol.Request): void {
 
@@ -814,28 +962,20 @@ export class ZhDebugSession extends LoggingDebugSession {
         this.stackArgs.push(args);
     }
 
+    private zh_setProcess(pid: number) {
 
-    private zh_setProcess(pid) {
-
-        var tc = this;
+        //var tc = this;
         this.processId = pid;
         var interval = setInterval(() => {
             try {
                 process.kill(pid, 0);
             } catch (error) {
-                tc.sendEvent(new TerminatedEvent());
+                this.sendEvent(new TerminatedEvent());
                 clearInterval(interval);
             }
         }, 1000);
 
     }
-
-    protected terminateRequest(response: DebugProtocol.TerminateResponse, args: DebugProtocol.TerminateArguments, request?: DebugProtocol.Request) {
-
-        process.kill(this.processId, 'SIGKILL');
-        this.sendResponse(response);
-    }
-
 
 
 
