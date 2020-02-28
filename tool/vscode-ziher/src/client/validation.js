@@ -6,7 +6,7 @@
 var vscode = require('vscode');
 var cp = require("child_process");
 var path = require("path");
-var localize = require("./myLocalize.js").localize;
+var localize = require("./localize.js").localize;
 
 var diagnosticCollection;
 
@@ -18,7 +18,7 @@ function activate(context)
 	vscode.workspace.onDidOpenTextDocument(validate,undefined, context.subscriptions);
 	vscode.workspace.onDidSaveTextDocument(validate,undefined, context.subscriptions);
 	vscode.workspace.onDidCloseTextDocument(removeValidation,undefined, context.subscriptions);
-	if(vscode.window.activeTextEditor && vscode.window.activeTextEditor.document)
+	if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document)
 		validate(vscode.window.activeTextEditor.document);
 }
 
@@ -31,13 +31,17 @@ var valRegEx = /^\r?(?:([^\(]*)\((\d+)\)\s+)?(Warning|Error)\s+([^\r\n]*)/
 
 function validate(textDocument)
 {
-	if(textDocument.languageId !== 'ziher' )
+	if (textDocument.languageId !== 'ziher' )
 		return;
+
 	var section = vscode.workspace.getConfiguration('ziher');
-	if(!section.validating)
+	
+	if (!section.validating)
 		return;
-	var args = ["-s", "-q0", "-m", "-n0", "-w"+section.warningLevel, textDocument.fileName ];
+
+	var args = ["-s", "-q0", "-m", "-n0", "-w" + section.warningLevel, textDocument.fileName ];
 	var file_cwd = path.dirname(textDocument.fileName);
+
 	for (var i = 0; i < section.extraIncludePaths.length; i++) {
 		var pathVal = section.extraIncludePaths[i];
 		if(pathVal.indexOf("${workspaceFolder}")>=0) {
@@ -45,28 +49,34 @@ function validate(textDocument)
 		}
 		args.push("-I"+pathVal);
 	}
-	args = args.concat(section.extraOptions.split(" ").filter(function(el) {return el.length != 0}));
+
+	args = args.concat(section.extraOptions.split(" ").filter( 
+	   function(el) {
+		  return el.length != 0;
+	   }
+	));
 	var diagnostics = {};
 	diagnostics[textDocument.fileName] = [];
 	var errorLines = "";
-	function parseData(data)
-	{
+
+	function parseData(data) {
+
 		errorLines += data.toString();
-		errorLines = errorLines.replace(/[\r\n]/g,"\n")
+		errorLines = errorLines.replace(/[\r\n]/g,"\n");
 		var p;
-		while((p=errorLines.indexOf("\n"))>=0)
+		
+		while((p=errorLines.indexOf("\n")) >=0 )
 		{
 			var subLine = errorLines.substring(0,p);
 			errorLines = errorLines.substring(p+1);
 			//console.error(data.toString())
 			var r = valRegEx.exec(subLine);
-			if(r)
+			if (r)
 			{
 				if(!r[1]) r[1]="";
 				var lineNr = r[2]? parseInt(r[2])-1 : 0;
 				var subject = r[4].match(/'([^']+)'/g);
-				if(subject && subject.length>1 && subject[1].indexOf("(")>=0)
-				{
+				if(subject && subject.length>1 && subject[1].indexOf("(")>=0) {
 					var nsub = subject[1].match(/\(([0-9]+)\)/);
 					if(nsub)
 					{
@@ -74,12 +84,12 @@ function validate(textDocument)
 					}
 				}
 				var line = textDocument.lineAt(lineNr)
-				if(!(r[1] in diagnostics))
+				if (!(r[1] in diagnostics))
 				{
 					diagnostics[r[1]] = [];
 				}
 				var putAll = true;
-				if(subject)
+				if (subject)
 				{
 					var m;
 					subject[0] = subject[0].substr(1,subject[0].length-2)
@@ -91,9 +101,8 @@ function validate(textDocument)
 							r[4], r[3]=="Warning"? 1 : 0))
 					}
 				} 
-				if(putAll)
-					diagnostics[r[1]].push(new vscode.Diagnostic(line.range,
-						r[4], r[3]=="Warning"? 1 : 0))
+				if (putAll)
+					diagnostics[r[1]].push(new vscode.Diagnostic(line.range, r[4], r[3]=="Warning"? 1 : 0))
 			}
 		}
 	}
@@ -104,6 +113,7 @@ function validate(textDocument)
 	});
 	process.stderr.on('data', parseData);
 	process.stdout.on('data', parseData);
+	
 	process.on("exit",function(code)
 	{
 		for (var file in diagnostics) {

@@ -58,7 +58,7 @@ FUNCTION zh_PathNormalize( cPath )
 
    IF ! cPath == ""
 
-      aDir := zh_ATokens( cPath, zh_ps() )
+      aDir := zh_ATokens( cPath, PathSeparator() )
 
       FOR EACH cDir IN aDir DESCEND
 
@@ -86,12 +86,12 @@ FUNCTION zh_PathNormalize( cPath )
       FOR EACH cDir IN aDir
          cPath += cDir
          IF ! cDir:__enumIsLast()
-            cPath += zh_ps()
+            cPath += PathSeparator()
          ENDIF
       NEXT
 
       IF cPath == ""
-         cPath := "." + zh_ps()
+         cPath := "." + PathSeparator()
       ENDIF
    ENDIF
 
@@ -176,7 +176,7 @@ FUNCTION zh_PathRelativize( cPathBase, cPathTarget, lForceRelative )
 
    /* Force to return relative paths even when base is different. */
    IF zh_defaultValue( lForceRelative, .T. ) .AND. ;
-      zh_vfDirExists( cPathBase + ( cTestTarget := s_FN_FromArray( aPathTarget, tmp, cTargetFileName, Replicate( ".." + zh_ps(), Len( aPathBase ) - tmp ) ) ) )
+      zh_vfDirExists( cPathBase + ( cTestTarget := s_FN_FromArray( aPathTarget, tmp, cTargetFileName, Replicate( ".." + PathSeparator(), Len( aPathBase ) - tmp ) ) ) )
       RETURN cTestTarget
    ENDIF
 
@@ -192,7 +192,7 @@ STATIC FUNCTION s_FN_ToArray( cPath, /* @ */ cFileName  )
       cFileName := cName + cExt
    ENDIF
 
-   RETURN zh_ATokens( cDir, zh_ps() )
+   RETURN zh_ATokens( cDir, PathSeparator() )
 
 STATIC FUNCTION s_FN_FromArray( aPath, nFrom, cFileName, cDirPrefix )
 
@@ -212,7 +212,7 @@ STATIC FUNCTION s_FN_FromArray( aPath, nFrom, cFileName, cDirPrefix )
    FOR tmp := nFrom TO nTo
       cDir += aPath[ tmp ]
       IF nFrom < nTo
-         cDir += zh_ps()
+         cDir += PathSeparator()
       ENDIF
    NEXT
 
@@ -226,9 +226,9 @@ FUNCTION zh_DirSepAdd( cDir )
 
    IF ! cDir == "" .AND. ;
       ! _ISDRIVESPEC( cDir ) .AND. ;
-      ! Right( cDir, 1 ) == zh_ps()
+      ! Right( cDir, 1 ) == PathSeparator()
 
-      cDir += zh_ps()
+      cDir += PathSeparator()
    ENDIF
 
    RETURN cDir
@@ -240,15 +240,15 @@ FUNCTION zh_DirSepDel( cDir )
    ENDIF
 
    IF zh_osDriveSeparator() == ""
-      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == zh_ps() .AND. ;
-         ! cDir == zh_ps() + zh_ps()
+      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == PathSeparator() .AND. ;
+         ! cDir == PathSeparator() + PathSeparator()
 
          cDir := zh_StrShrink( cDir )
       ENDDO
    ELSE
-      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == zh_ps() .AND. ;
-         ! cDir == zh_ps() + zh_ps() .AND. ;
-         ! Right( cDir, Len( zh_osDriveSeparator() ) + 1 ) == zh_osDriveSeparator() + zh_ps()
+      DO WHILE Len( cDir ) > 1 .AND. Right( cDir, 1 ) == PathSeparator() .AND. ;
+         ! cDir == PathSeparator() + PathSeparator() .AND. ;
+         ! Right( cDir, Len( zh_osDriveSeparator() ) + 1 ) == zh_osDriveSeparator() + PathSeparator()
 
          cDir := zh_StrShrink( cDir )
       ENDDO
@@ -259,7 +259,7 @@ FUNCTION zh_DirSepDel( cDir )
 FUNCTION zh_DirSepToOS( cFileName )
 
    IF ZH_ISSTRING( cFileName )
-      RETURN StrTran( cFileName, iif( zh_ps() == "\", "/", "\" ), zh_ps() )
+      RETURN StrTran( cFileName, iif( PathSeparator() == "\", "/", "\" ), PathSeparator() )
    ENDIF
 
    RETURN ""
@@ -284,16 +284,16 @@ FUNCTION zh_DirBuild( cDir )
          ( tmp := At( zh_osDriveSeparator(), cDir ) ) > 0
          cDirTemp := Left( cDir, tmp )
          cDir := SubStr( cDir, tmp + 1 )
-      ELSEIF Left( cDir, 1 ) == zh_ps()
+      ELSEIF Left( cDir, 1 ) == PathSeparator()
          cDirTemp := Left( cDir, 1 )
          cDir := SubStr( cDir, 2 )
       ELSE
          cDirTemp := ""
       ENDIF
 
-      FOR EACH cDirItem IN zh_ATokens( cDir, zh_ps() )
-         IF ! Right( cDirTemp, 1 ) == zh_ps() .AND. ! cDirTemp == ""
-            cDirTemp += zh_ps()
+      FOR EACH cDirItem IN zh_ATokens( cDir, PathSeparator() )
+         IF ! Right( cDirTemp, 1 ) == PathSeparator() .AND. ! cDirTemp == ""
+            cDirTemp += PathSeparator()
          ENDIF
          IF ! cDirItem == ""  /* Skip root path, if any */
             cDirTemp += cDirItem
@@ -327,7 +327,7 @@ FUNCTION zh_DirUnbuild( cDir )
             zh_vfDirRemove( cDir ) != 0
             RETURN .F.
          ENDIF
-         IF ( tmp := RAt( zh_ps(), cDir ) ) == 0  /* FIXME: use zh_URAt() function */
+         IF ( tmp := RAt( PathSeparator(), cDir ) ) == 0  /* FIXME: use zh_URAt() function */
             EXIT
          ENDIF
          cDir := Left( cDir, tmp - 1 )

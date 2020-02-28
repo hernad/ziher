@@ -81,14 +81,14 @@ FUNCTION __zhdoc_DirLastModified( cDir )
 
       IF zh_vfDirExists( cDir + _ZHDOC_SRC_SUBDIR )
 
-         FOR EACH aFile IN zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" )
+         FOR EACH aFile IN zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + PathSeparator() + zh_osFileMask(), "D" )
             IF "D" $ aFile[ F_ATTR ] .AND. ;
                !( aFile[ F_NAME ] == "." .OR. aFile[ F_NAME ] == ".." )
 
-               cDocDir := cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ]
+               cDocDir := cDir + _ZHDOC_SRC_SUBDIR + PathSeparator() + aFile[ F_NAME ]
 
-               FOR EACH aDocFile IN zh_vfDirectory( cDocDir + zh_ps() + "*" + _ZHDOC_SRC_EXT )
-                  IF zh_vfTimeGet( cDocDir + zh_ps() + aDocFile[ F_NAME ], @tDoc ) .AND. ;
+               FOR EACH aDocFile IN zh_vfDirectory( cDocDir + PathSeparator() + "*" + _ZHDOC_SRC_EXT )
+                  IF zh_vfTimeGet( cDocDir + PathSeparator() + aDocFile[ F_NAME ], @tDoc ) .AND. ;
                      tLast < tDoc
                      tLast := tDoc
                   ENDIF
@@ -119,11 +119,11 @@ FUNCTION __zhdoc_LoadDir( cDir, cName, aErrMsg )
             hMeta[ "_COMPONENT" ] := cName
          ENDIF
 
-         FOR EACH aFile IN ASort( zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + zh_osFileMask(), "D" ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
+         FOR EACH aFile IN ASort( zh_vfDirectory( cDir + _ZHDOC_SRC_SUBDIR + PathSeparator() + zh_osFileMask(), "D" ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
             IF "D" $ aFile[ F_ATTR ] .AND. ;
                !( aFile[ F_NAME ] == "." .OR. aFile[ F_NAME ] == ".." )
 
-               __zhdoc__read_langdir( aEntry, cDir + _ZHDOC_SRC_SUBDIR + zh_ps() + aFile[ F_NAME ], hMeta, aErrMsg )
+               __zhdoc__read_langdir( aEntry, cDir + _ZHDOC_SRC_SUBDIR + PathSeparator() + aFile[ F_NAME ], hMeta, aErrMsg )
             ENDIF
          NEXT
       ENDIF
@@ -139,8 +139,8 @@ STATIC PROCEDURE __zhdoc__read_langdir( aEntry, cDir, hMeta, aErrMsg )
    hMeta[ "_LANG" ] := zh_FNameName( zh_DirSepDel( cDir ) )
 
    nCount := 0
-   FOR EACH aFile IN ASort( zh_vfDirectory( cDir + zh_ps() + "*" + _ZHDOC_SRC_EXT ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
-      __zhdoc__read_file( aEntry, cDir + zh_ps() + aFile[ F_NAME ], hMeta, aErrMsg )
+   FOR EACH aFile IN ASort( zh_vfDirectory( cDir + PathSeparator() + "*" + _ZHDOC_SRC_EXT ),,, {| tmp1, tmp2 | tmp1[ F_NAME ] < tmp2[ F_NAME ] } )
+      __zhdoc__read_file( aEntry, cDir + PathSeparator() + aFile[ F_NAME ], hMeta, aErrMsg )
       ++nCount
    NEXT
 

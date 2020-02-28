@@ -9,7 +9,7 @@ const config = {
   target: 'node',
   entry: {
     "extension": './src/extension.js',
-    "debugger": './src/client/zh_debugger.js'
+    "zh_debugger": './src/client/debugAdapter.ts'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -21,10 +21,26 @@ const config = {
     vscode: 'commonjs vscode'
   },
   resolve: {
-    extensions: ['.js']
+    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
+    extensions: ['.ts', '.js']
   },
   module: {
     rules: [
+      {
+        test: /\.ts$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+                //compilerOptions: {
+                //    "module": "es6" // override `tsconfig.json` so that TypeScript emits native JavaScript modules.
+                //}
+            }
+          }
+
+        ]
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/

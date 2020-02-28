@@ -8,7 +8,7 @@ HB_BUILD_WARN := no
 HB_BUILD_MODE := c
 
 C_SOURCES := \
-   _hb_hpdf.c \
+   _zh_hpdf.c \
    hpdf_3dmeasure.c \
    hpdf_annotation.c \
    hpdf_array.c \

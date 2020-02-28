@@ -9,8 +9,8 @@ var net = require("net");
 var path = require("path");
 var fs = require("fs");
 var cp = require("child_process");
-var localize = require("./myLocalize.js").localize;
-var process = require("process")
+var localize = require("./localize.js").localize;
+var process = require("process");
 
 /** @requires vscode-debugadapter   */
 /// CLASS DEFINITION
@@ -20,31 +20,43 @@ var process = require("process")
  * @class
  */
 var ziherDebugSession = function () {
+
 	/** @type{net.socket} */
 	this.socket = null;
+
 	/** @type{boolean} */
 	this.Debbugging = true;
+
 	this.sourcePaths = [];
 	/** @description the current process line function
-	 * @type{function(string)} */
+	
+	* @type{function(string)} */
 	this.processLine = undefined;
+
 	this.breakpoints = {};
+
 	/** @type{string[]} */
 	this.variableCommands = [];
+
 	/** @type{string[]} */
 	this.variableEvaluations = [];
+
 	/** @type{DebugProtocol.StackResponse} */
 	this.stack = [];
+
 	this.stackArgs = [];
 	this.justStart = true;
+
 	/** @type{string} */
 	this.queue = "";
+
 	this.evaluateResponses = [];
+
 	/** @type{DebugProtocol.CompletionsResponse} */
 	this.completionsResponse = undefined;
 }
 
-ziherDebugSession.prototype = new debugadapter.DebugSession();
+ziherDebugSession.prototype = new debugadapter.LoggingDebugSession();
 
 /**
  * process data from debugging process.
@@ -56,7 +68,9 @@ ziherDebugSession.prototype.processInput = function (buff) {
 	for (var i = 0; i < lines.length; i++) {
 		var line = lines[i];
 		//if (!line.startsWith("LOG:")) this.sendEvent(new debugadapter.OutputEvent(">>"+line+"\r\n","stdout"))
-		if (line.length == 0) continue;
+		if (line.length == 0)
+			continue;
+
 		if (this.processLine) {
 			this.processLine(line);
 			continue;
@@ -112,8 +126,9 @@ ziherDebugSession.prototype.processInput = function (buff) {
  * @param args{debugprotocol.InitializeRequestArguments} 
  */
 ziherDebugSession.prototype.initializeRequest = function (response, args) {
+
 	if (args.locale) {
-		require("./myLocalize.js").reInit(args);
+		require("./localize.js").reInit(args);
 	}
 
 	response.body = response.body || {};
@@ -141,6 +156,7 @@ ziherDebugSession.prototype.initializeRequest = function (response, args) {
 };
 
 ziherDebugSession.prototype.configurationDoneRequest = function (response, args) {
+
 	if (this.startGo) {
 		this.command("GO\r\n");
 		this.sendEvent(new debugadapter.ContinuedEvent(1, true));
@@ -149,7 +165,10 @@ ziherDebugSession.prototype.configurationDoneRequest = function (response, args)
 }
 
 ziherDebugSession.prototype.launchRequest = function (response, args) {
+
 	var port = args.port ? args.port : 6110;
+	console.log(`launchRequest - starts the server listen ${port}`);
+
 	var tc = this;
 	this.justStart = true;
 	this.sourcePaths = []; //[path.dirname(args.program)];
@@ -162,7 +181,7 @@ ziherDebugSession.prototype.launchRequest = function (response, args) {
 	this.Debugging = !args.noDebug;
 	this.startGo = args.stopOnEntry === false || args.noDebug === true;
 
-	// starts the server
+	
 	var server = net.createServer(socket => {
 		tc.evaluateClient(socket, server, args)
 	}).listen(port);
@@ -170,14 +189,16 @@ ziherDebugSession.prototype.launchRequest = function (response, args) {
 	// starts the program
 	//console.log("start the program");
 	switch (args.terminalType) {
+
 		case 'external':
 		case 'integrated':
 			this.runInTerminalRequest({
 				"kind": args.terminalType,
 				"cwd": args.workingDir,
 				"args": [args.program].concat(args.arguments ? args.arguments : [])
-			})
+			});
 			break;
+
 		case 'none':
 		default:
 			var process;
@@ -185,14 +206,17 @@ ziherDebugSession.prototype.launchRequest = function (response, args) {
 				process = cp.spawn(args.program, args.arguments, { cwd: args.workingDir });
 			else
 				process = cp.spawn(args.program, { cwd: args.workingDir });
+
 			process.on("error", e => {
 				tc.sendEvent(new debugadapter.OutputEvent(localize("ziher.dbgError1", args.program, args.workingDir), "stderr"))
 				tc.sendEvent(new debugadapter.TerminatedEvent());
-				return
-			})
+				return;
+			});
+
 			process.stderr.on('data', data =>
 				tc.sendEvent(new debugadapter.OutputEvent(data.toString(), "stderr"))
 			);
+
 			process.stdout.on('data', data =>
 				tc.sendEvent(new debugadapter.OutputEvent(data.toString(), "stdout"))
 			);
@@ -202,27 +226,33 @@ ziherDebugSession.prototype.launchRequest = function (response, args) {
 }
 
 ziherDebugSession.prototype.attachRequest = function (response, args) {
+
 	var port = args.port ? args.port : 6110;
 	var tc = this;
 	this.justStart = true;
 	this.sourcePaths = []; //[path.dirname(args.program)];
+
 	if ("workspaceRoot" in args) {
 		this.sourcePaths.push(args.workspaceRoot);
 	}
+
 	if ("sourcePaths" in args) {
 		this.sourcePaths = this.sourcePaths.concat(args.sourcePaths);
 	}
+
 	this.Debugging = !args.noDebug;
 	this.startGo = true;
-	// starts the server
+	console.log(`attachRequest - starts the server listen ${port}`);
 	var server = net.createServer(socket => {
 		tc.evaluateClient(socket, server, args)
 	}).listen(port);
+
 	this.sendResponse(response);
 }
 
-ziherDebugSession.prototype.SetProcess = function (pid) {
-	var tc = this
+ziherDebugSession.prototype.setProcess = function (pid) {
+
+	var tc = this;
 	this.processId = pid;
 	var interval = setInterval(() => {
 		try {
@@ -231,7 +261,8 @@ ziherDebugSession.prototype.SetProcess = function (pid) {
 			tc.sendEvent(new debugadapter.TerminatedEvent());
 			clearInterval(interval);
 		}
-	}, 1000)
+	}, 1000);
+
 }
 
 ziherDebugSession.prototype.disconnectRequest = function (response, args) {
@@ -245,10 +276,12 @@ ziherDebugSession.prototype.terminateRequest = function (response, args) {
 }
 
 ziherDebugSession.prototype.evaluateClient = function (socket, server, args) {
+
 	var nData = 0;
 	var tc = this;
 	var exeTarget = path.basename(args.program, path.extname(args.program)).toLowerCase();
 	socket.on("data", data => {
+
 		if (tc.socket && nData > 0) {
 			tc.processInput(data.toString())
 			return;
@@ -257,10 +290,12 @@ ziherDebugSession.prototype.evaluateClient = function (socket, server, args) {
 			return
 		}
 		nData++;
-		// the client sended exe name and process ID		
+
+		// the client sent exe name and process ID		
 		var lines = data.toString().split("\r\n");
 		if (lines.length < 2) //todo: check if they arrive in 2 tranches.
 			return;
+
 		var clPath = path.basename(lines[0], path.extname(lines[0])).toLowerCase();
 		if (clPath != exeTarget) {
 			socket.write("NO\r\n")
@@ -268,11 +303,13 @@ ziherDebugSession.prototype.evaluateClient = function (socket, server, args) {
 			return;
 		}
 		socket.write("HELLO\r\n")
-		tc.SetProcess(parseInt(lines[1]));
+		tc.setProcess(parseInt(lines[1]));
+
 		//connected!
 		tc.sendEvent(new debugadapter.InitializedEvent());
 		server.close();
 		tc.socket = socket;
+
 		socket.removeAllListeners("data");
 		socket.on("data", data => {
 			tc.processInput(data.toString())
@@ -284,6 +321,7 @@ ziherDebugSession.prototype.evaluateClient = function (socket, server, args) {
 }
 
 ziherDebugSession.prototype.command = function (cmd) {
+
 	if (this.justStart)
 		this.queue += cmd;
 	else
@@ -296,13 +334,16 @@ ziherDebugSession.prototype.command = function (cmd) {
  * @param args{DebugProtocol.StackTraceArguments} arguments
  */
 ziherDebugSession.prototype.stackTraceRequest = function (response, args) {
+
 	if (this.stack.length == 0)
 		this.command("STACK\r\n");
+
 	this.stack.push(response);
 	this.stackArgs.push(args);
 }
 
 ziherDebugSession.prototype.threadsRequest = function (response) {
+
 	response.body =
 	{
 		threads:
@@ -310,7 +351,8 @@ ziherDebugSession.prototype.threadsRequest = function (response) {
 				new debugadapter.Thread(1, "Main Thread")
 			]
 	};
-	this.sendResponse(response)
+
+	this.sendResponse(response);
 }
 
 /** https://stackoverflow.com/questions/33086985/how-to-obtain-case-exact-path-of-a-file-in-node-js-on-windows
@@ -318,13 +360,20 @@ ziherDebugSession.prototype.threadsRequest = function (response) {
  * @returns {string|undefined}
  */
 function getRealPath(filePath) {
-	if (!process.platform.startsWith("win")) return filePath;
+
+	console.log(`getRealPath ${filePath}`);
+	if (!process.platform.startsWith("win")) 
+	   return filePath;
+
 	/** @type {number} */
 	var i;
+	
 	/** @type {string} */
 	var dirname = path.dirname(filePath);
+
 	/** @type {string} */
 	var lowerFileName = path.basename(filePath).toLowerCase();
+	
 	/** @type {Array.<string>} */
 	var fileNames = fs.readdirSync(dirname);
 
@@ -336,6 +385,7 @@ function getRealPath(filePath) {
 }
 
 ziherDebugSession.prototype.sendStack = function (line) {
+
 	var nStack = parseInt(line.substring(6));
 	var frames = [];
 	frames.length = nStack;
@@ -343,7 +393,8 @@ ziherDebugSession.prototype.sendStack = function (line) {
 	this.processLine = function (line) {
 		var infos = line.split(":");
 		for (i = 0; i < infos.length; i++) infos[i] = infos[i].replace(";", ":")
-		var completePath = infos[0]
+		var completePath = infos[0];
+		console.log(`completePath=${completePath}`);
 		var found = false;
 		if (path.isAbsolute(infos[0]) && fs.existsSync(infos[0])) {
 			completePath = getRealPath(infos[0]);
@@ -380,6 +431,7 @@ ziherDebugSession.prototype.sendStack = function (line) {
 
 /// VARIABLES
 ziherDebugSession.prototype.scopesRequest = function (response, args) {
+
 	// save wanted stack
 	this.currentStack = args.frameId + 1;
 
@@ -388,17 +440,20 @@ ziherDebugSession.prototype.scopesRequest = function (response, args) {
 }
 
 ziherDebugSession.prototype.sendScope = function (inError) {
+
 	// reset references
 	this.variableCommands = [];
 	if (inError)
-		this.variableCommands.push("ERROR_VAR")
+		this.variableCommands.push("ERROR_VAR");
+
 	this.variableCommands = this.variableCommands.concat([
 		"LOCALS",
 		"PUBLICS",
 		"PRIVATES",
 		"PRIVATE_CALLEE",
-		"STATICS"]
-	);
+		"STATICS"
+	]);
+
 	//TODO: "GLOBALS","EXTERNALS"
 	this.varResp = [];
 	this.varResp.length = this.variableCommands.length;
@@ -425,36 +480,42 @@ ziherDebugSession.prototype.sendScope = function (inError) {
 }
 
 ziherDebugSession.prototype.variablesRequest = function (response, args) {
-	var hbStart = args.start ? args.start + 1 : 1;
-	var hbCount = args.count ? args.count : 0;
-	var prefix;
+
+	var zhStart = args.start ? args.start + 1 : 1;
+	var zhCount = args.count ? args.count : 0;
+	//var prefix;
 	if (args.variablesReference <= this.variableCommands.length) {
 		this.varResp[args.variablesReference - 1] = response;
 		this.command(`${this.variableCommands[args.variablesReference - 1]}\r\n` +
-			`${this.currentStack}:${hbStart}:${hbCount}\r\n`);
+			`${this.currentStack}:${zhStart}:${zhCount}\r\n`);
 	} else
-		this.sendResponse(response)
+		this.sendResponse(response);
 }
 
+
 ziherDebugSession.prototype.getVarReference = function (line, eval) {
+
 	var r = this.variableCommands.indexOf(line);
-	if (r >= 0) return r + 1;
+	if (r >= 0)
+		return r + 1;
+
 	var infos = line.split(":");
 	if (infos.length > 4) { //the value can contains : , we need to rejoin it.
 		infos[2] = infos.splice(2).join(":").slice(0, -1);
 		infos.length = 3;
-		line = infos.join(":") + ":"
+		line = infos.join(":") + ":";
 	}
-	this.variableCommands.push(line)
-	this.variableEvaluations.push(eval)
-	//this.sendEvent(new debugadapter.OutputEvent("added variable command:'"+line+"'\r\n","stdout"))
+	this.variableCommands.push(line);
+	this.variableEvaluations.push(eval);
+	this.sendEvent(new debugadapter.OutputEvent("added variable command:'"+line+"'\r\n","stdout"))
 	return this.variableCommands.length;
 }
 
 ziherDebugSession.prototype.getVariableFormat = function (dest, type, value, valueName, line, id) {
+
 	if (type == "C") {
-		value = value.replace(/\\\$\\n/g, "\n")
-		value = value.replace(/\\\$\\r/g, "\r")
+		value = value.replace(/\\\$\\n/g, "\n");
+		value = value.replace(/\\\$\\r/g, "\r");
 	}
 	dest[valueName] = value;
 	dest.type = type;
@@ -467,19 +528,22 @@ ziherDebugSession.prototype.getVariableFormat = function (dest, type, value, val
 			dest.evaluateName += "]";
 	}
 	switch (type) {
+
 		case "A":
 			dest.variablesReference = this.getVarReference(line, dest.evaluateName + "[");
 			dest[valueName] = `ARRAY(${value})`;
 			dest.indexedVariables = parseInt(value);
 			break;
+
 		case "H":
 			dest.variablesReference = this.getVarReference(line, dest.evaluateName + "[");
 			dest[valueName] = `HASH(${value})`;
 			dest.namedVariables = parseInt(value);
 			break;
+
 		case "O":
 			dest.variablesReference = this.getVarReference(line, dest.evaluateName + ":");
-			var infos = value.split(" ")
+			var infos = value.split(" ");
 			dest[valueName] = `CLASS ${infos[0]}`;
 			dest.namedVariables = parseInt(infos[1]);
 			break;
@@ -487,7 +551,9 @@ ziherDebugSession.prototype.getVariableFormat = function (dest, type, value, val
 	return dest;
 }
 
+
 ziherDebugSession.prototype.sendVariables = function (id, line) {
+	
 	var vars = [];
 	this.processLine = function (line) {
 		if (line.startsWith("END")) {
@@ -511,6 +577,7 @@ ziherDebugSession.prototype.sendVariables = function (id, line) {
 
 /// PROGRAM FLOW
 ziherDebugSession.prototype.continueRequest = function (response, args) {
+
 	this.command("GO\r\n");
 	this.sendResponse(response);
 }
@@ -521,23 +588,26 @@ ziherDebugSession.prototype.nextRequest = function (response, args) {
 }
 
 ziherDebugSession.prototype.stepInRequest = function (response, args) {
+
 	this.command("STEP\r\n");
 	this.sendResponse(response);
 }
 
 ziherDebugSession.prototype.stepOutRequest = function (response, args) {
+	
 	this.command("EXIT\r\n");
 	this.sendResponse(response);
 }
 
 ziherDebugSession.prototype.pauseRequest = function (response, args) {
+
 	this.command("PAUSE\r\n");
 	this.sendResponse(response);
 }
 
 /// breakpoints
 ziherDebugSession.prototype.setBreakPointsRequest = function (response, args) {
-	
+
 	var message = "";
 	// prepare a response
 	response.body = { "breakpoints": [] };
@@ -559,19 +629,24 @@ ziherDebugSession.prototype.setBreakPointsRequest = function (response, args) {
 	// check current breakpoints
 	dest.response = response;
 	for (var i = 0; i < args.breakpoints.length; i++) {
+
 		var breakpoint = args.breakpoints[i];
 		response.body.breakpoints[i] = new debugadapter.Breakpoint(false, breakpoint.line);
-		var thisBreakpoint = "BREAKPOINT\r\n"
-		thisBreakpoint += `+:${src}:${breakpoint.line}`
+		var thisBreakpoint = "BREAKPOINT\r\n";
+		thisBreakpoint += `+:${src}:${breakpoint.line}`;
+
 		if ('condition' in breakpoint && breakpoint.condition.length > 0) {
 			thisBreakpoint += `:?:${breakpoint.condition.replace(/:/g, ";")}`
 		}
+
 		if ('hitCondition' in breakpoint) {
 			thisBreakpoint += `:C:${breakpoint.hitCondition}`
 		}
+
 		if ('logMessage' in breakpoint) {
 			thisBreakpoint += `:L:${breakpoint.logMessage.replace(/:/g, ";")}`
 		}
+
 		if (dest.hasOwnProperty(breakpoint.line) && dest[breakpoint.line].substring(1) == thisBreakpoint) { // breakpoint already exists
 			dest[breakpoint.line] = thisBreakpoint
 			response.body.breakpoints[i].verified = true;
@@ -586,26 +661,27 @@ ziherDebugSession.prototype.setBreakPointsRequest = function (response, args) {
 	for (var i in dest) {
 		if (dest.hasOwnProperty(i) && i != "response") {
 			if (dest[i].substring(0, 1) == "-") {
-				message += "BREAKPOINT\r\n"
-				message += `-:${src}:${i}\r\n`
+				message += "BREAKPOINT\r\n";
+				message += `-:${src}:${i}\r\n`;
 				dest[i] = "-";
 			}
 		}
 	}
 	this.checkBreakPoint(src);
-	//this.sendEvent(new debugadapter.OutputEvent("send: "+message,"console"))
-	this.command(message)
+	this.sendEvent(new debugadapter.OutputEvent("send: "+message,"console"))
+	this.command(message);
 	//this.sendResponse(response)
 }
 
 ziherDebugSession.prototype.processBreak = function (line) {
-	
-	//this.sendEvent(new debugadapter.OutputEvent("received: "+line+"\r\n","console"))
+
+	this.sendEvent(new debugadapter.OutputEvent("received: "+line+"\r\n","console"))
 	var aInfos = line.split(":");
-	var dest
+	var dest;
+
 	if (!(aInfos[1] in this.breakpoints)) {
 		//error 
-		return
+		return;
 	}
 	aInfos[2] = parseInt(aInfos[2]);
 	aInfos[3] = parseInt(aInfos[3]);
@@ -634,7 +710,7 @@ ziherDebugSession.prototype.processBreak = function (line) {
 }
 
 ziherDebugSession.prototype.checkBreakPoint = function (src) {
-	
+
 	var dest = this.breakpoints[src];
 	for (var i in dest) {
 		if (dest.hasOwnProperty(i) && i != "response") {
@@ -649,7 +725,7 @@ ziherDebugSession.prototype.checkBreakPoint = function (src) {
 
 /// Exception / error
 ziherDebugSession.prototype.setExceptionBreakPointsRequest = function (response, args) {
-	
+
 	var errorType = args.filters.length;
 	// 0 - no stop on error
 	// 1 - stop only ut-of-sequence
@@ -664,7 +740,7 @@ ziherDebugSession.prototype.setExceptionBreakPointsRequest = function (response,
 /// Evaluation
 
 ziherDebugSession.prototype.evaluateRequest = function (response, args) {
-	
+
 	response.body = {};
 	response.body.result = args.expression;
 	this.evaluateResponses.push(response);
@@ -676,10 +752,11 @@ ziherDebugSession.prototype.evaluateRequest = function (response, args) {
  * @param line{string} the income line
  */
 ziherDebugSession.prototype.processExpression = function (line) {
-	
+
 	// EXPRESSION:{frame}:{type}:{result}
 	var infos = line.split(":");
-	if (infos.length > 4) { //the value can contains : , we need to rejoin it.
+	//the value can contains : , we need to rejoin it.
+	if (infos.length > 4) { 
 		infos[3] = infos.splice(3).join(":");
 	}
 	var resp = this.evaluateResponses.shift();
@@ -700,23 +777,29 @@ ziherDebugSession.prototype.processExpression = function (line) {
  * @param args{DebugProtocol.CompletionsArguments}
  */
 ziherDebugSession.prototype.completionsRequest = function (response, args) {
+
 	this.completionsResponse = response;
 	this.command(`COMPLETITION\r\n${args.frameId + 1 || this.currentStack}:${args.text}\r\n`)
+
 }
 
 /**
  * @param line{string}
  */
 ziherDebugSession.prototype.processCompletion = function () {
-	
+
 	this.processLine = function (line) {
 		if (line == "END") {
 			this.sendResponse(this.completionsResponse);
 			this.processLine = undefined;
 			return;
 		}
-		if (!this.completionsResponse.body) this.completionsResponse.body = {};
-		if (!this.completionsResponse.body.targets) this.completionsResponse.body.targets = [];
+		if (!this.completionsResponse.body)
+			this.completionsResponse.body = {};
+
+		if (!this.completionsResponse.body.targets)
+			this.completionsResponse.body.targets = [];
+
 		var type = line.substr(0, line.indexOf(":"));
 		line = line.substr(line.indexOf(":") + 1);
 		var thisCompletion = new debugadapter.CompletionItem(line, 0);
@@ -731,6 +814,7 @@ ziherDebugSession.prototype.processCompletion = function () {
 	}
 }
 
-
 /// END
-debugadapter.DebugSession.run(ziherDebugSession);
+console.log('debugger - ne kontam');
+debugadapter.LoggingDebugSession.run( ziherDebugSession );
+console.log('debugger - ne kontam - kraj');

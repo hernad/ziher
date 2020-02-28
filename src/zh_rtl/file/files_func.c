@@ -588,7 +588,8 @@ ZH_FUNC( ZH_OSERROR )
    zh_retni( zh_fsOsError() );
 }
 
-ZH_FUNC( ZH_PS )
+// ZH_FUNC( PathSeparator )
+ZH_FUNC( PATHSEPARATOR )
 {
    zh_retc_const( ZH_OS_PATH_DELIM_CHR_STRING );
 }

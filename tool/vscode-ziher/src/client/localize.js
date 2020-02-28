@@ -2,10 +2,11 @@
   License: GPL 2.0
   Credits: source code based on "https://github.com/APerricone/harbourCodeExtension"
   */
- 
-var fs = require("fs");
-var path = require('path');
-var localize = require("vscode-nls").loadMessageBundle();
+
+
+const fs = require("fs");
+const path = require('path');
+const localize = require("vscode-nls").loadMessageBundle();
 
 var messages;
 
@@ -15,6 +16,7 @@ function Init() {
     else
         reInit("");
 }
+
 Init();
 
 function reInit(config) {
@@ -24,9 +26,7 @@ function reInit(config) {
     catch (error) {
         messages = JSON.parse(fs.readFileSync(path.resolve(__dirname, path.join('..', "package.nls.json")), 'utf8'));
     }
-}
 
-function myLocalize() {
     var arg = Array.prototype.slice.call(arguments);
     if (arg[0] in messages) {
         arg[0] = messages[arg[0]];
@@ -37,5 +37,9 @@ function myLocalize() {
     return localize.apply(null, arg)
 }
 
+//exports.reInit = reInit;
+//exports.localize = myLocalize;
+//export {reInit, localize};
+
 exports.reInit = reInit;
-exports.localize = myLocalize;
+exports.localize = localize;

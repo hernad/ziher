@@ -6,7 +6,7 @@
 -hblib
 -inc
 
--o${hb_name}
+-o${zh_name}
 
 -warn=low
 -cpp=no
@@ -46,7 +46,7 @@
 -cflag=-DPNG_ALLOCATED{allpocc}
 -cflag=-U__COREDLL__{mingwarm}
 
-_hb_hpdf.c
+_zh_hpdf.c
 
 hpdf_3dmeasure.c
 hpdf_annotation.c

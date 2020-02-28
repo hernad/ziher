@@ -194,7 +194,7 @@ METHOD DrawText( nRow, nCol, xValue, cPicture, nFontSize, cFontName, nAngle, aNR
    nAngle    := iif( nAngle == NIL, ::nAngle, nAngle )
 
    // IF ::lUTF8 .AND. ValType( xValue ) == "C" .AND. !( ::nType == PDF_TXT_PORTRAIT .OR. ::nType == PDF_TXT_LANDSCAPE )
-   // xValue := hb_UTF8ToStr( xValue )
+   // xValue := zh_UTF8ToStr( xValue )
    // ENDIF
    cTexto  := Transform( xValue, cPicture )
    ::nCol := nCol + Len( cTexto )

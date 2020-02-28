@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Z18",
+            "type": "ziher-dbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/bazel-bin/Z18/src/Z18-klijent",
+            "arguments": [
+                "--data-home",
+                "/home/hernad/F18/F18/data",
+                "--dbf-prefix",
+                "9",
+                "-h", 
+                "192.168.122.244",
+                "-y",
+                "5432",
+                "-ua",
+                "admin",
+                "-pa",
+                "boutpgmin",
+                "-u",
+                "knjig",
+                "-p",
+                "knjig",
+                "-d",
+                "vindija_2020",
+                "--kalk"
+            ],
+            "workingDir": "/home/hernad/F18/F18",
+            "sourcePaths": [
+                "${workspaceFolder}/Z18/src",
+                "${workspaceFolder}/Z18/src/common",
+                "${workspaceFolder}/Z18/src/common_legacy",
+                "${workspaceFolder}/Z18/src/core",
+                "${workspaceFolder}/Z18/src/core_dbf",
+            ],
+            "terminalType": "integrated"
+        }
+    ]
+}

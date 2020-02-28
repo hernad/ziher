@@ -26,7 +26,12 @@ function activate(context) {
 	
 	var serverModule = context.asAbsolutePath( path.join('dist','zh_server'));
 
-	var debugOptions = { execArgv: ["--nolazy", "--inspect-brk=21780"] };
+	var debugOptions = { 
+		execArgv: [
+			"--nolazy", 
+			"--inspect-brk=21780"
+	    ]
+	};
 	var serverOptions = {
 		run : { 
 			module: serverModule, 
@@ -54,7 +59,6 @@ function activate(context) {
 	context.subscriptions.push(langCli.start());
 	vscode.commands.registerCommand('ziher.getdbgcode', zh_get_debugger_code);
 	//vscode.languages.registerFoldingRangeProvider(['ziher'], new decorator.HBProvider());
-	
 	
 	doc_creator.activate(context, langCli);
 	decorator.activate(context, langCli);

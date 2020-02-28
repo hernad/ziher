@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "zh_class_api.h": "c",
+        "zh_io.h": "c",
+        "zh_comp.h": "c",
+        "zh_ver_bld.h": "c",
+        "zh_date.h": "c",
+        "*.zhh": "c",
+        "zh_set.h": "c",
+        "zh_api.h": "c",
+        "zh_regex.h": "c",
+        "dbf_cdx_1.h": "c"
+    }
+}

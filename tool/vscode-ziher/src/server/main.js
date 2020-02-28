@@ -161,17 +161,17 @@ connection.onDidChangeConfiguration(params => {
     //var searchExclude = params.settings.search.exclude;
     // minimatch
     aIncludeDirs = params.settings.ziher.extraIncludePaths;
-    aIncludeDirs.splice(0, 0, ".")
+    aIncludeDirs.splice(0, 0, ".");
     workspaceDepth = params.settings.ziher.workspaceDepth;
     wordBasedSuggestions = params.settings.editor.wordBasedSuggestions
     parse_workspace();
 
 })
 
-function parse_zh_dir(dir, onlyHeader, depth, subirPaths) {
+function parse_zh_dir(dir, onlyHeader, depth, subDirPaths) {
 
-    if (!subirPaths)
-        subirPaths = [];
+    if (!subDirPaths)
+        subDirPaths = [];
 
     fs.readdir(dir, function (err, aFiles) {
         if (aFiles == undefined)
@@ -189,15 +189,15 @@ function parse_zh_dir(dir, onlyHeader, depth, subirPaths) {
                 }
                 var modeCLang = (ext.startsWith(DOT_C_EXT) && ext != DOT_ZIHER_HEADER_EXT) || ext == DOT_C_HEADER_EXT
                 if (modeCLang) {
-                    var ziherFile = path.basename(fileName)
+                    var ziherFile = path.basename(fileName);
                     var pos = ziherFile.lastIndexOf(".");
                     ziherFile = ziherFile.substr(0, pos < 0 ? ziherFile.length : pos) + DOT_ZIHER_EXT;
-                    if (subirPaths.findIndex((v) => v.indexOf(ziherFile) >= 0) >= 0)
+                    if (subDirPaths.findIndex((v) => v.indexOf(ziherFile) >= 0) >= 0)
                         continue;
                 }
                 if (ext == DOT_ZIHER_EXT || ext == DOT_ZIHER_HEADER_EXT || modeCLang) {
 
-                    subirPaths.push(completePath);
+                    subDirPaths.push(completePath);
                     var fileUri = Uri.file(completePath);
                     var provider = new zhProvider.ZhLangProvider(true);
                     provider.parseFile(completePath, fileUri.toString(), modeCLang).then(
@@ -207,7 +207,7 @@ function parse_zh_dir(dir, onlyHeader, depth, subirPaths) {
                     )
                 }
             } else if (info.isDirectory() && depth > 0) {
-                parse_zh_dir(path.join(dir, fileName), onlyHeader, depth - 1, subirPaths);
+                parse_zh_dir(path.join(dir, fileName), onlyHeader, depth - 1, subDirPaths);
             }
         }
     });
@@ -223,9 +223,13 @@ function parse_workspace() {
         // other scheme of uri unsupported
         if (workspaceRoots[i] == null)
             continue;
+        
         /** @type {vscode-uri.default} */
         var uri = Uri.parse(workspaceRoots[i]);
-        if (uri.scheme != "file") return;
+
+        if (uri.scheme != "file") 
+            return;
+
         parse_zh_dir(uri.fsPath, false, workspaceDepth);
     }
 }

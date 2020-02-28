@@ -75,7 +75,7 @@ FUNCTION zh_DirScan( cPath, cFileMask, cAttr )
    RETURN zh_DoScan( zh_DirSepAdd( zh_defaultValue( cPath, "" ) ), ;
       iif( ZH_ISSTRING( cFileMask ), cFileMask, zh_osFileMask() ), ;
       zh_defaultValue( cAttr, "" ), ;
-      zh_ps() )
+      PathSeparator() )
 
 FUNCTION zh_DirRemoveAll( cDir )
 
