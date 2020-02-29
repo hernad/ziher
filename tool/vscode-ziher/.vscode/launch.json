@@ -42,21 +42,11 @@
             "type": "node",
             "request": "attach",
             "protocol": "inspector",
-            "port": 21780,
+			"port": 21780,
+			"timeout": 20000,
             "sourceMaps": true,
 			"outFiles": [
 				"${workspaceRoot}/dist/zh_server.js*"
-			],
-		},
-		{
-            "name": "ZHDebugDebug",
-            "type": "node",
-            "request": "attach",
-            "protocol": "inspector",
-            "port": 26972,
-            "sourceMaps": true,
-			"outFiles": [
-				"${workspaceRoot}/dist/zh_debug.js*"
 			],
 		}
 	],

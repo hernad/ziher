@@ -181,7 +181,7 @@ typedef enum
    ZH_P_SEQEND,                /* 114 END SEQUENCE */
    ZH_P_SEQRECOVER,            /* 115 RECOVER statement */
    ZH_P_SFRAME,                /* 116 sets the statics frame for a function */
-   ZH_P_STATICS,               /* 117 defines the number of statics variables for a PRG */
+   ZH_P_STATICS,               /* 117 defines the number of statics variables for a ZH */
    ZH_P_STATICNAME,            /* 118 sets the name of static variable */
    ZH_P_SWAPALIAS,             /* 119 restores the current workarea number from the eval stack */
    ZH_P_TRUE,                  /* 120 pushes true on the virtual machine stack */

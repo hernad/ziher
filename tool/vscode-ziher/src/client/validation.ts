@@ -3,10 +3,10 @@
   Credits: source code based on "https://github.com/APerricone/harbourCodeExtension"
   */
  
-var vscode = require('vscode');
-var cp = require("child_process");
-var path = require("path");
-var localize = require("./localize.js").localize;
+import * as vscode from 'vscode';
+const cp = require("child_process");
+const path = require("path");
+const localize = require("./localize.js").localize;
 
 var diagnosticCollection;
 

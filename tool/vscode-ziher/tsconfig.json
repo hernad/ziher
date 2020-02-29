@@ -13,7 +13,8 @@
         "strict": false
 	},
 	"include": [
-           "src/client"
+           "src/client",
+           "src/server",
 	],
     "exclude": [
         "node_modules",

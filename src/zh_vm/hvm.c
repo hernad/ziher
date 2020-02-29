@@ -143,7 +143,7 @@ static ZIHER zh_vmDoBlock( void );             /* executes a codeblock */
 static void    zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and params supplied */
 static void    zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and variable number of params supplied */
 static void    zh_vmSFrame( PZH_SYMB pSym );     /* sets the statics frame for a function */
-static void    zh_vmStatics( PZH_SYMB pSym, ZH_USHORT uiStatics ); /* increases the global statics array to hold a PRG statics */
+static void    zh_vmStatics( PZH_SYMB pSym, ZH_USHORT uiStatics ); /* increases the global statics array to hold a ZH statics */
 static void    zh_vmInitThreadStatics( ZH_USHORT uiCount, const ZH_BYTE * pCode ); /* mark thread static variables */
 static void    zh_vmStaticsClear( void );       /* clear complex static variables */
 static void    zh_vmStaticsRelease( void );     /* release arrays with static variables */
@@ -195,7 +195,7 @@ static void    zh_vmMsgIndexReference( PZH_ITEM pRefer, PZH_ITEM pObject, PZH_IT
 
 static void    zh_vmLocalName( ZH_USHORT uiLocal, const char * szLocalName ); /* locals and parameters index and name information for the debugger */
 static void    zh_vmStaticName( ZH_BYTE bIsGlobal, ZH_USHORT uiStatic, const char * szStaticName ); /* statics vars information for the debugger */
-static void    zh_vmModuleName( const char * szModuleName ); /* PRG and function name information for the debugger */
+static void    zh_vmModuleName( const char * szModuleName ); /* ZH and function name information for the debugger */
 
 static void    zh_vmDebugEntry( int nMode, int nLine, const char * szName, int nIndex, PZH_ITEM pFrame );
 static void    zh_vmDebuggerExit( ZH_BOOL fRemove );      /* shuts down the debugger */
@@ -224,7 +224,7 @@ static ZH_BOOL zh_bProfiler = ZH_FALSE;                        /* profiler statu
 #endif
 
 #if defined( ZH_PRG_TRACE )
-static ZH_BOOL zh_bTracePrgCalls = ZH_FALSE; /* prg tracing is off */
+static ZH_BOOL zh_bTracePrgCalls = ZH_FALSE; /* zh tracing is off */
 #  define ZH_TRACE_PRG( _TRMSG_ ) if( zh_bTracePrgCalls ) ZH_TRACE( ZH_TR_ALWAYS, _TRMSG_ )
 #else
 #  define ZH_TRACE_PRG( _TRMSG_ )
@@ -6319,7 +6319,7 @@ static void zh_vmStaticName( ZH_BYTE bIsGlobal, ZH_USHORT uiStatic, const char *
       s_pFunDbgEntry( ZH_DBG_STATICNAME, 0, szStaticName, uiStatic, ( PZH_ITEM ) zh_stackGetStaticsBase() );
 }
 
-static void zh_vmModuleName( const char * szModuleName ) /* PRG and function name information for the debugger */
+static void zh_vmModuleName( const char * szModuleName ) /* ZH and function name information for the debugger */
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmModuleName(%s)", szModuleName ) );
 
@@ -6387,7 +6387,7 @@ static void zh_vmStatics( PZH_SYMB pSym, ZH_USHORT uiStatics ) /* initializes th
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmStatics(%p, %hu)", ( void * ) pSym, uiStatics ) );
 
-   /* statics frame for this PRG */
+   /* statics frame for this ZH */
    pSym->value.pStaticsBase = ( void * ) zh_itemArrayNew( uiStatics );
    pSym->scope.value |= ZH_FS_FRAME;
 }
@@ -12051,7 +12051,7 @@ ZH_FUNC( __OPGETPRF ) /* profiler: It returns an array with an opcode called and
 }
 
 /*
- * Turns on | off tracing of PRG-level function and method calls
+ * Turns on | off tracing of ZH-level function and method calls
  * __TracePrgCalls( <lOnOff> ) --> <lOldValue>
  */
 ZH_FUNC( __TRACEPRGCALLS )

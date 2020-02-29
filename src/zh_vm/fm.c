@@ -542,7 +542,7 @@ void * zh_xalloc( ZH_SIZE nSize )         /* allocates fixed memory, returns NUL
 
       if( zh_tr_level() >= ZH_TR_DEBUG || pTrace->level == ZH_TR_FM )
       {
-         /* NOTE: PRG line number/procname is not very useful during hunting
+         /* NOTE: ZH line number/procname is not very useful during hunting
           * for memory leaks - this is why we are using the previously stored
           * function/line info - this is a location of code that called
           * zh_xalloc()/zh_xgrab()
@@ -635,7 +635,7 @@ void * zh_xgrab( ZH_SIZE nSize )         /* allocates fixed memory, exits on fai
 
       if( zh_tr_level() >= ZH_TR_DEBUG || pTrace->level == ZH_TR_FM )
       {
-         /* NOTE: PRG line number/procname is not very useful during hunting
+         /* NOTE: ZH line number/procname is not very useful during hunting
           * for memory leaks - this is why we are using the previously stored
           * function/line info - this is a location of code that called
           * zh_xalloc()/zh_xgrab()

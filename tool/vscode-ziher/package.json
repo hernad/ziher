@@ -214,11 +214,11 @@
                                 "description": "Automatically stop after launch",
                                 "default": true
                             },
-							"trace": {
-								"type": "boolean",
-								"description": "Enable logging of the Debug Adapter Protocol.",
-								"default": true
-							},
+                            "trace": {
+                                "type": "boolean",
+                                "description": "Enable logging of the Debug Adapter Protocol.",
+                                "default": true
+                            },
                             "sourcePaths": {
                                 "type": "array",
                                 "description": "%ziher.launch.sourcePaths%",
@@ -242,7 +242,7 @@
                             "port": {
                                 "type": "number",
                                 "description": "%ziher.launch.port%",
-                                "default": "6110"
+                                "default": "60110"
                             }
                         }
                     },
@@ -292,6 +292,7 @@
         "copy-webpack-plugin": "^5.1.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.8.2",
+        "vscode": "^1.1.36",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.10"
     }

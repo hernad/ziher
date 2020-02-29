@@ -11,9 +11,9 @@ var methodRegEx = /\s*(meth(?:o(?:d)?)?)\s+(?:(?:(?:proc(?:e(?:d(?:u(?:r(?:e)?)?
 var defineRegEx = /\s*(#\s*define)\s+([^\s\(]+)(?:\(([^\)]*)\))?(\s+.*)?/i;
 var zh_funcRegEx = /ZH_FUNC\s*\(\s*([A-Z0-9_]+)\s*\)/
 
-export function ZhLangProvider(light) {
+export function ZhLangProvider(light: boolean) {
 
-    this.light = light !== undefined ? light : false;
+    this.light = light; //light !== undefined ? light : false;
     this.doGroups = false;
 
     this.Clear();
@@ -289,10 +289,9 @@ function KeywordPos(line, startCol, endCol, text) {
 function Group(type) {
     this.type = type;
 
-    /**  @type {KeywordPos[]} */
+    /**  @type {aKeywordPositions[]} */
     this.aKeywordPositions = [];
 }
-
 
 Group.prototype.addRange = function (line, startCol, endCol, text) {
     this.aKeywordPositions.push(new KeywordPos(line, startCol, endCol, text));
@@ -352,6 +351,7 @@ ZhLangProvider.prototype.linePrepare = function (line) {
 
     var lineStart = 0;
     for (var i = 0; i < this.currLine.length; i++) {
+
         precC = c;
         precJustStart = justStart;
         c = this.currLine[i];
@@ -415,6 +415,7 @@ ZhLangProvider.prototype.linePrepare = function (line) {
                 this.firstLineCommment = this.lineNr;
             return;
         }
+        
         if (c == '"') {
             string = c;
             stringStart = i;
@@ -423,11 +424,13 @@ ZhLangProvider.prototype.linePrepare = function (line) {
             }
             continue;
         }
+        
         if (c == "'") {
             string = c;
             stringStart = i;
             continue;
         }
+        
         if (c == "[") {
             if (!/[a-zA-Z0-9_\[]/.test(precC)) {
                 string = "]";
@@ -470,19 +473,27 @@ ZhLangProvider.prototype.parseDeclareList = function (list, kind, parent) {
     }
 }
 
-String.prototype.right = function (n) { return this.substring(this.length - n); }
+// @ts-ignore
+String.prototype.right = function (n) { 
+    return this.substring(this.length - n); 
+}
+
 const commandPartsingEnabled = false;
 
 ZhLangProvider.prototype.parseCommand = function () {
     if (!commandPartsingEnabled)
         return;
-    var pos = this.currLine.match(/\s+/);
+    
+    let pos = this.currLine.match(/\s+/);
     pos = pos.index + pos[0].length;
-    var endDefine = this.currLine.indexOf("=>");
-    if (endDefine < 0) return; // incomplete code
-    var definePart = this.currLine.substring(pos, endDefine).replace(/;\s+/g, "");
-    var resultPart = this.currLine.substring(endDefine + 2).replace(/;\s+/g, "");
-    var commandResult = [];
+    let endDefine = this.currLine.indexOf("=>");
+    
+    if (endDefine < 0) 
+         return; // incomplete code
+    
+    let definePart = this.currLine.substring(pos, endDefine).replace(/;\s+/g, "");
+    let resultPart = this.currLine.substring(endDefine + 2).replace(/;\s+/g, "");
+    let commandResult: any = [];
     // SplitDefinePart
     pos = 0;
     while (pos < definePart.length) {
@@ -536,7 +547,7 @@ ZhLangProvider.prototype.parseCommand = function () {
     if (commandResult.name.length <= 0)
         return; //circular command
 
-    var commandRecognizer = commandResult[i].text.trim();
+    let commandRecognizer = commandResult[i].text.trim();
 
     // https://stackoverflow.com/a/3561711/854279
     commandRecognizer = commandRecognizer.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -547,7 +558,7 @@ ZhLangProvider.prototype.parseCommand = function () {
     commandResult.regEx = new RegExp(commandRecognizer, "i");
 
     // convert define parts in snippets
-    for (var i = 0; i < commandResult.length; ++i) {
+    for (let i = 0; i < commandResult.length; ++i) {
         commandResult[i].text = commandResult[i].text.trim();
         var nextVar = commandResult[i].text.indexOf("<");
         var idx = 1;
@@ -580,8 +591,8 @@ ZhLangProvider.prototype.parseCommand = function () {
             idx++;
         }
     }
-    commandResult.startLine = this.startLine
-    commandResult.endLine = this.lineNr
+    commandResult.startLine = this.startLine;
+    commandResult.endLine = this.lineNr;
     this.aCommands.push(commandResult);
 }
 

@@ -922,7 +922,7 @@ PZH_ITEM zh_i18n_ngettext( PZH_ITEM pNum, PZH_ITEM pMsgID, PZH_ITEM pContext )
 
 
 /*
- * base .prg i18n functions
+ * base .zh i18n functions
  */
 
 ZH_FUNC( ZH_I18N_GETTEXT )
@@ -960,7 +960,7 @@ ZH_FUNC_TRANSLATE( ZH_I18N_GETTEXT_STRICT, ZH_I18N_GETTEXT )
 ZH_FUNC_TRANSLATE( ZH_I18N_NGETTEXT_STRICT, ZH_I18N_NGETTEXT )
 
 /*
- * extended .prg i18n functions to create and manage translation tables
+ * extended .zh i18n functions to create and manage translation tables
  */
 
 ZH_FUNC( ZH_I18N_CREATE )

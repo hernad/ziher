@@ -1,5 +1,5 @@
 /*
- * .prg functions for workarea detaching
+ * .zh functions for workarea detaching
  *
  * Copyright 2008 Przemyslaw Czerpak
  *

@@ -55,7 +55,7 @@
 
 /* Standard Menu System Modal handling for Menu Items */
 FUNCTION MenuModal( oTopMenu, nSelection, nMsgRow, nMsgLeft, nMsgRight, cMsgColor, GetList )
-   RETURN HBMenuSys():New( oTopMenu ):modal( nSelection, nMsgRow, nMsgLeft, nMsgRight, cMsgColor, GetList )
+   RETURN ZHMenuSys():New( oTopMenu ):modal( nSelection, nMsgRow, nMsgLeft, nMsgRight, cMsgColor, GetList )
 
 /* Dummy function */
 FUNCTION ShowMsg( aMsg, lMode )

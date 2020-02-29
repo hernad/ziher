@@ -1,5 +1,5 @@
 /*
- * PRG functions for BlowFish encryption
+ * ZH functions for BlowFish encryption
  *
  * Copyright 2009 Przemyslaw Czerpak
  *

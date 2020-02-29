@@ -45,7 +45,7 @@
  */
 
 /* NOTE: This file is used by C code and at Ziher build time.
-         Normally you never need to #include it in any .prg code. */
+         Normally you never need to #include it in any .zh code. */
 
 #ifndef ZH_SETUP_ZH_
 #define ZH_SETUP_ZH_

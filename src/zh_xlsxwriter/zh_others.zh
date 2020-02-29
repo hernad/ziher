@@ -1,5 +1,5 @@
 /*
- * zh_others.prg  A library for creating Excel XLSX worksheet files.
+ * zh_others.zh  A library for creating Excel XLSX worksheet files.
  *
  * Used in conjunction with the libxlsxwriter library of
  * John McNamara, jmcnamara@cpan.org. See LICENSE.txt.

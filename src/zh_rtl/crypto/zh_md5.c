@@ -52,7 +52,7 @@
 /*
    MD5 digest (based on RFC 1321 only). Ziher implementation
 
-   PRG functions:
+   ZH functions:
 
    zh_MD5( <cString> ) --> <cMD5>
          Calculates RFC 1321 MD5 digest (128-bit checksum)

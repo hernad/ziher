@@ -53,3 +53,39 @@ ZH_FUNC( FILE )
 
    zh_retl( szFile ? zh_spFile( szFile, NULL ) : ZH_FALSE );
 }
+
+
+#include "zh_api.h"
+#include "zh_fs_api.h"
+
+ZH_FUNC( FILEBASE )
+{
+   const char * szPath = zh_parc( 1 );
+   if( szPath )
+   {
+      PZH_FNAME pFileName = zh_fsFNameSplit( szPath );
+      zh_retc( pFileName->szName );
+      zh_xfree( pFileName );
+   }
+   else
+      zh_retc_null();
+}
+
+/* FileExt( <cFile> ) --> cFileExt
+*/
+ZH_FUNC( FILEEXT )
+{
+   const char * szPath = zh_parc( 1 );
+   if( szPath )
+   {
+      PZH_FNAME pFileName = zh_fsFNameSplit( szPath );
+      if( pFileName->szExtension != NULL )
+         zh_retc( pFileName->szExtension + 1 ); /* Skip the dot */
+      else
+         zh_retc_null();
+      zh_xfree( pFileName );
+   }
+   else
+      zh_retc_null();
+}
+

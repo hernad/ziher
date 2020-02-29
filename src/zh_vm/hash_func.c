@@ -1,5 +1,5 @@
 /*
- * The Hash tables API (PRG level)
+ * The Hash tables API (ZH level)
  *
  * Copyright 2007 Przemyslaw Czerpak
  *

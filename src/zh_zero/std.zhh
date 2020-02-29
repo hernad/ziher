@@ -69,7 +69,7 @@
 #command ENDFOR [<*x*>]    => next
 #command NEXT <v> [TO <x>] [STEP <s>]  => next
 
-#command DO <proc>.prg [WITH <p,...>]  => do <proc> [ WITH <p>]
+#command DO <proc>.zh [WITH <p,...>]  => do <proc> [ WITH <p>]
 
 #command DO <proc>.hb [WITH <p,...>]  => do <proc> [ WITH <p>]
 #command CALL <proc>() [WITH <p,...>]  => call <proc> [ WITH <p>]

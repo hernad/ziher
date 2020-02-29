@@ -447,7 +447,7 @@ extern ZH_EXPORT ZH_SIZE      zh_fileResult( ZH_SIZE nSize );
 extern ZH_EXPORT ZH_BYTE *    zh_fileLoad( const char * pszFileName, ZH_SIZE nMaxSize, ZH_SIZE * pnSize );
 extern ZH_EXPORT ZH_BYTE *    zh_fileLoadData( PZH_FILE pFile, ZH_SIZE nMaxSize, ZH_SIZE * pnSize );
 
-/* interface to PRG level zh_vf*() file pointer items */
+/* interface to ZH level zh_vf*() file pointer items */
 extern ZH_EXPORT PZH_FILE     zh_fileParam( int iParam );
 extern ZH_EXPORT PZH_FILE     zh_fileParamGet( int iParam );
 extern ZH_EXPORT PZH_FILE     zh_fileItemGet( PZH_ITEM pItem );

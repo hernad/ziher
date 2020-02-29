@@ -137,12 +137,8 @@ ZH_FUNC( ZH_CDPLIST )
    zh_xfree( ( void * ) list );
 }
 
-/* NOTE: CA-Cl*pper 5.2e Intl. will return: "NATSORT v1.2i x14 19/Mar/93" */
-/* NOTE: CA-Cl*pper 5.3  Intl. will return: "NATSORT v1.3i x19 06/Mar/95" */
-ZH_FUNC_TRANSLATE( __NATSORTVER, ZH_CDPINFO )
-
 /*
- * extended CP PRG functions
+ * extended CP ZH functions
  */
 ZH_FUNC( ZH_TRANSLATE )
 {

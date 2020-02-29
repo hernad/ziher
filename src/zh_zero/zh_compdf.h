@@ -816,7 +816,7 @@ typedef struct _ZH_COMP
    int               iHidden;             /* hide strings */
    int               iWarnings;           /* enable parse warnings */
    int               iExitLevel;          /* holds if there was any warning during the compilation process */
-   int               iStaticCnt;          /* number of defined statics variables on the PRG */
+   int               iStaticCnt;          /* number of defined statics variables on the ZH */
    int               iVarScope;           /* holds the scope for next variables to be defined */
    int               iLanguage;           /* default Ziher generated output language */
    int               iGenCOutput;         /* C code generation should be verbose (use comments) or not */

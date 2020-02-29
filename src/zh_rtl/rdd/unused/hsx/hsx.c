@@ -1699,7 +1699,7 @@ static int zh_hsxFilter( int iHandle, const char * pSeek, ZH_SIZE nSeek,
 
 
 /* ************************************************************************ */
-/* .prg level functions: HS_*() */
+/* .zh level functions: HS_*() */
 /* ************************************************************************ */
 
 /* hs_Create( <cFile>, <nBufSize>, <nKeySize>, <lCase>, <nFiltSet>, <xExpr> )

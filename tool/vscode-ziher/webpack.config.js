@@ -8,7 +8,7 @@ const path = require('path');
 const config = {
   target: 'node',
   entry: {
-    "extension": './src/extension.js',
+    "extension": './src/extension.ts',
     "zh_debugger": './src/client/debugAdapter.ts'
   },
   output: {

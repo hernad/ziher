@@ -301,7 +301,7 @@ METHOD findFirstRegex( cName, cAttrib, cValue, cData ) CLASS THtmlDocument
    RETURN ::oIterator:Find( cName, cAttrib, cValue, cData )
 
 /* Abstract super class for THtmlIteratorScan and THtmlIteratorScanRegEx
-   (Adopted from TXMLIterator -> contrib/xhb/txml.prg) */
+   (Adopted from TXMLIterator -> contrib/xhb/txml.zh) */
 
 CREATE CLASS THtmlIterator MODULE FRIENDLY
 

@@ -26,34 +26,13 @@ import * as childProcess from "child_process";
 
 //const { localize } = require("./localize.js").localize;
 import * as net from "net";
+const DEBUG_PORT = 60110;
 
 function timeout(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 
-/** https://stackoverflow.com/questions/33086985/how-to-obtain-case-exact-path-of-a-file-in-node-js-on-windows
- * @param {string} filePath
- * @returns {string|undefined}
- */
-function zh_getRealPath(filePath: string) {
-
-    console.log(`getRealPath ${filePath}`);
-    if (!process.platform.startsWith("win"))
-        return filePath;
-
-    let i: number;
-
-    let dirname = path.dirname(filePath);
-    let lowerFileName = path.basename(filePath).toLowerCase();
-    let fileNames: string[] = fs.readdirSync(dirname);
-
-    for (i = 0; i < fileNames.length; i += 1) {
-        if (fileNames[i].toLowerCase() === lowerFileName) {
-            return path.join(dirname, fileNames[i]);
-        }
-    }
-}
 
 /**
  * This interface describes the mock-debug specific launch attributes
@@ -76,7 +55,7 @@ interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
     terminalType: string;
     workingDir: string;
     arguments: any;
-    workspaceRoot: string;
+    //workspaceRoot: string;
     sourcePaths: any;
 
 }
@@ -87,9 +66,9 @@ interface AttachRequestArguments extends DebugProtocol.AttachRequestArguments {
     noDebug: boolean;
 
     //terminalType: string;
-    //workingDir: string;
+    workingDir: string;
     //arguments: any;
-    workspaceRoot: string;
+    //workspaceRoot: string;
     sourcePaths: any;
 
 }
@@ -100,9 +79,9 @@ export class ZhDebugSession extends LoggingDebugSession {
 
     private Debugging: boolean;
     private sourcePaths: string[] = [];
-    private processLine = undefined;
+    private zhProcessLineCallback = undefined;
     private breakpoints = {};
-    private variableCommands: string[] = [];
+    private variableReferences: string[] = [];
     private variableEvaluations: string[] = [];
     private stack: DebugProtocol.StackTraceResponse[] = [];
     private stackArgs: DebugProtocol.StackTraceArguments[] = [];
@@ -116,7 +95,7 @@ export class ZhDebugSession extends LoggingDebugSession {
     private varResp: any[] = [];
     private startGo: boolean;
     private tcpServer;
-  
+
     // we don't support multiple threads, so we can use a hardcoded ID for the default thread
     //private static THREAD_ID = 1;
 
@@ -179,12 +158,35 @@ export class ZhDebugSession extends LoggingDebugSession {
     }
 
 
+    private zh_getRealPath(filePath: string) {
+
+        if (!process.platform.startsWith("win")) {
+            this.sendEvent(new OutputEvent(`zh_getRealPath ${process.platform} => [!windows]=${filePath}\n`));
+            return filePath;
+        }
+
+
+        let dirname = path.dirname(filePath);
+        let lowerFileName = path.basename(filePath).toLowerCase();
+        let fileNames: string[] = fs.readdirSync(dirname);
+
+        for (let i = 0; i < fileNames.length; i += 1) {
+            if (fileNames[i].toLowerCase() === lowerFileName) {
+                this.sendEvent(new OutputEvent(`zh_getRealPath=${path.join(dirname, fileNames[i])}\n`));
+                return path.join(dirname, fileNames[i]);
+            }
+        }
+    }
+
     private zh_command(cmd: string) {
 
-        if (this.justStart)
+        if (this.justStart) {
+            this.sendEvent(new OutputEvent(`zh_command: add to this.queue: ${cmd}\n`));
             this.queue += cmd;
-        else
+        } else {
+            this.sendEvent(new OutputEvent(`zh_command: ${cmd}\n`));  
             this.socket.write(cmd);
+        }
     }
 
     /**
@@ -270,17 +272,22 @@ export class ZhDebugSession extends LoggingDebugSession {
 
 
         logger.setup(args.trace ? Logger.LogLevel.Verbose : Logger.LogLevel.Stop, false);
-        var port = args.port ? args.port : 60110;
- 
-        this.justStart = true;
-        this.sourcePaths = []; //[path.dirname(args.program)];
+        var port = args.port ? args.port : DEBUG_PORT;
 
-        if ("workspaceRoot" in args) {
-            this.sourcePaths.push(args.workspaceRoot);
+        this.justStart = true;
+
+        this.sendEvent(new OutputEvent(`args=${JSON.stringify(args)}\n`));
+
+        if ("workingDir" in args) {
+            this.sourcePaths.push(args.workingDir);
         }
         if ("sourcePaths" in args) {
             this.sourcePaths = this.sourcePaths.concat(args.sourcePaths);
+        } else {
+            this.sourcePaths = [];
         }
+
+        this.sendEvent(new OutputEvent(`sourcePaths=${JSON.stringify(this.sourcePaths)}\n`));
 
         this.Debugging = !args.noDebug;
         this.startGo = args.stopOnEntry === false || args.noDebug === true;
@@ -313,7 +320,7 @@ export class ZhDebugSession extends LoggingDebugSession {
 
             case 'none':
             default:
-                let child;
+                let child: childProcess.ChildProcess;
                 if (args.arguments)
                     child = childProcess.spawn(args.program, args.arguments, { cwd: args.workingDir });
                 else
@@ -343,13 +350,12 @@ export class ZhDebugSession extends LoggingDebugSession {
 
     protected attachRequest(response: DebugProtocol.AttachResponse, args: AttachRequestArguments, request?: DebugProtocol.Request): void {
 
-        var port = args.port ? args.port : 6110;
-        //var tc = this;
+        var port = args.port ? args.port : DEBUG_PORT;
         this.justStart = true;
-        this.sourcePaths = []; //[path.dirname(args.program)];
+        this.sourcePaths = [];
 
-        if ("workspaceRoot" in args) {
-            this.sourcePaths.push(args.workspaceRoot);
+        if ("workingDir" in args) {
+            this.sourcePaths.push(args.workingDir);
         }
 
         if ("sourcePaths" in args) {
@@ -358,10 +364,10 @@ export class ZhDebugSession extends LoggingDebugSession {
 
         this.Debugging = !args.noDebug;
         this.startGo = true;
-        console.log(`attachRequest - starts the server listen ${port}`);
-        var server = net.createServer(socket => {
+
+        let server = net.createServer(socket => {
             this.zh_evaluateClient(socket, server, args)
-        }).listen(port);
+        }).listen(port, "127.0.0.1" );
 
         this.sendResponse(response);
     }
@@ -377,20 +383,21 @@ export class ZhDebugSession extends LoggingDebugSession {
     }
 
 
-    private zh_evaluateClient(socket: any, server: any, args: any) {
+    private zh_evaluateClient(socket: net.Socket, server: net.Server, args: any) {
 
-        var nData = 0;
-        //var tc = this;
-        var exeTarget = path.basename(args.program, path.extname(args.program)).toLowerCase();
+        let nData = 0;
+        let exeTarget = path.basename(args.program, path.extname(args.program)).toLowerCase();
 
-        socket.on("data", (data) => {
+        socket.on("data", (data: Buffer) => {
+
+            this.sendEvent(new OutputEvent(`socket.on data, data.toString()=${data.toString()}\n`));
 
             if (this.socket && nData > 0) {
-                this.zh_processInput(data.toString())
+                this.zh_processInput(data.toString());
                 return;
             }
             if (nData > 0) {
-                return
+                return;
             }
             nData++;
 
@@ -400,13 +407,13 @@ export class ZhDebugSession extends LoggingDebugSession {
             if (lines.length < 2) //todo: check if they arrive in 2 tranches.
                 return;
 
-            var clPath = path.basename(lines[0], path.extname(lines[0])).toLowerCase();
+            let clPath = path.basename(lines[0], path.extname(lines[0])).toLowerCase();
             if (clPath != exeTarget) {
-                socket.write("NO\r\n")
+                socket.write("NO\r\n");
                 socket.end();
                 return;
             }
-            socket.write("HELLO\r\n")
+            socket.write("HELLO\r\n");
             this.zh_setProcess(parseInt(lines[1]));
 
             //connected!
@@ -415,7 +422,7 @@ export class ZhDebugSession extends LoggingDebugSession {
             this.socket = socket;
 
             socket.removeAllListeners("data");
-            socket.on("data", data => {
+            socket.on("data", (data: Buffer) => {
                 this.zh_processInput(data.toString())
             });
 
@@ -427,39 +434,48 @@ export class ZhDebugSession extends LoggingDebugSession {
 
 
     // line type ?
-    private zh_sendVariables(id: any, line: any) {
+    private zh_sendVariables(id: any ) { //, cLineX: string) {
 
-        var vars = [];
-        this.processLine = (line: any) => {
+        //this.sendEvent(new OutputEvent(`zh_sendVariables id=${id} cLineX=${cLineX}\n`));
+        this.sendEvent(new OutputEvent(`zh_sendVariables id=${id}\n`));
 
-            if (line.startsWith("END")) {
+
+        let vars = [];
+        this.zhProcessLineCallback = (cL: string) => {
+
+            this.sendEvent(new OutputEvent(`zh_sendVariables/zhProcessLineCallback id=${id} cL=${cL} vars.length=${vars.length}\n`));
+
+            if (cL.startsWith("END")) {
                 this.varResp[id].body = {
                     variables: vars
                 };
                 this.sendResponse(this.varResp[id]);
-                this.processLine = undefined;
+                this.zhProcessLineCallback = undefined;
                 return;
             }
 
-            var infos = line.split(":");
-            line = infos[0] + ":" + infos[1] + ":" + infos[2] + ":" + infos[3];
-            if (infos.length > 7) { //the value can contains : , we need to rejoin it.
-                infos[6] = infos.splice(6).join(":");
+            let aInfos: string[] = cL.split( ":" );
+            cL = aInfos[0] + ":" + aInfos[1] + ":" + aInfos[2] + ":" + aInfos[3];
+
+             //the value can contains : , we need to rejoin it.
+            if (aInfos.length > 7) {
+                aInfos[6] = aInfos.splice(6).join(":");
             }
-            var v = new Variable(infos[4], infos[6], line);
-            v = this.zh_getVariableFormat(v, infos[5], infos[6], "value", line, id);
-            vars.push(v);
+            let debuggerVariable = new Variable( /*name*/ aInfos[4], /*value*/ aInfos[6]) // /*ref*/ cLine);
+            debuggerVariable = this.zh_getVariableFormat(debuggerVariable, aInfos[5], aInfos[6], "value", cL, id);
+            vars.push(debuggerVariable);
         }
     }
 
     private zh_sendScope(inError: boolean) {
 
         // reset references
-        this.variableCommands = [];
-        if (inError)
-            this.variableCommands.push("ERROR_VAR");
+        this.variableReferences = [];
 
-        this.variableCommands = this.variableCommands.concat([
+        if (inError)
+            this.variableReferences.push("ERROR_VAR");
+
+        this.variableReferences = this.variableReferences.concat([
             "LOCALS",
             "PUBLICS",
             "PRIVATES",
@@ -469,15 +485,18 @@ export class ZhDebugSession extends LoggingDebugSession {
 
         //TODO: "GLOBALS","EXTERNALS"
         this.varResp = [];
-        this.varResp.length = this.variableCommands.length;
+        this.varResp.length = this.variableReferences.length;
         this.variableEvaluations = [];
-        this.variableEvaluations.length = this.variableCommands.length;
-        var n = 0;
-        var scopes = [];
+        this.variableEvaluations.length = this.variableReferences.length;
+
+        let n = 0;
+        let scopes: Scope[] = [];
+
         if (inError) {
             n = 1;
-            scopes.push(new Scope("Error", 1))
+            scopes.push(new Scope("Error", 1));
         }
+
         scopes = scopes.concat([
             new Scope("Local", n + 1),
             new Scope("Public", n + 2),
@@ -487,126 +506,148 @@ export class ZhDebugSession extends LoggingDebugSession {
             //new Scope("Gobals",6),
             //new Scope("Externals",7)
         ]);
-        var response = this.scopeResponse;
-        response.body = { scopes: scopes };
-        this.sendResponse(response)
+        let response = this.scopeResponse;
+        response.body = { 
+            scopes: scopes 
+        };
+        this.sendResponse(response);
     }
 
 
-    private zh_getVarReference(line: string, evaluate: any) {
+    private zh_getVarReference(cLine: string, evaluate: any) {
 
-        var r = this.variableCommands.indexOf(line);
+        let r = this.variableReferences.indexOf(cLine);
         if (r >= 0)
             return r + 1;
 
-        var infos = line.split(":");
-
+        let aInfos = cLine.split(":");
         //the value can contains : , we need to rejoin it.
-        if (infos.length > 4) {
-            infos[2] = infos.splice(2).join(":").slice(0, -1);
-            infos.length = 3;
-            line = infos.join(":") + ":";
+        if (aInfos.length > 4) {
+            aInfos[2] = aInfos.splice(2).join(":").slice(0, -1);
+            aInfos.length = 3;
+            cLine = aInfos.join(":") + ":";
         }
 
-        this.variableCommands.push(line);
+        this.variableReferences.push(cLine);
         this.variableEvaluations.push(evaluate);
-        this.sendEvent(new OutputEvent("added variable command:'" + line + "'\r\n", "stdout"))
-        return this.variableCommands.length;
+        this.sendEvent(new OutputEvent(`zh_getVarReference variable cLine=${cLine} evaluate=${evaluate}\n`));
+        return this.variableReferences.length;
     }
 
+    
+    private zh_getVariableFormat(debuggerVariable: Variable | string | any, type: string, value: string, valueName:string, cLine: string, id?: any): any {
 
-    private zh_getVariableFormat(dest, type, value, valueName, line, id?: any): any {
+        // zh_getVariableFormat: debuggerVariable={"name":"S_ASQLCONNECTIONS","value":"0","variablesReference":null} ; type=A ; value=0 ; valueName=value line=NaN id=4 
+        // zh_getVariableFormat: debuggerVariable={"name":"CQUERY","value":"\"SELECT public.fetchmetrictext('kalk_cache_tabela/knjig')\"","variablesReference":null} ; type=C ; value="SELECT public.fetchmetrictext('kalk_cache_tabela/knjig')" ; valueName=value line=NaN id=0 
 
+        this.sendEvent(new OutputEvent(`zh_getVariableFormat: debuggerVariable=${JSON.stringify(debuggerVariable)} ; type=${type} ; value=${value} ; valueName=${valueName} line=${cLine} id=${id} \n`));
+        // char
         if (type == "C") {
             value = value.replace(/\\\$\\n/g, "\n");
             value = value.replace(/\\\$\\r/g, "\r");
         }
-        dest[valueName] = value;
-        dest.type = type;
+        debuggerVariable[valueName] = value;
+        debuggerVariable.type = type;
 
-        if (["E", "B", "P"].indexOf(dest.type) == -1) {
-            dest.evaluateName = "";
+        if (["E", "B", "P"].indexOf(debuggerVariable.type) == -1) {
+
+            debuggerVariable.evaluateName = "";
             if (this.variableEvaluations[id])
-                dest.evaluateName = this.variableEvaluations[id];
-            dest.evaluateName += dest.name;
-            if (this.variableEvaluations[id] && this.variableEvaluations[id].endsWith("["))
-                dest.evaluateName += "]";
+                debuggerVariable.evaluateName = this.variableEvaluations[id];
+
+            debuggerVariable.evaluateName += debuggerVariable.name;
+            if (this.variableEvaluations[id] && this.variableEvaluations[id].endsWith( "[" ))
+                debuggerVariable.evaluateName += "]";
         }
         switch (type) {
 
+            // array
             case "A":
-                dest.variablesReference = this.zh_getVarReference(line, dest.evaluateName + "[");
-                dest[valueName] = `ARRAY(${value})`;
-                dest.indexedVariables = parseInt(value);
+                debuggerVariable.variablesReference = this.zh_getVarReference(cLine, debuggerVariable.evaluateName + "[");
+                debuggerVariable[valueName] = `ARRAY(${value})`;
+                debuggerVariable.indexedVariables = parseInt(value);
                 break;
 
+            // hash
             case "H":
-                dest.variablesReference = this.zh_getVarReference(line, dest.evaluateName + "[");
-                dest[valueName] = `HASH(${value})`;
-                dest.namedVariables = parseInt(value);
+                debuggerVariable.variablesReference = this.zh_getVarReference(cLine, debuggerVariable.evaluateName + "[");
+                debuggerVariable[valueName] = `HASH(${value})`;
+                debuggerVariable.namedVariables = parseInt(value);
                 break;
 
+            // object
             case "O":
-                dest.variablesReference = this.zh_getVarReference(line, dest.evaluateName + ":");
-                var infos = value.split(" ");
-                dest[valueName] = `CLASS ${infos[0]}`;
-                dest.namedVariables = parseInt(infos[1]);
+                debuggerVariable.variablesReference = this.zh_getVarReference(cLine, debuggerVariable.evaluateName + ":");
+                let infos = value.split(" ");
+                debuggerVariable[ valueName ] = `CLASS ${infos[0]}`;
+                debuggerVariable.namedVariables = parseInt(infos[1]);
                 break;
         }
-        return dest;
+        //zh_getVariableFormat: OUT debuggerVariable={"name":"CQUERY","value":"\"SELECT public.fetchmetrictext('kalk_cache_tabela/knjig')\"","variablesReference":null,"type":"C","evaluateName":"CQUERY"} ; type=C ; value="SELECT public.fetchmetrictext('kalk_cache_tabela/knjig')" ; valueName=value line=NaN id=0
+        this.sendEvent(new OutputEvent(`zh_getVariableFormat: OUT debuggerVariable=${JSON.stringify(debuggerVariable)} ; type=${type} ; value=${value} ; valueName=${valueName} line=${cLine} id=${id} \n`));
+        
+        return debuggerVariable;
     }
 
     /**
      * Evaluate the return from an expression request
      * line the income line
      */
-    private zh_processExpression(line: string) {
+    private zh_processExpression(cLine: string) {
 
         // EXPRESSION:{frame}:{type}:{result}
-        var infos = line.split(":");
+        var aInfos = cLine.split(":");
         //the value can contains : , we need to rejoin it.
-        if (infos.length > 4) {
-            infos[3] = infos.splice(3).join(":");
+        if (aInfos.length > 4) {
+            aInfos[3] = aInfos.splice(3).join(":");
         }
-        var resp = this.evaluateResponses.shift();
-        var line = "EXP:" + infos[1] + ":" + resp.body.result.replace(/:/g, ";") + ":";
+
+        let resp = this.evaluateResponses.shift();
+        cLine = "EXP:" + aInfos[1] + ":" + resp.body.result.replace(/:/g, ";") + ":";
         resp.body.name = resp.body.result
-        if (infos[2] == "E") {
+        if (aInfos[2] == "E") {
             resp.success = false;
-            resp.message = infos[3];
+            resp.message = aInfos[3];
         } else
-            resp.body = this.zh_getVariableFormat(resp.body, infos[2], infos[3], "result", line);
+            resp.body = this.zh_getVariableFormat(resp.body, aInfos[2], aInfos[3], "result", cLine);
         this.sendResponse(resp);
     }
 
 
-    private zh_sendStack(line: string) {
+    private zh_sendStack(cLine: string) {
 
-        var nStack = parseInt(line.substring(6));
-        var frames = [];
+        var nStack = parseInt(cLine.substring(6));
+        this.sendEvent(new OutputEvent(`zh_sendStack cLine=${cLine} nStack=${nStack}\n`));
+        
+        let frames = [];
         frames.length = nStack;
         var j = 0;
-        this.processLine = function (line) {
-            var infos = line.split(":");
-            for (var i = 0; i < infos.length; i++) infos[i] = infos[i].replace(";", ":")
-            var completePath = infos[0];
-            console.log(`completePath=${completePath}`);
-            var found = false;
+
+        this.zhProcessLineCallback = (cL: string) => {
+
+            this.sendEvent(new OutputEvent(`zh_sendStack/zhProcessLineCallback cL=${cL}\n`));
+            let infos = cL.split(":");
+            for (let i = 0; i < infos.length; i++) 
+               infos[i] = infos[i].replace(";", ":");
+
+            let completePath = infos[0];
+            let found = false;
             if (path.isAbsolute(infos[0]) && fs.existsSync(infos[0])) {
-                completePath = zh_getRealPath(infos[0]);
+                completePath = this.zh_getRealPath(infos[0]);
                 found = true;
             } else
                 for (let i = 0; i < this.sourcePaths.length; i++) {
                     if (fs.existsSync(path.join(this.sourcePaths[i], infos[0]))) {
-                        completePath = zh_getRealPath(path.join(this.sourcePaths[i], infos[0]));
+                        completePath = this.zh_getRealPath(path.join(this.sourcePaths[i], infos[0]));
                         found = true;
                         break;
                     }
                 }
-            if (found) infos[0] = path.basename(completePath);
-            frames[j] = new StackFrame(j, infos[2],
-                new Source(infos[0], completePath),
-                parseInt(infos[1]));
+            
+            if (found)
+                infos[0] = path.basename(completePath);
+
+            frames[j] = new StackFrame(j, infos[2], new Source(infos[0], completePath), parseInt(infos[1]));
             j++;
             if (j == nStack) {
                 while (this.stack.length > 0) {
@@ -620,126 +661,135 @@ export class ZhDebugSession extends LoggingDebugSession {
                     };
                     this.sendResponse(resp);
                 }
-                this.processLine = undefined;
+                this.zhProcessLineCallback = undefined;
             }
         }
     }
 
-    private zh_processBreak(line: string) {
+    private zh_processBreak(cLine: string) {
 
-        this.sendEvent(new OutputEvent("received: " + line + "\r\n", "console"));
-
-        // ? aInfos type ??
-        var aInfos: any[] = line.split(":");
-        var dest;
-
-        if (!(aInfos[1] in this.breakpoints)) {
+        let aInfos: any[] = cLine.split(":");
+        
+        if ( !(aInfos[1] in this.breakpoints)) {
             //error 
             return;
         }
         aInfos[2] = parseInt(aInfos[2]);
         aInfos[3] = parseInt(aInfos[3]);
-        dest = this.breakpoints[aInfos[1]];
+        let oBreakPoint = this.breakpoints[aInfos[1]];
+        this.sendEvent(new OutputEvent(`zh_processBreak ${cLine}; aInfos=${JSON.stringify(aInfos)} \n`));
 
-        var idBreak = dest.response.body.breakpoints.findIndex(b => b.line == aInfos[2]);
+        let idBreak = oBreakPoint.response.body.breakpoints.findIndex( 
+            (b: any) => b.line == aInfos[2]
+        );
+
         if (idBreak == -1) {
-            if (aInfos[2] in dest) {
-                delete dest[aInfos[2]];
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in
+            if (aInfos[2] in oBreakPoint) {
+                delete oBreakPoint[aInfos[2]];
                 this.zh_checkBreakPoint(aInfos[1]);
             }
             return;
         }
+
         if (aInfos[3] > 1) {
-            dest.response.body.breakpoints[idBreak].line = aInfos[3];
-            dest.response.body.breakpoints[idBreak].verified = true;
-            dest[aInfos[2]] = 1;
+            oBreakPoint.response.body.breakpoints[idBreak].line = aInfos[3];
+            oBreakPoint.response.body.breakpoints[idBreak].verified = true;
+            oBreakPoint[aInfos[2]] = 1;
         } else {
-            dest.response.body.breakpoints[idBreak].verified = false;
+            oBreakPoint.response.body.breakpoints[idBreak].verified = false;
             if (aInfos[4] == 'notfound')
                 //dest.response.body.breakpoints[idBreak].message = localize('ziher.dbgNoModule')
-                dest.response.body.breakpoints[idBreak].message = "Module not found";
+                oBreakPoint.response.body.breakpoints[idBreak].message = "Module not found";
             else
                 // dest.response.body.breakpoints[idBreak].message = localize('ziher.dbgNoLine')
-                dest.response.body.breakpoints[idBreak].message = "Invalid line";
+                oBreakPoint.response.body.breakpoints[idBreak].message = "Invalid line";
 
-            dest[aInfos[2]] = 1;
+            oBreakPoint[aInfos[2]] = 1;
         }
         this.zh_checkBreakPoint(aInfos[1]);
     }
 
-    private zh_checkBreakPoint(src) {
+    private zh_checkBreakPoint(src: string) {
 
-        var dest = this.breakpoints[src];
-        for (var i in dest) {
-            if (dest.hasOwnProperty(i) && i != "response") {
-                if (dest[i] != 1) {
+        let oBreakPoint = this.breakpoints[src];
+        this.sendEvent(new OutputEvent(`zh_checkBreakPoint src=${src} oBreakPoint=${JSON.stringify(oBreakPoint)}\n`));
+        
+        for (let cKey in oBreakPoint) {
+            if (oBreakPoint.hasOwnProperty(cKey) && cKey != "response") {
+                if (oBreakPoint[cKey] != 1) {
                     return;
                 }
             }
         }
-        //this.sendEvent(new debugadapter.OutputEvent("Response "+src+"\r\n","console"))
-        this.sendResponse(dest.response);
+
+        this.sendEvent(new OutputEvent(`zh_checkBreakPoint dest.response=${oBreakPoint.response}\n`));
+        this.sendResponse(oBreakPoint.response);
     }
 
 
     private zh_processInput(buff: string) {
 
-        var lines = buff.split("\r\n");
-        for (var i = 0; i < lines.length; i++) {
-            var line = lines[i];
-            //if (!line.startsWith("LOG:")) this.sendEvent(new debugadapter.OutputEvent(">>"+line+"\r\n","stdout"))
-            if (line.length == 0)
+        let aLines = buff.split("\r\n");
+        for (let nI: number = 0; nI < aLines.length; nI++) {
+
+            let cLine = aLines[nI];
+            // zh_processInput i=3 cLine=Z18/src/Z18-klijent.zh:57:MAIN
+            this.sendEvent(new OutputEvent(`zh_processInput i=${nI} cLine=${cLine}\n`));
+
+            if (cLine.length == 0)
                 continue;
 
-            if (this.processLine) {
-                this.processLine(line);
+            if (this.zhProcessLineCallback) {
+                this.zhProcessLineCallback(cLine);
                 continue;
             }
-            if (line.startsWith("STOP")) {
-                this.sendEvent(new StoppedEvent(line.substring(5), 1));
+            if (cLine.startsWith("STOP")) {
+                this.sendEvent(new StoppedEvent(cLine.substring(5), 1));
                 continue;
             }
-            if (line.startsWith("STACK")) {
-                this.zh_sendStack(line);
+            if (cLine.startsWith("STACK")) {
+                this.zh_sendStack(cLine);
                 continue;
             }
-            if (line.startsWith("BREAK")) {
-                this.zh_processBreak(line);
+            if (cLine.startsWith("BREAK")) {
+                this.zh_processBreak(cLine);
                 continue;
             }
-            if (line.startsWith("ERROR") && !line.startsWith("ERROR_VAR")) {
-                //console.log("ERROR")
-                var stopEvt = new StoppedEvent("error", 1, line.substring(6));
+            if (cLine.startsWith("ERROR") && !cLine.startsWith("ERROR_VAR")) {
+                let stopEvt = new StoppedEvent("error", 1, cLine.substring(6));
                 this.sendEvent(stopEvt);
                 continue;
             }
-            if (line.startsWith("EXPRESSION")) {
-                this.zh_processExpression(line);
+            if (cLine.startsWith("EXPRESSION")) {
+                this.zh_processExpression(cLine);
                 continue;
             }
-            if (line.startsWith("LOG")) {
-                this.sendEvent(new OutputEvent(line.substring(4) + "\r\n", "stdout"))
+            if (cLine.startsWith("LOG")) {
                 continue;
             }
-            if (line.startsWith("INERROR")) {
-                this.zh_sendScope(line[8] == 'T')
+            if (cLine.startsWith("INERROR")) {
+                this.zh_sendScope(cLine[8] == 'T')
                 continue;
             }
-            if (line.startsWith("COMPLETITION")) {
-                this.zh_processCompletion(line);
+            if (cLine.startsWith("COMPLETITION")) {
+                this.zh_processCompletion(cLine);
                 continue;
             }
-            for (var j = this.variableCommands.length - 1; j >= 0; j--) {
-                if (line.startsWith(this.variableCommands[j])) {
-                    this.zh_sendVariables(j, line);
+            let nJ: number;
+            for (nJ = this.variableReferences.length - 1; nJ >= 0; nJ--) {
+
+                if (cLine.startsWith(this.variableReferences[nJ])) {
+                    // zh_processInput variableCommands[j]=LOCALS cLine=LOCALS 1
+                    this.sendEvent(new OutputEvent(`zh_processInput variableCommands[j]=${this.variableReferences[nJ]} cLine=${cLine}\n`));
+                    this.zh_sendVariables(nJ) //, cLine);
                     break;
                 }
             }
-            if (j != this.variableCommands.length)
+            if (nJ != this.variableReferences.length)
                 continue;
         }
     }
-
 
     protected continueRequest(response: DebugProtocol.ContinueResponse, args: DebugProtocol.ContinueArguments, request?: DebugProtocol.Request): void {
         this.zh_command("GO\r\n");
@@ -750,7 +800,6 @@ export class ZhDebugSession extends LoggingDebugSession {
         this.zh_command("NEXT\r\n");
         this.sendResponse(response);
     }
-
 
     protected stepInRequest(response: DebugProtocol.StepInResponse, args: DebugProtocol.StepInArguments, request?: DebugProtocol.Request): void {
         this.zh_command("STEP\r\n");
@@ -781,20 +830,25 @@ export class ZhDebugSession extends LoggingDebugSession {
 
     private zh_processCompletion(line: any) {
 
-        this.processLine = function (line) {
-            if (line == "END") {
+        this.zhProcessLineCallback = (cL: string) => {
+            
+            this.sendEvent(new OutputEvent(`zh_processCompletion/zhProcessLineCallback cL=${cL}\n`));
+
+            if (cL == "END") {
                 this.sendResponse(this.completionsResponse);
-                this.processLine = undefined;
+                this.zhProcessLineCallback = undefined;
                 return;
             }
             if (!this.completionsResponse.body)
-                this.completionsResponse.body = {};
+                this.completionsResponse.body = {
+                    targets: []
+                };
 
             if (!this.completionsResponse.body.targets)
                 this.completionsResponse.body.targets = [];
 
-            var type = line.substr(0, line.indexOf(":"));
-            line = line.substr(line.indexOf(":") + 1);
+            let type = cL.substr(0, line.indexOf(":"));
+            cL = line.substr(line.indexOf(":") + 1);
 
             let thisCompletion = new CompletionItem(line, 0);
 
@@ -821,15 +875,15 @@ export class ZhDebugSession extends LoggingDebugSession {
 
 
     protected setBreakPointsRequest(response: DebugProtocol.SetBreakpointsResponse, args: DebugProtocol.SetBreakpointsArguments, request?: DebugProtocol.Request): void {
-    
+
         var message = "";
         // prepare a response
         response.body = { "breakpoints": [] };
         response.body.breakpoints = [];
         response.body.breakpoints.length = args.breakpoints.length;
         // check if the source is already configurated for breakpoints
-        var src = args.source.name.toLowerCase();
-        var dest
+        let src = args.source.name.toLowerCase();
+        let dest
         if (!(src in this.breakpoints)) {
             this.breakpoints[src] = {};
         }
@@ -872,8 +926,8 @@ export class ZhDebugSession extends LoggingDebugSession {
         }
 
         // require delete old breakpoints
-        var n1 = 0;
-        for (var i in dest) {
+        let n1 = 0;
+        for (let i in dest) {
             if (dest.hasOwnProperty(i) && i != "response") {
                 if (dest[i].substring(0, 1) == "-") {
                     message += "BREAKPOINT\r\n";
@@ -883,7 +937,6 @@ export class ZhDebugSession extends LoggingDebugSession {
             }
         }
         this.zh_checkBreakPoint(src);
-        this.sendEvent(new OutputEvent("send: " + message, "console"))
         this.zh_command(message);
         //this.sendResponse(response);
     }
@@ -901,12 +954,19 @@ export class ZhDebugSession extends LoggingDebugSession {
         this.sendResponse(response);
     }
 
-    protected evaluateRequest(response: DebugProtocol.EvaluateResponse, args: DebugProtocol.EvaluateArguments, request?: DebugProtocol.Request): void {
+    protected evaluateRequest(response: DebugProtocol.EvaluateResponse | any, args: DebugProtocol.EvaluateArguments, request?: DebugProtocol.Request): void {
 
-        //response.body = {};
+        response.body = {};
+        this.sendEvent(new OutputEvent(`evaluateRequest: response=${response} args=${JSON.stringify(args)}\n`));
+        
+
         response.body.result = args.expression;
+        this.sendEvent(new OutputEvent(`evaluateRequest: OUT push response=${response}\n`));
+
         this.evaluateResponses.push(response);
-        this.zh_command(`EXPRESSION\r\n${args.frameId + 1 || this.currentStack}:${args.expression.replace(/:/g, ";")}\r\n`)
+
+        this.sendEvent(new OutputEvent(`zh_command: EXPRESSION\r\n${args.frameId + 1 || this.currentStack}:${args.expression.replace(/:/g, ";")}\r\n`));
+        this.zh_command(`EXPRESSION\r\n${args.frameId + 1 || this.currentStack}:${args.expression.replace(/:/g, ";")}\r\n`);
     }
 
 
@@ -915,9 +975,9 @@ export class ZhDebugSession extends LoggingDebugSession {
         var zhStart = args.start ? args.start + 1 : 1;
         var zhCount = args.count ? args.count : 0;
         //var prefix;
-        if (args.variablesReference <= this.variableCommands.length) {
+        if (args.variablesReference <= this.variableReferences.length) {
             this.varResp[args.variablesReference - 1] = response;
-            this.zh_command(`${this.variableCommands[args.variablesReference - 1]}\r\n` +
+            this.zh_command(`${this.variableReferences[args.variablesReference - 1]}\r\n` +
                 `${this.currentStack}:${zhStart}:${zhCount}\r\n`);
         } else
             this.sendResponse(response);
