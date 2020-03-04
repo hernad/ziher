@@ -2,7 +2,7 @@
     "name": "ziher",
     "displayName": "Ziher",
     "description": "Ziher support",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "publisher": "bringout",
     "license": "GPL",
     "main": "./dist/extension",
