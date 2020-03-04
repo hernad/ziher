@@ -109,6 +109,10 @@ FUNCTION tip_MailSend( cServer, nPort, cFrom, xTo, xCC, xBCC, cBody, cSubject, ;
    LOCAL lAuthTLS      := .F.
    LOCAL lConnect      := .F.
    LOCAL oPop
+   LOCAL oError
+   LOCAL cUrl
+
+   altd()
 
    /* consider any empty values invalid */
    IF Empty( cServer )
@@ -213,12 +217,12 @@ FUNCTION tip_MailSend( cServer, nPort, cFrom, xTo, xCC, xBCC, cBody, cSubject, ;
    ENDIF
 */
 
+   cUrl := IIF( lSSL, "smtps://", "smtp://" ) + cUser + iif( Empty( cSMTPPass ), "", ":" + cSMTPPass ) + "@" + cServer
+
    BEGIN SEQUENCE WITH __BreakBlock()
-      oUrl := TUrl():New( ;
-         iif( lSSL, "smtps://", "smtp://" ) + ;
-         cUser + iif( Empty( cSMTPPass ), "", ":" + cSMTPPass ) + ;
-         "@" + cServer )
-   RECOVER
+      oUrl := TUrl():New( cUrl )
+   RECOVER USING oError
+      OutErr("smtp auth error:" + oError:description)
       RETURN .F.
    END SEQUENCE
 

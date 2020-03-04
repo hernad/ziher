@@ -167,11 +167,10 @@ ZH_FUNC( ZH_VERSION )
 
          pszOptions[ 0 ] = '\0';
 
-         #if defined( ZH_HAS_PCRE2 )
-            zh_strncat( pszOptions, " pcre2", sizeof( pszOptions ) - 1 );
-         #elif defined( ZH_POSIX_REGEX )
-            zh_strncat( pszOptions, " posix_regex", sizeof( pszOptions ) - 1 );
-         #endif
+         
+         zh_strncat( pszOptions, " pcre2", sizeof( pszOptions ) - 1 );
+
+
          #if defined( ZH_HAS_ZLIB )
             zh_strncat( pszOptions, " zlib", sizeof( pszOptions ) - 1 );
          #endif

@@ -165,11 +165,9 @@ void zh_regexFree( PZH_REGEX pRegEx )
 
 ZH_BOOL zh_regexMatch( PZH_REGEX pRegEx, const char * szString, ZH_SIZE nLen, ZH_BOOL fFull )
 {
-#if defined( ZH_HAS_PCRE2 )
+
    ZH_REGMATCH * aMatches = pcre2_match_data_create( 1, NULL );
-#else
-   ZH_REGMATCH aMatches[ ZH_REGMATCH_SIZE( 1 ) ];
-#endif
+
    ZH_BOOL fMatch;
 
    fMatch = ( s_reg_exec )( pRegEx, szString, nLen, 1, aMatches ) > 0;
@@ -177,9 +175,8 @@ ZH_BOOL zh_regexMatch( PZH_REGEX pRegEx, const char * szString, ZH_SIZE nLen, ZH
             ( ZH_REGMATCH_SO( aMatches, 0 ) == 0 &&
               ( ZH_SIZE ) ZH_REGMATCH_EO( aMatches, 0 ) == nLen ) );
 
-#if defined( ZH_HAS_PCRE2 )
    pcre2_match_data_free( aMatches );
-#endif
+
 
    return fMatch;
 }

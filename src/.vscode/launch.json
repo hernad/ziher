@@ -34,8 +34,10 @@
                 "${workspaceFolder}/Z18/src/common_legacy",
                 "${workspaceFolder}/Z18/src/core",
                 "${workspaceFolder}/Z18/src/core_dbf",
+                "${workspaceFolder}/Z18/src/core_sql",
+                "${workspaceFolder}/zh_tcp_ip",
             ],
-            "terminalType": "integrated"
+            "terminalType": "external"
         }
     ]
 }

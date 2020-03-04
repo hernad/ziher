@@ -52,36 +52,23 @@
 #include "zh_item_api.h"
 #include "zh_error_api.h"
 #include "zh_init.h"
-#if defined( ZH_HAS_PCRE2 )
 #include "zh_vm.h"
-#endif
 
-#if defined( ZH_HAS_PCRE ) || defined( ZH_HAS_PCRE2 )
-   static int s_iUTF8Enabled;
-#endif
+static int s_iUTF8Enabled;
 
-#if defined( ZH_HAS_PCRE2 )
-   static pcre2_general_context * s_re_ctxg;
-   static pcre2_compile_context * s_re_ctxc;
-   static pcre2_match_context *   s_re_ctxm;
-#endif
+
+static pcre2_general_context * s_re_ctxg;
+static pcre2_compile_context * s_re_ctxc;
+static pcre2_match_context *   s_re_ctxm;
+
 
 static void zh_regfree( PZH_REGEX pRegEx )
 {
-#if defined( ZH_HAS_PCRE2 )
    pcre2_code_free( pRegEx->re_pcre );
-#elif defined( ZH_HAS_PCRE )
-   ( pcre_free )( pRegEx->re_pcre );
-#elif defined( ZH_POSIX_REGEX )
-   regfree( &pRegEx->reg );
-#else
-   ZH_SYMBOL_UNUSED( pRegEx );
-#endif
 }
 
 static int zh_regcomp( PZH_REGEX pRegEx, const char * szRegEx )
 {
-#if defined( ZH_HAS_PCRE2 )
    int iError = 0;
    PCRE2_SIZE iErrOffset = 0;
    ZH_U32 uiCFlags = ( ( pRegEx->iFlags & HBREG_ICASE   ) ? PCRE2_CASELESS  : 0 ) |
@@ -101,43 +88,13 @@ static int zh_regcomp( PZH_REGEX pRegEx, const char * szRegEx )
                                     &iError,
                                     &iErrOffset, s_re_ctxc );
    return pRegEx->re_pcre ? 0 : -1;
-#elif defined( ZH_HAS_PCRE )
-   const unsigned char * pCharTable = NULL;
-   const char * szError = NULL;
-   int iErrOffset = 0;
-   int iCFlags = ( ( pRegEx->iFlags & HBREG_ICASE   ) ? PCRE_CASELESS  : 0 ) |
-                 ( ( pRegEx->iFlags & HBREG_NEWLINE ) ? PCRE_MULTILINE : 0 ) |
-                 ( ( pRegEx->iFlags & HBREG_DOTALL  ) ? PCRE_DOTALL    : 0 );
 
-   pRegEx->iEFlags = ( ( pRegEx->iFlags & HBREG_NOTBOL ) ? PCRE_NOTBOL : 0 ) |
-                     ( ( pRegEx->iFlags & HBREG_NOTEOL ) ? PCRE_NOTEOL : 0 );
-
-   /* use UTF-8 in PCRE1 when available and ZHVM CP is also UTF-8. */
-   if( s_iUTF8Enabled && zh_cdpIsUTF8( NULL ) )
-      iCFlags |= PCRE_UTF8;
-
-   pRegEx->re_pcre = pcre_compile( szRegEx, iCFlags, &szError,
-                                   &iErrOffset, pCharTable );
-   return pRegEx->re_pcre ? 0 : -1;
-#elif defined( ZH_POSIX_REGEX )
-   int iCFlags = REG_EXTENDED |
-                 ( ( pRegEx->iFlags & HBREG_ICASE   ) ? REG_ICASE   : 0 ) |
-                 ( ( pRegEx->iFlags & HBREG_NEWLINE ) ? REG_NEWLINE : 0 ) |
-                 ( ( pRegEx->iFlags & HBREG_NOSUB   ) ? REG_NOSUB   : 0 );
-   pRegEx->iEFlags = ( ( pRegEx->iFlags & HBREG_NOTBOL ) ? REG_NOTBOL : 0 ) |
-                     ( ( pRegEx->iFlags & HBREG_NOTEOL ) ? REG_NOTEOL : 0 );
-   return regcomp( &pRegEx->reg, szRegEx, iCFlags );
-#else
-   ZH_SYMBOL_UNUSED( pRegEx );
-   ZH_SYMBOL_UNUSED( szRegEx );
-   return -1;
-#endif
 }
 
 static int zh_regexec( PZH_REGEX pRegEx, const char * szString, ZH_SIZE nLen,
                        int iMatches, ZH_REGMATCH * aMatches )
 {
-#if defined( ZH_HAS_PCRE2 )
+
    PCRE2_SIZE iResult = pcre2_match( pRegEx->re_pcre,
                                      ( PCRE2_SPTR ) szString,
                                      ( PCRE2_SIZE ) nLen,
@@ -154,53 +111,7 @@ static int zh_regexec( PZH_REGEX pRegEx, const char * szString, ZH_SIZE nLen,
       }
    }
    return ( int ) iResult;
-#elif defined( ZH_HAS_PCRE )
-   int iResult = pcre_exec( pRegEx->re_pcre, NULL /* pcre_extra */,
-                            szString, ( int ) nLen, 0 /* startoffset */,
-                            pRegEx->iEFlags, aMatches, ZH_REGMATCH_SIZE( iMatches ) );
-   if( iResult == 0 )
-   {
-      int i;
-      for( i = 0; i < iMatches; i++ )
-      {
-         if( ZH_REGMATCH_EO( aMatches, i ) != ZH_REGMATCH_UNSET )
-            iResult = i + 1;
-      }
-   }
-   return iResult;
-#elif defined( ZH_POSIX_REGEX )
-   char * szBuffer = NULL;
-   int iResult, i;
 
-   if( szString[ nLen ] != 0 )
-   {
-      szBuffer = zh_strndup( szString, nLen );
-      szString = szBuffer;
-   }
-   for( i = 0; i < iMatches; i++ )
-      ZH_REGMATCH_EO( aMatches, i ) = ZH_REGMATCH_UNSET;
-   iResult = regexec( &pRegEx->reg, szString, iMatches, aMatches, pRegEx->iEFlags );
-   if( iResult == 0 )
-   {
-      for( i = 0; i < iMatches; i++ )
-      {
-         if( ZH_REGMATCH_EO( aMatches, i ) != ZH_REGMATCH_UNSET )
-            iResult = i + 1;
-      }
-   }
-   else
-      iResult = -1;
-   if( szBuffer )
-      zh_xfree( szBuffer );
-   return iResult;
-#else
-   ZH_SYMBOL_UNUSED( pRegEx );
-   ZH_SYMBOL_UNUSED( szString );
-   ZH_SYMBOL_UNUSED( nLen );
-   ZH_SYMBOL_UNUSED( iMatches );
-   ZH_SYMBOL_UNUSED( aMatches );
-   return -1;
-#endif
 }
 
 
@@ -251,14 +162,10 @@ ZH_FUNC( ZH_ATX )
 
          if( nLen && nStart <= nLen && nStart <= nEnd )
          {
-#if defined( ZH_HAS_PCRE2 )
             ZH_REGMATCH * aMatches = pcre2_match_data_create( 1, NULL );
 
             if( aMatches )
             {
-#else
-            ZH_REGMATCH aMatches[ ZH_REGMATCH_SIZE( 1 ) ];
-#endif
                const char * pszString = zh_itemGetCPtr( pString );
 
                if( nEnd < nLen )
@@ -279,12 +186,10 @@ ZH_FUNC( ZH_ATX )
                else
                   nStart = nLen = 0;
 
-#if defined( ZH_HAS_PCRE2 )
                pcre2_match_data_free( aMatches );
             }
             else
                nStart = nLen = 0;
-#endif
          }
          else
             nStart = nLen = 0;
@@ -306,11 +211,8 @@ ZH_FUNC( ZH_ATX )
 
 static ZH_BOOL zh_regex( int iRequest )
 {
-#if defined( ZH_HAS_PCRE2 )
+
    ZH_REGMATCH * aMatches;
-#else
-   ZH_REGMATCH aMatches[ ZH_REGMATCH_SIZE( REGEX_MAX_GROUPS ) ];
-#endif
    PZH_ITEM pRetArray, pString;
    int iMatches, iMaxMatch;
    ZH_BOOL fResult = ZH_FALSE;
@@ -330,11 +232,9 @@ static ZH_BOOL zh_regex( int iRequest )
    if( ! pRegEx )
       return ZH_FALSE;
 
-#if defined( ZH_HAS_PCRE2 )
    aMatches = pcre2_match_data_create( REGEX_MAX_GROUPS, NULL );
    if( ! aMatches )
       return ZH_FALSE;
-#endif
 
    pszString = zh_itemGetCPtr( pString );
    nLen      = zh_itemGetCLen( pString );
@@ -392,9 +292,7 @@ static ZH_BOOL zh_regex( int iRequest )
 
             /* last match must be done also in case that pszString is empty;
                this would mean an empty split field at the end of the string */
-#if 0
-            if( nLen )
-#endif
+
             {
                zh_itemPutCL( pMatch, pszString, nLen );
                zh_arrayAddForward( pRetArray, pMatch );
@@ -539,9 +437,7 @@ static ZH_BOOL zh_regex( int iRequest )
       fResult = ZH_TRUE;
    }
 
-#if defined( ZH_HAS_PCRE2 )
    pcre2_match_data_free( aMatches );
-#endif
 
    zh_regexFree( pRegEx );
    return fResult;
@@ -605,7 +501,7 @@ ZH_FUNC( ZH_REGEXALL )
       zh_reta( 0 );
 }
 
-#if defined( ZH_HAS_PCRE2 )
+
 static void * zh_pcre2_grab( PCRE2_SIZE size, void * data )
 {
    ZH_SYMBOL_UNUSED( data );
@@ -625,20 +521,9 @@ static void zh_pcre2_exit( void * cargo )
    pcre2_compile_context_free( s_re_ctxc );
    pcre2_general_context_free( s_re_ctxg );
 }
-#elif defined( ZH_HAS_PCRE )
-static void * zh_pcre_grab( size_t size )
-{
-   return size > 0 ? zh_xgrab( size ) : NULL;
-}
-static void zh_pcre_free( void * ptr )
-{
-   if( ptr )
-      zh_xfree( ptr );
-}
-#endif
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_regex_init_ )
-#if defined( ZH_HAS_PCRE2 )
+
    /* detect UTF-8 support. */
    if( pcre2_config( PCRE2_CONFIG_UNICODE, &s_iUTF8Enabled ) != 0 )
       s_iUTF8Enabled = 0;
@@ -648,19 +533,6 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_regex_init_ )
    s_re_ctxm = pcre2_match_context_create( s_re_ctxg );
 
    zh_vmAtExit( zh_pcre2_exit, NULL );
-#elif defined( ZH_HAS_PCRE )
-   /* detect UTF-8 support.
-    * In BCC builds this code also forces linking newer PCRE versions
-    * then the one included in BCC RTL.
-    */
-   if( pcre_config( PCRE_CONFIG_UTF8, &s_iUTF8Enabled ) != 0 )
-      s_iUTF8Enabled = 0;
-
-   pcre_malloc = zh_pcre_grab;
-   pcre_free = zh_pcre_free;
-   pcre_stack_malloc = zh_pcre_grab;
-   pcre_stack_free = zh_pcre_free;
-#endif
    zh_regexInit( zh_regfree, zh_regcomp, zh_regexec );
 ZH_CALL_ON_STARTUP_END( _zh_regex_init_ )
 

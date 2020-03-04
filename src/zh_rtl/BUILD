@@ -4,7 +4,7 @@ load("//bazel:variables.bzl", "ZH_COMP_OPTS")
 
 cc_library(
     name = "zh_rtl",
-    srcs = glob( [
+    srcs = glob([
         "*.c",
         "zlib/*.c",
         "codepage/*.c",
@@ -15,7 +15,7 @@ cc_library(
         "date/*.c",
         "memo/*.c",
         "gt/*.c",
-    ]),
+    ]) + [ "//third_party/pcre2:headers" ],
     hdrs = glob([
         "*.h", 
         "*.zhh",
@@ -33,13 +33,24 @@ cc_library(
         "gt/*.h",
         "gt/*.zhh",
     ]),
+    copts = [
+       "-Ithird_party/pcre2",
+       "-DSUPPORT_UNICODE",
+       "-DPCRE2_CODE_UNIT_WIDTH=8",
+       "-DPCRE2_STATIC",
+       "-DHAVE_CONFIG_H",
+    ],
     alwayslink = 1,
     deps = [ 
         "//zh_zero:zh_zero", 
-        "//zh_vm:zh_vm"
+        "//zh_vm:zh_vm",
+        "//third_party/pcre2:pcre2"
     ],
     visibility = ["//visibility:public"],
-    includes = ["*.*", "string/*.*"]
+    includes = [
+        "*.*", 
+        "string/*.*"
+    ]
 )
 
 filegroup(
@@ -65,7 +76,10 @@ cc_library(
         "*.h",
         "*.zhh"
     ]),
-    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_rtl:zh_rtl" 
+    ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

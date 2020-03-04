@@ -51,60 +51,27 @@
 
 #if defined( _ZH_REGEX_INTERNAL_ )
 
-#if defined( ZH_HAS_PCRE2 )
 #  include <pcre2.h>
 #  undef ZH_POSIX_REGEX
-#elif defined( ZH_HAS_PCRE )
-#  include <pcre.h>
-#  undef ZH_POSIX_REGEX
-#elif defined( ZH_OS_UNIX )
-#  include <sys/types.h>
-#  include <regex.h>
-#  define ZH_POSIX_REGEX
-#else
-#  error pcre component required, but not available
-#endif
 
 typedef struct
 {
    ZH_BOOL     fFree;
    int         iFlags;
    int         iEFlags;
-#if defined( ZH_HAS_PCRE2 )
+
    pcre2_code  * re_pcre;
-#elif defined( ZH_HAS_PCRE )
-   pcre        * re_pcre;
-#elif defined( ZH_POSIX_REGEX )
-   regex_t     reg;
-#endif
+
 } ZH_REGEX;
 typedef ZH_REGEX * PZH_REGEX;
 
-#if defined( ZH_HAS_PCRE2 )
+
    #define ZH_REGMATCH              pcre2_match_data
    #define ZH_REGMATCH_SIZE( n )    ( n )
    #define ZH_REGMATCH_SO( p, n )   pcre2_get_ovector_pointer( p )[ ( n ) * 2 ]
    #define ZH_REGMATCH_EO( p, n )   pcre2_get_ovector_pointer( p )[ ( n ) * 2 + 1 ]
    #define ZH_REGMATCH_UNSET        PCRE2_UNSET
-#elif defined( ZH_HAS_PCRE )
-   #define ZH_REGMATCH              int
-   #define ZH_REGMATCH_SIZE( n )    ( ( n ) * 3 )
-   #define ZH_REGMATCH_SO( p, n )   ( p )[ ( n ) * 2 ]
-   #define ZH_REGMATCH_EO( p, n )   ( p )[ ( n ) * 2 + 1 ]
-   #define ZH_REGMATCH_UNSET        ( -1 )
-#elif defined( ZH_POSIX_REGEX )
-   #define ZH_REGMATCH              regmatch_t
-   #define ZH_REGMATCH_SIZE( n )    ( n )
-   #define ZH_REGMATCH_SO( p, n )   ( p )[ n ].rm_so
-   #define ZH_REGMATCH_EO( p, n )   ( p )[ n ].rm_eo
-   #define ZH_REGMATCH_UNSET        ( -1 )
-#else
-   #define ZH_REGMATCH              int
-   #define ZH_REGMATCH_SIZE( n )    ( ( n ) * 2 )
-   #define ZH_REGMATCH_SO( p, n )   ( p )[ ( n ) * 2 ]
-   #define ZH_REGMATCH_EO( p, n )   ( p )[ ( n ) * 2 + 1 ]
-   #define ZH_REGMATCH_UNSET        ( -1 )
-#endif
+
 
 typedef void ( * ZH_REG_FREE )( PZH_REGEX );
 typedef int  ( * ZH_REG_COMP )( PZH_REGEX, const char * );

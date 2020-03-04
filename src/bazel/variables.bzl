@@ -8,6 +8,7 @@ ZH_Z18_COMP_OPTS=[
     "-iZ18/src/include",
     "-izh_harupdf",
     "-DGT_DEFAULT_CONSOLE",
+    "-DF18_DEBUG",
     "-b"
 ]
 

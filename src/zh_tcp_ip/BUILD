@@ -58,7 +58,8 @@ zh_comp_all(
         "*.zh",
     ]),
     args = ZH_COMP_OPTS + [ 
-        "-izh_ssl" 
+        "-izh_ssl",
+        "-b" 
     ],
     deps = [ 
         "//zh_zero:headers", 
