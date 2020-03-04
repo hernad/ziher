@@ -2,56 +2,68 @@
 	"cicle-for": {
 		"scope": "ziher",
 		"prefix": "for",
-		"body": ["for $1:=${2:1} to $3",
+		"body": ["FOR $1 := ${2:1} TO $3",
 			"\t$0",
-			"next"]
+			"NEXT"]
 	},
 	"cicle-foreach": {
 		"scope": "ziher",
-		"prefix": "for each",
-		"body": ["for each $1 in $2",
+		"prefix": "foreach",
+		"body": ["FOR EACH $1 IN $2",
 			"\t$0",
-			"next"]
+			"NEXT"]
 	},
-	"do while": {
+	"do-while": {
 		"scope": "ziher",
-		"prefix": "do while",
-		"body": ["do while $1",
+		"prefix": "dowhile",
+		"body": ["DO WHILE $1",
 			"\t$0",
-			"enddo"]
+			"ENDDO"]
 	},
 	"if": {
 		"scope": "ziher",
 		"prefix": "if",
-		"body": ["if $1",
+		"body": ["IF $1",
 			"\t$0",
-			"endif"]
+			"ENDIF"]
+	},
+	"if-else": {
+		"scope": "ziher",
+		"prefix": "ifelse",
+		"body": ["IF $1",
+			"\t$2",
+			"ELSE",
+			"\t$0",
+			"ENDIF"]
 	},
 	"switch": {
 		"scope": "ziher",
 		"prefix": "switch",
-		"body": ["switch $1",
-			"\tcase $2",
+		"body": ["SWITCH $1",
+			"\tCASE $2",
 			"\t\t$0",
-			"\t\texit",
-			"endswitch"]
+			"\t\tEXIT",
+			"ENDSWITCH"]
 	},
-	"do case": {
+	"do-case": {
 		"scope": "ziher",
-		"prefix": "do case",
-		"body": ["do case",
-			"\tcase $2",
+		"prefix": "docase",
+		"body": ["DO CASE",
+			"\tCASE $2",
 			"\t\t$0",
-			"endcase"]
+			"ENDCASE"]
 	},
-	"try-catch": {
+	"begin-sequence": {
 		"scope": "ziher",
-		"prefix": "try",
-		"body": ["try $1",
-				"\t$0",
-				"catch ${2:oErr}",
-				"\t",
-				"end"]
+		"prefix": "beginseq",
+		"body": [
+		   "BEGIN SEQUENCE WITH {| oErr | Break( oErr ) }",
+		   "\t$2",
+      	   "RECOVER USING oErr",
+		   "\t//QOut(oErr:description)",
+		   "\t$0",
+      	   "ENDSEQUENCE"
+		]
 	}
 }
 

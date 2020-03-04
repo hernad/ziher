@@ -1032,11 +1032,14 @@
 					"match": "\\b(AND|OR|NOT|!)\\b"
 				},
 				{
-					"name": "keyword.get.ziher",
+					"name": "keyword.control.saygetread",
 					"match": "\\b(SAY|GET|READ|PICT|PICTURE|VALID)\\b"
 				},
-				{ "name": "keyword.seek.ziher", "match": "\\b(?i:SEEK)\\b" },
-				{ "name": "keyword.with.ziher", "match": "\\b(?i:with)\\b" },
+				{ "name": "keyword.control.seek", "match": "\\b(?i:SEEK)\\b" },
+				{ "name": "keyword.control.select", "match": "\\b(?i:SELECT)\\b" },
+				{ "name": "keyword.control.gotop", "match": "\\b(?i:GO TOP)\\b" },
+
+				{ "name": "keyword.with.ziher", "match": "\\b(?i:WITH)\\b" },
 				{ "name": "keyword._zh_class.ziher", "match": "\\b(?i:_zh_class)\\b" },
 				{ "name": "keyword._zh_member.ziher", "match": "\\b(?i:_zh_member)\\b" },
 				{ "name": "keyword._procreq_.ziher", "match": "\\b(?i:_procreq_)\\b" },

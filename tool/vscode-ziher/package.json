@@ -20,7 +20,8 @@
     "categories": [
         "Programming Languages",
         "Linters",
-        "Debuggers"
+        "Debuggers",
+        "Snippets"
     ],
     "dependencies": {
         "vscode-debugadapter": "^1.35.0",

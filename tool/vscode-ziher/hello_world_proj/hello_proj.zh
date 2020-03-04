@@ -57,6 +57,7 @@ PROCEDURE Main()
 
    Alert("MAIN THREAD g_cPublic1: " + g_cPublic1)
 
+
    RETURN
 
 
