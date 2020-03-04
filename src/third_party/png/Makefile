@@ -4,8 +4,8 @@ include $(TOP)$(ROOT)config/global.mk
 
 LIBNAME := png
 
-HB_BUILD_WARN := no
-HB_BUILD_MODE := c
+ZH_BUILD_WARN := no
+ZH_BUILD_MODE := c
 
 C_SOURCES := \
    png.c \
@@ -25,14 +25,14 @@ C_SOURCES := \
    pngwutil.c \
 
 
-ifneq ($(HB_HAS_ZLIB),)
+ifneq ($(ZH_HAS_ZLIB),)
 
-   HB_CFLAGS += $(QUOTE)-I$(HB_HAS_ZLIB)$(QUOTE)
-   HB_CFLAGS_DYN := -DPNG_BUILD_DLL
+   ZH_CFLAGS += $(QUOTE)-I$(ZH_HAS_ZLIB)$(QUOTE)
+   ZH_CFLAGS_DYN := -DPNG_BUILD_DLL
 
    include $(TOP)$(ROOT)config/lib.mk
 else
-   HB_SKIP_REASON := $(_DET_RES_TEXT)
+   ZH_SKIP_REASON := $(_DET_RES_TEXT)
    include $(TOP)$(ROOT)config/none.mk
 endif
 

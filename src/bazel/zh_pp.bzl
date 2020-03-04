@@ -1,7 +1,14 @@
 # https://docs.bazel.build/versions/2.0.0/skylark/tutorial-creating-a-macro.html
 
+#def as_path(p, is_windows):
+#    if is_windows:
+#        return p.replace("/", "\\")
+#    else:
+#        return p
+
 def zh_pp(name, ppin, out, args="-izh_zero", **kwargs):
   """Create preprocessed ziher.
+
 
   std_gen.zhh -> std_gen.zhh.zpp
   """ 

@@ -1,4 +1,5 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary")
+load("//bazel:variables.bzl", "C_OPTS", "L_OPTS")
 
 cc_binary(
     name = "zhcomp",
@@ -8,5 +9,7 @@ cc_binary(
         "//zh_comp:zh_comp",
         "//zh_pp:zh_pp"
     ],
+    copts = C_OPTS,
+    linkopts = L_OPTS,
     visibility = ["//visibility:public"],
 )

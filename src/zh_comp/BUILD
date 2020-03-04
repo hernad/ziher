@@ -1,11 +1,13 @@
 load("@rules_bison//bison:bison.bzl", "bison_cc_library")
 load("@rules_cc//cc:defs.bzl", "cc_library")
+load("//bazel:variables.bzl", "C_OPTS")
 
 cc_library(
     name = "zh_comp",
     srcs = glob( ["*.c"]),
     hdrs = glob( ["*.h", "*.zhh"]) ,
     #alwayslink = 1,
+    copts = C_OPTS,
     deps = [ "//zh_zero:zh_zero", ":zh_comp_y" ],
     visibility = ["//visibility:public"],
 )

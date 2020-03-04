@@ -57,8 +57,7 @@
 #  include <unistd.h>
 #  include <signal.h>
 #  if defined( SIGSTKSZ ) && \
-      ( ( defined( _BSD_SOURCE ) && _BSD_SOURCE ) || \
-        ( defined( _XOPEN_SOURCE ) && _XOPEN_SOURCE >= 500 ) )
+      ( defined( _XOPEN_SOURCE ) && _XOPEN_SOURCE >= 500 )
 #     define ZH_SIGNAL_EXCEPTION_HANDLER
 #  endif
 #elif defined( ZH_OS_WIN )
@@ -385,15 +384,12 @@ static LONG WINAPI zh_winExceptionHandler( struct _EXCEPTION_POINTERS * pExcepti
 #endif
 
    {
-#if defined( ZH_OS_WIN_CE )
-      HMODULE hToolhelp = GetModuleHandle( TEXT( "toolhelp.dll" ) );
-#else
+
       /* NOTE: Several non-MS sources say that Win9x has these functions
                in tlhelp32.dll. Testing shows though, that in Win95, Win95b
                and Win98 they are in kernel32.dll, and tlhelp32.dll doesn't
                exist. [vszakats] */
       HMODULE hToolhelp = GetModuleHandle( TEXT( "kernel32.dll" ) );
-#endif
 
       if( hToolhelp )
       {

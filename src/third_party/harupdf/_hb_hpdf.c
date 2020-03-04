@@ -1,6 +1,6 @@
 #include "zh_api.h"
 
-#if defined( HB_OS_WIN_CE )
+#if defined( ZH_OS_WIN_CE )
 
 /* NOTE: Ugly hack to make this lib work on WinCE/CEGCC platforms. [vszakats] */
 

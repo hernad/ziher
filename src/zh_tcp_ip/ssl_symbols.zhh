@@ -1,8 +1,8 @@
 /* --------------------------------------------------------------------
  * NOTE: You can add manual override which functions to include or
  *       exclude from automatically generated EXTERNAL/DYNAMIC list.
- *          Syntax: // HB_FUNC_INCLUDE <func>
- *                  // HB_FUNC_EXCLUDE <func>
+ *          Syntax: // ZH_FUNC_INCLUDE <func>
+ *                  // ZH_FUNC_EXCLUDE <func>
  */
 
 /* --------------------------------------------------------------------

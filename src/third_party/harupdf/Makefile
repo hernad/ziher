@@ -4,8 +4,8 @@ include $(TOP)$(ROOT)config/global.mk
 
 LIBNAME := harupdf
 
-HB_BUILD_WARN := no
-HB_BUILD_MODE := c
+ZH_BUILD_WARN := no
+ZH_BUILD_MODE := c
 
 C_SOURCES := \
    _zh_hpdf.c \
@@ -67,12 +67,12 @@ C_SOURCES := \
    hpdf_utils.c \
    hpdf_xref.c \
 
-ifneq ($(HB_HAS_ZLIB),)
-   HB_CFLAGS += $(QUOTE)-I$(HB_HAS_ZLIB)$(QUOTE)
-   HB_CFLAGS += $(QUOTE)-I$(HB_HAS_PNG)$(QUOTE)
+ifneq ($(ZH_HAS_ZLIB),)
+   ZH_CFLAGS += $(QUOTE)-I$(ZH_HAS_ZLIB)$(QUOTE)
+   ZH_CFLAGS += $(QUOTE)-I$(ZH_HAS_PNG)$(QUOTE)
    include $(TOP)$(ROOT)config/lib.mk
 
 else
-   HB_SKIP_REASON := local copy unused
+   ZH_SKIP_REASON := local copy unused
    include $(TOP)$(ROOT)config/none.mk
 endif

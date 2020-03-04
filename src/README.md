@@ -6,3 +6,11 @@ Install [bazel.build](https://bazel.build/).
     bazel query //... 
 
     # bazel run //zh_comp/main:zhcomp -- -credits
+
+
+## Windows
+
+
+    # Install `Windows Subsystem for Linux`
+    
+    # bazel build //zh_comp:zh_comp --experimental_enable_runfiles=yes

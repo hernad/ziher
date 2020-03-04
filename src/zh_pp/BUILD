@@ -1,11 +1,13 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_pp.bzl", "zh_pp")
+load("//bazel:variables.bzl", "C_OPTS")
 
 cc_library(
     name = "zh_pp",
     srcs = glob( ["*.c"]),
     hdrs = glob( ["*.h", "*.zhh"]) ,
     #alwayslink = 1,
+    copts = C_OPTS,
     deps = [ "//zh_zero:zh_zero" ],
     visibility = ["//visibility:public"],
 )

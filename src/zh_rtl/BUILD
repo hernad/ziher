@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 cc_library(
     name = "zh_rtl",
@@ -33,7 +33,7 @@ cc_library(
         "gt/*.h",
         "gt/*.zhh",
     ]),
-    copts = [
+    copts = C_OPTS + [
        "-Ithird_party/pcre2",
        "-DSUPPORT_UNICODE",
        "-DPCRE2_CODE_UNIT_WIDTH=8",

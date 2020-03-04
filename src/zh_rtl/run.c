@@ -64,9 +64,7 @@ ZH_FUNC( __RUN )
 
    if( pszCommand && zh_gtSuspend() == ZH_SUCCESS )
    {
-#if defined( ZH_OS_WIN_CE )
-      zh_fsProcessRun( pszCommand, NULL, 0, NULL, NULL, NULL, NULL, ZH_FALSE );
-#elif defined( ZH_OS_WIN )
+#if defined( ZH_OS_WIN )
       LPTSTR lpCommand = ZH_CHARDUP( pszCommand );
       ( void ) ZH_WINAPI_SYSTEM( lpCommand );
       zh_xfree( lpCommand );

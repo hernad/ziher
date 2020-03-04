@@ -1,11 +1,12 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 cc_library(
     name = "zh_vm",
     srcs = glob( ["*.c"] + [ "zh_runtime_symbols/init_runtime_symbols.c"]),
-    hdrs = glob( ["*.h", "*.zhh"]) ,
+    hdrs = glob( ["*.h", "*.zhh"]),
+    copts = C_OPTS,
     #alwayslink = 1,
     deps = [ 
         "//zh_zero:zh_zero",  

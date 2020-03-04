@@ -4,8 +4,8 @@ include $(TOP)$(ROOT)config/global.mk
 
 LIBNAME := hbpcre2
 
-HB_BUILD_WARN := no
-HB_BUILD_MODE := c
+ZH_BUILD_WARN := no
+ZH_BUILD_MODE := c
 
 C_SOURCES := \
    pcre2_chartables.c \
@@ -33,23 +33,23 @@ C_SOURCES := \
    pcre2_valid_utf.c \
    pcre2_xclass.c \
 
-ifneq ($(HB_HAS_PCRE2_LOCAL),)
+ifneq ($(ZH_HAS_PCRE2_LOCAL),)
 
-   HB_CFLAGS += -DSUPPORT_UNICODE -DPCRE2_CODE_UNIT_WIDTH=8
+   ZH_CFLAGS += -DSUPPORT_UNICODE -DPCRE2_CODE_UNIT_WIDTH=8
    # only needed for win/wce, for other platforms this is no-op
-   HB_CFLAGS_STA := -DPCRE2_STATIC
+   ZH_CFLAGS_STA := -DPCRE2_STATIC
 
-   ifneq ($(filter $(HB_COMPILER),gcc clang clang64 mingw mingw64 sunpro),)
-      ifeq ($(filter $(HB_PLATFORM)-$(HB_COMPILER),win-clang win-clang64),)
-         HB_CFLAGS += -DHAVE_INTTYPES_H
+   ifneq ($(filter $(ZH_COMPILER),gcc clang clang64 mingw mingw64 sunpro),)
+      ifeq ($(filter $(ZH_PLATFORM)-$(ZH_COMPILER),win-clang win-clang64),)
+         ZH_CFLAGS += -DHAVE_INTTYPES_H
       endif
    endif
 
-   HB_CFLAGS += -DHAVE_CONFIG_H
+   ZH_CFLAGS += -DHAVE_CONFIG_H
 
    include $(TOP)$(ROOT)config/lib.mk
 else
-   HB_SKIP_REASON := local copy unused
+   ZH_SKIP_REASON := local copy unused
    include $(TOP)$(ROOT)config/none.mk
 endif
 
