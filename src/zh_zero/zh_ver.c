@@ -58,7 +58,7 @@
 #if defined( ZH_OS_WIN )
 
    #include <windows.h>
-   #include "zwinuni.h"
+   #include "zh_winuni.h"
 
 
    #ifndef VER_PLATFORM_WIN32_WINDOWS

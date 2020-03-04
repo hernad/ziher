@@ -63,7 +63,7 @@
 #if defined( ZH_OS_WIN )
 
    #include <windows.h>
-   #include "zhwinuni.h"
+   #include "zh_winuni.h"
 
    typedef struct
    {
