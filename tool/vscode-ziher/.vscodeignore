@@ -6,3 +6,4 @@ node_modules/yarn/
 node_modules
 webpack.config.js
 webpack.config.server.js
+doc/
