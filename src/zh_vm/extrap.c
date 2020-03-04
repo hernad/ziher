@@ -64,7 +64,7 @@
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
 #  include <tlhelp32.h>
-#  include "zh_win_uni.h"
+#  include "zh_win_unicode.h"
 #  ifndef TH32CS_SNAPMODULE32
 #  define TH32CS_SNAPMODULE32  0x00000010
 #  endif

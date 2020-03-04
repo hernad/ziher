@@ -63,7 +63,7 @@ static char ** s_argv = NULL;
    static char    s_szAppName[ ZH_PATH_MAX ];
 #else
 
-#include "zh_win_uni.h"
+#include "zh_win_unicode.h"
 #include <windows.h>
 
 static LPTSTR * s_lpArgV = NULL;

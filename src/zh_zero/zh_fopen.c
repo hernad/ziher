@@ -55,7 +55,7 @@
 #include "zh_vm.h"
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "zh_winuni.h"
+   #include "zh_win_unicode.h"
 #endif
 
 #if defined( ZH_OS_WIN )

@@ -54,7 +54,7 @@
 #include "zh_vm.h"
 
 #if defined( ZH_OS_WIN )
-# include "zh_win_uni.h"
+# include "zh_win_unicode.h"
 # include <windows.h>
 #  endif
 

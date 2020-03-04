@@ -56,7 +56,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "zh_winuni.h"
+   #include "zh_win_unicode.h"
    #if ! defined( INVALID_FILE_ATTRIBUTES )
       #define INVALID_FILE_ATTRIBUTES  ( ( DWORD ) -1 )
    #endif

@@ -67,7 +67,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "zh_win_uni.h"
+   #include "zh_win_unicode.h"
 #endif
 
 #if defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN )

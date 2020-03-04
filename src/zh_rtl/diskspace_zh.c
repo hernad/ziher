@@ -57,7 +57,7 @@
 #     include <sys/statvfs.h>
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
-#  include "zh_win_uni.h"
+#  include "zh_win_unicode.h"
 #endif
 
 double zh_fsDiskSpace( const char * pszPath, ZH_USHORT uiType )

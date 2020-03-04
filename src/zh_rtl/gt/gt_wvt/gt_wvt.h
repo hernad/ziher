@@ -61,7 +61,7 @@
 #include "zh_vm.h"
 #include "zh_thread.h"
 #include "hbgfxdef.zhh"
-#include "zh_win_uni.h"
+#include "zh_win_unicode.h"
 
 #include <windows.h>
 #if defined( ZH_OS_WIN_CE )

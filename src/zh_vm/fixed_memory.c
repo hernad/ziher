@@ -58,8 +58,7 @@
 #  define _GNU_SOURCE
 #endif
 
-/* NOTE: Need to have these before Ziher headers,
-         because in MT mode, they will automatically #include <os2.h>. */
+
 #define INCL_BASE
 
 /* malloc.h has been obsoleted by stdlib.h, which is included via
@@ -94,12 +93,7 @@
 #elif defined( ZH_FM_WIN_ALLOC )
 #  undef ZH_FM_DL_ALLOC
 #elif ! defined( ZH_FM_DL_ALLOC ) && ! defined( ZH_FM_WIN_ALLOC )
-#  if defined( ZH_OS_WIN_CE )
-      /* In WinCE builds DLMALLOC creates problems when allocated
-       * memory is used in file IO operations.
-       */
-#     define ZH_FM_STD_ALLOC
-#  elif defined( _MSC_VER ) || defined( __MINGW32__ ) || \
+#  if defined( _MSC_VER ) || defined( __MINGW32__ ) || \
       defined( ZH_FM_DLMT_ALLOC )
 #     define ZH_FM_DL_ALLOC
 #  else
@@ -164,7 +158,7 @@
 #        define EINVAL  22
 #     endif
 #  endif
-#  include "dlmalloc.c"
+#  include "win_dl_malloc.h"
 #  if defined( _MSC_VER )
 #     pragma warning( pop )
 #  endif

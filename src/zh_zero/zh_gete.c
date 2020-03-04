@@ -51,7 +51,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "zh_winuni.h"
+   #include "zh_win_unicode.h"
 #endif
 
 /* NOTE: Warning, this function _may_ return NULL as a result if

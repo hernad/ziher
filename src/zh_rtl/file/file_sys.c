@@ -134,7 +134,7 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #include "zh_win_uni.h"
+   #include "zh_win_unicode.h"
    #if ! defined( INVALID_SET_FILE_POINTER ) && defined( _MSC_VER )
       #define INVALID_SET_FILE_POINTER ( ( DWORD ) -1 )
    #endif

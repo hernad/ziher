@@ -66,7 +66,7 @@
       extern char ** environ;
 #  endif
 #elif defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
-#  include "zh_win_uni.h"
+#  include "zh_win_unicode.h"
 #  include <windows.h>
 #endif
 

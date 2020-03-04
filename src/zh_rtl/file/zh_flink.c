@@ -53,7 +53,7 @@
    #if ! defined( INVALID_FILE_ATTRIBUTES )
       #define INVALID_FILE_ATTRIBUTES  ( ( DWORD ) -1 )
    #endif
-   #include "zh_win_uni.h"
+   #include "zh_win_unicode.h"
 #elif defined( ZH_OS_UNIX )
    #include <unistd.h>
 #endif

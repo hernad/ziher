@@ -82,7 +82,7 @@
 #include "zh_vm.h"
 #include "zh_set.h"
 #include "zh_error_api.h"
-#include "zh_win_uni.h"
+#include "zh_win_unicode.h"
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>

@@ -72,7 +72,7 @@
 #include "zh_init.h"
 #include "zh_item_api.h"
 #include "zh_error_api.h"
-#include "zh_win_uni.h"
+#include "zh_win_unicode.h"
 #include "zh_date.h"
 
 #include "zh_codepage_api.h"
