@@ -59,7 +59,7 @@ zh_comp_all(
     ]),
     args = ZH_COMP_OPTS + [ 
         "-izh_ssl",
-        "-b" 
+        #"-b" debug ziher code 
     ],
     deps = [ 
         "//zh_zero:headers", 

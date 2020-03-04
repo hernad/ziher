@@ -36,6 +36,9 @@
                 "${workspaceFolder}/Z18/src/core_dbf",
                 "${workspaceFolder}/Z18/src/core_sql",
                 "${workspaceFolder}/zh_tcp_ip",
+                "${workspaceFolder}/Z18/src/kalk",
+                "${workspaceFolder}/Z18/src/fin",
+                "${workspaceFolder}/Z18/src/fakt"
             ],
             "terminalType": "external"
         }
