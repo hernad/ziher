@@ -208,7 +208,7 @@ ZhLangProvider.prototype.addInfo = function (name, kind, like, parent, search) {
     if (search) {
         var lines = this.currLine.split("\r\n");
         var regExp = new RegExp('\\b' + name.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '\\b', "i")
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             var line = lines[i];
             var match = regExp.exec(line)
             if (match) {
@@ -219,7 +219,7 @@ ZhLangProvider.prototype.addInfo = function (name, kind, like, parent, search) {
                 var prevComma = line.lastIndexOf(",", match.index);
 
 
-                for (var ic = 0; ic < this.aRemovedComments.length; ic++) {
+                for (let ic = 0; ic < this.aRemovedComments.length; ic++) {
                     if (this.aRemovedComments[ic].line == this.startLine + i && ( //same line
                         (this.aRemovedComments[ic].pos < nextComma && //inside this elements commas
                             this.aRemovedComments[ic].pos > prevComma) ||
@@ -228,7 +228,7 @@ ZhLangProvider.prototype.addInfo = function (name, kind, like, parent, search) {
                         thisComment = this.aRemovedComments[ic].value;
                 }
 
-                var info = new ZhInfo(name, kind, like, parent, this.currentDocument,
+                let info = new ZhInfo(name, kind, like, parent, this.currentDocument,
                     this.startLine + i, match.index, this.startLine + i, match.index + name.length, thisComment);
                 this.aFunctions.push(info);
 
@@ -244,7 +244,8 @@ ZhLangProvider.prototype.addInfo = function (name, kind, like, parent, search) {
         else
             break;
     }
-    var info = new ZhInfo(
+    
+    let info = new ZhInfo(
         name,
         kind,
         like,
@@ -350,7 +351,7 @@ ZhLangProvider.prototype.linePrepare = function (line) {
     }
 
     var lineStart = 0;
-    for (var i = 0; i < this.currLine.length; i++) {
+    for (let i = 0; i < this.currLine.length; i++) {
 
         precC = c;
         precJustStart = justStart;
@@ -375,7 +376,7 @@ ZhLangProvider.prototype.linePrepare = function (line) {
         // check code
         if (c == "*") {
             if (precC == "/") {
-                var endC = this.currLine.indexOf("*/", i + 1)
+                let endC = this.currLine.indexOf("*/", i + 1)
                 if (endC > 0) {
                     if (!precJustStart) this.newComment()
                     this.lastComment = "\r\n" + this.currLine.substr(i + 1, endC - i - 1)
@@ -400,7 +401,8 @@ ZhLangProvider.prototype.linePrepare = function (line) {
                 // commented line: skip
                 this.lastComment += "\r\n" + this.currLine.substr(i + 1)
                 this.currLine = "";
-                if (this.firstLineCommment < 0) this.firstLineCommment = this.lineNr;
+                if (this.firstLineCommment < 0) 
+                      this.firstLineCommment = this.lineNr;
                 return;
             }
         }
@@ -443,7 +445,7 @@ ZhLangProvider.prototype.linePrepare = function (line) {
 
 ZhLangProvider.prototype.parseDeclareList = function (list, kind, parent) {
 
-    var i = -1;
+    let i = -1;
     while (true) {
         i++;
         var filter = undefined;
@@ -466,8 +468,8 @@ ZhLangProvider.prototype.parseDeclareList = function (list, kind, parent) {
     }
 
     list = list.split(",");
-    for (var i = 0; i < list.length; i++) {
-        var m = list[i].trim().split(/\s+/g)[0];
+    for (let i = 0; i < list.length; i++) {
+        let m = list[i].trim().split(/\s+/g)[0];
         if (m.length > 0 && m.match(/[a-z0-9_]+/i))
             this.addInfo(m, kind, "definition", parent, true);
     }
@@ -535,7 +537,7 @@ ZhLangProvider.prototype.parseCommand = function () {
     }
 
     // create a neme from first part
-    var i = 0;
+    let i = 0;
     while (!commandResult[i].fixed)
         i++;
 
@@ -561,7 +563,7 @@ ZhLangProvider.prototype.parseCommand = function () {
     for (let i = 0; i < commandResult.length; ++i) {
         commandResult[i].text = commandResult[i].text.trim();
         var nextVar = commandResult[i].text.indexOf("<");
-        var idx = 1;
+        let idx = 1;
         commandResult[i].repeatable = !commandResult[i].fixed;
         while (nextVar >= 0) {
             var endVar = commandResult[i].text.indexOf(">", nextVar);
@@ -596,7 +598,7 @@ ZhLangProvider.prototype.parseCommand = function () {
     this.aCommands.push(commandResult);
 }
 
-ZhLangProvider.prototype.parseZiher = function (words) {
+ZhLangProvider.prototype.parseZiher = function (words: any) {
 
     /* && /\^s*#pragma\s+BEGINDUMP\s*$/.test(this.currLine)*/
     if (this.currLine.indexOf("#pragma") >= 0 && this.currLine.indexOf("BEGINDUMP") >= 0) {
@@ -608,7 +610,7 @@ ZhLangProvider.prototype.parseZiher = function (words) {
         return;
     }
 
-    var words1 = "";
+    let words1 = "";
     if (words.length > 1) {
         words1 = words[1];
         words[1] = words[1].toLowerCase();
@@ -693,7 +695,7 @@ ZhLangProvider.prototype.parseZiher = function (words) {
                                         words[1] == "function".substr(0, words[1].length)
                                     )
                                 )) {
-                                var r = procRegEx.exec(this.currLine);
+                                let r = procRegEx.exec(this.currLine);
                                 if (r) {
                                     var kind = r[1].startsWith('p') || r[1].startsWith('P') ? "procedure" : "function";
                                     if (words[0].startsWith("stat")) kind += "*";
@@ -735,6 +737,7 @@ ZhLangProvider.prototype.parseZiher = function (words) {
 }
 
 ZhLangProvider.prototype.parseC = function () {
+
     if (this.currLine.indexOf("pragma") >= 0 && this.currLine.indexOf("ENDDUMP") >= 0) {
         // && /\^s*#pragma\s+ENDDUMP\s*$/.test(this.currLine) {
         this.cMode = false;
@@ -753,10 +756,13 @@ ZhLangProvider.prototype.parseC = function () {
             open = this.currLine.indexOf("{", open + 1);
         } else
         /*if(close>=0 && (close<open || open<0)) */ {
-            var idx = this.cCodeFolder.length - 1;
-            while (idx >= 0 && this.cCodeFolder[idx].length > 2) idx--;
-            if (idx >= 0) this.cCodeFolder[idx].push(this.lineNr, close);
-            close = this.currLine.indexOf("}", close + 1)
+            let idx = this.cCodeFolder.length - 1;
+            while (idx >= 0 && this.cCodeFolder[idx].length > 2) 
+                 idx--;
+            if (idx >= 0) 
+                this.cCodeFolder[idx].push(this.lineNr, close);
+
+            close = this.currLine.indexOf("}", close + 1);
         }
     }
 }
@@ -889,11 +895,12 @@ ZhLangProvider.prototype.parse = function (line) {
         var lines = this.currLine.split(/;(?!\s+[\r\n])/)
         var pre = ""
         var code = false;
-        for (var i = 0; i < lines.length; i++) {
+        for (let i = 0; i < lines.length; i++) {
             this.currLine = pre + lines[i];
             //console.debug(this.lineNr+"-"+this.currLine);
             var words = this.currLine.replace(/\s+/g, " ").trim().split(" ");
-            if (words.length == 0) continue;
+            if (words.length == 0) 
+                continue;
             code = true;
             words[0] = words[0].toLowerCase();
             this.findDbfReferences();
@@ -919,7 +926,7 @@ ZhLangProvider.prototype.parseString = function (txt, docName, cMode) {
     if (cMode != undefined)
         this.cMode = cMode;
     var lines = txt.split(/\r?\n/);
-    for (var i = 0; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
         this.parse(lines[i])
     }
     this.endParse();
@@ -1014,8 +1021,8 @@ function group_management(dest, destStack, keywords, checkString, pos, lineNr) {
 
     var currKeywords;
     var currGroup;
-    for (var i = 0; i < keywords.length; i++) {
-        var m;
+    for (let i = 0; i < keywords.length; i++) {
+        let m;
         if ((m = checkString.match(keywords[i][1])) && m.index == 0) {
             currGroup = new Group(keywords[i][0]);
             destStack.push(currGroup);
@@ -1026,8 +1033,8 @@ function group_management(dest, destStack, keywords, checkString, pos, lineNr) {
     for (var j = destStack.length - 1; j >= 0; j--) {
         currGroup = destStack[j];
         currKeywords = keywords.find(v => v[0] == currGroup.type);
-        for (var i = 2; i < currKeywords.length; i++) {
-            var m;
+        for (let i = 2; i < currKeywords.length; i++) {
+            let m;
             if ((m = checkString.match(currKeywords[i])) && m.index == 0) {
                 currGroup.addRange(lineNr, pos, pos + m[0].length, m);
                 if (i == currKeywords.length - 1) {

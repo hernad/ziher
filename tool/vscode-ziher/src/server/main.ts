@@ -23,30 +23,30 @@ const DOT_C_EXT = '.c';
 const DOT_C_HEADER_EXT = '.h';
 
 /** @type {Array<string>} */
-var workspaceRoots;
+let workspaceRoots;
 
 /** @type {Array<string>} */
-var aIncludeDirs;
+let aIncludeDirs;
 
 /** @type {number} */
-var workspaceDepth;
+let workspaceDepth;
 
 /** @type {boolean} */
-var wordBasedSuggestions;
+let wordBasedSuggestions;
 
 /** @type {Object.<string, provider.ZhLangProvider>} */
-var oFiles;
+let oFiles;
 
 /** @type {Object.<string, provider.ZhLangProvider>} */
-var oProviderIncludes;
+let oProviderIncludes;
 
 /** the list of documentation ziher functions
  * @type {Array<object>} */
-var aFunctions;
+let aFunctions;
 
 /** the list of undocumentation ziher functions
  * @type {Array<string>} */
-var aFunctionsMissing
+let aFunctionsMissing
 
 /**
  * @typedef dbInfo
@@ -59,15 +59,13 @@ var aFunctionsMissing
  */
 
 /** @type {Object.<string, dbInfo>} every key is the lowercase name of db */
-var oDbfs;
+let oDbfs;
 
-/** @type {boolean} */
-var canLocationLink;
+let canLocationLink: boolean;
 
-/** @type {boolean} */
-var lineFoldingOnly;
+let lineFoldingOnly: boolean;
 
-var aKeywords = [
+let aKeywords: string[] = [
     "function", "procedure", "return",
     "if", "else", "elseif", "end if",
     "end while", "end case", "end do", "end switch", "end class", "end sequence",
@@ -98,7 +96,8 @@ connection.onInitialize( (params) => {
 
     if (params.capabilities.textDocument &&
         params.capabilities.textDocument.foldingRange &&
-        lineFoldingOnly in params.capabilities.textDocument.foldingRange)
+        ("lineFoldingOnly" in params.capabilities.textDocument.foldingRange)
+       )
         lineFoldingOnly = params.capabilities.textDocument.foldingRange.lineFoldingOnly;
 
     if (params.capabilities.workspace && params.capabilities.workspace.workspaceFolders && params.workspaceFolders) {
@@ -293,7 +292,7 @@ function zh_update_file(provider) {
     zh_add_includes(path.dirname(doc), provider.aIncludes);
 }
 
-function zh_add_includes(startPath, aProviderIncludes) {
+function zh_add_includes(startPath: string, aProviderIncludes) {
 
     if (aProviderIncludes.length == 0)
         return;
@@ -301,7 +300,7 @@ function zh_add_includes(startPath, aProviderIncludes) {
     if (startPath.startsWith("file:///"))
         startPath = Uri.parse(startPath).fsPath;
 
-    function zh_find_include_dir_file_name(dir, fileName) {
+    function zh_find_include_dir_file_name(dir: string, fileName: string) {
 
         if (startPath && !path.isAbsolute(dir))
             dir = path.join(startPath, dir);
@@ -318,7 +317,7 @@ function zh_add_includes(startPath, aProviderIncludes) {
         var fileUri = Uri.file(completePath);
         var provider = new zhProvider.ZhLangProvider(true);
         provider.parseFile(completePath, fileUri.toString(), false).then(
-            provider => {
+            (provider) => {
                 oProviderIncludes[fileName] = provider;
                 zh_add_includes(dir, provider.aIncludes);
             }
@@ -326,14 +325,14 @@ function zh_add_includes(startPath, aProviderIncludes) {
         return true;
     }
 
-    for (var j = 0; j < aProviderIncludes.length; j++) {
+    for (let j = 0; j < aProviderIncludes.length; j++) {
 
         var cInclude = aProviderIncludes[j];
         if (cInclude in oProviderIncludes)
             continue;
 
         var lFound = false;
-        for (var i = 0; i < workspaceRoots.length; i++) {
+        for (let i = 0; i < workspaceRoots.length; i++) {
 
             // other scheme of uri unsupported
             /** @type {vscode-uri.default} */
@@ -385,19 +384,19 @@ function zh_parse_include(startPath, includeName, addGlobal) {
         return provider;
     }
 
-    for (var i = 0; i < workspaceRoots.length; i++) {
+    for (let i = 0; i < workspaceRoots.length; i++) {
         // other scheme of uri unsupported
         /** @type {vscode-uri.default} */
-        var uri = Uri.parse(workspaceRoots[i]);
+        let uri = Uri.parse(workspaceRoots[i]);
         if (uri.scheme != "file")
             continue;
-        var provider = zh_find_include_dir(uri.fsPath);
+        let provider = zh_find_include_dir(uri.fsPath);
         if (provider)
             return provider;
     }
 
-    for (var i = 0; i < aIncludeDirs.length; i++) {
-        var provider = zh_find_include_dir(aIncludeDirs[i]);
+    for (let i = 0; i < aIncludeDirs.length; i++) {
+        let provider = zh_find_include_dir(aIncludeDirs[i]);
         if (provider)
             return provider;
     }

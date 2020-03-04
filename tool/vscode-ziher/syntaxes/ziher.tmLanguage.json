@@ -3,23 +3,30 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "Ziher",
 
-	"patterns": [{
+	"patterns": [
+		{
 			"include": "#directives"
-		},{
+		},
+		{
 			"include": "#function-declaration"
-		},{
+		},
+		{
 			"include": "#class-declaration"
-		},{
+		},
+		{
 			"include": "#method-declaration"
-		},{
+		},
+		{
 			"include": "#variable-declaration"
-		},{
-			"include": "#inline-staments"
+		},
+		{
+			"include": "#inline-statements"
 		}
 	],
 	"repository": {
-		"inline-staments": {
-			"patterns": [{
+		"inline-statements": {
+			"patterns": [
+				{
 					"include": "#continue-expression"
 				},
 				{
@@ -79,7 +86,7 @@
 					"include": "#variable-declaration"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -121,7 +128,7 @@
 							}
 						},{
 							"match": "<[\\w\\s]+>",
-							"name": "variable.other.ziherdoc"
+							"name": "variable.language.ziherdoc"
 						},{
 							"match": "\\[[\\s,]*<\\w+>[\\s\\.]*\\]",
 							"name": "variable.optional.other.ziherdoc"
@@ -234,7 +241,8 @@
 					"name": "punctuation.definition.parameters.end.ziher"
 				}
 			},
-			"patterns": [{
+			"patterns": [
+				{
 					"include": "#continue-expression"
 				},
 				{
@@ -242,7 +250,7 @@
 				},
 				{
 					"name": "variable.parameter.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+					"match": "\\b(s_)*[abcdhlnouxp][A-Z]\\w*\\b"
 				},
 				{
 					"include": "#parameter-comma"
@@ -291,9 +299,10 @@
 		"variable-name": {
 			"patterns": [
 				{
-					"name": "variable.other.readwrite.ziher",
-					"match": "(?i)\\b([a-z_]\\w*)\\b"
-				}
+                    "name": "variable.language.readwrite.ziher",
+					"comment": "variable name hungary notation",
+					"match": "\\b(s_)*[abcdhlnouxp][A-Z]\\w*\\b"
+                }
 			]
 		},
 		"variable-initializer": {
@@ -305,26 +314,27 @@
 			},
 			"end": "(?=(?m:$)|,)",
 			"patterns": [{
-					"begin": "(?i)([a-z_]\\w*)\\s*(:=)",
+					"begin": "([abcdhlnouxp][A-Z]\\w*)\\s*(:=)",
 					"beginCaptures": {
 						"1": {
-							"name": "variable.other.readwrite.ziher"
+							"name": "variable.language.readwrite.ziher"
 						},
 						"2": {
 							"name": "keyword.operator.assignment.ziher"
 						}
 					},
 					"end": "(?=(?m:$)|,)",
-					"patterns": [{
+					"patterns": [
+						{
 							"include": "#variable-initializer"
 						},
 						{
-							"include": "#inline-staments"
+							"include": "#inline-statements"
 						}
 					]
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -338,7 +348,7 @@
 		},
 		"variable-parameters-declaration": {
 			"name": "meta.parameters.ziher",
-			"begin": "(?i)^\\s*para(?:m(?:e(?:t(?:e(?:r(?:s)?)?)?)?)?)?\\b",
+			"begin": "(?i)^\\s*PARAMETERS\\b",
 			"beginCaptures": {
 				"0": {
 					"name": "storage.type.parameters.ziher"
@@ -358,7 +368,7 @@
 				},
 				{
 					"name": "variable.parameter.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+					"match": "\\b[abcdhlnouxp][A-Z]\\w*\\b"
 				},
 				{
 					"include": "#parameter-comma"
@@ -367,22 +377,23 @@
 		},
 		"variable-memvar-declaration": {
 			"name": "meta.definition.variable.memvar.ziher",
-			"begin": "(?i)^\\s*memv(?:a(?:r)?)?\\b",
+			"begin": "(?i)^\\s*MEMVAR\\b",
 			"beginCaptures": {
 				"0": {
 					"name": "storage.type.memvar.ziher"
 				}
 			},
 			"end": "(?m:$)",
-			"patterns": [{
+			"patterns": [
+				{
 					"include": "#continue-expression"
 				},
 				{
 					"include": "#comments"
 				},
 				{
-					"name": "variable.other.readwrite.memvar.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+					"name": "variable.language.readwrite.memvar.ziher",
+					"match": "\\b[abcdhlnouxp][A-Z]\\w*\\b"
 				},
 				{
 					"include": "#punctuation-comma"
@@ -390,7 +401,7 @@
 			]
 		},
 		"variable-field-declaration": {
-			"match": "(?i)^\\s*(_?field?)\\s*(->)\\s*([a-z0-9_]+)",
+			"match": "(?i)^\\s*(FIELD)(->)([a-z0-9_]+)\\b",
 			"captures": {
 				"1": {
 					"name": "storage.type.field.ziher"
@@ -399,16 +410,19 @@
 					"name": "keyword.accessor.ziher"
 				},
 				"3": {
-					"name": "meta.definition.variable.field.ziher"
+					"name": "variable.field.ziher"
 				}
 			}
 		},
 		"variable-local-declaration": {
 			"name": "meta.definition.variable.local.ziher",
-			"begin": "(?i)^\\s*(loca(?:l)?)\\b",
+			"begin": "(?i)^\\s*(LOCAL)\\s*([a-z0-9_]+)\\b",
 			"beginCaptures": {
 				"0": {
 					"name": "storage.type.local.ziher"
+				},
+				"1": {
+					"name": "variable.local.ziher"
 				}
 			},
 			"end": "(?m:$)",
@@ -428,21 +442,25 @@
 					"include": "#variable-type-definition"
 				},
 				{
-					"name": "variable.other.readwrite.local.ziher",
+					"name": "variable.language.readwrite.local.ziher",
 					"match": "(?i)\\b([A-Z_]\\w*)\\b"
 				}
 			]
 		},
 		"variable-static-declaration": {
 			"name": "meta.definition.variable.static.ziher",
-			"begin": "(?i)^\\s*(stat(?:i(?:c)?)?)\\b",
+			"begin": "(?i)^\\s*(STATIC)\\s+([a-zA-Z_]\\w*)\\b",
 			"beginCaptures": {
-				"0": {
+				"1": {
 					"name": "storage.type.static.ziher"
+				},
+				"2": {
+					"name": "entity.name.variable.ziher"
 				}
 			},
 			"end": "(?m:$)",
-			"patterns": [{
+			"patterns": [
+				{
 					"include": "#continue-expression"
 				},
 				{
@@ -456,16 +474,12 @@
 				},
 				{
 					"include": "#variable-type-definition"
-				},
-				{
-					"name": "variable.other.readwrite.static.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
 				}
 			]
 		},
 		"variable-private-declaration": {
 			"name": "meta.definition.variable.private.ziher",
-			"begin": "(?i)^\\s*(priv(?:a(?:t(?:e)?)?)?)\\b",
+			"begin": "(?i)^\\s*(PRIVATE)\\b",
 			"beginCaptures": {
 				"0": {
 					"name": "storage.type.private.ziher"
@@ -488,14 +502,14 @@
 					"include": "#variable-type-definition"
 				},
 				{
-					"name": "variable.other.readwrite.private.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+					"name": "variable.language.readwrite.private.ziher",
+					"match": "\\b([abcdhlnouxp][A-Z]\\w*)\\b"
 				}
 			]
 		},
 		"variable-public-declaration": {
 			"name": "meta.definition.variable.public.ziher",
-			"begin": "(?i)^\\s*(publ(?:i(?:c)?)?)\\b",
+			"begin": "(?i)^\\s*(PUBLIC)\\b",
 			"beginCaptures": {
 				"0": {
 					"name": "storage.type.public.ziher"
@@ -518,7 +532,7 @@
 					"include": "#variable-type-definition"
 				},
 				{
-					"name": "variable.other.readwrite.public.ziher",
+					"name": "variable.language.readwrite.public.ziher",
 					"match": "(?i)\\b([A-Z_]\\w*)\\b"
 				}
 			]
@@ -557,14 +571,15 @@
 						"name": "keyword.end.class.ziher"
 					}
 				},
-				"patterns": [{
+				"patterns": [
+					{
 						"include": "#continue-expression"
 					},
 					{
 						"include": "#comments"
 					},
 					{
-						"begin": "(?i)^\\s*((?:create\\s*)?class)\\s+([a-z_]\\w*)\\b",
+						"begin": "(?i)^\\s*((?:CREATE\\s*)?CLASS)\\s+([a-z_]\\w*)\\b",
 						"beginCaptures": {
 							"1": {
 								"name": "keyword.class.class.ziher"
@@ -593,7 +608,7 @@
 							},
 							{
 								"name": "keyword.control.static.ziher",
-								"match": "(?i)static"
+								"match": "(?i)STATIC"
 							},
 							{
 								"name": "keyword.control.metaclass.ziher",
@@ -666,7 +681,7 @@
 								},
 								"end": "(?i)(?m:$)|(?=\\b(?:exported|visible|protected|hidden|readonly|ro|persistent|property|sync)\\b)",
 								"patterns": [{
-									"include": "#inline-staments"
+									"include": "#inline-statements"
 								}]
 							},
 							{
@@ -682,45 +697,44 @@
 			}]
 		},
 		"method-declaration": {
-			"patterns": [{
+			"patterns": [
+				{
 				"name": "meta.method.declaration.ziher",
-				"begin": "(?i)^\\s*(method)\\b",
+				"begin": "(?i)^\\s*(METHOD)\\s+([a-zA-z_]\\w*)\\s*(\\()",
 				"beginCaptures": {
 					"1": {
 						"name": "keyword.type.method.ziher"
+					},
+					"2": {
+						"name":  "entity.name.function.ziher"
+					},
+					"3": {
+						"name": "punctuation.definition.parameters.begin.bracket.round.ziher"
 					}
 				},
-				"end": "(?m:$)",
-				"patterns": [{
+				"end": "\\)",
+				"endCaptures": {
+					"0": {
+						"name": "punctuation.definition.parameters.end.bracket.round.ziher"
+					}
+				},
+				"patterns": [
+					{
 						"include": "#continue-expression"
 					},
 					{
 						"include": "#comments"
 					},
 					{
-						"begin": "(?i)\\bclass\\b",
-						"beginCaptures": {
-							"0": {
-								"name": "storage.modifier.class.ziher"
-							}
-						},
-						"end": "(?i)[a-z_]\\w*",
-						"endCaptures": {
-							"0": {
-								"name": "support.class.ziher"
-							}
-						},
-						"patterns": [{
-								"include": "#continue-expression"
-							},
-							{
-								"include": "#comments"
-							}
-						]
+						"name": "variable.parameter.ziher",
+						"match": "\\b(s_)*[abcdhlnouxp][A-Z]\\w*\\b"
 					},
 					{
-						"name": "meta.definition.function.ziher entity.name.function.ziher",
-						"match": "(?i)\\b([A-Z_]\\w*)(?=\\s*\\()"
+						"include": "#parameter-comma"
+					},
+					{
+						"name": "keyword.operator.epsilon.ziher",
+						"match": "\\.\\.\\."
 					},
 					{
 						"begin": "(?i)\\bINLINE\\b",
@@ -731,7 +745,7 @@
 						},
 						"end": "(?m:$)",
 						"patterns": [{
-							"include": "#inline-staments"
+							"include": "#inline-statements"
 						}]
 					},
 					{
@@ -745,9 +759,6 @@
 						"patterns": [{
 							"include": "#codeblock"
 						}]
-					},
-					{
-						"include": "#function-parameters"
 					},
 					{
 						"name": "constant.language.${1:/downcase}.ziher",
@@ -778,7 +789,8 @@
 					"name": "punctuation.definition.parameters.end.ziher"
 				}
 			},
-			"patterns": [{
+			"patterns": [
+				{
 					"include": "#continue-expression"
 				},
 				{
@@ -789,7 +801,7 @@
 				},
 				{
 					"name": "variable.parameter.ziher",
-					"match": "(?i)\\b([A-Z_]\\w*)\\b"
+					"match": "\\b([aonp][A-Z]\\w*)\\b"
 				}
 			]
 		},
@@ -811,7 +823,7 @@
 					"include": "#codeblock-parameters"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -838,7 +850,7 @@
 					"name": "punctuation.separator.array"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -866,11 +878,12 @@
 					"name": "punctuation.definition.parameters.end.bracket.round.ziher"
 				}
 			},
-			"patterns": [{
+			"patterns": [
+				{
 					"include": "#punctuation-comma"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -896,7 +909,7 @@
 					"include": "#punctuation-comma"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -923,7 +936,7 @@
 					"include": "#punctuation-comma"
 				},
 				{
-					"include": "#inline-staments"
+					"include": "#inline-statements"
 				}
 			]
 		},
@@ -941,7 +954,7 @@
 				}
 			},
 			"patterns": [{
-				"include": "#inline-staments"
+				"include": "#inline-statements"
 			}]
 		},
 		"macro-var": {
@@ -993,9 +1006,9 @@
 				{ "name": "keyword.in.ziher", "match": "\\b(?i:in)\\b" },
 				{ "name": "keyword.init.ziher", "match": "\\b(?i:init)\\b" },
 				{ "name": "keyword.local.ziher", "match": "\\b(?i:local?)\\b" },
-				{ "name": "keyword.loop.ziher", "match": "\\b(?i:loop)\\b" },
+				{ "name": "keyword.loop.ziher", "match": "\\b(?i:LOOP)\\b" },
 				{ "name": "keyword.memvar.ziher", "match": "\\b(?i:memv(?:ar?)?)\\b" },
-				{ "name": "keyword.next.ziher", "match": "\\b(?i:next)\\b" },
+				{ "name": "keyword.next.ziher", "match": "\\b(?i:NEXT)\\b" },
 				{ "name": "keyword.nil.ziher", "match": "\\b(?i:nil)\\b" },
 				{ "name": "keyword.optional.ziher", "match": "\\b(?i:opti(?:o(?:n(?:al?)?)?)?)\\b" },
 				{ "name": "keyword.otherwise.ziher", "match": "\\b(?i:othe(?:r(?:w(?:i(?:se?)?)?)?)?)\\b" },
@@ -1006,17 +1019,28 @@
 				{ "name": "keyword.qself.ziher", "match": "\\b(?i:qself)\\b" },
 				{ "name": "keyword.recover.ziher", "match": "\\b(?i:reco(?:v(?:er?)?)?)\\b" },
 				{ "name": "keyword.return.ziher", "match": "\\b(?i:retu(?:rn?)?)\\b" },
-				{ "name": "keyword.static.ziher", "match": "\\b(?i:stat(?:ic?)?)\\b" },
-				{ "name": "keyword.step.ziher", "match": "\\b(?i:step)\\b" },
-				{ "name": "keyword.switch.ziher", "match": "\\b(?i:swit(?:ch?)?)\\b" },
+				{ "name": "keyword.static.ziher", "match": "\\b(?i:STATIC)\\b" },
+				{ "name": "keyword.field.ziher", "match": "\\b(?i:FIELD)\\b" },
+				{ "name": "keyword.step.ziher", "match": "\\b(?i:STEP)\\b" },
+				{ "name": "keyword.switch.ziher", "match": "\\b(?i:SWITCH?)\\b" },
 				{ "name": "keyword.thread.ziher", "match": "\\b(?i:thre(?:ad?)?)\\b" },
 				{ "name": "keyword.to.ziher", "match": "\\b(?i:to)\\b" },
-				{ "name": "keyword.while.ziher", "match": "\\b(?i:while?)\\b" },
+				{ "name": "keyword.while.ziher", "match": "\\b(?i:WHILE?)\\b" },
+				{ "name": "keyword.set_order_to_tag.ziher", "match": "\\b(?i:SET ORDER TO TAG)\\b" },
+				{
+					"name": "keyword.logical.ziher",
+					"match": "\\b(AND|OR|NOT|!)\\b"
+				},
+				{
+					"name": "keyword.get.ziher",
+					"match": "\\b(SAY|GET|READ|PICT|PICTURE|VALID)\\b"
+				},
+				{ "name": "keyword.seek.ziher", "match": "\\b(?i:SEEK)\\b" },
 				{ "name": "keyword.with.ziher", "match": "\\b(?i:with)\\b" },
 				{ "name": "keyword._zh_class.ziher", "match": "\\b(?i:_zh_class)\\b" },
 				{ "name": "keyword._zh_member.ziher", "match": "\\b(?i:_zh_member)\\b" },
 				{ "name": "keyword._procreq_.ziher", "match": "\\b(?i:_procreq_)\\b" },
-							{
+				{
 					"name": "variable.language.self.ziher",
 					"match": "(?i)\\b(self)\\b"
 				},
@@ -1025,20 +1049,12 @@
 					"match": "\\b(?i:(end)?class(data)?|method|data|message|init|constructor|destructor|hidden:|exported:)\\b"
 				},
 				{
-					"name": "keyword.operator.logical.ziher",
-					"match": "(?i)(\\.(and|or|not)\\.|!)"
-				},
-				{
 					"name": "keyword.getters.ziher",
 					"match": "\\b(?i:replace|with)\\b"
 				},
 				{
 					"name": "keyword.accessor.ziher",
 					"match": "->"
-				},
-				{
-					"name": "keyword.operator.logical.ziher",
-					"match": "!"
 				},
 				{
 					"name": "keyword.operator.assignment.ziher",
@@ -1061,13 +1077,14 @@
 					"match": "\\-\\-?|\\+\\+?|\\*\\*?|[\\/%^]"
 				},
 				{
-					"match": ";",
-					"name": "punctuation.terminator.statement.ziher"
+					"name": "punctuation.terminator.statement.ziher",
+					"match": ";"
 				}
 			]
 		},
 		"identifiers": {
-			"patterns": [{
+			"patterns": [
+				{
 					"match": "(?<=:)\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()",
 					"captures": {
 						"1": {
@@ -1076,10 +1093,18 @@
 					}
 				},
 				{
+					"match": "((s_)*[abcdhlnouxp][A-Z]\\w*)",
+					"captures": {
+						"1": {
+							"name": "variable.name.parametar.ziher"
+						}
+					}
+				},
+				{
 					"match": "(?<=:)\\s*([a-zA-Z_][a-zA-Z0-9_]*)",
 					"captures": {
 						"1": {
-							"name": "variable.other.property.ziher"
+							"name": "variable.name.property.ziher"
 						}
 					}
 				},
@@ -1104,7 +1129,7 @@
 					}
 				},
 				{
-					"name": "variable.other.object.ziher",
+					"name": "variable.name.object.ziher",
 					"match": "\\b([a-zA-Z_][a-zA-Z0-9_]*\\s*)(?=:[^=])"
 				},
 				{
@@ -1116,12 +1141,21 @@
 		"constants": {
 			"patterns": [{
 					"name": "constant.language.logical.ziher",
-					"match": "(?i)(\\.(t|f|y|n)\\.)"
+					"match": "(?i)(\\.(T|F|Y|N)\\.)"
 				},
 				{
 					"name": "constant.language.nil.ziher",
-					"match": "(?i)\\b(nil)\\b"
+					"match": "(?i)\\b(NIL)\\b"
 				},
+				{
+                    "name": "constant.language.keyboard.ziher",
+                    "match": "(K_DOWN|K_PGDN|K_CTRL_PGDN|K_UP|K_PGUP|K_CTRL_PGUP|K_RIGHT|K_LEFT|K_HOME|K_END|K_CTRL_LEFT|K_CTRL_RIGHT|K_CTRL_HOME|K_CTRL_END)"
+				},
+				{
+					"comment": "const like F18_TEST_SECTION",
+                    "name": "constant.language.defines.ziher",
+                    "match": "\\b([A-Z0-9]{2,}_|[A-Z]_)[A-Z0-9_]+\\b"
+                },
 				{
 					"name": "constant.other.date.quoted.ziher",
 					"match": "[dD]\"\\d{4}[-/\\.](?:0\\d|1[0-2])[-/\\.](?:[0-2]\\d|3[0-1])\""
@@ -1193,7 +1227,7 @@
 							"end": "(?=\\||(?m:$))",
 							"patterns": [
 								{
-									"include": "#inline-staments"
+									"include": "#inline-statements"
 								}
 							]
 						}
@@ -1245,7 +1279,7 @@
 							"end": "(?=\\||(?m:$))",
 							"patterns": [
 								{
-									"include": "#inline-staments"
+									"include": "#inline-statements"
 								},
 								{
 									"include": "#variable-name"
@@ -1300,7 +1334,7 @@
 							"end": "(?=\\||(?m:$))",
 							"patterns": [
 								{
-									"include": "#inline-staments"
+									"include": "#inline-statements"
 								}
 							]
 						},
@@ -1321,7 +1355,7 @@
 							"name": "keyword.operator.into.ziher"
 						},
 						"3": {
-							"name": "variable.other.readwrite.ziher"
+							"name": "variable.name.readwrite.ziher"
 						}
 					},
 					"endCaptures": {
@@ -1671,7 +1705,7 @@
 							},
 							"patterns": [
 								{
-									"include": "#inline-staments"
+									"include": "#inline-statements"
 								}
 							]
 						},

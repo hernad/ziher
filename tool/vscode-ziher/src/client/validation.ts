@@ -42,12 +42,12 @@ function validate(textDocument)
 	var args = ["-s", "-q0", "-m", "-n0", "-w" + section.warningLevel, textDocument.fileName ];
 	var file_cwd = path.dirname(textDocument.fileName);
 
-	for (var i = 0; i < section.extraIncludePaths.length; i++) {
-		var pathVal = section.extraIncludePaths[i];
+	for (let i = 0; i < section.extraIncludePaths.length; i++) {
+		let pathVal = section.extraIncludePaths[i];
 		if(pathVal.indexOf("${workspaceFolder}")>=0) {
-			pathVal=pathVal.replace("${workspaceFolder}",file_cwd)
+			pathVal=pathVal.replace("${workspaceFolder}",file_cwd);
 		}
-		args.push("-I"+pathVal);
+		args.push("-I" + pathVal);
 	}
 
 	args = args.concat(section.extraOptions.split(" ").filter( 
@@ -59,7 +59,7 @@ function validate(textDocument)
 	diagnostics[textDocument.fileName] = [];
 	var errorLines = "";
 
-	function parseData(data) {
+	function parseData(data: Buffer) {
 
 		errorLines += data.toString();
 		errorLines = errorLines.replace(/[\r\n]/g,"\n");
@@ -102,7 +102,7 @@ function validate(textDocument)
 					}
 				} 
 				if (putAll)
-					diagnostics[r[1]].push(new vscode.Diagnostic(line.range, r[4], r[3]=="Warning"? 1 : 0))
+					diagnostics[r[1]].push(new vscode.Diagnostic(line.range, r[4], r[3]== "Warning"? 1 : 0))
 			}
 		}
 	}

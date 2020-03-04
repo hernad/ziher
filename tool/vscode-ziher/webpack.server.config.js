@@ -5,7 +5,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-/**@type {import('webpack').Configuration}*/
 const config = {
   target: 'node', 
   entry: {
