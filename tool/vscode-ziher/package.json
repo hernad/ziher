@@ -2,7 +2,7 @@
     "name": "ziher",
     "displayName": "Ziher",
     "description": "Ziher support",
-    "version": "1.2.0",
+    "version": "1.2.2",
     "publisher": "bringout",
     "license": "GPL",
     "main": "./dist/extension",
@@ -20,8 +20,7 @@
     "categories": [
         "Programming Languages",
         "Linters",
-        "Debuggers",
-        "Snippets"
+        "Debuggers"
     ],
     "dependencies": {
         "vscode-debugadapter": "^1.35.0",

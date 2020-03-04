@@ -3,31 +3,29 @@
 #pragma -B-
 
 #ifndef DBG_PORT
-#define DBG_PORT 6110
+#define DBG_PORT 60110
 #endif
 
 #include <debug.zhh>
 #include <memvar.zhh>
 #include <oo.zhh>
 #include <class.zhh>
+#include "file_io.zhh"
 
-
+/*
 //#define _DEBUGDEBUG
 #ifdef _DEBUGDEBUG
-#ifdef INAPACHE
-#command ? [<explist,...>] => AP_RPuts( <explist>, "<br>" )
-#else
 #command ? [<explist,...>] => dbgQOut( <explist> )
-#endif
 #else
 #command ? [<explist,...>] =>
 #endif
+*/
 
 #ifndef ZH_DBG_CS_LEN
-#define ZH_DBG_CS_MODULE      1  /* module name (.zh file) */
+#define ZH_DBG_CS_MODULE      1  /* cModule name (.zh file) */
 #define ZH_DBG_CS_FUNCTION    2  /* function name */
-#define ZH_DBG_CS_LINE        3  /* start line */
-#define ZH_DBG_CS_LEVEL       4  /* eval stack level of the function */
+#define ZH_DBG_CS_LINE        3  /* nStart nLine */
+#define ZH_DBG_CS_LEVEL       4  /* eval stack nLevel of the function */
 #define ZH_DBG_CS_LOCALS      5  /* an array with local variables */
 #define ZH_DBG_CS_STATICS     6  /* an array with static variables */
 #define ZH_DBG_CS_LEN         6
@@ -37,7 +35,7 @@
 #define ZH_DBG_VAR_NAME          1  /* variable name */
 #define ZH_DBG_VAR_INDEX         2  /* index */
 #define ZH_DBG_VAR_TYPE          3  /* type of variable: "L", "S", "G" */
-#define ZH_DBG_VAR_FRAME         4  /* eval stack level of the function or static frame */
+#define ZH_DBG_VAR_FRAME         4  /* eval stack nLevel of the function or static frame */
 #define ZH_DBG_VAR_LEN           4
 #endif
 
@@ -45,117 +43,123 @@
 
 // returns .T. if need step
 static procedure CheckSocket(lStopSent)
-	LOCAL tmp, lNeedExit := .F.
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	lStopSent := iif(empty(lStopSent),.F.,lStopSent)
+
+	LOCAL cReceive, lNeedExit := .F.
+	LOCAL oDebugInfo := __DEBUGITEM()
+
 	// if no server then search it.
-	// 140+130+120+110+100+90+80+70+60+50+40+30+20+10=1050 wait 1sec at start, then 0
-	do while (empty(t_oDebugInfo['socket']) .and. t_oDebugInfo['timeCheckForDebug']<=14)
-		//QOut("try to connect to debug server",t_oDebugInfo['timeCheckForDebug'], seconds()," timeout:",140-t_oDebugInfo['timeCheckForDebug']*10)
+	// 140+130+120+110+100+90+80+70+60+50+40+30+20+10=1050 wait 1sec at nStart, then 0
+	do while ( empty(oDebugInfo['socket']) .and. oDebugInfo['timeCheckForDebug'] <=14 )
+	
+		//QOut("try to connect to debug server",oDebugInfo['timeCheckForDebug'], seconds()," timeout:",140-oDebugInfo['timeCheckForDebug']*10)
 		zh_inetInit()
-		t_oDebugInfo['socket'] := zh_inetCreate(140-t_oDebugInfo['timeCheckForDebug']*10)
-		zh_inetConnect("127.0.0.1",DBG_PORT,t_oDebugInfo['socket'])
-		if zh_inetErrorCode(t_oDebugInfo['socket']) <> 0			
-			//QOut("failed")			// no server found
-			tmp := "NO"
+		oDebugInfo['socket'] := zh_inetCreate( 140 - oDebugInfo['timeCheckForDebug'] * 10 )
+		
+		zh_inetConnect("127.0.0.1", DBG_PORT, oDebugInfo['socket'])
+		if zh_inetErrorCode(oDebugInfo['socket']) <> 0			
+			cReceive := "NO"
 		else
-			//QOut("connected") //server found, send my exeName and my processId
-#ifdef INAPACHE
-			zh_inetSend(t_oDebugInfo['socket'],GetAppName()+CRLF+str(__PIDNum())+CRLF)
-#else
-			zh_inetSend(t_oDebugInfo['socket'],ZH_ARGV(0)+CRLF+str(__PIDNum())+CRLF)
-#endif
-			do while zh_inetDataReady(t_oDebugInfo['socket']) != 1 //waiting for response
-				zh_idleSleep(0.2)
+			
+			//debug_log_write_file( ZH_ARGV(0) + "<EOL>" + str(__PIDNum()))
+			zh_inetSend(oDebugInfo['socket'], ZH_ARGV(0) + CRLF + str(__PIDNum()) + CRLF)
+			do while zh_inetDataReady(oDebugInfo['socket']) != 1 //waiting for response
+				zh_idleSleep( 0.2 )
 			end do
-			tmp := zh_inetRecvLine(t_oDebugInfo['socket']) // if the server does not respond "NO" it is ok
-			//QOut("returned ",tmp)
+
+			cReceive := zh_inetRecvLine(oDebugInfo['socket']) // if the server does not respond "NO" it is ok
+			
 			// End of handshake
 		endif
-		if tmp="NO" //server not found or handshake failed 
-			t_oDebugInfo['socket'] := nil
-			t_oDebugInfo['timeCheckForDebug']+=1
+
+		if cReceive == "NO" //server not found or handshake failed 
+			oDebugInfo['socket'] := nil
+			oDebugInfo['timeCheckForDebug'] += 1
 		endif
+
 	end do
-	if empty(t_oDebugInfo['socket'])
+
+	if empty(oDebugInfo['socket'])
 		// no debug server
-		t_oDebugInfo['timeCheckForDebug']-=1
-		return
+		oDebugInfo['timeCheckForDebug']--
+		//Alert("NO DBG Server")
+	    return
 	endif
+
 	do while .T.
-		if zh_inetErrorCode(t_oDebugInfo['socket']) <> 0
+		if zh_inetErrorCode(oDebugInfo['socket']) <> 0
 			// disconected?
-			//QOut("socket error",zh_inetErrorDesc( t_oDebugInfo['socket'] ))
-			t_oDebugInfo['socket'] := nil
-			t_oDebugInfo['lRunning'] := .T.
-			t_oDebugInfo['aBreaks'] := {=>}
-			t_oDebugInfo['maxLevel'] := nil
+			//QOut("socket error",zh_inetErrorDesc( oDebugInfo['socket'] ))
+			oDebugInfo['socket'] := nil
+			oDebugInfo['lRunning'] := .T.
+			oDebugInfo['aBreaks'] := {=>}
+			oDebugInfo['maxLevel'] := nil
 			return
 		endif
 
-		do while zh_inetDataReady(t_oDebugInfo['socket']) = 1
-			tmp := zh_inetRecvLine(t_oDebugInfo['socket'])
-			if .not. empty(tmp)
-				//? "<<", tmp
-				if subStr(tmp,4,1)==":"
-					sendCoumpoundVar(tmp, zh_inetRecvLine(t_oDebugInfo['socket']))
+		do while zh_inetDataReady(oDebugInfo['socket']) == 1
+			cReceive := zh_inetRecvLine(oDebugInfo['socket'])
+			if .not. empty(cReceive)
+				//? "<<", cReceive
+				if subStr(cReceive,4,1)==":"
+					sendCoumpoundVar(cReceive, zh_inetRecvLine(oDebugInfo['socket']))
 					loop
 				endif
  
-
 				do case
-				    case tmp=="PAUSE"
-						t_oDebugInfo['lRunning'] := .F.
-						//? "StopRun on pause"
-						if .not. lStopSent
-							zh_inetSend(t_oDebugInfo['socket'],"STOP:pause"+CRLF)
+
+				    case cReceive == "PAUSE"
+						oDebugInfo['lRunning'] := .F.
+						//debug_log_write_file("StopRun on pause")
+						if !lStopSent
+							//debug_log_write_file( "STOP:pause" )
+							zh_inetSend(oDebugInfo['socket'], "STOP:pause" + CRLF)
 							lStopSent := .T.
 						endif
 						
-					case tmp=="GO"
-						t_oDebugInfo['lRunning'] := .T.
-						t_oDebugInfo['maxLevel'] := nil
-						t_oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
+					case cReceive == "GO"
+						oDebugInfo['lRunning'] := .T.
+						oDebugInfo['maxLevel'] := nil
+						oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
 						lNeedExit := .T.
 						
-					case tmp="STEP" // go to next line of code even if is in another procedure
-						t_oDebugInfo['lRunning'] := .F.
-						t_oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
+					case cReceive == "STEP" // go to next nLine of code even if is in another procedure
+						oDebugInfo['lRunning'] := .F.
+						oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
 						//? "StopRun on step"
 						lNeedExit := .T.
 						
-					case tmp=="NEXT" // go to next line of same procedure
-						t_oDebugInfo['lRunning'] := .T.
-						t_oDebugInfo['maxLevel'] := t_oDebugInfo['__dbgEntryLevel']
-						t_oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
+					case cReceive == "NEXT" // go to next nLine of same procedure
+						oDebugInfo['lRunning'] := .T.
+						oDebugInfo['maxLevel'] := oDebugInfo['__dbgEntryLevel']
+						oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
 						lNeedExit := .T.
 						
-					case tmp=="EXIT" // go to callee procedure
-						t_oDebugInfo['lRunning'] := .T.
-						t_oDebugInfo['maxLevel'] := t_oDebugInfo['__dbgEntryLevel']-1
-						t_oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
+					case cReceive == "EXIT" // go to callee procedure
+						oDebugInfo['lRunning'] := .T.
+						oDebugInfo['maxLevel'] := oDebugInfo['__dbgEntryLevel']-1
+						oDebugInfo['inError'] := .F. // If it was on error, now it doesn't
 						lNeedExit := .T.
 						
-					case tmp=="STACK"
+					case cReceive == "STACK"
 						sendStack()
 						
-					case tmp=="BREAKPOINT"
-						setBreakpoint(zh_inetRecvLine(t_oDebugInfo['socket']))
+					case cReceive == "BREAKPOINT"
+						setBreakpoint(zh_inetRecvLine( oDebugInfo['socket']) )
 						
-					case tmp=="LOCALS"
-						sendLocals(zh_inetRecvLine(t_oDebugInfo['socket']),tmp)
+					case cReceive == "LOCALS"
+						sendLocals(zh_inetRecvLine(oDebugInfo['socket']), cReceive)
 						
-					case tmp=="STATICS"
-						sendStatics(zh_inetRecvLine(t_oDebugInfo['socket']),tmp)
+					case cReceive == "STATICS"
+						sendStatics(zh_inetRecvLine(oDebugInfo['socket']), cReceive)
 						
-					case tmp=="PRIVATES"
-						sendFromInfo(tmp,zh_inetRecvLine(t_oDebugInfo['socket']),ZH_MV_PRIVATE, .T.)
+					case cReceive == "PRIVATES"
+						sendFromInfo(cReceive, zh_inetRecvLine(oDebugInfo['socket']), ZH_MV_PRIVATE, .T.)
 						
-					case tmp=="PRIVATE_CALLEE"
-						sendFromInfo(tmp,zh_inetRecvLine(t_oDebugInfo['socket']),ZH_MV_PRIVATE, .F.)
+					case cReceive == "PRIVATE_CALLEE"
+						sendFromInfo(cReceive, zh_inetRecvLine(oDebugInfo['socket']),ZH_MV_PRIVATE, .F.)
 						
-					case tmp=="PUBLICS"
-						sendFromInfo(tmp,zh_inetRecvLine(t_oDebugInfo['socket']),ZH_MV_PUBLIC)
+					case cReceive == "PUBLICS"
+						sendFromInfo(cReceive, zh_inetRecvLine(oDebugInfo['socket']), ZH_MV_PUBLIC)
 						
 					//COMMAND "GLOBALS"
 					//	sendVariables(ZH_MV_PUBLIC,.F.)
@@ -163,36 +167,36 @@ static procedure CheckSocket(lStopSent)
 					//COMMAND "EXTERNALS"
 					//	sendVariables(ZH_MV_PUBLIC,.F.)
 					//	END_COM
-					case tmp=="EXPRESSION"
-						sendExpression(zh_inetRecvLine(t_oDebugInfo['socket']))
+					case cReceive == "EXPRESSION"
+						sendExpression(zh_inetRecvLine(oDebugInfo['socket']))
 						
-					case tmp=="INERROR"
-						//? "INERROR",t_oDebugInfo['inError']
-						if t_oDebugInfo['inError']
-							zh_inetSend(t_oDebugInfo['socket'],"INERROR:True"+CRLF)
+					case cReceive == "INERROR"
+						//? "INERROR",oDebugInfo['inError']
+						if oDebugInfo['inError']
+							zh_inetSend(oDebugInfo['socket'], "INERROR:True" + CRLF)
 						else
-							zh_inetSend(t_oDebugInfo['socket'],"INERROR:False"+CRLF)
+							zh_inetSend(oDebugInfo['socket'], "INERROR:False" + CRLF)
 						endif
 						
-					case tmp=="ERROR_VAR"
-						zh_inetRecvLine(t_oDebugInfo['socket'])
-						zh_inetSend(t_oDebugInfo['socket'],"ERROR_VAR 0"+CRLF)
-						if t_oDebugInfo['inError']
-							zh_inetSend(t_oDebugInfo['socket'],"ERR:0:0::Error:O:" + format(t_oDebugInfo['error'])+CRLF)
+					case cReceive == "ERROR_VAR"
+						zh_inetRecvLine(oDebugInfo['socket'])
+						zh_inetSend(oDebugInfo['socket'], "ERROR_VAR 0" + CRLF)
+						if oDebugInfo['inError']
+							zh_inetSend(oDebugInfo['socket'], "ERR:0:0::Error:O:" + format(oDebugInfo['error']) + CRLF)
 						endif
-						zh_inetSend(t_oDebugInfo['socket'],"END"+CRLF)
+						zh_inetSend(oDebugInfo['socket'], "END" + CRLF)
 						
-					case tmp=="ERRORTYPE"
-						SetErrorType(zh_inetRecvLine(t_oDebugInfo['socket']))
+					case cReceive == "ERRORTYPE"
+						SetErrorType(zh_inetRecvLine(oDebugInfo['socket']))
 						
-					case tmp=="COMPLETITION"
-						sendCompletition(zh_inetRecvLine(t_oDebugInfo['socket']))
+					case cReceive == "COMPLETITION"
+						sendCompletition(zh_inetRecvLine(oDebugInfo['socket']))
 						
-					case tmp=="DISCONNECT"
-						t_oDebugInfo['socket'] := nil
-						t_oDebugInfo['lRunning'] := .T.
-						t_oDebugInfo['aBreaks'] := {=>}
-						t_oDebugInfo['maxLevel'] := nil
+					case cReceive == "DISCONNECT"
+						oDebugInfo['socket'] := nil
+						oDebugInfo['lRunning'] := .T.
+						oDebugInfo['aBreaks'] := {=>}
+						oDebugInfo['maxLevel'] := nil
 						return
 				endcase
 
@@ -201,46 +205,48 @@ static procedure CheckSocket(lStopSent)
 		if lNeedExit
 			return
 		endif
-		if t_oDebugInfo['lRunning']
+
+		if oDebugInfo['lRunning']
 			if inBreakpoint()
-				t_oDebugInfo['lRunning'] := .F.
+				oDebugInfo['lRunning'] := .F.
 				//? "StopRun on break"
 				if .not. lStopSent
-					zh_inetSend(t_oDebugInfo['socket'],"STOP:break"+CRLF)
+					zh_inetSend(oDebugInfo['socket'], "STOP:break" + CRLF)
 					lStopSent := .T.
 				endif
 			endif
 			if __dbgInvokeDebug(.F.)
-				t_oDebugInfo['lRunning'] := .F.
-				//? "StopRun on AltD"
+				oDebugInfo['lRunning'] := .F.
+				//debug_log_write_file( "StopRun on AltD" )
 				if .not. lStopSent
-					zh_inetSend(t_oDebugInfo['socket'],"STOP:AltD"+CRLF)
+					zh_inetSend(oDebugInfo['socket'],"STOP:AltD"+CRLF)
 					lStopSent := .T.
 				endif
 			endif
-			if .not. empty(t_oDebugInfo['maxLevel'])
-				//? "maxLevel",t_oDebugInfo['maxLevel'], t_oDebugInfo['__dbgEntryLevel']
-				if t_oDebugInfo['maxLevel'] < t_oDebugInfo['__dbgEntryLevel']
+			if !empty(oDebugInfo['maxLevel'])
+				//? "maxLevel",oDebugInfo['maxLevel'], oDebugInfo['__dbgEntryLevel']
+				if oDebugInfo['maxLevel'] < oDebugInfo['__dbgEntryLevel']
 					// we are not in the same procedure
 					return
 				endif
-				t_oDebugInfo['maxLevel'] := nil
-				t_oDebugInfo['lRunning'] := .F.
+				oDebugInfo['maxLevel'] := NIL
+				oDebugInfo['lRunning'] := .F.
 				//? "StopRun on level"
-				if .not. lStopSent
-					zh_inetSend(t_oDebugInfo['socket'],"STOP:next"+CRLF)
+				if !lStopSent
+					zh_inetSend(oDebugInfo['socket'], "STOP:next" + CRLF)
 					lStopSent := .T.
 				endif
 			endif
 		endif
-		if t_oDebugInfo['lRunning']
+
+	  if oDebugInfo['lRunning']
 			return
       else
-         t_oDebugInfo['lInternalRun'] := .T.
+         oDebugInfo['lInternalRun'] := .T.
          zh_idleSleep(0.1)
-         t_oDebugInfo['lInternalRun'] := .F.
+         oDebugInfo['lInternalRun'] := .F.
 			if .not. lStopSent
-				zh_inetSend(t_oDebugInfo['socket'],"STOP:step"+CRLF)
+				zh_inetSend(oDebugInfo['socket'], "STOP:step" + CRLF)
 				lStopSent := .T.
 			endif
 		endif
@@ -248,323 +254,353 @@ static procedure CheckSocket(lStopSent)
 	// unreachable code
 return
 
+
 static procedure sendStack()
-	local i,d, line, module, functionName, start := 3
-	LOCAL t_oDebugInfo := __DEBUGITEM(), n, nLevel
-	local aStack := t_oDebugInfo['aStack']
-	if t_oDebugInfo['inError']
-		start := 4
+
+	local nI, nD, nLine 
+	LOCAL cModule, cFunctionName
+	LOCAL nStart := 3
+	LOCAL oDebugInfo := __DEBUGITEM()
+	LOCAL n, nLevel
+	local aStack := oDebugInfo['aStack']
+	LOCAL cSend
+
+	if oDebugInfo['inError']
+		nStart := 4
 	endif
-	//start := 0
+
+	//nStart := 0
 	nLevel := __dbgProcLevel()
-	d := nLevel-1
-	//? "send stack---", start,d, t_oDebugInfo['__dbgEntryLevel']
-	zh_inetSend(t_oDebugInfo['socket'],"STACK " + alltrim(str(d-start+1))+CRLF)
-	for i:=start to d
-		line := procLine(i)
-		module := ProcFile(i)
-		if (n:=aScan(aStack,{|x| (nLevel-x[ZH_DBG_CS_LEVEL])==i}))>0
-			module := aStack[n,ZH_DBG_CS_MODULE]
+	nD := nLevel - 1
+	
+	cSend := "STACK " + alltrim( str ( nD - nStart + 1) )
+
+	//debug_log_write_file( cSend )
+	zh_inetSend(oDebugInfo['socket'], cSend + CRLF)
+
+	for nI := nStart to nD
+		nLine := ProcLine(nI)
+		cModule := ExtractFileName( ProcFile(nI) )
+		//debug_log_write_file( "sendStack nI=" + Alltrim(str(nI)) + " cModule=" + cModule)
+		if (n := aScan(aStack,{|aElem| (nLevel - aElem[ZH_DBG_CS_LEVEL] ) == nI}))>0
+			cModule := ExtractFileName(aStack[n, ZH_DBG_CS_MODULE])
+			//debug_log_write_file( "cModule=" + cModule )
 		endif
-#ifdef INAPACHE
-		module := strTran(FixProcFile(module),":",";")
-#else
-		module := strTran(module,":",";")
-#endif
-		functionName := strTran(ProcName(i),":",";")
-		zh_inetSend(t_oDebugInfo['socket'], module+":"+alltrim(str(line))+":"+functionName+CRLF)
+		cModule := strTran(cModule, ":", ";")
+		cFunctionName := strTran( ProcName(nI), ":", ";")
+		cSend := cModule + ":" + alltrim(Str(nLine)) + ":" + cFunctionName
+		debug_log_write_file( "[cModule:nLine:cFunctionName]" + cSend )
+		zh_inetSend(oDebugInfo['socket'], cSend + CRLF)
 	next
 
-	//? "send stack---", t_oDebugInfo['__dbgEntryLevel'], nLevel
-	//for i:=len(aStack) to 1 step -1
-	//	? "memoStack",i,aStack[i,ZH_DBG_CS_LEVEL],(nLevel-aStack[i,ZH_DBG_CS_LEVEL]),aStack[i,ZH_DBG_CS_MODULE],aStack[i,ZH_DBG_CS_LINE]
-	//next
-	//for i:=start to d
-	//	if (n:=aScan(aStack,{|x| (nLevel-x[ZH_DBG_CS_LEVEL])==i}))>0
-	//		? "sendStack",i,aStack[n,ZH_DBG_CS_MODULE], ProcLine(i), "*"
-	//	else
-	//		? "sendStack",i,procFile(i), ProcLine(i)
-	//	endif
-	//next
 return
 
-static function format(value)
-	switch valtype(value)
+static function format(xValue)
+
+	switch valtype(xValue)
 		case "U"
-			return "nil"
+			return "NIL"
 		case "C"
 		case "M"
-			value=StrTran(value,e"\n","\$\n")
-			value=StrTran(value,e"\r","\$\r")
-			if at('"',value)==0
-				return '"'+value+'"'
-			elseif at("'",value)==0
-				return "'"+value+"'"
+			xValue=StrTran(xValue, e"\n","\$\n")
+			xValue=StrTran(xValue, e"\r","\$\r")
+			
+			if at('"', xValue)==0
+				return '"'+ xValue + '"'
+			elseif at("'", xValue )==0
+				return "'" + xValue + "'"
 			else
-				return "["+value+"]" //i don't like it decontexted
+				return "[" + xValue + "]" //nI don't like it decontexted
 			endif
 		case "N"
-			return alltrim(str(value))
+			return alltrim(str(xValue))
 		case "L"
-			return iif(value,".T.",".F.")
+			return iif(xValue, ".T.", ".F.")
 		case "D"
-			return 'd"'+left(zh_TsToStr(value),10)+'"'
+			return 'd"'+left(zh_TsToStr(xValue), 10) + '"'
 		case "T"
-			return 't"'+zh_TsToStr(value)+'"'
+			return 't"' + zh_TsToStr(xValue) + '"'
 		case "A"
 		case "H"
-			return alltrim(str(len(value)))
+			return alltrim(str(len(xValue)))
 		case "B"
 			return "{|| ...}"
 		case "O"
-			//return value:ClassName()+" "+alltrim(str(len(value)))
-			return value:ClassName()+" "+alltrim(str(len(__objGetMsgList(value,.T.,ZH_MSGLISTALL))))
+			//return xValue:ClassName()+" "+alltrim(str(len(xValue)))
+			return xValue:ClassName() + " " + alltrim(str(len(__objGetMsgList(xValue,.T., ZH_MSGLISTALL))))
+		
 		case "P"
 			return "Pointer"
+
 		case "S"
-			RETURN "@" + value:name + "()"
+			RETURN "@" + xValue:name + "()"
 		endswitch
 return ""
 
-static function GetStackId(level,aStack)
-	local l := __DEBUGITEM()['__dbgEntryLevel'] - level
+
+static function GetStackId(nLevel, aStack)
+
+	local l := __DEBUGITEM()['__dbgEntryLevel'] - nLevel
+	
 	if __DEBUGITEM()['inError']
-		l -= 1
+		l--
 	endif
+
 	if empty(aStack)
 		aStack := __DEBUGITEM()['aStack']
 	endif
+
 return AScan( aStack, {| a | a[ ZH_DBG_CS_LEVEL ] == l } )
 
 
 static function GetStackAndParams(cParams, aStack)
+
 	local aParams := zh_aTokens(cParams,":")
-	local iStack
+	local nStack
 	local iStart := val(aParams[2])
 	local iCount := val(aParams[3])
-	local idx := val(aParams[1])
-	local l := __DEBUGITEM()['__dbgEntryLevel'] - idx
-	iStack := GetStackId(idx,aStack)
+	local nIndex := val(aParams[1])
+	local l := __DEBUGITEM()['__dbgEntryLevel'] - nIndex
+	nStack := GetStackId(nIndex, aStack)
 
-return {iStack, iStart, iCount,l,idx} //l and idx used by sendFromInfo
+return {nStack, iStart, iCount,l,nIndex} //l and nIndex used by sendFromInfo
 
 
-static procedure sendLocals(cParams,prefix)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
+static procedure sendLocals(cParams, cPrefix)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
 	local aParams := GetStackAndParams(cParams,aStack)
-	local iStack := aParams[1]
+	local nStack := aParams[1]
 	local iStart := aParams[2]
 	local iCount := aParams[3]
 	local iLevel := __dbgProcLevel()
-	local i, aInfo, value, cLine
-	//? "sendLocals ", cParams, alltrim(str(aParams[5])), iStack, iLevel, t_oDebugInfo['__dbgEntryLevel']
-	zh_inetSend(t_oDebugInfo['socket'],prefix+" "+alltrim(str(aParams[5]))+CRLF)
-	if iStack>0
-		if iCount=0
-			iCount := len(aStack[iStack,ZH_DBG_CS_LOCALS])
+	local nI, aInfo, xValue, cLine
+
+	//? "sendLocals ", cParams, alltrim(str(aParams[5])), nStack, iLevel, oDebugInfo['__dbgEntryLevel']
+	zh_inetSend( oDebugInfo['socket'], cPrefix + " " + alltrim(str(aParams[5])) + CRLF)
+	if nStack > 0
+		if iCount == 0
+			iCount := len( aStack[nStack, ZH_DBG_CS_LOCALS])
 		endif
-		for i:=iStart to iStart+iCount
-			if(i>len(aStack[iStack,ZH_DBG_CS_LOCALS]))
+		for nI := iStart to iStart + iCount
+			if( nI > len(aStack[nStack, ZH_DBG_CS_LOCALS]) )
 				exit
 			endif
-			aInfo := aStack[iStack,ZH_DBG_CS_LOCALS,i]
-			value := __dbgVMVarLGet( iLevel-aInfo[ ZH_DBG_VAR_FRAME ], aInfo[ ZH_DBG_VAR_INDEX ] )
-			// LOC:LEVEL:IDX::
-			cLine := left(prefix,3) + ":" + alltrim(str(aInfo[ ZH_DBG_VAR_FRAME ])) + ":" + ;
-					alltrim(str(aInfo[ ZH_DBG_VAR_INDEX ])) + "::" + ;
-					aInfo[ZH_DBG_VAR_NAME] + ":" + valtype(value) + ":" + format(value)
-			zh_inetSend(t_oDebugInfo['socket'],cLine + CRLF )
+			aInfo := aStack[nStack, ZH_DBG_CS_LOCALS, nI]
+			xValue := __dbgVMVarLGet( iLevel-aInfo[ ZH_DBG_VAR_FRAME ], aInfo[ ZH_DBG_VAR_INDEX ] )
+			// LOC:LEVEL:nIndex::
+			cLine := left(cPrefix, 3) + ":" +;
+			         alltrim(str(aInfo[ ZH_DBG_VAR_FRAME ])) + ":" + ;
+					 alltrim(str(aInfo[ ZH_DBG_VAR_INDEX ])) + "::" + ;
+					 aInfo[ZH_DBG_VAR_NAME] + ":" + valtype(xValue) + ":" + format(xValue)
+			zh_inetSend(oDebugInfo['socket'], cLine + CRLF )
 		next
 	endif
-	zh_inetSend(t_oDebugInfo['socket'],"END"+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "END" + CRLF)
 return
 
 
-static procedure sendStatics(cParams, prefix)
+static procedure sendStatics(cParams, cPrefix)
 
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
-	local aModules := t_oDebugInfo['aModules']
-	local cModule, idxModule, nVarMod, nVarStack
-	local aParams := GetStackAndParams(cParams,aStack)
-	local iStack := aParams[1]
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
+	local aModules := oDebugInfo['aModules']
+	local cModule, nModuleIndex, nVarMod, nVarStack
+	local aParams := GetStackAndParams(cParams, aStack)
+	local nStack := aParams[1]
 	local iStart := aParams[2]
 	local iCount := aParams[3]
-	local i, aInfo, value, cLine
+	local nI, aInfo, xValue, cLine
 
-	if iStack>0
-		cModule := lower(allTrim(aStack[iStack,ZH_DBG_CS_MODULE]))
-		idxModule := aScan(aModules, {|v| v[1]=cModule})
+	if nStack > 0
+		cModule := lower(allTrim(aStack[nStack, ZH_DBG_CS_MODULE]))
+		nModuleIndex := aScan(aModules, {|v| v[1] == cModule})
 	else
-		idxModule := 0
+		nModuleIndex := 0
 	endif
-	if idxModule>0
-		nVarMod:=len(aModules[idxModule,4])
+
+	if nModuleIndex>0
+		nVarMod:=len(aModules[nModuleIndex,4])
 	else
 		nVarMod:=0
 	endif
-	nVarStack := iif(iStack>0,len(aStack[iStack,ZH_DBG_CS_STATICS]),0)
-	iStart:= iif(iStart>nVarMod+nVarStack  , nVarMod+nVarStack , iStart )
-	iStart:= iif(iStart<1				   , 1				   , iStart )
-	iCount:= iif(iCount<1				   , nVarMod+nVarStack , iCount )
+	
+	nVarStack := iif( nStack > 0, len(aStack[nStack, ZH_DBG_CS_STATICS]), 0)
+	iStart:= iif( iStart > nVarMod+nVarStack  , nVarMod+nVarStack , iStart )
+	iStart:= iif( iStart < 1				   , 1				   , iStart )
+	iCount:= iif( iCount < 1				   , nVarMod+nVarStack , iCount )
 
-	zh_inetSend(t_oDebugInfo['socket'],prefix+" "+alltrim(str(aParams[5]))+CRLF)
-	for i:=iStart to iStart+iCount
-		if i<=nVarMod
-			aInfo := aModules[idxModule,4,i]
-		elseif i<=nVarMod+nVarStack
-			aInfo := aStack[iStack,ZH_DBG_CS_STATICS,i-nVarMod]
+	zh_inetSend( oDebugInfo['socket'], cPrefix + " " + alltrim(str(aParams[5]))+CRLF )
+
+	for nI := iStart to iStart + iCount
+	
+		if nI <= nVarMod
+			aInfo := aModules[nModuleIndex, 4, nI]
+		elseif nI <= nVarMod+nVarStack
+			aInfo := aStack[nStack, ZH_DBG_CS_STATICS, nI-nVarMod]
 		else
 			exit
 		endif
-		value := __dbgVMVarSGet( aInfo[ ZH_DBG_VAR_FRAME ], aInfo[ ZH_DBG_VAR_INDEX ] )
-		// LOC:LEVEL:IDX::
-		cLine := left(prefix,3) + ":"+alltrim(str(iStack))+":" + alltrim(str(i)) + "::" + ;
-				 aInfo[ZH_DBG_VAR_NAME] + ":" + valtype(value) + ":" + format(value)
-		zh_inetSend(t_oDebugInfo['socket'],cLine + CRLF )
+		xValue := __dbgVMVarSGet( aInfo[ ZH_DBG_VAR_FRAME ], aInfo[ ZH_DBG_VAR_INDEX ] )
+		// LOC:LEVEL:nIndex::
+		cLine := left(cPrefix, 3) + ":" + alltrim(str(nStack))+":" + alltrim(str(nI)) + "::" + ;
+				 aInfo[ZH_DBG_VAR_NAME] + ":" + valtype(xValue) + ":" + format(xValue)
+
+		//debug_log_write_file("DBG: sendStatics:" + cLine)
+		zh_inetSend(oDebugInfo['socket'], cLine + CRLF )
+	
 	next
-	zh_inetSend(t_oDebugInfo['socket'],"END"+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "END" + CRLF)
+
 return
 
-static function MyGetSta(iStack,varIndex)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
-	local aModules := t_oDebugInfo['aModules']
-	LOCAL cModule, idxModule
-	local nVarMod, aInfo, nVarStack := iif(iStack>0,len(aStack[iStack,ZH_DBG_CS_STATICS]),0)
-	if iStack>0
-		cModule := lower(allTrim(aStack[iStack,ZH_DBG_CS_MODULE]))
-		idxModule := aScan(aModules, {|v| v[1]=cModule})
+static function MyGetSta(nStack, varIndex)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
+	local aModules := oDebugInfo['aModules']
+	LOCAL cModule, nModuleIndex
+	local nVarMod, aInfo, nVarStack := iif( nStack > 0, len(aStack[ nStack, ZH_DBG_CS_STATICS ]), 0)
+	
+	if nStack > 0
+		cModule := lower(allTrim(aStack[ nStack, ZH_DBG_CS_MODULE]))
+		nModuleIndex := aScan(aModules, {|v| v[1] == cModule})
 	else
-		idxModule := 0
+		nModuleIndex := 0
 	endif
-	if idxModule>0
-		nVarMod:=len(aModules[idxModule,4])
+	if nModuleIndex > 0
+		nVarMod:=len(aModules[nModuleIndex,4])
 	else
 		nVarMod:=0
 	endif
-	if varIndex<=nVarMod
-		aInfo := aModules[idxModule,4,varIndex]
+	if varIndex <= nVarMod
+		aInfo := aModules[nModuleIndex,4,varIndex]
 	elseif varIndex<=nVarMod+nVarStack
-		aInfo := aStack[iStack,ZH_DBG_CS_STATICS,varIndex-nVarMod]
+		aInfo := aStack[nStack, ZH_DBG_CS_STATICS, varIndex-nVarMod]
 	else
 		return nil
 	endif
 return  __dbgVMVarSGet( aInfo[ ZH_DBG_VAR_FRAME ], aInfo[ ZH_DBG_VAR_INDEX ] )
 
 
-static procedure sendFromInfo(prefix, cParams, ZH_MV, lLocal)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
+static procedure sendFromInfo(cPrefix, cParams, ZH_MV, lLocal)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
 	local nVars := __mvDbgInfo( ZH_MV )
-	local aParams := GetStackAndParams(cParams,aStack)
-	//local iStack := aParams[1]
+	local aParams := GetStackAndParams(cParams, aStack)
+	//local nStack := aParams[1]
 	local iStart := aParams[2]
 	local iCount := aParams[3]
 	local iLevel := aParams[4]
-	local i, cLine, cName, value
+	local nI, cLine, cName, xValue
 	local nLocal := __mvDbgInfo( ZH_MV_PRIVATE_LOCAL, iLevel )
-	zh_inetSend(t_oDebugInfo['socket'], prefix+" "+alltrim(str(aParams[5]))+CRLF)
-	if iCount=0
+
+	//debug_log_write_file("DBG: sendFromInfo:" + cPrefix + " " + alltrim(str(aParams[5])))
+	zh_inetSend(oDebugInfo['socket'], cPrefix + " " + alltrim(str(aParams[5])) + CRLF)
+	if iCount == 0
 		iCount := nVars
 	endif
 	//? "send From Info", cParams, alltrim(str(aParams[5])), nVars, ZH_MV, iLevel
-	for i:=iStart to iStart+iCount
-	//for i:=1 to nVars
-		if i > nVars
+	for nI:=iStart to iStart+iCount
+	//for nI:=1 to nVars
+		if nI > nVars
 			loop
 		endif
 		if ZH_MV = ZH_MV_PRIVATE
-			if lLocal .and. i>nLocal
+			if lLocal .and. nI > nLocal
 				loop
 			endif
-			if .not.  lLocal .and. i<=nLocal
+			if !lLocal .and. nI <= nLocal
 				loop
 			endif
 		endif
-		value := __mvDbgInfo( ZH_MV, i, @cName )
-		// PRI::i:
-		cLine := left(prefix,3) + "::" + alltrim(str(i)) + "::" +;
-				  cName + ":" + valtype(value) + ":" + format(value)
-		zh_inetSend(t_oDebugInfo['socket'],cLine + CRLF )
+		xValue := __mvDbgInfo( ZH_MV, nI, @cName )
+		// PRI::nI:
+		cLine := left(cPrefix,3) + "::" + alltrim(str(nI)) + "::" +;
+				  cName + ":" + valtype(xValue) + ":" + format(xValue)
+		//debug_log_write_file("DBG: sendFromInfo:" + cLine)
+		zh_inetSend(oDebugInfo['socket'], cLine + CRLF )
 	next
 
-	zh_inetSend(t_oDebugInfo['socket'],"END"+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "END" + CRLF)
 return
 
 static function getValue(req)
 	local aInfos := zh_aTokens(req,":")
-	local v, i, aIndices, cName
+	local v, nI, aIndices, cName
 	//? "getValue", req
 
 do case
 		case aInfos[1]=="ERR"
 			v := __DEBUGITEM()["error"]
-			ENDTYPE
+			
 		case aInfos[1]=="LOC"
-			v := __dbgVMVarLGet(__dbgProcLevel()-val(aInfos[2]),val(aInfos[3]))
-			ENDTYPE
+			v := __dbgVMVarLGet(__dbgProcLevel() - val(aInfos[2]), val(aInfos[3]))
+			
 		case aInfos[1]=="STA"
 			v := MyGetSta(val(aInfos[2]),val(aInfos[3]))
-			ENDTYPE
+			
 		case aInfos[1]=="GLO"
 			v := __dbgVMVarSGet(val(aInfos[2]),val(aInfos[3]))
-			ENDTYPE
+			
 		case aInfos[1]=="EXT"
 			v := __dbgVMVarSGet(val(aInfos[2]),val(aInfos[3]))
-			ENDTYPE
+			
 		case aInfos[1]=="PRI"
 			v := __mvDbgInfo(ZH_MV_PRIVATE,val(aInfos[3]), @cName)
-			ENDTYPE
+			
 		case aInfos[1]=="PUB"
 			v := __mvDbgInfo(ZH_MV_PUBLIC,val(aInfos[3]), @cName)
-			ENDTYPE
+			
 		case aInfos[1]=="EXP"
 			v := evalExpression( aInfos[3], val(aInfos[2]))
 		endcase
 
 	// some variable changes its type during execution. mha
 	req := aInfos[1]+":"+aInfos[2]+":"+aInfos[3]+":"+aInfos[4]
+
 	if !empty(aInfos[4])
+	
 		aIndices := zh_aTokens(aInfos[4],",")
-		for i:=1 to len(aIndices)
+		for nI := 1 to len(aIndices)
 			if at(valtype(v),"AHO") == 0
 				return {}
 			endif
 			switch(valtype(v))
 				case "A"
-					if val(aIndices[i])>len(v)
+					if val(aIndices[nI])>len(v)
 						v := {}
 					else
-						v:=v[val(aIndices[i])]
+						v:=v[val(aIndices[nI])]
 					endif
 					exit
 				case "H"
-					if val(aIndices[i])>len(v)
+					if val(aIndices[nI])>len(v)
 						v := {}
 					else
-			
-						v := zh_HValueAt(v,val(aIndices[i]))
-						
+						v := zh_HValueAt(v,val(aIndices[nI]))
 					endif
 					exit
 				case "O"
-					v :=  __dbgObjGetValue(val(aInfos[2]),v,aIndices[i])
+					v :=  __dbgObjGetValue(val(aInfos[2]),v,aIndices[nI])
 			endswitch
 		next
 	endif
+
 	if at(valtype(v),"AHO") == 0
 		return {}
 	endif
 return v
 
+
 STATIC FUNCTION __dbgObjGetValue( nProcLevel, oObject, cVar )
 
    LOCAL xResult
    LOCAL oErr
-   LOCAL t_oDebugInfo := __DEBUGITEM()
-  t_oDebugInfo['lInternalRun'] := .T.
+   LOCAL oDebugInfo := __DEBUGITEM()
+  oDebugInfo['lInternalRun'] := .T.
 
 
    	BEGIN SEQUENCE WITH {|| Break() }
@@ -578,23 +614,23 @@ STATIC FUNCTION __dbgObjGetValue( nProcLevel, oObject, cVar )
       	END SEQUENCE
 	   END SEQUENCE
 	   
-	t_oDebugInfo['lInternalRun'] := .F.
+	oDebugInfo['lInternalRun'] := .F.
 RETURN xResult
 
 
 static procedure sendCoumpoundVar(req, cParams )
-	local value := getValue(@req)
+	local xValue := getValue(@req)
 	local aInfos := zh_aTokens(req,":")
 	local aParams := GetStackAndParams(cParams)
 	local iStart := aParams[2]
-	local iCount := aParams[3], nMax := len(value)
-	local i, idx,vSend, cLine, aData, idx2
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	if valtype(value) == "O"
-		aData :=   __objGetMsgList( value )
+	local iCount := aParams[3], nMax := len(xValue)
+	local nI, nIndex,vSend, cLine, aData, idx2
+	LOCAL oDebugInfo := __DEBUGITEM()
+	if valtype(xValue) == "O"
+		aData :=   __objGetMsgList( xValue )
 		nMax := len(aData)
 	endif
-	zh_inetSend(t_oDebugInfo['socket'],req+CRLF)
+	zh_inetSend(oDebugInfo['socket'],req+CRLF)
 	if right(req,1)<>":"
 		req+=","
 	endif
@@ -602,91 +638,95 @@ static procedure sendCoumpoundVar(req, cParams )
 		iCount := nMax
 	endif
 
-	for i:=iStart to iStart+iCount
-		if i > nMax
+	for nI := iStart to iStart + iCount
+		if nI > nMax
 			loop
 		endif
-		switch(valtype(value))
+		switch(valtype(xValue))
 			case "A"
-				idx2 := idx := alltrim(str(i))
-				vSend:=value[i]
+				idx2 := nIndex := alltrim(str(nI))
+				vSend:=xValue[nI]
 				exit
 			case "H"
 				
-					vSend:=zh_HValueAt(value,i)
-					idx2 := format(zh_HKeyAt(value,i))
+					vSend:=zh_HValueAt(xValue,nI)
+					idx2 := format(zh_HKeyAt(xValue,nI))
 	
-				idx := alltrim(str(i))
+				nIndex := alltrim(str(nI))
 				exit
 			case "O"
 				
-					idx2 := idx := aData[i]
-					vSend := __dbgObjGetValue(VAL(aInfos[2]),value, aData[i])
+					idx2 := nIndex := aData[nI]
+					vSend := __dbgObjGetValue(VAL(aInfos[2]),xValue, aData[nI])
 
 				exit
 		endswitch
-		cLine := req + idx + ":" + idx2 + ":" + valtype(vSend) + ":" + format(vSend)
-		zh_inetSend(t_oDebugInfo['socket'],cLine + CRLF )
+		cLine := req + nIndex + ":" + idx2 + ":" + valtype(vSend) + ":" + format(vSend)
+		zh_inetSend(oDebugInfo['socket'],cLine + CRLF )
 	next
 
-	zh_inetSend(t_oDebugInfo['socket'],"END"+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "END" + CRLF)
 return
 
-static function IsValidFileName(cModule) 
-	LOCAL iModule, t_oDebugInfo := __DEBUGITEM()
+
+static function IsValidFileName( cModule ) 
+
+	LOCAL iModule, oDebugInfo := __DEBUGITEM()
 	//? "IsValidFileName: ", cModule
-	cModule := ExtractFileName(cModule)
-	iModule := aScan(t_oDebugInfo['aModules'],{|v| v[1]=cModule})
+	cModule := ExtractFileName( cModule )
+	
+	iModule := aScan(oDebugInfo['aModules'], {|v| v[1] == cModule})
+
 	//? cModule, iif(iModule=0," not found","found")
 return iModule
 
 
 static function IsValidStopLine(iModule,nLine)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local nIdx, nInfo, tmp
-	if nLine<t_oDebugInfo['aModules'][iModule,2]
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local nIdx, nInfo, cReceive
+	if nLine<oDebugInfo['aModules'][iModule,2]
 		return .F.
 	endif
-	nIdx := nLine - t_oDebugInfo['aModules'][iModule,2]
-	tmp := Int(nIdx/8)
-	if tmp>=len(t_oDebugInfo['aModules'][iModule,3])
+	nIdx := nLine - oDebugInfo['aModules'][iModule,2]
+	cReceive := Int(nIdx/8)
+	if cReceive>=len(oDebugInfo['aModules'][iModule,3])
 		return .F.
 	endif
-	nInfo = Asc(SubStr(t_oDebugInfo['aModules'][iModule,3],tmp+1,1))
-return ZH_BITAND(ZH_BITSHIFT(nInfo, -(nIdx-tmp*8)),1)=1
+	nInfo = Asc(SubStr(oDebugInfo['aModules'][iModule,3],cReceive+1,1))
+return ZH_BITAND(ZH_BITSHIFT(nInfo, -(nIdx-cReceive*8)),1)=1
 
 static procedure setBreakpoint(cInfo)
 	LOCAL aInfos := zh_aTokens(cInfo,":"), idLine
 	local nReq, nLine, lFound, nExtra, iModule
-	LOCAL t_oDebugInfo := __DEBUGITEM()
+	LOCAL oDebugInfo := __DEBUGITEM()
 	//? " BRAEK - ", cInfo
 	nReq := val(aInfos[3])
 	aInfos[2] := lower(aInfos[2])
 	if aInfos[1]=="-"
 		// remove
-		if zh_HHasKey(t_oDebugInfo['aBreaks'],aInfos[2])
-			idLine := aScan(t_oDebugInfo['aBreaks'][aInfos[2]], {|v| v[1]=nReq })
+		if zh_HHasKey(oDebugInfo['aBreaks'],aInfos[2])
+			idLine := aScan(oDebugInfo['aBreaks'][aInfos[2]], {|v| v[1]=nReq })
 			if idLine>0
-				aDel(t_oDebugInfo['aBreaks'][aInfos[2]],idLine)
-				aSize(t_oDebugInfo['aBreaks'][aInfos[2]],len(t_oDebugInfo['aBreaks'][aInfos[2]])-1)
+				aDel(oDebugInfo['aBreaks'][aInfos[2]],idLine)
+				aSize(oDebugInfo['aBreaks'][aInfos[2]],len(oDebugInfo['aBreaks'][aInfos[2]])-1)
 			endif
 		endif
-		zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:request"+CRLF)
+		zh_inetSend(oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:request"+CRLF)
 		//? "BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:request"
 		return
 	endif
 	if aInfos[1]<>"+"
-		zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid request"+CRLF)
+		zh_inetSend(oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid request"+CRLF)
 		//? "BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid request"
 		return
 	endif
 	iModule := IsValidFileName(@aInfos[2])
-	if iModule==0
-		zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:not found"+CRLF)
+	if iModule == 0
+		zh_inetSend(oDebugInfo['socket'], "BREAK:" + aInfos[2] + ":" + aInfos[3] + ":-1:not found" + CRLF)
 		return
 	endif
 	nLine := nReq
-	while .not. (lFound:=IsValidStopLine(iModule,nLine))
+	while .not. (lFound := IsValidStopLine(iModule,nLine))
 		nLine++
 		if (nLine-nReq)>2
 			exit
@@ -694,63 +734,63 @@ static procedure setBreakpoint(cInfo)
 	enddo
 	if !lFound
 		nLine := nReq - 1
-		while .not. (lFound:=IsValidStopLine(iModule,nLine))
+		while .not. (lFound := IsValidStopLine(iModule,nLine))
 			nLine--
 			if (nReq-nLine)>2
 				exit
 			endif
 		enddo
 	endif
+	
 	if !lFound
-		zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid"+CRLF)
+		zh_inetSend(oDebugInfo['socket'], "BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid"+CRLF)
 		return
 	endif
-	if .not. zh_HHasKey(t_oDebugInfo['aBreaks'],aInfos[2])
-		t_oDebugInfo['aBreaks'][aInfos[2]] := {}
+
+	if !zh_HHasKey(oDebugInfo['aBreaks'], aInfos[2])
+		oDebugInfo['aBreaks'][aInfos[2]] := {}
 	endif
-	idLine := aScan(t_oDebugInfo['aBreaks'][aInfos[2]], {|v| v[1]=nLine })
+	idLine := aScan(oDebugInfo['aBreaks'][aInfos[2]], {|v| v[1]=nLine })
 	if idLine=0
-		aAdd(t_oDebugInfo['aBreaks'][aInfos[2]],{nLine})
-		idLine = len(t_oDebugInfo['aBreaks'][aInfos[2]])
+		aAdd(oDebugInfo['aBreaks'][aInfos[2]],{nLine})
+		idLine = len(oDebugInfo['aBreaks'][aInfos[2]])
 	endif
 	nExtra := 4
 	do While len(aInfos) >= nExtra
-		if .not. (aInfos[nExtra] $ "?CL")
-			zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid request "+ aInfos[nExtra]+CRLF)
+		if !(aInfos[nExtra] $ "?CL")
+			zh_inetSend(oDebugInfo['socket'],"BREAK:" + aInfos[2] + ":" + aInfos[3] + ":-1:invalid request " + aInfos[nExtra] + CRLF)
 			//? "BREAK:"+aInfos[2]+":"+aInfos[3]+":-1:invalid request "+ aInfos[nExtra]
 			return
 		endif
-		if aInfos[nExtra]='C' //count
+		if aInfos[nExtra] == 'C' //count
 			aInfos[nExtra+1] := Val(aInfos[nExtra+1])
 		endif
-		aAdd(t_oDebugInfo['aBreaks'][aInfos[2]][idLine],aInfos[nExtra])
-		aAdd(t_oDebugInfo['aBreaks'][aInfos[2]][idLine],aInfos[nExtra+1])
-		aAdd(t_oDebugInfo['aBreaks'][aInfos[2]][idLine],0)
+		aAdd(oDebugInfo['aBreaks'][aInfos[2]][idLine],aInfos[nExtra])
+		aAdd(oDebugInfo['aBreaks'][aInfos[2]][idLine],aInfos[nExtra+1])
+		aAdd(oDebugInfo['aBreaks'][aInfos[2]][idLine],0)
 		nExtra += 2
 	enddo
-	zh_inetSend(t_oDebugInfo['socket'],"BREAK:"+aInfos[2]+":"+aInfos[3]+":"+alltrim(str(nLine))+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "BREAK:" + aInfos[2] + ":" + aInfos[3]+":" + alltrim(str(nLine)) + CRLF)
 	//? "BREAK:"+aInfos[2]+":"+aInfos[3]+":"+alltrim(str(nLine))
 return
 
 static function inBreakpoint()
+
 	LOCAL aBreaks := __DEBUGITEM()['aBreaks']
 	LOCAL nLine := procLine(3), aBreakInfo
 	local idLine
-	#ifdef INAPACHE
-	local cFile := ExtractFileName(FixProcFile(ProcFile(3)))
-	#else
-	local cFile := ExtractFileName(ProcFile(3))
-	#endif
+	local cFile := ExtractFileName( ProcFile(3) )
 	local nExtra := 2
 	LOCAL ck
-	if .not. zh_HHasKey(aBreaks,cFile)
+	if !zh_HHasKey(aBreaks, cFile)
 		return .F.
 	endif
-	idLine := aScan(aBreaks[cFile], {|v| iif(!empty(v),(aBreakInfo:=v, v[1]=nLine),.F.) })
+	idLine := aScan(aBreaks[cFile], {|v| iif(!empty(v),( aBreakInfo := v, v[1] == nLine),.F.) })
 	if idLine = 0
 		return  .F.
 	endif
-	//? "BRK in line " + str(nLine)
+
+	//? "BRK in nLine " + str(nLine)
 	do while len(aBreakInfo) >= nExtra
 		switch aBreakInfo[nExtra]
 			case '?'
@@ -763,14 +803,15 @@ static function inBreakpoint()
 					return .F.
 				endif
 				exit
+			
 			case 'C'
-				aBreakInfo[nExtra+2]+=1
-				if aBreakInfo[nExtra+2] < aBreakInfo[nExtra+1]
+				aBreakInfo[ nExtra + 2 ] ++
+				if aBreakInfo[ nExtra + 2 ] < aBreakInfo[ nExtra + 1 ]
 					return .F.
 				endif
 				exit
 			case 'L'
-				BreakLog(aBreakInfo[nExtra+1])
+				BreakLog( aBreakInfo[ nExtra + 1 ] )
 				return .F.
 		endswitch
 		nExtra +=3
@@ -779,15 +820,17 @@ return .T.
 
 static procedure BreakLog(cMessage)
 	LOCAL cResponse := "", cCur, cExpr
-	LOCAL nCurly:=0, i
-	for i:=1 to len(cMessage)
-		cCur := subStr(cMessage,i,1)
-		if nCurly=0
+	LOCAL nCurly :=0, nI
+
+	for nI:=1 to len(cMessage)
+	
+		cCur := subStr(cMessage,nI,1)
+		if nCurly == 0
 			if cCur = "{"
 				nCurly := 1
 				cExpr := ""
 			else
-				cResponse+=cCur
+				cResponse += cCur
 			endif
 		else
 			if cCur = "{"
@@ -803,370 +846,392 @@ static procedure BreakLog(cMessage)
 			endif
 		endif
 	next
-	zh_inetSend(__DEBUGITEM()['socket'],"LOG:"+cResponse+CRLF)
+	zh_inetSend(__DEBUGITEM()['socket'], "LOG:" + cResponse + CRLF)
 return
 
-static function ExtractFileName(cFileName)
-	LOCAL idx
-	//? "ExtractFileName before",cFileName
+static function ExtractFileName( cFileName )
+	
+	LOCAL nIndex
+	LOCAL cStart := cFileName
+
 	#ifdef __PLATFORM__WINDOWS
 		// case insensitive
 		cFileName := lower(alltrim(cFileName))
 	#else
 		cFileName := alltrim(cFileName)
 	#endif
-	idx := rat(zh_osPathSeparator(), cFileName)
-	if idx>0
-		cFileName:=substr(cFileName,idx+1)
+	
+	nIndex := RAT(PathSeparator(), cFileName)
+	
+	if nIndex > 0
+		cFileName := substr(cFileName, nIndex + 1 )
 	endif
-	//? "ExtractFileName after ",cFileName
-return cFileName
+
+	//debug_log_write_file( "Extract: [" + cStart + "]->[" + cFileName + "]" ) 
+    return cFileName
 
 
-//#define SAVEMODULES
 static procedure AddModule(aInfo)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local i, idx
-	//#ifdef SAVEMODULES
-	//	local j, tmp, cc,fFileModules
-	//	fFileModules := fopen("modules.dbg",1+64)
-	//	fSeek(fFileModules,0,2)
-	//#endif
-	   for i:=1 to len(aInfo)		
-		aInfo[i,1] := ExtractFileName(aInfo[i,1])
-		if len(aInfo[i,1])=0
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local nI, nIndex
+	
+	for nI := 1 to len( aInfo )
+
+		aInfo[nI, 1] := ExtractFileName( aInfo[nI, 1] )
+
+		if len(aInfo[nI,1]) == 0
 			loop
 		endif
-		idx := aScan(t_oDebugInfo['aModules'], {|v| aInfo[i,1]=v[1]})
-		if idx=0
-			aAdd(aInfo[i],{}) //statics
-			aadd(t_oDebugInfo['aModules'],aInfo[i])
+		nIndex := aScan( oDebugInfo['aModules'], {|v| aInfo[nI,1] == v[1]})
+
+		if nIndex == 0
+			aAdd(aInfo[nI], {}) //statics
+			aadd(oDebugInfo[ 'aModules' ], aInfo[nI])
 		else
-			aAdd(aInfo[i],t_oDebugInfo['aModules'][idx,4])
-			t_oDebugInfo['aModules'][idx] := aInfo[i]
+			aAdd( aInfo[nI], oDebugInfo[ 'aModules' ][ nIndex, 4 ] )
+			oDebugInfo[ 'aModules' ][ nIndex ] := aInfo[ nI ]
 		endif
-
-		//#ifdef SAVEMODULES
-		//	fWrite(fFileModules,aInfo[i,1]+str(aInfo[i,2])+e"\r\n")
-		//	for j:=1 to len(aInfo[i,3])*8
-		//		tmp := Int(j/8)
-		//		cc := asc(substr(aInfo[i,3],tmp+1,1))
-		//		fWrite(fFileModules,str(j+aInfo[i,2])+str(ZH_BITAND(ZH_BITSHIFT(cc, -(j-tmp*8)),1))+str(cc)+e"\r\n")
-		//		//? j, ZH_BITAND(ZH_BITSHIFT(cc, -(j-tmp*8)),1), cc
-		//	next
-		//#endif
+	
 	next
-	//#ifdef SAVEMODULES
-	//	fclose(fFileModules)
-	//#endif
+	
 return
 
-static procedure AddStaticModule(idx,name,frame)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local currModule := t_oDebugInfo['aStack'][len(t_oDebugInfo['aStack']),ZH_DBG_CS_MODULE]
-	local idxModule
-   currModule := lower(alltrim(currModule))
-	idxModule := aScan(t_oDebugInfo['aModules'], {|v| v[1]==currModule})
-	if idxModule=0
-		aadd(t_oDebugInfo['aModules'],{currModule,0,{},{}})
-		idxModule := len(t_oDebugInfo['aModules'])
+static procedure AddStaticModule(nIndex, name, frame)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local currModule := oDebugInfo['aStack'][ len(oDebugInfo['aStack']), ZH_DBG_CS_MODULE ]
+	local nModuleIndex
+
+	currModule := lower(alltrim(currModule))
+	nModuleIndex := aScan(oDebugInfo['aModules'], {|v| v[1]==currModule})
+	if nModuleIndex=0
+		aadd(oDebugInfo['aModules'],{currModule,0,{},{}})
+		nModuleIndex := len(oDebugInfo['aModules'])
 	endif
-	aAdd(t_oDebugInfo['aModules'][idxModule,4],{name,idx,"S",frame})
+	aAdd(oDebugInfo['aModules'][nModuleIndex,4],{name,nIndex,"S",frame})
 return
 
-static function replaceExpression(xExpr, __dbg, name, value)
-	local aMatches := zh_REGEXALL("\b"+name+"\b",xExpr,.F./*CASE*/,/*line*/,/*nMat*/,/*nGet*/,.F.)
-	local i, cVal
+static function replaceExpression(xExpr, __dbg, name, xValue)
+
+	local aMatches := zh_REGEXALL( "\b" + name + "\b", xExpr, .F./*CASE*/,/*nLine*/,/*nMat*/,/*nGet*/, .F.)
+	local nI, cVal
 	if empty(aMatches)
 		return xExpr
 	endif
-	aadd(__dbg, value )
-	cVal := "__dbg[" + allTrim(str(len(__dbg))) +"]"
-	for i:=len(aMatches) to 1 step -1
-		xExpr := left(xExpr,aMatches[i,1,2]-1) + cVal + substr(xExpr,aMatches[i,1,3]+1)
+	aadd(__dbg, xValue )
+	cVal := "__dbg[" + allTrim(str(len(__dbg))) + "]"
+	for nI := len(aMatches) to 1 step -1
+		xExpr := left(xExpr, aMatches[nI, 1, 2] - 1) + cVal + substr(xExpr,aMatches[nI, 1, 3]+1)
 	next
+
 return xExpr
 
-static function evalExpression( xExpr, level )
-	local oErr, xResult, __dbg := {}
-	local i, cName, v
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
-	LOCAL iStack := GetStackId(level,aStack)
-	local aModules := t_oDebugInfo['aModules']
-	LOCAL cModule, idxModule := 0
-	if iStack>0
-		cModule := lower(aStack[iStack,ZH_DBG_CS_MODULE])
-		idxModule := aScan(aModules, {|v| v[1]=cModule})
+static function evalExpression( xExpr, nLevel )
+
+	local oErr, xResult 
+	LOCAL __dbg := {}
+	local nI, cName, v
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
+	LOCAL nStack := GetStackId(nLevel, aStack)
+	local aModules := oDebugInfo['aModules']
+	LOCAL cModule
+	LOCAL nModuleIndex := 0
+
+	if nStack>0
+		cModule := lower(aStack[ nStack, ZH_DBG_CS_MODULE ] )
+		nModuleIndex := aScan(aModules, {|v| v[1] == cModule})
 	endif
 
-	xExpr := strTran(xExpr,";",":")
-	xExpr := strTran(xExpr,"::","self:")
-	if iStack>0
+	xExpr := strTran(xExpr,";", ":")
+	xExpr := strTran(xExpr,"::", "self:")
+
+	if nStack > 0
 		// replace all locals
-		for i:=1 to len(aStack[iStack,ZH_DBG_CS_LOCALS])
-			xExpr := replaceExpression(xExpr, @__dbg, aStack[iStack,ZH_DBG_CS_LOCALS,i,ZH_DBG_VAR_NAME], ;
-						__dbgVMVarLGet(__dbgProcLevel()-aStack[iStack,ZH_DBG_CS_LOCALS, i, ZH_DBG_VAR_FRAME], aStack[iStack,ZH_DBG_CS_LOCALS, i, ZH_DBG_VAR_INDEX]))
+		for nI := 1 to len(aStack[nStack,ZH_DBG_CS_LOCALS])
+			xExpr := replaceExpression(xExpr, @__dbg, aStack[nStack,ZH_DBG_CS_LOCALS, nI, ZH_DBG_VAR_NAME], ;
+						__dbgVMVarLGet(__dbgProcLevel()-aStack[nStack,ZH_DBG_CS_LOCALS, nI, ZH_DBG_VAR_FRAME], aStack[nStack, ZH_DBG_CS_LOCALS, nI, ZH_DBG_VAR_INDEX]))
 		next
 		// replace all proc statics
-		for i:=1 to len(aStack[iStack,ZH_DBG_CS_STATICS])
-			xExpr := replaceExpression(xExpr, @__dbg, aStack[iStack,ZH_DBG_CS_STATICS,i,ZH_DBG_VAR_NAME], ;
-						__dbgVMVarSGet(aStack[iStack,ZH_DBG_CS_STATICS, i, ZH_DBG_VAR_FRAME],aStack[iStack,ZH_DBG_CS_STATICS,i,ZH_DBG_VAR_INDEX]))
+		for nI := 1 to len(aStack[nStack, ZH_DBG_CS_STATICS])
+			xExpr := replaceExpression(xExpr, @__dbg, aStack[nStack, ZH_DBG_CS_STATICS, nI, ZH_DBG_VAR_NAME], ;
+						__dbgVMVarSGet(aStack[nStack,ZH_DBG_CS_STATICS, nI, ZH_DBG_VAR_FRAME],aStack[nStack,ZH_DBG_CS_STATICS, nI,ZH_DBG_VAR_INDEX]))
 		next
 	endif
+
 	// replace all public
-	for i:=1 to __mvDbgInfo( ZH_MV_PUBLIC )
-		v:=__mvDbgInfo( ZH_MV_PUBLIC, i, @cName )
+	for nI := 1 to __mvDbgInfo( ZH_MV_PUBLIC )
+		v:=__mvDbgInfo( ZH_MV_PUBLIC, nI, @cName )
 		xExpr := replaceExpression(xExpr, @__dbg, cName, v)
 	next
 	// replace all private
-	for i:=1 to __mvDbgInfo( ZH_MV_PRIVATE )
-		v:=__mvDbgInfo( ZH_MV_PRIVATE, i, @cName )
+	for nI := 1 to __mvDbgInfo( ZH_MV_PRIVATE )
+		v := __mvDbgInfo( ZH_MV_PRIVATE, nI, @cName )
 		xExpr := replaceExpression(xExpr, @__dbg, cName, v)
 	next
-	// replace all module statics
-	if idxModule>0
-		for i:=1 to len(aModules[idxModule,4])
-			xExpr := replaceExpression(xExpr, @__dbg, aModules[idxModule,4,i,ZH_DBG_VAR_NAME], ;
-						__dbgVMVarSGet(aModules[idxModule,4,i,ZH_DBG_VAR_FRAME],aModules[idxModule,4,i,ZH_DBG_VAR_INDEX]))
+	// replace all cModule statics
+	if nModuleIndex > 0
+		for nI:=1 to len(aModules[nModuleIndex, 4])
+			xExpr := replaceExpression(xExpr, @__dbg, aModules[nModuleIndex, 4, nI, ZH_DBG_VAR_NAME], ;
+						__dbgVMVarSGet(aModules[nModuleIndex,4,nI,ZH_DBG_VAR_FRAME],aModules[nModuleIndex,4,nI,ZH_DBG_VAR_INDEX]))
 		next
 	endif
 	// ******
-	t_oDebugInfo['lInternalRun'] := .T.
+	oDebugInfo['lInternalRun'] := .T.
 	BEGIN SEQUENCE WITH {|oErr| BREAK( oErr ) }
-		xResult := Eval(&("{|__dbg| "+xExpr+"}"),__dbg)
+		xResult := Eval(&("{|__dbg| "+xExpr+"}"), __dbg)
 	RECOVER USING oErr
 		xResult := oErr
 	END SEQUENCE
-	t_oDebugInfo['lInternalRun'] := .F.
+	oDebugInfo['lInternalRun'] := .F.
 return xResult
 
+
 static procedure sendExpression( xExpr )
+
 	LOCAL xResult
-	LOCAL cType, level, iDots := at(":",xExpr)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	level := val(left(xExpr,iDots))
-	xResult :=  evalExpression( substr(xExpr,iDots+1), level)
-	if valtype(xResult)="O" .and. xResult:ClassName() == "ERROR"
+	LOCAL cType, nLevel, nDots := at(":",xExpr)
+	LOCAL oDebugInfo := __DEBUGITEM()
+	nLevel := val(left(xExpr,nDots))
+	xResult := evalExpression( substr(xExpr,nDots+1), nLevel)
+	if valtype(xResult) == "O" .and. xResult:ClassName() == "ERROR"
 		cType := "E"
 		xResult := xResult:description
 	else
 		cType := valtype(xResult)
 		xResult := format(xResult)
 	ENDIF
-	zh_inetSend(t_oDebugInfo['socket'],"EXPRESSION:"+alltrim(str(level))+":"+cType+":"+xResult+CRLF)
+	zh_inetSend(oDebugInfo['socket'], "EXPRESSION:" + alltrim(str(nLevel)) + ":" + cType + ":" + xResult + CRLF)
 return
+
 
 static procedure sendCompletition( cLine )
-	LOCAL iDots := at(":",cLine), cResult:="COMPLETITION"+CRLF
-	LOCAL level := val(left(cLine,iDots-1))
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	cLine := substr(cLine,iDots+1)
-	if at(":",cLine)>0 //contains : ?
-		cResult+=classSymbols(cLine,level)
+
+	LOCAL nDots := At(":", cLine)
+	LOCAL cResult:="COMPLETITION" + CRLF
+	LOCAL nLevel := val(left(cLine,nDots-1))
+	LOCAL oDebugInfo := __DEBUGITEM()
+
+	cLine := substr(cLine, nDots + 1)
+	if at(":", cLine) > 0 //contains : ?
+		cResult += classSymbols(cLine, nLevel)
 	else
-		cResult+=normalSymbols(cLine,level)
+		cResult += normalSymbols(cLine, nLevel)
 	endif
-	cResult+="END"+CRLF
-	zh_inetSend(t_oDebugInfo['socket'],cResult)
+	cResult += "END" + CRLF
+	zh_inetSend(oDebugInfo['socket'], cResult)
 return
 
-static func classSymbols(cLine,level)
+static func classSymbols(cLine, nLevel)
+	
 	local oClass, aData, aMethods
-	local cResult := "", i,cName, iLen
-	LOCAL iDots := rat(":",cLine)
-	if(iDots>0)
-		oClass := evalExpression(left(cLine,iDots-1),level)
+	local cResult := "", nI, cName, nLen
+	LOCAL nDots := rat(":", cLine)
+	
+	if (nDots > 0)
+		oClass := evalExpression(left(cLine, nDots-1), nLevel)
 	else
 		return ""
 	endif
+
 	if valtype(oClass)<>"O"
 		return ""
 	endif
-	cLine := upper(substr(cLine, iDots+1))
-	iLen := len(cLine)
+	
+	cLine := upper(substr(cLine, nDots + 1))
+	nLen := len(cLine)
 	aData :=  __objGetMsgList( oClass )
 	aMethods :=  __objGetMethodList( oClass )
-	for i:=1 to len(aData)
-		cName := aData[i]
-		if iLen=0 .or. left(cName,iLen)=cLine
-			cResult+="D:"+cName+CRLF
+
+	for nI := 1 to len(aData)
+		cName := aData[nI]
+		if nLen == 0 .or. left(cName, nLen) == cLine
+			cResult += "D:"+cName+CRLF
 		endif
 	next
-	for i:=1 to len(aMethods)
-		cName := aMethods[i]
-		if iLen=0 .or. left(cName,iLen)=cLine
-			cResult+="M:"+cName+CRLF
+	
+	for nI := 1 to len(aMethods)
+		cName := aMethods[nI]
+		if nLen == 0 .or. left(cName, nLen) == cLine
+			cResult += "M:" + cName+CRLF
 		endif
 	next
+
 return cResult
 
-static func normalSymbols(cLine,level)
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	local aStack := t_oDebugInfo['aStack']
-	local aModules := t_oDebugInfo['aModules']
-	LOCAL iLen:=len(cLine), cName
-	LOCAL cResult:="", i
-	LOCAL iStack := GetStackId(level,aStack)
-	local cModule, idxModule
-	if iStack>0
-		cModule := lower(aStack[iStack,ZH_DBG_CS_MODULE])
-		idxModule := aScan(aModules, {|v| v[1]=cModule})
+
+static func normalSymbols(cLine, nLevel)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	local aStack := oDebugInfo['aStack']
+	local aModules := oDebugInfo['aModules']
+	LOCAL nLen := len(cLine)
+	LOCAL cName
+	LOCAL cResult := ""
+	LOCAL nI
+	LOCAL nStack := GetStackId(nLevel, aStack)
+	local cModule, nModuleIndex
+	
+	if nStack > 0
+		cModule := lower(aStack[nStack, ZH_DBG_CS_MODULE])
+		nModuleIndex := aScan(aModules, {|v| v[1] == cModule})
 	endif
+
 	cLine := upper(cLine)
-	if iStack>0
+	if nStack > 0
 		// returns all locals
-		for i:=1 to len(aStack[iStack,ZH_DBG_CS_LOCALS])
-			cName := aStack[iStack,ZH_DBG_CS_LOCALS,i,ZH_DBG_VAR_NAME]
-			if left(cName,iLen)=cLine
-				cResult+="L:"+cName+CRLF
+		for nI := 1 to len(aStack[nStack,ZH_DBG_CS_LOCALS])
+			cName := aStack[nStack,ZH_DBG_CS_LOCALS,nI,ZH_DBG_VAR_NAME]
+			if left(cName,nLen)=cLine
+				cResult += "L:" + cName + CRLF
 			endif
 		next
 		// returns all proc statics
-		for i:=1 to len(aStack[iStack,ZH_DBG_CS_STATICS])
-			cName := aStack[iStack,ZH_DBG_CS_STATICS,i,ZH_DBG_VAR_NAME]
-			if left(cName,iLen)=cLine
-				cResult+="S:"+cName+CRLF
+		for nI := 1 to len(aStack[nStack,ZH_DBG_CS_STATICS])
+			cName := aStack[nStack,ZH_DBG_CS_STATICS,nI,ZH_DBG_VAR_NAME]
+			if left(cName, nLen) == cLine
+				cResult += "S:" + cName + CRLF
 			endif
 		next
 	endif
+
 	// returns all public
-	for i:=1 to __mvDbgInfo( ZH_MV_PUBLIC )
-		__mvDbgInfo( ZH_MV_PUBLIC, i, @cName )
-		if left(cName,iLen)=cLine
-			cResult+="PB:"+cName+CRLF
+	for nI:=1 to __mvDbgInfo( ZH_MV_PUBLIC )
+		__mvDbgInfo( ZH_MV_PUBLIC, nI, @cName )
+		if left(cName,nLen) == cLine
+			cResult += "PB:" + cName + CRLF
 		endif
 	next
 	// returns all private
-	for i:=1 to __mvDbgInfo( ZH_MV_PRIVATE )
-		__mvDbgInfo( ZH_MV_PRIVATE, i, @cName )
-		if left(cName,iLen)=cLine
-			cResult+="PR:"+cName+CRLF
+	for nI := 1 to __mvDbgInfo( ZH_MV_PRIVATE )
+		__mvDbgInfo( ZH_MV_PRIVATE, nI, @cName )
+		if left(cName,nLen)=cLine
+			cResult+= "PR:" + cName + CRLF
 		endif
 	next
-	// returns all module statics
-	if idxModule>0
-		for i:=1 to len(aModules[idxModule,4])
-			cName :=  aModules[idxModule,4,i,ZH_DBG_VAR_NAME]
-			if left(cName,iLen)=cLine
-				cResult+="S:"+cName+CRLF
+	// returns all cModule statics
+	if nModuleIndex > 0
+		for nI:=1 to len(aModules[nModuleIndex, 4])
+			cName :=  aModules[ nModuleIndex, 4, nI, ZH_DBG_VAR_NAME]
+			if left(cName, nLen) == cLine
+				cResult += "S:" + cName + CRLF
 			endif
 		next
 	endif
-	if len(cLine)>0
-		cResult+=AddDynSymbols(cLine)
+	if len(cLine) > 0
+		cResult += AddDynSymbols(cLine)
 	endif
+
 return cResult
 
-static func AddDynSymbols(cmd)
-    LOCAL uiFirst := 0,uiLast := __DynSCount()
-    local uiMiddle, cCurrent, cRet := ""
-    //cmd := upper(cmd)
-    do while  uiFirst < uiLast
-        uiMiddle = zh_bitshift(( uiFirst + uiLast ), -1)
-        cCurrent := __DynSGetName(uiMiddle)
-        if cCurrent==cmd
+
+static func AddDynSymbols( cCmd )
+
+    LOCAL nFirst := 0, nLast := __DynSCount()
+	LOCAL nMiddle, cCurrent, cRet := ""
+	
+    //cCmd := upper(cCmd)
+    do while nFirst < nLast
+        nMiddle = zh_bitshift(( nFirst + nLast ), -1)
+        cCurrent := __DynSGetName(nMiddle)
+        if cCurrent==cCmd
             exit
         endif
-        if cCurrent<cmd
-          uiLast := uiMiddle
+        if cCurrent < cCmd
+          nLast := nMiddle
         else
-          uiFirst := uiMiddle + 1
+          nFirst := nMiddle + 1
         endif
     enddo
-    do while __DynSGetName(uiMiddle)<cmd
-        uiMiddle -= 1
+	
+	do while __DynSGetName(nMiddle)<cCmd
+        nMiddle -= 1
     enddo
-    for uiMiddle:= uiMiddle to 0 step -1
-        cCurrent := __DynSGetName(uiMiddle)
-        if left(cCurrent,len(cmd))<>cmd
+	
+	for nMiddle := nMiddle to 0 step -1
+        cCurrent := __DynSGetName(nMiddle)
+        if left(cCurrent,len(cCmd))<>cCmd
             exit
 		endif
-		if __DynSIsFun(uiMiddle)
-			cRet+="F:"+cCurrent+CRLF
+		if __DynSIsFun(nMiddle)
+			cRet += "F:" + cCurrent + CRLF
 		endif
-    next
+	next
+	
 return cRet
 
+
 STATIC PROCEDURE SetErrorType( nType )
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	t_oDebugInfo["errorType"] := val(nType)
-	//? "errorType = ",t_oDebugInfo["errorType"]
-	__DEBUGITEM(t_oDebugInfo)
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	oDebugInfo["errorType"] := val(nType)
+	//? "errorType = ",oDebugInfo["errorType"]
+	__DEBUGITEM(oDebugInfo)
+
 return
+
 
 STATIC PROCEDURE ErrorBlockCode( e )
-	LOCAL t_oDebugInfo := __DEBUGITEM()
-	if t_oDebugInfo["inError"]
+
+	LOCAL oDebugInfo := __DEBUGITEM()
+	if oDebugInfo["inError"]
 		return
 	endif
-	//? "error with ",t_oDebugInfo["errorType"]
-	if t_oDebugInfo["errorType"]==0 // 0 is no stop on error
-		if !empty(t_oDebugInfo['userErrorBlock'])
-			eval(t_oDebugInfo['userErrorBlock'], e)
+	//? "error with ",oDebugInfo["errorType"]
+	if oDebugInfo["errorType"] == 0 // 0 is no stop on error
+		if !empty(oDebugInfo['userErrorBlock'])
+			eval(oDebugInfo['userErrorBlock'], e)
 		endif
 		return
 	endif
-	if t_oDebugInfo["errorType"]==1 .and. IsBegSeq() // 1 is no stop on error in sequence
-		if !empty(t_oDebugInfo['userErrorBlock'])
-			eval(t_oDebugInfo['userErrorBlock'], e)
+	
+	if oDebugInfo["errorType"]==1 .and. IsBegSeq() // 1 is no stop on error in sequence
+		if !empty(oDebugInfo['userErrorBlock'])
+			eval(oDebugInfo['userErrorBlock'], e)
 		endif
 		return
 	endif
-	t_oDebugInfo['__dbgEntryLevel'] := __dbgProcLevel()
-	if !empty(t_oDebugInfo['socket'])
-		t_oDebugInfo["error"] := e
-		t_oDebugInfo["inError"] := .T.
-		t_oDebugInfo['lRunning'] := .F.
-		//? "StopRun on error"
-		zh_inetSend(t_oDebugInfo['socket'],"ERROR:"+e:Description+CRLF)
-		__DEBUGITEM(t_oDebugInfo)
+	
+	oDebugInfo['__dbgEntryLevel'] := __dbgProcLevel()
+
+	if !empty(oDebugInfo['socket'])
+		oDebugInfo["error"] := e
+		oDebugInfo["inError"] := .T.
+		oDebugInfo['lRunning'] := .F.
+		
+		//debug_log_write_file("ERROR:" + e:Description)
+		zh_inetSend(oDebugInfo['socket'], "ERROR:" + e:Description + CRLF)
+		__DEBUGITEM(oDebugInfo)
 		CheckSocket(.T.)
 	endif
-	t_oDebugInfo := __DEBUGITEM()
-	if !empty(t_oDebugInfo['userErrorBlock'])
-		eval(t_oDebugInfo['userErrorBlock'], e)
+
+	oDebugInfo := __DEBUGITEM()
+	if !empty(oDebugInfo['userErrorBlock'])
+		eval(oDebugInfo['userErrorBlock'], e)
 	endif
+
 return
 
-#ifdef INAPACHE
-static function GetAppName()
-	local cAppName := ZH_ArgV( 0 )
-  do case
-	case "Darwin" $ OS()
-		 cAppName = "/System/Library/CoreServices/Dock.app/Contents/MacOS/Dock"
-	case "Linux" $ OS()
-		 cAppName = "..."	 
-  endcase
-return cAppName	
-
-static function FixProcFile( cProcFile,lRemoveDriveLetter )
-	local cResult := cProcFile
-	if ("{SOURCE}" $ upper(cResult)) .or. ("pcode.zhb" $ lower(cResult))
-		cResult := AP_FileName()
-		if zh_DefaultValue(lRemoveDriveLetter,.f.)
-			cResult := SubStr( cResult, At( ":", cResult ) + 1 )
-	  endif
-	endif
-return cResult
-#endif
 
 PROCEDURE __dbgEntry( nMode, uParam1, uParam2, uParam3 )
-	local tmp, i
-	LOCAL t_oDebugInfo, lAdd
-	if nMode = ZH_DBG_GETENTRY
+
+	local aInfo, nI
+	LOCAL oDebugInfo, lAdd
+
+	if nMode == ZH_DBG_GETENTRY
 		return
 	endif
-	#ifdef INAPACHE
-	if nMode == ZH_DBG_VMQUIT
-		return
-	endif
-	#endif
-	t_oDebugInfo := __DEBUGITEM()
+
+	//debug_log_write_file("DBG: nStart debug")
+	
+	oDebugInfo := __DEBUGITEM()
 	switch nMode
+
 		case ZH_DBG_MODULENAME
-			if(empty(t_oDebugInfo))
-				t_oDebugInfo := { ;
+
+			if ( empty(oDebugInfo) )
+				oDebugInfo := { ;
 					'socket' =>  nil, ;
 					'lRunning' =>  .F., ;
 					'lInternalRun' => .F., ;
@@ -1186,173 +1251,163 @@ PROCEDURE __dbgEntry( nMode, uParam1, uParam2, uParam3 )
 					'__dbgEntryLevel' => 0, ;
 					'timeCheckForDebug' => 0 ;
 				}
-				__DEBUGITEM(t_oDebugInfo)
+				__DEBUGITEM(oDebugInfo)
+
 				//#ifdef SAVEMODULES
 				//	ferase("modules.dbg")
 				//	fclose(fcreate("modules.dbg"))
 				//#endif
+
 			endif
 
-			i := rat(":",uParam1)
-			tmp := ATail(t_oDebugInfo['aStack'])
-			lAdd := (empty(tmp) .or. __dbgProcLevel()-1!=tmp[ZH_DBG_CS_LEVEL])
-			lAdd := lAdd .or. t_oDebugInfo['bInitStatics'] 
-			lAdd := lAdd .or. t_oDebugInfo['bInitGlobals']
-			lAdd := lAdd .or. t_oDebugInfo['bInitLines']
+			nI := rat(":", uParam1)
+			aInfo := ATail(oDebugInfo['aStack'])
+			lAdd := (empty(aInfo) .or. __dbgProcLevel() - 1 != aInfo[ ZH_DBG_CS_LEVEL ])
+			lAdd := lAdd .or. oDebugInfo['bInitStatics'] 
+			lAdd := lAdd .or. oDebugInfo['bInitGlobals']
+			lAdd := lAdd .or. oDebugInfo['bInitLines']
 			if lAdd
-				tmp := Array(ZH_DBG_CS_LEN)
+				aInfo := Array(ZH_DBG_CS_LEN)
 			endif
 
-#ifdef INAPACHE
-			if i=0
-				tmp[ZH_DBG_CS_MODULE] := FixProcFile(uParam1)
-				tmp[ZH_DBG_CS_FUNCTION] := procName(1) 
+			if nI == 0
+				aInfo[ ZH_DBG_CS_MODULE ] := ExtractFileName( uParam1 )
+				aInfo[ ZH_DBG_CS_FUNCTION ] := procName(1)
 			else
-				tmp[ZH_DBG_CS_MODULE] := FixProcFile(left(uParam1,i-1),.t.)
-				tmp[ZH_DBG_CS_FUNCTION] := substr(uParam1,i+1)
+				aInfo[ ZH_DBG_CS_MODULE ] := ExtractFileName( left(uParam1, nI - 1) )
+				aInfo[ ZH_DBG_CS_FUNCTION ] := substr(uParam1, nI + 1 )
 			endif
-#else
-			if i=0
-				tmp[ZH_DBG_CS_MODULE] := uParam1
-				tmp[ZH_DBG_CS_FUNCTION] := procName(1)
-			else
-				tmp[ZH_DBG_CS_MODULE] := left(uParam1,i-1)
-				tmp[ZH_DBG_CS_FUNCTION] := substr(uParam1,i+1)
-			endif
-#endif
-			? "moduleName",uParam1,t_oDebugInfo['maxLevel'], t_oDebugInfo['__dbgEntryLevel'], procFile(1), __dbgProcLevel()-1, lAdd
 
-			tmp[ZH_DBG_CS_LINE] := procLine(1) // line
-			tmp[ZH_DBG_CS_LEVEL] := __dbgProcLevel()-1 // level
-			tmp[ZH_DBG_CS_LOCALS] := {} // locals
-			tmp[ZH_DBG_CS_STATICS] := {} // statics
-			//#ifdef SAVEMODULES
-			//	i := fopen("modules.dbg",1+64)
-			//	fSeek(i,0,2)
-			//	fWrite(i,"ZH_DBG_MODULENAME "+tmp[ZH_DBG_CS_MODULE]+" "+ tmp[ZH_DBG_CS_FUNCTION]+e"\r\n")
-			//	fclose(i)
-			//#endif
-			if at("_INITSTATICS", tmp[ZH_DBG_CS_FUNCTION])<>0
-				tmp[ZH_DBG_CS_MODULE] := ProcFile(1)
-				t_oDebugInfo['bInitStatics'] := .T.
-			elseif at("_INITGLOBALS", tmp[ZH_DBG_CS_FUNCTION])<>0
-				t_oDebugInfo['bInitGlobals'] := .T.
-			elseif at("_INITLINES", tmp[ZH_DBG_CS_FUNCTION])<>0
-				t_oDebugInfo['bInitLines'] := .T.
+			
+			aInfo[ZH_DBG_CS_LINE] := procLine(1) // nLine
+			aInfo[ZH_DBG_CS_LEVEL] := __dbgProcLevel() - 1 // nLevel
+			aInfo[ZH_DBG_CS_LOCALS] := {} // locals
+			aInfo[ ZH_DBG_CS_STATICS ] := {} // statics
+
+			
+			if At("_INITSTATICS", aInfo[ ZH_DBG_CS_FUNCTION ]) <> 0
+				
+				aInfo[ ZH_DBG_CS_MODULE ] := ExtractFileName( ProcFile(1) )
+				oDebugInfo[ 'bInitStatics' ] := .T.
+
+			elseif at("_INITGLOBALS", aInfo[ZH_DBG_CS_FUNCTION]) <> 0
+			
+				oDebugInfo['bInitGlobals'] := .T.
+			
+			elseif at("_INITLINES", aInfo[ZH_DBG_CS_FUNCTION]) <> 0
+			
+				oDebugInfo['bInitLines'] := .T.
+			
 			endif
+			
 			if lAdd
-				aAdd(t_oDebugInfo['aStack'], tmp)
+				aAdd(oDebugInfo['aStack'], aInfo)
 			endif
+
 			exit
+
 		case ZH_DBG_LOCALNAME
-			if t_oDebugInfo['bInitGlobals']
+			
+			if oDebugInfo['bInitGlobals']
 				//? "LOCALNAME - bInitGlobals", uParam1, uParam2, uParam3, valtype(uParam1), valtype(uParam2), valtype(uParam3),  __dbgProcLevel()-1,procLine(__dbgProcLevel()-1)
 			else
-				aAdd(aTail(t_oDebugInfo['aStack'])[ZH_DBG_CS_LOCALS], {uParam2, uParam1, "L", __dbgProcLevel()-1})
+				aAdd(aTail(oDebugInfo['aStack'])[ZH_DBG_CS_LOCALS], {uParam2, uParam1, "L", __dbgProcLevel()-1})
 			endif
 			exit
-		case ZH_DBG_STATICNAME
-			//#ifdef SAVEMODULES
-			//	i := fopen("modules.dbg",1+64)
-			//	fSeek(i,0,2)
-			//	fWrite(i,"STATICNAME "+valtype(uParam1)+" "+ valtype(uParam2)+" "+valtype(uParam3)+" " + ;
-			//			iif(t_oDebugInfo['bInitStatics'],"InitStat","") + ;
-			//			iif(t_oDebugInfo['bInitGlobals'],"InitGlob","") + ;
-			//			e"\r\n")
-			//	fclose(i)
-			//#endif
 
-			if t_oDebugInfo['bInitStatics']
+		case ZH_DBG_STATICNAME
+			
+			if oDebugInfo[ 'bInitStatics' ]
 				//? "STATICNAME - bInitStatics", len(uParam1), uParam2, uParam3, valtype(uParam1), valtype(uParam2), valtype(uParam3)
 				//aEval(uParam1,{|x,n| QOut(n,valtype(x),x)})
 				AddStaticModule(uParam2, uParam3, uParam1)
-			elseif t_oDebugInfo['bInitGlobals']
+
+			elseif oDebugInfo[ 'bInitGlobals' ]
 				//? "STATICNAME - bInitGlobals", uParam1, uParam2, uParam3
 			else
 				//? "STATICNAME", uParam1, uParam2, uParam3, valtype(uParam1), valtype(uParam2), valtype(uParam3),  __dbgProcLevel()
 				//aEval(uParam1,{|x,n| QOut(n,valtype(x),x)})
-				aAdd(aTail(t_oDebugInfo['aStack'])[ZH_DBG_CS_STATICS], {uParam3, uParam2, "S", uParam1})
+				aAdd(aTail(oDebugInfo['aStack'])[ZH_DBG_CS_STATICS], {uParam3, uParam2, "S", uParam1})
 			endif
 			exit
+
 		case ZH_DBG_ENDPROC
+			
 			//uParam1 := __GETLASTRETURN(12)
 			//? "EndPROC", uParam1, uParam2, uParam3, valtype(uParam1), valtype(uParam2), valtype(uParam3)
-			//? "EndPROC",procName(1),t_oDebugInfo['maxLevel'], t_oDebugInfo['__dbgEntryLevel'], __dbgProcLevel()
-			if .not. empty(t_oDebugInfo['maxLevel'])
-				if t_oDebugInfo['maxLevel'] >= __dbgProcLevel()-1
+			//? "EndPROC",procName(1),oDebugInfo['maxLevel'], oDebugInfo['__dbgEntryLevel'], __dbgProcLevel()
+			
+			if !empty( oDebugInfo['maxLevel'] )
+				if oDebugInfo['maxLevel'] >= __dbgProcLevel()-1
 					//? "stopped for OUT"
-					t_oDebugInfo['lRunning']:=.F.
+					oDebugInfo['lRunning']:=.F.
 				endif
 			endif
-			aSize(t_oDebugInfo['aStack'],len(t_oDebugInfo['aStack'])-1)
-			if t_oDebugInfo['bInitLines']
-				// I don't like this hack, shoud be better if in case of ZH_DBG_ENDPROC
-				// uParam1 is the returned value, it allow to show it in watch too...
+			aSize(oDebugInfo['aStack'], len(oDebugInfo['aStack']) - 1 )
+			
+			if oDebugInfo['bInitLines']
+				// nI don't like this hack, shoud be better if in case of ZH_DBG_ENDPROC
+				// uParam1 is the returned xValue, it allow to show it in watch too...
 				// * Ziher is 13
-				// * xHarbur is 14
-				#ifdef __XZIHER__
-					tmp := __GETLASTRETURN(14) //; ? 14,valtype(tmp),tmp
-				#else
-					tmp := __GETLASTRETURN(13) //; ? 13,valtype(tmp),tmp
-				#endif
-				AddModule(tmp)
+				aInfo := __GETLASTRETURN(13) //; ? 13,valtype(cReceive),cReceive
+			
+				AddModule( aInfo )
 			endif
 
-			t_oDebugInfo['bInitStatics'] := .F.
-			t_oDebugInfo['bInitGlobals'] := .F.
-			t_oDebugInfo['bInitLines'] := .F.
+			oDebugInfo['bInitStatics'] := .F.
+			oDebugInfo['bInitGlobals'] := .F.
+			oDebugInfo['bInitLines'] := .F.
 			exit
+
 		case ZH_DBG_SHOWLINE
-			? "show line:" + procFile(1) + "(" + alltrim(str(uParam1))+")", __dbgProcLevel()
-			//for i:= 1 to len(t_oDebugInfo['aStack'])
-			//	? i,t_oDebugInfo['aStack',i,ZH_DBG_CS_FUNCTION],t_oDebugInfo['aStack',i,ZH_DBG_CS_LINE]
+
+			//? "show nLine:" + procFile(1) + "(" + alltrim(str(uParam1))+")", __dbgProcLevel()
+			//for nI:= 1 to len(oDebugInfo['aStack'])
+			//	? nI,oDebugInfo['aStack',nI,ZH_DBG_CS_FUNCTION],oDebugInfo['aStack',nI,ZH_DBG_CS_LINE]
 			//next
 			//TODO check if ErrorBlock is setted by user and save user's errorBlock
-			if t_oDebugInfo['lInternalRun']
+			if oDebugInfo['lInternalRun']
 				exit
 			endif
-			t_oDebugInfo['__dbgEntryLevel'] := __dbgProcLevel()
-			tmp := ErrorBlock()
-			#ifndef __XZIHER__ //temp
-				 if empty(tmp) .or. empty(t_oDebugInfo['errorBlock']) .or. !(t_oDebugInfo['errorBlock']==tmp)
-					//? "Error block changed " + procFile(1) + "("+alltrim(str(uParam1))+")", len(t_oDebugInfo['aStack'])
-					//check if the new error block is an oldone
-					i:=aScan(t_oDebugInfo['errorBlockHistory'], {|x| x[1]==tmp })
-					if i>0 // it is an old one!
-						//? "OLD:" + alltrim(str(i))
-						t_oDebugInfo['userErrorBlock'] := t_oDebugInfo['errorBlockHistory',i,2]
-						t_oDebugInfo['errorBlock'] :=  t_oDebugInfo['errorBlockHistory',i,1]
-					else
-						//? "NEW:" + alltrim(str(i))
-						t_oDebugInfo['userErrorBlock'] := tmp
-						t_oDebugInfo['errorBlock'] :=  {| e | ErrorBlockCode( e ) }
-						aAdd(t_oDebugInfo['errorBlockHistory'],{t_oDebugInfo['errorBlock'], tmp })
-					endif
-					__DEBUGITEM(t_oDebugInfo)
-					ErrorBlock( t_oDebugInfo['errorBlock'] )
-				endif
-			#endif
-			t_oDebugInfo['error'] := nil
-			t_oDebugInfo['inError'] := .F.
-			t_oDebugInfo['aStack',len(t_oDebugInfo['aStack']),ZH_DBG_CS_LINE] := uParam1
-			CheckSocket()
+
+			oDebugInfo['__dbgEntryLevel'] := __dbgProcLevel()
+		    //aInfo := ErrorBlock()
+			
+			oDebugInfo['error'] := nil
+			oDebugInfo['inError'] := .F.
+			oDebugInfo['aStack', len(oDebugInfo['aStack']), ZH_DBG_CS_LINE] := uParam1
+			
+			CheckSocket(.F.)
 			__dbgInvokeDebug(.F.)
+			
 			exit
 	endswitch
 return
 
-#ifdef _DEBUGDEBUG
-static proc dbgQOut(...)
-	LOCAL nPar := PCOUNT()
-	LOCAL cMsg := ""
-	LOCAL oSocket := __DEBUGITEM()['socket']
-	IF nPar == 0 .or. empty(oSocket)
-   		RETURN
+
+FUNCTION debug_log_write_file( cMsg )
+   
+	LOCAL cMsgTime
+	LOCAL cLogFile
+	LOCAL nHandle
+ 
+	cLogFile := "DBG.log"
+	
+	IF !File( cLogFile )
+	   nHandle := zh_vfOpen( cLogFile, FO_CREAT + FO_TRUNC + FO_WRITE )
+	ELSE
+	   nHandle := zh_vfOpen( cLogFile, FO_WRITE )
+	   zh_vfSeek( nHandle, 0, FS_END )
 	ENDIF
-	aEval(ZH_APARAMS(), {|x| cMsg += ValToStr(x)+" " })
-	zh_inetSend(oSocket,"LOG:" + cMsg + CRLF)
-RETURN
-#endif
+ 
+	cMsgTime := PadR( Time(), 8 )
+	cMsgTime += ": "
+ 
+	zh_vfWrite( nHandle, cMsgTime + cMsg + zh_eol() )
+	zh_vfClose( nHandle )
+ 
+	RETURN .T.
+
 
 #pragma BEGINDUMP
 
@@ -1370,7 +1425,7 @@ RETURN
 
 ZH_FUNC( __GETLASTRETURN )
 {
-	PZH_ITEM pItem = zh_stackItemFromTop( -1-zh_parni(1) );
+	PZH_ITEM pItem = zh_stackItemFromTop( -1 - zh_parni(1) );
 	zh_itemReturn( ZH_IS_BYREF( pItem ) ? zh_itemUnRef( pItem ) : pItem );
 }
 
@@ -1381,9 +1436,9 @@ ZH_FUNC( __DEBUGITEM )
 	{
 		sDebugInfo = zh_itemNew(0);
 	}
-	if(zh_pcount()>0)
+	if(zh_pcount() > 0 )
 	{
-		zh_itemCopy(sDebugInfo, zh_param(1,ZH_IT_ANY));
+		zh_itemCopy(sDebugInfo, zh_param(1, ZH_IT_ANY));
 	}
 	zh_itemReturn(sDebugInfo);
 }
@@ -1397,22 +1452,21 @@ ZH_FUNC( __PIDNUM )
 #endif
 }
 
-#if !defined( _ZH_API_INTERNAL_ ) && !defined( _ZH_STACK_MACROS_ )
+//#if !defined( _ZH_API_INTERNAL_ ) && !defined( _ZH_STACK_MACROS_ )
 extern ZH_EXPORT ZH_ISIZ     zh_stackGetRecoverBase( void );
-#endif
+//#endif
 
 ZH_FUNC( ISBEGSEQ )
 {
    zh_retl( zh_stackGetRecoverBase() != 0 );
 }
 
-#ifdef INAPACHE
-#include <hbapicls.h>
+#include "zh_class_api.h"
 ZH_FUNC( __DBGSENDMSG )
 {
    zh_dbg_objSendMessage( zh_parnl( 1 ), zh_param( 2, ZH_IT_ANY ),
                           zh_param( 3, ZH_IT_ANY ), 4 );
 }
-#endif
+
 
 #pragma ENDDUMP
