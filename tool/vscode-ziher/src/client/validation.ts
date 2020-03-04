@@ -29,7 +29,7 @@ function deactivate()
 
 var valRegEx = /^\r?(?:([^\(]*)\((\d+)\)\s+)?(Warning|Error)\s+([^\r\n]*)/
 
-function validate(textDocument)
+function validate( textDocument )
 {
 	if (textDocument.languageId !== 'ziher' )
 		return;
@@ -107,16 +107,16 @@ function validate(textDocument)
 		}
 	}
 	var process = cp.spawn(section.compilerExecutable,args, { cwd: file_cwd });
-	process.on("error", e=>
+	process.on("error", e =>
 	{
-		vscode.window.showWarningMessage(localize("ziher.validation.NoExe",section.compilerExecutable));
+		vscode.window.showWarningMessage(localize("ziher.validation.NoExe", section.compilerExecutable));
 	});
 	process.stderr.on('data', parseData);
 	process.stdout.on('data', parseData);
 	
-	process.on("exit",function(code)
+	process.on("exit", function(code)
 	{
-		for (var file in diagnostics) {
+		for (let file in diagnostics) {
 			if (diagnostics.hasOwnProperty(file)) {
 				var infos = diagnostics[file];
 				diagnosticCollection.set(vscode.Uri.file(file), infos);		

@@ -2,7 +2,7 @@
     "name": "ziher",
     "displayName": "Ziher",
     "description": "Ziher support",
-    "version": "1.2.2",
+    "version": "1.2.4",
     "publisher": "bringout",
     "license": "GPL",
     "main": "./dist/extension",
@@ -57,7 +57,7 @@
         "commands": [
             {
                 "command": "ziher.getdbgcode",
-                "title": "%ziher.dbgCodeCmd%"
+                "title": "Ziher: Get debugger source code"
             }
         ],
         "configuration": {
@@ -66,22 +66,22 @@
             "properties": {
                 "ziher.validating": {
                     "type": "boolean",
-                    "description": "%ziher.validating%",
+                    "description": "Every time a file is opened or saved the executable is called to validate the code (Lint)",
                     "default": true
                 },
                 "ziher.compilerExecutable": {
                     "type": "string",
-                    "description": "%ziher.compilerExecutable%",
+                    "description": "complete path of the ziher executable",
                     "default": "zhcomp"
                 },
                 "ziher.extraOptions": {
                     "type": "string",
-                    "description": "%ziher.extraOptions%",
+                    "description": "other options to pass to ziher compiler",
                     "default": ""
                 },
                 "ziher.extraIncludePaths": {
                     "type": "array",
-                    "description": "%ziher.extraIncludePaths%",
+                    "description": "Extra include paths to use during the compilation (for include)",
                     "items": {
                         "type": "string",
                         "default": ""
@@ -92,18 +92,18 @@
                     "default": 1,
                     "maximum": 3,
                     "minimum": 0,
-                    "description": "%ziher.warningLevel%"
+                    "description": "Warning level"
                 },
                 "ziher.decorator": {
                     "type": "boolean",
                     "default": true,
-                    "description": "%ziher.decorator%"
+                    "description": "Enables the decoration of correspondents if/endif, for/next, while/endwhile, ..."
                 },
                 "ziher.workspaceDepth": {
                     "type": "number",
                     "default": 0,
                     "minimum": 0,
-                    "description": "%ziher.workspaceDepth%"
+                    "description": "Depth of sub-folder of workspace where looking for sources"
                 }
             }
         },
@@ -146,7 +146,7 @@
                 ],
                 "initialConfigurations": [
                     {
-                        "name": "%ziher.initialConfigurations%",
+                        "name": "Launch Program",
                         "type": "ziher-dbg",
                         "request": "launch",
                         "program": "${workspaceFolder}/ProgramName",
@@ -159,9 +159,9 @@
                 "configurationSnippets": [
                     {
                         "label": "Ziher launch",
-                        "description": "%ziher.configurationSnippetsDesc%",
+                        "description": "Start and debug a ziher program with debug symbols",
                         "body": {
-                            "name": "%ziher.configurationSnippets%",
+                            "name": "Launch ${2:Program}",
                             "type": "ziher-dbg",
                             "request": "launch",
                             "program": "^\"\\${workspaceFolder}/${2:ProgramName}\"",
@@ -171,9 +171,9 @@
                     },
                     {
                         "label": "Ziher attach",
-                        "description": "%ziher.configurationSnippetsDesc2%",
+                        "description": "Debug a running ziher program with debug symbols",
                         "body": {
-                            "name": "%ziher.configurationSnippets2%",
+                            "name": "Attach ${2:Program}",
                             "type": "ziher-dbg",
                             "request": "attach",
                             "program": "^\"\\${workspaceFolder}/${2:ProgramName}\"",
@@ -190,20 +190,20 @@
                             "workspaceRoot": {
                                 "type": "string",
                                 "default": "${workspaceFolder}",
-                                "deprecationMessage": "%ziher.launch.workspaceRoot%"
+                                "deprecationMessage": "Attribute 'workspaceRoot' is deprecated, use 'sourcePaths' instead"
                             },
                             "program": {
                                 "type": "string",
-                                "description": "%ziher.launch.program%"
+                                "description": "Absolute path of executable"
                             },
                             "workingDir": {
                                 "type": "string",
-                                "description": "%ziher.launch.workingDir%",
+                                "description": "Working directory",
                                 "default": "${workspaceFolder}/"
                             },
                             "arguments": {
                                 "type": "array",
-                                "description": "%ziher.launch.arguments%",
+                                "description": "Arguments to pass to executable",
                                 "items": {
                                     "type": "string"
                                 }
@@ -220,7 +220,7 @@
                             },
                             "sourcePaths": {
                                 "type": "array",
-                                "description": "%ziher.launch.sourcePaths%",
+                                "description": "Directories where search for source files",
                                 "items": {
                                     "type": "string"
                                 },
@@ -230,7 +230,7 @@
                             },
                             "terminalType": {
                                 "type": "string",
-                                "description": "%ziher.launch.terminalType%",
+                                "description": "Type of terminal to use to run the application",
                                 "default": "none",
                                 "enum": [
                                     "none",
@@ -240,7 +240,7 @@
                             },
                             "port": {
                                 "type": "number",
-                                "description": "%ziher.launch.port%",
+                                "description": "Port used by debugger, It must be the same value of DBG_PORT in debugger code line 6",
                                 "default": "60110"
                             }
                         }
@@ -253,15 +253,15 @@
                             "workspaceRoot": {
                                 "type": "string",
                                 "default": "${workspaceFolder}",
-                                "deprecationMessage": "%ziher.launch.workspaceRoot%"
+                                "deprecationMessage": "Attribute 'workspaceRoot' is deprecated, use 'sourcePaths' instead"
                             },
                             "program": {
                                 "type": "string",
-                                "description": "%ziher.launch.program%"
+                                "description": "Absolute path of executable"
                             },
                             "sourcePaths": {
                                 "type": "array",
-                                "description": "%ziher.launch.sourcePaths%",
+                                "description": "Directories where search for source files",
                                 "items": {
                                     "type": "string"
                                 },
@@ -271,8 +271,8 @@
                             },
                             "port": {
                                 "type": "number",
-                                "description": "%ziher.launch.port%",
-                                "default": "6110"
+                                "description": "Port used by debugger, It must be the same value of DBG_PORT in debugger code line 6",
+                                "default": "60110"
                             }
                         }
                     }
