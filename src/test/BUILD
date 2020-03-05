@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_LIB")
 
 
 cc_binary(
@@ -18,7 +18,10 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_world_zh_lib_c",
     ],
-    linkopts = ["-lz", "-ldl", "-lpthread"],
+    linkopts = L_OPTS,
+    copts = [
+        "-Izh_rtl"
+    ],
     linkstatic = True,
     visibility = ["//visibility:public"],
 )
@@ -30,6 +33,9 @@ cc_library(
     hdrs = glob([
         "*.h",
     ]),
+    copts = [
+        "-Izh_rtl"
+    ],
     deps = [ 
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",
@@ -49,8 +55,6 @@ zh_comp_all(
     ],
     visibility = ["//visibility:public"],
 )
-
-
 
 
 
@@ -116,8 +120,11 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_dbf_zh_lib_c",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_rtl"
     ],
-    linkopts = ["-lz", "-ldl", "-lpthread"],
     linkstatic = True,
     visibility = ["//visibility:public"],
 )
@@ -133,6 +140,9 @@ cc_library(
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",
        "//zh_vm:zh_vm"
+    ],
+    copts = [
+        "-Izh_rtl"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
@@ -165,7 +175,10 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_codepage_zh_lib_c",
     ],
-    linkopts = ["-lz", "-ldl", "-lpthread"],
+    linkopts = L_OPTS,
+    copts = [
+        "-Izh_rtl"
+    ],
     linkstatic = True,
     visibility = ["//visibility:public"],
 )
@@ -181,6 +194,9 @@ cc_library(
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",
        "//zh_vm:zh_vm"
+    ],
+    copts = [
+        "-Izh_rtl"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],

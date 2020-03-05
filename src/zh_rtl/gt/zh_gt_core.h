@@ -61,17 +61,11 @@ ZH_EXTERN_BEGIN
 #define ZH_GT_nul    ZH_GT_NUL
 #define ZH_GT_std    ZH_GT_STD
 #define ZH_GT_cgi    ZH_GT_CGI
-#define ZH_GT_pca    ZH_GT_PCA
-#define ZH_GT_crs    ZH_GT_CRS
-#define ZH_GT_sln    ZH_GT_SLN
 #define ZH_GT_win    ZH_GT_WIN
 #define ZH_GT_wvt    ZH_GT_WVT
-#define ZH_GT_dos    ZH_GT_DOS
-#define ZH_GT_os2    ZH_GT_OS2
 #define ZH_GT_tpl    ZH_GT_TPL
 #define ZH_GT_trm    ZH_GT_TRM
 #define ZH_GT_ele    ZH_GT_ELE
-#define ZH_GT_QTc    ZH_GT_QTC
 #define ZH_GT_xvt    ZH_GT_XVT
 #define ZH_GT_xwc    ZH_GT_XWC
 #define ZH_GT_gui    ZH_GT_GUI

@@ -1776,5 +1776,5 @@ ZH_CALL_ON_STARTUP_END( _zh_delim_rdd_init_ )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( delim1__InitSymbols ) \
                               ZH_DATASEG_FUNC( _zh_delim_rdd_init_ )
-   #include "zh_ini_seg.h"
+   #include "..\zh_ini_seg.h"
 #endif

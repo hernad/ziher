@@ -131,7 +131,7 @@ ZH_CALL_ON_STARTUP_END( _zh_sqlt3dd_init_ )
    #define ZH_DATASEG_BODY \
    ZH_DATASEG_FUNC( sqlt3dd__InitSymbols ) \
    ZH_DATASEG_FUNC( _zh_sqlt3dd_init_ )
-   #include "hbiniseg.h"
+   #include "zh_ini_seg.h"
 #endif
 
 /* --- */

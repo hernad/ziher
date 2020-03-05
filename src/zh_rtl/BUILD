@@ -73,15 +73,15 @@ filegroup(
 
 cc_library(
     name = "zh_rtl_zh_c",
-    srcs = [ ":zh_rtl_zh" ] + [ "//zh_rtl:headers" ],
+    srcs = [ ":zh_rtl_zh", "//zh_rtl:headers" ],
     hdrs = glob([
         "*.h",
         "*.zhh"
     ]),
     copts = [
         "-Izh_rtl"
-    ],
-    deps = [ 
+    ] + C_OPTS,
+    deps = [
         "//zh_zero:zh_zero", 
         "//zh_rtl:zh_rtl" 
     ],

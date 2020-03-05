@@ -167,9 +167,6 @@ static void sig_handler( int iSigNo )
 #endif
 #ifdef SIGTSTP
       case SIGTSTP:
-         #if 0
-         s_DebugFlag = ZH_TRUE;
-         #endif
          break;
 #endif
 #ifdef SIGTSTP

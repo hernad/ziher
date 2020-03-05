@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT" )
 
 cc_library(
     name = "zh_rtl_rdd",
@@ -19,10 +19,11 @@ cc_library(
     ]) + [
         "//zh_rtl:headers",
         "//zh_rtl/rdd:headers"
-    ],
+    ] + POSTGRESQL_HEADERS,
     copts = [
+        "-Izh_rtl",
         "-Izh_rtl/rdd/rdd_sql"
-    ],
+    ] + POSTGRESQL_COPT,
     hdrs = glob( [
         "*.h", 
         "*.zhh",
@@ -72,7 +73,13 @@ cc_library(
         "*.h",
         "*.zhh",
     ]),
-    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    copts = [
+        "-Izh_rtl"
+    ],
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_rtl:zh_rtl" 
+    ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

@@ -23,7 +23,13 @@ cc_library(
         "*.zh",
         "*.zhh",
     ]),
-    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    copts = [
+        "-Izh_rtl"
+    ],
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_rtl:zh_rtl" 
+    ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

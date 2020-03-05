@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 
 _WINDOWS_C_SRC = glob([
@@ -57,7 +57,11 @@ cc_library(
     srcs = _C_SRC,
     hdrs = _C_HDR,
     alwayslink = 1,
-    deps = [ "//zh_zero:zh_zero", "//zh_vm:zh_vm", "//zh_rtl:zh_rtl" ],
+    copts = C_OPTS,
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_vm:zh_vm", 
+        "//zh_rtl:zh_rtl" ],
     visibility = ["//visibility:public"],
 )
 
@@ -73,11 +77,14 @@ filegroup(
 
 cc_library(
     name = "zh_rtl_gt_zh_c",
-    srcs = [ ":zh_rtl_gt_zh" ],
+    srcs = [ ":zh_rtl_gt_zh", "//zh_rtl:headers" ],
     hdrs = glob([
         "*.zh",
         "*.zhh",
     ]),
+    copts = [
+        "-Izh_rtl"
+    ] + C_OPTS,
     deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
