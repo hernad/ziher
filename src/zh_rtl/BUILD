@@ -35,6 +35,7 @@ cc_library(
     ]),
     copts = C_OPTS + [
        "-Ithird_party/pcre2",
+       "-Ithird_party/zlib",
        "-DSUPPORT_UNICODE",
        "-DPCRE2_CODE_UNIT_WIDTH=8",
        "-DPCRE2_STATIC",
@@ -44,7 +45,8 @@ cc_library(
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
-        "//third_party/pcre2:pcre2"
+        "//third_party/pcre2:pcre2",
+        "//third_party/zlib:zlib"
     ],
     visibility = ["//visibility:public"],
     includes = [

@@ -162,5 +162,5 @@ ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \
          ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
-   #include "zhiniseg.h"
+   #include "../zh_ini_seg.h"
 #endif
