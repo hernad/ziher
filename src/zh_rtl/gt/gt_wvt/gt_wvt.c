@@ -65,7 +65,7 @@
  *
  */
 
-#include "gtwvt.h"
+#include "gt_wvt.h"
 
 #ifndef WS_EX_COMPOSITED
 #define WS_EX_COMPOSITED  0x02000000
@@ -4639,6 +4639,6 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 
 /* *********************************************************************** */
 
-#include "zh_gt_reg.h"
+#include "..\zh_gt_reg.h"
 
 /* *********************************************************************** */

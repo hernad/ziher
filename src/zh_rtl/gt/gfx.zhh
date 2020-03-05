@@ -49,7 +49,7 @@
 #ifndef _ZHGFX_ZH_
 #define _ZHGFX_ZH_
 
-#include "hbgfxdef.zhh"
+#include "gfx_def.zhh"
 
 /*
  * NOTE: ACQUIRE / RELEASE screen pair must work same way DispBegin()/DispEnd() pair does

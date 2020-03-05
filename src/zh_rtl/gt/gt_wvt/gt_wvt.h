@@ -51,7 +51,7 @@
 
 #include "zh_api.h"
 #include "zh_set.h"
-#include "zh_gt_core.h"
+#include "..\zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_codepage_api.h"
 #include "zh_error_api.h"
@@ -60,27 +60,20 @@
 #include "error.zhh"
 #include "zh_vm.h"
 #include "zh_thread.h"
-#include "hbgfxdef.zhh"
+#include "..\gfx_def.zhh"
 #include "zh_win_unicode.h"
 
 #include <windows.h>
-#if defined( ZH_OS_WIN_CE )
-   #include "hbwince.h"
-#endif
+
 
 #define WVT_MAX_WINDOWS             256
 
-#if defined( ZH_OS_WIN_CE )
-#  define WVT_DEFAULT_ROWS         15
-#  define WVT_DEFAULT_COLS         50
-#  define WVT_DEFAULT_FONT_HEIGHT  12
-#  define WVT_DEFAULT_FONT_WIDTH   8
-#else
+
 #  define WVT_DEFAULT_ROWS         25
 #  define WVT_DEFAULT_COLS         80
 #  define WVT_DEFAULT_FONT_HEIGHT  20
 #  define WVT_DEFAULT_FONT_WIDTH   10
-#endif
+
 
 #define WVT_DEFAULT_FONT_ATTR       0
 #define WVT_DEFAULT_FONT_NAME       TEXT( "Courier New" )

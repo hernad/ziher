@@ -7,7 +7,12 @@ def zh_comp(name, zhin, args="-n -izh_zero", **kwargs):
   """ 
   native.genrule(
     name = name,
-    srcs = ["//zh_comp/main:zhcomp", "//zh_zero:headers", "//zh_rtl:headers", zhin],
+    srcs = [
+      "//zh_comp/main:zhcomp", 
+      "//zh_zero:headers", 
+      "//zh_rtl:headers", 
+      zhin
+    ],
     outs = [zhin + ".c"],
     # $< - src (one) file
     # $@ - out (one) file

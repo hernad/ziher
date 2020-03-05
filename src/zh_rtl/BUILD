@@ -73,11 +73,14 @@ filegroup(
 
 cc_library(
     name = "zh_rtl_zh_c",
-    srcs = [ ":zh_rtl_zh" ],
+    srcs = [ ":zh_rtl_zh" ] + [ "//zh_rtl:headers" ],
     hdrs = glob([
         "*.h",
         "*.zhh"
     ]),
+    copts = [
+        "-Izh_rtl"
+    ],
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_rtl:zh_rtl" 
@@ -95,6 +98,9 @@ zh_comp_all(
         "zlib/*.zh"
     ]),
     args = ZH_COMP_OPTS,
-    deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
+    deps = [ 
+        "//zh_zero:headers", 
+        "//zh_rtl:headers" 
+    ],
     visibility = ["//visibility:public"],
 )

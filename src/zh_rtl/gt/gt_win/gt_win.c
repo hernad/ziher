@@ -68,7 +68,7 @@
 /* *********************************************************************** */
 
 #include "zh_api.h"
-#include "zh_gt_core.h"
+#include "..\zh_gt_core.h"
 #include "zh_init.h"
 #include "zh_item_api.h"
 #include "zh_error_api.h"
@@ -2221,6 +2221,6 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 
 /* *********************************************************************** */
 
-#include "zh_gt_reg.h"
+#include "../zh_gt_reg.h"
 
 /* *********************************************************************** */

@@ -66,5 +66,5 @@ ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \
       ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
-   #include "zh_ini_seg.h"
+   #include "..\zh_ini_seg.h"
 #endif
