@@ -7,14 +7,18 @@ cc_library(
     hdrs = glob([
         "*.h",
         "**/*.h",
-    ]),
+    ]) + [ 
+        "//third_party/zlib:headers"
+    ],
     deps = [ 
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",
-       "//zh_vm:zh_vm"
+       "//zh_vm:zh_vm",
+       "//third_party/zlib:zlib"
     ],
     copts = [ 
-        "-DCREATE_LIB"
+        "-DCREATE_LIB",
+        "-Ithird_party/zlib"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],

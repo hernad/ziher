@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "C_OPTS")
 
 ZH_LIB="zh_ssl"
 
@@ -13,18 +13,15 @@ cc_library(
         "*.h", 
         "*.zhh"
     ]) + [
-        "//zh_rtl:headers", 
-        #"//third_party/minizip:headers",
-    ],
+        "//zh_rtl:headers",
+    ] + POSTGRESQL_HEADERS,
     copts = [
         "-Izh_rtl",
-        #"-Ithird_party/minizip"
-    ],
+    ] + POSTGRESQL_COPT + C_OPTS,
     alwayslink = 1,
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
-        #"//third_party/minizip:minizip"
     ],
     visibility = ["//visibility:public"],
     includes = ["*.*", "string/*.*"]
@@ -51,6 +48,7 @@ cc_library(
         "//zh_zero:zh_zero", 
         "//zh_rtl:zh_rtl" 
     ],
+    copts = C_OPTS,
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

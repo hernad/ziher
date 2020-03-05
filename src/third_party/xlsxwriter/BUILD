@@ -11,10 +11,12 @@ cc_library(
     deps = [ 
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",
-       "//zh_vm:zh_vm"
+       "//zh_vm:zh_vm",
+       "//third_party/zlib:zlib"
     ],
     copts = [
-        "-DUSE_STANDARD_TMPFILE"
+        "-DUSE_STANDARD_TMPFILE",
+        "-Ithird_party/zlib"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],

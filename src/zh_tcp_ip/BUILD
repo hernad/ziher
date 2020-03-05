@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 ZH_LIB="zh_tcp_ip"
 
@@ -49,6 +49,7 @@ cc_library(
         "//zh_ssl:zh_ssl"
     ],
     alwayslink = 1,
+    copts = C_OPTS,
     visibility = ["//visibility:public"],
 )
 

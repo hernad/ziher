@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 ZH_LIB="zh_harupdf"
 
@@ -44,6 +44,7 @@ cc_library(
         "*.zhh"
     ]),
     deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    copts = C_OPTS,
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

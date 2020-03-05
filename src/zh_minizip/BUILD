@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 ZH_LIB="zh_minizip"
 
@@ -15,10 +15,12 @@ cc_library(
     ]) + [
         "//zh_rtl:headers", 
         "//third_party/minizip:headers",
+        "//third_party/zlib:headers",
     ],
     copts = [
         "-Izh_rtl",
-        "-Ithird_party/minizip"
+        "-Ithird_party/minizip",
+        "-Ithird_party/zlib"
     ],
     alwayslink = 1,
     deps = [ 
@@ -51,6 +53,7 @@ cc_library(
         "//zh_zero:zh_zero", 
         "//zh_rtl:zh_rtl" 
     ],
+    copts = C_OPTS,
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "C_OPTS", "ZH_COMP_OPTS")
 
 ZH_LIB="zh_tools"
 
@@ -14,11 +14,13 @@ cc_library(
         "*.zhh"
     ]) + [ "//zh_rtl/gt:headers" ],
     copts = [
-        "-Izh_rtl/gt"
-    ],
+        "-Izh_rtl/gt",
+        "-Izh_rtl"
+    ] + C_OPTS,
     alwayslink = 1,
-    deps = [ 
-        "//zh_zero:zh_zero", 
+    deps = [
+        "//zh_zero:zh_zero",
+        "//zh_rtl:zh_rtl", 
         "//zh_vm:zh_vm"
     ],
     visibility = ["//visibility:public"],
@@ -42,7 +44,11 @@ cc_library(
         "*.h",
         "*.zhh"
     ]),
-    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    copts = C_OPTS,
+    deps = [ 
+        "//zh_zero:zh_zero",
+        "//zh_rtl:zh_rtl"
+    ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )
@@ -53,6 +59,11 @@ zh_comp_all(
         "*.zh",
     ]),
     args = ZH_COMP_OPTS,
-    deps = [ "//zh_zero:headers", "//zh_rtl:headers", "//zh_rtl/gt:headers", ":headers" ],
+    deps = [ 
+        "//zh_zero:headers", 
+        "//zh_rtl:headers", 
+        "//zh_rtl/gt:headers", 
+        ":headers" 
+    ],
     visibility = ["//visibility:public"],
 )

@@ -1,7 +1,14 @@
 
-_DARWIN_COPTS = ["-DZH_OS_DARWIN"]
-_WINDOWS_COPTS = ["-DZH_OS_WIN"]
-_LINUX_COPTS = ["-DZH_OS_LINUX"]
+_DARWIN_COPTS = [
+    "-DZH_OS_DARWIN"
+]
+_WINDOWS_COPTS = [
+    "-DZH_OS_WIN",
+    "-Izh_rtl"
+]
+_LINUX_COPTS = [
+    "-DZH_OS_LINUX"
+]
 
 
 _WINDOWS_LOPTS = [
@@ -29,8 +36,11 @@ _LINUX_LOPTS_2 = [
     "-lz", 
     "-ldl", 
     "-lpthread",
-    "-lpq"
+    "-lpq",
+    "-lssl",
+    "-lcrypto"
 ]
+
 
 _LINUX_POSTGRESQL_HEADERS = [ "@postgresql_linux//:headers" ]
 _WINDOWS_POSTGRESQL_HEADERS = [ "@postgresql_windows//:headers" ]

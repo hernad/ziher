@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "C_OPTS")
 
 ZH_LIB="zh_pgsql"
 
@@ -12,10 +12,9 @@ cc_library(
     hdrs = glob([
         "*.h", 
         "*.zhh"
-    ]), #+ [ "//third_party/xlsxwriter:headers" ],
+    ]) + POSTGRESQL_HEADERS,
     copts = [
-        #"-Ithird_party/xlsxwriter"
-    ],
+    ]  + POSTGRESQL_COPT,
     alwayslink = 1,
     deps = [ 
         "//zh_zero:zh_zero", 
@@ -47,6 +46,7 @@ cc_library(
         "//zh_zero:zh_zero", 
         "//zh_rtl:zh_rtl" 
     ],
+    copts = C_OPTS,
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

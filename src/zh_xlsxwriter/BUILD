@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
 
 ZH_LIB="zh_xlsxwriter"
 
@@ -12,9 +12,13 @@ cc_library(
     hdrs = glob([
         "*.h", 
         "*.zhh"
-    ]) + [ "//third_party/xlsxwriter:headers" ],
+    ]) + [ 
+        "//third_party/xlsxwriter:headers",
+        "//third_party/zlib:headers",
+    ],
     copts = [
-        "-Ithird_party/xlsxwriter"
+        "-Ithird_party/xlsxwriter",
+        "-Ithird_party/zlib",
     ],
     alwayslink = 1,
     deps = [ 
@@ -45,6 +49,7 @@ cc_library(
     ]),
     deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
     alwayslink = 1,
+    copts = C_OPTS,
     visibility = ["//visibility:public"],
 )
 
