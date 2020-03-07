@@ -112,7 +112,7 @@ typedef struct _ZH_SSL
       #pragma GCC diagnostic push
       #pragma GCC diagnostic ignored "-Wpedantic"
    #endif
-   #include "openssl/applink.c"
+   #include "openssl_applink.c.h"
    #if defined( ZH_GCC_HAS_DIAG ) && defined( __clang__ )
       #pragma GCC diagnostic pop
    #endif
