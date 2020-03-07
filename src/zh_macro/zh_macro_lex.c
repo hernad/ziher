@@ -49,7 +49,7 @@
 #include "zh_macro.h"
 #include "zh_comp.h"
 #include "zh_date.h"
-#include "zh_macro/zh_macroy.h"
+#include "zh_macro/zh_macro_y.h"
 
 typedef struct _ZH_MACRO_LEX
 {

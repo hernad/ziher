@@ -10,19 +10,19 @@ http_archive(
 load("@rules_m4//m4:m4.bzl", "m4_register_toolchains")
 m4_register_toolchains()
 
-http_archive(
-    name = "rules_bison",
-    urls = ["https://github.com/jmillikin/rules_bison/releases/download/v0.2/rules_bison-v0.2.tar.xz"],
-    sha256 = "6ee9b396f450ca9753c3283944f9a6015b61227f8386893fb59d593455141481",
-)
+#http_archive(
+#    name = "rules_bison",
+#    urls = ["https://github.com/jmillikin/rules_bison/releases/download/v0.2/rules_bison-v0.2.tar.xz"],
+#    sha256 = "6ee9b396f450ca9753c3283944f9a6015b61227f8386893fb59d593455141481",
+#)
 
 #local_repository(
 #    name = "rules_bison",
 #    path = "c:/users/hernad/rules_bison",
 #)
 
-load("@rules_bison//bison:bison.bzl", "bison_register_toolchains")
-bison_register_toolchains()
+#load("@rules_bison//bison:bison.bzl", "bison_register_toolchains")
+#bison_register_toolchains()
 
 
 # Group the sources of the library so that CMake rule have access to it
@@ -46,7 +46,7 @@ bison_register_toolchains()
 
 new_local_repository(
     name = "postgresql_windows",
-    path = "c:/postgresql/12/include",
+    path = "c:/postgresql/x86/include",
     build_file_content = """
 package(
     default_visibility = [
@@ -65,7 +65,7 @@ filegroup(
 
 new_local_repository(
     name = "postgresql_windows_lib",
-    path = "c:/postgresql/12/lib",
+    path = "c:/postgresql/x86/lib",
     build_file_content = """
 package(
     default_visibility = [
