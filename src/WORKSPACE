@@ -102,7 +102,7 @@ filegroup(
 
 new_local_repository(
     name = "postgresql_linux_lib",
-    path = "/usr/lib",
+    path = "/usr/lib64",
     build_file_content = """
 package(
     default_visibility = [
@@ -111,7 +111,7 @@ package(
 )
 cc_library(
     name = "postgresql_lib",
-    srcs = glob(["*.*"])
+    srcs = ["libpq.so","libcrypt.so","libssl.so"]
 )
 """
 )

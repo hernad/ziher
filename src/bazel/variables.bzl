@@ -49,7 +49,7 @@ _LINUX_POSTGRESQL_LIB = [ "@postgresql_linux_lib//:postgresql_lib" ]
 _WINDOWS_POSTGRESQL_LIB = [ "@postgresql_windows_lib//:postgresql_lib" ]
 
 
-_LINUX_POSTGRESQL_COPT = [ "-iexternal/postgresql_linux" ]
+_LINUX_POSTGRESQL_COPT = [ "-Iexternal/postgresql_linux" ]
 _WINDOWS_POSTGRESQL_COPT = [ 
     "/Iexternal/postgresql_windows" 
 ]
