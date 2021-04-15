@@ -146,7 +146,7 @@ ZH_FUNC( SETTIME )
       st.wSecond       = ( WORD ) iTime[ 2 ];
       st.wMilliseconds = ( WORD ) iTime[ 3 ] * 10;
       fResult = SetLocalTime( &st );
-#elif defined( ZH_OS_LINUX ) && ! defined( ZH_OS_ANDROID ) && ! defined( __WATCOMC__ )
+#elif defined( ZH_OS_LINUX )
       /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
       ZH_ULONG lNewTime;
       time_t   tm;
@@ -154,15 +154,18 @@ ZH_FUNC( SETTIME )
       lNewTime = iTime[ 0 ] * 3600 + iTime[ 1 ] * 60 + iTime[ 2 ];
       tm       = time( NULL );
       tm      += lNewTime - ( tm % 86400 );
-      fResult  = stime( &tm ) == 0;
-#elif defined( ZH_OS_DOS )
-      union REGS regs;
-      regs.h.ah = 45;
-      regs.h.ch = iTime[ 0 ];
-      regs.h.cl = iTime[ 1 ];
-      regs.h.dh = iTime[ 2 ];
-      ZH_DOS_INT86( 0x21, &regs, &regs );
-      fResult = regs.h.al == 0;
+      //   Starting with glibc 2.31, this function is no longer available to
+      // newly linked applications and is no longer declared in <time.h>.
+      // stime() is deprecated in glibc 2.31. alternative is clock_settime()
+      // fResult  = stime( &tm ) == 0;
+      // https://github.com/WebPlatformForEmbedded/Thunder/pull/329/commits/76269000542f3d211ece4a28680d9b2428214eac
+
+      #if (__GLIBC__ >= 2) && (__GLIBC_MINOR__ > 30)
+        fResult = clock_settime(CLOCK_REALTIME, &tm) == 0;
+      #else
+        fResult  = stime( &tm ) == 0;
+      #endif
+
 #endif
    }
 
@@ -189,7 +192,7 @@ ZH_FUNC( SETDATE )
          st.wDay       = ( WORD ) iDay;
          st.wDayOfWeek = ( WORD ) zh_dateJulianDOW( lDate );
          fResult       = SetLocalTime( &st );
-#elif defined( ZH_OS_LINUX ) && ! defined( ZH_OS_ANDROID ) && ! defined( __WATCOMC__ )
+#elif defined( ZH_OS_LINUX )
          /* stime() exists only in SVr4, SVID, X/OPEN and Linux */
          long   lNewDate;
          time_t tm;
@@ -197,15 +200,11 @@ ZH_FUNC( SETDATE )
          lNewDate = lDate - zh_dateEncode( 1970, 1, 1 );
          tm       = time( NULL );
          tm       = lNewDate * 86400 + ( tm % 86400 );
-         fResult  = stime( &tm ) == 0;
-#elif defined( ZH_OS_DOS )
-         union REGS regs;
-         regs.h.ah        = 43;
-         regs.ZH_XREGS.cx = iYear;
-         regs.h.dh        = iMonth;
-         regs.h.dl        = iDay;
-         ZH_DOS_INT86( 0x21, &regs, &regs );
-         fResult = regs.h.al == 0;
+         #if (__GLIBC__ >= 2) && (__GLIBC_MINOR__ > 30)
+            fResult = clock_settime(CLOCK_REALTIME, &tm) == 0;
+         #else
+            fResult  = stime( &tm ) == 0;
+         #endif
 #endif
       }
    }

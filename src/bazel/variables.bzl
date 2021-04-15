@@ -30,6 +30,7 @@ _WINDOWS_LOPTS_2 = [
 
 
 _LINUX_LOPTS = [
+    "-lm"
 ]
 
 _LINUX_LOPTS_2 = [
