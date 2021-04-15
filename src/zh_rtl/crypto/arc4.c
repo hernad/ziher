@@ -49,8 +49,8 @@
 #include "zh_thread.h"
 
 /* XXX: Check and possibly extend this to other Unix-like platforms */
-#if ( defined( ZH_OS_LINUX ) && ! defined( ZH_OS_ANDROID ) && ! defined( __EMSCRIPTEN__ ) )
-#  define HAVE_SYS_SYSCTL_H
+#if defined( ZH_OS_LINUX )
+//#  define HAVE_SYS_SYSCTL_H
 #  define HAVE_DECL_CTL_KERN
 #  define HAVE_DECL_KERN_RANDOM
 #  if defined( ZH_OS_LINUX )
@@ -64,12 +64,14 @@
 #     include <sys/param.h>
 #  include <sys/time.h>
 #  include <sys/types.h>
+/*
 #  ifdef HAVE_SYS_SYSCTL_H
 #     include <sys/sysctl.h>
 #     if ! defined( ZH_OS_LINUX ) && defined( KERN_ARND )
 #        define HAVE_DECL_KERN_ARND
 #     endif
 #  endif
+*/
 #  include <fcntl.h>
 #  include <unistd.h>
 #endif

@@ -18,7 +18,7 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_world_zh_lib_c",
     ],
-    linkopts = L_OPTS,
+    linkopts = L_OPTS_2,
     copts = [
         "-Izh_rtl"
     ],
@@ -73,7 +73,7 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_code_block_zh_lib_c",
     ],
-    linkopts = ["-lz", "-ldl", "-lpthread"],
+    linkopts = ["-lz", "-ldl", "-lpthread", "-lpq"],
     linkstatic = True,
     visibility = ["//visibility:public"],
 )
@@ -175,7 +175,7 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_codepage_zh_lib_c",
     ],
-    linkopts = L_OPTS,
+    linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_rtl"
     ],
