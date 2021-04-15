@@ -6,6 +6,9 @@ Install [bazel.build](https://bazel.build/).
     bazel query //... 
 
     # bazel run //zh_comp/main:zhcomp -- -credits
+    
+    # fedora33 - gcc with cccahe
+    # bazel run //zh_comp/main:zhcomp --strategy=CppCompile=standalone -- -credits
 
 
 ## Windows
