@@ -51,15 +51,12 @@
 #include "zh_set.h"
 
 
-#if defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN ) || \
-      defined( ZH_OS_CYGWIN )
+#if defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN )
 #  include <pthread.h>
 #  define ZH_PTHREAD_API
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
-#  if ! defined( ZH_OS_WIN_CE )
-#    include <process.h>
-#  endif
+#  include <process.h>
 #endif
 
 ZH_EXTERN_BEGIN
@@ -121,13 +118,6 @@ ZH_EXTERN_BEGIN
    typedef HANDLE             ZH_THREAD_HANDLE;
    typedef CRITICAL_SECTION   ZH_RAWCRITICAL_T;
    typedef HANDLE             ZH_OSCOND_T;
-
-#  if defined( ZH_OS_WIN_CE ) && \
-      ( ( defined( __MINGW32CE__ ) && ! defined( __MSVCRT__ ) ) || \
-          defined( __POCC__ ) ) || \
-        ( defined( _MSC_VER ) && ( _MSC_VER <= 1500 ) )
-#     define ZH_THREAD_RAWWINAPI
-#  endif
 
 #  if defined( ZH_THREAD_RAWWINAPI )
       typedef DWORD                       ZH_THREAD_ID;

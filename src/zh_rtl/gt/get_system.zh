@@ -63,7 +63,7 @@ FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColo
       RETURN .F.
    ENDIF
 
-   oGetList := HBGetList():New( GetList )
+   oGetList := ZHGetList():New( GetList )
 
    oSaveGetList := __GetListActive()
 

@@ -16,10 +16,11 @@ PROCEDURE init_language()
 
 PROCEDURE Main()
 
-    LOCAL GetList := {}
+    //LOCAL GetList := {}
     LOCAL cString
     LOCAL dDate := Date()
 
+    __ZHVMInit()
     init_language()
 
     cString := PadR( zh_UTF8ToStr("šŠ ćĆ čČ đĐ žŽ"), 100)

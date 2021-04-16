@@ -1,5 +1,5 @@
 /*
- * Main Ziher VM initialization function __HBVMInit()
+ * Main Ziher VM initialization function __ZHVMInit()
  *
  * Copyright 1999-2001 Viktor Szakats
  *
@@ -54,7 +54,7 @@ ANNOUNCE SYSINIT
  * basic VM settings like public variable GetList and ErrorBlock() by
  * calling ErrorSys() function.
  */
-PROCEDURE __HBVMInit()
+PROCEDURE __ZHVMInit()
 
    MEMVAR GetList
 

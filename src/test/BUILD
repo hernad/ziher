@@ -26,6 +26,58 @@ cc_binary(
     visibility = ["//visibility:public"],
 )
 
+cc_binary(
+    name = "hello_threads",
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_vm:zh_vm",
+        "//zh_vm:zh_vm_zh_c",
+        "//zh_macro:zh_macro",
+        "//zh_rtl:zh_rtl",
+        "//zh_rtl:zh_rtl_zh_c",
+        "//zh_rtl/gt:zh_rtl_gt",
+        "//zh_rtl/gt:zh_rtl_gt_zh_c",
+        "//zh_rtl/rdd:zh_rtl_rdd",
+        "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
+        ":hello_threads_zh_lib_c",
+    ],
+    linkopts = L_OPTS_2,
+    copts = [
+        "-Izh_rtl"
+    ],
+    linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "hello_threads_zh_lib_c",
+    srcs = [ ":hello_threads_zh_lib" ],
+    hdrs = glob([
+        "*.h",
+    ]),
+    copts = [
+        "-Izh_rtl"
+    ],
+    deps = [ 
+       "//zh_zero:zh_zero", 
+       "//zh_rtl:zh_rtl",
+       "//zh_vm:zh_vm"
+    ],
+    alwayslink=1,
+    visibility = ["//visibility:public"],
+)
+
+zh_comp_all(
+    name = "hello_threads_zh_lib", 
+    srcs = [ "hello_threads.zh" ],
+    args = ZH_COMP_OPTS,
+    deps = [ 
+        "//zh_zero:headers", 
+        "//zh_rtl:headers",
+        "//zh_vm:headers"
+    ],
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = "hello_world_zh_lib_c",

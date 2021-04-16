@@ -105,9 +105,7 @@
 
 #if defined( ZH_OS_UNIX )
 #  include <sys/time.h>
-#  if ! defined( ZH_OS_VXWORKS )
-#     include <sys/times.h>
-#  endif
+#  include <sys/times.h>
 #  include <unistd.h>
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * HBGetList Class
+ * ZHGetList Class
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  * Copyright 2001 Luiz Rafael Culik (Support for CA-Cl*pper 5.3 GET-system)
@@ -68,7 +68,7 @@
 #define MSGRIGHT        4
 #define MSGCOLOR        5
 
-CREATE CLASS HBGetList
+CREATE CLASS ZHGetList
 
    EXPORTED:
 
@@ -138,7 +138,7 @@ ENDCLASS
 /* --- */
 
 
-METHOD ReadModal( nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor ) CLASS HBGetList
+METHOD ReadModal( nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor ) CLASS ZHGetList
 
    LOCAL lMsgFlag
    LOCAL aMsg
@@ -191,13 +191,13 @@ METHOD ReadModal( nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor ) CLASS H
 
    RETURN Self
 
-METHOD Updated() CLASS HBGetList
+METHOD Updated() CLASS ZHGetList
    RETURN ::lUpdated
 
-METHOD Get() CLASS HBGetList
+METHOD Get() CLASS ZHGetList
    RETURN ::oGet
 
-METHOD SetFocus() CLASS HBGetList
+METHOD SetFocus() CLASS ZHGetList
 
    __GetListSetActive( Self )
    __GetListLast( Self )
@@ -205,7 +205,7 @@ METHOD SetFocus() CLASS HBGetList
 
    RETURN Self
 
-METHOD Reader( oMenu, aMsg ) CLASS HBGetList
+METHOD Reader( oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL oGet := ::oGet
    LOCAL nRow
@@ -262,7 +262,7 @@ METHOD Reader( oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD GetApplyKey( nKey, oGet, oMenu, aMsg ) CLASS HBGetList
+METHOD GetApplyKey( nKey, oGet, oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL cKey
    LOCAL bKeyBlock
@@ -476,7 +476,7 @@ METHOD GetApplyKey( nKey, oGet, oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD GetPreValidate( oGet, aMsg ) CLASS HBGetList
+METHOD GetPreValidate( oGet, aMsg ) CLASS ZHGetList
 
    LOCAL lUpdated
    LOCAL lWhen := .T.
@@ -511,7 +511,7 @@ METHOD GetPreValidate( oGet, aMsg ) CLASS HBGetList
 
    RETURN lWhen
 
-METHOD GetPostValidate( oGet, aMsg ) CLASS HBGetList
+METHOD GetPostValidate( oGet, aMsg ) CLASS ZHGetList
 
    LOCAL lUpdated
    LOCAL lValid := .T.
@@ -565,7 +565,7 @@ METHOD GetPostValidate( oGet, aMsg ) CLASS HBGetList
 
    RETURN lValid
 
-METHOD GetDoSetKey( bKeyBlock, oGet ) CLASS HBGetList
+METHOD GetDoSetKey( bKeyBlock, oGet ) CLASS ZHGetList
 
    LOCAL lUpdated
    LOCAL lSetKey
@@ -594,7 +594,7 @@ METHOD GetDoSetKey( bKeyBlock, oGet ) CLASS HBGetList
 
    RETURN zh_defaultValue( lSetKey, .T. )
 
-METHOD Settle( nPos, lInit ) CLASS HBGetList
+METHOD Settle( nPos, lInit ) CLASS ZHGetList
 
    LOCAL nExitState
 
@@ -685,7 +685,7 @@ METHOD Settle( nPos, lInit ) CLASS HBGetList
 
    RETURN nPos
 
-METHOD PostActiveGet() CLASS HBGetList
+METHOD PostActiveGet() CLASS ZHGetList
 
    ::GetActive( ::oGet )
    ::ReadVar( ::GetReadVar() )
@@ -693,10 +693,10 @@ METHOD PostActiveGet() CLASS HBGetList
 
    RETURN Self
 
-METHOD GetReadVar() CLASS HBGetList
+METHOD GetReadVar() CLASS ZHGetList
    RETURN zh_GetReadVar( ::oGet )
 
-METHOD SetFormat( bFormat ) CLASS HBGetList
+METHOD SetFormat( bFormat ) CLASS ZHGetList
 
    LOCAL bSavFormat := ::bFormat
 
@@ -706,7 +706,7 @@ METHOD SetFormat( bFormat ) CLASS HBGetList
 
    RETURN bSavFormat
 
-METHOD KillRead( lKill ) CLASS HBGetList
+METHOD KillRead( lKill ) CLASS ZHGetList
 
    LOCAL lSavKill := ::lKillRead
 
@@ -716,7 +716,7 @@ METHOD KillRead( lKill ) CLASS HBGetList
 
    RETURN lSavKill
 
-METHOD GetActive( oGet ) CLASS HBGetList
+METHOD GetActive( oGet ) CLASS ZHGetList
 
    LOCAL oOldGet := ::oActiveGet
 
@@ -726,7 +726,7 @@ METHOD GetActive( oGet ) CLASS HBGetList
 
    RETURN oOldGet
 
-METHOD ShowScoreboard() CLASS HBGetList
+METHOD ShowScoreboard() CLASS ZHGetList
 
    IF Set( _SET_SCOREBOARD )
 
@@ -740,7 +740,7 @@ METHOD ShowScoreboard() CLASS HBGetList
 
    RETURN Self
 
-METHOD DateMsg() CLASS HBGetList
+METHOD DateMsg() CLASS ZHGetList
 
    LOCAL nKey
 
@@ -758,7 +758,7 @@ METHOD DateMsg() CLASS HBGetList
 
    RETURN Self
 
-METHOD ReadVar( cNewVarName ) CLASS HBGetList
+METHOD ReadVar( cNewVarName ) CLASS ZHGetList
 
    LOCAL cOldName := ::cVarName
 
@@ -768,7 +768,7 @@ METHOD ReadVar( cNewVarName ) CLASS HBGetList
 
    RETURN cOldName
 
-METHOD ReadUpdated( lUpdated ) CLASS HBGetList
+METHOD ReadUpdated( lUpdated ) CLASS ZHGetList
 
    LOCAL lSavUpdated := ::lUpdated
 
@@ -778,7 +778,7 @@ METHOD ReadUpdated( lUpdated ) CLASS HBGetList
 
    RETURN lSavUpdated
 
-METHOD GUIReader( oGet, oMenu, aMsg ) CLASS HBGetList
+METHOD GUIReader( oGet, oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL oGUI
    LOCAL nKey
@@ -865,7 +865,7 @@ METHOD GUIReader( oGet, oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD GUIApplyKey( oGet, oGUI, nKey, oMenu, aMsg ) CLASS HBGetList
+METHOD GUIApplyKey( oGet, oGUI, nKey, oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL bKeyBlock
    LOCAL oTheClass
@@ -1070,7 +1070,7 @@ METHOD GUIApplyKey( oGet, oGUI, nKey, oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD GUIPreValidate( oGet, oGUI, aMsg ) CLASS HBGetList
+METHOD GUIPreValidate( oGet, oGUI, aMsg ) CLASS ZHGetList
 
    LOCAL lUpdated
    LOCAL lWhen := .T.
@@ -1104,7 +1104,7 @@ METHOD GUIPreValidate( oGet, oGUI, aMsg ) CLASS HBGetList
 
    RETURN lWhen
 
-METHOD GUIPostValidate( oGet, oGUI, aMsg ) CLASS HBGetList
+METHOD GUIPostValidate( oGet, oGUI, aMsg ) CLASS ZHGetList
 
    LOCAL lUpdated
    LOCAL lValid := .T.
@@ -1165,7 +1165,7 @@ METHOD GUIPostValidate( oGet, oGUI, aMsg ) CLASS HBGetList
 
    RETURN lValid
 
-METHOD TBApplyKey( oGet, oTB, nKey, oMenu, aMsg ) CLASS HBGetList
+METHOD TBApplyKey( oGet, oTB, nKey, oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL bKeyBlock
    LOCAL nMRow
@@ -1263,7 +1263,7 @@ METHOD TBApplyKey( oGet, oTB, nKey, oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD TBReader( oGet, oMenu, aMsg ) CLASS HBGetList
+METHOD TBReader( oGet, oMenu, aMsg ) CLASS ZHGetList
 
    LOCAL oTB
    LOCAL nKey
@@ -1349,7 +1349,7 @@ METHOD TBReader( oGet, oMenu, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD Accelerator( nKey, aMsg ) CLASS HBGetList
+METHOD Accelerator( nKey, aMsg ) CLASS ZHGetList
 
    LOCAL nGet
    LOCAL oGet
@@ -1431,7 +1431,7 @@ METHOD Accelerator( nKey, aMsg ) CLASS HBGetList
 
    RETURN 0
 
-METHOD HitTest( nMRow, nMCol, aMsg ) CLASS HBGetList
+METHOD HitTest( nMRow, nMCol, aMsg ) CLASS ZHGetList
 
    LOCAL oGet
    LOCAL lGUI
@@ -1511,7 +1511,7 @@ METHOD HitTest( nMRow, nMCol, aMsg ) CLASS HBGetList
 #define SNMENUID        16
 #define SNSVCURSOR      17
 
-METHOD ReadStats( nElement, xNewValue ) CLASS HBGetList
+METHOD ReadStats( nElement, xNewValue ) CLASS ZHGetList
 
    LOCAL xRetVal
 
@@ -1561,7 +1561,7 @@ METHOD ReadStats( nElement, xNewValue ) CLASS HBGetList
 
    RETURN xRetVal
 
-METHOD ShowGetMsg( oGet, aMsg ) CLASS HBGetList
+METHOD ShowGetMsg( oGet, aMsg ) CLASS ZHGetList
 
    LOCAL cMsg
    LOCAL lMOldState
@@ -1582,7 +1582,7 @@ METHOD ShowGetMsg( oGet, aMsg ) CLASS HBGetList
 
    RETURN Self
 
-METHOD EraseGetMsg( aMsg ) CLASS HBGetList
+METHOD EraseGetMsg( aMsg ) CLASS ZHGetList
 
    LOCAL nRow := Row()
    LOCAL nCol := Col()
@@ -1601,7 +1601,7 @@ METHOD EraseGetMsg( aMsg ) CLASS HBGetList
 
 /* --- */
 
-METHOD New( GetList ) CLASS HBGetList
+METHOD New( GetList ) CLASS ZHGetList
 
    ::aGetList := GetList
 

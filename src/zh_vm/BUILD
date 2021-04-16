@@ -43,3 +43,12 @@ zh_comp_all(
     deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "headers",
+    srcs = glob([
+        "*.h",
+        "*.zhh"
+    ]),
+    visibility = ["//visibility:public"],
+)
