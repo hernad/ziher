@@ -62,7 +62,7 @@ ZH_EXTERN_BEGIN
 /* maximum length of color string */
 #define ZH_CLRSTR_LEN           64
 
-/* attributes for color strings, these are the same as the ones in color.ch
+/* attributes for color strings, these are the same as the ones in color.zhh
    but prefixed with ZH_ to avoid collision. */
 #define ZH_CLR_STANDARD         0
 #define ZH_CLR_ENHANCED         1

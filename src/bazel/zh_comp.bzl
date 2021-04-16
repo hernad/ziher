@@ -45,6 +45,8 @@ def _zh_comp_impl(ctx):
   
     #args = [ctx.outputs.out.path] + [f.path for f in ctx.files.srcs]
     outs = []
+    for hdr in ctx.files.hdrs:
+      outs.append(hdr)
     for src in ctx.files.srcs:
       out = ctx.actions.declare_file(src.path + ".c")
       outs.append(out)
@@ -71,6 +73,9 @@ zh_comp_all = rule(
     attrs = {
         "srcs": attr.label_list(
           allow_files = [".zh", ".zhh"]
+        ),
+        "hdrs": attr.label_list(
+          allow_files = [".json", ".txt", ".xml"]
         ),
         "args": attr.string_list(
           default = []
