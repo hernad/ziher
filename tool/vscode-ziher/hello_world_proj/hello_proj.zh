@@ -10,7 +10,6 @@ STATIC s_mtxMutex
 
 MEMVAR g_cPublic1, p_cVariable
 
-
 PROCEDURE Main()
 
    LOCAL cLoco1
