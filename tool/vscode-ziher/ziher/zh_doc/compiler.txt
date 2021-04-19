@@ -8,7 +8,7 @@
    $SUBCATEGORY$
       Compiler
    $DESCRIPTION$
-      <b>Invoking the Harbour compiler:</b>
+      <b>Invoking the Ziher compiler:</b>
       ==============================
 
       ```
@@ -26,7 +26,7 @@
       The command-line options have to be separated by at least one space.
       The option can start with either `-` character or `/` character.
 
-      <b>The Harbour command-line options:</b>
+      <b>The Ziher command-line options:</b>
       =================================
 
       `-a`               automatic memvar declaration
@@ -81,7 +81,7 @@
                           <type>: `0`=compact (default) `1`=normal `2`=verbose
                                   `3`=generate real C code
 
-          `-gh`          output type: Harbour Portable Object `.hrb`
+          `-gh`          output type: Ziher Portable Object `.hrb`
 
           `-gd[.<destext>]`  generate dependencies list into `.d` file
 
@@ -102,7 +102,7 @@
 
           `-kc`        clear all flags (strict Clipper mode)
 
-          `-kh`        Harbour mode (default)
+          `-kh`        Ziher mode (default)
 
           `-ko`        allow operator optimizations
 
@@ -176,7 +176,7 @@
       =================
       `-r[<lib>]`        request linker to search <lib> (or none)
 
-          Currently not supported in Harbour.
+          Currently not supported in Ziher.
 
       =================
       `-r=<max>`         sets maximum number of preprocessor iterations
@@ -197,7 +197,7 @@
       =================
       `-t<path>`         path for temp file creation
 
-          Currently not used in Harbour (the Harbour compiler does not
+          Currently not used in Ziher (the Ziher compiler does not
           create any temporary files).
 
       =================
@@ -225,7 +225,7 @@
 
           `-w2`         - some useful warnings missed in CA-Cl*pper
 
-          `-w3`         - warnings generated for Harbour language extensions
+          `-w3`         - warnings generated for Ziher language extensions
                           and also enables strong type checking but only
                           warns against declared types, or types which may be
                           calculated at compile time
@@ -249,7 +249,7 @@
 
           Not supported yet.
 
-      <b>Known incompatibilities between Harbour and CA-Cl*pper compilers</b>
+      <b>Known incompatibilities between Ziher and CA-Cl*pper compilers</b>
       =============================================================
 
       Note:
@@ -266,9 +266,9 @@
       passed variable is checked at runtime (field or memvar). However,
       field variables cannot be passed by reference. This means that
       CA-Cl*pper checks the memvar variable only and doesn't look for a field.
-      This is the reason why the Harbour compiler uses the usual
+      This is the reason why the Ziher compiler uses the usual
       PUSHMEMVARREF opcode in such cases. Notice that the runtime behavior
-      is the same in CA-Cl*pper and in Harbour - only the generated opcodes
+      is the same in CA-Cl*pper and in Ziher - only the generated opcodes
       are different.
 
       Handling of object messages
@@ -293,9 +293,9 @@
 
       In practice, CA-Cl*pper will call the COUNT() function two times:
       the first time before addition and the second one after addition.
-      In Harbour, COUNT() will be called only once, before addition.
+      In Ziher, COUNT() will be called only once, before addition.
 
-      The Harbour (non-strict) method is:
+      The Ziher (non-strict) method is:
 
       1) faster
 
@@ -323,15 +323,15 @@
       runtime error `Error/BASE 1132 Bound error: array access
       Called form (b)STATICS$(0)`
 
-      In Harbour this code generates a compile time error:
+      In Ziher this code generates a compile time error:
       `Error E0009 Illegal variable (b) initializer: 'MyLocalVar'`
 
-      Both CA-Cl*pper and Harbour are handling all local variables used in a
+      Both CA-Cl*pper and Ziher are handling all local variables used in a
       codeblock in a special way: they are detached from the local stack
       of function/procedure where they are declared. This allows access to
       these variables after the exit from a function/procedure. However,
       all static variables are initialized in a separate procedure
-      (`STATICS$` in CA-Cl*pper and `(_INITSTATICS)` in Harbour) before the
+      (`STATICS$` in CA-Cl*pper and `(_INITSTATICS)` in Ziher) before the
       main procedure and before all INIT procedures. The local variables
       don't exist on the eval stack when static variables are initialized,
       so they cannot be detached.

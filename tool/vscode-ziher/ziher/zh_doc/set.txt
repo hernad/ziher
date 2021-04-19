@@ -189,7 +189,7 @@
                    get written when using `COPY TO DELIMITED`, `COPY TO SDF`,
                    or when closing any of the various text files that are
                    created using various SET values.
-                   [This is a Harbour extension]
+                   [This is a Ziher extension]
 
               `_SET_EPOCH`       <nYear>
 
@@ -295,8 +295,8 @@
 
               `_SET_LANGUAGE`    <cLanguageID>
 
-                   Specifies the language to be used for Harbour messages.
-                   [This is a Harbour extension]
+                   Specifies the language to be used for Ziher messages.
+                   [This is a Ziher extension]
 
               `_SET_MARGIN`      <nColumns>
 
@@ -463,7 +463,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      Harbour use 11 and 12 to represent <F11> and <F12>, while CA-Cl*pper use
+      Ziher use 11 and 12 to represent <F11> and <F12>, while CA-Cl*pper use
       11 and 12 to represent <Shift+F1> and <Shift+F2>.
    $PLATFORMS$
       All
@@ -526,7 +526,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      Harbour use 11 and 12 to represent <F11> and <F12>, while CA-Cl*pper use
+      Ziher use 11 and 12 to represent <F11> and <F12>, while CA-Cl*pper use
       11 and 12 to represent <Shift+F1> and <Shift+F2>.
    $PLATFORMS$
       All
@@ -872,7 +872,7 @@
    $SUBCATEGORY$
       Environment
    $ONELINER$
-      Establishes the Harbour search drive and directory.
+      Establishes the Ziher search drive and directory.
    $SYNTAX$
       SET DEFAULT TO [<cPath>]
    $ARGUMENTS$
@@ -1078,7 +1078,7 @@
    $EXAMPLES$
       SET ALTERNATE TO test.txt
       SET ALTERNATE ON
-      ? "Harbour"
+      ? "Ziher"
       ? "is"
       ? "Power"
       SET ALTERNATE TO
@@ -1375,7 +1375,7 @@
    $ARGUMENTS$
       <nDecimal> Number of decimals places
    $DESCRIPTION$
-      This command establishes the number of decimal places that Harbour
+      This command establishes the number of decimal places that Ziher
       will display in mathematical calculations, functions, memory variables,
       and fields. Issuing no parameter with this command will the default
       number of decimals to 0. For decimals to be seen, the `SET FIXED ON`
@@ -1499,7 +1499,7 @@
       to be changed and the second parameter identifies whether the call
       is from before or after the value is changed. The callback function
       will be called twice whenever a SET parameter is changed using the
-      Harbour SET function. The first call takes place before the SET
+      Ziher SET function. The first call takes place before the SET
       value is changed and the second one is after the SET parameter has
       been changed.
    $RETURNS$
@@ -1559,7 +1559,7 @@
    $DESCRIPTION$
       This function notifies all SET listener callback functions. It
       must be called any time you change the value of a SET parameter
-      directly instead of using the Harbour SET function. Both before
+      directly instead of using the Ziher SET function. Both before
       and after the change.
    $EXAMPLES$
       zh_setListenerNotify( ZH_SET_DECIMALS, ZH_SET_LISTENER_BEFORE );

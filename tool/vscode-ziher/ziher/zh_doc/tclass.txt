@@ -39,12 +39,12 @@
    $STATUS$
       R
    $COMPLIANCE$
-      Object Oriented syntax in Harbour is compatible with CA-Cl*pper.
+      Object Oriented syntax in Ziher is compatible with CA-Cl*pper.
 
       However CA-Cl*pper only allowed creation of objects from a few standard
       classes, and did not let the programmer create new classes.
 
-      In Harbour, you can create your own classes--complete with
+      In Ziher, you can create your own classes--complete with
       Methods, Instance Variables, Class Variables and Inheritance.
       Entire applications can be designed and coded in Object Oriented
       style.

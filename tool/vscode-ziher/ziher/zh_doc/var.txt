@@ -20,7 +20,7 @@
    $RETURNS$
       Nothing
    $DESCRIPTION$
-      This function can be called either by the Harbour compiler or by user.
+      This function can be called either by the Ziher compiler or by user.
       The compiler always passes the item of ZH_IT_SYMBOL type that stores the
       name of variable.
       If a variable with the same name exists already then the new
@@ -60,7 +60,7 @@
    $RETURNS$
       Nothing
    $DESCRIPTION$
-      This function can be called either by the Harbour compiler or by user.
+      This function can be called either by the Ziher compiler or by user.
       The compiler always passes the item of ZH_IT_SYMBOL type that stores the
       name of variable.
       If a variable with the same name exists already then the value of old
@@ -747,9 +747,9 @@
       </table>
    $DESCRIPTION$
       This function returns a string which represents the data type
-      of the argument. The argument can be any valid Harbour expression.
+      of the argument. The argument can be any valid Ziher expression.
       If there is a syntax error in passed expression then "UE" is returned.
-      If there is a call for any non-reserved Harbour function then "UI"
+      If there is a call for any non-reserved Ziher function then "UI"
       is returned (in other words there is no call for passed UDF function
       during a data type determination - this is CA-Cl*pper compatible
       behavior). Additionally if requested user defined function is not
@@ -763,7 +763,7 @@
       Notice the subtle difference between Type() and ValType() functions.
       ValType() function doesn't call a macro compiler - it simply checks
       the type of passed argument of any type. Type() requires a string
-      argument with a valid Harbour expression - the data type of this
+      argument with a valid Ziher expression - the data type of this
       expression is returned.
    $EXAMPLES$
       LOCAL c, cFilter
@@ -793,14 +793,14 @@
           PRIVATE lCond := 0
           ? Type( "iof( lCond, 'true', MyUDF() )" )
           ```
-        CA-Cl*pper will print "UE" - in Harbour the output will be "UI"
+        CA-Cl*pper will print "UE" - in Ziher the output will be "UI"
 
       - If "UI" is returned then the syntax of the expression is
         correct. However invalid arguments can be passed to
         function/procedure that will cause runtime errors during
         evaluation of expression.
 
-      - Harbour supports two new types (Pointer and Symbol) which does
+      - Ziher supports two new types (Pointer and Symbol) which does
         not exists in CA-Cl*pper.
    $FILES$
       Library is core
@@ -848,19 +848,19 @@
    $EXAMPLES$
       ? ValType( Array( 1 ) )    // --> "A"
       ? ValType( {|| 1 + 1 } )   // --> "B"
-      ? ValType( "Harbour" )     // --> "C"
+      ? ValType( "Ziher" )     // --> "C"
       ? ValType( Date() )        // --> "D"
       ? ValType( .T. )           // --> "L"
       ? ValType( 1 )             // --> "N"
       ? ValType( TBrowse() )     // --> "O"
-      ? ValType( zh_idleAdd() )  // --> "P" Harbour extension
-      ? ValType( @QOut() )       // --> "S" Harbour extension
+      ? ValType( zh_idleAdd() )  // --> "P" Ziher extension
+      ? ValType( @QOut() )       // --> "S" Ziher extension
       ? ValType( NIL )           // --> "U"
    $STATUS$
       R
    $COMPLIANCE$
       ValType() is CA-Cl*pper compliant, with the addition of the new
-      Harbour types: Pointer and Symbol.
+      Ziher types: Pointer and Symbol.
    $FILES$
       Library is core
    $SEEALSO$
@@ -892,7 +892,7 @@
       This function return a logical value indicating if the parameter
       is passed by reference to actual function or procedure.
 
-      This function is based on the form that Harbour manages to the
+      This function is based on the form that Ziher manages to the
       variables for reference. When a variable is passed by reference,
       what receives the function or procedure is, a pointer to the
       previous variable, be this the container variable of the data or

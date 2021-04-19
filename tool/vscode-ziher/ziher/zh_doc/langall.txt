@@ -161,7 +161,7 @@
       Possible values for <cNewLang> are below as defined in the
       Lang library, sorted by language.
       <cCodepage>  Optional codepage ID into which the language
-      module strings are automatically converted by Harbour.
+      module strings are automatically converted by Ziher.
 
       <table>
        Language              <cNewLang>
@@ -320,7 +320,7 @@
    $RETURNS$
       <cOldLang>   The old language identifier
    $DESCRIPTION$
-      codepageSelect() set the active code page use by Harbour for
+      codepageSelect() set the active code page use by Ziher for
       sorting and comparing strings. The default code page use ASCII
       order (cLang == "EN").
 
@@ -338,7 +338,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      This function is a Harbour Extension.
+      This function is a Ziher Extension.
    $PLATFORMS$
       All
    $FILES$
@@ -395,7 +395,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      This function is a Harbour Extension.
+      This function is a Ziher Extension.
    $PLATFORMS$
       All
    $FILES$

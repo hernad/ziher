@@ -833,7 +833,7 @@
 
 /* $DOC$
    $AUTHOR$
-      Copyright 2000 David G. Holm <Harbour@SpaceMoose.com>
+      Copyright 2000 David G. Holm <Ziher@SpaceMoose.com>
    $TEMPLATE$
       Function
    $NAME$

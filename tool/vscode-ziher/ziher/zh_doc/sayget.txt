@@ -180,7 +180,7 @@
       `@...GET` command.
    $EXAMPLES$
       CLS
-      @ 2, 1 SAY "Harbour"
+      @ 2, 1 SAY "Ziher"
       @ 3, 1 SAY "is" COLOR "b/r+"
       @ 4, 1 SAY "Power" PICTURE "@!"
    $STATUS$

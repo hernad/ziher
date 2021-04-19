@@ -44,13 +44,13 @@
       zh_SetMacro() return the old state of requested feature.
    $DESCRIPTION$
       This function enables or disables some features of the macro
-      compiler. The Harbour is extending the macro features compared
+      compiler. The Ziher is extending the macro features compared
       to an original set available in CA-Cl*pper. Enabling/disabling
       some of them allows to keep strict CA-Cl*pper compatibility.
 
       Available features are:
 
-      `ZH_SM_HARBOUR` - enables Harbour extensions:
+      `ZH_SM_HARBOUR` - enables Ziher extensions:
             operators: `++`, `--`, `+=`, `-=`, `*=`, `/=`, `^=`
             objects: assignments to an instance variable
 
@@ -61,7 +61,7 @@
             logical operators (`.AND.`, `.OR.`)
 
       `ZH_SM_PREPROC` - enables preprocessing of commands
-            This is meaningful if Harbour is compiled with
+            This is meaningful if Ziher is compiled with
             ZH_MACRO_STATEMENTS flag
 
    $EXAMPLES$

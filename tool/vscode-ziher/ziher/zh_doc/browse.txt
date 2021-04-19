@@ -161,14 +161,14 @@
    $STATUS$
       S
    $COMPLIANCE$
-      <xUserFunc> can take a code block value, this is a Harbour
+      <xUserFunc> can take a code block value, this is a Ziher
       extension.
 
-      CA-Cl*pper will throw an error if there's no database open, Harbour
+      CA-Cl*pper will throw an error if there's no database open, Ziher
       would return .F.
 
       CA-Cl*pper is buggy and will throw an error if the number of columns
-      is zero, Harbour would return .F.
+      is zero, Ziher would return .F.
 
       The CA-Cl*pper 5.2 NG state that the return value is NIL, this is
       wrong and should be read logical.
@@ -176,7 +176,7 @@
       There is an undocumented result code (3) from the user defined
       function in CA-Cl*pper (both 87 and 5.x). This is an Append Mode which:
       "split the screen to allow data to be appended in windowed area".
-      This mode is not supported by Harbour.
+      This mode is not supported by Ziher.
    $FILES$
       Header files are dbedit.ch, inkey.ch
       Library is core

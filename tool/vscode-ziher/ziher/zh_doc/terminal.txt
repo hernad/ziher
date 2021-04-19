@@ -194,7 +194,7 @@
       Alert( <xMessage>, [<aOptions>], [<cColorNorm>], [<nDelay>] ) --> nChoice or NIL
    $ARGUMENTS$
       <xMessage> Message to display in the dialog box. <xMessage> can be
-      of any Harbour type.
+      of any Ziher type.
       If <xMessage> is an array of Character strings, each element would
       be displayed in a new line. If <xMessage> is a Character
       string, you could split the message to several lines by placing
@@ -277,10 +277,10 @@
       The interpretation of the `//NOALERT` command-line switch is done only
       if ZH_CLP_UNDOC was define during compilation of src/rtl/alert.prg
 
-      <cColorNorm> is a Harbour extension, or at least undocumented
+      <cColorNorm> is a Ziher extension, or at least undocumented
       in Clipper 5.2 NG.
 
-      <nDelay> is a Harbour extension.
+      <nDelay> is a Ziher extension.
    $FILES$
       Library is core
    $SEEALSO$
@@ -442,7 +442,7 @@
       R
    $COMPLIANCE$
       DevOutPict() is mostly CA-Cl*pper compliant. Any differences are due
-      to enhancements in the Harbour Transform() over CA-Cl*pper.
+      to enhancements in the Ziher Transform() over CA-Cl*pper.
    $FILES$
       Library is core
    $SEEALSO$
@@ -611,7 +611,7 @@
       OutStd( <xExp,...> )
    $ARGUMENTS$
       <xExp,...> is a list of expressions to display. Expressions are any
-      mixture of Harbour data types.
+      mixture of Ziher data types.
    $DESCRIPTION$
       OutStd() write one or more values into the standard output device.
       Character and Memo values are printed as is, Dates are printed
@@ -623,7 +623,7 @@
       source (see Str() for detail).
 
       OutStd() is similar to QQOut() with the different that QQOut() send
-      its output to the Harbour console stream, which can or cannot be
+      its output to the Ziher console stream, which can or cannot be
       redirected according with the screen driver, and OutStd() send its
       output to the standard output device (STDOUT) and can be redirected.
    $EXAMPLES$
@@ -661,7 +661,7 @@
       OutErr( <xExp,...> )
    $ARGUMENTS$
       <xExp,...> is a list of expressions to display. Expressions are any
-      mixture of Harbour data types.
+      mixture of Ziher data types.
    $DESCRIPTION$
       OutErr() write one or more values into the standard error device.
       Character and Memo values are printed as is, Dates are printed

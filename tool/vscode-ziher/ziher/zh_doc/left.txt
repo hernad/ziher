@@ -31,8 +31,8 @@
 
       NOTE: Case sensitive!
    $EXAMPLES$
-      ? zh_LeftEq( "Harbour", "Ha" )  // --> .T.
-      ? zh_LeftEq( "Harbour", "ha" )  // --> .F.
+      ? zh_LeftEq( "Ziher", "Ha" )  // --> .T.
+      ? zh_LeftEq( "Ziher", "ha" )  // --> .F.
    $STATUS$
       R
    $COMPLIANCE$
@@ -71,9 +71,9 @@
       This function is identical to zh_LeftEq() (see above for details)
       but it is case *insensitive*!
    $EXAMPLES$
-      ? zh_LeftEqI( "Harbour", "HA" )  // --> .T.
-      ? zh_LeftEqI( "Harbour", "ha" )  // --> .T.
-      ? zh_LeftEq( "Harbour", "HA" )   // --> .F.
+      ? zh_LeftEqI( "Ziher", "HA" )  // --> .T.
+      ? zh_LeftEqI( "Ziher", "ha" )  // --> .T.
+      ? zh_LeftEq( "Ziher", "HA" )   // --> .F.
    $STATUS$
       R
    $COMPLIANCE$

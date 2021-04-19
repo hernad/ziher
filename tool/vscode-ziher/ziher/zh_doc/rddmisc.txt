@@ -686,8 +686,8 @@
       IF ! NetErr()
          INDEX ON field->first TO test
          SET INDEX TO test
-         test->first := "Harbour"
-         IF dbSeek( "Harbour" )
+         test->first := "Ziher"
+         IF dbSeek( "Ziher" )
             ? test->first
          ENDIF
       ENDIF

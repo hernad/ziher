@@ -10,7 +10,7 @@
    $SUBCATEGORY$
       Conversion
    $ONELINER$
-      Convert signed short encoded bytes into Harbour numeric
+      Convert signed short encoded bytes into Ziher numeric
    $SYNTAX$
       Bin2I( <cBuffer> ) --> nNumber
    $ARGUMENTS$
@@ -21,15 +21,15 @@
       Bin2I() return numeric integer (or 0 if <cBuffer> is not a string).
    $DESCRIPTION$
       Bin2I() is one of the low-level binary conversion functions, those
-      functions convert between Harbour numeric and a character
+      functions convert between Ziher numeric and a character
       representation of numeric value. Bin2I() take two bytes of encoded
-      16-bit signed short integer and convert it into standard Harbour
+      16-bit signed short integer and convert it into standard Ziher
       numeric value.
 
       You might ask what is the need for such functions, well, first of
       all it allow you to read/write information from/to a binary file
       (like extracting information from DBF header), it is also a useful
-      way to share information from source other than Harbour (C for
+      way to share information from source other than Ziher (C for
       instance).
 
       Bin2I() is the opposite of I2Bin()
@@ -71,7 +71,7 @@
    $SUBCATEGORY$
       Conversion
    $ONELINER$
-      Convert signed long encoded bytes into Harbour numeric
+      Convert signed long encoded bytes into Ziher numeric
    $SYNTAX$
       Bin2L( <cBuffer> ) --> nNumber
    $ARGUMENTS$
@@ -82,15 +82,15 @@
       Bin2L() return numeric integer (or 0 if <cBuffer> is not a string).
    $DESCRIPTION$
       Bin2L() is one of the low-level binary conversion functions, those
-      functions convert between Harbour numeric and a character
+      functions convert between Ziher numeric and a character
       representation of numeric value. Bin2L() take four bytes of encoded
-      32-bit signed long integer and convert it into standard Harbour
+      32-bit signed long integer and convert it into standard Ziher
       numeric value.
 
       You might ask what is the need for such functions, well, first of
       all it allow you to read/write information from/to a binary file
       (like extracting information from DBF header), it is also a useful
-      way to share information from source other than Harbour (C for
+      way to share information from source other than Ziher (C for
       instance).
 
       Bin2L() is the opposite of L2Bin()
@@ -129,7 +129,7 @@
    $SUBCATEGORY$
       Conversion
    $ONELINER$
-      Convert unsigned short encoded bytes into Harbour numeric
+      Convert unsigned short encoded bytes into Ziher numeric
    $SYNTAX$
       Bin2W( <cBuffer> ) --> nNumber
    $ARGUMENTS$
@@ -140,15 +140,15 @@
       Bin2W() return numeric integer (or 0 if <cBuffer> is not a string).
    $DESCRIPTION$
       Bin2W() is one of the low-level binary conversion functions, those
-      functions convert between Harbour numeric and a character
+      functions convert between Ziher numeric and a character
       representation of numeric value. Bin2W() take two bytes of encoded
-      16-bit unsigned short integer and convert it into standard Harbour
+      16-bit unsigned short integer and convert it into standard Ziher
       numeric value.
 
       You might ask what is the need for such functions, well, first of
       all it allow you to read/write information from/to a binary file
       (like extracting information from DBF header), it is also a useful
-      way to share information from source other than Harbour (C for
+      way to share information from source other than Ziher (C for
       instance).
 
       Bin2W() is the opposite of W2Bin()
@@ -187,7 +187,7 @@
    $SUBCATEGORY$
       Conversion
    $ONELINER$
-      Convert Harbour numeric into signed short encoded bytes
+      Convert Ziher numeric into signed short encoded bytes
    $SYNTAX$
       I2Bin( <nNumber> ) --> cBuffer
    $ARGUMENTS$
@@ -197,7 +197,7 @@
       encoded signed short integer (least significant byte first).
    $DESCRIPTION$
       I2Bin() is one of the low-level binary conversion functions, those
-      functions convert between Harbour numeric and a character
+      functions convert between Ziher numeric and a character
       representation of numeric value. I2Bin() take a numeric integer
       value and convert it into two bytes of encoded 16-bit signed short
       integer.
@@ -205,7 +205,7 @@
       You might ask what is the need for such functions, well, first of
       all it allow you to read/write information from/to a binary file
       (like extracting information from DBF header), it is also a useful
-      way to share information from source other than Harbour (C for
+      way to share information from source other than Ziher (C for
       instance).
 
       I2Bin() is the opposite of Bin2I()
@@ -254,7 +254,7 @@
    $SUBCATEGORY$
       Conversion
    $ONELINER$
-      Convert Harbour numeric into signed long encoded bytes
+      Convert Ziher numeric into signed long encoded bytes
    $SYNTAX$
       L2Bin( <nNumber> ) --> cBuffer
    $ARGUMENTS$
@@ -264,7 +264,7 @@
       encoded signed long integer (least significant byte first).
    $DESCRIPTION$
       L2Bin() is one of the low-level binary conversion functions, those
-      functions convert between Harbour numeric and a character
+      functions convert between Ziher numeric and a character
       representation of numeric value. L2Bin() take a numeric integer
       value and convert it into four bytes of encoded 32-bit signed long
       integer.
@@ -272,7 +272,7 @@
       You might ask what is the need for such functions, well, first of
       all it allow you to read/write information from/to a binary file
       (like extracting information from DBF header), it is also a useful
-      way to share information from source other than Harbour (C for
+      way to share information from source other than Ziher (C for
       instance).
 
       L2Bin() is the opposite of Bin2L()
@@ -311,7 +311,7 @@
       R
    $COMPLIANCE$
       The CA-Cl*pper NG states that Word() will only work when used in CALL
-      commands parameter list, otherwise it will return NIL, in Harbour
+      commands parameter list, otherwise it will return NIL, in Ziher
       it will work anywhere.
    $FILES$
       Library is core

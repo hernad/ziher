@@ -14,12 +14,12 @@
    $SYNTAX$
       [CREATE] CLASS <ClassName> [ <FROM, INHERIT> <SuperClass1> [, <SuperClassN>] ] [STATIC]
    $ARGUMENTS$
-      <ClassName>  Name of the class to define. By tradition, Harbour
+      <ClassName>  Name of the class to define. By tradition, Ziher
                    classes start with "T" to avoid collisions with user-
                    created classes.
 
       <SuperClass1...n> The Parent class(es) to use for inheritance.
-                   Harbour supports Multiple Inheritance.
+                   Ziher supports Multiple Inheritance.
 
       STATIC       This clause causes the class function to be declared
                    as a static function. It will therefore not be available outside the current module.
@@ -46,7 +46,7 @@
       to a variable, which is used to access the VAR elements and
       methods.
 
-      Harbour's OOP syntax and implementation supports Scoping (Protect, Hidden and Readonly)
+      Ziher's OOP syntax and implementation supports Scoping (Protect, Hidden and Readonly)
       and Delegating, and is largely compatible with Class(y)(tm), TopClass(tm)
       and Visual Objects(tm).
    $EXAMPLES$

@@ -18,27 +18,27 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
  *
- * As a special exception, the Harbour Project gives permission for
- * additional uses of the text contained in its release of Harbour.
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
  *
- * The exception is that, if you link the Harbour libraries with other
+ * The exception is that, if you link the Ziher libraries with other
  * files to produce an executable, this does not by itself cause the
  * resulting executable to be covered by the GNU General Public License.
  * Your use of that executable is in no way restricted on account of
- * linking the Harbour library code into it.
+ * linking the Ziher library code into it.
  *
  * This exception does not however invalidate any other reasons why
  * the executable file might be covered by the GNU General Public License.
  *
- * This exception applies only to the code released by the Harbour
- * Project under the name Harbour.  If you copy code from other
- * Harbour Project or Free Software Foundation releases into a copy of
- * Harbour, as the General Public License permits, the exception does
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
  * not apply to the code that you add in this way.  To avoid misleading
  * anyone as to the status of such modified files, you must delete
  * this exception notice from them.
  *
- * If you write modifications of your own for Harbour, it is your choice
+ * If you write modifications of your own for Ziher, it is your choice
  * whether to permit this exception to apply to your modifications.
  * If you do not wish that, delete this exception notice.
  *
@@ -262,7 +262,7 @@ static const char * zh_dbgSetName( ZH_set_enum setId )
       case ZH_SET_AUTORDER:      return "Autorder";
       case ZH_SET_AUTOSHARE:     return "AutoShare";
 
-      /* Harbour SET extensions */
+      /* Ziher SET extensions */
       case ZH_SET_LANGUAGE:      return "Language";
       case ZH_SET_IDLEREPEAT:    return "IdleRepeat";
       case ZH_SET_FILECASE:      return "FileCase";

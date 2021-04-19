@@ -20,27 +20,27 @@
  * the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  * Boston, MA 02110-1301 USA (or visit https://www.gnu.org/licenses/).
  *
- * As a special exception, the Harbour Project gives permission for
- * additional uses of the text contained in its release of Harbour.
+ * As a special exception, the Ziher Project gives permission for
+ * additional uses of the text contained in its release of Ziher.
  *
- * The exception is that, if you link the Harbour libraries with other
+ * The exception is that, if you link the Ziher libraries with other
  * files to produce an executable, this does not by itself cause the
  * resulting executable to be covered by the GNU General Public License.
  * Your use of that executable is in no way restricted on account of
- * linking the Harbour library code into it.
+ * linking the Ziher library code into it.
  *
  * This exception does not however invalidate any other reasons why
  * the executable file might be covered by the GNU General Public License.
  *
- * This exception applies only to the code released by the Harbour
- * Project under the name Harbour.  If you copy code from other
- * Harbour Project or Free Software Foundation releases into a copy of
- * Harbour, as the General Public License permits, the exception does
+ * This exception applies only to the code released by the Ziher
+ * Project under the name Ziher.  If you copy code from other
+ * Ziher Project or Free Software Foundation releases into a copy of
+ * Ziher, as the General Public License permits, the exception does
  * not apply to the code that you add in this way.  To avoid misleading
  * anyone as to the status of such modified files, you must delete
  * this exception notice from them.
  *
- * If you write modifications of your own for Harbour, it is your choice
+ * If you write modifications of your own for Ziher, it is your choice
  * whether to permit this exception to apply to your modifications.
  * If you do not wish that, delete this exception notice.
  *
@@ -92,7 +92,7 @@ PROCEDURE __dbgEntry( nMode, uParam1, uParam2, uParam3, uParam4 )
    CASE ZH_DBG_ACTIVATE
 
       IF ( lStartup := ( t_oDebugger == NIL ) )
-         t_oDebugger := HBDebugger():New()
+         t_oDebugger := ZHDebugger():New()
          t_oDebugger:pInfo := uParam1
       ENDIF
       t_oDebugger:nProcLevel := uParam2
@@ -116,7 +116,7 @@ PROCEDURE __dbgEntry( nMode, uParam1, uParam2, uParam3, uParam4 )
 
    RETURN
 
-CREATE CLASS HBDebugger
+CREATE CLASS ZHDebugger
 
    VAR pInfo
    VAR aWindows          INIT {}
@@ -338,14 +338,14 @@ CREATE CLASS HBDebugger
 ENDCLASS
 
 
-METHOD New() CLASS HBDebugger
+METHOD New() CLASS ZHDebugger
 
    t_oDebugger := Self
 
    /* default the search path for files to the current directory
       that way if the source is in the same directory it will still be found even if the application
       changes the current directory with the SET DEFAULT command. */
-   ::cPathForFiles := GetEnv( "ZH_DBG_PATH" )
+   ::cPathForFiles := GetEnv( "ZH_DEBUG_PATH" )
    IF ::cPathForFiles == ""
       ::cPathForFiles := GetEnv( "PATH" )
    ENDIF
@@ -379,7 +379,7 @@ METHOD New() CLASS HBDebugger
 
    RETURN Self
 
-METHOD PROCEDURE OpenDebuggerWindow() CLASS HBDebugger
+METHOD PROCEDURE OpenDebuggerWindow() CLASS ZHDebugger
 
    IF ! ::lDebuggerWindowIsOpen
       ::hUserWindow := zh_gtInfo( ZH_GTI_GETWIN )
@@ -396,7 +396,7 @@ METHOD PROCEDURE OpenDebuggerWindow() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE CloseDebuggerWindow() CLASS HBDebugger
+METHOD PROCEDURE CloseDebuggerWindow() CLASS ZHDebugger
 
    IF ::lDebuggerWindowIsOpen
       ::hDebuggerWindow := zh_gtInfo( ZH_GTI_GETWIN )
@@ -407,7 +407,7 @@ METHOD PROCEDURE CloseDebuggerWindow() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Activate() CLASS HBDebugger
+METHOD PROCEDURE Activate() CLASS ZHDebugger
 
    LOCAL lFirst := .F.
 
@@ -448,7 +448,7 @@ METHOD PROCEDURE Activate() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE All() CLASS HBDebugger
+METHOD PROCEDURE All() CLASS ZHDebugger
 
    ::lShowPublics := ::lShowPrivates := ::lShowStatics := ;
       ::lShowLocals := ::lShowGlobals := ::lAll := ! ::lAll
@@ -457,7 +457,7 @@ METHOD PROCEDURE All() CLASS HBDebugger
 
    RETURN
 
-METHOD PROCEDURE BarDisplay() CLASS HBDebugger
+METHOD PROCEDURE BarDisplay() CLASS ZHDebugger
 
    LOCAL cClrItem   := __dbgColors()[ 8 ]
    LOCAL cClrHotKey := __dbgColors()[ 9 ]
@@ -482,7 +482,7 @@ METHOD PROCEDURE BarDisplay() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE BuildBrowseStack() CLASS HBDebugger
+METHOD PROCEDURE BuildBrowseStack() CLASS ZHDebugger
 
    LOCAL aColors
 
@@ -506,7 +506,7 @@ METHOD PROCEDURE BuildBrowseStack() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE BuildCommandWindow() CLASS HBDebugger
+METHOD PROCEDURE BuildCommandWindow() CLASS ZHDebugger
 
    LOCAL nSize
 
@@ -525,13 +525,13 @@ METHOD PROCEDURE BuildCommandWindow() CLASS HBDebugger
    ::nCommand := 1
 
    nSize := ::oWndCommand:nRight - ::oWndCommand:nLeft - 3
-   ::oGetCommand := HbDbInput():new( ::oWndCommand:nBottom - 1, ::oWndCommand:nLeft + 3, ;
+   ::oGetCommand := ZhDbInput():new( ::oWndCommand:nBottom - 1, ::oWndCommand:nLeft + 3, ;
                                      nSize, "", __dbgColors()[ 2 ], Max( nSize, 256 ) )
 
    RETURN
 
 
-METHOD PROCEDURE CallStackProcessKey( nKey ) CLASS HBDebugger
+METHOD PROCEDURE CallStackProcessKey( nKey ) CLASS ZHDebugger
 
    LOCAL n
    LOCAL nSkip
@@ -619,23 +619,13 @@ METHOD PROCEDURE CallStackProcessKey( nKey ) CLASS HBDebugger
          ::ShowVars()
       ENDIF
 
-      // jump to source line for a function
-
-#if 0
-      IF ::aCallStack[ ::oBrwStack:Cargo ][ ZH_DBG_CS_LINE ] != NIL
-         ::ShowCodeLine( ::aCallStack[ ::oBrwStack:Cargo ][ ZH_DBG_CS_LINE ], ::aCallStack[ ::oBrwStack:Cargo ][ ZH_DBG_CS_MODULE ] )
-      ELSE
-         ::GotoLine( 1 )
-      ENDIF
-#endif
-
       ::ShowCodeLine( ::oBrwStack:Cargo )
    ENDIF
 
    RETURN
 
 
-METHOD PROCEDURE CodeblockTrace() CLASS HBDebugger
+METHOD PROCEDURE CodeblockTrace() CLASS ZHDebugger
 
    ::oPullDown:GetItemByIdent( "CODEBLOCK" ):checked := ::lCBTrace := ! ::lCBTrace
    __dbgSetCBTrace( ::pInfo, ::lCBTrace )
@@ -643,7 +633,7 @@ METHOD PROCEDURE CodeblockTrace() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE CodeWindowProcessKey( nKey ) CLASS HBDebugger
+METHOD PROCEDURE CodeWindowProcessKey( nKey ) CLASS ZHDebugger
 
    IF ::oBrwText != NIL
 
@@ -700,7 +690,7 @@ METHOD PROCEDURE CodeWindowProcessKey( nKey ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Colors() CLASS HBDebugger
+METHOD PROCEDURE Colors() CLASS ZHDebugger
 
    LOCAL oWndColors := HBDbWindow():New( 4, 5, 16, ::nMaxCol - 5, ;
       "Debugger Colors[1..11]", ::ClrModal() )
@@ -750,7 +740,7 @@ METHOD PROCEDURE Colors() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE CommandWindowDisplay( cLine, lCmd ) CLASS HBDebugger
+METHOD PROCEDURE CommandWindowDisplay( cLine, lCmd ) CLASS ZHDebugger
 
    LOCAL n, nRow, nSize
 
@@ -778,7 +768,7 @@ METHOD PROCEDURE CommandWindowDisplay( cLine, lCmd ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE CommandWindowProcessKey( nKey ) CLASS HBDebugger
+METHOD PROCEDURE CommandWindowProcessKey( nKey ) CLASS ZHDebugger
 
    LOCAL cCommand
    LOCAL n
@@ -828,7 +818,7 @@ METHOD PROCEDURE CommandWindowProcessKey( nKey ) CLASS HBDebugger
  * ? <expr>
  *      displays either result or error description in command window
  */
-METHOD DoCommand( cCommand ) CLASS HBDebugger
+METHOD DoCommand( cCommand ) CLASS ZHDebugger
 
    LOCAL aCmnd[ 3 ]
    LOCAL cParam1 := ""
@@ -1242,7 +1232,7 @@ METHOD DoCommand( cCommand ) CLASS HBDebugger
    RETURN cResult
 
 
-METHOD PROCEDURE DoScript( cFileName ) CLASS HBDebugger
+METHOD PROCEDURE DoScript( cFileName ) CLASS ZHDebugger
 
    LOCAL nPos
    LOCAL cLine
@@ -1261,7 +1251,7 @@ METHOD PROCEDURE DoScript( cFileName ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE EditColor( nColor, oBrwColors ) CLASS HBDebugger
+METHOD PROCEDURE EditColor( nColor, oBrwColors ) CLASS ZHDebugger
 
    LOCAL cColor := '"' + ::aColors[ nColor ] + '"'
 
@@ -1280,7 +1270,7 @@ METHOD PROCEDURE EditColor( nColor, oBrwColors ) CLASS HBDebugger
 
    RETURN
 
-METHOD PROCEDURE EditSet( nSet, oBrwSets ) CLASS HBDebugger
+METHOD PROCEDURE EditSet( nSet, oBrwSets ) CLASS ZHDebugger
 
    LOCAL cSet  := zh_UPadR( __dbgValToExp( Set( nSet ) ), ;
                             oBrwSets:getColumn( 2 ):Width )
@@ -1302,7 +1292,7 @@ METHOD PROCEDURE EditSet( nSet, oBrwSets ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE EditVar( nVar ) CLASS HBDebugger
+METHOD PROCEDURE EditVar( nVar ) CLASS ZHDebugger
 
    LOCAL cVarName := ::aVars[ nVar ][ 1 ]
    LOCAL cVarStr
@@ -1330,15 +1320,15 @@ METHOD PROCEDURE EditVar( nVar ) CLASS HBDebugger
    RETURN
 
 
-METHOD FindNext() CLASS HBDebugger
+METHOD FindNext() CLASS ZHDebugger
    RETURN ::Locate( 1, ::cSearchString )
 
 
-METHOD FindPrevious() CLASS HBDebugger
+METHOD FindPrevious() CLASS ZHDebugger
    RETURN ::Locate( 2, ::cSearchString )
 
 
-METHOD GetExprValue( xExpr, lValid ) CLASS HBDebugger
+METHOD GetExprValue( xExpr, lValid ) CLASS ZHDebugger
 
    LOCAL xResult
    LOCAL oErr
@@ -1363,15 +1353,15 @@ METHOD GetExprValue( xExpr, lValid ) CLASS HBDebugger
    RETURN xResult
 
 
-METHOD GetSourceFiles() CLASS HBDebugger
+METHOD GetSourceFiles() CLASS ZHDebugger
    RETURN __dbgGetSourceFiles( ::pInfo )
 
 
-METHOD ModuleMatch( cModuleName1, cModuleName2 ) CLASS HBDebugger
+METHOD ModuleMatch( cModuleName1, cModuleName2 ) CLASS ZHDebugger
    RETURN __dbgModuleMatch( ::pInfo, cModuleName1, cModuleName2 )
 
 
-METHOD PROCEDURE Global() CLASS HBDebugger
+METHOD PROCEDURE Global() CLASS ZHDebugger
 
    ::lShowGlobals := ! ::lShowGlobals
    ::RefreshVars()
@@ -1379,7 +1369,7 @@ METHOD PROCEDURE Global() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Go() CLASS HBDebugger
+METHOD PROCEDURE Go() CLASS ZHDebugger
 
    // we are starting to run again so reset to the deepest call if
    // displaying stack
@@ -1394,14 +1384,14 @@ METHOD PROCEDURE Go() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE GotoLine( nLine ) CLASS HBDebugger
+METHOD PROCEDURE GotoLine( nLine ) CLASS ZHDebugger
 
    ::oBrwText:GotoLine( nLine )
 
    RETURN
 
 
-METHOD PROCEDURE HandleEvent() CLASS HBDebugger
+METHOD PROCEDURE HandleEvent() CLASS ZHDebugger
 
    LOCAL nPopup
    LOCAL oWnd
@@ -1597,14 +1587,14 @@ METHOD PROCEDURE HandleEvent() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Hide() CLASS HBDebugger
+METHOD PROCEDURE Hide() CLASS ZHDebugger
 
    ::CloseDebuggerWindow()
 
    RETURN
 
 
-METHOD PROCEDURE HideCallStack() CLASS HBDebugger
+METHOD PROCEDURE HideCallStack() CLASS ZHDebugger
 
    ::lShowCallStack := .F.
 
@@ -1630,7 +1620,7 @@ METHOD PROCEDURE HideCallStack() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE HideVars() CLASS HBDebugger
+METHOD PROCEDURE HideVars() CLASS ZHDebugger
 
    LOCAL nTop
 
@@ -1658,7 +1648,7 @@ METHOD PROCEDURE HideVars() CLASS HBDebugger
    RETURN
 
 
-METHOD InputBox( cMsg, uValue, bValid, lEditable ) CLASS HBDebugger
+METHOD InputBox( cMsg, uValue, bValid, lEditable ) CLASS ZHDebugger
 
    LOCAL nTop    := Int( ( ::nMaxRow / 2 ) - 5 )
    LOCAL nLeft   := Int( ( ::nMaxCol / 2 ) - 25 )
@@ -1741,18 +1731,18 @@ METHOD InputBox( cMsg, uValue, bValid, lEditable ) CLASS HBDebugger
    RETURN uTemp
 
 
-METHOD PROCEDURE Inspect( uValue, cValueName ) CLASS HBDebugger
+METHOD PROCEDURE Inspect( uValue, cValueName ) CLASS ZHDebugger
 
    ::InputBox( uValue, cValueName,, .F. )
 
    RETURN
 
 
-METHOD IsValidStopLine( cName, nLine ) CLASS HBDebugger
+METHOD IsValidStopLine( cName, nLine ) CLASS ZHDebugger
    RETURN __dbgIsValidStopLine( ::pInfo, cName, nLine )
 
 
-METHOD RunAtStartup( lRunAtStartup ) CLASS HBDebugger
+METHOD RunAtStartup( lRunAtStartup ) CLASS ZHDebugger
 
    ::lRunAtStartup := zh_defaultValue( lRunAtStartup, ! ::lRunAtStartup )
    ::oPulldown:GetItemByIdent( "ALTD" ):checked := ::lRunAtStartup
@@ -1760,7 +1750,7 @@ METHOD RunAtStartup( lRunAtStartup ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD LineNumbers( lLineNumbers ) CLASS HBDebugger
+METHOD LineNumbers( lLineNumbers ) CLASS ZHDebugger
 
    ::lLineNumbers := zh_defaultValue( lLineNumbers, ! ::lLineNumbers )
    ::oPulldown:GetItemByIdent( "LINE" ):checked := ::lLineNumbers
@@ -1772,7 +1762,7 @@ METHOD LineNumbers( lLineNumbers ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD ListBox( cCaption, aItems ) CLASS HBDebugger
+METHOD ListBox( cCaption, aItems ) CLASS ZHDebugger
 
    LOCAL nItems
    LOCAL nMaxWid
@@ -1806,7 +1796,7 @@ METHOD ListBox( cCaption, aItems ) CLASS HBDebugger
    RETURN n
 
 
-METHOD PROCEDURE LoadCallStack() CLASS HBDebugger
+METHOD PROCEDURE LoadCallStack() CLASS ZHDebugger
 
    LOCAL i
    LOCAL nDebugLevel
@@ -1834,7 +1824,7 @@ METHOD PROCEDURE LoadCallStack() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE LoadColors() CLASS HBDebugger
+METHOD PROCEDURE LoadColors() CLASS ZHDebugger
 
    LOCAL oWnd
 
@@ -1853,14 +1843,14 @@ METHOD PROCEDURE LoadColors() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE LoadSettings() CLASS HBDebugger
+METHOD PROCEDURE LoadSettings() CLASS ZHDebugger
 
    ::DoScript( ::cSettingsFileName )
 
    RETURN
 
 
-METHOD PROCEDURE LoadVars() CLASS HBDebugger  // updates monitored variables
+METHOD PROCEDURE LoadVars() CLASS ZHDebugger  // updates monitored variables
 
    LOCAL nCount
    LOCAL n
@@ -1955,7 +1945,7 @@ METHOD PROCEDURE LoadVars() CLASS HBDebugger  // updates monitored variables
    RETURN
 
 
-METHOD PROCEDURE Local() CLASS HBDebugger
+METHOD PROCEDURE Local() CLASS ZHDebugger
 
    ::lShowLocals := ! ::lShowLocals
    ::RefreshVars()
@@ -1963,7 +1953,7 @@ METHOD PROCEDURE Local() CLASS HBDebugger
    RETURN
 
 
-METHOD Locate( nMode, cValue ) CLASS HBDebugger
+METHOD Locate( nMode, cValue ) CLASS ZHDebugger
 
    LOCAL lFound
 
@@ -1981,7 +1971,7 @@ METHOD Locate( nMode, cValue ) CLASS HBDebugger
    RETURN lFound
 
 
-METHOD LocatePrgPath( cPrgName ) CLASS HBDebugger
+METHOD LocatePrgPath( cPrgName ) CLASS ZHDebugger
 
    LOCAL cRetPrgName
    LOCAL cDir
@@ -1995,7 +1985,7 @@ METHOD LocatePrgPath( cPrgName ) CLASS HBDebugger
    RETURN NIL
 
 
-METHOD PROCEDURE MonoDisplay() CLASS HBDebugger
+METHOD PROCEDURE MonoDisplay() CLASS ZHDebugger
 
    ::lMonoDisplay := ! ::lMonoDisplay
    ::oPullDown:GetItemByIdent( "MONO" ):checked := ::lMonoDisplay
@@ -2004,7 +1994,7 @@ METHOD PROCEDURE MonoDisplay() CLASS HBDebugger
    RETURN
 
 
-METHOD NextRoutine() CLASS HBDebugger
+METHOD NextRoutine() CLASS ZHDebugger
 
    ::RestoreAppScreen()
    ::RestoreAppState()
@@ -2014,7 +2004,7 @@ METHOD NextRoutine() CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE NextWindow() CLASS HBDebugger
+METHOD PROCEDURE NextWindow() CLASS ZHDebugger
 
    LOCAL oWnd
 
@@ -2038,7 +2028,7 @@ METHOD PROCEDURE NextWindow() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Open( cFileName ) CLASS HBDebugger
+METHOD PROCEDURE Open( cFileName ) CLASS ZHDebugger
 
    LOCAL nFileName
    LOCAL cRealName
@@ -2086,7 +2076,7 @@ METHOD PROCEDURE Open( cFileName ) CLASS HBDebugger
 
    RETURN
 
-METHOD OpenMenu( cName ) CLASS HBDebugger
+METHOD OpenMenu( cName ) CLASS ZHDebugger
 
    LOCAL nPopup := ::oPullDown:GetHotKeyPos( zh_ULeft( cName, 1 ) )
 
@@ -2099,7 +2089,7 @@ METHOD OpenMenu( cName ) CLASS HBDebugger
 
    RETURN .T.
 
-METHOD OpenPPO() CLASS HBDebugger
+METHOD OpenPPO() CLASS ZHDebugger
 
    LOCAL lSuccess
 
@@ -2132,7 +2122,7 @@ METHOD OpenPPO() CLASS HBDebugger
    RETURN lSuccess
 
 
-METHOD PROCEDURE OSShell() CLASS HBDebugger
+METHOD PROCEDURE OSShell() CLASS ZHDebugger
 
    LOCAL cImage := __dbgSaveScreen()
    LOCAL cColors := SetColor()
@@ -2168,7 +2158,7 @@ METHOD PROCEDURE OSShell() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Quit() CLASS HBDebugger
+METHOD PROCEDURE Quit() CLASS ZHDebugger
 
    ::Exit()
    ::Hide()
@@ -2180,7 +2170,7 @@ METHOD PROCEDURE Quit() CLASS HBDebugger
    RETURN
 
 
-METHOD PathForFiles( cPathForFiles ) CLASS HBDebugger
+METHOD PathForFiles( cPathForFiles ) CLASS ZHDebugger
 
    IF ! ZH_ISSTRING( cPathForFiles )
       cPathForFiles := ::InputBox( "Search path for source files:", ::cPathForFiles )
@@ -2196,7 +2186,7 @@ METHOD PathForFiles( cPathForFiles ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE PrevWindow() CLASS HBDebugger
+METHOD PROCEDURE PrevWindow() CLASS ZHDebugger
 
    LOCAL oWnd
 
@@ -2220,7 +2210,7 @@ METHOD PROCEDURE PrevWindow() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Private() CLASS HBDebugger
+METHOD PROCEDURE Private() CLASS ZHDebugger
 
    ::lShowPrivates := ! ::lShowPrivates
    ::RefreshVars()
@@ -2228,7 +2218,7 @@ METHOD PROCEDURE Private() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Public() CLASS HBDebugger
+METHOD PROCEDURE Public() CLASS ZHDebugger
 
    ::lShowPublics := ! ::lShowPublics
    ::RefreshVars()
@@ -2236,7 +2226,7 @@ METHOD PROCEDURE Public() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE RefreshVars() CLASS HBDebugger
+METHOD PROCEDURE RefreshVars() CLASS ZHDebugger
 
    ::oPulldown:GetItemByIdent( "GLOBAL" ):checked := ::lShowGlobals
    ::oPulldown:GetItemByIdent( "LOCAL" ):checked := ::lShowLocals
@@ -2258,7 +2248,7 @@ METHOD PROCEDURE RefreshVars() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE RemoveWindow( oWnd ) CLASS HBDebugger
+METHOD PROCEDURE RemoveWindow( oWnd ) CLASS ZHDebugger
 
    LOCAL n
 
@@ -2271,7 +2261,7 @@ METHOD PROCEDURE RemoveWindow( oWnd ) CLASS HBDebugger
    RETURN
 
 
-METHOD ResizeWindows( oWindow ) CLASS HBDebugger
+METHOD ResizeWindows( oWindow ) CLASS ZHDebugger
 
    LOCAL oWindow2
    LOCAL nTop
@@ -2323,7 +2313,7 @@ METHOD ResizeWindows( oWindow ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE RestoreAppScreen() CLASS HBDebugger
+METHOD PROCEDURE RestoreAppScreen() CLASS ZHDebugger
 
    LOCAL i
 
@@ -2336,7 +2326,7 @@ METHOD PROCEDURE RestoreAppScreen() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE RestoreAppState() CLASS HBDebugger
+METHOD PROCEDURE RestoreAppState() CLASS ZHDebugger
 
    Set( _SET_DIRCASE, ::nAppDirCase )
    Set( _SET_FILECASE, ::nAppFileCase )
@@ -2346,7 +2336,7 @@ METHOD PROCEDURE RestoreAppState() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE RestoreSettings( cFileName ) CLASS HBDebugger
+METHOD PROCEDURE RestoreSettings( cFileName ) CLASS ZHDebugger
 
    IF ! ZH_ISSTRING( cFileName ) .OR. cFileName == ""
       ::cSettingsFileName := ::InputBox( "File name", ::cSettingsFileName )
@@ -2363,7 +2353,7 @@ METHOD PROCEDURE RestoreSettings( cFileName ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE SaveAppScreen() CLASS HBDebugger
+METHOD PROCEDURE SaveAppScreen() CLASS ZHDebugger
 
    LOCAL nRight
    LOCAL nTop
@@ -2409,7 +2399,7 @@ METHOD PROCEDURE SaveAppScreen() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE SaveAppState() CLASS HBDebugger
+METHOD PROCEDURE SaveAppState() CLASS ZHDebugger
 
    ::nAppDirCase := Set( _SET_DIRCASE, ZH_SET_CASE_MIXED )
    ::nAppFileCase := Set( _SET_FILECASE, ZH_SET_CASE_MIXED )
@@ -2419,7 +2409,7 @@ METHOD PROCEDURE SaveAppState() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE SaveSettings( cFileName ) CLASS HBDebugger
+METHOD PROCEDURE SaveSettings( cFileName ) CLASS ZHDebugger
 
    LOCAL cInfo := ""
    LOCAL n
@@ -2522,7 +2512,7 @@ METHOD PROCEDURE SaveSettings( cFileName ) CLASS HBDebugger
    RETURN
 
 
-METHOD ResizeCmdWnd( nLines ) CLASS HBDebugger
+METHOD ResizeCmdWnd( nLines ) CLASS ZHDebugger
 
    LOCAL nRight
    LOCAL nTop
@@ -2595,14 +2585,14 @@ METHOD ResizeCmdWnd( nLines ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE SearchLine( cLine ) CLASS HBDebugger
+METHOD PROCEDURE SearchLine( cLine ) CLASS ZHDebugger
 
    ::GotoLine( Max( 1, iif( ZH_ISSTRING( cLine ) .AND. IsDigit( cLine ), ;
                             Val( cLine ), ::InputBox( "Line number", 1 ) ) ) )
    RETURN
 
 
-METHOD PROCEDURE Show() CLASS HBDebugger
+METHOD PROCEDURE Show() CLASS ZHDebugger
 
    ::SaveAppScreen()
    ::oPullDown:Display()
@@ -2615,7 +2605,7 @@ METHOD PROCEDURE Show() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE ShowAllGlobals() CLASS HBDebugger
+METHOD PROCEDURE ShowAllGlobals() CLASS ZHDebugger
 
    ::lShowAllGlobals := ! ::lShowAllGlobals
    ::RefreshVars()
@@ -2623,7 +2613,7 @@ METHOD PROCEDURE ShowAllGlobals() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE ShowAppScreen() CLASS HBDebugger
+METHOD PROCEDURE ShowAppScreen() CLASS ZHDebugger
 
    ::CloseDebuggerWindow()
 
@@ -2638,7 +2628,7 @@ METHOD PROCEDURE ShowAppScreen() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE ShowCallStack() CLASS HBDebugger
+METHOD PROCEDURE ShowCallStack() CLASS ZHDebugger
 
    ::lShowCallStack := .T.
 
@@ -2687,7 +2677,7 @@ METHOD PROCEDURE ShowCallStack() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE ShowCodeLine( nProc ) CLASS HBDebugger
+METHOD PROCEDURE ShowCodeLine( nProc ) CLASS ZHDebugger
 
    LOCAL nLine
    LOCAL cPrgName
@@ -2758,7 +2748,7 @@ METHOD PROCEDURE ShowCodeLine( nProc ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE ShowHelp( cTopic ) CLASS HBDebugger
+METHOD PROCEDURE ShowHelp( cTopic ) CLASS ZHDebugger
 
    __dbgHelp( cTopic )
 
@@ -2767,7 +2757,7 @@ METHOD PROCEDURE ShowHelp( cTopic ) CLASS HBDebugger
 
 #define MAX_VARS_HEIGHT  7
 
-METHOD PROCEDURE ShowVars() CLASS HBDebugger
+METHOD PROCEDURE ShowVars() CLASS ZHDebugger
 
    LOCAL oCol
    LOCAL lRepaint := .F.
@@ -2911,7 +2901,7 @@ METHOD PROCEDURE ShowVars() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Stack( cParam ) CLASS HBDebugger
+METHOD PROCEDURE Stack( cParam ) CLASS ZHDebugger
 
    SWITCH iif( ZH_ISSTRING( cParam ), cParam, "" )
    CASE "ON"
@@ -2937,7 +2927,7 @@ METHOD PROCEDURE Stack( cParam ) CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Static() CLASS HBDebugger
+METHOD PROCEDURE Static() CLASS ZHDebugger
 
    ::lShowStatics := ! ::lShowStatics
    ::RefreshVars()
@@ -2945,7 +2935,7 @@ METHOD PROCEDURE Static() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE Step() CLASS HBDebugger
+METHOD PROCEDURE Step() CLASS ZHDebugger
 
    // we are starting to run again so reset to the deepest call if displaying stack
    IF ::oBrwStack != NIL
@@ -2959,7 +2949,7 @@ METHOD PROCEDURE Step() CLASS HBDebugger
    RETURN
 
 
-METHOD ToCursor() CLASS HBDebugger
+METHOD ToCursor() CLASS ZHDebugger
 
    IF ::IsValidStopLine( ::cPrgName, ::oBrwText:RowPos )
       __dbgSetToCursor( ::pInfo, ::cPrgName, ::oBrwText:RowPos )
@@ -2973,7 +2963,7 @@ METHOD ToCursor() CLASS HBDebugger
 
 // Toggle a breakpoint at the cursor position in the currently viewed file
 // which may be different from the file in which execution was broken
-METHOD PROCEDURE BreakPointToggle( nLine, cFileName ) CLASS HBDebugger
+METHOD PROCEDURE BreakPointToggle( nLine, cFileName ) CLASS ZHDebugger
 
    // look for a breakpoint which matches both line number and module name
 
@@ -2999,7 +2989,7 @@ METHOD PROCEDURE BreakPointToggle( nLine, cFileName ) CLASS HBDebugger
    RETURN
 
 
-METHOD BreakPointDelete( cPos ) CLASS HBDebugger
+METHOD BreakPointDelete( cPos ) CLASS ZHDebugger
 
    LOCAL nAt
 
@@ -3023,14 +3013,14 @@ METHOD BreakPointDelete( cPos ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD BreakPointFunc( cFuncName ) CLASS HBDebugger
+METHOD BreakPointFunc( cFuncName ) CLASS ZHDebugger
 
    __dbgAddBreak( ::pInfo,,, cFuncName )
 
    RETURN Self
 
 
-METHOD BreakPointList() CLASS HBDebugger
+METHOD BreakPointList() CLASS ZHDebugger
 
    LOCAL aBreak, cType
 
@@ -3046,7 +3036,7 @@ METHOD BreakPointList() CLASS HBDebugger
    RETURN Self
 
 
-METHOD Trace() CLASS HBDebugger
+METHOD Trace() CLASS ZHDebugger
 
    __dbgSetTrace( ::pInfo )
    ::Step() // forces a Step()
@@ -3054,7 +3044,7 @@ METHOD Trace() CLASS HBDebugger
    RETURN Self
 
 
-METHOD TracepointAdd( cExpr ) CLASS HBDebugger
+METHOD TracepointAdd( cExpr ) CLASS ZHDebugger
 
    LOCAL aWatch
 
@@ -3081,7 +3071,7 @@ METHOD TracepointAdd( cExpr ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD VarGetInfo( aVar ) CLASS HBDebugger
+METHOD VarGetInfo( aVar ) CLASS ZHDebugger
 
    LOCAL uValue := ::VarGetValue( aVar )
    LOCAL cType
@@ -3096,7 +3086,7 @@ METHOD VarGetInfo( aVar ) CLASS HBDebugger
    RETURN aVar[ ZH_DBG_VAR_NAME ] + " <" + cType + ", " + ValType( uValue ) + ">: " + __dbgValToStr( uValue )
 
 
-METHOD VarGetValue( aVar ) CLASS HBDebugger
+METHOD VarGetValue( aVar ) CLASS ZHDebugger
 
    SWITCH aVar[ ZH_DBG_VAR_TYPE ]
    CASE "G" ; RETURN __dbgVMVarGGet( aVar[ ZH_DBG_VAR_FRAME ], aVar[ ZH_DBG_VAR_INDEX ] )
@@ -3108,7 +3098,7 @@ METHOD VarGetValue( aVar ) CLASS HBDebugger
    RETURN aVar[ ZH_DBG_VAR_MVALUE ]
 
 
-METHOD VarSetValue( aVar, uValue ) CLASS HBDebugger
+METHOD VarSetValue( aVar, uValue ) CLASS ZHDebugger
 
    LOCAL nProcLevel
 
@@ -3132,7 +3122,7 @@ METHOD VarSetValue( aVar, uValue ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE ViewSets() CLASS HBDebugger
+METHOD PROCEDURE ViewSets() CLASS ZHDebugger
 
    LOCAL aSets := __dbgGetSETs()
    LOCAL oWndSets := HBDbWindow():New( 1, 7, ::nMaxRow - 2, ::nMaxCol - 7, ;
@@ -3167,7 +3157,7 @@ METHOD PROCEDURE ViewSets() CLASS HBDebugger
    RETURN
 
 
-METHOD WatchGetInfo( nWatch ) CLASS HBDebugger
+METHOD WatchGetInfo( nWatch ) CLASS ZHDebugger
 
    LOCAL xVal
    LOCAL cType
@@ -3189,7 +3179,7 @@ METHOD WatchGetInfo( nWatch ) CLASS HBDebugger
    RETURN aWatch[ WP_EXPR ] + " <" + aWatch[ WP_TYPE ] + ", " + cType + ">: " + xVal
 
 
-METHOD WatchpointAdd( cExpr ) CLASS HBDebugger
+METHOD WatchpointAdd( cExpr ) CLASS ZHDebugger
 
    LOCAL aWatch
 
@@ -3214,7 +3204,7 @@ METHOD WatchpointAdd( cExpr ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD WatchpointDel( xPos ) CLASS HBDebugger
+METHOD WatchpointDel( xPos ) CLASS ZHDebugger
 
    LOCAL nPos := -1, lAll := .F.
 
@@ -3257,7 +3247,7 @@ METHOD WatchpointDel( xPos ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD WatchpointEdit( nPos ) CLASS HBDebugger
+METHOD WatchpointEdit( nPos ) CLASS ZHDebugger
 
    LOCAL cExpr := ::InputBox( "Enter Watchpoint", ::aWatch[ nPos ][ WP_EXPR ], __dbgExprValidBlock() )
    LOCAL aWatch
@@ -3281,7 +3271,7 @@ METHOD WatchpointEdit( nPos ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD WatchpointInspect( nPos ) CLASS HBDebugger
+METHOD WatchpointInspect( nPos ) CLASS ZHDebugger
 
    LOCAL xValue
    LOCAL lValid
@@ -3296,7 +3286,7 @@ METHOD WatchpointInspect( nPos ) CLASS HBDebugger
    RETURN Self
 
 
-METHOD PROCEDURE WatchpointsHide() CLASS HBDebugger
+METHOD PROCEDURE WatchpointsHide() CLASS ZHDebugger
 
    ::oWndPnt:Hide()
    ::oWndCode:nTop := iif( ::oWndVars != NIL .AND. ::oWndVars:lVisible, ::oWndVars:nBottom + 1, 1 )
@@ -3308,7 +3298,7 @@ METHOD PROCEDURE WatchpointsHide() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE WatchpointsShow() CLASS HBDebugger
+METHOD PROCEDURE WatchpointsShow() CLASS ZHDebugger
 
    LOCAL oCol
    LOCAL lRepaint := .F.
@@ -3418,7 +3408,7 @@ METHOD PROCEDURE WatchpointsShow() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE WatchpointList() CLASS HBDebugger
+METHOD PROCEDURE WatchpointList() CLASS ZHDebugger
 
    LOCAL aWatch, cType
 
@@ -3441,7 +3431,7 @@ METHOD PROCEDURE WatchpointList() CLASS HBDebugger
    RETURN
 
 
-METHOD PROCEDURE WndVarsLButtonDown( nMRow, nMCol ) CLASS HBDebugger
+METHOD PROCEDURE WndVarsLButtonDown( nMRow, nMCol ) CLASS ZHDebugger
 
    IF nMRow > ::oWndVars:nTop .AND. ;
       nMRow < ::oWndVars:nBottom .AND. ;
@@ -3626,7 +3616,7 @@ FUNCTION __dbgInput( nRow, nCol, nWidth, cValue, bValid, cColor, nSize )
    IF ! ZH_ISNUMERIC( nWidth )
       nWidth := zh_ULen( cValue )
    ENDIF
-   oGet := HbDbInput():new( nRow, nCol, nWidth, cValue, cColor, nSize )
+   oGet := ZhDbInput():new( nRow, nCol, nWidth, cValue, cColor, nSize )
 
    oGet:display()
 

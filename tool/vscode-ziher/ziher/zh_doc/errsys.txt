@@ -18,7 +18,7 @@
    $RETURNS$
       ErrorSys() always return NIL.
    $DESCRIPTION$
-      ErrorSys() is called upon startup by Harbour and installs the default
+      ErrorSys() is called upon startup by Ziher and installs the default
       error handler. Normally you should not call this function directly,
       instead use ErrorBlock() to install your own error handler.
    $STATUS$

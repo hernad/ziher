@@ -29,7 +29,7 @@
       array. This depends, of course, on the data storage type of either
       the array or the variable with the same name as the array.
 
-      CA-Cl*pper v5.x compliant except that arrays in Harbour can have
+      CA-Cl*pper v5.x compliant except that arrays in Ziher can have
       an unlimited number of elements.
    $EXAMPLES$
       LOCAL aArray := Array( 10 ), tmp
@@ -167,7 +167,7 @@
       This function return the value of the last element in the array
       named <aArray>. Same as `xValue := aArray[ Len( aArray ) ]`
    $EXAMPLES$
-      LOCAL aArray := { "Harbour", "is", "Supreme", "Power" }
+      LOCAL aArray := { "Ziher", "is", "Supreme", "Power" }
       ? ATail( aArray )  // --> "Power"
    $STATUS$
       R
@@ -216,7 +216,7 @@
       Note: To avoid loosing last element, you can use zh_AIns()
       which supports auto-sizing of array.
    $EXAMPLES$
-      LOCAL aArray := { "Harbour", "is", "Power!", "!!!" }
+      LOCAL aArray := { "Ziher", "is", "Power!", "!!!" }
       AIns( aArray, 4 )
       ? zh_ValToExp( aArray )
    $STATUS$
@@ -268,11 +268,11 @@
       that is, the size of <aArray> won't change and the last item of <aArray>
       will be lost.
    $EXAMPLES$
-      LOCAL aArray := { "Harbour", "Power!" }
+      LOCAL aArray := { "Ziher", "Power!" }
       zh_AIns( aArray, 2, "is", .F. )
-      ? zh_ValToExp( aArray )  // --> { "Harbour", "is" }
+      ? zh_ValToExp( aArray )  // --> { "Ziher", "is" }
       zh_AIns( aArray, 2, "is", .T. )
-      ? zh_ValToExp( aArray )  // --> { "Harbour", "is", "Power!" }
+      ? zh_ValToExp( aArray )  // --> { "Ziher", "is", "Power!" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -318,9 +318,9 @@
       Note: To completely remove an element and decrease the length of array
       you can use zh_ADel() that supports auto-sizing.
    $EXAMPLES$
-      LOCAL aArray := { "Harbour", "is", "Power" }
+      LOCAL aArray := { "Ziher", "is", "Power" }
       ADel( aArray, 2 )
-      ? zh_ValToExp( aArray )  // --> { "Harbour", "Power", NIL }
+      ? zh_ValToExp( aArray )  // --> { "Ziher", "Power", NIL }
    $STATUS$
       R
    $COMPLIANCE$
@@ -366,11 +366,11 @@
       remains unchanged and a NIL value will be stored in the last element,
       just like in ADel().
    $EXAMPLES$
-      LOCAL aArray := { "Harbour", "is", "Power" }
+      LOCAL aArray := { "Ziher", "is", "Power" }
       zh_ADel( aArray, 2 )
-      ? zh_ValToExp( aArray )  // --> { "Harbour", "Power", NIL } - length unchanged
+      ? zh_ValToExp( aArray )  // --> { "Ziher", "Power", NIL } - length unchanged
       zh_ADel( aArray, 2, .T. )
-      ? zh_ValToExp( aArray )  // --> a{ "Harbour", "Power" } - length decreased
+      ? zh_ValToExp( aArray )  // --> a{ "Ziher", "Power" } - length decreased
    $STATUS$
       R
    $COMPLIANCE$
@@ -664,10 +664,10 @@
       array <aTarget> remains constant.
    $EXAMPLES$
       LOCAL nCount := 2, nStart := 1
-      LOCAL aOne := { "Harbour", " is ", "Power" }
+      LOCAL aOne := { "Ziher", " is ", "Power" }
       LOCAL aTwo := { "Clipper", " was ", "Power" }
       ACopy( aOne, aTwo, nStart, nCount )
-      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "Power" }
+      ? zh_ValToExp( aTwo )  // --> { "Ziher", " is ", "Power" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -705,12 +705,12 @@
       a complete set of arrays values for all dimensions within the
       original array <aSource>
    $EXAMPLES$
-      LOCAL aOne := { "Harbour", " is ", "POWER" }
+      LOCAL aOne := { "Ziher", " is ", "POWER" }
       LOCAL aTwo := AClone( aOne )
-      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
-      aOne[ 1 ] := "The Harbour Compiler"
-      ? zh_ValToExp( aOne )  // --> { "The Harbour Compiler", " is ", "POWER" }
-      ? zh_ValToExp( aTwo )  // --> { "Harbour", " is ", "POWER" }
+      ? zh_ValToExp( aTwo )  // --> { "Ziher", " is ", "POWER" }
+      aOne[ 1 ] := "The Ziher Compiler"
+      ? zh_ValToExp( aOne )  // --> { "The Ziher Compiler", " is ", "POWER" }
+      ? zh_ValToExp( aTwo )  // --> { "Ziher", " is ", "POWER" }
    $STATUS$
       R
    $COMPLIANCE$
@@ -767,7 +767,7 @@
       type.
 
       Codeblock calling frequency and order differs from CA-Cl*pper, since
-      Harbour uses a different (faster) sorting algorithm (quicksort).
+      Ziher uses a different (faster) sorting algorithm (quicksort).
    $EXAMPLES$
       LOCAL aKeys, bSort, aPair
 

@@ -8,7 +8,7 @@
    $SUBCATEGORY$
       User interface
    $ONELINER$
-      Extracts the next key code from the Harbour keyboard buffer.
+      Extracts the next key code from the Ziher keyboard buffer.
    $SYNTAX$
       Inkey( [<nTimeout>] [, <nEvents>] ) --> nKey
    $ARGUMENTS$
@@ -25,7 +25,7 @@
       If omitted, defaults to `zh_set.ZH_SET_EVENTMASK`. Valid input masks are
       in inkey.ch and are explained below. It is recommended that the mask
       names be used rather than their numeric values, in case the numeric
-      values change in future releases of Harbour. To allow more than one
+      values change in future releases of Ziher. To allow more than one
       type of input event, simply add the various mask names together.
 
       <table>
@@ -88,7 +88,7 @@
       S
    $COMPLIANCE$
       Inkey() is compliant with the CA-Cl*pper 5.3 Inkey() function with one
-      exception: The Harbour Inkey() function will raise an argument error
+      exception: The Ziher Inkey() function will raise an argument error
       if the first parameter is less than or equal to 0 and the second
       parameter (or the default mask) is not valid, because otherwise Inkey()
       would never return, because it was, in effect, asked to wait forever
@@ -115,13 +115,13 @@
       KEYBOARD <cString>
       CLEAR TYPEAHEAD
    $ARGUMENTS$
-      <cString> is the optional string to stuff into the Harbour keyboard
+      <cString> is the optional string to stuff into the Ziher keyboard
       buffer after clearing it first.
 
       Note: The character `;` is converted
       to `Chr( 13 )` (this is an undocumented CA-Cl*pper feature).
    $DESCRIPTION$
-      Clears the Harbour keyboard type-ahead buffer and then inserts an
+      Clears the Ziher keyboard type-ahead buffer and then inserts an
       optional string into it.
    $EXAMPLES$
       // Stuff an Enter key into the keyboard buffer
@@ -202,9 +202,9 @@
       is to allow switching between using ZH_INKEY_EXTENDED key codes
       and using the normal CA-Cl*pper-compatible key codes
    $RETURNS$
-      <nKey>  The value of the next key in the Harbour keyboard buffer.
+      <nKey>  The value of the next key in the Ziher keyboard buffer.
    $DESCRIPTION$
-      Returns the value of the next key in the Harbour keyboard buffer
+      Returns the value of the next key in the Ziher keyboard buffer
       without extracting it.
    $EXAMPLES$
       #include "inkey.zhh"
@@ -227,7 +227,7 @@
       R
    $COMPLIANCE$
       NextKey() is compliant with CA-Cl*pper 5.3, but has been extended
-      for Harbour.
+      for Ziher.
    $FILES$
       Library is core
    $SEEALSO$
@@ -256,7 +256,7 @@
    $RETURNS$
       <nKey>  The last key extracted from the keyboard buffer.
    $DESCRIPTION$
-      Returns the value of the last key extracted from the Harbour
+      Returns the value of the last key extracted from the Ziher
       keyboard buffer
    $EXAMPLES$
       #include "inkey.zhh"
@@ -277,7 +277,7 @@
       R
    $COMPLIANCE$
       LastKey() is compliant with CA-Cl*pper 5.3, but has been extended
-      for Harbour.
+      for Ziher.
    $FILES$
       Library is core
    $SEEALSO$
@@ -300,7 +300,7 @@
       KEYBOARD <cString>
    $ARGUMENTS$
       <cString> String to be processed, one character at a time,
-      by the Harbour keyboard processor
+      by the Ziher keyboard processor
    $DESCRIPTION$
       This command stuffs the input buffer with <cString>.
 

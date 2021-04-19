@@ -274,7 +274,7 @@
    $COMPLIANCE$
       This function is sensitive to ZH_CLP_STRICT settings during build.
 
-      <nStart> and <nEnd> are Harbour extensions and do not exist if
+      <nStart> and <nEnd> are Ziher extensions and do not exist if
       ZH_CLP_STRICT is defined. In that case, the whole string is searched.
    $PLATFORMS$
       All
@@ -417,7 +417,7 @@
       SubStr( <cString>, 1, <nLen> )
       ```
    $EXAMPLES$
-      ? Left( "Hello Harbour", 5 )  // --> "Hello"
+      ? Left( "Hello Ziher", 5 )  // --> "Hello"
    $STATUS$
       R
    $COMPLIANCE$
@@ -462,7 +462,7 @@
       SubStr( <cString>, Len( <cString> ) - <nLen> + 1, <nLen> )
       ```
    $EXAMPLES$
-      ? Right( "Hello Harbour", 5 )  // --> "rbour"
+      ? Right( "Hello Ziher", 5 )  // --> "rbour"
    $STATUS$
       R
    $COMPLIANCE$
@@ -511,9 +511,9 @@
       characters from <nStart> to the end of the string is less than <nLen>
       the rest are ignored.
    $EXAMPLES$
-      ? SubStr( "Hello Harbour",  7, 4 )  // --> "Harb"
-      ? SubStr( "Hello Harbour", -3, 3 )  // --> "our"
-      ? SubStr( "Hello Harbour",  7    )  // --> "Harbour"
+      ? SubStr( "Hello Ziher",  7, 4 )  // --> "Harb"
+      ? SubStr( "Hello Ziher", -3, 3 )  // --> "our"
+      ? SubStr( "Hello Ziher",  7    )  // --> "Ziher"
    $STATUS$
       R
    $COMPLIANCE$
@@ -582,7 +582,7 @@
          <nNumber>, Str() returns asterisks instead of the number.
 
       *  If <nLength> is less than the number of decimal digits
-         required for the decimal portion of the returned string, Harbour
+         required for the decimal portion of the returned string, Ziher
          rounds the number to the available number of decimal places.
 
       *  If <nLength> is specified but <nDecimals> is omitted (no
@@ -658,7 +658,7 @@
          <nNumber>, Str() returns asterisks instead of the number.
 
       *  If <nLength> is less than the number of decimal digits
-         required for the decimal portion of the returned string, Harbour
+         required for the decimal portion of the returned string, Ziher
          rounds the number to the available number of decimal places.
 
       *  If <nLength> is specified but <nDecimals> is omitted (no
@@ -744,7 +744,7 @@
    $EXAMPLES$
       LOCAL cName
 
-      ? Len( "Harbour" )         // --> 7
+      ? Len( "Ziher" )         // --> 7
       ? Len( { "One", "Two" } )  // --> 2
 
       cName := ""
@@ -902,7 +902,7 @@
       case values and returns that formatted character expression.
    $EXAMPLES$
       ? Upper( "harbour" )  // --> "HARBOUR"
-      ? Upper( "Harbour" )  // --> "HARBOUR"
+      ? Upper( "Ziher" )  // --> "HARBOUR"
    $STATUS$
       R
    $COMPLIANCE$
@@ -1031,7 +1031,7 @@
       truncate the string <xVal> from the leftmost side to the length of
       <nWidth>.
    $EXAMPLES$
-      ? PadC( "Harbour", 20 )
+      ? PadC( "Ziher", 20 )
       ? PadC( 34.5142, 20 )
       ? PadC( Date(), 35 )
    $STATUS$
@@ -1081,7 +1081,7 @@
       truncate the string <xVal> from the leftmost side to the length of
       <nWidth>.
    $EXAMPLES$
-      ? PadL( "Harbour", 20 )
+      ? PadL( "Ziher", 20 )
       ? PadL( 34.5142, 20 )
       ? PadL( Date(), 35 )
    $STATUS$
@@ -1131,7 +1131,7 @@
       truncate the string <xVal> from the leftmost side to the length of
       <nWidth>.
    $EXAMPLES$
-      ? PadR( "Harbour", 20 )
+      ? PadR( "Ziher", 20 )
       ? PadR( 34.5142, 20 )
       ? PadR( Date(), 35 )
    $STATUS$
@@ -1170,10 +1170,10 @@
       This function returns the string <cExpression> will all leading and
       trailing blank spaces removed.
    $EXAMPLES$
-      ? AllTrim( "Hello Harbour" )
-      ? AllTrim( "     Hello Harbour" )
-      ? AllTrim( "Hello Harbour     " )
-      ? AllTrim( "     hello Harbour     " )
+      ? AllTrim( "Hello Ziher" )
+      ? AllTrim( "     Hello Ziher" )
+      ? AllTrim( "Hello Ziher     " )
+      ? AllTrim( "     hello Ziher     " )
    $STATUS$
       R
    $COMPLIANCE$

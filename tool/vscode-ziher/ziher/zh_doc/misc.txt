@@ -36,15 +36,15 @@
    $SUBCATEGORY$
       Environment
    $ONELINER$
-      Returns the version of Harbour compiler
+      Returns the version of Ziher compiler
    $SYNTAX$
       Version() --> cReturn
    $ARGUMENTS$
       None
    $RETURNS$
-      <cReturn>   String containing the Harbour version
+      <cReturn>   String containing the Ziher version
    $DESCRIPTION$
-      This function returns the current Harbour version.
+      This function returns the current Ziher version.
    $EXAMPLES$
       ? Version()
    $STATUS$

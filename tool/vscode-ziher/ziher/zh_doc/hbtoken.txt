@@ -48,7 +48,7 @@
 
       2) The delimiters are removed (trimmed) from tokens.
    $EXAMPLES$
-      LOCAL cString := "Harbour is proven to be stable, robust and efficient."
+      LOCAL cString := "Ziher is proven to be stable, robust and efficient."
       LOCAL aTokens := zh_ATokens( cString )
       AEval( aTokens, {| token, n | QOut( zh_ntos(n), token ) } )
       ?

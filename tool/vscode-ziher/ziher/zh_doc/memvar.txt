@@ -20,7 +20,7 @@
    $DESCRIPTION$
       This command declares the names of fields <xField> (and <xFieldn> and
       following) with an optional alias identifier as <cDatabase> for each.
-      This command allow  Harbour to resolve any reference to a field
+      This command allow  Ziher to resolve any reference to a field
       specified in the field list by viewing it as a field when it is not
       referenced by an alias. If a field is not listed in this list and it
       is not  explicitly tagged with an alias identifier, it may be viewed
@@ -78,7 +78,7 @@
 
       No macro expansions are allowed in the LOCAL declaration statement.
 
-      No Harbour command other then FUNCTION, PROCEDURE, PUBLIC, PRIVATE,
+      No Ziher command other then FUNCTION, PROCEDURE, PUBLIC, PRIVATE,
       PARAMETERS, MEMVAR, STATIC and FIELD, may precede the LOCAL command.
 
       LOCAL array reference may not be initialized (i.e., assigned values)

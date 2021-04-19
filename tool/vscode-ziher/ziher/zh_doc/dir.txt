@@ -34,15 +34,15 @@
       __Dir() is a compatibility function, it is superseded by Directory()
       which return all the information in a multidimensional array.
 
-      If long file names are available Harbour will use/display the first
-      15 characters else Harbour will use/display a 8.3 file name consistent
+      If long file names are available Ziher will use/display the first
+      15 characters else Ziher will use/display a 8.3 file name consistent
       with CA-Cl*pper.
    $EXAMPLES$
       __Dir()      // information for all DBF files in current directory
 
       __Dir( "*.dbf" )         // list all DBF file in current directory
 
-      // list all PRG files in Harbour Run-Time library
+      // list all PRG files in Ziher Run-Time library
       // for MS-DOS compatible operating systems
       __Dir( zh_DirSepToOS( "src/rtl/*.prg" ) )
 
@@ -95,15 +95,15 @@
       __Dir() is a compatibility function, it is superseded by Directory()
       which returns all the information in a multidimensional array.
 
-      If long file names are available Harbour will use/display the first
-      15 characters else Harbour will use/display a 8.3 file name consistent
+      If long file names are available Ziher will use/display the first
+      15 characters else Ziher will use/display a 8.3 file name consistent
       with CA-Cl*pper.
    $EXAMPLES$
       DIR          // information for all DBF files in current directory
 
       DIR "*.dbf"          // list all DBF file in current directory
 
-      // list all PRG files in Harbour Run-Time library
+      // list all PRG files in Ziher Run-Time library
       // for MS-DOS compatible operating systems
       DIR "src/rtl/*.prg"
 

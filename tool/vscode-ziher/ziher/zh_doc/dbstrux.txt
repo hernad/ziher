@@ -605,8 +605,8 @@
       R
    $COMPLIANCE$
       CA-Cl*pper has internal undocumented function named __FLedit(),
-      in Harbour we name it __dbStructFilter(). The new name gives a better
-      description of what this function does. In Harbour __FLedit() simply
+      in Ziher we name it __dbStructFilter(). The new name gives a better
+      description of what this function does. In Ziher __FLedit() simply
       calls __dbStructFilter() and therefor the latter is the recommended
       function to use.
 
@@ -698,7 +698,7 @@
    $STATUS$
       R
    $COMPLIANCE$
-      __dbStructFilter() is a Harbour extension. CA-Cl*pper has an internal
+      __dbStructFilter() is a Ziher extension. CA-Cl*pper has an internal
       undocumented function named __FLedit() that does exactly the same
       thing. The new name gives a better description of what this function does.
    $PLATFORMS$

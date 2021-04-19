@@ -163,7 +163,7 @@ active.
 When the Command window is active, the UP and DOWN
 arrow keys can be used to recall previous commands.
 --   Code
-The Code window displays Harbour source code for
+The Code window displays Ziher source code for
 the program being debugged.
 
 
@@ -171,7 +171,7 @@ What file the Code window displays may be controlled
 in the following ways:
 
     1.  By default, the Code window will contain the line
-        of Harbour code currently being executed.
+        of Ziher code currently being executed.
 
     2.  If the CallStack window is open, the code being
         viewed is that of the selected call in the CallStack
@@ -186,7 +186,7 @@ in the following ways:
         command, or selecting the File:View menu option.
 
 
-If the Code window contains the line of Harbour code
+If the Code window contains the line of Ziher code
 currently being executed, that line will be highlighted.
 Any lines which have Breakpoints set on them will also
 be marked.
@@ -362,7 +362,7 @@ Options:
     current value of a Watchpoint is displayed in the
     Watch window during debugging.
 
-    A Watchpoint may be any valid Harbour expression,
+    A Watchpoint may be any valid Ziher expression,
     i.e.:
 
         s                   // variable

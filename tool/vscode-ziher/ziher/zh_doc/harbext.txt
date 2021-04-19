@@ -2,7 +2,7 @@
    $TEMPLATE$
       Document
    $NAME$
-      Harbour Extensions
+      Ziher Extensions
    $CATEGORY$
       Document
    $DESCRIPTION$
@@ -14,7 +14,7 @@
               CA-Cl*pper only allowed creation of objects from a few standard
               classes.
 
-              In Harbour, you can create your own classes--complete with
+              In Ziher, you can create your own classes--complete with
               Methods, Instance Variables, Class Variables and Inheritance.
               Entire applications can be designed and coded in Object Oriented
               style.
@@ -53,11 +53,11 @@
 
         Example: LOCAL/STATIC Var `AS` ...
 
-      * The Harbour debugger provides new interesting classes:
+      * The Ziher debugger provides new interesting classes:
 
         - Class HBDbWindow() could be the foundation for a generic multi-platform
 
-        - Class HBDbInput()
+        - Class ZhDbInput()
 
         - Class HBDbMenu() implement both pull-down and popup menus.
 
@@ -66,7 +66,7 @@
 
       - `zh_vfDirSpace( <nDir>, <nType> )`
 
-        The second parameter is a Harbour (optional) parameter and indicates the
+        The second parameter is a Ziher (optional) parameter and indicates the
         type of disk info being requested. See doc/en/diskspac.txt for info.
 
    $END$

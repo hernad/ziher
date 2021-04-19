@@ -10,7 +10,7 @@
    $SUBCATEGORY$
       INET
    $ONELINER$
-      Activate Harbour INET support
+      Activate Ziher INET support
    $SYNTAX$
       zh_inetInit() --> lResult
    $ARGUMENTS$
@@ -48,7 +48,7 @@
    $SUBCATEGORY$
       INET
    $ONELINER$
-      Terminate Harbour INET support
+      Terminate Ziher INET support
    $SYNTAX$
       zh_inetCleanup()
    $ARGUMENTS$
