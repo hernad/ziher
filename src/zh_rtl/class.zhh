@@ -548,7 +548,7 @@
       REQUEST HB<type> [, HB<typeN>]
 
 #command ENABLE TYPE CLASS ALL => ;
-      REQUEST HBArray, ZHBlock, HBCharacter, ZHDate, HBHash, ;
-              HBLogical, HBNil, HBNumeric, HBSymbol, ZHTimeStamp, HBPointer
+      REQUEST HBArray, ZHBlock, ZHCharacter, ZHDate, HBHash, ;
+              HBLogical, HBNil, HBNumeric, HBSymbol, ZHTimeStamp, ZHPointer
 
 #endif /* ZH_CLASS_ZH_ */

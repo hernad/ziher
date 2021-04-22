@@ -1143,10 +1143,10 @@ void zh_clsInit( void )
 void zh_clsDoInit( void )
 {
    static const char * s_pszFuncNames[] =
-      { "HBARRAY", "ZHBLOCK", "HBCHARACTER",
+      { "HBARRAY", "ZHBLOCK", "ZHCHARACTER",
         "ZHDATE", "ZHTIMESTAMP",
         "HBHASH", "HBLOGICAL", "HBNIL", "HBNUMERIC",
-        "HBSYMBOL", "HBPOINTER",
+        "HBSYMBOL", "ZHPOINTER",
         "ZHObject" };
    static ZH_USHORT * s_puiHandles[] =
       { &s_uiArrayClass, &s_uiBlockClass, &s_uiCharacterClass,
