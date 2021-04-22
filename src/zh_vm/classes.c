@@ -1143,8 +1143,8 @@ void zh_clsInit( void )
 void zh_clsDoInit( void )
 {
    static const char * s_pszFuncNames[] =
-      { "HBARRAY", "HBBLOCK", "HBCHARACTER",
-        "ZHDATE", "HBTIMESTAMP",
+      { "HBARRAY", "ZHBLOCK", "HBCHARACTER",
+        "ZHDATE", "ZHTIMESTAMP",
         "HBHASH", "HBLOGICAL", "HBNIL", "HBNUMERIC",
         "HBSYMBOL", "HBPOINTER",
         "ZHObject" };

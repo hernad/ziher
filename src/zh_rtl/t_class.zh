@@ -59,13 +59,13 @@
          loop when launching it. [vszakats] */
 #pragma -b-
 
-/* Ziher Class HBClass to build classes */
+/* Ziher Class ZHClass to build classes */
 
 #include "oo.zhh"
 
 REQUEST ZHObject
 
-FUNCTION HBClass()
+FUNCTION ZHClass()
 
    STATIC s_hClass  /* NOTE: Automatically defaults to NIL */
 
@@ -75,11 +75,9 @@ FUNCTION HBClass()
 
       BEGIN SEQUENCE
 
-#if 0
-         hClass := __clsNew( "HBCLASS", 17,, @HBClass() )
-#else
-         hClass := __clsNew( "HBCLASS", 16,, @HBClass() )
-#endif
+
+           hClass := __clsNew( "ZHCLASS", 16,, @ZHClass() )
+
 
          __clsAddMsg( hClass, "New"            , @New()            , ZH_OO_MSG_METHOD )
          __clsAddMsg( hClass, "Create"         , @Create()         , ZH_OO_MSG_METHOD )
@@ -132,10 +130,6 @@ FUNCTION HBClass()
          __clsAddMsg( hClass, "_asFriendFunc"  , 15, ZH_OO_MSG_ASSIGN )
          __clsAddMsg( hClass, "sClassFunc"     , 16, ZH_OO_MSG_ACCESS )
          __clsAddMsg( hClass, "_sClassFunc"    , 16, ZH_OO_MSG_ASSIGN )
-#if 0
-         __clsAddMsg( hClass, "class"          , 17, ZH_OO_MSG_ACCESS )
-         __clsAddMsg( hClass, "_class"         , 17, ZH_OO_MSG_ASSIGN )
-#endif
 
       ALWAYS
 
@@ -200,10 +194,6 @@ STATIC PROCEDURE Create( /* MetaClass */ )
    LOCAL hClass
    LOCAL ahSuper := {}
 
-#if 0
-   ::Class := MetaClass
-#endif
-
    FOR EACH n IN ::asSuper
       IF ( hClass := __clsInstSuper( n ) ) != 0  /* Super handle available */
          AAdd( ahSuper, hClass )
@@ -217,14 +207,6 @@ STATIC PROCEDURE Create( /* MetaClass */ )
       __clsAddMsg( hClass, "__SUPER", 0, ZH_OO_MSG_SUPER, ahSuper[ 1 ], ZH_OO_CLSTP_EXPORTED + ZH_OO_CLSTP_NONVIRTUAL )
    ENDIF
    __clsAddMsg( hClass, "REALCLASS", 0, ZH_OO_MSG_REALCLASS, 0, ZH_OO_CLSTP_EXPORTED )
-
-#if 0
-   /* We will work here on the MetaClass object to add the Class Method
-      as needed */
-   FOR EACH n IN ::aClsMethods
-      // do it
-   NEXT
-#endif
 
    /* Local messages */
 

@@ -177,7 +177,8 @@ cc_binary(
     copts = [
         "-Izh_rtl"
     ],
-    linkstatic = True,
+    #linkstatic = False,
+    linkshared = True,
     visibility = ["//visibility:public"],
 )
 

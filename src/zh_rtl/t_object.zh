@@ -59,7 +59,7 @@ FUNCTION ZHObject()
 
       BEGIN SEQUENCE
 
-         oClass := HBClass():New( "ZHObject",, @ZHObject() )
+         oClass := ZHClass():New( "ZHObject",, @ZHObject() )
 
          oClass:AddInline( "ISDERIVEDFROM"   , {| Self, xPar1 | __objDerivedFrom( Self, xPar1 ) }, ZH_OO_CLSTP_EXPORTED ) /* Xbase++ compatibility */
 

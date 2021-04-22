@@ -210,7 +210,7 @@
       IF s_oClass == NIL .AND. __clsLockDef( @s_oClass ) ;;
          BEGIN SEQUENCE ;;
             nScope := ZH_OO_CLSTP_EXPORTED ; ZH_SYMBOL_UNUSED( nScope ) ;;
-            oClass  := iif( <.metaClass.>, <(metaClass)>, HBClass():new( <(ClassName)>, __ZH_CLS_PAR( [ @<SuperClass1>() ] [ , @<SuperClassN>() ] ), @__ZH_CLS_OPT([__ZH_CLS_ASID(<FuncName>),] <ClassName>)() [, <.modulfriend.> ] ) ) ;;
+            oClass  := iif( <.metaClass.>, <(metaClass)>, ZHClass():new( <(ClassName)>, __ZH_CLS_PAR( [ @<SuperClass1>() ] [ , @<SuperClassN>() ] ), @__ZH_CLS_OPT([__ZH_CLS_ASID(<FuncName>),] <ClassName>)() [, <.modulfriend.> ] ) ) ;;
    #undef  _CLASS_NAME_ ; #define _CLASS_NAME_ <ClassName> ;;
    #undef  _CLASS_MODE_ ; #define _CLASS_MODE_ _CLASS_DECLARATION_
 
@@ -548,7 +548,7 @@
       REQUEST HB<type> [, HB<typeN>]
 
 #command ENABLE TYPE CLASS ALL => ;
-      REQUEST HBArray, HBBlock, HBCharacter, ZHDate, HBHash, ;
+      REQUEST HBArray, ZHBlock, HBCharacter, ZHDate, HBHash, ;
               HBLogical, HBNil, HBNumeric, HBSymbol, ZHTimeStamp, HBPointer
 
 #endif /* ZH_CLASS_ZH_ */
