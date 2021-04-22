@@ -49,9 +49,6 @@
 
 
 ZH_EXTERN_BEGIN
-#if defined( __MINGW32__ ) && ! defined( __clang__ )
-int _CRT_glob = 0;
-#endif
 
 
 ZH_EXTERN_END

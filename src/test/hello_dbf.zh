@@ -8,6 +8,7 @@ PROCEDURE Main()
    LOCAL nI
    LOCAL oError
 
+   ? "=== Start dbf_hello ======="
 
    aDbf := { ;
         { "id", "C", 10, 0 },    ;
@@ -19,7 +20,7 @@ PROCEDURE Main()
 
    USE (cName) NEW ALIAS TEST_DBF
 
-   FOR nI := 100 TO 1 STEP -1
+   FOR nI := 10 TO 1 STEP -1
       APPEND BLANK
       REPLACE id    WITH PadL( AllTrim(Str(nI)), 10, "0" ),;
            desc  WITH "Description " + PadL( AllTrim( Str( nI) ), 3, "x" ),;

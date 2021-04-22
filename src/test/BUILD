@@ -157,9 +157,46 @@ zh_comp_all(
     visibility = ["//visibility:public"],
 )
 
+cc_binary(
+    name = "run_hello_dbf",
+    deps = [
+        ":hello_dbf_lib_c",
+        ":libhello_dbf_so",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_rtl"
+    ],
+    #linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "hello_dbf_lib_c",
+    srcs = [ "run_hello_dbf.c" ],
+    hdrs = glob([
+        "*.h",
+    ]),
+    deps = [ 
+       "//zh_zero:zh_zero", 
+       "//zh_rtl:zh_rtl",
+       "//zh_vm:zh_vm"
+    ],
+    copts = [
+        "-Izh_rtl"
+    ],
+    alwayslink=1,
+    visibility = ["//visibility:public"],
+)
+
+cc_import(
+    name = "libhello_dbf_so",
+    shared_library = "libhello_dbf.so",
+    hdrs = [],
+)
 
 cc_binary(
-    name = "hello_dbf",
+    name = "libhello_dbf.so",
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
