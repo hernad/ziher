@@ -51,7 +51,7 @@
 
 /* --- */
 
-CREATE CLASS ScalarObject FUNCTION HBScalar
+CREATE CLASS ScalarObject FUNCTION ZHScalar
 
    METHOD Copy()
    METHOD IsScalar()
@@ -109,7 +109,7 @@ METHOD PROCEDURE BecomeErr() CLASS ScalarObject
 
 /* --- */
 
-CREATE CLASS Array INHERIT HBScalar FUNCTION __ZHArray
+CREATE CLASS Array INHERIT ZHScalar FUNCTION __ZHArray
 
    METHOD Init( nElements )
 
@@ -238,7 +238,7 @@ METHOD _Size( newSize ) CLASS Array
 
 /* --- */
 
-CREATE CLASS Block INHERIT HBScalar FUNCTION __ZHBlock
+CREATE CLASS Block INHERIT ZHScalar FUNCTION __ZHBlock
 
    METHOD AsString()
 
@@ -249,7 +249,7 @@ METHOD AsString() CLASS Block
 
 /* --- */
 
-CREATE CLASS Character INHERIT HBScalar FUNCTION __ZHCharacter
+CREATE CLASS Character INHERIT ZHScalar FUNCTION __ZHCharacter
 
    METHOD AsString()
    METHOD AsExpStr()
@@ -264,7 +264,7 @@ METHOD AsExpStr() CLASS Character
 
 /* --- */
 
-CREATE CLASS Date INHERIT HBScalar FUNCTION __ZHDate
+CREATE CLASS Date INHERIT ZHScalar FUNCTION __ZHDate
 
    METHOD Year()
    METHOD Month()
@@ -291,7 +291,7 @@ METHOD Day() CLASS Date
 
 /* --- */
 
-CREATE CLASS TimeStamp INHERIT HBScalar FUNCTION __ZHTimeStamp
+CREATE CLASS TimeStamp INHERIT ZHScalar FUNCTION __ZHTimeStamp
 
    METHOD Date()
    METHOD Time()
@@ -339,7 +339,7 @@ METHOD Sec() CLASS TimeStamp
 
 /* --- */
 
-CREATE CLASS Hash INHERIT HBScalar FUNCTION __ZHHash
+CREATE CLASS Hash INHERIT ZHScalar FUNCTION __ZHHash
 
    METHOD AsString()
 
@@ -350,7 +350,7 @@ METHOD AsString() CLASS Hash
 
 /* --- */
 
-CREATE CLASS Logical INHERIT HBScalar FUNCTION __ZHLogical
+CREATE CLASS Logical INHERIT ZHScalar FUNCTION __ZHLogical
 
    METHOD AsString()
 
@@ -361,7 +361,7 @@ METHOD AsString() CLASS Logical
 
 /* --- */
 
-CREATE CLASS NIL INHERIT HBScalar FUNCTION __ZHNil
+CREATE CLASS NIL INHERIT ZHScalar FUNCTION __ZHNil
 
    METHOD AsString()
 
@@ -372,7 +372,7 @@ METHOD AsString() CLASS NIL
 
 /* --- */
 
-CREATE CLASS Numeric INHERIT HBScalar FUNCTION __ZHNumeric
+CREATE CLASS Numeric INHERIT ZHScalar FUNCTION __ZHNumeric
 
    METHOD AsString()
 
@@ -383,7 +383,7 @@ METHOD AsString() CLASS Numeric
 
 /* --- */
 
-CREATE CLASS Symbol INHERIT HBScalar FUNCTION __ZHSymbol
+CREATE CLASS Symbol INHERIT ZHScalar FUNCTION __ZHSymbol
 
    METHOD AsString()
 
@@ -394,7 +394,7 @@ METHOD AsString() CLASS Symbol
 
 /* --- */
 
-CREATE CLASS Pointer INHERIT HBScalar FUNCTION __ZHPointer
+CREATE CLASS Pointer INHERIT ZHScalar FUNCTION __ZHPointer
 
    METHOD AsString()
 

@@ -46,7 +46,7 @@
 
 #pragma -b-
 
-#define ZH_CLS_NOTOBJECT      /* do not inherit from HBObject class */
+#define ZH_CLS_NOTOBJECT      /* do not inherit from ZHObject class */
 #include "class.zhh"
 
 CREATE CLASS HBBrwText

@@ -4,36 +4,36 @@
    $TEMPLATE$
       Function
    $NAME$
-      HBClass()
+      ZHClass()
    $CATEGORY$
       API
    $SUBCATEGORY$
       Classes
    $ONELINER$
-      HBClass() is used in the creation of all classes
+      ZHClass() is used in the creation of all classes
    $SYNTAX$
-      oClass := HBClass():New( "TMyClass" )
+      oClass := ZHClass():New( "TMyClass" )
 
         -or-
 
-      HBClass() is usually accessed by defining a class with the commands
+      ZHClass() is usually accessed by defining a class with the commands
       defined in hbclass.ch:
 
-      CREATE CLASS HBGetList  // Calls HBClass() to create the HBGetList class
+      CREATE CLASS ZHGetList  // Calls ZHClass() to create the ZHGetList class
          ...
       ENDCLASS
    $ARGUMENTS$
 
    $RETURNS$
-      An instance of the HBClass() Class. This special object's `:New()`
+      An instance of the ZHClass() Class. This special object's `:New()`
       method can then create the classes you define.
    $DESCRIPTION$
-      HBClass() is a class that ...
+      ZHClass() is a class that ...
       The class methods are as follows:
 
       `:New()`              Create a new instance of the class
    $EXAMPLES$
-      LOCAL oObject := HBClass():New( "TMyClass" )
+      LOCAL oObject := ZHClass():New( "TMyClass" )
 
       oObject:End()
    $STATUS$

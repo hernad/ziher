@@ -341,7 +341,7 @@
       created using the @ operator, see example below.
    $EXAMPLES$
       // create a new THappy class and add a Smile method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddMethod( oHappy, "Smile", @MySmile() )
       ? oHappy:Smile( 1 )       // --> :)
       ? oHappy:Smile( 2 )       // --> ;)
@@ -396,7 +396,7 @@
       with the name <cInlineName> already exist in <oObject>.
    $EXAMPLES$
       // create a new THappy class and add a Smile INLINE method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       LOCAL bInline := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
          { ":)", ";)", "*SMILE*" }[ nType ] }
       __objAddInline( oHappy, "Smile", bInline )
@@ -441,7 +441,7 @@
       <cDataName> already exist in <oObject>.
    $EXAMPLES$
       // create a new THappy class and add a lHappy VAR
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddData( oHappy, "lHappy" )
       oHappy:lHappy := .T.
       IF oHappy:lHappy
@@ -494,7 +494,7 @@
       created using the @ operator, see example below.
    $EXAMPLES$
       // create a new THappy class and add a Smile method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddMethod( oHappy, "Smile", @MySmile() )
       ? oHappy:Smile( 1 )       // --> :)
       ? oHappy:Smile( 2 )       // --> ;)
@@ -562,7 +562,7 @@
       mechanism.
    $EXAMPLES$
       // create a new THappy class and add a Smile INLINE method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       LOCAL bMyInline   := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
          { ":)", ";)" }[ nType ] }
       LOCAL bYourInline := {| Self, nType | ZH_SYMBOL_UNUSED( Self ), ;
@@ -616,7 +616,7 @@
       __objDelInline() is exactly the same as __objDelMethod().
    $EXAMPLES$
       // create a new THappy class and add a Smile method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddMethod( oHappy, "Smile", @MySmile() )
       ? __objHasMethod( oHappy, "Smile" )  // --> .T.
       // remove Smile method
@@ -671,7 +671,7 @@
       <oObject>.
    $EXAMPLES$
       // create a new THappy class and add a Smile method
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddMethod( oHappy, "Smile", @MySmile() )
       ? __objHasMethod( oHappy, "Smile" )  // --> .T.
       // remove Smile method
@@ -725,7 +725,7 @@
       with the name <cDataName> does not exist in <oObject>.
    $EXAMPLES$
       // create a new THappy class and add a lHappy VAR
-      LOCAL oHappy := HBClass():New( "THappy" )
+      LOCAL oHappy := ZHClass():New( "THappy" )
       __objAddData( oHappy, "lHappy" )
       ? __objHasData( oHappy, "lHappy" )  // --> .T.
       // remove lHappy VAR
@@ -772,7 +772,7 @@
    $EXAMPLES$
       // Create three classes and check their relations
 
-      #include "hbclass.zhh"
+      #include "class.zhh"
       PROCEDURE Main()
          LOCAL oSuper  := TMood():New()
          LOCAL oObject := THappy():New()

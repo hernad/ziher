@@ -1728,7 +1728,7 @@ static ZH_SIZE zh_deserializeItem( PZH_ITEM pItem,
          nOffset = zh_deserializeItem( pItem, cdpIn, cdpOut, pBuffer,
                                        nOffset + 8, pRefList );
          nLen = nPad - nOffset;
-         /* get serialized HBPERSISTENT text */
+         /* get serialized ZHPersistent text */
          szVal = zh_cdpnDup( ( const char * ) &pBuffer[ nOffset ], &nLen,
                              cdpIn, cdpOut );
          nOffset = nPad;

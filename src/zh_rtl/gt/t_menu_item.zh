@@ -53,7 +53,7 @@
 #define IS_IN( str, list )  ( "|" + ( str ) + "|" $ "|" + ( list ) + "|" )
 
 
-CREATE CLASS MenuItem FUNCTION HBMenuItem
+CREATE CLASS MenuItem FUNCTION ZHMenuItem
 
    EXPORTED:
 
@@ -180,7 +180,7 @@ METHOD New( cCaption, boData, nShortcut, cMessage, nID ) CLASS MenuItem
    RETURN Self
 
 FUNCTION MenuItem( cCaption, boData, nShortcut, cMessage, nID )
-   RETURN HBMenuItem():New( cCaption, boData, nShortcut, cMessage, nID )
+   RETURN ZHMenuItem():New( cCaption, boData, nShortcut, cMessage, nID )
 
 
 FUNCTION __MIColumn( o, nColumn )

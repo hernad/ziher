@@ -1,5 +1,5 @@
 /*
- * HBreportForm class and __ReportForm()
+ * ZHReportForm class and __ReportForm()
  *
  * Copyright 2000 Luiz Rafael Culik <Culik@sl.conex.net>
  *
@@ -144,7 +144,7 @@
 #define PE_OFFSET               23
 #define OPTION_OFFSET           24
 
-CREATE CLASS HBReportForm
+CREATE CLASS ZHReportForm
 
    VAR aReportData    INIT {}
    VAR aReportTotals  INIT {}
@@ -194,7 +194,7 @@ METHOD PROCEDURE New( cFrmName AS STRING, ;
       lPlain AS LOGICAL, ;
       cHeading AS STRING, ;
       lBEject AS LOGICAL, ;
-      lSummary AS LOGICAL ) CLASS HBReportForm
+      lSummary AS LOGICAL ) CLASS ZHReportForm
 
    LOCAL lPrintOn, lConsoleOn // Status of PRINTER and CONSOLE
    LOCAL cExtraFile, lExtraState // Status of EXTRA
@@ -425,14 +425,14 @@ METHOD PROCEDURE New( cFrmName AS STRING, ;
 
    RETURN
 
-METHOD PrintIt( cString AS STRING ) CLASS HBReportForm
+METHOD PrintIt( cString AS STRING ) CLASS ZHReportForm
 
    QQOut( zh_defaultValue( cString, "" ) )
    QOut()
 
    RETURN Self
 
-METHOD EjectPage() CLASS HBReportForm
+METHOD EjectPage() CLASS ZHReportForm
 
    IF ::lFormFeeds
       EJECT
@@ -440,7 +440,7 @@ METHOD EjectPage() CLASS HBReportForm
 
    RETURN Self
 
-METHOD ReportHeader() CLASS HBReportForm
+METHOD ReportHeader() CLASS ZHReportForm
 
    LOCAL nLinesInHeader
    LOCAL aPageHeader    := {}
@@ -534,7 +534,7 @@ METHOD ReportHeader() CLASS HBReportForm
 
    RETURN Self
 
-METHOD PROCEDURE ExecuteReport() CLASS HBReportForm
+METHOD PROCEDURE ExecuteReport() CLASS ZHReportForm
 
    LOCAL aRecordHeader  := {}          // Header for the current record
    LOCAL aRecordToPrint := {}          // Current record to print
@@ -826,7 +826,7 @@ METHOD PROCEDURE ExecuteReport() CLASS HBReportForm
 
    RETURN
 
-METHOD LoadReportFile( cFrmFile AS STRING ) CLASS HBReportForm
+METHOD LoadReportFile( cFrmFile AS STRING ) CLASS ZHReportForm
 
    LOCAL cFieldsBuff
    LOCAL cParamsBuff
@@ -1005,7 +1005,7 @@ METHOD LoadReportFile( cFrmFile AS STRING ) CLASS HBReportForm
       1. The expression is empty if:
           a. Passed pointer is equal to 65535
           b. Character following character pointed to by pointer is zh_BChar( 0 ) */
-METHOD GetExpr( nPointer AS NUMERIC ) CLASS HBReportForm
+METHOD GetExpr( nPointer AS NUMERIC ) CLASS ZHReportForm
 
    LOCAL nExprOffset
    LOCAL nExprLength
@@ -1113,7 +1113,7 @@ STATIC FUNCTION ParseHeader( cHeaderString, nFields )
       1. The Header or Contents expressions are empty if:
          a. Passed pointer is equal to 65535
          b. Character following character pointed to by pointer is zh_BChar( 0 ) */
-METHOD GetColumn( cFieldsBuffer AS STRING, /* @ */ nOffset AS NUMERIC ) CLASS HBReportForm
+METHOD GetColumn( cFieldsBuffer AS STRING, /* @ */ nOffset AS NUMERIC ) CLASS ZHReportForm
 
    LOCAL aColumn[ RCT_COUNT ]
 
@@ -1198,7 +1198,7 @@ PROCEDURE __ReportForm( cFRMName, lPrinter, cAltFile, lNoConsole, bFor, ;
       bWhile, nNext, nRecord, lRest, lPlain, cHeading, ;
       lBEject, lSummary )
 
-   HBReportForm():New( cFrmName, lPrinter, cAltFile, lNoConsole, bFor, bWhile, nNext, nRecord, ;
+   ZHReportForm():New( cFrmName, lPrinter, cAltFile, lNoConsole, bFor, bWhile, nNext, nRecord, ;
       lRest, lPlain, cHeading, lBEject, lSummary )
 
    RETURN

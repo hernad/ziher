@@ -49,7 +49,7 @@
 
 ZH_FUNC_EXTERN( __ZHNIL );
 
-ZH_FUNC( HBNIL )
+ZH_FUNC( ZHNIL )
 {
    ZH_FUNC_EXEC( __ZHNIL );
 
