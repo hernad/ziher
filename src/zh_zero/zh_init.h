@@ -170,31 +170,19 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
       static ZH_SYMB symbols_table[] = {
 
-   #if defined( __DCC__ )
-      #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
-         }; \
-         static PZH_SYMB symbols = symbols_table; \
-         void __attribute__ ((constructor)) func( void ) \
-         { \
-            symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-         }
 
-      #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
-         void __attribute__ ((constructor)) func( void ) \
-         {
-   #else
-      #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
-         }; \
-         static PZH_SYMB symbols = symbols_table; \
-         static void __attribute__ ((constructor)) func( void ) \
-         { \
-            symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-         }
+   #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
+      }; \
+      static PZH_SYMB symbols = symbols_table; \
+      static void __attribute__ ((constructor)) func( void ) \
+      { \
+         symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
+      }
 
-      #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
-         static void __attribute__ ((constructor)) func( void ) \
-         {
-   #endif
+   #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
+      static void __attribute__ ((constructor)) func( void ) \
+      {
+
 
    #define ZH_CALL_ON_STARTUP_END( func ) \
       }

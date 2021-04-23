@@ -10039,12 +10039,7 @@ ZH_BOOL zh_xvmEqualInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value == ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value == ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10097,12 +10092,7 @@ ZH_BOOL zh_xvmEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value == ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value == ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10168,12 +10158,7 @@ ZH_BOOL zh_xvmNotEqualInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value != ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value != ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10226,12 +10211,7 @@ ZH_BOOL zh_xvmNotEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value != ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value != ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10297,12 +10277,7 @@ ZH_BOOL zh_xvmLessThenInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value < ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value < ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10350,12 +10325,7 @@ ZH_BOOL zh_xvmLessThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value < ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value < ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10416,12 +10386,7 @@ ZH_BOOL zh_xvmLessEqualThenInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value <= ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value <= ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10469,12 +10434,7 @@ ZH_BOOL zh_xvmLessEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value <= ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value <= ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10535,12 +10495,7 @@ ZH_BOOL zh_xvmGreaterThenInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value > ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value > ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10588,12 +10543,7 @@ ZH_BOOL zh_xvmGreaterThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value > ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value > ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10654,12 +10604,7 @@ ZH_BOOL zh_xvmGreaterEqualThenInt( ZH_LONG lValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value >= ( ZH_MAXINT ) lValue;
-      pItem->item.asLogical.value = f;
-#else
       pItem->item.asLogical.value = pItem->item.asLong.value >= ( ZH_MAXINT ) lValue;
-#endif
       pItem->type = ZH_IT_LOGICAL;
    }
    else if( ZH_IS_DOUBLE( pItem ) )
@@ -10707,12 +10652,7 @@ ZH_BOOL zh_xvmGreaterEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
    }
    else if( ZH_IS_LONG( pItem ) )
    {
-#if defined( __DCC__ ) /* NOTE: Workaround for vxworks/diab/x86 5.8.0.0 compiler bug. */
-      ZH_BOOL f = pItem->item.asLong.value >= ( ZH_MAXINT ) lValue;
-      *pfValue = f;
-#else
       *pfValue = pItem->item.asLong.value >= ( ZH_MAXINT ) lValue;
-#endif
       zh_stackDec();
    }
    else if( ZH_IS_DOUBLE( pItem ) )
