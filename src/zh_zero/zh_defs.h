@@ -1350,7 +1350,7 @@ typedef ZH_U32 ZH_FATTR;
 #elif defined( __GNUC__ ) && defined( ZH_OS_LINUX ) && __GNUC__ >= 3
    #define ZH_EXPORT_ATTR     __attribute__ ((visibility ("default")))
 #elif defined( ZH_OS_WIN )
-   #define ZH_EXPORT_ATTR     _declspec( dllexport )
+   #define ZH_EXPORT_ATTR     __declspec( dllexport )
 #else
    #define ZH_EXPORT_ATTR
 #endif
@@ -1366,7 +1366,7 @@ typedef ZH_U32 ZH_FATTR;
 #if defined( __GNUC__ ) && defined( ZH_OS_WIN )
    #define ZH_IMPORT_ATTR     __attribute__ (( dllimport ))
 #elif defined( ZH_OS_WIN )
-   #define ZH_IMPORT_ATTR     _declspec( dllimport )
+   #define ZH_IMPORT_ATTR     __declspec( dllimport )
 #else
    #define ZH_IMPORT_ATTR
 #endif
