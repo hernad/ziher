@@ -54,12 +54,6 @@
 #define ZH_VM_STARTUP
 #include "hbwmain.c"
 
-#if ! defined( ZH_DYNLIB ) && defined( __MINGW32__ )
-ZH_EXTERN_BEGIN
-void zh_forceLinkMainWin( void ) {}
-ZH_EXTERN_END
-#endif
-
 #endif
 
 #endif

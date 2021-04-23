@@ -1,7 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
 load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_LIB")
-
+load("//bazel:windows_dll_library.bzl", "windows_dll_library")
 
 cc_binary(
     name = "hello_world",
@@ -158,22 +158,23 @@ zh_comp_all(
 )
 
 cc_binary(
-    name = "run_hello_dbf",
+    name = "run_hello_dbf_win",
     deps = [
-        ":hello_dbf_lib_c",
-        ":libhello_dbf_so",
+        ":hello_dbf_lib_win_c",
+        ":dll_hello_dbf",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
-        "-Izh_rtl"
+        "-Izh_rtl",
+        "-DZH_DYNIMP"
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
 )
 
 cc_library(
-    name = "hello_dbf_lib_c",
-    srcs = [ "run_hello_dbf.c" ],
+    name = "hello_dbf_lib_win_c",
+    srcs = [ "run_hello_dbf_win.c" ],
     hdrs = glob([
         "*.h",
     ]),
@@ -189,14 +190,22 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-cc_import(
-    name = "libhello_dbf_so",
-    shared_library = "libhello_dbf.so",
-    hdrs = [],
-)
+#cc_import(
+#    name = "libhello_dbf_so",
+#    shared_library = "libhello_dbf.dll",
+#    hdrs = [],
+#    interface_library = "libhello_dbf.lib",
+#    # mylib.dll is provided by system environment, for example it can be found in PATH.
+#    # This indicates that Bazel is not responsible for making mylib.dll available.
+#)
 
-cc_binary(
-    name = "libhello_dbf.so",
+
+windows_dll_library(
+    name = "dll_hello_dbf",
+    srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c" ],
+    hdrs = glob([
+        "*.h",
+    ]),
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
@@ -208,14 +217,14 @@ cc_binary(
         "//zh_rtl/gt:zh_rtl_gt_zh_c",
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
-        ":hello_dbf_zh_lib_c",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
-        "-Izh_rtl"
+        "-Izh_rtl",
+        "/DCOMPILING_DLL"
     ],
     #linkstatic = False,
-    linkshared = True,
+    #linkshared = True,
     visibility = ["//visibility:public"],
 )
 
@@ -232,7 +241,8 @@ cc_library(
        "//zh_vm:zh_vm"
     ],
     copts = [
-        "-Izh_rtl"
+        "-Izh_rtl",
+        "-DZH_DYNLIB"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
@@ -241,7 +251,7 @@ cc_library(
 zh_comp_all(
     name = "hello_dbf_zh_lib", 
     srcs = [ "hello_dbf.zh" ],
-    args = ZH_COMP_OPTS,
+    args = ZH_COMP_OPTS + [ "-DZH_DYNLIB" ],
     deps = [ 
         "//zh_zero:headers", 
         "//zh_rtl:headers" 

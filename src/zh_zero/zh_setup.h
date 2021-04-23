@@ -427,16 +427,10 @@
                      __attribute__ (( pure ))
    #define ZH_CONST_ATTR \
                      __attribute__ (( const ))
-#  if 0
-   #define ZH_NORETURN_ATTR \
-                     __attribute__ (( noreturn ))
-#  else
+
    #define ZH_NORETURN_ATTR
-#  endif
+
 #  if ( ( __GNUC__ > 4 ) || ( __GNUC__ == 4 && __GNUC_MINOR__ >= 1 ) ) && \
-      ! defined( __ICC ) && ! defined( __clang__ ) && \
-      ! defined( __PCC__ ) && \
-      ! defined( ZH_OS_ANDROID ) && \
       ! defined( ZH_NO_FLATTEN )
    #define ZH_FLATTEN_ATTR \
                      __attribute__ (( flatten ))
@@ -472,7 +466,7 @@
    #define ZH_RESTRICT
 #endif
 
-#if defined( __GNUC__ ) || defined( __SUNPRO_C )
+#if defined( __GNUC__ )
    #define _ZH_INLINE_  __inline__
 #elif defined( _MSC_VER )
    #define _ZH_INLINE_  __inline
@@ -483,8 +477,7 @@
 #if defined( __GNUC__ ) && \
     ( ( __GNUC__ > 3 ) || ( ( __GNUC__ == 3 ) && ( __GNUC_MINOR__ >= 2 ) ) )
    #define ZH_FORCEINLINE     __inline__ __attribute__((always_inline))
-#elif ( defined( _MSC_VER ) && ( _MSC_VER >= 1200 ) ) || \
-      ( defined( __POCC__ ) && ( __POCC__ >= 300 ) )
+#elif ( defined( _MSC_VER ) && ( _MSC_VER >= 1200 ) )
    #define ZH_FORCEINLINE     __forceinline
 #elif defined( FORCEINLINE )
    #define ZH_FORCEINLINE     FORCEINLINE

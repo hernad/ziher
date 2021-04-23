@@ -11,6 +11,6 @@ DLLEXPORT char *get_time() {
   return ctime(&ltime);
 }
 
-DLLEXPORT void dll_say_hello(char *message) {
-  printf("Hello from dll!\n%s", message);
+DLLEXPORT void dll_say_hello(char *message, char *message2) {
+  printf("Hello from dll: 1) %s - 2) %s\n", message, message2);
 }

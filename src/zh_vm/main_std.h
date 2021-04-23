@@ -47,9 +47,7 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
-
 ZH_EXTERN_BEGIN
-
 
 ZH_EXTERN_END
 

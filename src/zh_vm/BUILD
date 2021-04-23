@@ -6,7 +6,7 @@ cc_library(
     name = "zh_vm",
     srcs = glob( ["*.c"] + [ "zh_runtime_symbols/init_runtime_symbols.c"]),
     hdrs = glob( ["*.h", "*.zhh"]),
-    copts = C_OPTS,
+    copts = C_OPTS + [ "-DZH_DYNLIB" ],
     #alwayslink = 1,
     deps = [ 
         "//zh_zero:zh_zero",  

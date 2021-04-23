@@ -1170,7 +1170,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    }
 }
 
-int zh_vmQuit( void )
+ZH_EXPORT int zh_vmQuit( void )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -5876,12 +5876,6 @@ void zh_vmDo( ZH_USHORT uiParams )
       ulClock = ( ZH_ULONG ) clock();
 #endif
 
-   /* Poll the console keyboard */
-#if 0
-   #if ! defined( ZH_GUI )
-      zh_inkeyPoll();
-   #endif
-#endif
 
    pSym = zh_stackNewFrame( &sStackState, uiParams )->item.asSymbol.value;
    pSelf = zh_stackSelfItem();   /* NIL, OBJECT or BLOCK */
@@ -12173,21 +12167,4 @@ void zh_vmSetDefaultGT( const char * szGtName )
 ZH_CODEPAGE_REQUEST( ZH_CODEPAGE_DEFAULT )
 ZH_LANG_REQUEST( ZH_LANG_DEFAULT )
 
-#undef ZH_FORCE_LINK_MAIN
 
-#if ! defined( ZH_DYNLIB ) && defined( ZH_OS_WIN ) && defined( __MINGW32__ ) 
-
-#  define ZH_FORCE_LINK_MAIN  zh_forceLinkMainWin
-
-#endif
-
-#ifdef ZH_FORCE_LINK_MAIN
-ZH_EXTERN_BEGIN
-extern void ZH_FORCE_LINK_MAIN( void );
-ZH_EXTERN_END
-extern void _zh_forceLinkMain( void );
-void _zh_forceLinkMain()
-{
-   ZH_FORCE_LINK_MAIN();
-}
-#endif

@@ -1355,23 +1355,26 @@ typedef ZH_U32 ZH_FATTR;
    #define ZH_EXPORT_ATTR
 #endif
 
-#if defined( ZH_DYNLIB )
-   #define ZH_EXPORT    ZH_EXPORT_ATTR
-#else
-   #define ZH_EXPORT
-#endif
-
-#define ZH_EXPORT_INT ZH_EXPORT
-
-#if defined( __GNUC__ ) && defined( ZH_OS_WIN )
-   #define ZH_IMPORT_ATTR     __attribute__ (( dllimport ))
-#elif defined( ZH_OS_WIN )
+#if defined( ZH_OS_WIN )
    #define ZH_IMPORT_ATTR     __declspec( dllimport )
 #else
    #define ZH_IMPORT_ATTR
 #endif
 
 #define ZH_IMPORT    ZH_IMPORT_ATTR
+
+#if defined( ZH_DYNLIB )
+   #define ZH_EXPORT    ZH_EXPORT_ATTR
+#else
+   #if defined( ZH_DYNIMP )
+      /* import from dll */
+      #define ZH_EXPORT ZH_IMPORT_ATTR
+   #else
+      #define ZH_EXPORT
+   #endif
+#endif
+
+#define ZH_EXPORT_INT ZH_EXPORT
 
 #if defined( ZH_OS_WIN )
 
