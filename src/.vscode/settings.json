@@ -10,5 +10,6 @@
         "zh_api.h": "c",
         "zh_regex.h": "c",
         "dbf_cdx_1.h": "c"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }

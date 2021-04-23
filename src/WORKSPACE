@@ -46,7 +46,8 @@ m4_register_toolchains()
 
 new_local_repository(
     name = "postgresql_windows",
-    path = "c:/postgresql/x86/include",
+    #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/include",
+    path = "c:/PostgreSQL/13/include",
     build_file_content = """
 package(
     default_visibility = [
@@ -65,7 +66,8 @@ filegroup(
 
 new_local_repository(
     name = "postgresql_windows_lib",
-    path = "c:/postgresql/x86/lib",
+    #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/lib",
+    path = "c:/PostgreSQL/13/lib",
     build_file_content = """
 package(
     default_visibility = [
