@@ -49,7 +49,7 @@
 #include "zh_fs_api.h"
 #include "zh_item_api.h"
 
-#include "../directory.zhh"
+#include "directory.zhh"
 
 PZH_ITEM zh_fsDirectory( const char * pszDirSpec, const char * pszAttributes, ZH_BOOL fDateTime )
 {

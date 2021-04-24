@@ -56,20 +56,56 @@ cc_library(
 )
 
 filegroup(
-    name = "headers",
+    name = "c_sources",
     srcs = glob([
+        "*.c",
+        "*.h",
+        "zlib/*.c",
+        "codepage/*.c",
+        "crypto/*.c", 
+        "string/*.c", 
+        "file/*.c",
+        "language/*.c",
+        "date/*.c",
+        "memo/*.c",
+        "gt/*.c",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+#filegroup(
+#    name = "headers",
+#    srcs = glob([
+#        "*.h",
+#        "*.zhh",
+#        "zh/*.zhh",
+#        "file/*.zhh",
+#        "crypto/*.h",
+#        "crypto/*.zhh",
+#        "language/*.h",
+#        "zlib/*.h",
+#        "zlib/*.zhh"
+#    ]),
+#    visibility = ["//visibility:public"],
+#)
+
+cc_library(
+    name = "headers",
+    hdrs = glob([
         "*.h",
         "*.zhh",
         "zh/*.zhh",
         "file/*.zhh",
         "crypto/*.h",
         "crypto/*.zhh",
+        "language/*.h",
         "zlib/*.h",
-        "zlib/*.zhh"
+        "zlib/*.zhh",
+        "string/*.h",
+        "string/*.zhh"
     ]),
     visibility = ["//visibility:public"],
 )
-
 
 cc_library(
     name = "zh_rtl_zh_c",

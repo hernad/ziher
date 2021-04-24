@@ -172,8 +172,6 @@ cc_binary(
 )
 
 
-
-
 #cc_import(
 #    name = "libhello_dbf_so",
 #    shared_library = "libhello_dbf.dll",
@@ -183,28 +181,47 @@ cc_binary(
 #    # This indicates that Bazel is not responsible for making mylib.dll available.
 #)
 
+# c:\dev\bazelisk.exe build --explain=explain.log --verbose_explanations //test:run_hello_dbf_win
+
+# bazel-out\x64_windows-fastbuild\bin\test\_objs\dll_hello_dbf.dll
+
+# c:\dev\bazelisk.exe build --subcommands //test:run_hello_dbf_win
+
+# https://stackoverflow.com/questions/43921911/how-to-resolve-bazel-undeclared-inclusions-error
 
 windows_dll_library(
     name = "dll_hello_dbf",
-    srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c", "//zh_vm:c_sources", "//zh_vm:zh_vm_zh" ],
+    srcs = [ 
+       #":hello_dbf_zh_lib", 
+       "lib_hello_dbf_1.c",
+       #"//zh_zero:c_sources",
+       #"//zh_vm:c_sources", 
+       #"//zh_vm:zh_vm_zh"
+       "//zh_rtl:c_sources",
+       "//zh_rtl:zh_rtl_zh",
+    ],
     hdrs = glob([
         "*.h",
-    ]) + [ "//zh_vm:headers"],
+        "*.zhh"
+    ]) + [ "//zh_vm:headers", "//third_party/pcre2:headers", "//third_party/zlib:headers" ],
     deps = [ 
-        "//zh_zero:zh_zero", 
         "//zh_macro:zh_macro",
-        "//zh_rtl:zh_rtl",
-        "//zh_rtl:zh_rtl_zh_c",
-        "//zh_rtl/gt:zh_rtl_gt",
-        "//zh_rtl/gt:zh_rtl_gt_zh_c",
-        "//zh_rtl/rdd:zh_rtl_rdd",
-        "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
+        "//zh_rtl:headers",
+        #"//zh_rtl:zh_rtl",
+        #"//zh_rtl:zh_rtl_zh_c",
+        #"//zh_rtl/gt:zh_rtl_gt",
+        #"//zh_rtl/gt:zh_rtl_gt_zh_c",
+        #"//zh_rtl/rdd:zh_rtl_rdd",
+        #"//zh_rtl/rdd:zh_rtl_rdd_zh_c",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
+        "-DPCRE2_CODE_UNIT_WIDTH=8",
+        "-Izh_vm",
         "-Izh_rtl",
-        "/DCOMPILING_DLL",
-        "/DZH_DYNLIB"
+        "-Ithird_party/zlib",
+        "-Ithird_party/pcre2",
+        "-DZH_DYNLIB"
     ],
     #linkstatic = False,
     #linkshared = True,

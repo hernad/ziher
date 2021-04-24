@@ -23,12 +23,13 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-#windows_dll_library(
-#    name = "zero_win",
-#    srcs = ["lib.cc"],
-#    hdrs = ["lib.h"],
-#    # Define COMPILING_DLL to export symbols during compiling the DLL.
-#    # See lib.h
-#    copts = ["/DCOMPILING_DLL"],
-#)
+filegroup(
+    name = "c_sources",
+    srcs = glob([
+        "*.c"
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+
 

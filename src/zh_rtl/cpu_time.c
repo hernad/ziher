@@ -75,7 +75,6 @@ double zh_secondsCPU( int n )
    FILETIME Create, Exit, Kernel, User;
 #endif
 
-
 if( ( n < 1 || n > 3 ) && ( n < 11 || n > 13 ) )
       n = 3;
 
