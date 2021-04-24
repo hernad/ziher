@@ -190,6 +190,8 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+
+
 #cc_import(
 #    name = "libhello_dbf_so",
 #    shared_library = "libhello_dbf.dll",
@@ -202,14 +204,12 @@ cc_library(
 
 windows_dll_library(
     name = "dll_hello_dbf",
-    srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c" ],
+    srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c", "//zh_vm:c_sources", "//zh_vm:zh_vm_zh" ],
     hdrs = glob([
         "*.h",
-    ]),
+    ]) + [ "//zh_vm:headers"],
     deps = [ 
         "//zh_zero:zh_zero", 
-        "//zh_vm:zh_vm",
-        "//zh_vm:zh_vm_zh_c",
         "//zh_macro:zh_macro",
         "//zh_rtl:zh_rtl",
         "//zh_rtl:zh_rtl_zh_c",

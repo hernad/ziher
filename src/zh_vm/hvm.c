@@ -408,7 +408,7 @@ static void zh_vmDoModuleQuitFunctions( void )
  */
 static void zh_vmDoInitZHVM( void )
 {
-   PZH_DYNS pDynSym = zh_dynsymFind( "__ZZHVMINIT" );
+   PZH_DYNS pDynSym = zh_dynsymFind( "__ZHVMINIT" );
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {

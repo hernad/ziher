@@ -52,3 +52,9 @@ filegroup(
     ]),
     visibility = ["//visibility:public"],
 )
+
+filegroup(
+    name = "c_sources",
+    srcs = glob( ["*.c"] + [ "zh_runtime_symbols/init_runtime_symbols.c"]),
+    visibility = ["//visibility:public"],
+)
