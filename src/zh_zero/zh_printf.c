@@ -160,12 +160,7 @@
 #  else
 #     define _x_long_dbl      long double
 #     define _FL_FIX          0.0078125L
-#     if defined( ZH_NO_MODFL ) || \
-         defined( __MINGW32CE__ ) || defined( ZH_OS_CYGWIN ) || \
-         defined( __OpenBSD__ ) || defined( __NetBSD__ ) || defined( __DragonFly__ ) || \
-         ( defined( __FreeBSD_version ) && __FreeBSD_version < 603000 ) || \
-         defined( ZH_OS_ANDROID ) || \
-         ( defined( ZH_OS_WIN_CE ) && defined( __POCC__ ) ) || defined( ZH_OS_MINIX )
+#     if defined( ZH_NO_MODFL )
 #        define _ZH_WRAP_MODFL_
 #        define _MODFD( x, p )   _zh_modfl( x, p )
 #     else

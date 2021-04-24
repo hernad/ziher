@@ -65,7 +65,7 @@
 #  if ! defined( __WATCOMC__ )
       extern char ** environ;
 #  endif
-#elif defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#elif defined( ZH_OS_WIN )
 #  include "zh_win_unicode.h"
 #  include <windows.h>
 #endif
@@ -103,7 +103,7 @@ ZH_FUNC( ENVPARAM )
       zh_retc_buffer( ( char * ) ZH_UNCONST( zh_osDecodeCP( pResult, NULL, NULL ) ) );
    else
       zh_retc_null();
-#elif defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#elif defined( ZH_OS_WIN )
    LPTCH lpEnviron = GetEnvironmentStrings(), lpEnv;
    LPTSTR lpResult = NULL;
    ZH_SIZE nSize = 0;

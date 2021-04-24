@@ -52,9 +52,6 @@
 #if defined( ZH_OS_WIN )
 
 #include <windows.h>
-#if defined( ZH_OS_WIN_CE )
-   #include "hbwince.h"
-#endif
 
 int zh_gt_winapi_getKbdState( void )
 {

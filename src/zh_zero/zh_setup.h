@@ -302,21 +302,6 @@
    #endif
 #endif
 
-/* Sub-option inside ZH_OS_DARWIN */
-#ifndef ZH_OS_IOS /* Experimental */
-   #if defined( ZH_OS_DARWIN ) && \
-       ( defined( ZH_CPU_ARM ) || defined( __IPHONE_OS_VERSION_MIN_REQUIRED ) )
-      #define ZH_OS_IOS
-   #endif
-#endif
-
-
-#ifndef ZH_OS_ANDROID /* Experimental */
-   #if defined( __ANDROID__ )
-      #define ZH_OS_ANDROID
-   #endif
-#endif
-
 
 #ifndef ZH_OS_UNIX
    #if defined( ZH_OS_LINUX ) || \
@@ -349,11 +334,7 @@
    #define ZH_OS_PATH_DELIM_CHR_LIST    "\\/:"
    #define ZH_OS_ALLFILE_MASK           "*.*"
    #define ZH_OS_DRIVE_DELIM_CHR        ':'
-   #if defined( ZH_OS_WIN_CE )
-      #undef  ZH_OS_HAS_DRIVE_LETTER
-   #else
-      #define ZH_OS_HAS_DRIVE_LETTER
-   #endif
+   #define ZH_OS_HAS_DRIVE_LETTER
    #define ZH_OS_EOL_LEN                2  /* # of bytes in End of Line marker */
    #define ZH_OS_OPT_DELIM_LIST         "/-"
    #define ZH_ISOPTSEP( c )             ( ( c ) == '-' || ( c ) == '/' )

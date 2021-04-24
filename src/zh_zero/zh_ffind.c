@@ -327,7 +327,6 @@ static ZH_BOOL zh_fsFindNextLow( PZH_FFIND ffind )
 
       bFound = ZH_FALSE;
 
-#if ! defined( ZH_OS_WIN_CE )
       if( ( ffind->attrmask & ZH_FA_LABEL ) != 0 && ! info->fLabelDone )
       {
          TCHAR lpVolName[ ZH_PATH_MAX ];
@@ -364,7 +363,6 @@ static ZH_BOOL zh_fsFindNextLow( PZH_FFIND ffind )
          if( mask )
             zh_xfree( mask );
       }
-#endif
 
       if( ! bFound &&
           ( ffind->attrmask & ( ZH_FA_LABEL | ZH_FA_HIDDEN | ZH_FA_SYSTEM |

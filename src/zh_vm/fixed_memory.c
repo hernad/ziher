@@ -93,8 +93,7 @@
 #elif defined( ZH_FM_WIN_ALLOC )
 #  undef ZH_FM_DL_ALLOC
 #elif ! defined( ZH_FM_DL_ALLOC ) && ! defined( ZH_FM_WIN_ALLOC )
-#  if defined( _MSC_VER ) || defined( __MINGW32__ ) || \
-      defined( ZH_FM_DLMT_ALLOC )
+#  if defined( _MSC_VER ) || defined( ZH_FM_DLMT_ALLOC )
 #     define ZH_FM_DL_ALLOC
 #  else
       /* #define ZH_FM_DL_ALLOC */
@@ -112,7 +111,7 @@
 
 #if defined( ZH_FM_DL_ALLOC )
 #  if ! defined( ZH_FM_DLMT_ALLOC ) && ! defined( ZH_FM_DLMT_ALLOC_OFF ) 
-#     if ! ( defined( ZH_OS_WIN_CE ) && ( defined( _MSC_VER ) && ( _MSC_VER <= 1500 ) ) )
+#     if ( defined( _MSC_VER ) && ( _MSC_VER <= 1500 ) )
 #        define ZH_FM_DLMT_ALLOC
 #     endif
 #  endif

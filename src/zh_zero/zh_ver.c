@@ -233,8 +233,6 @@ static int     s_iWinNT    = 0;
 static int     s_iWin9x    = 0;
 static int     s_iWine     = 0;
 
-#if ! defined( ZH_OS_WIN_CE )
-
 #if ( defined( _MSC_VER ) && _MSC_VER < 1400 )
 
    typedef struct _OSVERSIONINFOEXW
@@ -277,11 +275,11 @@ static ZH_BOOL s_zh_winVerifyVersionInit( void )
           s_pVerSetConditionMask;
 }
 
-#endif
+
 
 static void s_zh_winVerInit( void )
 {
-#if ! defined( ZH_OS_WIN_CE )
+
    s_fWin10    = zh_iswinver( 10, 0, 0, ZH_TRUE );
    s_fWin81    = zh_iswinver( 6, 3, 0, ZH_TRUE );
    s_fWin8     = zh_iswinver( 6, 2, 0, ZH_TRUE );
@@ -328,7 +326,7 @@ static void s_zh_winVerInit( void )
 
    if( s_fWin2K )
       s_iWinNT = 5;
-#endif
+
 
    s_fWinVerInit = ZH_TRUE;
 }
@@ -357,11 +355,7 @@ char * zh_verPlatform( void )
 
       memset( &osvi, 0, sizeof( osvi ) );
 
-#if defined( ZH_OS_WIN_CE )
-      pszName = " CE";
-      osvi.dwOSVersionInfoSize = sizeof( osvi );
-      GetVersionEx( &osvi );
-#else
+
       /* Detection of legacy Windows versions */
       switch( zh_iswin9x() )
       {
@@ -381,7 +375,6 @@ char * zh_verPlatform( void )
             pszName = " ME";
             break;
       }
-#endif
 
       if( pszName[ 0 ] == '\0' )
       {
@@ -569,7 +562,7 @@ ZH_BOOL zh_iswinver( int iMajor, int iMinor, int iType, ZH_BOOL fOrUpper )
 
 ZH_BOOL zh_iswinsp( int iServicePackMajor, ZH_BOOL fOrUpper )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    if( s_zh_winVerifyVersionInit() )
    {
       OSVERSIONINFOEXW ver;
@@ -844,10 +837,7 @@ char * zh_verCompiler( void )
    zh_strncat( pszCompiler, szSub, COMPILER_BUF_SIZE - 1 );
 #endif
 
-
-   #if defined( ZH_ARCH_16BIT )
-      zh_strncat( pszCompiler, " (16-bit)", COMPILER_BUF_SIZE - 1 );
-   #elif defined( ZH_ARCH_32BIT )
+   #if defined( ZH_ARCH_32BIT )
       zh_strncat( pszCompiler, " (32-bit)", COMPILER_BUF_SIZE - 1 );
    #elif defined( ZH_ARCH_64BIT )
       zh_strncat( pszCompiler, " (64-bit)", COMPILER_BUF_SIZE - 1 );

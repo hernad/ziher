@@ -45,7 +45,7 @@
  *
  */
 
-#include "hbtypes.h"
+//#include "hbtypes.h"
 
 #if defined( ZH_OS_WIN )
 

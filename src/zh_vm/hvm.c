@@ -12144,6 +12144,7 @@ ZH_FUNC( ERRORLEVEL )
          Don't make this function static, because it's not called from
          this file. [vszakats] */
 
+/* hernad
 extern void zh_vmForceLink( void );
 void zh_vmForceLink( void )
 {
@@ -12151,6 +12152,7 @@ void zh_vmForceLink( void )
 
    ZH_FUNC_EXEC( SYSINIT );
 }
+*/
 
 /* NOTE: Pass string literals only. */
 void zh_vmSetLinkedMain( const char * szMain )

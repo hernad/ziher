@@ -51,22 +51,11 @@
 
    #include <windows.h>
    #include "zh_win_unicode.h"
-   #if defined( ZH_OS_WIN_CE )
-      #include "hbwince.h"
-   #endif
-
+  
 
 #elif defined( __GNUC__ )
 
    #include "zh_io.h"
-
-   /* 2004-03-25 - <maurilio.longo@libero.it>
-      not needed anymore as of GCC 3.2.2 */
-
-   #if defined( __EMX__ ) && __GNUC__ * 1000 + __GNUC_MINOR__ < 3002
-      #include <emx/syscalls.h>
-      #define gethostname __gethostname
-   #endif
 
 #elif defined( ZH_OS_UNIX )
 

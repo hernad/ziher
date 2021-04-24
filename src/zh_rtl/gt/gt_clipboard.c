@@ -53,18 +53,6 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   /* For Global*() */
-   #if defined( ZH_OS_WIN_CE )
-      #include "hbwince.h"
-   #endif
-
-   #if defined( __CYGWIN__ )
-      #include <wchar.h>
-   #elif defined( __POCC__ ) && defined( ZH_OS_WIN_CE )
-      #ifndef GMEM_MOVEABLE
-         #define GMEM_MOVEABLE  2
-      #endif
-   #endif
 #endif
 
 #include "zh_thread.h"

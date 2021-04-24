@@ -72,25 +72,7 @@ ZH_FUNC( ZH_LIBPREFIX )
    #define ZH_DLL_VER      ""
 #endif
 
-#if   defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_ARM )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-wce-arm"
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_MIPS )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-wce-mips"
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_SH )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-wce-sh"
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_X86 )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-wce-x86"
-#elif defined( ZH_OS_WIN_CE )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-wce"
-#elif defined( __BORLANDC__ )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-bcc"
-#elif defined( ZH_OS_WIN_64 ) && defined( ZH_CPU_X86_64 )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-x64"
-#elif defined( ZH_OS_WIN_64 ) && defined( ZH_CPU_IA_64 )
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER "-ia64"
-#else
-   #define ZH_DLL_SUFFIX  ZH_DLL_VER
-#endif
+#define ZH_DLL_SUFFIX  ZH_DLL_VER
 
 ZH_FUNC( ZH_LIBSUFFIX )
 {

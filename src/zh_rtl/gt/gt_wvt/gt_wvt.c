@@ -90,18 +90,7 @@ static ZH_CRITICAL_NEW( s_wvtMtx );
 #define ZH_WVT_LOCK()      zh_threadEnterCriticalSection( &s_wvtMtx )
 #define ZH_WVT_UNLOCK()    zh_threadLeaveCriticalSection( &s_wvtMtx )
 
-
-#if defined( _MSC_VER ) && ( _MSC_VER <= 1200 || defined( ZH_OS_WIN_CE ) ) && ! defined( ZH_ARCH_64BIT )
-#  ifndef GetWindowLongPtr
-#     define GetWindowLongPtr   GetWindowLong
-#  endif
-#  ifndef SetWindowLongPtr
-#     define SetWindowLongPtr   SetWindowLong
-#  endif
-#  define ZH_GTWVT_LONG_PTR     LONG
-#else
 #  define ZH_GTWVT_LONG_PTR     LONG_PTR
-#endif
 
 #ifndef WS_OVERLAPPEDWINDOW
    #define WS_OVERLAPPEDWINDOW  ( WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX )
@@ -1677,11 +1666,7 @@ static void zh_gt_wvt_FitRows( PZH_GTWVT pWVT )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_wvt_FitRows()" ) );
 
-#if defined( ZH_OS_WIN_CE )
-   pWVT->bMaximized = ZH_FALSE;
-#else
    pWVT->bMaximized = IsZoomed( pWVT->hWnd );
-#endif
 
    GetClientRect( pWVT->hWnd, &ci );
    maxWidth = ci.right;
@@ -1709,11 +1694,7 @@ static void zh_gt_wvt_FitSize( PZH_GTWVT pWVT )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_wvt_FitSize()" ) );
 
-#if defined( ZH_OS_WIN_CE )
-   pWVT->bMaximized = ZH_FALSE;
-#else
    pWVT->bMaximized = IsZoomed( pWVT->hWnd );
-#endif
 
    GetClientRect( pWVT->hWnd, &ci );
    GetWindowRect( pWVT->hWnd, &wi );
@@ -1794,13 +1775,10 @@ static void zh_gt_wvt_FitSize( PZH_GTWVT pWVT )
                zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
 #endif
 
-#if defined( ZH_OS_WIN_CE )
-               pWVT->FixedFont = ZH_FALSE;
-#else
+
                pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
                            ( tm.tmPitchAndFamily & TMPF_FIXED_PITCH ) == 0 &&
                            ( pWVT->PTEXTSIZE.x == tm.tmMaxCharWidth );
-#endif
                for( n = 0; n < pWVT->COLS; n++ )
                   pWVT->FixedSize[ n ] = pWVT->PTEXTSIZE.x;
 
@@ -1936,13 +1914,10 @@ static void zh_gt_wvt_ResetWindowSize( PZH_GTWVT pWVT, HFONT hFont )
    zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
 #endif
 
-#if defined( ZH_OS_WIN_CE )
-   pWVT->FixedFont = ZH_FALSE;
-#else
+
    pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
                      ( tm.tmPitchAndFamily & TMPF_FIXED_PITCH ) == 0 &&
                      ( pWVT->PTEXTSIZE.x == tm.tmMaxCharWidth );
-#endif
 
    /* pWVT->FixedSize[] is used by ExtTextOut() to emulate
       fixed font when a proportional font is used */
@@ -2018,14 +1993,12 @@ static void zh_gt_wvt_ResetWindowSize( PZH_GTWVT pWVT, HFONT hFont )
             SetWindowPos( pWVT->hWnd, NULL, wi.left, wi.top, width, height, SWP_NOSIZE | SWP_NOZORDER );
          }
       }
-#if ! defined( ZH_OS_WIN_CE )
       /* This code creates infinite recursive calls in WinCE */
       else
       {
          /* Will resize window without moving left/top origin */
          SetWindowPos( pWVT->hWnd, NULL, wi.left, wi.top, width, height, SWP_NOZORDER );
       }
-#endif
    }
 
    ZH_GTSELF_EXPOSEAREA( pWVT->pGT, 0, 0, pWVT->ROWS, pWVT->COLS );
@@ -2156,10 +2129,6 @@ static int zh_gt_wvt_UpdateKeyFlags( int iFlags )
 
 static void zh_gt_wvt_Composited( PZH_GTWVT pWVT, ZH_BOOL fEnable )
 {
-#if defined( ZH_OS_WIN_CE )
-   ZH_SYMBOL_UNUSED( pWVT );
-   ZH_SYMBOL_UNUSED( fEnable );
-#else
    if( zh_iswinvista() && ! GetSystemMetrics( SM_REMOTESESSION ) )
    {
       pWVT->bComposited = fEnable;
@@ -2168,7 +2137,6 @@ static void zh_gt_wvt_Composited( PZH_GTWVT pWVT, ZH_BOOL fEnable )
       else
          SetWindowLongPtr( pWVT->hWnd, GWL_EXSTYLE, GetWindowLongPtr( pWVT->hWnd, GWL_EXSTYLE ) & ~WS_EX_COMPOSITED );
    }
-#endif
 }
 
 static void zh_gt_wvt_SetCloseButton( PZH_GTWVT pWVT )
@@ -2374,7 +2342,6 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
                 rect.right  != pWVT->sRectOld.right  ||
                 rect.bottom != pWVT->sRectOld.bottom )
             {
-#if ! defined( ZH_OS_WIN_CE )  /* WinCE does not support InvertRgn */
                /* Concept forwarded by Andy Wos - thanks. */
                HRGN rgn1 = CreateRectRgn( pWVT->sRectOld.left, pWVT->sRectOld.top, pWVT->sRectOld.right, pWVT->sRectOld.bottom );
                HRGN rgn2 = CreateRectRgn( rect.left, rect.top, rect.right, rect.bottom );
@@ -2390,12 +2357,7 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
                DeleteObject( rgn1 );
                DeleteObject( rgn2 );
                DeleteObject( rgn3 );
-#else
-               HDC hdc = GetDC( pWVT->hWnd );
-               InvertRect( hdc, &pWVT->sRectOld );
-               InvertRect( hdc, &rect );
-               ReleaseDC( pWVT->hWnd, hdc );
-#endif
+
                pWVT->sRectOld.left   = rect.left;
                pWVT->sRectOld.top    = rect.top;
                pWVT->sRectOld.right  = rect.right;
@@ -3988,17 +3950,10 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
             void * hIconName;
 
             if( iType == ZH_GTI_ICONFILE )
-#if defined( ZH_OS_WIN_CE )
-               hIcon = hIconToFree = ( HICON )
-                       LoadImage( ( HINSTANCE ) NULL,
-                                  ZH_ITEMGETSTR( pInfo->pNewVal, &hIconName, NULL ),
-                                  IMAGE_ICON, 0, 0, LR_LOADFROMFILE );
-#else
                hIcon = hIconToFree = ( HICON )
                        LoadImage( ( HINSTANCE ) NULL,
                                   ZH_ITEMGETSTR( pInfo->pNewVal, &hIconName, NULL ),
                                   IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE );
-#endif
             else
                hIcon = LoadIcon( pWVT->hInstance,
                                  ZH_ITEMGETSTR( pInfo->pNewVal, &hIconName, NULL ) );
@@ -4195,12 +4150,7 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
                   pWVT->bSelectCopy = ZH_TRUE;
                   if( hSysMenu )
                   {
-#if defined( ZH_OS_WIN_CE )  /* WinCE does not support ModifyMenu */
-                     DeleteMenu( hSysMenu, SYS_EV_MARK, MF_BYCOMMAND );
-                     AppendMenu( hSysMenu, MF_STRING, SYS_EV_MARK, pWVT->lpSelectCopy );
-#else
                      ModifyMenu( hSysMenu, SYS_EV_MARK, MF_BYCOMMAND | MF_STRING | MF_ENABLED, SYS_EV_MARK, pWVT->lpSelectCopy );
-#endif
                   }
                }
             }

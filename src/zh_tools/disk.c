@@ -92,7 +92,7 @@ ZH_FUNC( DIRNAME )
 
 ZH_FUNC( DRIVETYPE )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    ZH_SIZE nSize = zh_parclen( 1 ) + 2;  /* allow space for '\0' & ":\" */
    char * pszDrive = ( char * ) zh_xgrab( nSize + 1 );
    LPCTSTR lpDrive;
@@ -185,7 +185,7 @@ ZH_FUNC( VOLUME )
 {
    ZH_BOOL bReturn = ZH_FALSE;
 
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    if( ! ct_getsafety() )
    {
       const char * pszRoot = NULL;
@@ -233,7 +233,7 @@ ZH_FUNC( VOLUME )
 
 ZH_FUNC( VOLSERIAL )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    DWORD dwSerial = 0;
    void * hDrive;
    ZH_SIZE nLen;
@@ -261,7 +261,7 @@ ZH_FUNC( TRUENAME )
 {
    if( ZH_ISCHAR( 1 ) )
    {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
       void * hFile;
       TCHAR buffer[ MAX_PATH + 1 ];
 

@@ -51,9 +51,6 @@
 
 #if defined( ZH_OS_WIN )
    #include <windows.h>
-   #if defined( ZH_OS_WIN_CE )
-      #include "hbwince.h"
-   #endif
 #endif
 
 #define ZH_DLL_PREF      TEXT( "ziher" )
@@ -62,19 +59,7 @@
 
 #define ZH_DLL_NAME      ZH_DLL_PREF ZH_DLL_EXT
 
-#if   defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_ARM )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-wce-arm" ) ZH_DLL_EXT
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_MIPS )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-wce-mips" ) ZH_DLL_EXT
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_SH )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-wce-sh" ) ZH_DLL_EXT
-#elif defined( ZH_OS_WIN_CE ) && defined( ZH_CPU_X86 )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-wce-x86" ) ZH_DLL_EXT
-#elif defined( ZH_OS_WIN_CE )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-wce" ) ZH_DLL_EXT
-#elif defined( __BORLANDC__ )
-   #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-bcc" ) ZH_DLL_EXT
-#elif defined( ZH_OS_WIN_64 ) && defined( ZH_CPU_X86_64 )
+#if defined( ZH_OS_WIN_64 ) && defined( ZH_CPU_X86_64 )
    #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-x64" ) ZH_DLL_EXT
 #elif defined( ZH_OS_WIN_64 ) && defined( ZH_CPU_IA_64 )
    #define ZH_DLL_NAME2  ZH_DLL_PREF ZH_DLL_VER TEXT( "-ia64" ) ZH_DLL_EXT
@@ -133,13 +118,8 @@ PZH_FUNC zh_dllGetProcAddress( const char * szProcName )
 
          do
          {
-#if defined( ZH_OS_WIN_CE )
-            LPCTSTR s_lpGetProcAddr = TEXT( "_dll_zh_vmProcAddress" );
-            s_pProcGet = ( ZH_PROC_GET ) GetProcAddress( s_hModule, s_lpGetProcAddr + i );
-#else
             static const char * s_szGetProcAddr = "_dll_zh_vmProcAddress";
             s_pProcGet = ( ZH_PROC_GET ) GetProcAddress( s_hModule, s_szGetProcAddr + i );
-#endif
          }
          while( s_pProcGet == NULL && ( i -= i == 4 ? 3 : 1 ) >= 0 );
          if( s_pProcGet == NULL )
@@ -151,11 +131,7 @@ PZH_FUNC zh_dllGetProcAddress( const char * szProcName )
 }
 
 
-#if defined( ZH_OS_WIN_CE ) && ( defined( _MSC_VER ) || defined( __POCC__ ) )
-BOOL WINAPI ZH_DLL_ENTRY_POINT( HANDLE hInstance, DWORD dwReason, PVOID pvReserved )
-#else
 BOOL WINAPI ZH_DLL_ENTRY_POINT( HINSTANCE hInstance, DWORD dwReason, PVOID pvReserved )
-#endif
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "DllEntryPoint(%p, %lu, %p)", hInstance, dwReason, pvReserved ) );
 

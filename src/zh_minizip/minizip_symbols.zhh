@@ -13,11 +13,11 @@
 #ifndef __ZHEXTERN_ZH__ZHMZIP__
 #define __ZHEXTERN_ZH__ZHMZIP__
 
-#if defined( __HBEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__ANNOUNCE )
+#if defined( __ZHEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__ANNOUNCE )
    ANNOUNCE __ZHEXTERN__ZHMZIP__
 #endif
 
-#if defined( __HBEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__REQUEST )
+#if defined( __ZHEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__REQUEST )
    #command DYNAMIC <fncs,...> => EXTERNAL <fncs>
 #endif
 
@@ -48,7 +48,7 @@ DYNAMIC zh_zipStoreFile
 DYNAMIC zh_zipStoreFileHandle
 DYNAMIC zh_zipStoreFileMem
 
-#if defined( __HBEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__REQUEST )
+#if defined( __ZHEXTREQ__ ) .OR. defined( __ZHEXTERN__ZHMZIP__REQUEST )
    #uncommand DYNAMIC <fncs,...> => EXTERNAL <fncs>
 #endif
 

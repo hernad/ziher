@@ -159,36 +159,18 @@ zh_comp_all(
 
 cc_binary(
     name = "run_hello_dbf_win",
+    srcs = ["run_hello_dbf_win.c"],
     deps = [
-        ":hello_dbf_lib_win_c",
         ":dll_hello_dbf",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
-        "-Izh_rtl",
         "-DZH_DYNIMP"
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
 )
 
-cc_library(
-    name = "hello_dbf_lib_win_c",
-    srcs = [ "run_hello_dbf_win.c" ],
-    hdrs = glob([
-        "*.h",
-    ]),
-    deps = [ 
-       "//zh_zero:zh_zero", 
-       "//zh_rtl:zh_rtl",
-       "//zh_vm:zh_vm"
-    ],
-    copts = [
-        "-Izh_rtl"
-    ],
-    alwayslink=1,
-    visibility = ["//visibility:public"],
-)
 
 
 
@@ -221,7 +203,8 @@ windows_dll_library(
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_rtl",
-        "/DCOMPILING_DLL"
+        "/DCOMPILING_DLL",
+        "/DZH_DYNLIB"
     ],
     #linkstatic = False,
     #linkshared = True,

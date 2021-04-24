@@ -146,7 +146,7 @@ ZH_BOOL zh_fsLinkSym( const char * pszTarget, const char * pszNewFile )
    {
       zh_vmUnlock();
 
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
       {
          typedef BOOL ( WINAPI * _ZH_CREATESYMBOLICLINK )( LPCTSTR, LPCTSTR, DWORD );
 

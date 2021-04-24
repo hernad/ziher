@@ -71,9 +71,6 @@
 #elif defined( ZH_OS_WIN )
 #  include <windows.h>
 #  include "zh_win_unicode.h"
-#  if defined( ZH_OS_WIN_CE )
-#     include "hbwince.h"
-#  endif
 #endif
 
 
@@ -216,39 +213,7 @@ static int zh_fsProcessExec( const char * pszFileName,
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_fsProcessExec(%s, %p, %p, %p)", pszFileName, ( void * ) ( ZH_PTRUINT ) hStdin, ( void * ) ( ZH_PTRUINT ) hStdout, ( void * ) ( ZH_PTRUINT ) hStderr ) );
 
-#if defined( ZH_OS_WIN_CE )
-{
-   LPTSTR lpAppName, lpParams;
-   ZH_BOOL fError;
-
-   ZH_SYMBOL_UNUSED( hStdin );
-   ZH_SYMBOL_UNUSED( hStdout );
-   ZH_SYMBOL_UNUSED( hStderr );
-
-   zh_getCommand( pszFileName, &lpAppName, &lpParams );
-
-   zh_vmUnlock();
-   fError = ! CreateProcess( lpAppName,      /* lpAppName */
-                             lpParams,       /* lpCommandLine */
-                             NULL,           /* lpProcessAttr */
-                             NULL,           /* lpThreadAttr */
-                             FALSE,          /* bInheritHandles */
-                             0,              /* dwCreationFlags */
-                             NULL,           /* lpEnvironment */
-                             NULL,           /* lpCurrentDirectory */
-                             NULL,           /* lpStartupInfo */
-                             NULL );         /* lpProcessInformation */
-   zh_fsSetIOError( ! fError, 0 );
-   if( ! fError )
-      iResult = 0;
-   zh_vmLock();
-
-   if( lpAppName )
-      zh_xfree( lpAppName );
-   if( lpParams )
-      zh_xfree( lpParams );
-}
-#elif defined( ZH_OS_WIN ) || defined( ZH_OS_UNIX )
+#if defined( ZH_OS_WIN ) || defined( ZH_OS_UNIX )
 {
    int iStdIn, iStdOut, iStdErr;
    char ** argv;
@@ -317,8 +282,6 @@ static int zh_fsProcessExec( const char * pszFileName,
 #else
 #  if defined( _MSC_VER )
       iResult = _spawnvp( _P_WAIT, argv[ 0 ], argv );
-#  elif defined( __MINGW32__ )
-      iResult = spawnvp( P_WAIT, argv[ 0 ], ( const char * const * ) argv );
 #  else
       iResult = spawnvp( P_WAIT, argv[ 0 ], ( char * const * ) argv );
 #  endif
@@ -799,9 +762,8 @@ int zh_fsProcessRun( const char * pszFileName,
 #if defined( ZH_PROCESS_USEFILES )
 {
 
-#if defined( ZH_OS_WIN_CE )
-#  define _ZH_NULLHANDLE()    FS_ERROR
-#elif defined( ZH_OS_UNIX )
+
+#if defined( ZH_OS_UNIX )
 #  define _ZH_NULLHANDLE()    open( "/dev/null", O_RDWR )
 #else
 #  define _ZH_NULLHANDLE()    open( "NUL:", O_RDWR )

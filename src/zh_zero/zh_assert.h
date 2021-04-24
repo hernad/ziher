@@ -49,7 +49,7 @@
 
 #include "zh_api.h"
 
-#if ( defined( ZH_OS_WIN_CE ) && defined( _MSC_VER ) ) || ! defined( ZH_TR_LEVEL_DEBUG )
+#if ! defined( ZH_TR_LEVEL_DEBUG )
    #ifndef assert
       #define assert( exp )   ( ( void ) 0 )
    #endif

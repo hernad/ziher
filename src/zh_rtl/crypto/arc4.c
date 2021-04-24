@@ -175,11 +175,10 @@ static int arc4_seed_win( void )
    /* NOTE: CryptAcquireContextW() is not available on Win95, but
             because we don't need to pass any strings in this context,
             CryptAcquireContextA() can be used safely here. [vszakats] */
-   #if ! defined( ZH_OS_WIN_CE )
-      #undef CryptAcquireContext
-      #define CryptAcquireContext  CryptAcquireContextA
-   #endif
-
+   
+   #undef CryptAcquireContext
+   #define CryptAcquireContext  CryptAcquireContextA
+ 
    if( ! s_provider_set &&
        ! CryptAcquireContext( &s_provider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT ) &&
        GetLastError() != ( DWORD ) NTE_BAD_KEYSET )

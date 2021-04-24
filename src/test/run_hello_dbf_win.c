@@ -45,14 +45,14 @@ File Type: EXECUTABLE IMAGE
                          1EA dll_say_hello
 */
 
-   puts("************************** run_hello_dbf *****************************");
+   puts("************************** run_hello_dbf win *****************************");
    //ZH_TRACE( ZH_TR_DEBUG, ( "main(%d, %p)", argc, ( void * ) argv ) );
    
    zh_cmdargInit( argc, argv );
    puts("-- 2 --");
    zh_vmInit( 1 );
    puts("");
-   puts("************************ end run_hello_dbf ****************************");
+   puts("************************ end run_hello_dbf win ****************************");
 
    return zh_vmQuit();
 }

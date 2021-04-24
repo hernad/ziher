@@ -89,7 +89,7 @@
    #include <winnetwk.h>
 #endif
 
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
 static ZH_BOOL zh_IsNetShared( const char * szLocalDevice )
 {
    TCHAR lpRemoteDevice[ ZH_PATH_MAX ];
@@ -111,7 +111,7 @@ static ZH_BOOL zh_IsNetShared( const char * szLocalDevice )
 
 ZH_FUNC( NETCANCEL )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    void * hDevice;
 
    DWORD dwResult = WNetCancelConnection( ZH_PARSTRDEF( 1, &hDevice, NULL ), TRUE );  /* FALSE = fail if exist open files or print jobs. */
@@ -128,7 +128,7 @@ ZH_FUNC( NETCANCEL )
 
 ZH_FUNC( NETPRINTER )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    const char * cPrn = zh_setGetCPtr( ZH_SET_PRINTFILE );  /* query default local printer port. */
 
    if( ! cPrn || ! *cPrn || zh_stricmp( cPrn, "PRN" ) == 0 )
@@ -141,7 +141,7 @@ ZH_FUNC( NETPRINTER )
 
 ZH_FUNC( NETDISK )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    const char * pszDrive = zh_parc( 1 );
 
    if( pszDrive )
@@ -161,7 +161,7 @@ ZH_FUNC( NETDISK )
 
 ZH_FUNC( NETREDIR )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    void * hLocalDev;
    void * hSharedRes;
    void * hPassword;
@@ -182,7 +182,7 @@ ZH_FUNC( NETREDIR )
 
 ZH_FUNC( NETRMTNAME )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    void * hLocalDev;
 
    TCHAR lpRemoteDevice[ 128 ];
@@ -208,7 +208,7 @@ ZH_FUNC( NETRMTNAME )
 
 ZH_FUNC( NETWORK )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    DWORD dwResult;
    TCHAR lpProviderName[ 128 ];
    DWORD dwLen = ZH_SIZEOFARRAY( lpProviderName );
@@ -231,7 +231,7 @@ ZH_FUNC( NETWORK )
 
 ZH_FUNC( NNETWORK )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    TCHAR lpProviderName[ 128 ];
    DWORD dwLen = ZH_SIZEOFARRAY( lpProviderName );
 

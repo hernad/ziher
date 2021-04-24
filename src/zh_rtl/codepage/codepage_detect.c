@@ -70,7 +70,7 @@ ZH_FUNC( __WAPI_GETOEMCP )
 
 ZH_FUNC( __WAPI_GETCONSOLEOUTPUTCP )
 {
-#if defined( ZH_OS_WIN ) && ! defined( ZH_OS_WIN_CE )
+#if defined( ZH_OS_WIN )
    zh_retnl( GetConsoleOutputCP() );
 #else
    zh_retnl( 0 );

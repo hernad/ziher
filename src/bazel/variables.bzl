@@ -4,6 +4,7 @@ _DARWIN_COPTS = [
 ]
 _WINDOWS_COPTS = [
     "-DZH_OS_WIN",
+    "-DZH_OS_WIN_64",
     "-Izh_rtl"
 ]
 _LINUX_COPTS = [
