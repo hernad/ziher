@@ -174,6 +174,7 @@ int zh_tr_level( void )
    if( s_level == -1 )
    {
       char env[ ZH_PATH_MAX ];
+      char str_i[ ZH_PATH_MAX ];
       int enabled = s_enabled;
 
       /* protection against recursive or concurrent calls */
@@ -199,12 +200,16 @@ int zh_tr_level( void )
           env[ 0 ] != '\0' )
       {
          int i;
+         //printf("ZH_TR_LEVEL: %s\n", env);
 
          for( i = 0; i < ZH_TR_LAST; ++i )
          {
-            if( zh_stricmp( env, s_slevel[ i ] ) == 0 ||
-                zh_stricmp( env, s_slevel[ i ] + 6 ) == 0 )
+            //if( zh_stricmp( env, s_slevel[ i ] ) == 0 ||
+            //    zh_stricmp( env, s_slevel[ i ] + 6 ) == 0 )
+            sprintf(str_i, "%d", i);
+            if (zh_stricmp(env, str_i) == 0)
             {
+               //printf("ZH_TR_LEVEL: %d\n", i);
                s_level = i;
                break;
             }
@@ -227,6 +232,7 @@ int zh_tr_level( void )
    }
 
    return s_level;
+
 }
 
 static void zh_tracelog_( int level, const char * file, int line, const char * proc,

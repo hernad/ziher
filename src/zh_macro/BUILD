@@ -11,6 +11,22 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "c_sources",
+    srcs = glob( ["*.c"]) + [":zh_macro_y"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = glob( [
+        "*.h", 
+        "*.zhh"
+    ]) ,
+    visibility = ["//visibility:public"],
+)
+
+
 #bison_cc_library(
 #    name = "zh_macroy",
 #    src = "zh_macro.y",

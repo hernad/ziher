@@ -14,9 +14,9 @@ cc_library(
     includes = ["."],
 )
 
-filegroup(
+cc_library(
     name = "headers",
-    srcs = glob([
+    hdrs = glob([
         "*.h",
         "*.zhh",
     ]),

@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_LIB")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
 load("//bazel:windows_dll_library.bzl", "windows_dll_library")
 
 cc_binary(
@@ -161,11 +161,14 @@ cc_binary(
     name = "run_hello_dbf_win",
     srcs = ["run_hello_dbf_win.c"],
     deps = [
+        "//zh_zero:headers",
         ":dll_hello_dbf",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
-        "-DZH_DYNIMP"
+        "-Izh_zero",
+        "-DZH_DYNIMP",
+        "-DZH_TR_LEVEL=5",
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
@@ -189,40 +192,59 @@ cc_binary(
 
 # https://stackoverflow.com/questions/43921911/how-to-resolve-bazel-undeclared-inclusions-error
 
+#C:\dev\ziher\src>dumpbin /imports  bazel-bin\test\run_hello_dbf_win.exe | grep zh
+#                         C76 zh_vmQuit
+#                         C57 zh_vmInit
+#                         71C zh_cmdargInit
+
 windows_dll_library(
     name = "dll_hello_dbf",
     srcs = [ 
-       #":hello_dbf_zh_lib", 
+       ":hello_dbf_zh_lib", 
        "lib_hello_dbf_1.c",
-       #"//zh_zero:c_sources",
-       #"//zh_vm:c_sources", 
-       #"//zh_vm:zh_vm_zh"
+       "//zh_zero:c_sources",
+       "//zh_vm:c_sources", 
+       "//zh_vm:zh_vm_zh",
+       "//zh_macro:c_sources",
        "//zh_rtl:c_sources",
        "//zh_rtl:zh_rtl_zh",
+       "//zh_rtl/gt:c_sources",
+       "//zh_rtl/gt:zh_rtl_gt_zh",
+       "//zh_rtl/rdd:c_sources",
+       "//zh_rtl/rdd:zh_rtl_rdd_zh",
+       "//third_party/zlib:c_sources",
+       "//third_party/pcre2:c_sources"
     ],
     hdrs = glob([
         "*.h",
         "*.zhh"
-    ]) + [ "//zh_vm:headers", "//third_party/pcre2:headers", "//third_party/zlib:headers" ],
+    ]) + POSTGRESQL_HEADERS,
     deps = [ 
-        "//zh_macro:zh_macro",
+        "//zh_zero:headers",
+        "//zh_vm:headers",
+        "//zh_macro:headers",
+        "//zh_comp:headers",
         "//zh_rtl:headers",
-        #"//zh_rtl:zh_rtl",
-        #"//zh_rtl:zh_rtl_zh_c",
-        #"//zh_rtl/gt:zh_rtl_gt",
-        #"//zh_rtl/gt:zh_rtl_gt_zh_c",
-        #"//zh_rtl/rdd:zh_rtl_rdd",
-        #"//zh_rtl/rdd:zh_rtl_rdd_zh_c",
+        "//zh_rtl/gt:headers",
+        "//zh_rtl/rdd:headers",
+        "//third_party/zlib:headers",
+        "//third_party/pcre2:headers",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
+        "-DSUPPORT_UNICODE",
+        "-DHAVE_CONFIG_H",
         "-DPCRE2_CODE_UNIT_WIDTH=8",
+        "-Izh_zero",
         "-Izh_vm",
         "-Izh_rtl",
+        "-Izh_rtl/rdd/rdd_sql",
         "-Ithird_party/zlib",
         "-Ithird_party/pcre2",
-        "-DZH_DYNLIB"
-    ],
+        "-DZH_DYNLIB",
+        "-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
     visibility = ["//visibility:public"],
@@ -242,7 +264,8 @@ cc_library(
     ],
     copts = [
         "-Izh_rtl",
-        "-DZH_DYNLIB"
+        "-DZH_DYNLIB",
+        "-DZH_TR_LEVEL=5"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
@@ -251,7 +274,7 @@ cc_library(
 zh_comp_all(
     name = "hello_dbf_zh_lib", 
     srcs = [ "hello_dbf.zh" ],
-    args = ZH_COMP_OPTS + [ "-DZH_DYNLIB" ],
+    args = ZH_COMP_OPTS + [ "-DZH_DYNLIB", "-DZH_TR_LEVEL=5" ],
     deps = [ 
         "//zh_zero:headers", 
         "//zh_rtl:headers" 

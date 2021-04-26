@@ -570,5 +570,5 @@ ZH_CALL_ON_STARTUP_END( _zh_zsock_init_ )
    #pragma startup _zh_zsock_init_
 #elif defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( _zh_zsock_init_ )
-   #include "../zh_ini_seg.h"
+   #include "zh_ini_seg.h"
 #endif

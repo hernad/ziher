@@ -421,6 +421,7 @@ static void zh_vmDoInitZHVM( void )
 /* call __SetHelpK() if HELP() function is linked */
 static void zh_vmDoInitHelp( void )
 {
+
    PZH_DYNS pDynSym = zh_dynsymFind( "HELP" );
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
@@ -1128,13 +1129,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
          }
          else
          {
-//#ifndef ZH_START_PROCEDURE
-//            pszMain = NULL;
-//#else
+            //ZH_START_PROCEDURE = "MAIN"
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
             if( ! ( pDynSym && pDynSym->pSymbol->value.pFunPtr ) )
-//#endif
             {
                if( s_vm_pszLinkedMain )
                {

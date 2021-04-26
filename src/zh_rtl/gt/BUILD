@@ -65,13 +65,15 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-
 filegroup(
+    name = "c_sources",
+    srcs = _C_SRC,
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
     name = "headers",
-    srcs = glob([
-        "*.h",
-        "*.zhh",
-    ]),
+    hdrs = _C_HDR,
     visibility = ["//visibility:public"],
 )
 
@@ -99,3 +101,5 @@ zh_comp_all(
     deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
     visibility = ["//visibility:public"],
 )
+
+

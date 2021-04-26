@@ -17,8 +17,16 @@ cc_library(
 )
 
 filegroup(
-    name = "headers",
+    name = "c_sources",
     srcs = glob([
+        "*.c"
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = glob([
         "*.h",
         "*.zhh",
     ]),

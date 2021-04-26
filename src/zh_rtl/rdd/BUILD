@@ -54,17 +54,53 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+
 filegroup(
-    name = "headers",
+    name = "c_sources",
     srcs = glob([
-        "*.h",
-        "*.zhh",
-        "rdd_sql/*.h",
-        "rdd_sql/*.zhh"
-    ]),
+        "*.c",
+        #"nul_sys/*.c",
+        "dbf_cdx/*.c",
+        "dbf_fpt/*.c",
+        "dbf_nsx/*.c",
+        "dbf_six/*.c",
+        "hsx/*.c",
+        "rdd_misc/*.c",
+        "rdd_sql/*.c",
+        "rdd_usr/*.c",
+        "sdd_pgsql/*.c"
+    ]) + [
+        "//zh_rtl:headers",
+        "//zh_rtl/rdd:headers"
+    ] + POSTGRESQL_HEADERS,
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "headers",
+    hdrs = glob( [
+        "*.h", 
+        "*.zhh",
+        #"nul_sys/*.h",
+        "dbf_cdx/*.h",
+        "dbf_cdx/*.zhh",
+        "dbf_fpt/*.h",
+        "dbf_fpt/*.zhh",
+        "dbf_nsx/*.h",
+        "dbf_nsx/*.zhh",
+        "dbf_six/*.h",
+        "dbf_six/*.zhh",
+        "hsx/*.h",
+        "rdd_misc/*.h",
+        "rdd_sql/*.h",
+        "rdd_sql/*.zhh",
+        "rdd_usr/*.h",
+        "rdd_usr/*.zhh",
+        "sdd_pgsql/*.h",
+        "sdd_pgsql/*.zhh"
+    ]),
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = "zh_rtl_rdd_zh_c",

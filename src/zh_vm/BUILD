@@ -44,9 +44,9 @@ zh_comp_all(
     visibility = ["//visibility:public"],
 )
 
-filegroup(
+cc_library(
     name = "headers",
-    srcs = glob([
+    hdrs = glob([
         "*.h",
         "*.zhh"
     ]),

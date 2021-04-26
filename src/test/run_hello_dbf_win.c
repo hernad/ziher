@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-//#include "zh_vm_pub.h"
+#include "zh_vm_pub.h"
+#include "zh_trace.h"
 //#include "zh_pcode.h"
 //#include "zh_init.h"
 //#include "zh_xvm.h"
@@ -46,7 +47,7 @@ File Type: EXECUTABLE IMAGE
 */
 
    puts("************************** run_hello_dbf win *****************************");
-   //ZH_TRACE( ZH_TR_DEBUG, ( "main(%d, %p)", argc, ( void * ) argv ) );
+   ZH_TRACE( ZH_TR_INFO, ( "main(%d, %p)", argc, ( void * ) argv ) );
    
    zh_cmdargInit( argc, argv );
    puts("-- 2 --");

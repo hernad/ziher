@@ -68,5 +68,6 @@ PROCEDURE __ZHVMInit()
 PROCEDURE __SetHelpK()
 
    //SetKey( K_F1, {| p, l, v | __XHelp( p, l, v ) } )
+   Alert("__SetHelpK")
 
    RETURN
