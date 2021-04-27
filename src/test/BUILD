@@ -3,6 +3,17 @@ load("//bazel:zh_comp.bzl", "zh_comp_all")
 load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
 load("//bazel:windows_dll_library.bzl", "windows_dll_library")
 
+#load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
+#bool_flag(
+#    name = "arch_x86",
+#    build_setting_default = False, 
+#    visibility = ["//visibility:public"],
+#)
+#config_setting(
+#    name = "is_flag_at_top_enabled",
+#    flag_values = {":arch_x86": "True"},
+#)
+
 cc_binary(
     name = "hello_world",
     deps = [ 
@@ -177,10 +188,11 @@ cc_binary(
 
 windows_dll_library(
     name = "hello_dbf",
-    srcs = [ 
-       ":hello_dbf_zh_lib", 
-       "lib_hello_dbf_1.c"
-    ],
+    #srcs = select({
+    #    ":is_flag_at_top_enabled": ["top.txt"],
+    #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    #}),
+    #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
     hdrs = glob([
         "*.h",
         "*.zhh"
