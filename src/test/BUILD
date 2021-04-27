@@ -168,7 +168,7 @@ cc_binary(
     copts = [
         "-Izh_zero",
         "-DZH_DYNIMP",
-        "-DZH_TR_LEVEL=5",
+        #"-DZH_TR_LEVEL=5",
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
