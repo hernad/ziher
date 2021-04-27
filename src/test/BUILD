@@ -162,7 +162,7 @@ cc_binary(
     srcs = ["run_hello_dbf_win.c"],
     deps = [
         "//zh_zero:headers",
-        ":dll_hello_dbf",
+        ":hello_dbf",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -174,6 +174,33 @@ cc_binary(
     visibility = ["//visibility:public"],
 )
 
+
+windows_dll_library(
+    name = "hello_dbf",
+    srcs = [ 
+       ":hello_dbf_zh_lib", 
+       "lib_hello_dbf_1.c"
+    ],
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + POSTGRESQL_HEADERS,
+    deps = [ 
+        ":ziher",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        "-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+)
 
 #cc_import(
 #    name = "libhello_dbf_so",
@@ -198,7 +225,7 @@ cc_binary(
 #                         71C zh_cmdargInit
 
 windows_dll_library(
-    name = "dll_hello_dbf",
+    name = "ziher",
     srcs = [ 
        ":hello_dbf_zh_lib", 
        "lib_hello_dbf_1.c",
@@ -242,7 +269,7 @@ windows_dll_library(
         "-Ithird_party/zlib",
         "-Ithird_party/pcre2",
         "-DZH_DYNLIB",
-        "-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=4", #INFO
         #"-DZH_TR_LEVEL=5", DEBUG
     ]  + POSTGRESQL_COPT,
     #linkstatic = False,
