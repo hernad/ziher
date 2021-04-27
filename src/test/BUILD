@@ -194,7 +194,7 @@ windows_dll_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        "-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=4", #INFO
         #"-DZH_TR_LEVEL=5", DEBUG
     ]  + POSTGRESQL_COPT,
     #linkstatic = False,
