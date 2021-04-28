@@ -30,15 +30,22 @@ cc_library(
     includes = ["*.*", "string/*.*"]
 )
 
-filegroup(
+cc_library(
     name = "headers",
-    srcs = glob([
+    hdrs = glob([
         "*.h",
         "*.zhh",
     ]),
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "c_sources",
+    srcs = glob( [
+        "*.c",
+    ]),
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = ZH_LIB + "_zh_c",
