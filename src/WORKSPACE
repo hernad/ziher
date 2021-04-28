@@ -58,113 +58,38 @@ new_local_repository(
     name = "postgresql_windows",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/include",
     path = "c:/PostgreSQL/13/include",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
-)
-filegroup(
-    name = "headers",
-    srcs = glob([
-        "*.h",
-        "*/*.h"
-    ])
-)
-"""
+    build_file_content = "postgresql_windows.BUILD"
 )
 
 new_local_repository(
     name = "postgresql_windows_lib",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/lib",
     path = "c:/PostgreSQL/13/lib",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
+    build_file="postgresql_windows_lib.BUILD"
+    
 )
-cc_library(
-    name = "postgresql_lib",
-    srcs = glob([
-        "libpq.lib", "libcrypto.lib" ])
-)
-"""
-)
-
-
 
 new_local_repository(
     name = "postgresql_x86_windows",
-    #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/include",
     path = "c:/PostgreSQL-x86/10/include",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
-)
-filegroup(
-    name = "headers",
-    srcs = glob([
-        "*.h",
-        "*/*.h"
-    ])
-)
-"""
+    build_file="postgresql_windows.BUILD"
 )
 
 new_local_repository(
     name = "postgresql_x86_windows_lib",
-    #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/lib",
     path = "c:/PostgreSQL-x86/10/lib",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
-)
-cc_library(
-    name = "postgresql_lib",
-    srcs = glob([
-        "libpq.lib", "libcrypto.lib" ])
-)
-"""
+    build_file = "postgresql_windows_lib.BUILD"
 )
 
 
 new_local_repository(
     name = "postgresql_linux",
     path = "/usr/include",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
-)
-filegroup(
-    name = "headers",
-    srcs = glob([
-        "*.h",
-        "*/*.h",
-        "*/*/*.h"
-    ])
-)
-"""
+    build_file  = "postgresql_linux.BUILD"
 )
 
 new_local_repository(
     name = "postgresql_linux_lib",
     path = "/usr/lib64",
-    build_file_content = """
-package(
-    default_visibility = [
-        "//visibility:public",
-    ],
-)
-cc_library(
-    name = "postgresql_lib",
-    srcs = ["libpq.so","libcrypt.so","libssl.so"]
-)
-"""
+    build_file = "postgresql_linux_lib.BUILD"
 )

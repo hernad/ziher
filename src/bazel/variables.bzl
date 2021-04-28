@@ -32,7 +32,6 @@ _WINDOWS_LOPTS_2 = [
     "libcrypto.lib",
     "/LIBPATH:external/postgresql_windows_lib"
 ]
-
 _WINDOWS_X86_LOPTS_2 = [
     "kernel32.lib",
     "ws2_32.lib",
@@ -99,6 +98,7 @@ C_OPTS = select({
         "//conditions:default": _LINUX_COPTS,
     })
 
+
 L_OPTS = select({
         "//bazel:windows_x86": _WINDOWS_X86_LOPTS,
         "//bazel:windows_x64": _WINDOWS_LOPTS,
@@ -108,29 +108,32 @@ L_OPTS = select({
 
 L_OPTS_2 = select({
         "//bazel:windows_x86": _WINDOWS_X86_LOPTS_2,
-        "@bazel_tools//src/conditions:darwin": _LINUX_LOPTS_2,
         "//bazel:windows_x64": _WINDOWS_LOPTS_2,
+        "@bazel_tools//src/conditions:darwin": _LINUX_LOPTS_2,
         "//conditions:default": _LINUX_LOPTS_2,
-    })
+    }) + []
+
 
 POSTGRESQL_HEADERS = select({
         "//bazel:windows_x86": _WINDOWS_X86_POSTGRESQL_HEADERS,
-        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_HEADERS,
         "//bazel:windows_x64": _WINDOWS_POSTGRESQL_HEADERS,
+        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_HEADERS,
         "//conditions:default": _LINUX_POSTGRESQL_HEADERS,
     })
 
+
 POSTGRESQL_LIB = select({
         "//bazel:windows_x86": _WINDOWS_X86_POSTGRESQL_LIB,
-        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_LIB,
         "//bazel:windows_x64": _WINDOWS_POSTGRESQL_LIB,
+        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_LIB,
         "//conditions:default": _LINUX_POSTGRESQL_LIB,
     })
 
+
 POSTGRESQL_COPT = select({
         "//bazel:windows_x86": _WINDOWS_X86_POSTGRESQL_COPT,
-        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_COPT,
         "//bazel:windows_x64": _WINDOWS_POSTGRESQL_COPT,
+        "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_COPT,
         "//conditions:default": _LINUX_POSTGRESQL_COPT,
     })
 
