@@ -58,7 +58,7 @@ new_local_repository(
     name = "postgresql_windows",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/include",
     path = "c:/PostgreSQL/13/include",
-    build_file_content = "postgresql_windows.BUILD"
+    build_file = "postgresql_windows.BUILD"
 )
 
 new_local_repository(
