@@ -1144,11 +1144,11 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
          if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
             s_pSymStart = pDynSym->pSymbol;
-#ifdef ZH_START_PROC_STRICT
-         else
-            /* clear startup symbol set by initialization code */
-            s_pSymStart = NULL;
-#endif
+//#ifdef ZH_START_PROC_STRICT
+//         else
+//            /* clear startup symbol set by initialization code */
+//            s_pSymStart = NULL;
+//#endif
 
          if( bStartMainProc && ! s_pSymStart )
          {

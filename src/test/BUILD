@@ -193,6 +193,7 @@ windows_dll_library(
     #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
     #}),
     #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    srcs = [ ":hello_dbf_zh_lib" ], 
     hdrs = glob([
         "*.h",
         "*.zhh"
@@ -239,7 +240,6 @@ windows_dll_library(
 windows_dll_library(
     name = "ziher",
     srcs = [ 
-       ":hello_dbf_zh_lib", 
        "lib_hello_dbf_1.c",
        "//zh_zero:c_sources",
        "//zh_vm:c_sources", 

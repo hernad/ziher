@@ -1,7 +1,7 @@
 FIELD id
 
 
-PROCEDURE Main()
+PROCEDURE MAIN()
 
    LOCAL aDbf
    LOCAL cName := "test.dbf"

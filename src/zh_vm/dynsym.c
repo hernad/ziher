@@ -312,7 +312,7 @@ PZH_DYNS zh_dynsymNew( PZH_SYMB pSymbol )
 
 #if defined( ZH_OVERLOAD_MULTIPLE_FUNC )
             /* In such way works MinGW, DJGPP, BCC */
-#if defined( __GNUC__ ) && ! defined( __DJGPP__ )
+#if defined( __GNUC__ )
             /* MinGW (like most of other GCC ports) uses reverted order for
              * initialization functions
              */

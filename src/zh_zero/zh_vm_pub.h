@@ -49,9 +49,7 @@
 
 #include "zh_defs.h"
 
-/* Maximum symbol name length handled by Ziher compiler and runtime.
-   For strict CA-Cl*pper compatibility a value of 10 would have
-   to be used, but Ziher won't properly compile using this setting. */
+/* Maximum symbol name length handled by Ziher compiler and runtime. */
 #define ZH_SYMBOL_NAME_LEN   63
 
 ZH_EXTERN_BEGIN
@@ -171,14 +169,6 @@ struct _ZH_SYMB;
    typedef void *  PZH_PCODEFUNC;
 
    typedef void    ZH_STACK;
-
-   /*
-    * The first version reduce the number of modification in existing 3rd
-    * party code but in longer terms I'd prefer to disable it and left
-    * only the second one where PZH_DYNS is mapped to void*.
-    * This will allow us to fully redesign dynamic symbol internals
-    * in the future if it will be necessary. [druzus]
-    */
 
    typedef void *  PZH_DYNS;
 

@@ -112,8 +112,6 @@ FUNCTION tip_MailSend( cServer, nPort, cFrom, xTo, xCC, xBCC, cBody, cSubject, ;
    LOCAL oError
    LOCAL cUrl
 
-   altd()
-
    /* consider any empty values invalid */
    IF Empty( cServer )
       cServer := NIL
