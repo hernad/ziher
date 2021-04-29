@@ -28,7 +28,7 @@ cc_library(
     name = "headers",
     hdrs = glob([
         "*.h",
-        "*.zhh",
+        "**/*.h",
     ]),
     visibility = ["//visibility:public"],
 )

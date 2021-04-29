@@ -44,6 +44,8 @@
  *
  */
 
+#define SLASH  PathSeparator()
+
 FUNCTION zh_HPDF_IsVersion( ma, mi, mu )
 
    LOCAL HPDF_MAJOR_VERSION, HPDF_MINOR_VERSION, HPDF_BUGFIX_VERSION
@@ -55,3 +57,172 @@ FUNCTION zh_HPDF_IsVersion( ma, mi, mu )
       ( HPDF_MAJOR_VERSION == ma .AND. ;
       ( HPDF_MINOR_VERSION > mi .OR. ;
       ( HPDF_MINOR_VERSION == mi .AND. HPDF_BUGFIX_VERSION >= mu ) ) )
+
+
+#ifdef __PLATFORM__LINUX
+
+FUNCTION is_linux()
+
+   RETURN .T.
+
+FUNCTION is_windows()
+
+   RETURN .F.
+
+FUNCTION is_mac()
+
+   RETURN .F.
+#endif
+
+
+#ifdef __PLATFORM__DARWIN
+
+FUNCTION is_linux()
+
+   RETURN .F.
+
+FUNCTION is_windows()
+
+   RETURN .F.
+
+FUNCTION is_mac()
+
+   RETURN .T.
+
+#endif
+
+
+#ifdef __PLATFORM__WINDOWS
+
+FUNCTION is_windows()
+
+   RETURN .T.
+
+FUNCTION is_mac()
+
+   RETURN .F.
+
+FUNCTION is_linux()
+
+   RETURN .F.
+
+#endif
+
+FUNCTION f18_run()
+   alert("dummy f18_run")
+   RETURN 100
+
+FUNCTION f18_open_mime_document( cDocument )
+
+   LOCAL cCmd := "", nError, cPrefixCmd
+
+   alert("dummy f18_open_mime_document")
+
+   RETURN 100
+      
+FUNCTION windows_run_invisible( cProg, cArgumenti, cStdOut, cStdErr, lAsync )
+
+   LOCAL nBytes := 0, cBuf := Space( 4 ), lStaraVerzija := .F.
+   LOCAL cDirF18Util := f18_exe_path() + "F18_util" + SLASH
+   LOCAL cStart, cCmd
+   LOCAL nH, cArg, cArg2
+   LOCAL cVer := "'006"
+
+   zh_default( @lAsync, .F. )
+   IF DirChange( cDirF18Util ) != 0  // e.g. F18.exe/F18_util
+      IF MakeDir( cDirF18Util ) != 0
+         Alert( "Kreiranje dir: " + cDirF18Util + " neuspješno?! STOP" )
+         RETURN -1
+      ENDIF
+   ENDIF
+
+   IF !is_windows()
+      RETURN -1
+   ENDIF
+
+   cArg := Token( cArgumenti, ";", 1 )
+   cArg2 := Token( cArgumenti, ";", 2 )
+
+   IF File( cDirF18Util + "run_invisible.vbs" )
+      nH := FOpen( cDirF18Util + "run_invisible.vbs" )
+      nBytes := FRead( nH, @cBuf, 4 )
+      FClose( nH )
+      IF nBytes < 4 .OR. cBuf != cVer
+         lStaraVerzija := .T.
+      ENDIF
+   ENDIF
+
+   IF lStaraVerzija .OR. !File( cDirF18Util + "run_invisible.vbs" )
+      nH := FCreate( cDirF18Util + "run_invisible.vbs" )
+
+      FWrite( nH, cVer + zh_eol() )
+      FWrite( nH, 'Dim cArg1, cArg2, cArg3, cArg4, cUserProfile, cShortUserProfile' + zh_eol() )
+      FWrite( nH, 'Set objShell = WScript.CreateObject("WScript.Shell")' + zh_eol() )
+      FWrite( nH, 'Set fso = CreateObject("Scripting.FileSystemObject")' + zh_eol() )
+      FWrite( nH, 'cUserProfile=objShell.ExpandEnvironmentStrings("%UserProfile%")' + zh_eol() )
+
+      // https://www.codeproject.com/Tips/44521/Get-DOS-short-name-with-VbScript
+
+      FWrite( nH, 'if fso is nothing then' + zh_eol() )
+      FWrite( nH, '   WScript.echo "fso not object?!"' + zh_eol() )
+      FWrite( nH, 'end if' + zh_eol() )
+
+      FWrite( nH, 'On Error Resume Next' + zh_eol() )
+      FWrite( nH, 'Set fsoFile = fso.GetFile( cUserProfile )' + zh_eol() )
+      FWrite( nH, 'if Err.number <> 0 then' + zh_eol() )
+      FWrite( nH, '        Set fsoFile = fso.GetFolder( cUserProfile )' + zh_eol() )
+      FWrite( nH, 'end if' + zh_eol() )
+      FWrite( nH, 'if fsoFile is not nothing then' + zh_eol() )
+      FWrite( nH, '   cShortUserProfile = fsoFile.ShortPath' + zh_eol() )
+      FWrite( nH, 'end if' + zh_eol() )
+      // ' WScript.echo objShell.Environment("System").Item("NUMBER_OF_PROCESSORS")
+      FWrite( nH, 'cArg1=replace(Wscript.arguments(0),cUserProfile,cShortUserProfile)' + zh_eol() )
+      FWrite( nH, 'cArg2=replace(Wscript.arguments(1),cUserProfile,cShortUserProfile)' + zh_eol() )
+      FWrite( nH, 'cArg3=replace(Wscript.arguments(2),cUserProfile,cShortUserProfile)' + zh_eol() )
+      FWrite( nH, 'cArg4=replace(Wscript.arguments(3),cUserProfile,cShortUserProfile)' + zh_eol() )
+      FWrite( nH, 'objShell.Run cArg1 & " " & cArg2 & " " & cArg3 & " " & cArg4, 0, True' )
+
+      FClose( nH )
+   ENDIF
+
+   cCmd := 'wscript '
+   cCmd += cDirF18Util + 'run_invisible.vbs '
+
+   IF lAsync
+      cCmd += '"cmd /c start" '
+   ELSE
+      cCmd += '"cmd /c" '
+   ENDIF
+
+   cCmd += '"' + cProg + '" "' + cArg + '" "' + cArg2 + '"'
+
+   //?E cCmd
+
+   RETURN zh_processRun( cCmd, NIL, @cStdOut, @cStdErr, lAsync )
+      
+FUNCTION PDF_open_dokument( cFile )
+
+   LOCAL cCmd, nRet
+
+   IF is_windows()
+      cCmd := PDF_cmd()
+      nRet := windows_run_invisible( cCmd, cFile )
+   ELSE
+      nRet := f18_open_mime_document( cFile )
+   ENDIF
+
+   RETURN nRet
+
+   FUNCTION f18_exe_path()
+
+   RETURN zh_FNameDir( zh_ProgName() )
+
+
+FUNCTION f18_util_path()
+   RETURN ".." + SLASH + "F18_util" + SLASH
+
+FUNCTION f18_template_path()
+   RETURN ".." + SLASH + "F18_template" + SLASH
+
+FUNCTION f18_template_file_name( cTemplate )
+   RETURN f18_exe_path() + f18_template_path() + cTemplate
