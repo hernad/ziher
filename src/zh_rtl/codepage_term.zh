@@ -233,8 +233,8 @@ STATIC FUNCTION __codepageStdToZiher( cCPStd, cCtryStd )
             ENDIF
          NEXT
          FOR EACH cCodePage IN aCP
-            ? "cCodePage:", cCodePage, "c", cCPStd 
-            inkey(0)
+            //? "cCodePage:", cCodePage, "c", cCPStd 
+            //inkey(0)
             //cCodePage: EN                                                                                                                                   
             //cCodePage: UTF8                                                                                                                                 
             //cCodePage: UTF8EX                                                                                                                               
