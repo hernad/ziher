@@ -57,7 +57,7 @@ ZH_FUNC( CODEPAGESELECT )
    zh_retc( zh_cdpID() );
 
    if( id )
-      codepageSelectID( id );
+      zh_codepageSelectID( id );
 }
 
 ZH_FUNC( CODEPAGEEXISTS )

@@ -882,7 +882,7 @@ PZH_ITEM zh_setGetItem( ZH_set_enum set_specifier, PZH_ITEM pResult,
          if( pArg1 != NULL )
          {
             if( ZH_IS_STRING( pArg1 ) )
-               codepageSelectID( zh_itemGetCPtr( pArg1 ) );
+               zh_codepageSelectID( zh_itemGetCPtr( pArg1 ) );
             else
                zh_errRT_BASE( EG_ARG, 2020, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
          }
@@ -1707,7 +1707,7 @@ ZH_BOOL zh_setSetItem( ZH_set_enum set_specifier, PZH_ITEM pItem )
          case ZH_SET_CODEPAGE:
             if( ZH_IS_STRING( pItem ) )
             {
-               codepageSelectID( zh_itemGetCPtr( pItem ) );
+               zh_codepageSelectID( zh_itemGetCPtr( pItem ) );
                fResult = ZH_TRUE;
             }
             break;

@@ -616,7 +616,7 @@ static LPCDXKEY zh_cdxKeyEval( LPCDXKEY pKey, LPCDXTAG pTag )
 {
    CDXAREAP pArea = pTag->pIndex->pArea;
    PZH_ITEM pItem;
-   PZH_CODEPAGE cdpTmp = codepageSelect( pArea->dbfarea.area.cdPage );
+   PZH_CODEPAGE cdpTmp = zh_codepageSelect( pArea->dbfarea.area.cdPage );
 
    if( pTag->nField )
    {
@@ -640,7 +640,7 @@ static LPCDXKEY zh_cdxKeyEval( LPCDXKEY pKey, LPCDXTAG pTag )
          zh_rddSelectWorkAreaNumber( iCurrArea );
    }
 
-   codepageSelect( cdpTmp );
+   zh_codepageSelect( cdpTmp );
 
    return pKey;
 }
@@ -9530,7 +9530,7 @@ static void zh_cdxTagDoIndex( LPCDXTAG pTag, ZH_BOOL fReindex )
    PZH_ITEM pWhileItem = NULL, pEvalItem = NULL;
    ZH_ULONG ulRecCount, ulRecNo = pArea->dbfarea.ulRecNo;
    ZH_LONG lStep = 0;
-   PZH_CODEPAGE cdpTmp = codepageSelect( pArea->dbfarea.area.cdPage );
+   PZH_CODEPAGE cdpTmp = zh_codepageSelect( pArea->dbfarea.area.cdPage );
 
    if( pArea->dbfarea.area.lpdbOrdCondInfo )
    {
@@ -9821,7 +9821,7 @@ static void zh_cdxTagDoIndex( LPCDXTAG pTag, ZH_BOOL fReindex )
    zh_cdxSortFree( pSort );
    pArea->pSort = NULL;
 
-   codepageSelect( cdpTmp );
+   zh_codepageSelect( cdpTmp );
 }
 
 

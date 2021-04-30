@@ -861,7 +861,7 @@ void zh_vmThreadInit( void * Cargo )
    {
       ZH_STACK_TLS_PRELOAD
 
-      codepageSelectID( pState->pszCDP );
+      zh_codepageSelectID( pState->pszCDP );
       zh_langSelectID( pState->pszLang );
 
       zh_vmSetI18N( pState->pI18N );
@@ -1032,7 +1032,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
    zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
-   codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
+   zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
    {
       ZH_STACK_TLS_PRELOAD
       s_main_thread = zh_stackId();
