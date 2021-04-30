@@ -60,7 +60,7 @@ static ZH_BOOL zh_sxSemName( char * szFileName )
 
    if( szName && szName[ 0 ] )
    {
-      zh_cdpnDup2Lower( zh_vmCDP(), szName, strlen( szName ),
+      zh_cdpnDup2Lower( zh_vmCodepage(), szName, strlen( szName ),
                         szFileName, ZH_PATH_MAX );
       szFileName[ ZH_PATH_MAX - 1 ] = '\0';
       fResult = ZH_TRUE;
@@ -82,7 +82,7 @@ static ZH_BOOL zh_sxSemName( char * szFileName )
          szName = zh_itemGetCPtr( pOrderInfo.itmResult );
          if( szName && szName[ 0 ] )
          {
-            zh_cdpnDup2Lower( zh_vmCDP(), szName, strlen( szName ),
+            zh_cdpnDup2Lower( zh_vmCodepage(), szName, strlen( szName ),
                               szFileName, ZH_PATH_MAX );
             szFileName[ ZH_PATH_MAX - 1 ] = '\0';
             fResult = ZH_TRUE;

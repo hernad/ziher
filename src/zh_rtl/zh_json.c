@@ -472,7 +472,7 @@ static const char * _zh_jsonDecode( const char * szSource, PZH_ITEM pValue, PZH_
                         return NULL;
                      }
                   }
-                  szHead += zh_cdpU16ToStr( cdp ? cdp : zh_vmCDP(), ZH_CODEPAGE_ENDIAN_NATIVE,
+                  szHead += zh_cdpU16ToStr( cdp ? cdp : zh_vmCodepage(), ZH_CODEPAGE_ENDIAN_NATIVE,
                                             &wc, 1, szHead, szDest + nAlloc - szHead );
                   break;
                }
@@ -490,7 +490,7 @@ static const char * _zh_jsonDecode( const char * szSource, PZH_ITEM pValue, PZH_
             return NULL;
          }
       }
-      if( cdp && zh_vmCDP() != cdp )
+      if( cdp && zh_vmCodepage() != cdp )
          zh_itemPutStrLen( pValue, cdp, szDest, szHead - szDest );
       else
          zh_itemPutCL( pValue, szDest, szHead - szDest );

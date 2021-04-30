@@ -53,7 +53,7 @@ FUNCTION zh_cdpTerm()
 
 #if defined( __PLATFORM__WINDOWS )
    LOCAL tmp
-   cCP := __CPWinToCPStd( iif( ( tmp := __wapi_GetConsoleOutputCP() ) == 0, __wapi_GetOEMCP(), tmp ) )
+   cCP := __codepageWinToCPStd( iif( ( tmp := __wapi_GetConsoleOutputCP() ) == 0, __wapi_GetOEMCP(), tmp ) )
    cLang := zh_UserLang()
 #elif defined( __PLATFORM__UNIX )
    LOCAL tmp
@@ -61,7 +61,7 @@ FUNCTION zh_cdpTerm()
                                   GetEnv( "LC_CTYPE" ), tmp ), @cLang )
 #endif
 
-   RETURN __CPStdToHb( cCP, cLang )
+   RETURN __codepageStdToZiher( cCP, cLang )
 
 FUNCTION codepageOS()
 
@@ -69,18 +69,20 @@ FUNCTION codepageOS()
    LOCAL cLang
 
 #if defined( __PLATFORM__WINDOWS )
-   cCP := __CPWinToCPStd( __wapi_GetACP() )
+   cCP := __codepageWinToCPStd( __wapi_GetACP() )
    cLang := zh_UserLang()
+   // Alert("CP: " + cCP + " Lang: " + cLang)
+   // CP: cp1252 Lang=
+
 #elif defined( __PLATFORM__UNIX )
    LOCAL tmp
    cCP := __UnixParseLangCP( iif( ( tmp := GetEnv( "LANG" ) ) == "", ;
                                   GetEnv( "LC_CTYPE" ), tmp ), @cLang )
 #endif
-
-   RETURN __CPStdToHb( cCP, cLang )
+   RETURN __codepageStdToZiher( cCP, cLang )
 
 #if defined( __PLATFORM__WINDOWS )
-STATIC FUNCTION __CPWinToCPStd( nCPWin )
+STATIC FUNCTION __codepageWinToCPStd( nCPWin )
 
    SWITCH nCPWin
    CASE 65001 ; RETURN "utf8"
@@ -209,7 +211,7 @@ STATIC FUNCTION __UnixParseLangCP( cString, /* @ */ cLang )
 
 #endif
 
-STATIC FUNCTION __CPStdToHb( cCPStd, cCtryStd )
+STATIC FUNCTION __codepageStdToZiher( cCPStd, cCtryStd )
 
    LOCAL cCtryHb
    LOCAL cdp
@@ -222,16 +224,17 @@ STATIC FUNCTION __CPStdToHb( cCPStd, cCtryStd )
       CASE "utf16"
          RETURN "UTF16LE"
       OTHERWISE
-         aCP := zh_cdpList()
-         cCtryHb := __LangStdToCPCtryZh( cCtryStd )
+         aCP := zh_codepageList()
+         //Alert("aCp:" + Str(Len(aCp)))
+         cCtryHb := __LangStdToCodepageCtryZh( cCtryStd )
          FOR EACH cdp IN aCP
-            IF zh_LeftEq( cdp, cCtryHb ) .AND. cCPStd == zh_cdpUniID( cdp )
+            IF zh_LeftEq( cdp, cCtryHb ) .AND. cCPStd == zh_codepageUniID( cdp )
                RETURN cdp
             ENDIF
          NEXT
          FOR EACH cdp IN aCP
-            IF cCPStd == zh_cdpUniID( cdp )
-               RETURN zh_cdpUniID( cdp )
+            IF cCPStd == zh_codepageUniID( cdp )
+               RETURN zh_codepageUniID( cdp )
             ENDIF
          NEXT
       ENDSWITCH
@@ -239,7 +242,7 @@ STATIC FUNCTION __CPStdToHb( cCPStd, cCtryStd )
 
    RETURN NIL
 
-STATIC FUNCTION __LangStdToCPCtryZh( cCtryStd )
+STATIC FUNCTION __LangStdToCodepageCtryZh( cCtryStd )
 
    SWITCH Lower( cCtryStd )
 #if 0
@@ -485,4 +488,6 @@ STATIC FUNCTION __LangStdToCPCtryZh( cCtryStd )
 #endif
    ENDSWITCH
 
+   //Alert("Lang:" + cCtryStd + "codepageSelect(): " + codepageSelect())
+   // => EN
    RETURN Left( codepageSelect(), 2 )  /* Caller assumes this never returns strings shorter than two chars */

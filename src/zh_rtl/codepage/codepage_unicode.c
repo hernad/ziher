@@ -61,7 +61,7 @@ ZH_FUNC( ZH_UCHAR )
       char szChar[ ZH_MAX_CHAR_LEN ];
       ZH_SIZE nLen;
 
-      nLen = zh_cdpTextPutU16( zh_vmCDP(), szChar, sizeof( szChar ),
+      nLen = zh_cdpTextPutU16( zh_vmCodepage(), szChar, sizeof( szChar ),
                                            ( ZH_WCHAR ) zh_parni( 1 ) );
       zh_retclen( szChar, nLen );
    }
@@ -92,7 +92,7 @@ ZH_FUNC( ZH_UCODE )
    PZH_ITEM pText = zh_param( 1, ZH_IT_STRING );
 
    if( pText )
-      zh_retni( zh_cdpTextGetU16( zh_vmCDP(), zh_itemGetCPtr( pText ),
+      zh_retni( zh_cdpTextGetU16( zh_vmCodepage(), zh_itemGetCPtr( pText ),
                                               zh_itemGetCLen( pText ) ) );
    else
       zh_errRT_BASE_SubstR( EG_ARG, 1111, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
@@ -119,7 +119,7 @@ ZH_FUNC( ZH_ULEN )
    PZH_ITEM pText = zh_param( 1, ZH_IT_STRING );
 
    if( pText )
-      zh_retns( zh_cdpTextLen( zh_vmCDP(), zh_itemGetCPtr( pText ),
+      zh_retns( zh_cdpTextLen( zh_vmCodepage(), zh_itemGetCPtr( pText ),
                                            zh_itemGetCLen( pText ) ) );
    else
       zh_errRT_BASE_SubstR( EG_ARG, 1111, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
@@ -160,7 +160,7 @@ ZH_FUNC( ZH_UPEEK )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * szText = zh_itemGetCPtr( pText );
       ZH_SIZE nLen = zh_itemGetCLen( pText );
       ZH_SIZE nPos = zh_parns( 2 );
@@ -207,7 +207,7 @@ ZH_FUNC( ZH_UPOKE )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) && ZH_IS_PARAM_NUM( 3 ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * szText = zh_itemGetCPtr( pText );
       ZH_SIZE nLen = zh_itemGetCLen( pText );
       ZH_SIZE nPos = zh_parns( 2 );
@@ -282,7 +282,7 @@ ZH_FUNC( ZH_USUBSTR )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) && ( iPCount < 3 || ZH_IS_PARAM_NUM( 3 ) ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * pszText = zh_itemGetCPtr( pText );
       ZH_ISIZ nSize = zh_itemGetCLen( pText );
       ZH_ISIZ nFrom = zh_parns( 2 );
@@ -382,7 +382,7 @@ ZH_FUNC( ZH_ULEFT )
       {
          ZH_SIZE nText = zh_itemGetCLen( pText );
          if( ( ZH_SIZE ) nLen < nText )
-            nLen = zh_cdpTextPos( zh_vmCDP(), zh_itemGetCPtr( pText ), nText, nLen );
+            nLen = zh_cdpTextPos( zh_vmCodepage(), zh_itemGetCPtr( pText ), nText, nLen );
          if( ( ZH_SIZE ) nLen >= nText )
             zh_itemReturn( pText );
          else
@@ -429,7 +429,7 @@ ZH_FUNC( ZH_URIGHT )
    {
       if( ( ZH_SIZE ) nLen < nText )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          ZH_SIZE nChars = zh_cdpTextLen( cdp, zh_itemGetCPtr( pText ), nText );
          if( nChars > ( ZH_SIZE ) nLen )
             nLen = nText - zh_cdpTextPos( cdp, zh_itemGetCPtr( pText ), nText, nChars - nLen );
@@ -474,7 +474,7 @@ ZH_FUNC( ZH_UAT )
 
    if( pText && pSub )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * pszText = zh_itemGetCPtr( pText );
       ZH_SIZE nTextLength = zh_itemGetCLen( pText );
       ZH_SIZE nStart = zh_parns( 3 );
@@ -683,7 +683,7 @@ ZH_FUNC( ZH_USTUFF )
 
    if( szText && szIns && ZH_IS_PARAM_NUM( 2 ) && ZH_IS_PARAM_NUM( 3 ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nLen = zh_parclen( 1 );
       ZH_SIZE nPos = zh_parns( 2 );
       ZH_SIZE nDel = zh_parns( 3 );

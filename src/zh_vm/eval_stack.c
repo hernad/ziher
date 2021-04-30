@@ -1039,8 +1039,8 @@ void zh_stackWithObjectSetOffset( ZH_ISIZ nOffset )
    zh_stack.nWithObject = nOffset;
 }
 
-#undef zh_stackGetCDP
-void * zh_stackGetCDP( void )
+#undef zh_stackGetCodepage
+void * zh_stackGetCodepage( void )
 {
    ZH_STACK_TLS_PRELOAD
    return zh_stack.pCDP;

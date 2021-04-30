@@ -59,7 +59,7 @@ ZH_FUNC( RAT )
 
       if( nTo >= 0 )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          const char * pszSub = zh_parc( 1 );
          const char * pszText = zh_parc( 2 );
 
@@ -94,7 +94,7 @@ ZH_FUNC( ZH_RAT )
 
       if( nTo >= 0 )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          const char * pszSub = zh_parc( 1 );
          const char * pszText = zh_parc( 2 );
          ZH_ISIZ nStart = zh_parns( 3 );

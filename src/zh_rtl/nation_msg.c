@@ -86,7 +86,7 @@ ZH_FUNC( __NATISAFFIRM )
 
       if( nStr && nLen >= nStr )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          if( cdp )
             fIS = zh_cdpicmp( zh_parc( 1 ), nLen, szYesNo, nStr, cdp, ZH_FALSE ) == 0;
          else
@@ -113,7 +113,7 @@ ZH_FUNC( __NATISNEGATIVE )
 
       if( nStr && nLen >= nStr )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          if( cdp )
             fIS = zh_cdpicmp( zh_parc( 1 ), nLen, szYesNo, nStr, cdp, ZH_FALSE ) == 0;
          else

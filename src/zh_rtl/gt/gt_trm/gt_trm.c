@@ -593,7 +593,7 @@ static void zh_gt_trm_termOutTrans( PZH_GTTRM pTerm, const char * pStr, int iLen
          else if( pTerm->cdpHost )
             cdp = pTerm->cdpHost;
          else
-            cdp = zh_vmCDP();
+            cdp = zh_vmCodepage();
       }
 
       if( cdp )

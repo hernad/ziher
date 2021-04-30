@@ -97,7 +97,7 @@ FUNCTION tip_MailAssemble( ;
    IF Upper( cCharset ) == "UTF-8"
       cCharsetCP := "UTF8"
    ELSEIF codepageExists( Lower( cCharset ) )
-      cCharsetCP := zh_cdpUniID( Lower( cCharset ) )
+      cCharsetCP := zh_codepageUniID( Lower( cCharset ) )
    ENDIF
 
    cContentType := iif( lBodyHTML, "text/html", "text/plain" ) + "; charset=" + cCharset

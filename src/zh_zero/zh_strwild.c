@@ -246,7 +246,7 @@ static ZH_BOOL zh_strMatchWildCDP( const char * szString, const char * szPattern
 
 ZH_BOOL zh_strMatchWild( const char * szString, const char * szPattern )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp && ZH_CODEPAGE_ISCHARIDX( cdp ) )
       return zh_strMatchWildCDP( szString, szPattern, ZH_FALSE, ZH_FALSE, ZH_FALSE, cdp );
@@ -256,7 +256,7 @@ ZH_BOOL zh_strMatchWild( const char * szString, const char * szPattern )
 
 ZH_BOOL zh_strMatchWildExact( const char * szString, const char * szPattern )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp && ZH_CODEPAGE_ISCHARIDX( cdp ) )
       return zh_strMatchWildCDP( szString, szPattern, ZH_TRUE, ZH_FALSE, ZH_FALSE, cdp );
@@ -266,7 +266,7 @@ ZH_BOOL zh_strMatchWildExact( const char * szString, const char * szPattern )
 
 ZH_BOOL zh_strMatchCaseWildExact( const char * szString, const char * szPattern )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp && ZH_CODEPAGE_ISCHARIDX( cdp ) )
       return zh_strMatchWildCDP( szString, szPattern, ZH_TRUE, ZH_TRUE, ZH_FALSE, cdp );
@@ -283,7 +283,7 @@ ZH_BOOL zh_strMatchFile( const char * szString, const char * szPattern )
    return fnmatch( szPattern, szString, FNM_PATHNAME ) == 0;
 #  endif
 #elif defined( ZH_OS_WIN )
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp && ZH_CODEPAGE_ISCHARIDX( cdp ) )
       return zh_strMatchWildCDP( szString, szPattern, ZH_TRUE, ZH_TRUE, ZH_TRUE, cdp );

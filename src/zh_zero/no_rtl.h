@@ -370,7 +370,7 @@ int zh_charLower( int iChar )
    return ZH_TOLOWER( iChar );
 }
 
-PZH_CODEPAGE zh_vmCDP( void )
+PZH_CODEPAGE zh_vmCodepage( void )
 {
    return NULL;
 }

@@ -54,13 +54,13 @@ ZH_FUNC( CHR )
 {
    if( ZH_IS_PARAM_NUM( 1 ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( ZH_CODEPAGE_ISCHARUNI( cdp ) )
       {
          char szChar[ ZH_MAX_CHAR_LEN ];
          ZH_SIZE nLen;
 
-         nLen = zh_cdpTextPutU16( zh_vmCDP(), szChar, sizeof( szChar ),
+         nLen = zh_cdpTextPutU16( zh_vmCodepage(), szChar, sizeof( szChar ),
                                            ( ZH_WCHAR ) zh_parni( 1 ) );
          zh_retclen( szChar, nLen );
       }
@@ -79,7 +79,7 @@ ZH_FUNC( ASC )
    if( szValue )
    {
       int iChar;
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( ZH_CODEPAGE_ISCHARUNI( cdp ) )
          iChar = zh_cdpTextGetU16( cdp, szValue, zh_parclen( 1 ) );
       else

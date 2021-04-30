@@ -164,13 +164,13 @@ ZH_FUNC( ZH_SCROLL )
       iChar = zh_parni( 8 );
       if( iChar > 0 && iChar <= 255 )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          if( ! ZH_CODEPAGE_ISCHARUNI( cdp ) )
             iChar = zh_cdpGetU16( cdp, ( ZH_UCHAR ) iChar );
       }
    }
    else if( ZH_ISCHAR( 8 ) )
-      iChar = zh_cdpTextGetU16( zh_vmCDP(), zh_parc( 8 ), zh_parclen( 8 ) );
+      iChar = zh_cdpTextGetU16( zh_vmCodepage(), zh_parc( 8 ), zh_parclen( 8 ) );
    else
       iChar = -1;
 

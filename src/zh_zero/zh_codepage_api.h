@@ -340,7 +340,7 @@ extern ZH_UNITABLE zh_uniTbl_10081;
 extern ZH_UNITABLE zh_uniTbl_USASCII;
 extern ZH_UNITABLE zh_uniTbl_CWI2;
 
-extern ZH_EXPORT PZH_CODEPAGE zh_vmCDP( void );
+extern ZH_EXPORT PZH_CODEPAGE zh_vmCodepage( void );
 extern ZH_EXPORT void         zh_vmSetCDP( PZH_CODEPAGE pCDP );
 
 /* character flags */
@@ -422,7 +422,7 @@ extern ZH_EXPORT PZH_CODEPAGE codepageSelect( PZH_CODEPAGE cdp );
 extern ZH_EXPORT const char * codepageSelectID( const char * id );
 extern ZH_EXPORT PZH_CODEPAGE zh_cdpFind( const char * id );
 extern ZH_EXPORT PZH_CODEPAGE zh_cdpFindExt( const char * id );
-extern ZH_EXPORT const char ** zh_cdpList( void ); /* Caller must release the pointer */
+extern ZH_EXPORT const char ** zh_codepageList( void ); /* Caller must release the pointer */
 
 
 extern ZH_EXPORT ZH_BOOL      zh_cdpIsDigit( PZH_CODEPAGE cdp, int iChar );

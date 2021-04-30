@@ -91,7 +91,7 @@ void zh_errInternalRaw( ZH_ERRCODE errCode, const char * szText, const char * sz
 
       fprintf( hLog, "Application Internal Error - %s\n", zh_cmdargARGVN( 0 ) );
       fprintf( hLog, "Terminated at: %04d-%02d-%02d %s\n", iYear, iMonth, iDay, szTime );
-      szInfo = fStack ? zh_setGetCPtr( ZH_SET_HBOUTLOGINFO ) : NULL;
+      szInfo = fStack ? zh_setGetCPtr( ZH_SET_ZHOUTLOGINFO ) : NULL;
       if( szInfo && *szInfo )
          fprintf( hLog, "Info: %s\n", szInfo );
    }

@@ -186,10 +186,10 @@ extern ZH_EXPORT ZH_ERRCODE zh_gtPutText( int iRow, int iCol, const char * szStr
 extern ZH_EXPORT const char * zh_gtVersion( int iType );
 extern ZH_EXPORT ZH_ERRCODE zh_gtOutStd( const char * szStr, ZH_SIZE nLen );
 extern ZH_EXPORT ZH_ERRCODE zh_gtOutErr( const char * szStr, ZH_SIZE nLen );
-extern ZH_EXPORT ZH_ERRCODE zh_gtSetDispCP( const char * pszTermCDP, const char * pszHostCDP, ZH_BOOL fBox );
-extern ZH_EXPORT ZH_ERRCODE zh_gtSetKeyCP( const char * pszTermCDP, const char * pszHostCDP );
-extern ZH_EXPORT PZH_CODEPAGE zh_gtHostCP( void );
-extern ZH_EXPORT PZH_CODEPAGE zh_gtBoxCP( void );
+extern ZH_EXPORT ZH_ERRCODE zh_gtSetDisplayCodepage( const char * pszTermCDP, const char * pszHostCDP, ZH_BOOL fBox );
+extern ZH_EXPORT ZH_ERRCODE zh_gtSetKeyboardCodepage( const char * pszTermCDP, const char * pszHostCDP );
+extern ZH_EXPORT PZH_CODEPAGE zh_gtHostCodepage( void );
+extern ZH_EXPORT PZH_CODEPAGE zh_gtBoxCodepage( void );
 extern ZH_EXPORT ZH_ERRCODE zh_gtInfo( int iType, PZH_GT_INFO pInfo );
 extern ZH_EXPORT int        zh_gtAlert( PZH_ITEM pMessage, PZH_ITEM pOptions, int iClrNorm, int iClrHigh, double dDelay );
 extern ZH_EXPORT int        zh_gtSetFlag( int iType, int iNewValue );

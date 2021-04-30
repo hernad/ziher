@@ -462,7 +462,7 @@ static LPCDXKEY zh_cdxKeyPutItem( LPCDXKEY pKey, PZH_ITEM pItem, ZH_ULONG ulRec,
          ZH_SIZE nDestLen = pTag->uiLen;
          char * pFree = NULL, * pDest;
          const char * pText;
-         PZH_CODEPAGE cdpVM = zh_vmCDP();
+         PZH_CODEPAGE cdpVM = zh_vmCodepage();
 
          pText = zh_itemGetCPtr( pItem );
          nLen = zh_itemGetCLen( pItem );
@@ -567,7 +567,7 @@ static PZH_ITEM zh_cdxKeyGetItem( LPCDXKEY pKey, PZH_ITEM pItem, LPCDXTAG pTag )
          {
             ZH_SIZE nLen = pKey->len;
             char * pszVal = zh_cdpnDup( ( const char * ) pKey->val, &nLen,
-                                        pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCDP() );
+                                        pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCodepage() );
             pItem = zh_itemPutCLPtr( pItem, pszVal, nLen );
             break;
          }
@@ -5557,9 +5557,9 @@ static ZH_BOOL zh_cdxDBOISkipWild( CDXAREAP pArea, LPCDXTAG pTag, ZH_BOOL fForwa
       return fForward ? pArea->dbfarea.fPositioned : ! pArea->dbfarea.area.fBof;
    }
 
-   if( pArea->dbfarea.area.cdPage != zh_vmCDP() )
+   if( pArea->dbfarea.area.cdPage != zh_vmCodepage() )
    {
-      szPattern = szFree = zh_cdpDup( szPattern, zh_vmCDP(), pArea->dbfarea.area.cdPage );
+      szPattern = szFree = zh_cdpDup( szPattern, zh_vmCodepage(), pArea->dbfarea.area.cdPage );
    }
 
    while( iFixed < pTag->uiLen && szPattern[ iFixed ] &&
@@ -5692,9 +5692,9 @@ static ZH_BOOL zh_cdxRegexMatch( CDXAREAP pArea, PZH_REGEX pRegEx, LPCDXKEY pKey
    char * pszBuff = NULL;
    ZH_BOOL fResult;
 
-   if( pArea->dbfarea.area.cdPage != zh_vmCDP() )
+   if( pArea->dbfarea.area.cdPage != zh_vmCodepage() )
       szKey = pszBuff = zh_cdpnDup( szKey, &nLen,
-                                    pArea->dbfarea.area.cdPage, zh_vmCDP() );
+                                    pArea->dbfarea.area.cdPage, zh_vmCodepage() );
    fResult = zh_regexMatch( pRegEx, szKey, nLen, ZH_FALSE );
    if( pszBuff )
       zh_xfree( pszBuff );

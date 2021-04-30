@@ -425,7 +425,7 @@ static int zh_hsxHashVal( int c1, int c2, int iKeyBits,
    {
       if( iFilter == 3 )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          c1 = ( ZH_UCHAR ) cdp->upper[ c1 ];
          c2 = ( ZH_UCHAR ) cdp->upper[ c2 ];
       }
@@ -516,7 +516,7 @@ static int zh_hsxStrCmp( const char * pSub, ZH_SIZE nSub, const char * pStr, ZH_
          {
             if( iFilter == 3 )
             {
-               PZH_CODEPAGE cdp = zh_vmCDP();
+               PZH_CODEPAGE cdp = zh_vmCodepage();
                c1 = ( ZH_UCHAR ) cdp->upper[ c1 ];
                c2 = ( ZH_UCHAR ) cdp->upper[ c2 ];
             }

@@ -661,7 +661,7 @@ ZH_FUNC( ZH_DISPOUTATBOX )
       else
          iColor = zh_gtGetCurrColor();
 
-      cdp = zh_gtBoxCP();
+      cdp = zh_gtBoxCodepage();
 
       while( ZH_CODEPAGE_CHAR_GET( cdp, pszString, nLen, &nIndex, &wc ) )
          zh_gtPutChar( iRow, iCol++, iColor, ZH_GT_ATTR_BOX, wc );

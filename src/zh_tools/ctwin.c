@@ -1867,7 +1867,7 @@ static ZH_BOOL zh_ctw_gt_GetScrUC( PZH_GT pGT, int iRow, int iCol,
                if( pGT->cdpHost && pGT->cdpTerm != pGT->cdpHost )
                   uc = zh_cdpGetUC( pGT->cdpHost, usChar, 0 );
                if( uc == 0 )
-                  uc = zh_cdpGetUC( zh_vmCDP(), usChar, usChar < 32 ? ( ZH_UCHAR ) usChar : '?' );
+                  uc = zh_cdpGetUC( zh_vmCodepage(), usChar, usChar < 32 ? ( ZH_UCHAR ) usChar : '?' );
             }
          }
       }
@@ -2267,7 +2267,7 @@ static int zh_ctw_gt_Alert( PZH_GT pGT, PZH_ITEM pMessage, PZH_ITEM pOptions,
             }
             else if( ( nChar = zh_inkeyKeyString( iKey, szKey, sizeof( szKey ) ) ) > 0 )
             {
-               PZH_CODEPAGE cdp = zh_vmCDP();
+               PZH_CODEPAGE cdp = zh_vmCodepage();
                for( i = 1; i <= iOptions; ++i )
                {
                   nOptLen = zh_arrayGetCLen( pOptions, i );

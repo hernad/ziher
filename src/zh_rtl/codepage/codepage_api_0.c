@@ -791,7 +791,7 @@ ZH_BOOL zh_cdpIsUpper( PZH_CODEPAGE cdp, int iChar )
 
 ZH_BOOL zh_charIsDigit( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return ( cdp->flags[ iChar & 0x0ff ] & ZH_CODEPAGE_DIGIT ) != 0;
@@ -801,7 +801,7 @@ ZH_BOOL zh_charIsDigit( int iChar )
 
 ZH_BOOL zh_charIsAlpha( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return ( cdp->flags[ iChar & 0x0ff ] & ZH_CODEPAGE_ALPHA ) != 0;
@@ -811,7 +811,7 @@ ZH_BOOL zh_charIsAlpha( int iChar )
 
 ZH_BOOL zh_charIsLower( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return ( cdp->flags[ iChar & 0x0ff ] & ZH_CODEPAGE_LOWER ) != 0;
@@ -821,7 +821,7 @@ ZH_BOOL zh_charIsLower( int iChar )
 
 ZH_BOOL zh_charIsUpper( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return ( cdp->flags[ iChar & 0x0ff ] & ZH_CODEPAGE_UPPER ) != 0;
@@ -831,7 +831,7 @@ ZH_BOOL zh_charIsUpper( int iChar )
 
 int zh_charLower( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return cdp->lower[ iChar & 0x0ff ];
@@ -841,7 +841,7 @@ int zh_charLower( int iChar )
 
 int zh_charUpper( int iChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
       return cdp->upper[ iChar & 0x0ff ];
@@ -854,7 +854,7 @@ char * zh_strLower( char * szText, ZH_SIZE nLen )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_strLower(%s, %" ZH_PFS "u)", szText, nLen ) );
 
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE u;
 
       if( cdp )
@@ -873,7 +873,7 @@ char * zh_strUpper( char * szText, ZH_SIZE nLen )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_strUpper(%s, %" ZH_PFS "u)", szText, nLen ) );
 
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE u;
 
       if( cdp )
@@ -896,7 +896,7 @@ char * zh_strUpper( char * szText, ZH_SIZE nLen )
 
 ZH_BOOL zh_strIsDigit( const char * szChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
    {
@@ -921,7 +921,7 @@ ZH_BOOL zh_strIsDigit( const char * szChar )
 
 ZH_BOOL zh_strIsAlpha( const char * szChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
    {
@@ -946,7 +946,7 @@ ZH_BOOL zh_strIsAlpha( const char * szChar )
 
 ZH_BOOL zh_strIsLower( const char * szChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
    {
@@ -971,7 +971,7 @@ ZH_BOOL zh_strIsLower( const char * szChar )
 
 ZH_BOOL zh_strIsUpper( const char * szChar )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( cdp )
    {
@@ -3246,7 +3246,7 @@ ZH_BOOL zh_cdpIsUTF8( PZH_CODEPAGE cdp )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_cdpIsUTF8(%p)", ( void * ) cdp ) );
 
    if( cdp == NULL )
-      cdp = zh_vmCDP();
+      cdp = zh_vmCodepage();
 
    return ZH_CODEPAGE_ISUTF8( cdp );
 }
@@ -3257,7 +3257,7 @@ PZH_CODEPAGE codepageSelect( PZH_CODEPAGE cdp )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "codepageSelect(%p)", ( void * ) cdp ) );
 
-   cdpOld = zh_vmCDP();
+   cdpOld = zh_vmCodepage();
    if( cdp )
       zh_vmSetCDP( cdp );
 
@@ -3270,7 +3270,7 @@ const char * zh_cdpID( void )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_cdpID()" ) );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
 
    return cdp ? cdp->id : NULL;
 }
@@ -3287,7 +3287,7 @@ const char * codepageSelectID( const char * id )
 }
 
 /* Caller must release the pointer */
-const char ** zh_cdpList( void )
+const char ** zh_codepageList( void )
 {
    PZH_CODEPAGE cdp;
    int iCount, iPos;

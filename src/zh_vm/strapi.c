@@ -280,7 +280,7 @@ const char * zh_itemGetStr( PZH_ITEM pItem, void * cdp, void ** phString, ZH_SIZ
       pString = zh_cdpnDup3( pItem->item.asString.value,
                              pItem->item.asString.length,
                              NULL, pnLen, &pFree, &nSize,
-                             zh_vmCDP(), ( PZH_CODEPAGE ) cdp );
+                             zh_vmCodepage(), ( PZH_CODEPAGE ) cdp );
       if( pFree != NULL )
          *phString = ( void * ) pFree;
       else if( pItem->item.asString.allocated == 0 )
@@ -306,7 +306,7 @@ const char * zh_itemGetStrUTF8( PZH_ITEM pItem, void ** phString, ZH_SIZE * pnLe
 
    if( pItem && ZH_IS_STRING( pItem ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nLen = zh_cdpStrAsUTF8Len( cdp,
                                          pItem->item.asString.value,
                                          pItem->item.asString.length, 0 );
@@ -348,7 +348,7 @@ const ZH_WCHAR * zh_itemGetStrU16( PZH_ITEM pItem, int iEndian,
    if( pItem && ZH_IS_STRING( pItem ) )
    {
       ZH_WCHAR * pszU16;
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nLen = zh_cdpStrAsU16Len( cdp, pItem->item.asString.value,
                                              pItem->item.asString.length, 0 );
       if( pnLen )
@@ -387,11 +387,11 @@ ZH_SIZE zh_itemCopyStr( PZH_ITEM pItem, void * cdp, char * pStrBuffer, ZH_SIZE n
          return zh_cdpTransTo( pItem->item.asString.value,
                                pItem->item.asString.length,
                                pStrBuffer, nSize,
-                               zh_vmCDP(), ( PZH_CODEPAGE ) cdp );
+                               zh_vmCodepage(), ( PZH_CODEPAGE ) cdp );
       else
          return zh_cdpnDup2Len( pItem->item.asString.value,
                                 pItem->item.asString.length,
-                                nSize, zh_vmCDP(), ( PZH_CODEPAGE ) cdp );
+                                nSize, zh_vmCodepage(), ( PZH_CODEPAGE ) cdp );
    }
    else if( pStrBuffer && nSize )
       pStrBuffer[ 0 ] = '\0';
@@ -406,12 +406,12 @@ ZH_SIZE zh_itemCopyStrUTF8( PZH_ITEM pItem, char * pStrBuffer, ZH_SIZE nSize )
    if( pItem && ZH_IS_STRING( pItem ) )
    {
       if( pStrBuffer )
-         nSize = zh_cdpStrToUTF8( zh_vmCDP(),
+         nSize = zh_cdpStrToUTF8( zh_vmCodepage(),
                                   pItem->item.asString.value,
                                   pItem->item.asString.length,
                                   pStrBuffer, nSize );
       else
-         nSize = zh_cdpStrAsUTF8Len( zh_vmCDP(),
+         nSize = zh_cdpStrAsUTF8Len( zh_vmCodepage(),
                                      pItem->item.asString.value,
                                      pItem->item.asString.length, nSize );
       return nSize;
@@ -430,12 +430,12 @@ ZH_SIZE zh_itemCopyStrU16( PZH_ITEM pItem, int iEndian, ZH_WCHAR * pStrBuffer, Z
    if( pItem && ZH_IS_STRING( pItem ) )
    {
       if( pStrBuffer )
-         nSize = zh_cdpStrToU16( zh_vmCDP(), iEndian,
+         nSize = zh_cdpStrToU16( zh_vmCodepage(), iEndian,
                                  pItem->item.asString.value,
                                  pItem->item.asString.length,
                                  pStrBuffer, nSize );
       else
-         nSize = zh_cdpStrAsU16Len( zh_vmCDP(),
+         nSize = zh_cdpStrAsU16Len( zh_vmCodepage(),
                                     pItem->item.asString.value,
                                     pItem->item.asString.length, nSize );
       return nSize;
@@ -456,7 +456,7 @@ PZH_ITEM zh_itemPutStrLen( PZH_ITEM pItem, void * cdp, const char * pStr, ZH_SIZ
    if( nLen == 0 )
       return zh_itemPutC( pItem, NULL );
 
-   pszText = zh_cdpnDup( pStr, &nLen, ( PZH_CODEPAGE ) cdp, zh_vmCDP() );
+   pszText = zh_cdpnDup( pStr, &nLen, ( PZH_CODEPAGE ) cdp, zh_vmCodepage() );
 
    return zh_itemPutCLPtr( pItem, pszText, nLen );
 }
@@ -472,7 +472,7 @@ PZH_ITEM zh_itemPutStrLenUTF8( PZH_ITEM pItem, const char * pStr, ZH_SIZE nLen )
    if( nLen == 0 )
       return zh_itemPutC( pItem, NULL );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    nDest = zh_cdpUTF8AsStrLen( cdp, pStr, nLen, 0 );
    pszDest = ( char * ) zh_xgrab( nDest + 1 );
    zh_cdpUTF8ToStr( cdp, pStr, nLen, pszDest, nDest + 1 );
@@ -491,7 +491,7 @@ PZH_ITEM zh_itemPutStrLenU16( PZH_ITEM pItem, int iEndian, const ZH_WCHAR * pStr
    if( nLen == 0 )
       return zh_itemPutC( pItem, NULL );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    nDest = zh_cdpU16AsStrLen( cdp, pStr, nLen, 0 );
    pszDest = ( char * ) zh_xgrab( nDest + 1 );
    zh_cdpU16ToStr( cdp, iEndian, pStr, nLen, pszDest, nDest + 1 );
@@ -511,7 +511,7 @@ PZH_ITEM zh_itemPutStr( PZH_ITEM pItem, void * cdp, const char * pStr )
       return zh_itemPutC( pItem, NULL );
 
    nLen = strlen( pStr );
-   pszText = zh_cdpnDup( pStr, &nLen, ( PZH_CODEPAGE ) cdp, zh_vmCDP() );
+   pszText = zh_cdpnDup( pStr, &nLen, ( PZH_CODEPAGE ) cdp, zh_vmCodepage() );
 
    return zh_itemPutCLPtr( pItem, pszText, nLen );
 }
@@ -527,7 +527,7 @@ PZH_ITEM zh_itemPutStrUTF8( PZH_ITEM pItem, const char * pStr )
    if( pStr == NULL )
       return zh_itemPutC( pItem, NULL );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    nLen = strlen( pStr );
    nDest = zh_cdpUTF8AsStrLen( cdp, pStr, nLen, 0 );
    pszDest = ( char * ) zh_xgrab( nDest + 1 );
@@ -547,7 +547,7 @@ PZH_ITEM zh_itemPutStrU16( PZH_ITEM pItem, int iEndian, const ZH_WCHAR * pStr )
    if( pStr == NULL )
       return zh_itemPutC( pItem, NULL );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    nLen = zh_wstrlen( pStr );
    nDest = zh_cdpU16AsStrLen( cdp, pStr, nLen, 0 );
    pszDest = ( char * ) zh_xgrab( nDest + 1 );

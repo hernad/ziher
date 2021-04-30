@@ -57,7 +57,7 @@ ZH_FUNC( LOWER )
    if( pText )
    {
       ZH_SIZE nLen = zh_itemGetCLen( pText );
-      char * pszBuffer = zh_cdpnDupLower( zh_vmCDP(),
+      char * pszBuffer = zh_cdpnDupLower( zh_vmCodepage(),
                                           zh_itemGetCPtr( pText ), &nLen );
       zh_retclen_buffer( pszBuffer, nLen );
    }
@@ -73,7 +73,7 @@ ZH_FUNC( UPPER )
    if( pText )
    {
       ZH_SIZE nLen = zh_itemGetCLen( pText );
-      char * pszBuffer = zh_cdpnDupUpper( zh_vmCDP(),
+      char * pszBuffer = zh_cdpnDupUpper( zh_vmCodepage(),
                                           zh_itemGetCPtr( pText ), &nLen );
       zh_retclen_buffer( pszBuffer, nLen );
    }

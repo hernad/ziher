@@ -206,7 +206,7 @@ static void s_zh_strPad( int iMode, PZH_CODEPAGE cdp )
 /* left-pads a date, number, or string with spaces or supplied character */
 ZH_FUNC( PADL )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCHARIDX( cdp ) )
       cdp = NULL;
@@ -221,7 +221,7 @@ ZH_FUNC( ZH_BPADL )
 
 ZH_FUNC( ZH_UPADL )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCUSTOM( cdp ) )
       cdp = NULL;
@@ -232,7 +232,7 @@ ZH_FUNC( ZH_UPADL )
 /* right-pads a date, number, or string with spaces or supplied character */
 ZH_FUNC( PADR )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCHARIDX( cdp ) )
       cdp = NULL;
@@ -247,7 +247,7 @@ ZH_FUNC( ZH_BPADR )
 
 ZH_FUNC( ZH_UPADR )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCUSTOM( cdp ) )
       cdp = NULL;
@@ -258,7 +258,7 @@ ZH_FUNC( ZH_UPADR )
 /* centre-pads a date, number, or string with spaces or supplied character */
 ZH_FUNC( PADC )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCHARIDX( cdp ) )
       cdp = NULL;
@@ -273,7 +273,7 @@ ZH_FUNC( ZH_BPADC )
 
 ZH_FUNC( ZH_UPADC )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCUSTOM( cdp ) )
       cdp = NULL;

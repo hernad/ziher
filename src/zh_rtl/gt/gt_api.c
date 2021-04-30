@@ -1023,12 +1023,12 @@ ZH_ERRCODE zh_gtOutErr( const char * szStr, ZH_SIZE nLen )
    return ZH_SUCCESS;
 }
 
-ZH_ERRCODE zh_gtSetDispCP( const char * pszTermCDP, const char * pszHostCDP, ZH_BOOL fBox )
+ZH_ERRCODE zh_gtSetDisplayCodepage( const char * pszTermCDP, const char * pszHostCDP, ZH_BOOL fBox )
 {
    ZH_ERRCODE errCode = ZH_FAILURE;
    PZH_GT pGT;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtSetDispCP(%s, %s, %d)", pszTermCDP, pszHostCDP, fBox ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtSetDisplayCodepage(%s, %s, %d)", pszTermCDP, pszHostCDP, fBox ) );
 
    pGT = zh_gt_Base();
    if( pGT )
@@ -1040,12 +1040,12 @@ ZH_ERRCODE zh_gtSetDispCP( const char * pszTermCDP, const char * pszHostCDP, ZH_
    return errCode;
 }
 
-ZH_ERRCODE zh_gtSetKeyCP( const char * pszTermCDP, const char * pszHostCDP )
+ZH_ERRCODE zh_gtSetKeyboardCodepage( const char * pszTermCDP, const char * pszHostCDP )
 {
    ZH_ERRCODE errCode = ZH_FAILURE;
    PZH_GT pGT;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtSetKeyCP(%s, %s)", pszTermCDP, pszHostCDP ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtSetKeyboardCodepage(%s, %s)", pszTermCDP, pszHostCDP ) );
 
    pGT = zh_gt_Base();
    if( pGT )
@@ -1057,12 +1057,12 @@ ZH_ERRCODE zh_gtSetKeyCP( const char * pszTermCDP, const char * pszHostCDP )
    return errCode;
 }
 
-PZH_CODEPAGE zh_gtHostCP( void )
+PZH_CODEPAGE zh_gtHostCodepage( void )
 {
    PZH_CODEPAGE cdp = NULL;
    PZH_GT pGT;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtHostCP()" ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtHostCodepage()" ) );
 
    pGT = zh_gt_Base();
    if( pGT )
@@ -1073,12 +1073,12 @@ PZH_CODEPAGE zh_gtHostCP( void )
    return cdp;
 }
 
-PZH_CODEPAGE zh_gtBoxCP( void )
+PZH_CODEPAGE zh_gtBoxCodepage( void )
 {
    PZH_CODEPAGE cdp = NULL;
    PZH_GT pGT;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtBoxCP()" ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtBoxCodepage()" ) );
 
    pGT = zh_gt_Base();
    if( pGT )

@@ -87,7 +87,7 @@ ZH_FUNC( ZH_ATI )
 
    if( pText && pSub )
    {
-      PZH_CODEPAGE cdp         = zh_vmCDP();
+      PZH_CODEPAGE cdp         = zh_vmCodepage();
       const char * pszText     = zh_itemGetCPtr( pText );
       ZH_SIZE      nTextLength = zh_itemGetCLen( pText );
       ZH_SIZE      nStart      = zh_parns( 3 );

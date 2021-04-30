@@ -54,9 +54,9 @@ ZH_FUNC( ZH_SETDISPCP )
    if( ZH_ISCHAR( 1 ) )
    {
       if( zh_pcount() == 2 && ZH_ISLOG( 2 ) )
-         zh_gtSetDispCP( zh_parc( 1 ), NULL, zh_parl( 2 ) );
+         zh_gtSetDisplayCodepage( zh_parc( 1 ), NULL, zh_parl( 2 ) );
       else
-         zh_gtSetDispCP( zh_parc( 1 ), zh_parc( 2 ), zh_parl( 3 ) );
+         zh_gtSetDisplayCodepage( zh_parc( 1 ), zh_parc( 2 ), zh_parl( 3 ) );
    }
    else if( ! ( zh_pcount() >= 1 && ZH_ISNIL( 1 ) ) )
       zh_errRT_BASE_SubstR( EG_ARG, 1089, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
@@ -65,7 +65,7 @@ ZH_FUNC( ZH_SETDISPCP )
 ZH_FUNC( ZH_SETKEYCP )
 {
    if( ZH_ISCHAR( 1 ) )
-      zh_gtSetKeyCP( zh_parc( 1 ), zh_parc( 2 ) );
+      zh_gtSetKeyboardCodepage( zh_parc( 1 ), zh_parc( 2 ) );
    else if( ! ( zh_pcount() >= 1 && ZH_ISNIL( 1 ) ) )
       zh_errRT_BASE_SubstR( EG_ARG, 1089, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
@@ -76,13 +76,13 @@ ZH_FUNC( ZH_SETTERMCP )
    {
       if( zh_pcount() == 2 && ZH_ISLOG( 2 ) )
       {
-         zh_gtSetDispCP( zh_parc( 1 ), NULL, zh_parl( 2 ) );
-         zh_gtSetKeyCP( zh_parc( 1 ), NULL );
+         zh_gtSetDisplayCodepage( zh_parc( 1 ), NULL, zh_parl( 2 ) );
+         zh_gtSetKeyboardCodepage( zh_parc( 1 ), NULL );
       }
       else
       {
-         zh_gtSetDispCP( zh_parc( 1 ), zh_parc( 2 ), zh_parl( 3 ) );
-         zh_gtSetKeyCP( zh_parc( 1 ), zh_parc( 2 ) );
+         zh_gtSetDisplayCodepage( zh_parc( 1 ), zh_parc( 2 ), zh_parl( 3 ) );
+         zh_gtSetKeyboardCodepage( zh_parc( 1 ), zh_parc( 2 ) );
       }
    }
    else if( ! ( zh_pcount() >= 1 && ZH_ISNIL( 1 ) ) )

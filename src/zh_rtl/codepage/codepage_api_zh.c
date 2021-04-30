@@ -70,10 +70,10 @@ ZH_FUNC( CODEPAGEEXISTS )
       zh_errRT_BASE_SubstR( EG_ARG, 3012, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
 
-ZH_FUNC( ZH_CDPUNIID )
+ZH_FUNC( ZH_CODEPAGEUNIID )
 {
    const char * id = zh_parc( 1 );
-   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCDP();
+   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCodepage();
 
    zh_retc( cdp ? cdp->uniTable->uniID : NULL );
 }
@@ -81,7 +81,7 @@ ZH_FUNC( ZH_CDPUNIID )
 ZH_FUNC( ZH_CDPINFO )
 {
    const char * id = zh_parc( 1 );
-   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCDP();
+   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCodepage();
 
    zh_retc( cdp ? cdp->info : NULL );
 }
@@ -89,7 +89,7 @@ ZH_FUNC( ZH_CDPINFO )
 ZH_FUNC( ZH_CDPISCHARIDX )
 {
    const char * id = zh_parc( 1 );
-   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCDP();
+   PZH_CODEPAGE cdp = id ? zh_cdpFindExt( id ) : zh_vmCodepage();
    ZH_BOOL fResult = ZH_FALSE;
 
    if( cdp )
@@ -116,9 +116,9 @@ ZH_FUNC( ZH_CDPISUTF8 )
    zh_retl( zh_cdpIsUTF8( zh_cdpFindExt( zh_parc( 1 ) ) ) );
 }
 
-ZH_FUNC( ZH_CDPLIST )
+ZH_FUNC( ZH_CODEPAGELIST )
 {
-   const char ** list = zh_cdpList();
+   const char ** list = zh_codepageList();
    ZH_ISIZ nPos;
 
    nPos = 0;
@@ -148,8 +148,8 @@ ZH_FUNC( ZH_TRANSLATE )
 
    if( nLen && ( szIdIn || szIdOut ) )
    {
-      PZH_CODEPAGE cdpIn = szIdIn ? zh_cdpFindExt( szIdIn ) : zh_vmCDP();
-      PZH_CODEPAGE cdpOut = szIdOut ? zh_cdpFindExt( szIdOut ) : zh_vmCDP();
+      PZH_CODEPAGE cdpIn = szIdIn ? zh_cdpFindExt( szIdIn ) : zh_vmCodepage();
+      PZH_CODEPAGE cdpOut = szIdOut ? zh_cdpFindExt( szIdOut ) : zh_vmCodepage();
 
       if( cdpIn && cdpOut && cdpIn != cdpOut &&
           ( cdpIn->uniTable != cdpOut->uniTable ||
@@ -174,7 +174,7 @@ ZH_FUNC( ZH_STRTOUTF8 )
    if( nLen )
    {
       const char * szCP = zh_parc( 2 );
-      PZH_CODEPAGE cdp = szCP ? zh_cdpFindExt( szCP ) : zh_vmCDP();
+      PZH_CODEPAGE cdp = szCP ? zh_cdpFindExt( szCP ) : zh_vmCodepage();
 
       if( cdp )
       {
@@ -210,7 +210,7 @@ ZH_FUNC( ZH_UTF8TOSTR )
       if( nLen )
       {
          const char * szCP = zh_parc( 2 );
-         PZH_CODEPAGE cdp = szCP ? zh_cdpFindExt( szCP ) : zh_vmCDP();
+         PZH_CODEPAGE cdp = szCP ? zh_cdpFindExt( szCP ) : zh_vmCodepage();
 
          if( cdp )
          {

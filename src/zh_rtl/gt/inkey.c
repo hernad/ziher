@@ -57,7 +57,7 @@
 
 static void zh_inkeySetTextKeys( const char * pszText, ZH_SIZE nSize, ZH_BOOL fInsert )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
    ZH_SIZE nIndex = 0;
    ZH_WCHAR wc;
 
@@ -211,7 +211,7 @@ ZH_FUNC( ZH_KEYCODE )
 
    if( szValue )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nIndex = 0;
       ZH_WCHAR wc;
 
@@ -259,7 +259,7 @@ ZH_FUNC( ZH_KEYNEW )
 {
    PZH_ITEM pText = zh_param( 1, ZH_IT_STRING );
    int iMod = zh_parni( 2 );
-   int iKey = pText ? zh_cdpTextGetU16( zh_vmCDP(), zh_itemGetCPtr( pText ),
+   int iKey = pText ? zh_cdpTextGetU16( zh_vmCodepage(), zh_itemGetCPtr( pText ),
                                                     zh_itemGetCLen( pText ) ) : zh_parni( 1 );
 
    if( iKey >= 127 )

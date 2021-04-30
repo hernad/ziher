@@ -351,9 +351,9 @@ extern ZH_EXPORT void zh_gt_gcMark( void );
 #define ZH_GTLOCAL(g)   (g)->pGTData[*ZH_GTID_PTR]
 
 #define ZH_GTSELF_TERMCP(g)                     ((g)->cdpTerm ? (g)->cdpTerm : ZH_GTSELF_HOSTCP(g))
-#define ZH_GTSELF_HOSTCP(g)                     ((g)->cdpHost ? (g)->cdpHost : zh_vmCDP())
+#define ZH_GTSELF_HOSTCP(g)                     ((g)->cdpHost ? (g)->cdpHost : zh_vmCodepage())
 #define ZH_GTSELF_BOXCP(g)                      ((g)->cdpBox ? (g)->cdpBox : ZH_GTSELF_HOSTCP(g))
-#define ZH_GTSELF_INCP(g)                       ((g)->cdpIn ? (g)->cdpIn : zh_vmCDP())
+#define ZH_GTSELF_INCP(g)                       ((g)->cdpIn ? (g)->cdpIn : zh_vmCodepage())
 
 #define ZH_GTSELF_CPTERM(g)                     ((g)->cdpTerm)
 #define ZH_GTSELF_CPHOST(g)                     ((g)->cdpHost)

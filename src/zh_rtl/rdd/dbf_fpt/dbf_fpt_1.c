@@ -76,7 +76,7 @@
 #define FPT_TRANS_CP       1
 #define FPT_TRANS_UNICODE  2
 
-#define FPT_DIRECT_TRANS( p )  ( zh_vmCDP() != ( p )->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE )
+#define FPT_DIRECT_TRANS( p )  ( zh_vmCodepage() != ( p )->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE )
 
 #define FPT_BLOCK_OFFSET( b )  ( ( ZH_FOFFSET ) ( b ) * \
                                  ( ZH_FOFFSET ) pArea->ulMemoBlockSize )
@@ -1160,7 +1160,7 @@ static ZH_ULONG zh_fptCountSMTItemLength( FPTAREAP pArea, PZH_ITEM pItem,
             if( iTrans == FPT_TRANS_CP && ulLen > 0 )
             {
                ulLen = ( ZH_ULONGCAST ) zh_cdpnDup2Len( zh_itemGetCPtr( pItem ), ulLen, 0xFFFF,
-                                                        zh_vmCDP(), pArea->area.cdPage );
+                                                        zh_vmCodepage(), pArea->area.cdPage );
             }
             else
             {
@@ -1299,7 +1299,7 @@ static void zh_fptStoreSMTItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_BYTE ** bBufP
                   ZH_SIZE nSize = u;
                   zh_cdpnDup2( zh_itemGetCPtr( pItem ), ulLen,
                                ( char * ) *bBufPtr + 2, &nSize,
-                               zh_vmCDP(), pArea->area.cdPage );
+                               zh_vmCodepage(), pArea->area.cdPage );
                   ulLen = ( ZH_ULONG ) nSize;
                }
                else
@@ -1419,7 +1419,7 @@ static ZH_ERRCODE zh_fptReadRawSMTItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_FOFFS
                ZH_SIZE nSize = ulLen + 1;
                ZH_SIZE nLen = ulLen;
                zh_cdpnDup3( pBuffer, ulLen, pBuffer, &nLen, &pBuffer, &nSize,
-                            pArea->area.cdPage, zh_vmCDP() );
+                            pArea->area.cdPage, zh_vmCodepage() );
                ulLen = ( ZH_ULONG ) nLen;
             }
             zh_itemPutCLPtr( pItem, pBuffer, ulLen );
@@ -1532,7 +1532,7 @@ static ZH_ERRCODE zh_fptReadSMTItem( FPTAREAP pArea, ZH_BYTE ** pbMemoBuf, ZH_BY
                else if( iTrans == FPT_TRANS_CP && ulLen != 0 )
                {
                   ZH_SIZE nLen = ulLen;
-                  pszStr = zh_cdpnDup( pszStr, &nLen, pArea->area.cdPage, zh_vmCDP() );
+                  pszStr = zh_cdpnDup( pszStr, &nLen, pArea->area.cdPage, zh_vmCodepage() );
                   ulLen = ( ZH_ULONG ) nLen;
                   zh_itemPutCLPtr( pItem, pszStr, ulLen );
                }
@@ -1641,7 +1641,7 @@ static ZH_ULONG zh_fptCountSixItemLength( FPTAREAP pArea, PZH_ITEM pItem,
             if( iTrans == FPT_TRANS_CP && ulLen > 0 )
             {
                ulLen = ( ZH_ULONGCAST ) zh_cdpnDup2Len( zh_itemGetCPtr( pItem ), ulLen, u,
-                                                        zh_vmCDP(), pArea->area.cdPage );
+                                                        zh_vmCodepage(), pArea->area.cdPage );
             }
             else
             {
@@ -1762,7 +1762,7 @@ static ZH_ULONG zh_fptStoreSixItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_BYTE ** b
                   ZH_SIZE nSize = u;
                   zh_cdpnDup2( zh_itemGetCPtr( pItem ), ulLen,
                                ( char * ) *bBufPtr + SIX_ITEM_BUFSIZE, &nSize,
-                               zh_vmCDP(), pArea->area.cdPage );
+                               zh_vmCodepage(), pArea->area.cdPage );
                   ulLen = ( ZH_ULONG ) nSize;
                }
                else
@@ -1837,7 +1837,7 @@ static ZH_ERRCODE zh_fptReadSixItem( FPTAREAP pArea, ZH_BYTE ** pbMemoBuf, ZH_BY
                   if( iTrans == FPT_TRANS_CP && ulLen > 0 )
                   {
                      ZH_SIZE nSize = ulLen;
-                     pszStr = zh_cdpnDup( pszStr, &nSize, pArea->area.cdPage, zh_vmCDP() );
+                     pszStr = zh_cdpnDup( pszStr, &nSize, pArea->area.cdPage, zh_vmCodepage() );
                      zh_itemPutCLPtr( pItem, pszStr, nSize );
                   }
                   else
@@ -1920,7 +1920,7 @@ static ZH_ULONG zh_fptCountFlexItemLength( FPTAREAP pArea, PZH_ITEM pItem,
             if( iTrans == FPT_TRANS_CP && ulLen > 0 )
             {
                ulLen = ( ZH_ULONGCAST ) zh_cdpnDup2Len( zh_itemGetCPtr( pItem ), ulLen, 0xFFFF,
-                                                        zh_vmCDP(), pArea->area.cdPage );
+                                                        zh_vmCodepage(), pArea->area.cdPage );
             }
             else
             {
@@ -1992,7 +1992,7 @@ static void zh_fptStoreFlexItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_BYTE ** bBuf
                ZH_SIZE nSize = u;
                zh_cdpnDup2( zh_itemGetCPtr( pItem ), ulLen,
                             ( char * ) *bBufPtr + 2, &nSize,
-                            zh_vmCDP(), pArea->area.cdPage );
+                            zh_vmCodepage(), pArea->area.cdPage );
                ulLen = ( ZH_ULONG ) nSize;
             }
             else
@@ -2353,7 +2353,7 @@ static ZH_ERRCODE zh_fptReadFlexItem( FPTAREAP pArea, ZH_BYTE ** pbMemoBuf, ZH_B
                else if( iTrans == FPT_TRANS_CP && ulLen != 0 )
                {
                   ZH_SIZE nLen = ulLen;
-                  pszStr = zh_cdpnDup( pszStr, &nLen, pArea->area.cdPage, zh_vmCDP() );
+                  pszStr = zh_cdpnDup( pszStr, &nLen, pArea->area.cdPage, zh_vmCodepage() );
                   zh_itemPutCLPtr( pItem, pszStr, nLen );
                }
                else
@@ -2696,7 +2696,7 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
                ZH_SIZE nBufSize = ulSize + 1;
                zh_cdpnDup3( pBuffer, ulSize, pBuffer, &nSize,
                             &pBuffer, &nBufSize,
-                            pArea->area.cdPage, zh_vmCDP() );
+                            pArea->area.cdPage, zh_vmCodepage() );
                ulSize = ( ZH_ULONG ) nSize;
             }
             zh_itemPutCLPtr( pItem, pBuffer, ulSize );
@@ -2722,7 +2722,7 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
                   ZH_SIZE nBufSize = ulSize + 1;
                   zh_cdpnDup3( pBuffer, ulSize, pBuffer, &nSize,
                                &pBuffer, &nBufSize,
-                               pArea->area.cdPage, zh_vmCDP() );
+                               pArea->area.cdPage, zh_vmCodepage() );
                   ulSize = ( ZH_ULONG ) nSize;
                }
                zh_itemPutCLPtr( pItem, pBuffer, ulSize );
@@ -2816,7 +2816,7 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
                      ZH_SIZE nBufSize = ulSize + 1;
                      zh_cdpnDup3( pBuffer, ulSize, pBuffer, &nSize,
                                   &pBuffer, &nBufSize,
-                                  pArea->area.cdPage, zh_vmCDP() );
+                                  pArea->area.cdPage, zh_vmCodepage() );
                      ulSize = ( ZH_ULONG ) nSize;
                   }
                   zh_itemPutCLPtr( pItem, pBuffer, ulSize );
@@ -3016,7 +3016,7 @@ static ZH_ERRCODE zh_fptPutMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
          {
             ZH_SIZE nSize = ulSize;
             bBufAlloc = ( ZH_BYTE * ) zh_cdpnDup( ( const char * ) bBufPtr, &nSize,
-                                                  zh_vmCDP(), pArea->area.cdPage );
+                                                  zh_vmCodepage(), pArea->area.cdPage );
             bBufPtr = bBufAlloc;
             ulSize = ( ZH_ULONG ) nSize;
          }
@@ -3344,11 +3344,11 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
                if( ulLen > 0 )
                {
                   if( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                           zh_vmCDP() != pArea->area.cdPage )
+                           zh_vmCodepage() != pArea->area.cdPage )
                   {
                      ZH_SIZE nLen = ulLen;
                      pString = pAlloc = zh_cdpnDup( pString, &nLen,
-                                                    pArea->area.cdPage, zh_vmCDP() );
+                                                    pArea->area.cdPage, zh_vmCodepage() );
                      ulLen = ( ZH_ULONG ) nLen;
                   }
                }
@@ -3368,7 +3368,7 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
                errCode = zh_fptReadRawBlock( pArea, ( ZH_BYTE * ) pPtr, NULL, ulBlock, ulSize );
                if( errCode == ZH_SUCCESS && ulLen > 0 &&
                    ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                   zh_vmCDP() != pArea->area.cdPage )
+                   zh_vmCodepage() != pArea->area.cdPage )
                {
                   ZH_SIZE nLen;
                   ZH_SIZE nSize;
@@ -3376,7 +3376,7 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
                   nLen = ulLen;
                   nSize = ulSize;
                   pString = zh_cdpnDup3( pString, ulLen, pAlloc, &nLen,
-                                         &pAlloc, &nSize, pArea->area.cdPage, zh_vmCDP() );
+                                         &pAlloc, &nSize, pArea->area.cdPage, zh_vmCodepage() );
                   ulLen = ( ZH_ULONG ) nLen;
                }
             }
@@ -3445,7 +3445,7 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
             else
                errCode = zh_fptReadSMTBlock( pArea, pItem, ulBlock, 0,
                                              ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                                             zh_vmCDP() != pArea->area.cdPage ?
+                                             zh_vmCodepage() != pArea->area.cdPage ?
                                              FPT_TRANS_CP : FPT_TRANS_NONE );
          }
          else if( uiType == ZH_VF_BLOB )
@@ -3470,7 +3470,7 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
       errCode = zh_fptGetMemo( pArea, uiIndex, pItem, pFile, 0, 0, 0,
                                ( pField->uiFlags & ZH_FF_UNICODE ) != 0 ? FPT_TRANS_UNICODE :
                                ( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                                 zh_vmCDP() != pArea->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE ) );
+                                 zh_vmCodepage() != pArea->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE ) );
    }
    else if( pFile == NULL )
    {
@@ -3614,7 +3614,7 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
          errCode = zh_fptPutMemo( pArea, uiIndex, pItem, NULL,
                                   ( pField->uiFlags & ZH_FF_UNICODE ) != 0 ? FPT_TRANS_UNICODE :
                                   ( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                                    zh_vmCDP() != pArea->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE ) );
+                                    zh_vmCodepage() != pArea->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE ) );
 #if defined( ZH_MEMO_SAFELOCK )
          if( errCode == ZH_SUCCESS )
          {
@@ -3734,11 +3734,11 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
             if( nLen > ZH_VF_CHAR )
                nLen = ZH_VF_CHAR;
             if( nLen > 0 && ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                zh_vmCDP() != pArea->area.cdPage )
+                zh_vmCodepage() != pArea->area.cdPage )
             {
                pBlock = pAlloc = ( ZH_BYTE * )
                                  zh_cdpnDup( ( const char * ) pBlock, &nLen,
-                                             zh_vmCDP(), pArea->area.cdPage );
+                                             zh_vmCodepage(), pArea->area.cdPage );
                if( nLen > ZH_VF_CHAR )
                   nLen = ZH_VF_CHAR;
             }
@@ -3769,7 +3769,7 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
             else
 #endif
             if( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                zh_vmCDP() != pArea->area.cdPage )
+                zh_vmCodepage() != pArea->area.cdPage )
                iTrans = FPT_TRANS_CP;
             else
                iTrans = FPT_TRANS_NONE;
@@ -5053,7 +5053,7 @@ static ZH_ERRCODE zh_fptFieldInfo( FPTAREAP pArea, ZH_USHORT uiIndex, ZH_USHORT 
             if( ( pField->uiFlags & ZH_FF_UNICODE ) != 0 )
                iTrans = FPT_TRANS_UNICODE;
             else if( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
-                     zh_vmCDP() != pArea->area.cdPage )
+                     zh_vmCodepage() != pArea->area.cdPage )
                iTrans = FPT_TRANS_CP;
             else
                iTrans = FPT_TRANS_NONE;

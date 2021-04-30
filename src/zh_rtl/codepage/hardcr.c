@@ -55,7 +55,7 @@ static char * zh_strHardCR( char * pszString, ZH_SIZE nStringLen )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_strHardCR(%s, %" ZH_PFS "u)", pszString, nStringLen ) );
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    if( ZH_CODEPAGE_ISCUSTOM( cdp ) )
    {
       ZH_WCHAR wc;

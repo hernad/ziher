@@ -56,7 +56,7 @@ ZH_FUNC( STUFF )
 
    if( szText && szIns && ZH_IS_PARAM_NUM( 2 ) && ZH_IS_PARAM_NUM( 3 ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nLen = zh_parclen( 1 );
       ZH_SIZE nPos = zh_parns( 2 );
       ZH_SIZE nDel = zh_parns( 3 );

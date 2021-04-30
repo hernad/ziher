@@ -450,7 +450,7 @@ static LPKEYINFO zh_ntxKeyPutItem( LPKEYINFO pKey, PZH_ITEM pItem, ZH_ULONG ulRe
             len = pTag->KeyLength;
             zh_cdpnDup2( zh_itemGetCPtr( pItem ), zh_itemGetCLen( pItem ),
                          pKey->key, &len,
-                         zh_vmCDP(), pTag->pIndex->pArea->dbfarea.area.cdPage );
+                         zh_vmCodepage(), pTag->pIndex->pArea->dbfarea.area.cdPage );
          }
          else
          {
@@ -526,7 +526,7 @@ static PZH_ITEM zh_ntxKeyGetItem( PZH_ITEM pItem, LPKEYINFO pKey,
             {
                ZH_SIZE nLen = pTag->KeyLength;
                char * pszVal = zh_cdpnDup( pKey->key, &nLen,
-                                           pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCDP() );
+                                           pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCodepage() );
                pItem = zh_itemPutCLPtr( pItem, pszVal, nLen );
             }
             else
@@ -4247,9 +4247,9 @@ static ZH_BOOL zh_ntxOrdSkipWild( LPTAGINFO pTag, ZH_BOOL fForward, PZH_ITEM pWi
       return fForward ? ! pArea->dbfarea.area.fEof : ! pArea->dbfarea.area.fBof;
    }
 
-   if( pArea->dbfarea.area.cdPage != zh_vmCDP() )
+   if( pArea->dbfarea.area.cdPage != zh_vmCodepage() )
    {
-      szPattern = szFree = zh_cdpDup( szPattern, zh_vmCDP(), pArea->dbfarea.area.cdPage );
+      szPattern = szFree = zh_cdpDup( szPattern, zh_vmCodepage(), pArea->dbfarea.area.cdPage );
    }
 
    while( iFixed < pTag->KeyLength && szPattern[ iFixed ] &&
@@ -4355,11 +4355,11 @@ static ZH_BOOL zh_ntxRegexMatch( LPTAGINFO pTag, PZH_REGEX pRegEx, const char * 
    ZH_SIZE nLen = pTag->KeyLength;
    char szBuff[ NTX_MAX_KEY + 1 ];
 
-   if( pTag->pIndex->pArea->dbfarea.area.cdPage != zh_vmCDP() )
+   if( pTag->pIndex->pArea->dbfarea.area.cdPage != zh_vmCodepage() )
    {
       nLen = sizeof( szBuff ) - 1;
       zh_cdpnDup2( szKey, pTag->KeyLength, szBuff, &nLen,
-                   pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCDP() );
+                   pTag->pIndex->pArea->dbfarea.area.cdPage, zh_vmCodepage() );
       szBuff[ nLen ] = '\0';
       szKey = szBuff;
    }

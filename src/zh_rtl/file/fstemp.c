@@ -111,12 +111,12 @@ static ZH_BOOL fsGetTempDirByCase( char * pszName, const char * pszTempDir, ZH_B
       switch( zh_setGetDirCase() )
       {
          case ZH_SET_CASE_LOWER:
-            pTmp = zh_cdpnDupLower( zh_vmCDP(), pszName, NULL );
+            pTmp = zh_cdpnDupLower( zh_vmCodepage(), pszName, NULL );
             fOK = strcmp( pszName, pTmp ) == 0;
             zh_xfree( pTmp );
             break;
          case ZH_SET_CASE_UPPER:
-            pTmp = zh_cdpnDupUpper( zh_vmCDP(), pszName, NULL );
+            pTmp = zh_cdpnDupUpper( zh_vmCodepage(), pszName, NULL );
             fOK = strcmp( pszName, pTmp ) == 0;
             zh_xfree( pTmp );
             break;

@@ -63,7 +63,7 @@ ZH_FUNC( LEN )
       if( ZH_IS_STRING( pItem ) )
       {
          ZH_SIZE nLen = zh_itemGetCLen( pItem );
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
             nLen = zh_cdpTextLen( cdp, zh_itemGetCPtr( pItem ), nLen );
          zh_retns( nLen );

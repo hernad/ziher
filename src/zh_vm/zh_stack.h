@@ -314,7 +314,7 @@ extern ZH_BOOL *   zh_stackDebugRequest( void );
 extern void        zh_stackDestroyTSD( void );
 
 extern PZH_PRIVATE_STACK zh_stackGetPrivateStack( void );
-extern void *      zh_stackGetCDP( void );
+extern void *      zh_stackGetCodepage( void );
 extern void        zh_stackSetCDP( void * );
 extern void *      zh_stackGetLang( void );
 extern void        zh_stackSetLang( void * );
@@ -366,7 +366,7 @@ extern void        zh_stackUpdateAllocator( void *, PZH_ALLOCUPDT_FUNC, int );
 #define zh_stackWithObjectItem( )   ( zh_stack.nWithObject ? * ( zh_stack.pItems + zh_stack.nWithObject ) : NULL )
 #define zh_stackWithObjectOffset( ) ( zh_stack.nWithObject )
 #define zh_stackWithObjectSetOffset( n )  do { zh_stack.nWithObject = ( n ); } while( 0 )
-#define zh_stackGetCDP( )           ( zh_stack.pCDP )
+#define zh_stackGetCodepage( )           ( zh_stack.pCDP )
 #define zh_stackSetCDP( p )         do { zh_stack.pCDP = ( p ); } while( 0 )
 #define zh_stackGetLang( )          ( zh_stack.pLang )
 #define zh_stackSetLang( p )        do { zh_stack.pLang = ( p ); } while( 0 )

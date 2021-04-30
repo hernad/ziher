@@ -15,7 +15,7 @@ cc_library(
         "date/*.c",
         "memo/*.c",
         "gt/*.c",
-    ]) + [ "//third_party/pcre2:headers" ],
+    ]),
     hdrs = glob([
         "*.h", 
         "*.zhh",
@@ -45,6 +45,7 @@ cc_library(
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
+        "//third_party/pcre2:headers",
         "//third_party/pcre2:pcre2",
         "//third_party/zlib:zlib"
     ],
@@ -109,7 +110,7 @@ cc_library(
 
 cc_library(
     name = "zh_rtl_zh_c",
-    srcs = [ ":zh_rtl_zh", "//zh_rtl:headers" ],
+    srcs = [ ":zh_rtl_zh" ],
     hdrs = glob([
         "*.h",
         "*.zhh"
@@ -119,7 +120,8 @@ cc_library(
     ] + C_OPTS,
     deps = [
         "//zh_zero:zh_zero", 
-        "//zh_rtl:zh_rtl" 
+        "//zh_rtl:zh_rtl",
+        "//zh_rtl:headers"
     ],
     alwayslink = 1,
     visibility = ["//visibility:public"],

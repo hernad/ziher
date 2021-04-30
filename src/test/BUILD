@@ -336,7 +336,7 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_codepage_zh_lib_c",
-    ],
+    ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_rtl"

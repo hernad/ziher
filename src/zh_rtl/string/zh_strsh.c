@@ -61,7 +61,7 @@ ZH_FUNC( ZH_STRSHRINK )
          const char * pszText = zh_itemGetCPtr( pText );
          ZH_ISIZ nText = zh_itemGetCLen( pText );
          ZH_ISIZ nLen;
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
 
          if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
             nLen = zh_cdpTextLen( cdp, pszText, nText );

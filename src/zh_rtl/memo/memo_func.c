@@ -153,7 +153,7 @@ static ZH_BOOL zh_mlInit( PZH_MLC_INFO pMLC, int iParAdd )
       if( pMLC->nTabSize == 0 )
          pMLC->nTabSize = 1;
 
-      pMLC->cdp = zh_vmCDP();
+      pMLC->cdp = zh_vmCodepage();
       if( ! ZH_CODEPAGE_ISCHARIDX( pMLC->cdp ) )
          pMLC->cdp = NULL;
 
@@ -542,7 +542,7 @@ ZH_FUNC( ZH_MLEVAL )
       ZH_SIZE nTabSize = zh_parnsdef( 4, 4 );
       ZH_SIZE nPos = zh_parns( 6 ) - 1;
       ZH_BOOL fWordWrap = zh_parldef( 5, ZH_TRUE );
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       PZH_ITEM pLineItem = NULL, pSoftItem = NULL;
       ZH_BOOL fSoftCR, fEOL;
       char * pszLine;

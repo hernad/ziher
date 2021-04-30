@@ -818,7 +818,7 @@ static ZH_BOOL zh_gt_def_GetUC( PZH_GT pGT, int iRow, int iCol,
                if( pGT->cdpHost && pGT->cdpTerm != pGT->cdpHost )
                   uc = zh_cdpGetUC( pGT->cdpHost, wc, 0 );
                if( uc == 0 )
-                  uc = zh_cdpGetUC( zh_vmCDP(), wc, wc < 32 ? ( ZH_UCHAR ) wc : '?' );
+                  uc = zh_cdpGetUC( zh_vmCodepage(), wc, wc < 32 ? ( ZH_UCHAR ) wc : '?' );
             }
          }
       }
@@ -3042,7 +3042,7 @@ static void zh_gt_def_InkeySetText( PZH_GT pGT, const char * szText, ZH_SIZE nLe
 
    if( szText && nLen )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       ZH_SIZE nIndex = 0;
       ZH_WCHAR wc;
 

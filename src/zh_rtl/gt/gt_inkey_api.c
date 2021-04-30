@@ -400,7 +400,7 @@ ZH_SIZE zh_inkeyKeyString( int iKey, char * buffer, ZH_SIZE nSize )
 
    if( ZH_INKEY_ISUNICODE( iKey ) )
    {
-      nLen = zh_cdpTextPutU16( zh_vmCDP(), buffer, nSize, ZH_INKEY_VALUE( iKey ) );
+      nLen = zh_cdpTextPutU16( zh_vmCodepage(), buffer, nSize, ZH_INKEY_VALUE( iKey ) );
    }
    else
    {
@@ -419,7 +419,7 @@ ZH_SIZE zh_inkeyKeyString( int iKey, char * buffer, ZH_SIZE nSize )
       }
       if( iKey >= 32 && iKey <= 255 && iKey != 127 )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          nLen = zh_cdpTextPutU16( cdp, buffer, nSize,
                                   zh_cdpGetU16( cdp, ( ZH_UCHAR ) iKey ) );
       }
@@ -458,7 +458,7 @@ int zh_inkeyKeyStd( int iKey )
             ZH_WCHAR wc = ( ZH_WCHAR ) iVal;
             if( wc )
             {
-               ZH_UCHAR uc = zh_cdpGetUC( zh_vmCDP(), wc, 0 );
+               ZH_UCHAR uc = zh_cdpGetUC( zh_vmCodepage(), wc, 0 );
                if( uc != 0 )
                   iKey = uc;
             }

@@ -16,10 +16,7 @@ cc_library(
         "rdd_sql/*.c",
         "rdd_usr/*.c",
         "sdd_pgsql/*.c"
-    ]) + [
-        "//zh_rtl:headers",
-        "//zh_rtl/rdd:headers"
-    ] + POSTGRESQL_HEADERS,
+    ]) + POSTGRESQL_HEADERS,
     copts = [
         "-Izh_rtl",
         "-Izh_rtl/rdd/rdd_sql"
@@ -49,7 +46,9 @@ cc_library(
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm", 
-        "//zh_rtl:zh_rtl" 
+        "//zh_rtl:zh_rtl",
+        "//zh_rtl:headers",
+        "//zh_rtl/rdd:headers"
     ],
     visibility = ["//visibility:public"],
 )
@@ -69,10 +68,7 @@ filegroup(
         "rdd_sql/*.c",
         "rdd_usr/*.c",
         "sdd_pgsql/*.c"
-    ]) + [
-        "//zh_rtl:headers",
-        "//zh_rtl/rdd:headers"
-    ] + POSTGRESQL_HEADERS,
+    ]) + POSTGRESQL_HEADERS,
     visibility = ["//visibility:public"],
 )
 
@@ -114,7 +110,9 @@ cc_library(
     ],
     deps = [ 
         "//zh_zero:zh_zero", 
-        "//zh_rtl:zh_rtl" 
+        "//zh_rtl:zh_rtl", 
+        "//zh_rtl:headers",
+        "//zh_rtl/rdd:headers"
     ],
     alwayslink = 1,
     visibility = ["//visibility:public"],

@@ -103,7 +103,7 @@ ZH_FUNC( CTODOW )
 
    if( nLen )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * szParam = zh_parc( 1 );
 
       for( iDow = 1; iDow <= 7; ++iDow )
@@ -124,7 +124,7 @@ ZH_FUNC( CTOMONTH )
 
    if( nLen )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * szParam = zh_parc( 1 );
       for( iMonth = 1; iMonth <= 12; ++iMonth )
       {

@@ -80,7 +80,7 @@ ZH_FUNC( TRANSFORM )
       bError = ZH_TRUE;
    else if( pPic && zh_itemGetCLen( pPic ) > 0 )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       char szPicDate[ 11 ];
       const char * szPic = zh_itemGetCPtr( pPic );
       ZH_SIZE nPicLen = zh_itemGetCLen( pPic );

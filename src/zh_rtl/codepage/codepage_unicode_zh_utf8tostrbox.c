@@ -62,7 +62,7 @@ ZH_FUNC( ZH_UTF8TOSTRBOX )
 
       if( nLen )
       {
-         PZH_CODEPAGE cdp = zh_gtBoxCP();
+         PZH_CODEPAGE cdp = zh_gtBoxCodepage();
 
          if( cdp )
          {

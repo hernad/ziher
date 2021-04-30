@@ -2141,7 +2141,7 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
          else if( ( pField->uiFlags & ZH_FF_BINARY ) == 0 )
          {
             pszVal = zh_cdpnDup( ( const char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                                 &nLen, pArea->area.cdPage, zh_vmCDP() );
+                                 &nLen, pArea->area.cdPage, zh_vmCodepage() );
             zh_itemPutCLPtr( pItem, pszVal, nLen );
          }
          else
@@ -2174,7 +2174,7 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
             }
             if( ( pField->uiFlags & ZH_FF_BINARY ) == 0 )
                pszVal = zh_cdpnDup( ( const char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                                    &nLen, pArea->area.cdPage, zh_vmCDP() );
+                                    &nLen, pArea->area.cdPage, zh_vmCodepage() );
             else
                pszVal = ( char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ];
 
@@ -2594,7 +2594,7 @@ static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
                {
                   zh_cdpnDup2( pszPtr, nSize,
                                ( char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                               &nLen, zh_vmCDP(), pArea->area.cdPage );
+                               &nLen, zh_vmCodepage(), pArea->area.cdPage );
                }
                else
                {
@@ -2626,7 +2626,7 @@ static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
                   if( nLen > ( ZH_SIZE ) sizeof( szBuffer ) )
                      nLen = sizeof( szBuffer );
                   pszPtr = zh_cdpnDup2( pszPtr, nSize, szBuffer, &nLen,
-                                        zh_vmCDP(), pArea->area.cdPage );
+                                        zh_vmCodepage(), pArea->area.cdPage );
                }
                else
                {
@@ -3470,10 +3470,10 @@ static ZH_ERRCODE zh_dbfCreate( DBFAREAP pArea, LPDBOPENINFO pCreateInfo )
    {
       pArea->area.cdPage = zh_cdpFindExt( pCreateInfo->cdpId );
       if( ! pArea->area.cdPage )
-         pArea->area.cdPage = zh_vmCDP();
+         pArea->area.cdPage = zh_vmCodepage();
    }
    else
-      pArea->area.cdPage = zh_vmCDP();
+      pArea->area.cdPage = zh_vmCodepage();
 
    pItem = zh_itemNew( NULL );
    if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PENDINGPASSWORD,
@@ -4137,10 +4137,10 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
    {
       pArea->area.cdPage = zh_cdpFindExt( pOpenInfo->cdpId );
       if( ! pArea->area.cdPage )
-         pArea->area.cdPage = zh_vmCDP();
+         pArea->area.cdPage = zh_vmCodepage();
    }
    else
-      pArea->area.cdPage = zh_vmCDP();
+      pArea->area.cdPage = zh_vmCodepage();
 
    pArea->fShared = pOpenInfo->fShared;
    pArea->fReadonly = pOpenInfo->fReadonly;

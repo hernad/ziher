@@ -59,7 +59,7 @@ ZH_FUNC( SUBSTR )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) && ( iPCount < 3 || ZH_IS_PARAM_NUM( 3 ) ) )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * pszText = zh_itemGetCPtr( pText );
       ZH_ISIZ nSize = zh_itemGetCLen( pText );
       ZH_ISIZ nFrom = zh_parns( 2 );

@@ -70,7 +70,7 @@ ZH_FUNC( __ACCEPTSTR )
 
 ZH_FUNC( __ACCEPT )
 {
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
    char         szAcceptResult[ ACCEPT_BUFFER_LEN ];
    char         szKey[ ZH_MAX_CHAR_LEN ];
    ZH_SIZE      nLen  = 0, nChar;

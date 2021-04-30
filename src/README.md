@@ -13,7 +13,7 @@ Install [bazel.build](https://bazel.build/).
 
 ## Windows
 
-
-    # Install `Windows Subsystem for Linux`
+    # Install cygwin64
     
     # bazel build //zh_comp:zh_comp --experimental_enable_runfiles=yes
+    # c:\dev\bazelisk.exe run //test:run_hello_dbf_win --//bazel:windows_build=x64

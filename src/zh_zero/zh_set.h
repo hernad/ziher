@@ -128,7 +128,7 @@ typedef enum
    ZH_SET_EOL           = 110,
    ZH_SET_TRIMFILENAME  = 111,
    ZH_SET_HBOUTLOG      = 112,
-   ZH_SET_HBOUTLOGINFO  = 113,
+   ZH_SET_ZHOUTLOGINFO  = 113,
    ZH_SET_CODEPAGE      = 114,
    ZH_SET_OSCODEPAGE    = 115,
    ZH_SET_TIMEFORMAT    = 116,
@@ -209,7 +209,7 @@ typedef struct
    char *     ZH_SET_EOL;
    ZH_BOOL    ZH_SET_TRIMFILENAME;
    char *     ZH_SET_HBOUTLOG;
-   char *     ZH_SET_HBOUTLOGINFO;
+   char *     ZH_SET_ZHOUTLOGINFO;
    char *     ZH_SET_TIMEFORMAT;
 
 } ZH_SET_STRUCT, * PZH_SET_STRUCT;

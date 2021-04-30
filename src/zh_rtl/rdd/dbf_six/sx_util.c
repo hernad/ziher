@@ -60,7 +60,7 @@ ZH_FUNC( SX_SLIMFAST )
       char * szDst, cQuote = 0, c;
       ZH_SIZE nDst;
 
-      szDst = zh_cdpnDupUpper( zh_vmCDP(), szExp, NULL );
+      szDst = zh_cdpnDupUpper( zh_vmCodepage(), szExp, NULL );
       szExp = szDst;
       nDst = 0;
 

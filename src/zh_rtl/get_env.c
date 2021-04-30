@@ -57,7 +57,7 @@ ZH_FUNC( GETENV )
    if( pName && zh_pcount() == 1 )
    {
 #ifdef _ZH_GETENV_REQUIRES_UPPERCASE
-      char * pszName = zh_cdpnDupUpper( zh_vmCDP(),
+      char * pszName = zh_cdpnDupUpper( zh_vmCodepage(),
                                         zh_itemGetCPtr( pName ), NULL );
 #else
       const char * pszName = zh_itemGetCPtr( pName );
@@ -94,7 +94,7 @@ ZH_FUNC( ZH_GETENV )
    if( pName )
    {
 #ifdef _ZH_GETENV_REQUIRES_UPPERCASE
-      char * pszName = zh_cdpnDupUpper( zh_vmCDP(),
+      char * pszName = zh_cdpnDupUpper( zh_vmCodepage(),
                                         zh_itemGetCPtr( pName ), NULL );
 #else
       const char * pszName = zh_itemGetCPtr( pName );

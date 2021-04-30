@@ -3971,25 +3971,25 @@ const char * zh_fsNameConv( const char * pszFileName, char ** pszFree )
       if( iFileCase == ZH_SET_CASE_LOWER )
       {
          if( pFileName->szName )
-            pFileName->szName = pszName = zh_cdpnDupLower( zh_vmCDP(), pFileName->szName, NULL );
+            pFileName->szName = pszName = zh_cdpnDupLower( zh_vmCodepage(), pFileName->szName, NULL );
          if( pFileName->szExtension )
-            pFileName->szExtension = pszExt = zh_cdpnDupLower( zh_vmCDP(), pFileName->szExtension, NULL );
+            pFileName->szExtension = pszExt = zh_cdpnDupLower( zh_vmCodepage(), pFileName->szExtension, NULL );
       }
       else if( iFileCase == ZH_SET_CASE_UPPER )
       {
          if( pFileName->szName )
-            pFileName->szName = pszName = zh_cdpnDupUpper( zh_vmCDP(), pFileName->szName, NULL );
+            pFileName->szName = pszName = zh_cdpnDupUpper( zh_vmCodepage(), pFileName->szName, NULL );
          if( pFileName->szExtension )
-            pFileName->szExtension = pszExt = zh_cdpnDupUpper( zh_vmCDP(), pFileName->szExtension, NULL );
+            pFileName->szExtension = pszExt = zh_cdpnDupUpper( zh_vmCodepage(), pFileName->szExtension, NULL );
       }
 
       /* DIRCASE */
       if( pFileName->szPath )
       {
          if( iDirCase == ZH_SET_CASE_LOWER )
-            pFileName->szPath = pszPath = zh_cdpnDupLower( zh_vmCDP(), pFileName->szPath, NULL );
+            pFileName->szPath = pszPath = zh_cdpnDupLower( zh_vmCodepage(), pFileName->szPath, NULL );
          else if( iDirCase == ZH_SET_CASE_UPPER )
-            pFileName->szPath = pszPath = zh_cdpnDupUpper( zh_vmCDP(), pFileName->szPath, NULL );
+            pFileName->szPath = pszPath = zh_cdpnDupUpper( zh_vmCodepage(), pFileName->szPath, NULL );
       }
 
       zh_fsFNameMerge( ( char * ) ZH_UNCONST( pszFileName ), pFileName );
@@ -4045,7 +4045,7 @@ ZH_WCHAR * zh_fsNameConvU16( const char * pszFileName )
    if( ! zh_vmIsReady() )
       return zh_mbtowc( pszFileName );  /* No ZHVM stack */
 
-   cdp = zh_vmCDP();
+   cdp = zh_vmCodepage();
    fTrim = zh_setGetTrimFileName();
    cDirSep = ( char ) zh_setGetDirSeparator();
    iFileCase = zh_setGetFileCase();

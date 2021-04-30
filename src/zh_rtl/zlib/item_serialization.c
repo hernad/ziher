@@ -1856,8 +1856,8 @@ ZH_FUNC( ZH_SERIALIZE )
       pszCdpIn = zh_parc( 3 );
       pszCdpOut = zh_parc( 4 );
 
-      cdpIn = pszCdpIn ? zh_cdpFindExt( pszCdpIn ) : zh_vmCDP();
-      cdpOut = pszCdpOut ? zh_cdpFindExt( pszCdpOut ) : zh_vmCDP();
+      cdpIn = pszCdpIn ? zh_cdpFindExt( pszCdpIn ) : zh_vmCodepage();
+      cdpOut = pszCdpOut ? zh_cdpFindExt( pszCdpOut ) : zh_vmCodepage();
 
       if( ZH_IS_PARAM_NUM( 2 ) )
          iFlags = zh_parni( 2 );
@@ -1882,8 +1882,8 @@ ZH_FUNC( ZH_DESERIALIZE )
       const char * pszCdpIn = zh_parc( 2 ),
                  * pszCdpOut = zh_parc( 3 );
 
-      cdpIn = pszCdpIn ? zh_cdpFindExt( pszCdpIn ) : zh_vmCDP();
-      cdpOut = pszCdpOut ? zh_cdpFindExt( pszCdpOut ) : zh_vmCDP();
+      cdpIn = pszCdpIn ? zh_cdpFindExt( pszCdpIn ) : zh_vmCodepage();
+      cdpOut = pszCdpOut ? zh_cdpFindExt( pszCdpOut ) : zh_vmCodepage();
 
       pItem = zh_itemDeserializeCP( &pBuffer, &nSize, cdpIn, cdpOut );
       if( pItem )

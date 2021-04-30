@@ -276,7 +276,7 @@ static const char * zh_dbgSetName( ZH_set_enum setId )
       case ZH_SET_EOL:           return "EOL";
       case ZH_SET_TRIMFILENAME:  return "TrimFileName";
       case ZH_SET_HBOUTLOG:      return "OutLogFile";
-      case ZH_SET_HBOUTLOGINFO:  return "OutLogInfo";
+      case ZH_SET_ZHOUTLOGINFO:  return "OutLogInfo";
       case ZH_SET_CODEPAGE:      return "CodePage";
       case ZH_SET_OSCODEPAGE:    return "OSCodePage";
       case ZH_SET_TIMEFORMAT:    return "TimeFormat";

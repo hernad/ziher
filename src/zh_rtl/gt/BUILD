@@ -79,7 +79,7 @@ cc_library(
 
 cc_library(
     name = "zh_rtl_gt_zh_c",
-    srcs = [ ":zh_rtl_gt_zh", "//zh_rtl:headers" ],
+    srcs = [ ":zh_rtl_gt_zh" ],
     hdrs = glob([
         "*.zh",
         "*.zhh",
@@ -87,7 +87,11 @@ cc_library(
     copts = [
         "-Izh_rtl"
     ] + C_OPTS,
-    deps = [ "//zh_zero:zh_zero", "//zh_rtl:zh_rtl" ],
+    deps = [ 
+        "//zh_zero:zh_zero", 
+        "//zh_rtl:zh_rtl",
+        "//zh_rtl:headers",
+    ],
     alwayslink = 1,
     visibility = ["//visibility:public"],
 )

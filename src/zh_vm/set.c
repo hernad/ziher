@@ -999,12 +999,12 @@ PZH_ITEM zh_setGetItem( ZH_set_enum set_specifier, PZH_ITEM pResult,
             zh_xsetfilename( pSet->ZH_SET_HBOUTLOG );
          }
          break;
-      case ZH_SET_HBOUTLOGINFO:
-         pResult = zh_itemPutC( pResult, pSet->ZH_SET_HBOUTLOGINFO );
+      case ZH_SET_ZHOUTLOGINFO:
+         pResult = zh_itemPutC( pResult, pSet->ZH_SET_ZHOUTLOGINFO );
          if( pArg1 != NULL )
          {
-            pSet->ZH_SET_HBOUTLOGINFO = set_string( pArg1, pSet->ZH_SET_HBOUTLOGINFO );
-            zh_xsetinfo( pSet->ZH_SET_HBOUTLOGINFO );
+            pSet->ZH_SET_ZHOUTLOGINFO = set_string( pArg1, pSet->ZH_SET_ZHOUTLOGINFO );
+            zh_xsetinfo( pSet->ZH_SET_ZHOUTLOGINFO );
          }
          break;
       case ZH_SET_OSCODEPAGE:
@@ -1148,10 +1148,10 @@ void zh_setInitialize( PZH_SET_STRUCT pSet )
    pSet->ZH_SET_EOL = zh_strdup( zh_conNewLine() );
    pSet->ZH_SET_TRIMFILENAME = ZH_FALSE;
    pSet->ZH_SET_HBOUTLOG = zh_strdup( "zh_out.log" );
-   pSet->ZH_SET_HBOUTLOGINFO = zh_strdup( "" );
+   pSet->ZH_SET_ZHOUTLOGINFO = zh_strdup( "" );
 
    zh_xsetfilename( pSet->ZH_SET_HBOUTLOG );
-   zh_xsetinfo( pSet->ZH_SET_HBOUTLOGINFO );
+   zh_xsetinfo( pSet->ZH_SET_ZHOUTLOGINFO );
 
    pSet->zh_set_oscp = NULL;
    pSet->zh_set_dbcp = NULL;
@@ -1180,7 +1180,7 @@ void zh_setRelease( PZH_SET_STRUCT pSet )
    if( pSet->ZH_SET_COLOR )         zh_xfree( pSet->ZH_SET_COLOR );
    if( pSet->ZH_SET_EOL )           zh_xfree( pSet->ZH_SET_EOL );
    if( pSet->ZH_SET_HBOUTLOG )      zh_xfree( pSet->ZH_SET_HBOUTLOG );
-   if( pSet->ZH_SET_HBOUTLOGINFO )  zh_xfree( pSet->ZH_SET_HBOUTLOGINFO );
+   if( pSet->ZH_SET_ZHOUTLOGINFO )  zh_xfree( pSet->ZH_SET_ZHOUTLOGINFO );
 
    zh_fsFreeSearchPath( pSet->zh_set_path );
 
@@ -1226,7 +1226,7 @@ PZH_SET_STRUCT zh_setClone( PZH_SET_STRUCT pSrc )
    if( pSet->ZH_SET_PRINTFILE )    pSet->ZH_SET_PRINTFILE    = zh_strdup( pSet->ZH_SET_PRINTFILE );
    if( pSet->ZH_SET_EOL )          pSet->ZH_SET_EOL          = zh_strdup( pSet->ZH_SET_EOL );
    if( pSet->ZH_SET_HBOUTLOG )     pSet->ZH_SET_HBOUTLOG     = zh_strdup( pSet->ZH_SET_HBOUTLOG );
-   if( pSet->ZH_SET_HBOUTLOGINFO ) pSet->ZH_SET_HBOUTLOGINFO = zh_strdup( pSet->ZH_SET_HBOUTLOGINFO );
+   if( pSet->ZH_SET_ZHOUTLOGINFO ) pSet->ZH_SET_ZHOUTLOGINFO = zh_strdup( pSet->ZH_SET_ZHOUTLOGINFO );
 
    if( pSet->ZH_SET_PATH )
       zh_fsAddSearchPath( pSet->ZH_SET_PATH, &pSet->zh_set_path );
@@ -1858,14 +1858,14 @@ ZH_BOOL zh_setSetItem( ZH_set_enum set_specifier, PZH_ITEM pItem )
                fResult = ZH_TRUE;
             }
             break;
-         case ZH_SET_HBOUTLOGINFO:
+         case ZH_SET_ZHOUTLOGINFO:
             if( ZH_IS_STRING( pItem ) || ZH_IS_NIL( pItem ) )
             {
                szValue = zh_strndup( zh_itemGetCPtr( pItem ), USHRT_MAX );
-               if( pSet->ZH_SET_HBOUTLOGINFO )
-                  zh_xfree( pSet->ZH_SET_HBOUTLOGINFO );
-               pSet->ZH_SET_HBOUTLOGINFO = szValue;
-               zh_xsetinfo( pSet->ZH_SET_HBOUTLOGINFO );
+               if( pSet->ZH_SET_ZHOUTLOGINFO )
+                  zh_xfree( pSet->ZH_SET_ZHOUTLOGINFO );
+               pSet->ZH_SET_ZHOUTLOGINFO = szValue;
+               zh_xsetinfo( pSet->ZH_SET_ZHOUTLOGINFO );
                fResult = ZH_TRUE;
             }
             break;
@@ -2055,7 +2055,7 @@ ZH_BOOL zh_setGetL( ZH_set_enum set_specifier )
       case ZH_SET_DBFLOCKSCHEME:
       case ZH_SET_EOL:
       case ZH_SET_HBOUTLOG:
-      case ZH_SET_HBOUTLOGINFO:
+      case ZH_SET_ZHOUTLOGINFO:
       case ZH_SET_OSCODEPAGE:
       case ZH_SET_DBCODEPAGE:
       case ZH_SET_INVALID_:
@@ -2107,8 +2107,8 @@ const char * zh_setGetCPtr( ZH_set_enum set_specifier )
          return pSet->ZH_SET_EOL;
       case ZH_SET_HBOUTLOG:
          return pSet->ZH_SET_HBOUTLOG;
-      case ZH_SET_HBOUTLOGINFO:
-         return pSet->ZH_SET_HBOUTLOGINFO;
+      case ZH_SET_ZHOUTLOGINFO:
+         return pSet->ZH_SET_ZHOUTLOGINFO;
       case ZH_SET_OSCODEPAGE:
          return pSet->zh_set_oscp ? ( ( PZH_CODEPAGE ) pSet->zh_set_oscp )->id : NULL;
       case ZH_SET_DBCODEPAGE:
@@ -2264,7 +2264,7 @@ int     zh_setGetNI( ZH_set_enum set_specifier )
       case ZH_SET_DEFEXTENSIONS:
       case ZH_SET_TRIMFILENAME:
       case ZH_SET_HBOUTLOG:
-      case ZH_SET_HBOUTLOGINFO:
+      case ZH_SET_ZHOUTLOGINFO:
       case ZH_SET_OSCODEPAGE:
       case ZH_SET_DBCODEPAGE:
       case ZH_SET_INVALID_:
@@ -2699,7 +2699,7 @@ const char * zh_setGetHBOUTLOG( void )
 const char * zh_setGetHBOUTLOGINFO( void )
 {
    ZH_STACK_TLS_PRELOAD
-   return zh_stackSetStruct()->ZH_SET_HBOUTLOGINFO;
+   return zh_stackSetStruct()->ZH_SET_ZHOUTLOGINFO;
 }
 
 const char * zh_setGetOSCODEPAGE( void )
@@ -2733,7 +2733,7 @@ ZH_BOOL zh_osUseCP( void )
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          return cdpHost && cdpHost != cdpOS;
       }
    }
@@ -2749,7 +2749,7 @@ const char * zh_osEncodeCP( const char * szName, char ** pszFree, ZH_SIZE * pnSi
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
          {
             ZH_SIZE nSize = 0;
@@ -2784,7 +2784,7 @@ const char * zh_osDecodeCP( const char * szName, char ** pszFree, ZH_SIZE * pnSi
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
          {
             ZH_SIZE nSize = 0;
@@ -2819,7 +2819,7 @@ char * zh_osStrEncode( const char * pszName )
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
             return zh_cdpDup( pszName, cdpHost, cdpOS );
       }
@@ -2836,7 +2836,7 @@ char * zh_osStrEncodeN( const char * pszName, ZH_SIZE nLen )
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
             return zh_cdpDupn( pszName, nLen, cdpHost, cdpOS );
       }
@@ -2853,7 +2853,7 @@ char * zh_osStrDecode( const char * pszName )
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
             return zh_cdpDup( pszName, cdpOS, cdpHost );
       }
@@ -2870,7 +2870,7 @@ char * zh_osStrDecode2( const char * pszName, char * pszBuffer, ZH_SIZE nSize )
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
-         PZH_CODEPAGE cdpHost = zh_vmCDP();
+         PZH_CODEPAGE cdpHost = zh_vmCodepage();
          if( cdpHost && cdpHost != cdpOS )
          {
             pszBuffer[ nSize ] = 0;
@@ -2888,7 +2888,7 @@ ZH_WCHAR * zh_osStrU16Encode( const char * pszName )
 {
    if( zh_vmIsReady() )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp )
       {
          ZH_SIZE nLen, nSize;
@@ -2909,7 +2909,7 @@ ZH_WCHAR * zh_osStrU16EncodeN( const char * pszName, ZH_SIZE nLen )
 {
    if( zh_vmIsReady() )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp )
       {
          ZH_SIZE nSize;
@@ -2930,7 +2930,7 @@ char * zh_osStrU16Decode( const ZH_WCHAR * pszNameW )
 {
    if( zh_vmIsReady() )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp )
       {
          ZH_SIZE nLen, nSize;
@@ -2951,7 +2951,7 @@ char * zh_osStrU16Decode2( const ZH_WCHAR * pszNameW, char * pszBuffer, ZH_SIZE 
 {
    if( zh_vmIsReady() )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp )
       {
          zh_cdpU16ToStr( cdp, ZH_CODEPAGE_ENDIAN_NATIVE, pszNameW, zh_wstrlen( pszNameW ), pszBuffer, nSize );

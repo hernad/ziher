@@ -94,13 +94,13 @@ ZH_FUNC( SETCLEARB )
    if( ZH_IS_PARAM_NUM( 1 ) )
    {
       int iChar = zh_parni( 1 );
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( ! ZH_CODEPAGE_ISCHARUNI( cdp ) )
          iChar = zh_cdpGetU16( cdp, ( ZH_UCHAR ) iChar );
       usNew = ( ZH_USHORT ) iChar;
    }
    else if( ZH_ISCHAR( 1 ) )
-      usNew = zh_cdpTextGetU16( zh_vmCDP(), zh_parc( 1 ), zh_parclen( 1 ) );
+      usNew = zh_cdpTextGetU16( zh_vmCodepage(), zh_parc( 1 ), zh_parclen( 1 ) );
    else
       usNew = ' ';  /* CT uses 255 => U+00A0 in CP437 */
 
@@ -112,7 +112,7 @@ ZH_FUNC( SETCLEARB )
 ZH_FUNC( GETCLEARB )
 {
    int iChar = zh_gtGetClearChar();
-   PZH_CODEPAGE cdp = zh_vmCDP();
+   PZH_CODEPAGE cdp = zh_vmCodepage();
 
    if( ! ZH_CODEPAGE_ISCHARUNI( cdp ) )
    {
@@ -224,7 +224,7 @@ ZH_FUNC( WBOX )
    if( pszBoxFrame )
    {
       ZH_SIZE nLen = zh_parclen( 1 ), nIndex = 0, nSize = 0;
-      PZH_CODEPAGE cdp = zh_gtBoxCP();
+      PZH_CODEPAGE cdp = zh_gtBoxCodepage();
 
       while( nSize < ZH_SIZEOFARRAY( szBoxBuf ) - 1 &&
              ZH_CODEPAGE_CHAR_GET( cdp, pszBoxFrame, nLen, &nIndex, &wc ) )

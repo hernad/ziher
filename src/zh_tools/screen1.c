@@ -101,7 +101,7 @@ ZH_FUNC( SCREENMIX )
          ZH_BYTE bAttr;
          ZH_USHORT usChar;
          ZH_WCHAR wc;
-         PZH_CODEPAGE cdp = zh_gtHostCP();
+         PZH_CODEPAGE cdp = zh_gtHostCodepage();
          ZH_SIZE nIndex = 0, ul = 0;
          int i;
 
@@ -147,7 +147,7 @@ ZH_FUNC( SAYSCREEN )
       if( iRow >= 0 && iCol >= 0 &&
           iRow <= zh_gtMaxRow() && iCol <= zh_gtMaxCol() )
       {
-         PZH_CODEPAGE cdp = zh_gtHostCP();
+         PZH_CODEPAGE cdp = zh_gtHostCodepage();
          ZH_SIZE nIndex = 0;
          int i;
 

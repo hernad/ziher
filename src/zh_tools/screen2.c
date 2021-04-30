@@ -73,7 +73,7 @@ ZH_FUNC( SAYDOWN )
          ZH_SIZE nTextLen = zh_parclen( 1 );
 
          ZH_WCHAR wc;
-         PZH_CODEPAGE cdp = zh_gtHostCP();
+         PZH_CODEPAGE cdp = zh_gtHostCodepage();
          ZH_SIZE nIndex = 0;
 
          int iColor = zh_gtGetCurrColor();

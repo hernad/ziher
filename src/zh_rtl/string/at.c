@@ -59,7 +59,7 @@ ZH_FUNC( ZH_AT )
 
    if( pText && pSub )
    {
-      PZH_CODEPAGE cdp         = zh_vmCDP();
+      PZH_CODEPAGE cdp         = zh_vmCodepage();
       const char * pszText     = zh_itemGetCPtr( pText );
       ZH_SIZE      nTextLength = zh_itemGetCLen( pText );
       ZH_SIZE      nStart      = zh_parns( 3 );
@@ -125,7 +125,7 @@ ZH_FUNC( AT )
                                zh_itemGetCPtr( pText ), zh_itemGetCLen( pText ) );
       if( nPos )
       {
-         PZH_CODEPAGE cdp = zh_vmCDP();
+         PZH_CODEPAGE cdp = zh_vmCodepage();
          if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
             nPos = zh_cdpTextLen( cdp, zh_itemGetCPtr( pText ), nPos - 1 ) + 1;
       }

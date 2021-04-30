@@ -816,7 +816,7 @@ PZH_ITEM zh_i18n_gettext( PZH_ITEM pMsgID, PZH_ITEM pContext )
       {
          if( cdpage )
          {
-            PZH_CODEPAGE cdp = zh_vmCDP();
+            PZH_CODEPAGE cdp = zh_vmCodepage();
             if( cdp && cdp != cdpage )
             {
                if( pMsgDst != pMsgID )
@@ -901,7 +901,7 @@ PZH_ITEM zh_i18n_ngettext( PZH_ITEM pNum, PZH_ITEM pMsgID, PZH_ITEM pContext )
       {
          if( cdpage )
          {
-            PZH_CODEPAGE cdp = zh_vmCDP();
+            PZH_CODEPAGE cdp = zh_vmCodepage();
             if( cdp && cdp != cdpage )
             {
                if( pMsgDst != pMsgID )

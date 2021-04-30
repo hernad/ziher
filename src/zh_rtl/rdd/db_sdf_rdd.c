@@ -413,7 +413,7 @@ static ZH_ERRCODE zh_sdfGetValue( SDFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
          {
             ZH_SIZE nLen = pField->uiLen;
             char * pszVal = zh_cdpnDup( ( const char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                                        &nLen, pArea->area.cdPage, zh_vmCDP() );
+                                        &nLen, pArea->area.cdPage, zh_vmCodepage() );
             zh_itemPutCLPtr( pItem, pszVal, nLen );
          }
          else
@@ -534,7 +534,7 @@ static ZH_ERRCODE zh_sdfPutValue( SDFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
                nSize = pField->uiLen;
                zh_cdpnDup2( zh_itemGetCPtr( pItem ), zh_itemGetCLen( pItem ),
                             ( char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                            &nSize, zh_vmCDP(), pArea->area.cdPage );
+                            &nSize, zh_vmCodepage(), pArea->area.cdPage );
             }
             else
             {
@@ -1046,10 +1046,10 @@ static ZH_ERRCODE zh_sdfCreate( SDFAREAP pArea, LPDBOPENINFO pCreateInfo )
    {
       pArea->area.cdPage = zh_cdpFindExt( pCreateInfo->cdpId );
       if( ! pArea->area.cdPage )
-         pArea->area.cdPage = zh_vmCDP();
+         pArea->area.cdPage = zh_vmCodepage();
    }
    else
-      pArea->area.cdPage = zh_vmCDP();
+      pArea->area.cdPage = zh_vmCodepage();
 
    pFileName = zh_fsFNameSplit( pCreateInfo->abName );
    if( zh_setGetDefExtension() && ! pFileName->szExtension )
@@ -1138,10 +1138,10 @@ static ZH_ERRCODE zh_sdfOpen( SDFAREAP pArea, LPDBOPENINFO pOpenInfo )
    {
       pArea->area.cdPage = zh_cdpFindExt( pOpenInfo->cdpId );
       if( ! pArea->area.cdPage )
-         pArea->area.cdPage = zh_vmCDP();
+         pArea->area.cdPage = zh_vmCodepage();
    }
    else
-      pArea->area.cdPage = zh_vmCDP();
+      pArea->area.cdPage = zh_vmCodepage();
 
    uiFlags = ( pArea->fReadonly ? FO_READ : FO_READWRITE ) |
              ( pArea->fShared ? FO_DENYNONE : FO_EXCLUSIVE );

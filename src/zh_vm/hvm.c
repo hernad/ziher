@@ -8954,11 +8954,11 @@ ZH_BOOL zh_vmInternalsEnabled( void )
    return s_fInternalsEnabled;
 }
 
-PZH_CODEPAGE zh_vmCDP( void )
+PZH_CODEPAGE zh_vmCodepage( void )
 {
    ZH_STACK_TLS_PRELOAD
 
-   return ( PZH_CODEPAGE ) zh_stackGetCDP();
+   return ( PZH_CODEPAGE ) zh_stackGetCodepage();
 }
 
 void zh_vmSetCDP( PZH_CODEPAGE pCDP )

@@ -66,7 +66,7 @@ ZH_FUNC( LEFT )
          ZH_SIZE nText = zh_itemGetCLen( pText );
          if( ( ZH_SIZE ) nLen < nText )
          {
-            PZH_CODEPAGE cdp = zh_vmCDP();
+            PZH_CODEPAGE cdp = zh_vmCodepage();
             if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
                nLen = zh_cdpTextPos( cdp, zh_itemGetCPtr( pText ), nText, nLen );
          }
@@ -87,7 +87,7 @@ ZH_FUNC( ZH_LEFTEQ )
 
    if( pItem1 && pItem2 )
       zh_retl( zh_cdpcmp( zh_itemGetCPtr( pItem1 ), zh_itemGetCLen( pItem1 ),
-                          zh_itemGetCPtr( pItem2 ), zh_itemGetCLen( pItem2 ), zh_vmCDP(), ZH_FALSE ) == 0 );
+                          zh_itemGetCPtr( pItem2 ), zh_itemGetCLen( pItem2 ), zh_vmCodepage(), ZH_FALSE ) == 0 );
    else
       zh_errRT_BASE_SubstR( EG_ARG, 1071, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
@@ -99,7 +99,7 @@ ZH_FUNC( ZH_LEFTEQI )
 
    if( pItem1 && pItem2 )
       zh_retl( zh_cdpicmp( zh_itemGetCPtr( pItem1 ), zh_itemGetCLen( pItem1 ),
-                           zh_itemGetCPtr( pItem2 ), zh_itemGetCLen( pItem2 ), zh_vmCDP(), ZH_FALSE ) == 0 );
+                           zh_itemGetCPtr( pItem2 ), zh_itemGetCLen( pItem2 ), zh_vmCodepage(), ZH_FALSE ) == 0 );
    else
       zh_errRT_BASE_SubstR( EG_ARG, 1071, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }

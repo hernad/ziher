@@ -66,7 +66,7 @@ ZH_FUNC( RIGHT )
          ZH_SIZE nText = zh_itemGetCLen( pText );
          if( ( ZH_SIZE ) nLen < nText )
          {
-            PZH_CODEPAGE cdp = zh_vmCDP();
+            PZH_CODEPAGE cdp = zh_vmCodepage();
             if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
             {
                ZH_SIZE nChars = zh_cdpTextLen( cdp, zh_itemGetCPtr( pText ), nText );

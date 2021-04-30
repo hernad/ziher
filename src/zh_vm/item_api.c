@@ -2329,7 +2329,7 @@ int zh_itemStrCmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
    /* Both strings not empty */
    if( nMinLen )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp && ! ZH_CODEPAGE_ISBINSORT( cdp ) )
          iRet = zh_cdpcmp( szFirst, nLenFirst, szSecond, nLenSecond,
                            cdp, bForceExact );
@@ -2408,7 +2408,7 @@ int zh_itemStrICmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
    /* Both strings not empty */
    if( nMinLen )
    {
-      PZH_CODEPAGE cdp = zh_vmCDP();
+      PZH_CODEPAGE cdp = zh_vmCodepage();
       if( cdp && ! ZH_CODEPAGE_ISBINSORT( cdp ) )
          iRet = zh_cdpicmp( szFirst, nLenFirst, szSecond, nLenSecond,
                             cdp, bForceExact );

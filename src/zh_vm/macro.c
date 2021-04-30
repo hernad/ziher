@@ -79,7 +79,7 @@ static void zh_macroFlagsSet( int flag )
 }
 
 
-#define ZH_SM_ISUSERCP()         ( ZH_CODEPAGE_ISCHARUNI( zh_vmCDP() ) ? ZH_COMPFLAG_USERCP : 0 )
+#define ZH_SM_ISUSERCP()         ( ZH_CODEPAGE_ISCHARUNI( zh_vmCodepage() ) ? ZH_COMPFLAG_USERCP : 0 )
 
 /* - */
 
