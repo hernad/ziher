@@ -9,8 +9,8 @@ def zh_comp(name, zhin, args="-n -izh_zero", **kwargs):
     name = name,
     srcs = [
       "//zh_comp/main:zhcomp", 
-      "//zh_zero:headers", 
-      "//zh_rtl:headers", 
+      "//zh_zero:headers_filegroup", 
+      "//zh_rtl:headers_filegroup", 
       zhin
     ],
     outs = [zhin + ".c"],

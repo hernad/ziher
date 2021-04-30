@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "C_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "C_OPTS")
 
 ZH_LIB="zh_ssl"
 
@@ -28,7 +28,7 @@ cc_library(
 )
 
 filegroup(
-    name = "headers",
+    name = "headers_filegroup",
     srcs = glob([
         "*.h",
         "*.zhh",
@@ -61,9 +61,7 @@ zh_comp_all(
     args = ZH_COMP_OPTS + [ 
         #   "-ithird_party/minizip" 
     ],
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers", 
+    deps = ZH_DEPS_STD + [ 
         #"//third_party/minizip:headers", 
         ":headers" 
     ],

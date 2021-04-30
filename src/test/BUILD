@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
 load("//bazel:windows_dll_library.bzl", "windows_dll_library")
 
 #load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
@@ -82,10 +82,8 @@ zh_comp_all(
     name = "hello_threads_zh_lib", 
     srcs = [ "hello_threads.zh" ],
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers",
-        "//zh_vm:headers"
+    deps = ZH_DEPS_STD + [ 
+        "//zh_vm:headers_filegroup"
     ],
     visibility = ["//visibility:public"],
 )
@@ -112,13 +110,9 @@ zh_comp_all(
     name = "hello_world_zh_lib", 
     srcs = [ "hello.zh" ],
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers" 
-    ],
+    deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )
-
 
 
 cc_binary(
@@ -161,10 +155,7 @@ zh_comp_all(
     name = "hello_code_block_zh_lib", 
     srcs = [ "hello_code_block.zh" ],
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers" 
-    ],
+    deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )
 
@@ -315,8 +306,8 @@ zh_comp_all(
     srcs = [ "hello_dbf.zh" ],
     args = ZH_COMP_OPTS + [ "-DZH_DYNLIB", "-DZH_TR_LEVEL=5" ],
     deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers" 
+        "//zh_zero:headers_filegroup", 
+        "//zh_rtl:headers_filegroup" 
     ],
     visibility = ["//visibility:public"],
 )
@@ -368,9 +359,6 @@ zh_comp_all(
     name = "hello_codepage_zh_lib", 
     srcs = [ "hello_codepage.zh" ],
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers" 
-    ],
+    deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )

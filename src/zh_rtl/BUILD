@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "C_OPTS")
 
 cc_library(
     name = "zh_rtl",
@@ -34,6 +34,7 @@ cc_library(
         "gt/*.zhh",
     ]),
     copts = C_OPTS + [
+       "-Izh_rtl",
        "-Ithird_party/pcre2",
        "-Ithird_party/zlib",
        "-DSUPPORT_UNICODE",
@@ -43,8 +44,9 @@ cc_library(
     ],
     alwayslink = 1,
     deps = [ 
-        "//zh_zero:zh_zero", 
+        "//zh_zero:zh_zero",
         "//zh_vm:zh_vm",
+        "//zh_rtl:headers", 
         "//third_party/pcre2:headers",
         "//third_party/pcre2:pcre2",
         "//third_party/zlib:zlib"
@@ -74,21 +76,21 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-#filegroup(
-#    name = "headers",
-#    srcs = glob([
-#        "*.h",
-#        "*.zhh",
-#        "zh/*.zhh",
-#        "file/*.zhh",
-#        "crypto/*.h",
-#        "crypto/*.zhh",
-#        "language/*.h",
-#        "zlib/*.h",
-#        "zlib/*.zhh"
-#    ]),
-#    visibility = ["//visibility:public"],
-#)
+filegroup(
+    name = "headers_filegroup",
+    srcs = glob([
+        "*.h",
+        "*.zhh",
+        "zh/*.zhh",
+        "file/*.zhh",
+        "crypto/*.h",
+        "crypto/*.zhh",
+        "language/*.h",
+        "zlib/*.h",
+        "zlib/*.zhh"
+    ]),
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = "headers",
@@ -136,9 +138,6 @@ zh_comp_all(
         "zlib/*.zh"
     ]),
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers" 
-    ],
+    deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )

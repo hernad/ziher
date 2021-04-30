@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "C_OPTS", "ZH_COMP_OPTS")
+load("//bazel:variables.bzl", "C_OPTS", "ZH_COMP_OPTS", "ZH_DEPS_STD")
 
 ZH_LIB="zh_tools"
 
@@ -30,6 +30,15 @@ cc_library(
 cc_library(
     name = "headers",
     hdrs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers_filegroup",
+    srcs = glob([
         "*.h",
         "*.zhh",
     ]),
@@ -66,11 +75,9 @@ zh_comp_all(
         "*.zh",
     ]),
     args = ZH_COMP_OPTS,
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers", 
-        "//zh_rtl/gt:headers", 
-        ":headers" 
+    deps = ZH_DEPS_STD + [ 
+        "//zh_rtl/gt:headers_filegroup", 
+        ":headers_filegroup" 
     ],
     visibility = ["//visibility:public"],
 )

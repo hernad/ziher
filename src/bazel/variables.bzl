@@ -152,9 +152,14 @@ ZH_Z18_COMP_OPTS=[
     "-b"
 ]
 
-ZH_Z18_HEADERS=[
-    "//zh_zero:headers", 
-    "//zh_rtl:headers",
+ZH_DEPS_F18=[
+    "//zh_zero:headers_filegroup", 
+    "//zh_rtl:headers_filegroup",
     "//Z18/src/include:headers",
     "//zh_harupdf:headers"
+]
+
+ZH_DEPS_STD=[ 
+    "//zh_zero:headers_filegroup", 
+    "//zh_rtl:headers_filegroup" 
 ]

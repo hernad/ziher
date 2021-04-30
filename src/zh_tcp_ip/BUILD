@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "C_OPTS")
 
 ZH_LIB="zh_tcp_ip"
 
@@ -29,6 +29,15 @@ cc_library(
 cc_library(
     name = "headers",
     hdrs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "headers_filegroup",
+    srcs = glob([
         "*.h",
         "*.zhh",
     ]),
@@ -69,12 +78,9 @@ zh_comp_all(
         "-izh_ssl",
         #"-b" debug ziher code 
     ],
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers",
-        "//zh_ssl:headers",
-        #"//third_party/xlsxwriter:headers", 
-        ":headers" 
+    deps = ZH_DEPS_STD + [ 
+        "//zh_ssl:headers_filegroup", 
+        ":headers_filegroup" 
     ],
     visibility = ["//visibility:public"],
 )

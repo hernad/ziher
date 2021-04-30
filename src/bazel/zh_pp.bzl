@@ -14,7 +14,7 @@ def zh_pp(name, ppin, out, args="-izh_zero", **kwargs):
   """ 
   native.genrule(
     name = name,
-    srcs = ["//zh_pp/main:zhpp", "//zh_zero:headers", ppin],
+    srcs = ["//zh_pp/main:zhpp", "//zh_zero:headers_filegroup", ppin],
     outs = [out],
     # https://stackoverflow.com/questions/51073133/bazel-genrule-that-outputs-an-directory
     # https://docs.bazel.build/versions/2.0.0/be/make-variables.html

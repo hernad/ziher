@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT" )
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT" )
 
 cc_library(
     name = "zh_rtl_rdd",
@@ -126,6 +126,6 @@ zh_comp_all(
         "dbf_six/*.zh",
     ]),
     args = ZH_COMP_OPTS,
-    deps = [ "//zh_zero:headers", "//zh_rtl:headers" ],
+    deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )
