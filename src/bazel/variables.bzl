@@ -1,7 +1,9 @@
 _DARWIN_COPTS = [
+    "-DUNICODE",
     "-DZH_OS_DARWIN"
 ]
 _WINDOWS_COPTS = [
+    "-DUNICODE",
     "-DZH_OS_WIN",
     "-DZH_OS_WIN_64",
     "-Izh_rtl"
@@ -12,6 +14,7 @@ _WINDOWS_X86_COPTS = [
 ]
 
 _LINUX_COPTS = [
+    "-DUNICODE",
     "-DZH_OS_LINUX"
 ]
 
