@@ -1,5 +1,5 @@
 /*
- * National Collation Support Module (HRWIN)
+ * National Collation Support Module (HRISO)
  *
  * Copyright 2003 Mitja Podgornik <Mitja.Podgornik@zgs.gov.si>
  * Copyright 2003 Vlado Miholic <Vladimir.Miholic@sk.hinet.hr>
@@ -45,11 +45,11 @@
  *
  */
 
-#define ZH_CP_ID        HRWIN
-#define ZH_CP_INFO      "Croatian Windows-1250"
-#define ZH_CP_UNITB     ZH_UNITB_1250
+#define ZH_CP_ID        HRISO
+#define ZH_CP_INFO      "Croatian ISO-8859-2"
+#define ZH_CP_UNITB     ZH_UNITB_8859_2
 #define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
-#include "l_hr.h"
+#include "lang_hr.h"
 #define ZH_CP_UTF8
 
 /* include CP registration code */

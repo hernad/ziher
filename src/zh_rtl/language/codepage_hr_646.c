@@ -50,7 +50,7 @@
 #define ZH_CP_INFO      "Croatian ISO-646 (CROSCII)"
 #define ZH_CP_UNITB     ZH_UNITB_646YU
 #define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
-#include "l_hr.h"
+#include "lang_hr.h"
 #define ZH_CP_UTF8
 
 /* include CP registration code */
