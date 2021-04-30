@@ -7,10 +7,10 @@ PROCEDURE init_language()
     SET EPOCH TO 1980  // 81 - 1981,  79-2079
     SET DATE TO GERMAN
 
-    ? codepageOS()
-    ? Set( _SET_OSCODEPAGE, codepageOS() )
-    ? Set( _SET_OSCODEPAGE, codepageOS() )
-    inkey(0)
+    ? "codepageOS", codepageOS() // linux: UTF8
+    inkey(2)
+    Set( _SET_OSCODEPAGE, codepageOS() )
+    
 
     codepageSelect( "SL852" )
 
