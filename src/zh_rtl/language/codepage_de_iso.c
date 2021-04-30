@@ -1,5 +1,5 @@
 /*
- * National Collation Support Module (DEWIN)
+ * National Collation Support Module (DEISO)
  *
  * Copyright 2003 Guenther Steiner <byte-one@aon.at>
  *
@@ -44,11 +44,11 @@
  *
  */
 
-#define ZH_CP_ID        DEWIN
-#define ZH_CP_INFO      "German Windows-1252"
-#define ZH_CP_UNITB     ZH_UNITB_1252
+#define ZH_CP_ID        DEISO
+#define ZH_CP_INFO      "German ISO-8859-1"
+#define ZH_CP_UNITB     ZH_UNITB_8859_1
 #define ZH_CP_ACSORT    ZH_CODEPAGE_ACSORT_NONE
-#include "l_de.h"
+#include "lang_de.h"
 #define ZH_CP_UTF8
 
 /* include CP registration code */
