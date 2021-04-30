@@ -36,7 +36,7 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-cc_library(
+filegroup(
     name = "headers_filegroup",
     srcs = glob([
         "*.h",

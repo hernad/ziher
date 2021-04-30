@@ -213,8 +213,8 @@ STATIC FUNCTION __UnixParseLangCP( cString, /* @ */ cLang )
 
 STATIC FUNCTION __codepageStdToZiher( cCPStd, cCtryStd )
 
-   LOCAL cCtryHb
-   LOCAL cdp
+   LOCAL cCountryZh
+   LOCAL cCodePage
    LOCAL aCP
 
    IF cCPStd != NIL
@@ -226,15 +226,17 @@ STATIC FUNCTION __codepageStdToZiher( cCPStd, cCtryStd )
       OTHERWISE
          aCP := zh_codepageList()
          //Alert("aCp:" + Str(Len(aCp)))
-         cCtryHb := __LangStdToCodepageCtryZh( cCtryStd )
-         FOR EACH cdp IN aCP
-            IF zh_LeftEq( cdp, cCtryHb ) .AND. cCPStd == zh_codepageUniID( cdp )
-               RETURN cdp
+         cCountryZh := __LangStdToCodepageCountryZh( cCtryStd )
+         FOR EACH cCodePage IN aCP
+            IF zh_LeftEq( cCodePage, cCountryZh ) .AND. cCPStd == zh_codepageUniID( cCodePage )
+               RETURN cCodePage
             ENDIF
          NEXT
-         FOR EACH cdp IN aCP
-            IF cCPStd == zh_codepageUniID( cdp )
-               RETURN zh_codepageUniID( cdp )
+         FOR EACH cCodePage IN aCP
+            ? "cCodePage:", cCodePage
+            inkey(0)
+            IF cCPStd == zh_codepageUniID( cCodePage )
+               RETURN zh_codepageUniID( cCodePage )
             ENDIF
          NEXT
       ENDSWITCH
@@ -242,7 +244,7 @@ STATIC FUNCTION __codepageStdToZiher( cCPStd, cCtryStd )
 
    RETURN NIL
 
-STATIC FUNCTION __LangStdToCodepageCtryZh( cCtryStd )
+STATIC FUNCTION __LangStdToCodepageCountryZh( cCtryStd )
 
    SWITCH Lower( cCtryStd )
 #if 0
