@@ -17,3 +17,8 @@ Install [bazel.build](https://bazel.build/).
     
     # bazel build //zh_comp:zh_comp --experimental_enable_runfiles=yes
     # c:\dev\bazelisk.exe run //test:run_hello_dbf_win --//bazel:windows_build=x64
+
+## Linux
+
+    #~/.bazelrc 
+    build --strategy=CppCompile=standalone

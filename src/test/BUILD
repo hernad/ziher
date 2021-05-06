@@ -1,7 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
 load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
-load("//bazel:windows_dll_library.bzl", "windows_dll_library")
+load("//bazel:shared_library.bzl", "windows_dll_library")
 
 #load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 #bool_flag(

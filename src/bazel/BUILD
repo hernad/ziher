@@ -7,6 +7,8 @@
 #c:\dev\bazel-x86.exe build  //test:run_hello_dbf_win --no//bazel:arch_x86
 
 load("@bazel_skylib//rules:common_settings.bzl", "bool_flag", "string_flag")
+load("@bazel_skylib//lib:selects.bzl", "selects")
+
 #bool_flag(
 #    name = "arch_x86",
 #    build_setting_default = False, 
@@ -52,4 +54,9 @@ config_setting(
     flag_values = {
         "//bazel:windows_build": "x64",
     },
+)
+
+selects.config_setting_group(
+    name = "windows",
+    match_any = [":windows_x86", ":windows_x64"],
 )

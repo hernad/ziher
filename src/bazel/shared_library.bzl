@@ -15,11 +15,31 @@ Example useage:
 
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_import", "cc_library")
 
+
+def shared_library(
+        name,
+        os = "windows",
+        srcs = [],
+        deps = [],
+        hdrs = [],
+        linkopts = [],
+        copts = [],
+        visibility = None,
+        **kwargs):
+    
+    if os == "windows":
+        windows_dll_library(name, srcs, deps, hdrs, linkopts, copts, visibility, **kwargs)
+    else:
+        linux_so_library(name, srcs, deps, hdrs, linkopts, copts, visibility, **kwargs)
+
+
 def windows_dll_library(
         name,
         srcs = [],
         deps = [],
         hdrs = [],
+        linkopts = [],
+        copts = [],
         visibility = None,
         **kwargs):
     """A simple windows_dll_library rule for builing a DLL Windows."""
@@ -32,6 +52,8 @@ def windows_dll_library(
         name = dll_name,
         srcs = srcs + hdrs,
         deps = deps,
+        linkopts = linkopts,
+        copts = copts,
         linkshared = 1,
         **kwargs
     )
@@ -55,8 +77,45 @@ def windows_dll_library(
     cc_library(
         name = name,
         hdrs = hdrs,
+        linkopts = linkopts,
+        copts = copts,
         visibility = visibility,
         deps = deps + [
             ":" + import_target_name,
         ],
     )
+
+def linux_so_library(
+        name,
+        srcs = [],
+        deps = [],
+        hdrs = [],
+        linkopts = [],
+        copts = [],
+        visibility = None,
+        **kwargs):
+    so_name = name + ".so"
+    import_target_name = name + "_import"
+
+
+    # Build the shared library
+    cc_binary(
+        name = so_name,
+        srcs = srcs + hdrs,
+        deps = deps,        
+        linkopts = linkopts,
+        copts = copts,
+        linkshared = 1,
+        visibility = visibility,
+        **kwargs
+    )
+
+    
+    # Because we cannot directly depend on cc_binary from other cc rules in deps attribute,
+    # we use cc_import as a bridge to depend on the dll.
+    cc_import(
+        name = import_target_name,
+        shared_library = ":" + so_name,
+        visibility = visibility
+    )
+

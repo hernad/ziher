@@ -7,7 +7,7 @@ PROCEDURE init_language()
     SET EPOCH TO 1980  // 81 - 1981,  79-2079
     SET DATE TO GERMAN
 
-    ? "codepageOS", codepageOS() // linux: UTF8
+    ? "codepageOS", codepageOS() // linux: UTF8, windows: cp1252 (ziher error NIL?)
     inkey(2)
     Set( _SET_OSCODEPAGE, codepageOS() )
     

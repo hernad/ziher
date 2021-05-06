@@ -1,7 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:variables.bzl", "C_OPTS")
 
-#load("//:windows_dll_library.bzl", "windows_dll_library")
+#load("//:shared_library.bzl", "windows_dll_library")
 
 cc_library(
     name = "zh_zero",

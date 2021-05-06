@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "C_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "C_OPTS")
 
 ZH_LIB="zh_minizip"
 
@@ -42,6 +42,15 @@ cc_library(
 )
 
 filegroup(
+    name = "headers_filegroup",
+    srcs = glob([
+        "*.h",
+        "*.zhh",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
     name = "c_sources",
     srcs = glob([
         "*.c",
@@ -73,11 +82,9 @@ zh_comp_all(
     args = ZH_COMP_OPTS + [ 
         "-ithird_party/minizip" 
     ],
-    deps = [ 
-        "//zh_zero:headers", 
-        "//zh_rtl:headers", 
+    deps = ZH_DEPS_STD + [  
         "//third_party/minizip:headers", 
-        ":headers" 
+        ":headers_filegroup" 
     ],
     visibility = ["//visibility:public"],
 )
