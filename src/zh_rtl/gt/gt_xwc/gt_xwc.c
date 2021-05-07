@@ -50,11 +50,16 @@
 /* #define XWC_DEBUG */
 /* #define ZH_XWC_USE_LOCALE */
 
+#define ZH_XWC_USE_LOCALE
+#define X_HAVE_UTF8_STRING
 
 #include "gt_xwc.h"
 #ifdef ZH_XWC_USE_LOCALE
 #  include <locale.h>
 #endif
+
+#include "zh_vm_pub.h"
+#include "zh_trace.h"
 
 /* #undef X_HAVE_UTF8_STRING */
 
@@ -316,11 +321,9 @@ static void zh_gt_xwc_SetSelection( PXWND_DEF wnd, const char * szData, ZH_SIZE 
 static PXWND_DEF s_wnd = NULL;
 static ZH_BOOL s_fNoXServer = ZH_FALSE;
 
-#if 1
+
 static int s_updateMode = XWC_SYNC_UPDATE;
-#else
-static int s_updateMode = XWC_ASYNC_UPDATE;
-#endif
+
 static int s_iUpdateCounter;
 
 static ZH_BOOL s_fIgnoreErrors = ZH_FALSE;
@@ -2267,16 +2270,7 @@ static ZH_BOOL zh_gt_xwc_DefineBoxChar( PXWND_DEF wnd, ZH_USHORT usCh, XWC_CharT
             size = 1;
             type = CH_RECT;
             break;
-#if 0
-         default:
-            rect[ 0 ].x = 1;
-            rect[ 0 ].y = 1;
-            rect[ 0 ].width = cellx - 2;
-            rect[ 0 ].height = celly - 2;
-            size = 1;
-            type = CH_RECT;
-            break;
-#endif
+
       }
 
    if( type != CH_UNDEF )
@@ -3168,9 +3162,7 @@ static void zh_gt_xwc_WndProc( PXWND_DEF wnd, XEvent * evt )
                         break;
 
                      nI += zh_cdpTextPutU16( wnd->utf8CDP, pBuffer + nI, nSize - nI, usChar );
-                     #if 0
-                     nI += zh_cdpU16CharToUTF8( pBuffer + nI, &usChar );
-                     #endif
+
                   }
                   if( wnd->markTop < wnd->markBottom )
                      pBuffer[ nI++ ] = '\n';
@@ -4357,14 +4349,20 @@ static ZH_BOOL zh_gt_xwc_SetFont( PXWND_DEF wnd, const char * fontFace,
 /*
       "-*-%s-%s-r-normal-*-%d-*-*-*-*-*-%s"
  */
+
       zh_snprintf( fontString, sizeof( fontString ),
                    "-*-%s-%s-r-*-*-%d-*-*-*-*-*-%s",
                    fontFace, szWeight, size, encoding == NULL ? "*-*" : encoding );
+
+
    }
    else
       zh_strncpy( fontString, fontFace, sizeof( fontString ) - 1 );
 
+   ZH_TRACE( ZH_TR_ALWAYS, ( "fontstring(%s)", fontString ) );
+
    xfs = XLoadQueryFont( wnd->dpy, fontString );
+   //xfs = XLoadQueryFont( wnd->dpy, "terminus" );
 
    if( xfs == NULL )
       return ZH_FALSE;
@@ -4767,6 +4765,7 @@ static void zh_gt_xwc_SetResizing( PXWND_DEF wnd )
 static void zh_gt_xwc_CreateWindow( PXWND_DEF wnd )
 {
    ZH_BOOL fResizable = wnd->fResizable, fReset = ZH_FALSE;
+   char msg[100];
 
    ZH_XWC_XLIB_LOCK( wnd->dpy );
 
@@ -4778,14 +4777,10 @@ static void zh_gt_xwc_CreateWindow( PXWND_DEF wnd )
          if( ! zh_gt_xwc_SetFont( wnd, XWC_DEFAULT_FONT_NAME, XWC_DEFAULT_FONT_WEIGHT, XWC_DEFAULT_FONT_HEIGHT, XWC_DEFAULT_FONT_ENCODING ) )
          {
             ZH_XWC_XLIB_UNLOCKRAW( wnd->dpy );
-
-            /* TODO: a standard Ziher error should be generated here when
-                     it can run without console!
-            zh_errRT_TERM( EG_CREATE, 10001, NULL, "Cannot load 'fixed' font", 0, 0 );
-            return;
-            */
             s_fNoXServer = ZH_TRUE;
-            zh_errInternal( 10001, "Cannot load 'fixed' font", NULL, NULL );
+            //sprintf(msg, "XWC Cannot load '%s' font; find available with cmd 'fc-list | cut -f2 -d: | sort -u'", wnd->szFontName);
+            sprintf(msg, "XWC Cannot load '%s' font; find available with cmd 'xlsfonts'", wnd->szFontName);
+            zh_errInternal( 10001, msg, NULL, NULL );
          }
       }
    }

@@ -26,7 +26,7 @@ _LINUX_C_SRC = glob([
         "*.c",
         "gt_std/*.c",
         "gt_trm/*.c",
-        #"gt_xwc/*.c"
+        "gt_xwc/*.c"
     ])
 
 _LINUX_C_HDR = glob( [
@@ -36,7 +36,7 @@ _LINUX_C_HDR = glob( [
         "gt_std/*.zhh",
         "gt_trm/*.h",
         "gt_trm/*.zhh",
-        #"gt_xwc/*.h",
+        "gt_xwc/*.h",
     ])
 
 _C_SRC = select({
