@@ -1,3 +1,6 @@
+#_WINDOWS_LINUX="windows"
+WINDOWS_LINUX = "windows"
+
 _DARWIN_COPTS = [
     "-DUNICODE",
     "-DZH_OS_DARWIN"

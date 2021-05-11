@@ -3,7 +3,6 @@
 def zh_comp(name, zhin, args="-n -izh_zero", **kwargs):
   """Create preprocessed ziher.
 
-  
   """ 
   native.genrule(
     name = name,

@@ -15,7 +15,6 @@ Example useage:
 
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_import", "cc_library")
 
-
 def shared_library(
         name,
         os = "windows",
@@ -26,12 +25,14 @@ def shared_library(
         copts = [],
         visibility = None,
         **kwargs):
-    
+
+    # https://github.com/bazelbuild/bazel/issues/6883
     if os == "windows":
         windows_dll_library(name, srcs, deps, hdrs, linkopts, copts, visibility, **kwargs)
     else:
         linux_so_library(name, srcs, deps, hdrs, linkopts, copts, visibility, **kwargs)
 
+# https://docs.bazel.build/versions/master/skylark/macros.html
 
 def windows_dll_library(
         name,
