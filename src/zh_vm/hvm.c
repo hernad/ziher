@@ -1020,7 +1020,7 @@ void zh_vmSetDynFunc( PZH_DYNSYMBOL pDynSym )
 
 /* Ziher application entry point */
 
-void zh_vmInit( ZH_BOOL bStartMainProc )
+void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmInit()" ) );
 
@@ -1030,9 +1030,15 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
    zh_xinit();
    zh_vmSetExceptionHandler();
-   zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
+   if (bInitRT)
+      zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
+   
+   printf("init step 1\n");
    zh_threadInit();
+   printf("init step 2\n");
    zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
+   
+   printf("init step 3\n");
    s_pSymbolsMtx = zh_threadMutexCreate();
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
@@ -1045,20 +1051,39 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
-   zh_cmdargUpdate();
-   zh_clsInit(); /* initialize Classy/OO system */
-   zh_errInit();
-   zh_breakBlock();
+   printf("init step 4\n");
+   if (bInitRT)
+      zh_cmdargUpdate();
 
+   printf("init step 5\n");
+   if (bInitRT)
+      zh_clsInit(); /* initialize Classy/OO system */
+   printf("init step 6\n");
+   if (bInitRT)
+      zh_errInit();
+   printf("init step 7\n");
+   if (bInitRT)
+      zh_breakBlock();
+
+printf("init step 8\n");
    /* initialize dynamic symbol for evaluating codeblocks and break function */
    zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
    s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
 
+printf("init step 9\n");
+   //if (bInitRT)
    zh_conInit();
 
    /* Check for some internal switches */
-   zh_cmdargProcess();
-   zh_i18n_init();            /* initialize i18n module */
+   printf("init step 10\n");
+
+
+   if (bInitRT)
+     zh_cmdargProcess();
+
+   printf("init step 11\n");
+   if (bInitRT)
+     zh_i18n_init();            /* initialize i18n module */
 
 #ifndef ZH_NO_PROFILER
    /* Initialize opcodes profiler support arrays */
@@ -1076,9 +1101,11 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
    /* enable executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_TRUE;
 
+printf("init step 12\n");
    /* lock main ZHVM thread */
    zh_vmLock();
 
+printf("init step 13\n");
    s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
    if( s_pDynsDbgEntry )
    {
@@ -1093,23 +1120,38 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
     * Static variables have to be initialized before any INIT functions
     * because INIT function can use static variables
     */
-   zh_vmDoInitStatics();
+   printf("init step 14\n");
+   if (bInitRT)
+     zh_vmDoInitStatics();
 
+printf("init step 15\n");
    /* call __ZZHVMINIT() function to initialize GetList public variable
     * and set ErrorBlock() by ErrorSys() function.
     */
-   zh_vmDoInitZHVM();
-   zh_clsDoInit();                     /* initialize Class(y) .zh functions */
+   if (bInitRT)
+     zh_vmDoInitZHVM();
 
-   zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
-   zh_vmDoInitFunctions( ZH_TRUE );    /* process registered CLIPINIT INIT procedures */
-   zh_vmDoInitFunctions( ZH_FALSE );   /* process registered other INIT procedures */
+printf("init step 16\n");
+   if (bInitRT)
+      zh_clsDoInit();                     /* initialize Class(y) .zh functions */
 
+printf("init step 17\n");
+   if (bInitRT)
+     zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
+
+printf("init step 18\n");
+
+      zh_vmDoInitFunctions( ZH_TRUE );    /* process registered CLIPINIT INIT procedures */
+
+printf("init step 19\n");
+     zh_vmDoInitFunctions( ZH_FALSE );   /* process registered other INIT procedures */
+
+printf("init step 20\n");
    /* Call __SetHelpK() function to redirect K_F1 to HELP() function
-    * if it is linked. CA-Cl*pper calls it after INIT PROCEDUREs and
-    * before executing the application entry function.
+    * if it is linked.
     */
-   zh_vmDoInitHelp();
+   if (bInitRT)
+      zh_vmDoInitHelp();
 
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
@@ -1137,10 +1179,12 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
             puts("ZH_START_PROCEDURE = \"MAIN\"");
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
+            printf("init step 20\n");
             if( ! ( pDynSym && pDynSym->pSymbol->value.pFunPtr ) )
             {
                if( s_vm_pszLinkedMain )
                {
+                  printf("init step 21\n");
                   pszMain = s_vm_pszLinkedMain;
                   pDynSym = zh_dynsymFind( pszMain );
                }
@@ -1149,11 +1193,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
          if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
             s_pSymStart = pDynSym->pSymbol;
-//#ifdef ZH_START_PROC_STRICT
-//         else
-//            /* clear startup symbol set by initialization code */
-//            s_pSymStart = NULL;
-//#endif
 
          if( bStartMainProc && ! s_pSymStart )
          {
@@ -1167,9 +1206,19 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
    if( bStartMainProc && s_pSymStart )
    {
+      printf("init step 22\n");
       zh_vmPushSymbol( s_pSymStart ); /* pushes first ZH_FS_PUBLIC defined symbol to the stack */
+      printf("init step 23\n");
       zh_vmPushNil();                 /* places NIL at self */
-      zh_vmProc( ( ZH_USHORT ) zh_cmdargPushArgs() ); /* invoke it with number of supplied parameters */
+      printf("init step 24\n");
+      if (bInitRT) {
+         printf("init step 25\n");
+          zh_vmProc( ( ZH_USHORT ) zh_cmdargPushArgs() ); /* invoke it with number of supplied parameters */
+      } else {
+         printf("init step 26\n");
+         zh_vmProc( 0 );
+      }
+
    }
 }
 
@@ -1198,7 +1247,9 @@ ZH_EXPORT int zh_vmQuit( void )
     */
    zh_stackSetActionRequest( 0 );
    zh_rddCloseAll();             /* close all workareas */
-   zh_rddShutDown();             /* remove all registered RDD drivers */
+   // hernad ne diraj rdd drajvere
+   //zh_rddShutDown();             /* remove all registered RDD drivers */
+   // hernad ne diraj rdd
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
    zh_i18n_exit();               /* unregister i18n module */
@@ -1216,23 +1267,28 @@ ZH_EXPORT int zh_vmQuit( void )
    /* release thread specific data */
    zh_stackDestroyTSD();
 
-   zh_breakBlockRelease();
-   zh_errExit();
-   zh_clsReleaseAll();
+   // hernad ne diraj ovo
+   //zh_breakBlockRelease();
+   //zh_errExit();
+   //zh_clsReleaseAll();
+   // end hernad
 
    zh_vmStaticsRelease();
 
    /* release all remaining items */
 
    zh_conRelease();                 /* releases Console */
+
    zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
-   zh_dynsymRelease();              /* releases the dynamic symbol table */
+   //hernad ne diraj dynamic sym table
+   //zh_dynsymRelease();              /* releases the dynamic symbol table */
 
    zh_itemClear( zh_stackReturnItem() );
    zh_gcCollectAll( ZH_TRUE );
 
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
+   
    zh_vmCleanModuleFunctions();
 
    zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
@@ -1243,8 +1299,10 @@ ZH_EXPORT int zh_vmQuit( void )
    }
    zh_threadExit();
 
-   zh_langReleaseAll();             /* release lang modules */
-   zh_cdpReleaseAll();              /* releases codepages */
+   //hernad ne diraj ovo 
+   //zh_langReleaseAll();             /* release lang modules */
+   //zh_cdpReleaseAll();              /* releases codepages */
+   // hernad end ne diraj ovo
 
    /* release all known garbage */
    if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */

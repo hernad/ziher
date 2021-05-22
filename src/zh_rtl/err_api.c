@@ -413,8 +413,6 @@ ZH_FUNC( ERRORNEW )
    zh_itemReturnRelease( zh_errNew() );
 }
 
-/* There's a similar undocumented, internal function in CA-Cl*pper named
-   ErrorInHandler(). [vszakats] */
 
 ZH_FUNC( __ERRINHANDLER )
 {

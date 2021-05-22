@@ -185,5 +185,7 @@ void zh_vmSymbolInit_RT( void )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSymbolInit_RT()" ) );
 
    // puts("hernad zhbuiltin");
+   //printf("dynsumcount before:%d\n", zh_dynsymCount());
    zh_vmProcessSymbols( symbols, ZH_SIZEOFARRAY( symbols ), "ZHBUILTIN", 0, 0 );
+   //printf("dynsumcount after:%d\n", zh_dynsymCount());
 }

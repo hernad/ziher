@@ -56,6 +56,6 @@ int main( int argc, char * argv[] )
    ZH_TRACE( ZH_TR_DEBUG, ( "main(%d, %p)", argc, ( void * ) argv ) );
 
    zh_cmdargInit( argc, argv );
-   zh_vmInit( ZH_TRUE );
+   zh_vmInit( ZH_TRUE, ZH_TRUE );
    return zh_vmQuit();
 }

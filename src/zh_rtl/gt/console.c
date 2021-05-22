@@ -123,7 +123,7 @@ void zh_conInit( void )
 #endif
 
    {
-      /* Undocumented CA-Cl*pper switch //STDERR:x */
+      /* switch //STDERR:x */
       int iStderr = zh_cmdargNum( "STDERR" );
 
       if( iStderr == 0 || iStderr == 1 )  /* //STDERR with no parameter or 0 */

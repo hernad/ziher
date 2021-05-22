@@ -52,7 +52,7 @@
 ZH_EXTERN_BEGIN
 
 /* Ziher virtual machine init/exit functions */
-extern ZH_EXPORT void     zh_vmInit( ZH_BOOL bStartMainProc );
+extern ZH_EXPORT void     zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT );
 
 extern ZH_EXPORT int      zh_vmQuit( void ); /* Immediately quits the virtual machine, return ERRORLEVEL code */
 
