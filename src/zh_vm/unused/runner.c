@@ -281,7 +281,7 @@ static void zh_zhbUnLoad( PZZH_BODY pHrbBody )
          if( pHrbBody->pDynFunc[ ul ].szName &&
              pHrbBody->pDynFunc[ ul ].pcodeFunc.pCode )
          {
-            PZH_DYNS pDyn = zh_dynsymFind( pHrbBody->pDynFunc[ ul ].szName );
+            PZH_DYNSYMBOL pDyn = zh_dynsymFind( pHrbBody->pDynFunc[ ul ].szName );
             if( pDyn && pDyn->pSymbol->value.pCodeFunc ==
                         &pHrbBody->pDynFunc[ ul ].pcodeFunc )
             {
@@ -315,7 +315,7 @@ static PZZH_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
 
       PZH_SYMBOL pSymRead;           /* Symbols read */
       PZH_DYNF pDynFunc;           /* Functions read */
-      PZH_DYNS pDynSym;
+      PZH_DYNSYMBOL pDynSym;
 
       int iVersion = zh_zhbReadHead( szHrbBody, nBodySize, &nBodyOffset );
 

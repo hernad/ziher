@@ -806,10 +806,10 @@ ZH_FUNC( ZH_MACROBLOCK )
    }
 }
 
-static void zh_macroSetGetBlock( PZH_DYNS pVarSym, PZH_ITEM pItem,
+static void zh_macroSetGetBlock( PZH_DYNSYMBOL pVarSym, PZH_ITEM pItem,
                                  int iWorkArea, ZH_BOOL fMemVar )
 {
-   ZH_BYTE byBuf[ 23 + sizeof( PZH_DYNS ) + sizeof( PZH_DYNS ) ];
+   ZH_BYTE byBuf[ 23 + sizeof( PZH_DYNSYMBOL ) + sizeof( PZH_DYNSYMBOL ) ];
    ZH_BYTE bPushPcode, bPopPcode;
    int i = 0, n;
 
@@ -845,7 +845,7 @@ static void zh_macroSetGetBlock( PZH_DYNS pVarSym, PZH_ITEM pItem,
    }
    byBuf[ i++ ] = bPushPcode;
    ZH_PUT_PTR( &byBuf[ i ], pVarSym );
-   i += sizeof( PZH_DYNS );
+   i += sizeof( PZH_DYNSYMBOL );
    byBuf[ i++ ] = ZH_P_ENDBLOCK;
 
    byBuf[ n ] = ( ZH_BYTE ) ( i - n + 1 );
@@ -862,7 +862,7 @@ static void zh_macroSetGetBlock( PZH_DYNS pVarSym, PZH_ITEM pItem,
    }
    byBuf[ i++ ] = bPopPcode;
    ZH_PUT_PTR( &byBuf[ i ], pVarSym );
-   i += sizeof( PZH_DYNS );
+   i += sizeof( PZH_DYNSYMBOL );
    byBuf[ i++ ] = ZH_P_ENDBLOCK;
 
    if( ZH_IS_COMPLEX( pItem ) )
@@ -889,7 +889,7 @@ ZH_FUNC( MEMVARBLOCK )
 
       if( *szVarName )
       {
-         PZH_DYNS pVarSym = zh_dynsymFind( szVarName );
+         PZH_DYNSYMBOL pVarSym = zh_dynsymFind( szVarName );
 
          if( pVarSym && zh_dynsymIsMemvar( pVarSym ) )
          {
@@ -931,7 +931,7 @@ ZH_FUNC( FIELDBLOCK )
           * will register big number of completely unnecessary
           * symbols. [druzus]
           */
-         PZH_DYNS pFieldSym = zh_dynsymFind( szFieldName );
+         PZH_DYNSYMBOL pFieldSym = zh_dynsymFind( szFieldName );
          if( pFieldSym )
          {
             ZH_STACK_TLS_PRELOAD
@@ -956,7 +956,7 @@ ZH_FUNC( FIELDWBLOCK )
 
       if( *szFieldName )
       {
-         PZH_DYNS pFieldSym = zh_dynsymFind( szFieldName );
+         PZH_DYNSYMBOL pFieldSym = zh_dynsymFind( szFieldName );
          if( pFieldSym )
          {
             ZH_STACK_TLS_PRELOAD
@@ -988,7 +988,7 @@ void zh_macroPushSymbol( PZH_ITEM pItem )
                                      &fNewBuffer );
       if( szString )
       {
-         PZH_DYNS pDynSym = zh_dynsymGetCase( szString );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymGetCase( szString );
 
          if( fNewBuffer )
             zh_xfree( szString );   /* free space allocated in zh_macroTextSymbol */
@@ -1299,8 +1299,8 @@ void zh_macroGenJumpHere( ZH_SIZE nOffset, ZH_COMP_DECL )
  */
 static void zh_macroMemvarGenPCode( ZH_BYTE bPCode, const char * szVarName, ZH_COMP_DECL )
 {
-   ZH_BYTE byBuf[ sizeof( PZH_DYNS ) + 1 ];
-   PZH_DYNS pSym;
+   ZH_BYTE byBuf[ sizeof( PZH_DYNSYMBOL ) + 1 ];
+   PZH_DYNSYMBOL pSym;
 
    if( ZH_MACRO_DATA->Flags & ZH_MACRO_GEN_TYPE )
    {
@@ -1325,8 +1325,8 @@ static void zh_macroMemvarGenPCode( ZH_BYTE bPCode, const char * szVarName, ZH_C
 /* generates the pcode to push a symbol on the virtual machine stack */
 void zh_macroGenPushSymbol( const char * szSymbolName, ZH_BOOL bFunction, ZH_COMP_DECL )
 {
-   ZH_BYTE byBuf[ sizeof( PZH_DYNS ) + 1 ];
-   PZH_DYNS pSym;
+   ZH_BYTE byBuf[ sizeof( PZH_DYNSYMBOL ) + 1 ];
+   PZH_DYNSYMBOL pSym;
 
    if( ZH_MACRO_DATA->Flags & ZH_MACRO_GEN_TYPE )
    {
@@ -1421,11 +1421,11 @@ void zh_macroGenMessage( const char * szMsgName, ZH_BOOL bIsObject, ZH_COMP_DECL
 {
    if( szMsgName )
    {
-      ZH_BYTE byBuf[ sizeof( PZH_DYNS ) + 1 ];
+      ZH_BYTE byBuf[ sizeof( PZH_DYNSYMBOL ) + 1 ];
 
       /* Find the address of passed symbol - create the symbol if doesn't exist
        */
-      PZH_DYNS pSym = zh_dynsymGetCase( szMsgName );
+      PZH_DYNSYMBOL pSym = zh_dynsymGetCase( szMsgName );
 
       byBuf[ 0 ] = ZH_P_MMESSAGE;
       ZH_PUT_PTR( &byBuf[ 1 ], pSym );

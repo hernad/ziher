@@ -893,27 +893,27 @@ extern ZH_EXPORT void      zh_put_le_uint64( const ZH_BYTE * ptr, double d );
 #endif
 
 /* dynamic symbol table management */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymGet( const char * szName );    /* finds and creates a dynamic symbol if not found */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymGetCase( const char * szName );    /* finds and creates a dynamic symbol if not found - case sensitive */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymNew( PZH_SYMBOL pSymbol ); /* creates a new dynamic symbol based on a local one */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymFind( const char * szName );   /* finds a dynamic symbol */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymFindName( const char * szName ); /* converts to uppercase and finds a dynamic symbol */
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymGet( const char * szName );    /* finds and creates a dynamic symbol if not found */
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymGetCase( const char * szName );    /* finds and creates a dynamic symbol if not found - case sensitive */
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymNew( PZH_SYMBOL pSymbol ); /* creates a new dynamic symbol based on a local one */
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymFind( const char * szName );   /* finds a dynamic symbol */
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymFindName( const char * szName ); /* converts to uppercase and finds a dynamic symbol */
 extern ZH_EXPORT void      zh_dynsymRelease( void );         /* releases the memory of the dynamic symbol table */
 extern ZH_EXPORT void      zh_dynsymEval( PZH_DYNS_FUNC pFunction, void * Cargo ); /* enumerates all dynamic symbols */
 extern ZH_EXPORT void      zh_dynsymProtectEval( PZH_DYNS_FUNC pFunction, void * Cargo ); /* enumerates all dynamic symbols with global symbol table locked - can be used ONLY when user function does not try to access dynamic symbol table */
 extern ZH_EXPORT PZH_SYMBOL  zh_dynsymGetSymbol( const char * szName ); /* finds and creates a dynamic symbol if not found and return pointer to its ZH_SYMBOL structure */
 extern ZH_EXPORT PZH_SYMBOL  zh_dynsymFindSymbol( const char * szName ); /* finds a dynamic symbol and return pointer to its ZH_SYMBOL structure */
-extern ZH_EXPORT PZH_SYMBOL  zh_dynsymSymbol( PZH_DYNS pDynSym );
-extern ZH_EXPORT const char * zh_dynsymName( PZH_DYNS pDynSym ); /* return dynamic symbol name */
-extern ZH_EXPORT ZH_BOOL   zh_dynsymIsFunction( PZH_DYNS pDynSym );
-extern ZH_EXPORT ZH_BOOL   zh_dynsymIsMemvar( PZH_DYNS pDynSym );
-extern ZH_EXPORT int       zh_dynsymAreaHandle( PZH_DYNS pDynSym ); /* return work area number bound with given dynamic symbol */
-extern ZH_EXPORT void      zh_dynsymSetAreaHandle( PZH_DYNS pDynSym, int iArea ); /* set work area number for a given dynamic symbol */
-extern ZH_EXPORT int       zh_dynsymToNum( PZH_DYNS pDynSym );
-extern ZH_EXPORT PZH_DYNS  zh_dynsymFromNum( int iSymNum );
+extern ZH_EXPORT PZH_SYMBOL  zh_dynsymSymbol( PZH_DYNSYMBOL pDynSym );
+extern ZH_EXPORT const char * zh_dynsymName( PZH_DYNSYMBOL pDynSym ); /* return dynamic symbol name */
+extern ZH_EXPORT ZH_BOOL   zh_dynsymIsFunction( PZH_DYNSYMBOL pDynSym );
+extern ZH_EXPORT ZH_BOOL   zh_dynsymIsMemvar( PZH_DYNSYMBOL pDynSym );
+extern ZH_EXPORT int       zh_dynsymAreaHandle( PZH_DYNSYMBOL pDynSym ); /* return work area number bound with given dynamic symbol */
+extern ZH_EXPORT void      zh_dynsymSetAreaHandle( PZH_DYNSYMBOL pDynSym, int iArea ); /* set work area number for a given dynamic symbol */
+extern ZH_EXPORT int       zh_dynsymToNum( PZH_DYNSYMBOL pDynSym );
+extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymFromNum( int iSymNum );
 #ifdef _ZH_API_INTERNAL_
-extern           PZH_ITEM  zh_dynsymGetMemvar( PZH_DYNS pDynSym ); /* return memvar handle number bound with given dynamic symbol */
-extern           void      zh_dynsymSetMemvar( PZH_DYNS pDynSym, PZH_ITEM pMemvar ); /* set memvar handle for a given dynamic symbol */
+extern           PZH_ITEM  zh_dynsymGetMemvar( PZH_DYNSYMBOL pDynSym ); /* return memvar handle number bound with given dynamic symbol */
+extern           void      zh_dynsymSetMemvar( PZH_DYNSYMBOL pDynSym, PZH_ITEM pMemvar ); /* set memvar handle for a given dynamic symbol */
 extern           ZH_LONG   zh_dynsymCount( void ); /* number of dynamic symbols */
 #endif
 
@@ -963,7 +963,7 @@ extern           char *     zh_memvarGetStrValuePtr( char * szVarName, ZH_SIZE *
 extern           void       zh_memvarCreateFromItem( PZH_ITEM pMemvar, int iScope, PZH_ITEM pValue );
 extern           int        zh_memvarScope( const char * szVarName, ZH_SIZE nLength ); /* retrieve scope of a dynamic variable symbol */
 extern           PZH_ITEM   zh_memvarDetachLocal( PZH_ITEM pLocal ); /* Detach a local variable from the eval stack */
-extern ZH_EXPORT PZH_ITEM   zh_memvarGetValueBySym( PZH_DYNS pDynSym );
+extern ZH_EXPORT PZH_ITEM   zh_memvarGetValueBySym( PZH_DYNSYMBOL pDynSym );
 extern ZH_EXPORT PZH_ITEM   zh_memvarSaveInArray( int iScope, ZH_BOOL fCopy ); /* create array with visible memvar references or copies respecting given memvars scope */
 extern           void       zh_memvarRestoreFromArray( PZH_ITEM pArray );
 

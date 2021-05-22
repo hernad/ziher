@@ -550,7 +550,7 @@ static ZH_ERRCODE sqlbasePutValue( SQLBASEAREAP pArea, ZH_USHORT uiIndex, PZH_IT
       pError = zh_errNew();
       zh_errPutGenCode( pError, EG_DATATYPE );
       zh_errPutDescription( pError, zh_langDGetErrorDesc( EG_DATATYPE ) );
-      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
       zh_errPutSubCode( pError, errCode );
       zh_errPutFlags( pError, EF_CANDEFAULT );
       errCode = SELF_ERROR( &pArea->area, pError );

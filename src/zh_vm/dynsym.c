@@ -52,7 +52,7 @@
 
 typedef struct
 {
-   PZH_DYNS pDynSym;             /* Pointer to dynamic symbol */
+   PZH_DYNSYMBOL pDynSym;             /* Pointer to dynamic symbol */
 } DYNZH_ITEM, * PDYNZH_ITEM;
 
 typedef struct _ZH_SYM_HOLDER
@@ -85,9 +85,9 @@ static int         s_iDynIdxSize = 0;
 /* Insert new symbol into dynamic symbol table.
  * In MT mode caller should protected it by ZH_DYNSYM_LOCK()
  */
-static PZH_DYNS zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
+static PZH_DYNSYMBOL zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymInsert(%p, %u)", ( void * ) pSymbol, uiPos ) );
 
@@ -107,7 +107,7 @@ static PZH_DYNS zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
                sizeof( DYNZH_ITEM ) * ( s_uiDynSymbols - uiPos - 1 ) );
    }
 
-   pDynSym = ( PZH_DYNS ) zh_xgrabz( sizeof( ZH_DYNS ) );
+   pDynSym = ( PZH_DYNSYMBOL ) zh_xgrabz( sizeof( ZH_DYNSYMBOL ) );
    pDynSym->pSymbol  = pSymbol;
    pDynSym->uiSymNum = s_uiDynSymbols;
 
@@ -120,7 +120,7 @@ static PZH_DYNS zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
  * If not found set position for insert operation.
  * In MT mode caller should protected it by ZH_DYNSYM_LOCK()
  */
-static PZH_DYNS zh_dynsymPos( const char * szName, ZH_UINT * puiPos )
+static PZH_DYNSYMBOL zh_dynsymPos( const char * szName, ZH_UINT * puiPos )
 {
    ZH_UINT uiFirst, uiLast, uiMiddle;
 
@@ -176,7 +176,7 @@ static PZH_SYMBOL zh_symbolAlloc( const char * szName )
 }
 
 /* Find symbol in dynamic symbol table */
-PZH_DYNS zh_dynsymFind( const char * szName )
+PZH_DYNSYMBOL zh_dynsymFind( const char * szName )
 {
    ZH_UINT uiFirst, uiLast;
 
@@ -225,9 +225,9 @@ PZH_SYMBOL zh_symbolNew( const char * szName )
 }
 
 /* creates a new dynamic symbol */
-PZH_DYNS zh_dynsymNew( PZH_SYMBOL pSymbol )
+PZH_DYNSYMBOL zh_dynsymNew( PZH_SYMBOL pSymbol )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
    ZH_UINT uiPos;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymNew(%p)", ( void * ) pSymbol ) );
@@ -345,9 +345,9 @@ PZH_DYNS zh_dynsymNew( PZH_SYMBOL pSymbol )
 }
 
 /* finds and creates a symbol if not found */
-PZH_DYNS zh_dynsymGetCase( const char * szName )
+PZH_DYNSYMBOL zh_dynsymGetCase( const char * szName )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
    ZH_UINT uiPos;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymGetCase(%s)", szName ) );
@@ -363,7 +363,7 @@ PZH_DYNS zh_dynsymGetCase( const char * szName )
    return pDynSym;
 }
 
-PZH_DYNS zh_dynsymGet( const char * szName )  /* finds and creates a symbol if not found */
+PZH_DYNSYMBOL zh_dynsymGet( const char * szName )  /* finds and creates a symbol if not found */
 {
    char szUprName[ ZH_SYMBOL_NAME_LEN + 1 ];
 
@@ -392,7 +392,7 @@ PZH_DYNS zh_dynsymGet( const char * szName )  /* finds and creates a symbol if n
    return zh_dynsymGetCase( szUprName );
 }
 
-PZH_DYNS zh_dynsymFindName( const char * szName )  /* finds a symbol */
+PZH_DYNSYMBOL zh_dynsymFindName( const char * szName )  /* finds a symbol */
 {
    char szUprName[ ZH_SYMBOL_NAME_LEN + 1 ];
 
@@ -430,7 +430,7 @@ PZH_SYMBOL zh_dynsymGetSymbol( const char * szName )
 
 PZH_SYMBOL zh_dynsymFindSymbol( const char * szName )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymFindSymbol(%s)", szName ) );
 
@@ -438,65 +438,65 @@ PZH_SYMBOL zh_dynsymFindSymbol( const char * szName )
    return pDynSym ? pDynSym->pSymbol : NULL;
 }
 
-PZH_SYMBOL zh_dynsymSymbol( PZH_DYNS pDynSym )
+PZH_SYMBOL zh_dynsymSymbol( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymSymbol(%p)", ( void * ) pDynSym ) );
 
    return pDynSym->pSymbol;
 }
 
-const char * zh_dynsymName( PZH_DYNS pDynSym )
+const char * zh_dynsymName( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymName(%p)", ( void * ) pDynSym ) );
 
    return pDynSym->pSymbol->szName;
 }
 
-ZH_BOOL zh_dynsymIsFunction( PZH_DYNS pDynSym )
+ZH_BOOL zh_dynsymIsFunction( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymIsFunction(%p)", ( void * ) pDynSym ) );
 
    return pDynSym->pSymbol->value.pFunPtr != NULL;
 }
 
-ZH_BOOL zh_dynsymIsMemvar( PZH_DYNS pDynSym )
+ZH_BOOL zh_dynsymIsMemvar( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymIsMemvar(%p)", ( void * ) pDynSym ) );
 
    return zh_dynsymHandles( pDynSym )->pMemvar != NULL;
 }
 
-PZH_ITEM zh_dynsymGetMemvar( PZH_DYNS pDynSym )
+PZH_ITEM zh_dynsymGetMemvar( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymGetMemvar(%p)", ( void * ) pDynSym ) );
 
    return ( PZH_ITEM ) zh_dynsymHandles( pDynSym )->pMemvar;
 }
 
-void zh_dynsymSetMemvar( PZH_DYNS pDynSym, PZH_ITEM pMemvar )
+void zh_dynsymSetMemvar( PZH_DYNSYMBOL pDynSym, PZH_ITEM pMemvar )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymSetMemvar(%p, %p)", ( void * ) pDynSym, ( void * ) pMemvar ) );
 
    zh_dynsymHandles( pDynSym )->pMemvar = ( void * ) pMemvar;
 }
 
-int zh_dynsymAreaHandle( PZH_DYNS pDynSym )
+int zh_dynsymAreaHandle( PZH_DYNSYMBOL pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymAreaHandle(%p)", ( void * ) pDynSym ) );
 
    return zh_dynsymHandles( pDynSym )->uiArea;
 }
 
-void zh_dynsymSetAreaHandle( PZH_DYNS pDynSym, int iArea )
+void zh_dynsymSetAreaHandle( PZH_DYNSYMBOL pDynSym, int iArea )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymSetAreaHandle(%p, %d)", ( void * ) pDynSym, iArea ) );
 
    zh_dynsymHandles( pDynSym )->uiArea = ( ZH_USHORT ) iArea;
 }
 
-static PZH_DYNS zh_dynsymGetByIndex( ZH_LONG lIndex )
+static PZH_DYNSYMBOL zh_dynsymGetByIndex( ZH_LONG lIndex )
 {
-   PZH_DYNS pDynSym = NULL;
+   PZH_DYNSYMBOL pDynSym = NULL;
 
    ZH_DYNSYM_LOCK();
 
@@ -515,7 +515,7 @@ ZH_LONG zh_dynsymCount( void )
    return s_uiDynSymbols;
 }
 
-int zh_dynsymToNum( PZH_DYNS pDynSym )
+int zh_dynsymToNum( PZH_DYNSYMBOL pDynSym )
 {
    int iSymNum;
 
@@ -542,9 +542,9 @@ int zh_dynsymToNum( PZH_DYNS pDynSym )
    return iSymNum;
 }
 
-PZH_DYNS zh_dynsymFromNum( int iSymNum )
+PZH_DYNSYMBOL zh_dynsymFromNum( int iSymNum )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymFromNum(%d)", iSymNum ) );
 
@@ -560,7 +560,7 @@ PZH_DYNS zh_dynsymFromNum( int iSymNum )
 
 void zh_dynsymEval( PZH_DYNS_FUNC pFunction, void * Cargo )
 {
-   PZH_DYNS pDynSym = NULL;
+   PZH_DYNSYMBOL pDynSym = NULL;
    ZH_USHORT uiPos = 0;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymEval(%p, %p)", ( void * ) pFunction, Cargo ) );
@@ -653,7 +653,7 @@ ZH_FUNC( __DYNSCOUNT ) /* How much symbols do we have: dsCount = __dynsymCount()
 ZH_FUNC( __DYNSGETNAME ) /* Get name of symbol: cSymbol = __dynsymGetName( dsIndex ) */
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_DYNS pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
+   PZH_DYNSYMBOL pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
 
    zh_retc( pDynSym ? pDynSym->pSymbol->szName : NULL );
 }
@@ -666,7 +666,7 @@ ZH_FUNC( __DYNSGETINDEX ) /* Gimme index number of symbol: dsIndex = __dynsymGet
 
    if( szName )
    {
-      PZH_DYNS pDynSym = zh_dynsymFindName( szName );
+      PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( szName );
       if( pDynSym )
       {
          ZH_DYNSYM_LOCK();
@@ -690,7 +690,7 @@ ZH_FUNC( ZH_ISFUNCTION ) /* returns .T. if a symbol has a function/procedure poi
 
    if( szProc )
    {
-      PZH_DYNS pDynSym = zh_dynsymFindName( szProc );
+      PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( szProc );
       if( pDynSym )
          fResult = zh_dynsymIsFunction( pDynSym );
    }
@@ -703,7 +703,7 @@ ZH_FUNC( __DYNSISFUN ) /* returns .T. if a symbol has a function/procedure point
 {
    ZH_STACK_TLS_PRELOAD
    const char * szName = zh_parc( 1 );
-   PZH_DYNS pDynSym = szName ? zh_dynsymFindName( szName ) :
+   PZH_DYNSYMBOL pDynSym = szName ? zh_dynsymFindName( szName ) :
                                zh_dynsymGetByIndex( zh_parnl( 1 ) );
 
    zh_retl( pDynSym && zh_dynsymIsFunction( pDynSym ) );
@@ -715,7 +715,7 @@ ZH_FUNC( __DYNSGETPRF ) /* profiler: It returns an array with a function or proc
 {
    ZH_STACK_TLS_PRELOAD
 #ifndef ZH_NO_PROFILER
-   PZH_DYNS pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
+   PZH_DYNSYMBOL pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
 #endif
 
    zh_reta( 2 );
@@ -754,7 +754,7 @@ ZH_FUNC( __DYNSN2SYM )
 ZH_FUNC( __DYNSP2NAME )
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_DYNS pDynSym = ( PZH_DYNS ) zh_parptr( 1 );
+   PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) zh_parptr( 1 );
 
    zh_retc( pDynSym != NULL ? pDynSym->pSymbol->szName : NULL );
 }
@@ -771,7 +771,7 @@ static int zh_dynsymVerify( void )
 
    while( iResult == 0 && uiPos < s_uiDynSymbols )
    {
-      PZH_DYNS pDynSym = s_pDynItems[ uiPos ].pDynSym;
+      PZH_DYNSYMBOL pDynSym = s_pDynItems[ uiPos ].pDynSym;
       ZH_UINT uiAt;
       int iCmp;
 

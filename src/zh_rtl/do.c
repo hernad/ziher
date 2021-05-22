@@ -68,7 +68,7 @@ ZH_FUNC( DO )
 
       if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
 
          if( ! pDynSym )
          {

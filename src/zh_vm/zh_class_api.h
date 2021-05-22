@@ -114,7 +114,7 @@ extern ZH_EXPORT const char * zh_clsFuncName( ZH_USHORT uiClass );
 extern ZH_EXPORT const char * zh_clsMethodName( ZH_USHORT uiClass, ZH_USHORT uiMethod );
 extern ZH_EXPORT PZH_SYMBOL   zh_clsFuncSym( ZH_USHORT uiClass );
 extern ZH_EXPORT ZH_BOOL    zh_clsIsParent( ZH_USHORT uiClass, const char * szParentName ); /* is a class handle inherited from szParentName Class ? */
-extern ZH_EXPORT ZH_SIZE    zh_clsGetVarIndex( ZH_USHORT uiClass, PZH_DYNS pVarSym );
+extern ZH_EXPORT ZH_SIZE    zh_clsGetVarIndex( ZH_USHORT uiClass, PZH_DYNSYMBOL pVarSym );
 extern ZH_EXPORT ZH_USHORT  zh_clsFindClass( const char * szClass, const char * szClassFunc );
 
 /* object management */
@@ -124,11 +124,11 @@ extern ZH_EXPORT const char * zh_objGetClsName( PZH_ITEM pObject );  /* retrieve
 extern ZH_EXPORT const char * zh_objGetRealClsName( PZH_ITEM pObject, const char * szString  ); /* retrieves an object class name for a specific message */
 
 extern ZH_EXPORT ZH_BOOL    zh_objHasMsg( PZH_ITEM pObject, const char * szString ); /* returns ZH_TRUE/ZH_FALSE whether szString is an existing message for object */
-extern ZH_EXPORT ZH_BOOL    zh_objHasMessage( PZH_ITEM pObject, PZH_DYNS pMessage );
+extern ZH_EXPORT ZH_BOOL    zh_objHasMessage( PZH_ITEM pObject, PZH_DYNSYMBOL pMessage );
 extern ZH_EXPORT PZH_ITEM   zh_objSendMsg( PZH_ITEM pObj, const char *sMsg, ZH_ULONG ulArg, ... );
-extern ZH_EXPORT PZH_ITEM   zh_objSendMessage( PZH_ITEM pObj, PZH_DYNS pMessage, ZH_ULONG ulArg, ... );
+extern ZH_EXPORT PZH_ITEM   zh_objSendMessage( PZH_ITEM pObj, PZH_DYNSYMBOL pMessage, ZH_ULONG ulArg, ... );
 
-extern ZH_EXPORT PZH_ITEM   zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNS pVarMsg );
+extern ZH_EXPORT PZH_ITEM   zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNSYMBOL pVarMsg );
 
 /* send message which allows to set execution context for debugger */
 extern ZH_EXPORT void       zh_dbg_objSendMessage( int iProcLevel, PZH_ITEM pObject, PZH_ITEM pMessage, int iParamOffset );

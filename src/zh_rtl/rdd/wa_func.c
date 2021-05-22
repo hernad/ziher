@@ -166,7 +166,7 @@ void * zh_rddAllocWorkAreaAlias( const char * szAlias, int iArea )
       zh_errRT_DBCMD_Ext( EG_DUPALIAS, EDBCMD_DUPALIAS, NULL, szAlias, EF_CANDEFAULT );
    else
    {
-      PZH_DYNS pSymAlias = zh_dynsymGet( szAlias );
+      PZH_DYNSYMBOL pSymAlias = zh_dynsymGet( szAlias );
 
       if( zh_dynsymAreaHandle( pSymAlias ) == 0 )
       {
@@ -199,7 +199,7 @@ ZH_USHORT zh_rddFieldIndex( AREAP pArea, const char * szName )
       if( nLen <= ZH_SYMBOL_NAME_LEN )
       {
          char szFieldName[ ZH_SYMBOL_NAME_LEN + 1 ];
-         PZH_DYNS pDynSym;
+         PZH_DYNSYMBOL pDynSym;
 
          szFieldName[ nLen ] = '\0';
          while( nLen-- )
@@ -214,7 +214,7 @@ ZH_USHORT zh_rddFieldIndex( AREAP pArea, const char * szName )
             while( pField )
             {
                ++uiCount;
-               if( pDynSym == ( PZH_DYNS ) pField->sym )
+               if( pDynSym == ( PZH_DYNSYMBOL ) pField->sym )
                   return uiCount;
                pField = pField->lpfNext;
             }
@@ -322,7 +322,7 @@ ZH_ERRCODE zh_rddGetAliasNumber( const char * szAlias, int * iArea )
    }
    else
    {
-      PZH_DYNS pSymAlias = zh_dynsymFindName( szAlias );
+      PZH_DYNSYMBOL pSymAlias = zh_dynsymFindName( szAlias );
 
       *iArea = pSymAlias ? ( int ) zh_dynsymAreaHandle( pSymAlias ) : 0;
       if( *iArea == 0 )
@@ -454,11 +454,11 @@ ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
    {
       ZH_USHORT uiField = 1;
       LPFIELD pField = pArea->lpFields;
-      PZH_DYNS pDynSym = pFieldSymbol->pDynSym;
+      PZH_DYNSYMBOL pDynSym = pFieldSymbol->pDynSym;
 
       while( pField )
       {
-         if( ( PZH_DYNS ) pField->sym == pDynSym )
+         if( ( PZH_DYNSYMBOL ) pField->sym == pDynSym )
          {
             return SELF_GETVALUE( pArea, uiField, pItem );
          }
@@ -483,11 +483,11 @@ ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
    {
       ZH_USHORT uiField = 1;
       LPFIELD pField = pArea->lpFields;
-      PZH_DYNS pDynSym = pFieldSymbol->pDynSym;
+      PZH_DYNSYMBOL pDynSym = pFieldSymbol->pDynSym;
 
       while( pField )
       {
-         if( ( PZH_DYNS ) pField->sym == pDynSym )
+         if( ( PZH_DYNSYMBOL ) pField->sym == pDynSym )
          {
             return SELF_PUTVALUE( pArea, uiField, pItem );
          }

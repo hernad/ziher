@@ -50,7 +50,7 @@
 
 ZH_FUNC( __XHELP )
 {
-   static PZH_DYNS s_pDynSym = NULL;
+   static PZH_DYNSYMBOL s_pDynSym = NULL;
 
    if( s_pDynSym == NULL )
       s_pDynSym = zh_dynsymGetCase( "HELP" );

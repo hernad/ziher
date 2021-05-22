@@ -973,7 +973,7 @@ ZH_FUNC( ZH_THREADSTART )
    {
       if( ZH_IS_STRING( pStart ) )
       {
-         PZH_DYNS pDynSym;
+         PZH_DYNSYMBOL pDynSym;
          szFuncName = zh_itemGetCPtr( pStart );
          pDynSym = zh_dynsymFindName( szFuncName );
          if( pDynSym )

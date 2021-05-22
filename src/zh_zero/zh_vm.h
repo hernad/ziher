@@ -101,10 +101,10 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessDynLibSymbols( PZH_SYMBOL pSymbols, ZH_U
    extern ZH_BOOL       zh_vmFindModuleSymbols( PZH_SYMBOL pSym, PZH_SYMBOL * pSymbols, ZH_USHORT * puiSymbols );
    extern PZH_SYMBOL      zh_vmGetRealFuncSym( PZH_SYMBOL pSym );
    extern void          zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym );
-   extern void          zh_vmSetDynFunc( PZH_DYNS pDynSym );
+   extern void          zh_vmSetDynFunc( PZH_DYNSYMBOL pDynSym );
 
    extern void          zh_vmEnumRelease( PZH_ITEM pBase, PZH_ITEM pValue );
-   extern ZH_BOOL       zh_vmMsgReference( PZH_ITEM pObject, PZH_DYNS pMessage, PZH_DYNS pAccMsg ); /* create extended message reference */
+   extern ZH_BOOL       zh_vmMsgReference( PZH_ITEM pObject, PZH_DYNSYMBOL pMessage, PZH_DYNSYMBOL pAccMsg ); /* create extended message reference */
 
    extern void          zh_vmUpdateAllocator( PZH_ALLOCUPDT_FUNC pFunc, int iCount );
 
@@ -167,7 +167,7 @@ extern ZH_EXPORT void     zh_vmPushStringPcode( const char * szText, ZH_SIZE len
 extern ZH_EXPORT void     zh_vmPushDate( long lDate );   /* pushes a long date onto the stack */
 extern ZH_EXPORT void     zh_vmPushTimeStamp( long lJulian, long lMilliSec ); /* pushes two long value as timestamp onto the stack */
 extern ZH_EXPORT void     zh_vmPushSymbol( PZH_SYMBOL pSym ); /* pushes a function pointer onto the stack */
-extern ZH_EXPORT void     zh_vmPushDynSym( PZH_DYNS pDynSym ); /* pushes a function/method pointer onto the stack */
+extern ZH_EXPORT void     zh_vmPushDynSym( PZH_DYNSYMBOL pDynSym ); /* pushes a function/method pointer onto the stack */
 extern ZH_EXPORT void     zh_vmPushEvalSym( void ); /* pushes a codeblock eval symbol onto the stack */
 extern ZH_EXPORT void     zh_vmPushPointer( void * pPointer ); /* push an item of ZH_IT_POINTER type */
 extern ZH_EXPORT void     zh_vmPushPointerGC( void * pPointer ); /* push an item of GC ZH_IT_POINTER type */

@@ -178,7 +178,7 @@ typedef struct
    ZH_BOOL bInitGlobals;
    ZH_BOOL bInitStatics;
    ZH_BOOL bInitLines;
-   PZH_DYNS pDbgEntry;
+   PZH_DYNSYMBOL pDbgEntry;
 } ZH_DEBUGINFO;
 
 static ZH_DBGCOMMONINFO s_common = { 0, NULL, NULL };
@@ -1796,7 +1796,7 @@ static PZH_ITEM zh_dbgVarGet( ZH_VARINFO * scope )
          return zh_dbg_vmVarSGet( scope->frame.ptr, scope->nIndex );
       case 'M':
       {
-         PZH_DYNS pDyn;
+         PZH_DYNSYMBOL pDyn;
 
          pDyn = zh_dynsymFind( scope->szName );
          if( pDyn != NULL )

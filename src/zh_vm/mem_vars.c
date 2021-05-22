@@ -67,18 +67,18 @@ struct mv_PUBLIC_var_info
 {
    int      iPos;
    ZH_BOOL  bFound;
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
 };
 
 struct mv_memvarArray_info
 {
    PZH_ITEM   pArray;
-   PZH_DYNS * pDyns;
+   PZH_DYNSYMBOL * pDyns;
    ZH_SIZE    nCount;
    int        iScope;
 };
 
-static void zh_memvarCreateFromDynSymbol( PZH_DYNS pDynVar, int iScope, PZH_ITEM pValue );
+static void zh_memvarCreateFromDynSymbol( PZH_DYNSYMBOL pDynVar, int iScope, PZH_ITEM pValue );
 
 static PZH_ITEM zh_memvarValueNew( void )
 {
@@ -122,7 +122,7 @@ void zh_memvarValueDecRef( PZH_ITEM pMemvar )
 /*
  * Detach public or private variable (swap current value with a memvar handle)
  */
-static void zh_memvarDetachDynSym( PZH_DYNS pDynSym, PZH_ITEM pPrevMemvar )
+static void zh_memvarDetachDynSym( PZH_DYNSYMBOL pDynSym, PZH_ITEM pPrevMemvar )
 {
    PZH_ITEM pMemvar;
 
@@ -199,7 +199,7 @@ PZH_ITEM zh_memvarDetachLocal( PZH_ITEM pLocal )
  * an exit from the function/procedure)
  *
  */
-static void zh_memvarAddPrivate( PZH_DYNS pDynSym, PZH_ITEM pValue )
+static void zh_memvarAddPrivate( PZH_DYNSYMBOL pDynSym, PZH_ITEM pValue )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_PRIVATE_STACK pPrivateStack;
@@ -302,7 +302,7 @@ void zh_memvarSetPrivatesBase( ZH_SIZE nBase )
 
    while( pPrivateStack->count > pPrivateStack->base )
    {
-      PZH_DYNS pDynSym = pPrivateStack->stack[ --pPrivateStack->count ].pDynSym;
+      PZH_DYNSYMBOL pDynSym = pPrivateStack->stack[ --pPrivateStack->count ].pDynSym;
 
       if( zh_dynsymGetMemvar( pDynSym ) )
       {
@@ -349,7 +349,7 @@ static void zh_memvarResetPrivatesBase( void )
  */
 void zh_memvarSetValue( PZH_SYMBOL pMemvarSymb, PZH_ITEM pItem )
 {
-   PZH_DYNS pDyn;
+   PZH_DYNSYMBOL pDyn;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarSetValue(%p, %p)", ( void * ) pMemvarSymb, ( void * ) pItem ) );
 
@@ -381,7 +381,7 @@ void zh_memvarSetValue( PZH_SYMBOL pMemvarSymb, PZH_ITEM pItem )
 
 ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 {
-   PZH_DYNS pDyn;
+   PZH_DYNSYMBOL pDyn;
    ZH_ERRCODE errCode = ZH_FAILURE;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGet(%p, %p)", ( void * ) pItem, ( void * ) pMemvarSymb ) );
@@ -439,11 +439,11 @@ void zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 
 void zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 {
-   PZH_DYNS pDyn;
+   PZH_DYNSYMBOL pDyn;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGetRefer(%p, %p)", ( void * ) pItem, ( void * ) pMemvarSymb ) );
 
-   pDyn = ( PZH_DYNS ) pMemvarSymb->pDynSym;
+   pDyn = ( PZH_DYNSYMBOL ) pMemvarSymb->pDynSym;
    if( pDyn )
    {
       PZH_ITEM pMemvar;
@@ -527,9 +527,9 @@ void zh_memvarNewParameter( PZH_SYMBOL pSymbol, PZH_ITEM pValue )
    zh_memvarCreateFromDynSymbol( pSymbol->pDynSym, ZH_VSCOMP_PRIVATE, pValue );
 }
 
-static PZH_DYNS zh_memvarFindSymbol( const char * szArg, ZH_SIZE nLen )
+static PZH_DYNSYMBOL zh_memvarFindSymbol( const char * szArg, ZH_SIZE nLen )
 {
-   PZH_DYNS pDynSym = NULL;
+   PZH_DYNSYMBOL pDynSym = NULL;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarFindSymbol(%p,%" ZH_PFS "u)", ( const void * ) szArg, nLen ) );
 
@@ -567,7 +567,7 @@ static PZH_DYNS zh_memvarFindSymbol( const char * szArg, ZH_SIZE nLen )
 
 char * zh_memvarGetStrValuePtr( char * szVarName, ZH_SIZE * pnLen )
 {
-   PZH_DYNS pDynVar;
+   PZH_DYNSYMBOL pDynVar;
    char * szValue = NULL;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGetStrValuePtr(%s, %p)", ( void * ) szVarName, ( void * ) pnLen ) );
@@ -614,7 +614,7 @@ char * zh_memvarGetStrValuePtr( char * szVarName, ZH_SIZE * pnLen )
  */
 void zh_memvarCreateFromItem( PZH_ITEM pMemvar, int iScope, PZH_ITEM pValue )
 {
-   PZH_DYNS pDynVar = NULL;
+   PZH_DYNSYMBOL pDynVar = NULL;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarCreateFromItem(%p, %d, %p)", ( void * ) pMemvar, iScope, ( void * ) pValue ) );
 
@@ -634,7 +634,7 @@ void zh_memvarCreateFromItem( PZH_ITEM pMemvar, int iScope, PZH_ITEM pValue )
       zh_errRT_BASE( EG_ARG, 3008, NULL, "&", ZH_ERR_ARGS_BASEPARAMS );
 }
 
-static void zh_memvarCreateFromDynSymbol( PZH_DYNS pDynVar, int iScope, PZH_ITEM pValue )
+static void zh_memvarCreateFromDynSymbol( PZH_DYNSYMBOL pDynVar, int iScope, PZH_ITEM pValue )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarCreateFromDynSymbol(%p, %d, %p)", ( void * ) pDynVar, iScope, ( void * ) pValue ) );
 
@@ -684,7 +684,7 @@ static void zh_memvarRelease( PZH_ITEM pMemvar )
 
    if( ZH_IS_STRING( pMemvar ) )
    {
-      PZH_DYNS pDynSymbol = zh_memvarFindSymbol( pMemvar->item.asString.value,
+      PZH_DYNSYMBOL pDynSymbol = zh_memvarFindSymbol( pMemvar->item.asString.value,
                                                  pMemvar->item.asString.length );
 
       if( pDynSymbol && zh_dynsymGetMemvar( pDynSymbol ) )
@@ -735,7 +735,7 @@ static void zh_memvarReleaseWithMask( const char * szMask, ZH_BOOL bInclude )
    nBase = zh_stackBaseItem()->item.asSymbol.stackstate->nPrivateBase;
    while( nCount-- > nBase )
    {
-      PZH_DYNS pDynVar;
+      PZH_DYNSYMBOL pDynVar;
       PZH_ITEM pMemvar;
 
       pDynVar = zh_stackGetPrivateStack()->stack[ nCount ].pDynSym;
@@ -754,7 +754,7 @@ static void zh_memvarReleaseWithMask( const char * szMask, ZH_BOOL bInclude )
 
 /* Checks if passed dynamic symbol is a variable and returns its scope
  */
-static int zh_memvarScopeGet( PZH_DYNS pDynVar )
+static int zh_memvarScopeGet( PZH_DYNSYMBOL pDynVar )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarScopeGet(%p)", ( void * ) pDynVar ) );
 
@@ -783,7 +783,7 @@ static int zh_memvarScopeGet( PZH_DYNS pDynVar )
  */
 int zh_memvarScope( const char * szVarName, ZH_SIZE nLength )
 {
-   PZH_DYNS pDynVar;
+   PZH_DYNSYMBOL pDynVar;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarScope(%s, %" ZH_PFS "u)", szVarName, nLength ) );
 
@@ -800,7 +800,7 @@ int zh_memvarScope( const char * szVarName, ZH_SIZE nLength )
 void zh_memvarsClear( ZH_BOOL fAll )
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_DYNS pGetList;
+   PZH_DYNSYMBOL pGetList;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarsClear(%d)", ( int ) fAll ) );
 
@@ -930,7 +930,7 @@ static PZH_ITEM zh_memvarDebugVariable( int iScope, int iPos, const char ** pszN
          ZH_STACK_TLS_PRELOAD
          if( ( ZH_SIZE ) iPos < zh_stackGetPrivateStack()->count )
          {
-            PZH_DYNS pDynSym = zh_stackGetPrivateStack()->stack[ iPos ].pDynSym;
+            PZH_DYNSYMBOL pDynSym = zh_stackGetPrivateStack()->stack[ iPos ].pDynSym;
 
             pValue = zh_dynsymGetMemvar( pDynSym );
             *pszName = pDynSym->pSymbol->szName;
@@ -970,8 +970,8 @@ PZH_ITEM zh_memvarSaveInArray( int iScope, ZH_BOOL fCopy )
       iScope = 0;
 
 
-   MVInfo.pDyns = ( PZH_DYNS * ) zh_xgrab( zh_stackDynHandlesCount() *
-                                           sizeof( PZH_DYNS ) );
+   MVInfo.pDyns = ( PZH_DYNSYMBOL * ) zh_xgrab( zh_stackDynHandlesCount() *
+                                           sizeof( PZH_DYNSYMBOL ) );
    MVInfo.nCount = 0;
    MVInfo.iScope = iScope;
 
@@ -984,7 +984,7 @@ PZH_ITEM zh_memvarSaveInArray( int iScope, ZH_BOOL fCopy )
          PZH_ITEM pItem = zh_arrayGetItemPtr( pArray, MVInfo.nCount );
          if( pItem )
          {
-            PZH_DYNS pDynSymbol = MVInfo.pDyns[ --MVInfo.nCount ];
+            PZH_DYNSYMBOL pDynSymbol = MVInfo.pDyns[ --MVInfo.nCount ];
             PZH_ITEM pMemvar = zh_dynsymGetMemvar( pDynSymbol );
 
             zh_arrayNew( pItem, 2 );
@@ -1024,7 +1024,7 @@ void zh_memvarRestoreFromArray( PZH_ITEM pArray )
          PZH_ITEM pMemRef = zh_arrayGetItemPtr( pItem, 2 );
          if( pSymbol && pMemRef )
          {
-            PZH_DYNS pDynSym = pSymbol->pDynSym;
+            PZH_DYNSYMBOL pDynSym = pSymbol->pDynSym;
             PZH_ITEM pMemvar = pMemRef->item.asMemvar.value;
             zh_memvarValueIncRef( pMemvar );
             if( zh_dynsymGetMemvar( pDynSym ) )
@@ -1224,7 +1224,7 @@ ZH_FUNC( __MVDBGINFO )
 ZH_FUNC( __MVEXIST )
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_DYNS pDyn;
+   PZH_DYNSYMBOL pDyn;
 
    pDyn = zh_memvarFindSymbol( zh_parc( 1 ), zh_parclen( 1 ) );
    zh_retl( pDyn && zh_dynsymGetMemvar( pDyn ) );
@@ -1237,7 +1237,7 @@ ZH_FUNC( __MVGET )
    if( pName )
    {
       ZH_STACK_TLS_PRELOAD
-      PZH_DYNS pDynVar = zh_memvarFindSymbol( pName->item.asString.value,
+      PZH_DYNSYMBOL pDynVar = zh_memvarFindSymbol( pName->item.asString.value,
                                               pName->item.asString.length );
 
       if( pDynVar )
@@ -1294,7 +1294,7 @@ ZH_FUNC( __MVPUT )
    {
       /* the first parameter is a string with not empty variable name
        */
-      PZH_DYNS pDynVar = zh_memvarFindSymbol( pName->item.asString.value,
+      PZH_DYNSYMBOL pDynVar = zh_memvarFindSymbol( pName->item.asString.value,
                                               pName->item.asString.length );
       if( pDynVar )
       {
@@ -1626,7 +1626,7 @@ ZH_FUNC( __MVRESTORE )
                if( bIncludeMask ? bMatch : ! bMatch )
                {
                   /* the first parameter is a string with not empty variable name */
-                  PZH_DYNS pDynVar = zh_memvarFindSymbol( pszName, strlen( pszName ) );
+                  PZH_DYNSYMBOL pDynVar = zh_memvarFindSymbol( pszName, strlen( pszName ) );
 
                   if( pDynVar )
                      /* variable was declared somewhere - assign a new value */
@@ -1670,7 +1670,7 @@ ZH_FUNC( __MVSETBASE )
 }
 
 /* debugger function */
-PZH_ITEM zh_memvarGetValueBySym( PZH_DYNS pDynSym )
+PZH_ITEM zh_memvarGetValueBySym( PZH_DYNSYMBOL pDynSym )
 {
    return zh_dynsymGetMemvar( pDynSym );
 }

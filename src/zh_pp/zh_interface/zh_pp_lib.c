@@ -118,7 +118,7 @@ static const ZH_GC_FUNCS s_gcPPFuncs =
 static void zh_pp_StdRules( PZH_ITEM ppItem )
 {
    static ZH_BOOL s_fInit = ZH_TRUE;
-   static PZH_DYNS s_pDynSym;
+   static PZH_DYNSYMBOL s_pDynSym;
 
    if( s_fInit )
    {

@@ -2350,7 +2350,7 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
       PZH_ITEM pError = zh_errNew();
       zh_errPutGenCode( pError, EG_DATATYPE );
       zh_errPutDescription( pError, zh_langDGetErrorDesc( EG_DATATYPE ) );
-      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
       zh_errPutSubCode( pError, EDBF_DATATYPE );
       SELF_ERROR( &pArea->area, pError );
       zh_itemRelease( pError );
@@ -2824,7 +2824,7 @@ static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
       PZH_ITEM pError = zh_errNew();
       zh_errPutGenCode( pError, zh_dbfGetEGcode( errCode ) );
       zh_errPutDescription( pError, zh_langDGetErrorDesc( zh_dbfGetEGcode( errCode ) ) );
-      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
       zh_errPutSubCode( pError, errCode );
       zh_errPutFlags( pError, EF_CANDEFAULT );
       zh_errPutArgs( pError, 1, pItem );
@@ -3183,7 +3183,7 @@ static ZH_ERRCODE zh_dbfCreate( DBFAREAP pArea, LPDBOPENINFO pCreateInfo )
    {
       LPFIELD pField = pArea->area.lpFields + uiCount;
       zh_strncpy( ( char * ) pThisField->bName,
-                  zh_dynsymName( ( PZH_DYNS ) pField->sym ), sizeof( pThisField->bName ) - 1 );
+                  zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ), sizeof( pThisField->bName ) - 1 );
       pArea->pFieldOffset[ uiCount ] = pArea->uiRecordLen;
       /* field offset */
       if( pArea->bTableType == DB_DBF_VFP )
@@ -3772,7 +3772,7 @@ static ZH_ERRCODE zh_dbfInfo( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem 
             pArea->fTrigger = pArea->pTriggerSym && zh_itemGetL( pItem );
          else
          {
-            PZH_DYNS pTriggerSym = pArea->pTriggerSym;
+            PZH_DYNSYMBOL pTriggerSym = pArea->pTriggerSym;
             if( ZH_IS_STRING( pItem ) )
                zh_dbfTriggerSet( pArea, pItem );
             zh_itemPutC( pItem, pTriggerSym ? zh_dynsymName( pTriggerSym ) : NULL );

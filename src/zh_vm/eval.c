@@ -108,7 +108,7 @@ PZH_ITEM zh_evalLaunch( PZH_EVALINFO pEvalInfo )
 
       if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( pItem->item.asString.value );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( pItem->item.asString.value );
 
          if( pDynSym )
          {
@@ -196,7 +196,7 @@ PZH_ITEM zh_itemDo( PZH_ITEM pItem, ZH_ULONG ulPCount, ... )
 
       if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( pItem->item.asString.value );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( pItem->item.asString.value );
 
          if( pDynSym )
          {
@@ -262,7 +262,7 @@ PZH_ITEM zh_itemDoC( const char * szFunc, ZH_ULONG ulPCount, ... )
 
    if( szFunc )
    {
-      PZH_DYNS pDynSym = zh_dynsymFindName( szFunc );
+      PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( szFunc );
 
       if( pDynSym )
       {

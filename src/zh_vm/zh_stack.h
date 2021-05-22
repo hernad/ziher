@@ -119,7 +119,7 @@ ZH_TSD_HOLDER, * PZH_TSD_HOLDER;
 
 typedef struct
 {
-   PZH_DYNS    pDynSym;
+   PZH_DYNSYMBOL    pDynSym;
    PZH_ITEM    pPrevMemvar;
 }
 ZH_PRIVATE_ITEM, * PZH_PRIVATE_ITEM;
@@ -185,34 +185,11 @@ typedef struct
                extern ZH_TLS_ATTR PZH_STACK zh_stack_ptr;
 #        endif
 #     else
-#        if ! defined( _ZH_STACK_LOCAL_MACROS_ )
-            extern ZH_TLS_KEY zh_stack_key;
-#        endif
-
-#        if defined( __MINGW32__ ) && defined( ZH_ASM_TLS ) && \
-              ! defined( ZH_OS_WIN_64 )
-#           if defined( _ZH_STACK_LOCAL_MACROS_ )
-               static ZH_TLS_KEY zh_stack_key;
-#           endif
-            static __inline__  __attribute__ ((pure, malloc)) void * zh_stack_ptr_from_tls( void )
-            {
-               void * p;
-               __asm__ (
-                  "movl  %%fs:(0x18), %0\n\t"
-                  "movl  0x0e10(%0,%1,4), %0\n\t"
-                  :"=a" (p)
-                  :"c" (zh_stack_key)
-               );
-               return p;
-            }
-#           define zh_stack_ptr_get()    zh_stack_ptr_from_tls()
-#           define zh_stack_ptr  ( ( PZH_STACK ) zh_stack_ptr_from_tls() )
-#        endif
-#        if ! defined( zh_stack_ptr )
-#           define zh_stack_ptr  ( ( PZH_STACK ) zh_tls_get( zh_stack_key ) )
-#        endif
+         #error "TLS support undefined for this compiler" 
 #     endif
 #     if defined( ZH_STACK_PRELOAD ) && ! defined( ZH_USE_TLS )
+         #error "TLS support undefined for this compiler" 
+/*
 #        if defined( zh_stack_ptr_get )
 #           define ZH_STACK_TLS_RELOAD    _zh_stack_ptr_ = ( PZH_STACK ) zh_stack_ptr_get();
 #           undef zh_stack_ptr
@@ -222,6 +199,7 @@ typedef struct
 #        define ZH_STACK_TLS_PRELOAD   PZH_STACK ZH_STACK_TLS_RELOAD
 #        define zh_stack            ( * _zh_stack_ptr_ )
 #        define zh_stack_ref()      ( _zh_stack_ptr_ )
+*/
 #     else
 #        define zh_stack            ( * zh_stack_ptr )
 #        define zh_stack_ref()      ( zh_stack_ptr )
@@ -327,7 +305,7 @@ extern void        zh_stackUpdateAllocator( void *, PZH_ALLOCUPDT_FUNC, int );
    extern void *           zh_stackList( void );
    extern void             zh_stackListSet( void * pStackLst );
    extern void             zh_stackIdSetActionRequest( void * pStackID, ZH_USHORT uiAction );
-   extern PZH_DYN_HANDLES  zh_stackGetDynHandle( PZH_DYNS pDynSym );
+   extern PZH_DYN_HANDLES  zh_stackGetDynHandle( PZH_DYNSYMBOL pDynSym );
    extern int              zh_stackDynHandlesCount( void );
    extern void             zh_stackClearMemvars( int );
    extern ZH_BOOL          zh_stackQuitState( void );

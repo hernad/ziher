@@ -202,7 +202,7 @@ static void    zh_vmDebuggerExit( ZH_BOOL fRemove );      /* shuts down the debu
 static void    zh_vmDebuggerShowLine( ZH_USHORT uiLine ); /* makes the debugger shows a specific source code line */
 static void    zh_vmDebuggerEndProc( void );     /* notifies the debugger for an endproc */
 
-static PZH_DYNS s_pDynsDbgEntry = NULL;   /* Cached __DBGENTRY symbol */
+static PZH_DYNSYMBOL s_pDynsDbgEntry = NULL;   /* Cached __DBGENTRY symbol */
 static ZH_DBGENTRY_FUNC s_pFunDbgEntry;   /* C level debugger entry */
 
 static ZH_BOOL s_fInternalsEnabled = ZH_TRUE;
@@ -408,16 +408,18 @@ static void zh_vmDoModuleQuitFunctions( void )
  */
 static void zh_vmDoInitZHVM( void )
 {
-   PZH_DYNS pDynSym = zh_dynsymFind( "__ZHVMINIT" );
+   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "__ZHVMINIT" );
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
-      puts("hernad __ZHVMINIT");
+      //puts("hernad __ZHVMINIT");
       zh_vmPushSymbol( pDynSym->pSymbol );
       zh_vmPushNil();
       zh_vmProc( 0 );
-   } else
-      puts("hernad NO __ZHVMINIT");
+   }; 
+   
+   //else
+   //puts("hernad NO __ZHVMINIT");
 
 }
 
@@ -425,7 +427,7 @@ static void zh_vmDoInitZHVM( void )
 static void zh_vmDoInitHelp( void )
 {
 
-   PZH_DYNS pDynSym = zh_dynsymFind( "HELP" );
+   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "HELP" );
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
@@ -997,7 +999,7 @@ void zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym )
    }
 }
 
-void zh_vmSetDynFunc( PZH_DYNS pDynSym )
+void zh_vmSetDynFunc( PZH_DYNSYMBOL pDynSym )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
 
@@ -1111,7 +1113,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
 
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
-      PZH_DYNS pDynSym = zh_dynsymFind( "_APPMAIN" );
+      PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "_APPMAIN" );
 
       if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
          s_pSymStart = pDynSym->pSymbol;
@@ -2608,64 +2610,64 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 
          case ZH_P_MMESSAGE:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushSymbol( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPOPALIASEDFIELD:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPopAliasedField( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPOPALIASEDVAR:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPopAliasedVar( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPOPFIELD:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             /* Pops a value from the eval stack and uses it to set
              * a new value of the given field
              */
             zh_rddPutFieldValue( ( zh_stackItemFromTop( -1 ) ), pDynSym->pSymbol );
             zh_stackPop();
             ZH_TRACE( ZH_TR_INFO, ( "(zh_vmMPopField)" ) );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPOPMEMVAR:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_memvarSetValue( pDynSym->pSymbol, zh_stackItemFromTop( -1 ) );
             zh_stackPop();
             ZH_TRACE( ZH_TR_INFO, ( "(zh_vmMPopMemvar)" ) );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSH_ALIASED_FIELD:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushAliasedField( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSHALIASEDVAR:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushAliasedVar( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
@@ -2707,46 +2709,46 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 
          case ZH_P_MPUSHFIELD:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             /* It pushes the current value of the given field onto the eval stack
              */
             zh_rddGetFieldValue( zh_stackAllocItem(), pDynSym->pSymbol );
             ZH_TRACE( ZH_TR_INFO, ( "(zh_vmMPushField)" ) );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSHMEMVAR:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_memvarGetValue( zh_stackAllocItem(), pDynSym->pSymbol );
             ZH_TRACE( ZH_TR_INFO, ( "(zh_vmMPushMemvar)" ) );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSHMEMVARREF:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_memvarGetRefer( zh_stackAllocItem(), pDynSym->pSymbol );
             ZH_TRACE( ZH_TR_INFO, ( "(zh_vmMPushMemvarRef)" ) );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSHSYM:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushSymbol( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
          case ZH_P_MPUSHVARIABLE:
          {
-            PZH_DYNS pDynSym = ( PZH_DYNS ) ZH_GET_PTR( pCode + 1 );
+            PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) ZH_GET_PTR( pCode + 1 );
             zh_vmPushVariable( pDynSym->pSymbol );
-            pCode += sizeof( PZH_DYNS ) + 1;
+            pCode += sizeof( PZH_DYNSYMBOL ) + 1;
             break;
          }
 
@@ -6803,7 +6805,7 @@ void zh_vmPushSymbol( PZH_SYMBOL pSym )
    pItem->item.asSymbol.stackstate = NULL;
 }
 
-void zh_vmPushDynSym( PZH_DYNS pDynSym )
+void zh_vmPushDynSym( PZH_DYNSYMBOL pDynSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem = zh_stackAllocItem();
@@ -7914,7 +7916,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       {
          if( fDynLib && ZH_VM_ISFUNC( pSymbol ) )
          {
-            PZH_DYNS pDynSym;
+            PZH_DYNSYMBOL pDynSym;
 
             pDynSym = zh_dynsymFind( pSymbol->szName );
 
@@ -8300,8 +8302,8 @@ void zh_vmPushItemRef( PZH_ITEM pItem )
  */
 typedef struct
 {
-   PZH_DYNS access;
-   PZH_DYNS assign;
+   PZH_DYNSYMBOL access;
+   PZH_DYNSYMBOL assign;
    ZH_ITEM  object;
    ZH_ITEM  value;
 } ZH_MSGREF, * PZH_MSGREF;
@@ -8424,7 +8426,7 @@ static void zh_vmMsgRefMark( void * value )
 /*
  * create extended message reference
  */
-ZH_BOOL zh_vmMsgReference( PZH_ITEM pObject, PZH_DYNS pMessage, PZH_DYNS pAccMsg )
+ZH_BOOL zh_vmMsgReference( PZH_ITEM pObject, PZH_DYNSYMBOL pMessage, PZH_DYNSYMBOL pAccMsg )
 {
    static const ZH_EXTREF s_MsgExtRef = {
       zh_vmMsgRefRead,
@@ -8872,7 +8874,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
 
       if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( pItem->item.asString.value );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( pItem->item.asString.value );
 
          if( pDynSym )
          {

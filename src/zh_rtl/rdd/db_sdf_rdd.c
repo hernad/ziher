@@ -488,7 +488,7 @@ static ZH_ERRCODE zh_sdfGetValue( SDFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
          PZH_ITEM pError = zh_errNew();
          zh_errPutGenCode( pError, EG_DATATYPE );
          zh_errPutDescription( pError, zh_langDGetErrorDesc( EG_DATATYPE ) );
-         zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+         zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
          zh_errPutSubCode( pError, EDBF_DATATYPE );
          SELF_ERROR( &pArea->area, pError );
          zh_itemRelease( pError );
@@ -609,7 +609,7 @@ static ZH_ERRCODE zh_sdfPutValue( SDFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
 
       zh_errPutGenCode( pError, errGenCode );
       zh_errPutDescription( pError, zh_langDGetErrorDesc( errGenCode ) );
-      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
       zh_errPutSubCode( pError, errCode );
       zh_errPutFlags( pError, EF_CANDEFAULT );
       errCode = SELF_ERROR( &pArea->area, pError );

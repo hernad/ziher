@@ -135,7 +135,7 @@ struct _ZH_SYMB;
       ZH_ULONG  ulTime;           /* profiler support */
       ZH_ULONG  ulRecurse;        /* profiler support */
 #  endif /* ! ZH_NO_PROFILER */
-   } ZH_DYNS, * PZH_DYNS;
+   } ZH_DYNSYMBOL, * PZH_DYNSYMBOL;
 
    /* pCode dynamic function - ZHB */
    typedef struct _ZH_PCODEFUNC
@@ -170,7 +170,7 @@ struct _ZH_SYMB;
 
    typedef void    ZH_STACK;
 
-   typedef void *  PZH_DYNS;
+   typedef void *  PZH_DYNSYMBOL;
 
 #endif /* ! _ZH_API_INTERNAL_ */
 
@@ -190,10 +190,10 @@ typedef struct _ZH_SYMB
       PZH_PCODEFUNC  pCodeFunc;     /* PCODE function address */
       void *         pStaticsBase;  /* base offset to array of statics */
    } value;
-   PZH_DYNS       pDynSym;          /* pointer to its dynamic symbol if defined */
+   PZH_DYNSYMBOL       pDynSym;          /* pointer to its dynamic symbol if defined */
 } ZH_SYMBOL, * PZH_SYMBOL;
 
-#define ZH_DYNS_FUNC( zhfunc )   ZH_BOOL zhfunc( PZH_DYNS pDynSymbol, void * Cargo )
+#define ZH_DYNS_FUNC( zhfunc )   ZH_BOOL zhfunc( PZH_DYNSYMBOL pDynSymbol, void * Cargo )
 typedef ZH_DYNS_FUNC( ( * PZH_DYNS_FUNC ) );
 
 #define ZH_CARGO_FUNC( func )    void func( void *cargo )

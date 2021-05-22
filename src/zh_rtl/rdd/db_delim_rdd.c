@@ -128,7 +128,7 @@ static ZH_ERRCODE zh_delimWriteHeader( DELIMAREAP pArea )
 
    for( uiCount = 0; uiCount < pArea->area.uiFieldCount; uiCount++ )
    {
-      pszFieldName = zh_dynsymName( ( PZH_DYNS )
+      pszFieldName = zh_dynsymName( ( PZH_DYNSYMBOL )
                                      ( pArea->area.lpFields + uiCount )->sym );
       nSize += strlen( pszFieldName ) + 3;
    }
@@ -141,7 +141,7 @@ static ZH_ERRCODE zh_delimWriteHeader( DELIMAREAP pArea )
       nSize = 0;
       for( uiCount = 0; uiCount < pArea->area.uiFieldCount; uiCount++ )
       {
-         pszFieldName = zh_dynsymName( ( PZH_DYNS )
+         pszFieldName = zh_dynsymName( ( PZH_DYNSYMBOL )
                                      ( pArea->area.lpFields + uiCount )->sym );
          nS = strlen( pszFieldName );
          if( uiCount )
@@ -729,7 +729,7 @@ static ZH_ERRCODE zh_delimGetValue( DELIMAREAP pArea, ZH_USHORT uiIndex, PZH_ITE
          PZH_ITEM pError = zh_errNew();
          zh_errPutGenCode( pError, EG_DATATYPE );
          zh_errPutDescription( pError, zh_langDGetErrorDesc( EG_DATATYPE ) );
-         zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+         zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
          zh_errPutSubCode( pError, EDBF_DATATYPE );
          SELF_ERROR( &pArea->area, pError );
          zh_itemRelease( pError );
@@ -849,7 +849,7 @@ static ZH_ERRCODE zh_delimPutValue( DELIMAREAP pArea, ZH_USHORT uiIndex, PZH_ITE
 
       zh_errPutGenCode( pError, errGenCode );
       zh_errPutDescription( pError, zh_langDGetErrorDesc( errGenCode ) );
-      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+      zh_errPutOperation( pError, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
       zh_errPutSubCode( pError, errCode );
       zh_errPutFlags( pError, EF_CANDEFAULT );
       errCode = SELF_ERROR( &pArea->area, pError );

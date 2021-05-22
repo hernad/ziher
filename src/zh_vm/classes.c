@@ -120,8 +120,8 @@ typedef struct
 
 typedef struct
 {
-   PZH_DYNS    pMessage;         /* Method symbolic name */
-   PZH_DYNS    pAccMsg;          /* Corresponding access method symbolic name */
+   PZH_DYNSYMBOL    pMessage;         /* Method symbolic name */
+   PZH_DYNSYMBOL    pAccMsg;          /* Corresponding access method symbolic name */
    PZH_SYMBOL    pFuncSym;         /* Function symbol */
    PZH_SYMBOL    pRealSym;         /* Real function symbol when wrapper is used */
    ZH_TYPE     itemType;         /* Type of item in restricted assignment */
@@ -143,7 +143,7 @@ typedef struct
 typedef struct
 {
    char *      szName;           /* Class name */
-   PZH_DYNS    pClassSym;        /* Class symbolic name */
+   PZH_DYNSYMBOL    pClassSym;        /* Class symbolic name */
    PMETHOD     pMethods;         /* Class methods */
    PZH_SYMBOL    pClassFuncSym;    /* Class function symbol */
    PZH_SYMBOL    pFriendModule;    /* Class friend symbols */
@@ -366,9 +366,9 @@ static PZH_ITEM s_pClassMtx = NULL;
 /* --- */
 
 #if 0
-static ZH_USHORT zh_clsBucketPos( PZH_DYNS pMsg, ZH_USHORT uiMask )
+static ZH_USHORT zh_clsBucketPos( PZH_DYNSYMBOL pMsg, ZH_USHORT uiMask )
 {
-   /* we can use PZH_DYNS address as base for hash key.
+   /* we can use PZH_DYNSYMBOL address as base for hash key.
     * This value is perfectly unique and we do not need anything more
     * but it's not continuous so we will have to add dynamic BUCKETSIZE
     * modification to be 100% sure that we can resolve all symbol name
@@ -377,7 +377,7 @@ static ZH_USHORT zh_clsBucketPos( PZH_DYNS pMsg, ZH_USHORT uiMask )
     */
 
    /* Safely divide it by 16 - it's minimum memory allocated for single
-    * ZH_DYNS structure
+    * ZH_DYNSYMBOL structure
     */
    #if 0
    return ( ( ZH_USHORT ) ( ( ZH_PTRUINT ) pMsg >> 4 ) & uiMask ) << BUCKETBITS;
@@ -459,7 +459,7 @@ static ZH_BOOL zh_clsDictRealloc( PCLASS pClass )
 
       for( n = 0; n < nLimit; n++ )
       {
-         PZH_DYNS pMessage = ( PZH_DYNS ) pClass->pMethods[ n ].pMessage;
+         PZH_DYNSYMBOL pMessage = ( PZH_DYNSYMBOL ) pClass->pMethods[ n ].pMessage;
 
          if( pMessage )
          {
@@ -515,7 +515,7 @@ static void zh_clsDictInit( PCLASS pClass, ZH_USHORT uiHashKey )
 #endif
 }
 
-static PMETHOD zh_clsFindMsg( PCLASS pClass, PZH_DYNS pMsg )
+static PMETHOD zh_clsFindMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
 {
 #ifdef ZH_MSG_POOL
 
@@ -559,7 +559,7 @@ static PMETHOD zh_clsFindMsg( PCLASS pClass, PZH_DYNS pMsg )
    return NULL;
 }
 
-static PMETHOD zh_clsAllocMsg( PCLASS pClass, PZH_DYNS pMsg )
+static PMETHOD zh_clsAllocMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsAllocMsg(%p,%p)", ( void * ) pClass, ( void * ) pMsg ) );
 
@@ -625,7 +625,7 @@ static ZH_BOOL zh_clsCanClearMethod( PMETHOD pMethod, ZH_BOOL fError )
    return ZH_TRUE;
 }
 
-static void zh_clsFreeMsg( PCLASS pClass, PZH_DYNS pMsg )
+static void zh_clsFreeMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
 {
 #ifdef ZH_MSG_POOL
 
@@ -707,7 +707,7 @@ static ZH_BOOL zh_clsHasParentClass( PCLASS pClass, ZH_USHORT uiParentCls )
    #endif
 }
 
-static ZH_USHORT zh_clsGetParent( PCLASS pClass, PZH_DYNS pParentSym )
+static ZH_USHORT zh_clsGetParent( PCLASS pClass, PZH_DYNSYMBOL pParentSym )
 {
    ZH_USHORT uiCount = pClass->uiSuperClasses;
 
@@ -1162,7 +1162,7 @@ void zh_clsDoInit( void )
 
    for( i = 0; i < ( int ) ZH_SIZEOFARRAY( s_puiHandles ); ++i )
    {
-      PZH_DYNS pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
+      PZH_DYNSYMBOL pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
       if( pFuncSym && zh_dynsymIsFunction( pFuncSym ) )
       {
          PZH_ITEM pReturn = zh_stackReturnItem();
@@ -1312,7 +1312,7 @@ ZH_BOOL zh_clsIsParent( ZH_USHORT uiClass, const char * szParentName )
          return ZH_TRUE;
       else
       {
-         PZH_DYNS pMsg = zh_dynsymFindName( szParentName );
+         PZH_DYNSYMBOL pMsg = zh_dynsymFindName( szParentName );
 
          if( pMsg )
             return zh_clsGetParent( pClass, pMsg ) != 0;
@@ -1477,7 +1477,7 @@ const char * zh_clsMethodName( ZH_USHORT uiClass, ZH_USHORT uiMethod )
    return NULL;
 }
 
-static ZH_SIZE zh_clsGetVarIndexEx( ZH_USHORT uiClass, PZH_DYNS pVarSym,
+static ZH_SIZE zh_clsGetVarIndexEx( ZH_USHORT uiClass, PZH_DYNSYMBOL pVarSym,
                                     ZH_USHORT uiSuper )
 {
    PMETHOD pMethod = zh_clsFindMsg( s_pClasses[ uiSuper ], pVarSym );
@@ -1498,7 +1498,7 @@ static ZH_SIZE zh_clsGetVarIndexEx( ZH_USHORT uiClass, PZH_DYNS pVarSym,
    return 0;
 }
 
-ZH_SIZE zh_clsGetVarIndex( ZH_USHORT uiClass, PZH_DYNS pVarSym )
+ZH_SIZE zh_clsGetVarIndex( ZH_USHORT uiClass, PZH_DYNSYMBOL pVarSym )
 {
    if( uiClass && uiClass <= s_uiClasses )
       return zh_clsGetVarIndexEx( uiClass, pVarSym, uiClass );
@@ -1580,7 +1580,7 @@ const char * zh_objGetRealClsName( PZH_ITEM pObject, const char * szName )
    uiClass = zh_objGetClassH( pObject );
    if( uiClass && uiClass <= s_uiClasses )
    {
-      PZH_DYNS pMsg = zh_dynsymFindName( szName );
+      PZH_DYNSYMBOL pMsg = zh_dynsymFindName( szName );
 
       if( pMsg )
       {
@@ -1749,7 +1749,7 @@ static PZH_SYMBOL zh_clsValidScope( PMETHOD pMethod, PZH_STACK_STATE pStack )
    return pMethod->pFuncSym;
 }
 
-static PZH_SYMBOL zh_clsScalarMethod( PCLASS pClass, PZH_DYNS pMsg,
+static PZH_SYMBOL zh_clsScalarMethod( PCLASS pClass, PZH_DYNSYMBOL pMsg,
                                     PZH_STACK_STATE pStack )
 {
    PMETHOD pMethod = zh_clsFindMsg( pClass, pMsg );
@@ -1794,7 +1794,7 @@ PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
 {
    ZH_STACK_TLS_PRELOAD
    PCLASS pClass = NULL;
-   PZH_DYNS pMsg;
+   PZH_DYNSYMBOL pMsg;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_objGetMethod(%p, %p, %p)", ( void * ) pObject, ( void * ) pMessage, ( void * ) pStack ) );
 
@@ -2449,7 +2449,7 @@ ZH_BOOL zh_objOperatorCall( ZH_USHORT uiOperator, PZH_ITEM pResult, PZH_ITEM pOb
 }
 
 /* return ZH_TRUE if object has a given message */
-ZH_BOOL zh_objHasMessage( PZH_ITEM pObject, PZH_DYNS pMessage )
+ZH_BOOL zh_objHasMessage( PZH_ITEM pObject, PZH_DYNSYMBOL pMessage )
 {
    return zh_objGetMethod( pObject, pMessage->pSymbol, NULL ) != NULL;
 }
@@ -2462,7 +2462,7 @@ ZH_BOOL zh_objHasMessage( PZH_ITEM pObject, PZH_DYNS pMessage )
  */
 ZH_BOOL zh_objHasMsg( PZH_ITEM pObject, const char * szString )
 {
-   PZH_DYNS pDynSym;
+   PZH_DYNSYMBOL pDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_objHasMsg(%p, %s)", ( void * ) pObject, szString ) );
 
@@ -2473,7 +2473,7 @@ ZH_BOOL zh_objHasMsg( PZH_ITEM pObject, const char * szString )
       return ZH_FALSE;
 }
 
-PZH_ITEM zh_objSendMessage( PZH_ITEM pObject, PZH_DYNS pMsgSym, ZH_ULONG ulArg, ... )
+PZH_ITEM zh_objSendMessage( PZH_ITEM pObject, PZH_DYNSYMBOL pMsgSym, ZH_ULONG ulArg, ... )
 {
    if( pObject && pMsgSym )
    {
@@ -2527,7 +2527,7 @@ PZH_ITEM zh_objSendMsg( PZH_ITEM pObject, const char * szMsg, ZH_ULONG ulArg, ..
    }
 }
 
-PZH_ITEM zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNS pVarMsg )
+PZH_ITEM zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNSYMBOL pVarMsg )
 {
    if( pObject && ZH_IS_OBJECT( pObject ) && pVarMsg )
    {
@@ -2562,9 +2562,9 @@ PZH_ITEM zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNS pVarMsg )
    return NULL;
 }
 
-static PZH_DYNS zh_objGetMsgSym( PZH_ITEM pMessage )
+static PZH_DYNSYMBOL zh_objGetMsgSym( PZH_ITEM pMessage )
 {
-   PZH_DYNS pDynSym = NULL;
+   PZH_DYNSYMBOL pDynSym = NULL;
 
    if( pMessage )
    {
@@ -2594,7 +2594,7 @@ static PZH_SYMBOL zh_objGetFuncSym( PZH_ITEM pItem )
          return pItem->item.asSymbol.value;
       else if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
 
          if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
             return pDynSym->pSymbol;
@@ -2630,7 +2630,7 @@ PZH_ITEM zh_objCloneTo( PZH_ITEM pDest, PZH_ITEM pObject )
 void zh_dbg_objSendMessage( int iProcLevel, PZH_ITEM pObject, PZH_ITEM pMessage, int iParamOffset )
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_DYNS pMsgSym;
+   PZH_DYNSYMBOL pMsgSym;
 
    pMsgSym = zh_objGetMsgSym( pMessage );
    if( pObject && pMsgSym )
@@ -2875,7 +2875,7 @@ static ZH_BOOL zh_clsAddMsg( ZH_USHORT uiClass, const char * szMessage,
    {
       PCLASS    pClass   = s_pClasses[ uiClass ];
 
-      PZH_DYNS  pMessage;
+      PZH_DYNSYMBOL  pMessage;
       PMETHOD   pNewMeth;
       ZH_USHORT uiOperator, uiSprClass = 0, uiIndex = 0, uiPrevCls, uiPrevMth;
       PZH_SYMBOL  pOpSym, pFuncSym = NULL;
@@ -2997,7 +2997,7 @@ static ZH_BOOL zh_clsAddMsg( ZH_USHORT uiClass, const char * szMessage,
 
          case ZH_OO_MSG_DELEGATE:
          {
-            PZH_DYNS pDelegMsg = zh_objGetMsgSym( pFunction );
+            PZH_DYNSYMBOL pDelegMsg = zh_objGetMsgSym( pFunction );
             if( pDelegMsg )
             {
                pNewMeth = zh_clsFindMsg( pClass, pDelegMsg );
@@ -3647,7 +3647,7 @@ ZH_FUNC( __CLSDELMSG )
    if( uiClass && uiClass <= s_uiClasses && pString &&
        ! s_pClasses[ uiClass ]->fLocked )
    {
-      PZH_DYNS pMsg = zh_dynsymFindName( pString->item.asString.value );
+      PZH_DYNSYMBOL pMsg = zh_dynsymFindName( pString->item.asString.value );
 
       if( pMsg )
          zh_clsFreeMsg( s_pClasses[ uiClass ], pMsg );
@@ -3750,7 +3750,7 @@ ZH_FUNC( __CLSMODMSG )
    if( uiClass && uiClass <= s_uiClasses && pString &&
        ! s_pClasses[ uiClass ]->fLocked )
    {
-      PZH_DYNS pMsg = zh_dynsymFindName( pString->item.asString.value );
+      PZH_DYNSYMBOL pMsg = zh_dynsymFindName( pString->item.asString.value );
 
       if( pMsg )
       {
@@ -3865,7 +3865,7 @@ ZH_FUNC( __OBJGETCLSNAME )
  */
 ZH_FUNC( __OBJHASMSG )
 {
-   PZH_DYNS pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
+   PZH_DYNSYMBOL pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
 
    if( pMessage )
    {
@@ -3882,7 +3882,7 @@ ZH_FUNC( __OBJHASMSG )
  */
 ZH_FUNC( __OBJHASMSGASSIGNED )
 {
-   PZH_DYNS pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
+   PZH_DYNSYMBOL pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
 
    if( pMessage )
    {
@@ -3901,7 +3901,7 @@ ZH_FUNC( __OBJHASMSGASSIGNED )
  */
 ZH_FUNC( __OBJSENDMSG )
 {
-   PZH_DYNS pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
+   PZH_DYNSYMBOL pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
 
    if( pMessage )
    {
@@ -3954,7 +3954,7 @@ ZH_FUNC( __CLSINSTSUPER )
          pClassFuncSym = zh_itemGetSymbol( pItem );
       else if( ZH_IS_STRING( pItem ) )
       {
-         PZH_DYNS pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
+         PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( zh_itemGetCPtr( pItem ) );
          if( pDynSym )
             pClassFuncSym = pDynSym->pSymbol;
       }
@@ -4997,7 +4997,7 @@ ZH_FUNC( __GETMSGPRF ) /* profiler: returns a method called and consumed times *
    zh_reta( 2 );
    if( uiClass && uiClass <= s_uiClasses && cMsg && *cMsg )
    {
-      PZH_DYNS pMsg = zh_dynsymFindName( cMsg );
+      PZH_DYNSYMBOL pMsg = zh_dynsymFindName( cMsg );
 
       if( pMsg )
       {
@@ -5176,7 +5176,7 @@ static void zh_objSetIVars( PZH_ITEM pObject, PZH_ITEM pArray )
       while( ( pValue = zh_arrayGetItemPtr( pArray, ++nPos ) ) != NULL )
       {
          const char * pszMethod = zh_arrayGetCPtr( pValue, 1 );
-         PZH_DYNS pVarSym = zh_dynsymFind( pszMethod );
+         PZH_DYNSYMBOL pVarSym = zh_dynsymFind( pszMethod );
          PZH_ITEM pNewVal = zh_arrayGetItemPtr( pValue, 2 );
          ZH_USHORT uiSuper = uiClass;
 
@@ -5188,7 +5188,7 @@ static void zh_objSetIVars( PZH_ITEM pObject, PZH_ITEM pArray )
                nLen = pszClass - pszMethod;
                if( nLen )
                {
-                  PZH_DYNS pParentSym;
+                  PZH_DYNSYMBOL pParentSym;
                   char szClassName[ ZH_SYMBOL_NAME_LEN + 1 ];
 
                   memcpy( szClassName, pszMethod, nLen );
@@ -5387,7 +5387,7 @@ ZH_FUNC( __CLSGETANCESTORS )
  */
 ZH_FUNC( __CLSMSGTYPE )
 {
-   PZH_DYNS pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
+   PZH_DYNSYMBOL pMessage = zh_objGetMsgSym( zh_param( 2, ZH_IT_ANY ) );
 
    if( pMessage )
    {
@@ -5567,7 +5567,7 @@ ZH_FUNC( __CLSVERIFY )
       {
          if( pMethod->pMessage )
          {
-            PZH_DYNS pDynSym = zh_dynsymFind( pMethod->pMessage->pSymbol->szName );
+            PZH_DYNSYMBOL pDynSym = zh_dynsymFind( pMethod->pMessage->pSymbol->szName );
 
             if( pMethod->pMessage != pDynSym ||
                 zh_clsFindMsg( pClass, pDynSym ) != pMethod )

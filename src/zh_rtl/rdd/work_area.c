@@ -527,7 +527,7 @@ static ZH_ERRCODE zh_waFieldInfo( AREAP pArea, ZH_USHORT uiIndex, ZH_USHORT uiTy
    switch( uiType )
    {
       case DBS_NAME:
-         zh_itemPutC( pItem, zh_dynsymName( ( PZH_DYNS ) pField->sym ) );
+         zh_itemPutC( pItem, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ) );
          break;
 
       case DBS_TYPE:
@@ -693,7 +693,7 @@ static ZH_ERRCODE zh_waFieldName( AREAP pArea, ZH_USHORT uiIndex, char * szName 
       return ZH_FAILURE;
 
    pField = pArea->lpFields + uiIndex - 1;
-   zh_strncpy( szName, zh_dynsymName( ( PZH_DYNS ) pField->sym ),
+   zh_strncpy( szName, zh_dynsymName( ( PZH_DYNSYMBOL ) pField->sym ),
                pArea->uiMaxFieldNameLength );
    return ZH_SUCCESS;
 }
@@ -722,8 +722,8 @@ static ZH_ERRCODE zh_waAlias( AREAP pArea, char * szAlias )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_waAlias(%p, %p)", ( void * ) pArea, ( void * ) szAlias ) );
 
    zh_strncpy( szAlias,
-      pArea->atomAlias && zh_dynsymAreaHandle( ( PZH_DYNS ) pArea->atomAlias )
-      ? zh_dynsymName( ( PZH_DYNS ) pArea->atomAlias ) : "",
+      pArea->atomAlias && zh_dynsymAreaHandle( ( PZH_DYNSYMBOL ) pArea->atomAlias )
+      ? zh_dynsymName( ( PZH_DYNSYMBOL ) pArea->atomAlias ) : "",
       ZH_RDD_MAX_ALIAS_LEN );
 
    return ZH_SUCCESS;
@@ -745,7 +745,7 @@ static ZH_ERRCODE zh_waClose( AREAP pArea )
    zh_rddCloseAllParentRelations( pArea );
 
    if( pArea->atomAlias )
-      zh_dynsymSetAreaHandle( ( PZH_DYNS ) pArea->atomAlias, 0 );
+      zh_dynsymSetAreaHandle( ( PZH_DYNSYMBOL ) pArea->atomAlias, 0 );
 
    return ZH_SUCCESS;
 }
@@ -2268,7 +2268,7 @@ void zh_rddShutDown( void )
 int zh_rddRegister( const char * szDriver, ZH_USHORT uiType )
 {
    LPRDDNODE pRddNewNode;
-   PZH_DYNS pGetFuncTable;
+   PZH_DYNSYMBOL pGetFuncTable;
    char szGetFuncTable[ ZH_RDD_MAX_DRIVERNAME_LEN + 14 ];
    ZH_USHORT uiFunctions = 0;
    int iResult;

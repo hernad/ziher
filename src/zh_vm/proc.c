@@ -92,7 +92,7 @@ ZH_FUNC( PROCFILE )
    }
    else if( ZH_ISCHAR( 1 ) )
    {
-      PZH_DYNS pDynSym = zh_dynsymFindName( zh_parc( 1 ) );
+      PZH_DYNSYMBOL pDynSym = zh_dynsymFindName( zh_parc( 1 ) );
 
       if( pDynSym )
          pSym = pDynSym->pSymbol;

@@ -594,7 +594,7 @@ ZH_ERRCODE zh_rddDetachArea( AREAP pArea, PZH_ITEM pCargo )
    zh_waNodeDelete( zh_stackRDD() );
    pArea->uiArea = 0;
    if( pArea->atomAlias )
-      zh_dynsymSetAreaHandle( ( PZH_DYNS ) pArea->atomAlias, 0 );
+      zh_dynsymSetAreaHandle( ( PZH_DYNSYMBOL ) pArea->atomAlias, 0 );
 
    /* restore previous WA number */
    zh_rddSelectWorkAreaNumber( iArea );
@@ -629,7 +629,7 @@ ZH_ERRCODE zh_rddDetachArea( AREAP pArea, PZH_ITEM pCargo )
 AREAP zh_rddRequestArea( const char * szAlias, PZH_ITEM pCargo,
                          ZH_BOOL fNewArea, ZH_ULONG ulMilliSec )
 {
-   PZH_DYNS pSymAlias = NULL;
+   PZH_DYNSYMBOL pSymAlias = NULL;
    AREAP pArea = NULL;
 
    if( pCargo )
@@ -678,7 +678,7 @@ AREAP zh_rddRequestArea( const char * szAlias, PZH_ITEM pCargo,
                AREAP * pDetachedArea = ( AREAP * )
                   zh_arrayGetPtrGC( zh_arrayGetItemPtr( s_pDetachedAreas, nPos ),
                                     1, &s_gcWAFuncs );
-               if( pSymAlias == ( PZH_DYNS ) ( *pDetachedArea )->atomAlias )
+               if( pSymAlias == ( PZH_DYNSYMBOL ) ( *pDetachedArea )->atomAlias )
                   break;
             }
          }
@@ -720,8 +720,8 @@ AREAP zh_rddRequestArea( const char * szAlias, PZH_ITEM pCargo,
       zh_waNodeInsert( zh_stackRDD(), pArea );
       if( pArea->atomAlias )
       {
-         if( zh_dynsymAreaHandle( ( PZH_DYNS ) pArea->atomAlias ) == 0 )
-            zh_dynsymSetAreaHandle( ( PZH_DYNS ) pArea->atomAlias, pArea->uiArea );
+         if( zh_dynsymAreaHandle( ( PZH_DYNSYMBOL ) pArea->atomAlias ) == 0 )
+            zh_dynsymSetAreaHandle( ( PZH_DYNSYMBOL ) pArea->atomAlias, pArea->uiArea );
       }
    }
 
@@ -747,7 +747,7 @@ PZH_ITEM zh_rddDetachedList( void )
          AREAP * pDetachedArea = ( AREAP * )
                zh_arrayGetPtrGC( zh_arrayGetItemPtr( s_pDetachedAreas, nPos ),
                                  1, &s_gcWAFuncs );
-         PZH_DYNS pAlias = ( PZH_DYNS ) ( *pDetachedArea )->atomAlias;
+         PZH_DYNSYMBOL pAlias = ( PZH_DYNSYMBOL ) ( *pDetachedArea )->atomAlias;
          zh_arraySetC( pArray, nPos, zh_dynsymName( pAlias ) );
       }
    }

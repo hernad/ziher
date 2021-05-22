@@ -335,6 +335,7 @@ extern ZH_BOOL zh_threadMutexSyncWait( PZH_ITEM pItemMtx, ZH_ULONG ulMilliSec, P
     * which are known that it will work correctly
 */
 // https://gcc.gnu.org/onlinedocs/gcc-3.3.1/gcc/Thread-Local.html
+// https://en.wikipedia.org/wiki/Thread-local_storage
 
 #if ( defined( _MSC_VER ) && ( _MSC_VER > 1500 ) )
 #     define ZH_USE_TLS

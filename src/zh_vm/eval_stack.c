@@ -55,7 +55,6 @@
 #include "zh_rdd_api.h"
 #include "zh_date.h"
 
-/* --- */
 
 #if ! defined( STACK_INITZH_ITEMS )
    #define STACK_INITZH_ITEMS    200
@@ -65,27 +64,18 @@
 #endif
 
 
-
 #  include "zh_thread.h"
 
    static ZH_CRITICAL_NEW( TSD_counter );
    static int s_iTSDCounter = 0;
 
 #  ifdef ZH_USE_TLS
-
+      // https://en.wikipedia.org/wiki/Thread-local_storage
       /* compiler has native support for TLS */
 #     if ! defined( _ZH_STACK_MACROS_ )
-#        if defined( __BORLANDC__ )
-            static PZH_STACK ZH_TLS_ATTR zh_stack_ptr;
-#        else
             static ZH_TLS_ATTR PZH_STACK zh_stack_ptr;
-#        endif
 #     elif ! defined( _ZH_STACK_LOCAL_MACROS_ )
-#        if defined( __BORLANDC__ )
-            PZH_STACK ZH_TLS_ATTR zh_stack_ptr = NULL;
-#        else
             ZH_TLS_ATTR PZH_STACK zh_stack_ptr = NULL;
-#        endif
 #     endif
 
 #     define zh_stack_alloc()    do { zh_stack_ptr = ( PZH_STACK ) \
@@ -95,26 +85,7 @@
 #     define zh_stack_ready()    (zh_stack_ptr != NULL)
 
 #  else
-
-      /* compiler has no native TLS support, we have to implement it ourselves */
-#     if ! defined( _ZH_STACK_MACROS_ )
-         static ZH_TLS_KEY zh_stack_key;
-#        define zh_stack_ptr     ( ( PZH_STACK ) zh_tls_get( zh_stack_key ) )
-#     elif ! defined( _ZH_STACK_LOCAL_MACROS_ )
-         ZH_TLS_KEY zh_stack_key;
-#     endif
-      static volatile ZH_BOOL s_fInited = ZH_FALSE;
-#     define zh_stack_alloc()    do { if( ! s_fInited ) { \
-                                         zh_tls_init( zh_stack_key ); \
-                                         s_fInited = ZH_TRUE; } \
-                                      zh_tls_set( zh_stack_key, \
-                                                  zh_xgrab( sizeof( ZH_STACK ) ) ); \
-                                 } while( 0 )
-#     define zh_stack_dealloc()  do { zh_xfree( ( void * ) zh_tls_get( zh_stack_key ) ); \
-                                      zh_tls_set( zh_stack_key, NULL ); } \
-                                 while( 0 )
-#     define zh_stack_ready()    ( s_fInited && zh_tls_get( zh_stack_key ) )
-
+      #error "TLS support undefined for this compiler"
 #  endif /* ZH_USE_TLS */
 
 #  if ! defined( ZH_STACK_PRELOAD )
@@ -128,11 +99,8 @@ static char s_szDirBuffer[ ZH_PATH_MAX ];
 static ZH_IOERRORS s_IOErrors;
 static ZH_TRACEINFO s_traceInfo;
 
-/* --- */
-
 static ZH_SYMBOL s_initSymbol = { "zh_stackInit", { ZH_FS_STATIC }, { NULL }, NULL };
 
-/* --- */
 
 static void zh_stack_init( PZH_STACK pStack )
 {
@@ -352,7 +320,7 @@ int zh_stackDynHandlesCount( void )
    return zh_stack.iDynH;
 }
 
-PZH_DYN_HANDLES zh_stackGetDynHandle( PZH_DYNS pDynSym )
+PZH_DYN_HANDLES zh_stackGetDynHandle( PZH_DYNSYMBOL pDynSym )
 {
    ZH_STACK_TLS_PRELOAD
    int iDynSym;
