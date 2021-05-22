@@ -130,7 +130,7 @@ static ZH_TRACEINFO s_traceInfo;
 
 /* --- */
 
-static ZH_SYMB s_initSymbol = { "zh_stackInit", { ZH_FS_STATIC }, { NULL }, NULL };
+static ZH_SYMBOL s_initSymbol = { "zh_stackInit", { ZH_FS_STATIC }, { NULL }, NULL };
 
 /* --- */
 
@@ -1133,7 +1133,7 @@ ZH_ISIZ zh_stackBaseProcOffset( int iLevel )
       return -1;
 }
 
-ZH_ISIZ zh_stackBaseSymbolOffset( PZH_SYMB pSymbol )
+ZH_ISIZ zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_ISIZ nOffset = zh_stack.pBase - zh_stack.pItems;

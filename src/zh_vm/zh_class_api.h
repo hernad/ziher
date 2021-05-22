@@ -91,10 +91,10 @@ extern void       zh_clsDoInit( void );         /* initialize Classy/OO system .
 extern void       zh_clsReleaseAll( void );     /* releases all defined classes */
 extern void       zh_clsIsClassRef( void );     /* classes.c - mark all class internals as used */
 extern ZH_BOOL    zh_clsHasDestructor( ZH_USHORT uiClass );
-extern PZH_SYMB   zh_clsMethodSym( PZH_ITEM pBaseSymbol ); /* returns the real method symbol for given stack symbol */
+extern PZH_SYMBOL   zh_clsMethodSym( PZH_ITEM pBaseSymbol ); /* returns the real method symbol for given stack symbol */
 
-extern PZH_SYMB   zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pSymMsg, PZH_STACK_STATE pStack ); /* returns the method pointer of an object class */
-extern ZH_BOOL    zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMB pMessage, PZH_STACK_STATE pStack ); /* create object variable reference */
+extern PZH_SYMBOL   zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pSymMsg, PZH_STACK_STATE pStack ); /* returns the method pointer of an object class */
+extern ZH_BOOL    zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMBOL pMessage, PZH_STACK_STATE pStack ); /* create object variable reference */
 extern ZH_BOOL    zh_objHasOperator( PZH_ITEM pObject, ZH_USHORT uiOperator );
 extern ZH_BOOL    zh_objOperatorCall( ZH_USHORT uiOperator, PZH_ITEM pResult, PZH_ITEM pObject, PZH_ITEM pMsgArg1, PZH_ITEM pMsgArg2 );
 extern void       zh_objDestructorCall( PZH_ITEM pObject );
@@ -112,7 +112,7 @@ extern void       zh_mthAddTime( ZH_ULONG ulClockTicks );       /* profiler from
 extern ZH_EXPORT const char * zh_clsName( ZH_USHORT uiClass );
 extern ZH_EXPORT const char * zh_clsFuncName( ZH_USHORT uiClass );
 extern ZH_EXPORT const char * zh_clsMethodName( ZH_USHORT uiClass, ZH_USHORT uiMethod );
-extern ZH_EXPORT PZH_SYMB   zh_clsFuncSym( ZH_USHORT uiClass );
+extern ZH_EXPORT PZH_SYMBOL   zh_clsFuncSym( ZH_USHORT uiClass );
 extern ZH_EXPORT ZH_BOOL    zh_clsIsParent( ZH_USHORT uiClass, const char * szParentName ); /* is a class handle inherited from szParentName Class ? */
 extern ZH_EXPORT ZH_SIZE    zh_clsGetVarIndex( ZH_USHORT uiClass, PZH_DYNS pVarSym );
 extern ZH_EXPORT ZH_USHORT  zh_clsFindClass( const char * szClass, const char * szClassFunc );

@@ -97,7 +97,7 @@ extern ZH_EXPORT ZH_MAXINT    zh_itemGetNInt   ( PZH_ITEM pItem );
 extern ZH_EXPORT void         zh_itemGetNLen   ( PZH_ITEM pItem, int * piWidth, int * piDec );
 extern ZH_EXPORT void *       zh_itemGetPtr    ( PZH_ITEM pItem );
 extern ZH_EXPORT void *       zh_itemGetPtrGC  ( PZH_ITEM pItem, const ZH_GC_FUNCS * pFuncs );
-extern ZH_EXPORT PZH_SYMB     zh_itemGetSymbol ( PZH_ITEM pItem );
+extern ZH_EXPORT PZH_SYMBOL     zh_itemGetSymbol ( PZH_ITEM pItem );
 extern ZH_EXPORT PZH_ITEM     zh_itemNew       ( PZH_ITEM pNull );
 extern ZH_EXPORT void         zh_itemInit      ( PZH_ITEM pItem );
 extern ZH_EXPORT ZH_USHORT    zh_itemPCount    ( void );
@@ -130,7 +130,7 @@ extern ZH_EXPORT PZH_ITEM     zh_itemPutNLLen  ( PZH_ITEM pItem, long lNumber, i
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNumType( PZH_ITEM pItem, double dNumber, int iDec, int iType1, int iType2 );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutPtr    ( PZH_ITEM pItem, void * pValue );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutPtrGC  ( PZH_ITEM pItem, void * pValue );
-extern ZH_EXPORT PZH_ITEM     zh_itemPutSymbol ( PZH_ITEM pItem, PZH_SYMB pSym );
+extern ZH_EXPORT PZH_ITEM     zh_itemPutSymbol ( PZH_ITEM pItem, PZH_SYMBOL pSym );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNil    ( PZH_ITEM pItem );
 extern ZH_EXPORT ZH_BOOL      zh_itemRelease   ( PZH_ITEM pItem );
 extern ZH_EXPORT PZH_ITEM     zh_itemReturn    ( PZH_ITEM pItem );

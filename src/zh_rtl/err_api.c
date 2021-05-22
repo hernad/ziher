@@ -79,7 +79,7 @@ ZH_FUNC_EXTERN( ERRORNEW );
 
 static PZH_ITEM s_pError = NULL;
 
-static ZH_SYMB s_symErrorNew = { "ERRORNEW", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( ERRORNEW ) }, NULL };
+static ZH_SYMBOL s_symErrorNew = { "ERRORNEW", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( ERRORNEW ) }, NULL };
 
 typedef struct
 {
@@ -760,7 +760,7 @@ PZH_ITEM zh_errPutOperation( PZH_ITEM pError, const char * szOperation )
 
    if( szOperation == ZH_ERR_FUNCNAME )
    {
-      PZH_SYMB pSym = zh_itemGetSymbol( zh_stackBaseItem() );
+      PZH_SYMBOL pSym = zh_itemGetSymbol( zh_stackBaseItem() );
       if( pSym )
          szOperation = pSym->szName;
    }

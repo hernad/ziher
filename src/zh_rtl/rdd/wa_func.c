@@ -335,7 +335,7 @@ ZH_ERRCODE zh_rddGetAliasNumber( const char * szAlias, int * iArea )
 /*
  * Select a WorkArea by the symbol name.
  */
-ZH_ERRCODE zh_rddSelectWorkAreaSymbol( PZH_SYMB pSymAlias )
+ZH_ERRCODE zh_rddSelectWorkAreaSymbol( PZH_SYMBOL pSymAlias )
 {
    PZH_ITEM pError;
    ZH_ERRCODE errCode;
@@ -443,7 +443,7 @@ ZH_ERRCODE zh_rddSelectWorkAreaAlias( const char * szAlias )
 /*
  * Obtain the current value of a field.
  */
-ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    AREAP pArea;
 
@@ -472,7 +472,7 @@ ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
 /*
  * Assign a value to a field.
  */
-ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    AREAP pArea;
 
@@ -501,7 +501,7 @@ ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
 /*
  * Obtain the current value of a field.
  */
-ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_ERRCODE errCode;
 
@@ -537,7 +537,7 @@ ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
 /*
  * Assign a value to a field.
  */
-ZH_ERRCODE zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_ERRCODE errCode;
 

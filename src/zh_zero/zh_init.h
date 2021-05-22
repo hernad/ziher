@@ -51,7 +51,7 @@
 
 ZH_EXTERN_BEGIN
 
-extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
+extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
 
 #define ZH_INIT_SYMBOLS_END( func ) ZH_INIT_SYMBOLS_EX_END( func, "", 0L, 0x0000 )
 
@@ -65,16 +65,17 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #define ZH_STATIC_STARTUP
 #endif
 
-#define ZH_INIT_SYMBOLS_COUNT ( sizeof( symbols_table ) / sizeof( ZH_SYMB ) )
+#define ZH_INIT_SYMBOLS_COUNT ( sizeof( symbols_table ) / sizeof( ZH_SYMBOL ) )
 
+/*
 #if defined( ZH_STRICT_ANSI_C )
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = symbols_table; \
+      static PZH_SYMBOL symbols = symbols_table; \
       void func( void ) \
       { \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
@@ -94,18 +95,16 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #endif
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
+      static PZH_SYMBOL symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
 
    #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
       static int func( void ) \
       {
 
-   /* this allows any macros to be preprocessed first
-      so that token pasting is handled correctly */
    #define ZH_CALL_ON_STARTUP_END( func ) \
           _ZH_CALL_ON_STARTUP_END( func )
 
@@ -127,11 +126,11 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #endif
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = symbols_table; \
+      static PZH_SYMBOL symbols = symbols_table; \
       ZH_CALL_ON_STARTUP_BEGIN( func ) \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
       ZH_CALL_ON_STARTUP_END( func )
@@ -149,31 +148,39 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
             "\n\tcall " ZH_MACRO2STRING( func ) \
             "\n\t.section .text\n\t" );
 
-   /* TODO: if possible use other way without public symbols to mark function
-    *       as used so it's not removed by C compiler optimization logic
-    */
+
    #define ZH_INIT_FUNCTION_REF( func )    \
       extern void * func##_ref_( void ); \
       void * func##_ref_( void ) \
       { \
          return ( void * ) func; \
       }
+*/
 
-#elif defined( ZH_GNUC_STARTUP ) || \
+#if defined( ZH_GNUC_STARTUP ) || \
       defined( __GNUC__ ) || \
       defined( __clang__ )
+
+   // https://stackoverflow.com/questions/2053029/how-exactly-does-attribute-constructor-work
+   // It runs when a shared library is loaded, typically during program startup.
+   // That's how all GCC attributes are; presumably to distinguish them from function calls.
+   // GCC-specific syntax.
+   // Yes, this works in C and C++.
+   // No, the function does not need to be static.
+   // The destructor runs when the shared library is unloaded, typically at program exit.
+
+   // https://stackoverflow.com/questions/64897476/why-does-the-gcc-compiler-not-support-pragma-startup-and-pragma-exit-directive?rq=1
 
    #if defined( ZH_PRAGMA_STARTUP ) || defined( ZH_DATASEG_STARTUP )
       #error Wrong macros set for startup code - clean your make/env settings.
    #endif
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
-
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = symbols_table; \
+      static PZH_SYMBOL symbols = symbols_table; \
       static void __attribute__ ((constructor)) func( void ) \
       { \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
@@ -182,7 +189,6 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
       static void __attribute__ ((constructor)) func( void ) \
       {
-
 
    #define ZH_CALL_ON_STARTUP_END( func ) \
       }
@@ -194,11 +200,11 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #endif
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = symbols_table; \
+      static PZH_SYMBOL symbols = symbols_table; \
       static void func( void ) \
       { \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
@@ -222,11 +228,11 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSy
    #endif
 
    #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMB symbols_table[] = {
+      static ZH_SYMBOL symbols_table[] = {
 
    #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
       }; \
-      static PZH_SYMB symbols = symbols_table; \
+      static PZH_SYMBOL symbols = symbols_table; \
       static int func( void ) \
       { \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \

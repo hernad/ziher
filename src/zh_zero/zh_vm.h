@@ -68,15 +68,15 @@ extern ZH_EXPORT void     zh_vmAtExit( ZH_INIT_FUNC pFunc, void * cargo );
 extern ZH_EXPORT void     zh_vmAtQuit( ZH_INIT_FUNC pFunc, void * cargo );
 
 /* Ziher virtual machine functions */
-extern ZH_EXPORT void     zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols ) ZH_FLATTEN_ATTR;  /* invokes the virtual machine */
-extern ZH_EXPORT PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
-extern ZH_EXPORT PZH_SYMB zh_vmProcessDynLibSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
+extern ZH_EXPORT void     zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols ) ZH_FLATTEN_ATTR;  /* invokes the virtual machine */
+extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
+extern ZH_EXPORT PZH_SYMBOL zh_vmProcessDynLibSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_USHORT uiPcodeVer ); /* module symbols initialization with extended information */
 
 
 #ifdef _ZH_API_INTERNAL_
    typedef struct _ZH_SYMBOLS
    {
-      PZH_SYMB  pModuleSymbols;     /* pointer to module symbol table */
+      PZH_SYMBOL  pModuleSymbols;     /* pointer to module symbol table */
       ZH_USHORT uiModuleSymbols;    /* number of symbols on that table */
       ZH_USHORT uiStaticsOffset;    /* offset of statics base symbol */
       struct _ZH_SYMBOLS * pNext;   /* pointer to the next SYMBOLS structure */
@@ -89,18 +89,18 @@ extern ZH_EXPORT PZH_SYMB zh_vmProcessDynLibSymbols( PZH_SYMB pSymbols, ZH_USHOR
       ZH_ULONG  ulID;               /* module unique identifier */
    } ZH_SYMBOLS, * PZH_SYMBOLS;     /* structure to keep track of all modules symbol tables */
 
-   extern PZH_SYMBOLS   zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_BOOL fDynLib, ZH_BOOL fClone, ZH_BOOL fOverLoad );
+   extern PZH_SYMBOLS   zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols, const char * szModuleName, ZH_ULONG ulID, ZH_BOOL fDynLib, ZH_BOOL fClone, ZH_BOOL fOverLoad );
    extern ZH_BOOL       zh_vmLockModuleSymbols( void );
    extern void          zh_vmUnlockModuleSymbols( void );
    extern void          zh_vmFreeSymbols( PZH_SYMBOLS pSymbols );
    extern void          zh_vmBeginSymbolGroup( void * hDynLib, ZH_BOOL fClone );
    extern void          zh_vmInitSymbolGroup( void * hNewDynLib, int argc, const char * argv[] );
    extern void          zh_vmExitSymbolGroup( void * hDynLib );
-   extern PZH_SYMB      zh_vmFindFuncSym( const char * szFuncName, void * hDynLib );
-   extern const char *  zh_vmFindModuleSymbolName( PZH_SYMB pSym );
-   extern ZH_BOOL       zh_vmFindModuleSymbols( PZH_SYMB pSym, PZH_SYMB * pSymbols, ZH_USHORT * puiSymbols );
-   extern PZH_SYMB      zh_vmGetRealFuncSym( PZH_SYMB pSym );
-   extern void          zh_vmSetFunction( PZH_SYMB pOldSym, PZH_SYMB pNewSym );
+   extern PZH_SYMBOL      zh_vmFindFuncSym( const char * szFuncName, void * hDynLib );
+   extern const char *  zh_vmFindModuleSymbolName( PZH_SYMBOL pSym );
+   extern ZH_BOOL       zh_vmFindModuleSymbols( PZH_SYMBOL pSym, PZH_SYMBOL * pSymbols, ZH_USHORT * puiSymbols );
+   extern PZH_SYMBOL      zh_vmGetRealFuncSym( PZH_SYMBOL pSym );
+   extern void          zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym );
    extern void          zh_vmSetDynFunc( PZH_DYNS pDynSym );
 
    extern void          zh_vmEnumRelease( PZH_ITEM pBase, PZH_ITEM pValue );
@@ -166,7 +166,7 @@ extern ZH_EXPORT void     zh_vmPushString( const char * szText, ZH_SIZE length )
 extern ZH_EXPORT void     zh_vmPushStringPcode( const char * szText, ZH_SIZE length );  /* pushes a string from pcode on to the stack */
 extern ZH_EXPORT void     zh_vmPushDate( long lDate );   /* pushes a long date onto the stack */
 extern ZH_EXPORT void     zh_vmPushTimeStamp( long lJulian, long lMilliSec ); /* pushes two long value as timestamp onto the stack */
-extern ZH_EXPORT void     zh_vmPushSymbol( PZH_SYMB pSym ); /* pushes a function pointer onto the stack */
+extern ZH_EXPORT void     zh_vmPushSymbol( PZH_SYMBOL pSym ); /* pushes a function pointer onto the stack */
 extern ZH_EXPORT void     zh_vmPushDynSym( PZH_DYNS pDynSym ); /* pushes a function/method pointer onto the stack */
 extern ZH_EXPORT void     zh_vmPushEvalSym( void ); /* pushes a codeblock eval symbol onto the stack */
 extern ZH_EXPORT void     zh_vmPushPointer( void * pPointer ); /* push an item of ZH_IT_POINTER type */

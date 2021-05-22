@@ -135,24 +135,24 @@ static void    zh_vmMacroArrayGen( ZH_USHORT uiArgSets );   /* generate array fr
 static void    zh_vmMacroPushIndex( void );              /* push macro array index {...}[ &var ] */
 
 /* Database */
-static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM, PZH_SYMB );  /* select the workarea using a given item or a substituted value */
+static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM, PZH_SYMBOL );  /* select the workarea using a given item or a substituted value */
 static void       zh_vmSwapAlias( void );           /* swaps items on the eval stack and pops the workarea number */
 
 /* Execution */
 static ZIHER zh_vmDoBlock( void );             /* executes a codeblock */
 static void    zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and params supplied */
 static void    zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and variable number of params supplied */
-static void    zh_vmSFrame( PZH_SYMB pSym );     /* sets the statics frame for a function */
-static void    zh_vmStatics( PZH_SYMB pSym, ZH_USHORT uiStatics ); /* increases the global statics array to hold a ZH statics */
+static void    zh_vmSFrame( PZH_SYMBOL pSym );     /* sets the statics frame for a function */
+static void    zh_vmStatics( PZH_SYMBOL pSym, ZH_USHORT uiStatics ); /* increases the global statics array to hold a ZH statics */
 static void    zh_vmInitThreadStatics( ZH_USHORT uiCount, const ZH_BYTE * pCode ); /* mark thread static variables */
 static void    zh_vmStaticsClear( void );       /* clear complex static variables */
 static void    zh_vmStaticsRelease( void );     /* release arrays with static variables */
 /* Push */
 static void    zh_vmPushAlias( void );            /* pushes the current workarea number */
-static void    zh_vmPushAliasedField( PZH_SYMB ); /* pushes an aliased field on the eval stack */
-static void    zh_vmPushAliasedVar( PZH_SYMB );   /* pushes an aliased variable on the eval stack */
-static void    zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nLen ); /* creates a codeblock */
-static void    zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nLen ); /* creates a codeblock */
+static void    zh_vmPushAliasedField( PZH_SYMBOL ); /* pushes an aliased field on the eval stack */
+static void    zh_vmPushAliasedVar( PZH_SYMBOL );   /* pushes an aliased variable on the eval stack */
+static void    zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen ); /* creates a codeblock */
+static void    zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen ); /* creates a codeblock */
 static void    zh_vmPushMacroBlock( const ZH_BYTE * pCode, ZH_SIZE nSize, ZH_USHORT usParams ); /* creates a macro-compiled codeblock */
 static void    zh_vmPushDoubleConst( double dNumber, int iWidth, int iDec ); /* Pushes a double constant (pcode) */
 static void    zh_vmPushLocal( int iLocal );       /* pushes the content of a local onto the stack */
@@ -168,7 +168,7 @@ static void    zh_vmPushLongConst( long lNumber );    /* Pushes a long constant 
 #endif
 static void    zh_vmPushStatic( ZH_USHORT uiStatic );     /* pushes the content of a static onto the stack */
 static void    zh_vmPushStaticByRef( ZH_USHORT uiStatic ); /* pushes a static by reference onto the stack */
-static void    zh_vmPushVariable( PZH_SYMB pVarSymb ); /* pushes undeclared variable */
+static void    zh_vmPushVariable( PZH_SYMBOL pVarSymb ); /* pushes undeclared variable */
 static void    zh_vmPushObjectVarRef( void );   /* pushes reference to object variable */
 static void    zh_vmPushVParams( void );        /* pushes variable parameters */
 static void    zh_vmPushAParams( void );        /* pushes array items */
@@ -180,8 +180,8 @@ static void    zh_vmSwap( int iCount );        /* swap bCount+1 time two items o
 /* Pop */
 static ZH_BOOL zh_vmPopLogical( void );           /* pops the stack latest value and returns its logical value */
 static void    zh_vmPopAlias( void );             /* pops the workarea number form the eval stack */
-static void    zh_vmPopAliasedField( PZH_SYMB );  /* pops an aliased field from the eval stack*/
-static void    zh_vmPopAliasedVar( PZH_SYMB );    /* pops an aliased variable from the eval stack*/
+static void    zh_vmPopAliasedField( PZH_SYMBOL );  /* pops an aliased field from the eval stack*/
+static void    zh_vmPopAliasedVar( PZH_SYMBOL );    /* pops an aliased variable from the eval stack*/
 static void    zh_vmPopLocal( int iLocal );       /* pops the stack latest value onto a local */
 static void    zh_vmPopStatic( ZH_USHORT uiStatic ); /* pops the stack latest value onto a static */
 
@@ -234,14 +234,14 @@ static const char * s_vm_pszLinkedMain = NULL; /* name of startup function set b
 
 /* virtual machine state */
 
-ZH_SYMB zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* symbol to evaluate codeblocks */
-static ZH_SYMB  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
+ZH_SYMBOL zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* symbol to evaluate codeblocks */
+static ZH_SYMBOL  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
 static PZH_ITEM s_breakBlock = NULL;
 
 static ZH_BOOL  s_fZHVMActive = ZH_FALSE;  /* is ZHVM ready for PCODE executing */
 static ZH_BOOL  s_fDoExitProc = ZH_TRUE;  /* execute EXIT procedures */
 static int      s_nErrorLevel = 0;     /* application exit status */
-static PZH_SYMB s_pSymStart = NULL;    /* start symbol of the application. MAIN() is not required */
+static PZH_SYMBOL s_pSymStart = NULL;    /* start symbol of the application. MAIN() is not required */
 
 static PZH_SYMBOLS s_pSymbols = NULL;  /* to hold a linked list of all different modules symbol tables */
 static ZH_ULONG    s_ulFreeSymbols = 0;/* number of free module symbols */
@@ -412,10 +412,13 @@ static void zh_vmDoInitZHVM( void )
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
+      puts("hernad __ZHVMINIT");
       zh_vmPushSymbol( pDynSym->pSymbol );
       zh_vmPushNil();
       zh_vmProc( 0 );
-   }
+   } else
+      puts("hernad NO __ZHVMINIT");
+
 }
 
 /* call __SetHelpK() if HELP() function is linked */
@@ -961,10 +964,10 @@ PZH_ITEM zh_vmThreadStart( ZH_ULONG ulAttr, PZH_CARGO_FUNC pFunc, void * cargo )
    return zh_threadStart( ulAttr, pFunc, cargo );
 }
 
-void zh_vmSetFunction( PZH_SYMB pOldSym, PZH_SYMB pNewSym )
+void zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
-   ZH_SYMB SymOldBuf, SymNewBuf;
+   ZH_SYMBOL SymOldBuf, SymNewBuf;
 
    /* make copy of symbols to eliminate possible problem with
     * dynamic modification of passed parameters inside the loop
@@ -980,7 +983,7 @@ void zh_vmSetFunction( PZH_SYMB pOldSym, PZH_SYMB pNewSym )
 
       for( ui = 0; ui < uiSymbols; ++ui )
       {
-         PZH_SYMB pSym = pLastSymbols->pModuleSymbols + ui;
+         PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + ui;
 
          if( pSym->value.pFunPtr == pOldSym->value.pFunPtr &&
              ( pSym->value.pFunPtr ||
@@ -1004,7 +1007,7 @@ void zh_vmSetDynFunc( PZH_DYNS pDynSym )
 
       for( ui = 0; ui < uiSymbols; ++ui )
       {
-         PZH_SYMB pSym = pLastSymbols->pModuleSymbols + ui;
+         PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + ui;
 
          if( pSym->pDynSym == pDynSym && pDynSym->pSymbol != pSym )
             pSym->scope.value |= ZH_FS_DEFERRED;
@@ -1129,7 +1132,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc )
          }
          else
          {
-            //ZH_START_PROCEDURE = "MAIN"
+            puts("ZH_START_PROCEDURE = \"MAIN\"");
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
             if( ! ( pDynSym && pDynSym->pSymbol->value.pFunPtr ) )
@@ -1221,7 +1224,9 @@ ZH_EXPORT int zh_vmQuit( void )
 
    zh_conRelease();                 /* releases Console */
    zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
+   
    zh_dynsymRelease();              /* releases the dynamic symbol table */
+
    zh_itemClear( zh_stackReturnItem() );
    zh_gcCollectAll( ZH_TRUE );
 
@@ -1254,7 +1259,7 @@ ZH_EXPORT int zh_vmQuit( void )
    return s_nErrorLevel;
 }
 
-void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_BOOL bCanRecover = ZH_FALSE;
@@ -5666,7 +5671,7 @@ static void zh_vmPushAParams( void )
 /* Database                        */
 /* ------------------------------- */
 
-static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM pAlias, PZH_SYMB pField )
+static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM pAlias, PZH_SYMBOL pField )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_ERRCODE errCode;
@@ -5798,7 +5803,7 @@ static void zh_vmSwapAlias( void )
 void zh_vmProc( ZH_USHORT uiParams )
 {
    ZH_STACK_STATE sStackState;
-   PZH_SYMB pSym;
+   PZH_SYMBOL pSym;
 
 #ifndef ZH_NO_PROFILER
    ZH_ULONG ulClock = 0;
@@ -5857,7 +5862,7 @@ void zh_vmDo( ZH_USHORT uiParams )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_STACK_STATE sStackState;
-   PZH_SYMB pSym;
+   PZH_SYMBOL pSym;
    PZH_ITEM pSelf;
 
 #ifndef ZH_NO_PROFILER
@@ -5880,7 +5885,7 @@ void zh_vmDo( ZH_USHORT uiParams )
 
    if( ! ZH_IS_NIL( pSelf ) )  /* are we sending a message ? */
    {
-      PZH_SYMB pExecSym;
+      PZH_SYMBOL pExecSym;
 
       pExecSym = zh_objGetMethod( pSelf, pSym, &sStackState );
       if( pExecSym )
@@ -5939,8 +5944,8 @@ void zh_vmSend( ZH_USHORT uiParams )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_STACK_STATE sStackState;
-   PZH_SYMB pSym;
-   PZH_SYMB pExecSym;
+   PZH_SYMBOL pSym;
+   PZH_SYMBOL pExecSym;
    PZH_ITEM pSelf;
 
 #ifndef ZH_NO_PROFILER
@@ -5997,7 +6002,7 @@ static void zh_vmPushObjectVarRef( void )
    ZH_STACK_TLS_PRELOAD
    ZH_STACK_STATE sStackState;
    PZH_ITEM pItem;
-   PZH_SYMB pSym;
+   PZH_SYMBOL pSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushObjectVarRef()" ) );
 
@@ -6365,7 +6370,7 @@ static void zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams )
       ZH_VM_PUSHNIL();
 }
 
-static void zh_vmSFrame( PZH_SYMB pSym )      /* sets the statics frame for a function */
+static void zh_vmSFrame( PZH_SYMBOL pSym )      /* sets the statics frame for a function */
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -6375,7 +6380,7 @@ static void zh_vmSFrame( PZH_SYMB pSym )      /* sets the statics frame for a fu
    zh_stackSetStaticsBase( pSym->value.pStaticsBase );
 }
 
-static void zh_vmStatics( PZH_SYMB pSym, ZH_USHORT uiStatics ) /* initializes the global aStatics array or redimensions it */
+static void zh_vmStatics( PZH_SYMBOL pSym, ZH_USHORT uiStatics ) /* initializes the global aStatics array or redimensions it */
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmStatics(%p, %hu)", ( void * ) pSym, uiStatics ) );
 
@@ -6786,7 +6791,7 @@ void zh_vmPushStringPcode( const char * szText, ZH_SIZE nLength )
                         zh_szAscii[ ( unsigned char ) szText[ 0 ] ] : szText ) );
 }
 
-void zh_vmPushSymbol( PZH_SYMB pSym )
+void zh_vmPushSymbol( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem = zh_stackAllocItem();
@@ -6830,7 +6835,7 @@ void zh_vmPushEvalSym( void )
  *
  * NOTE: pCode points to static memory
  */
-static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nLen )
+static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen )
 {
    ZH_STACK_TLS_PRELOAD
    ZH_USHORT uiLocals;
@@ -6867,7 +6872,7 @@ static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nL
  *
  * NOTE: pCode points to static memory
  */
-static void zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMB pSymbols, ZH_SIZE nLen )
+static void zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem = zh_stackAllocItem();
@@ -6938,7 +6943,7 @@ static void zh_vmPushAlias( void )
  * and next pushes the value of a given field
  * (for performance reason it replaces alias value with field value)
  */
-static void zh_vmPushAliasedField( PZH_SYMB pSym )
+static void zh_vmPushAliasedField( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pAlias;
@@ -6964,7 +6969,7 @@ static void zh_vmPushAliasedField( PZH_SYMB pSym )
  * This is used in the following context:
  * ( any_alias )->variable
  */
-static void zh_vmPushAliasedVar( PZH_SYMB pSym )
+static void zh_vmPushAliasedVar( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pAlias = zh_stackItemFromTop( -1 );
@@ -7091,7 +7096,7 @@ static void zh_vmPushStaticByRef( ZH_USHORT uiStatic )
    zh_gcRefInc( pBase->item.asArray.value );
 }
 
-static void zh_vmPushVariable( PZH_SYMB pVarSymb )
+static void zh_vmPushVariable( PZH_SYMBOL pVarSymb )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem;
@@ -7216,7 +7221,7 @@ static void zh_vmPopAlias( void )
 /* Pops the alias to use it to select a workarea and next pops a value
  * into a given field
  */
-static void zh_vmPopAliasedField( PZH_SYMB pSym )
+static void zh_vmPopAliasedField( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    int iCurrArea;
@@ -7237,7 +7242,7 @@ static void zh_vmPopAliasedField( PZH_SYMB pSym )
  * This is used in the following context:
  * ( any_alias )->variable
  */
-static void zh_vmPopAliasedVar( PZH_SYMB pSym )
+static void zh_vmPopAliasedVar( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pAlias = zh_stackItemFromTop( -1 );
@@ -7331,7 +7336,7 @@ static void zh_vmPopStatic( ZH_USHORT uiStatic )
  * Functions to manage module symbols
  */
 
-PZH_SYMB zh_vmGetRealFuncSym( PZH_SYMB pSym )
+PZH_SYMBOL zh_vmGetRealFuncSym( PZH_SYMBOL pSym )
 {
    if( pSym && ! ( pSym->scope.value & ZH_FS_LOCAL ) )
    {
@@ -7354,7 +7359,7 @@ void zh_vmUnlockModuleSymbols( void )
       zh_threadMutexUnlock( s_pSymbolsMtx );
 }
 
-const char * zh_vmFindModuleSymbolName( PZH_SYMB pSym )
+const char * zh_vmFindModuleSymbolName( PZH_SYMBOL pSym )
 {
    if( pSym )
    {
@@ -7373,7 +7378,7 @@ const char * zh_vmFindModuleSymbolName( PZH_SYMB pSym )
    return NULL;
 }
 
-ZH_BOOL zh_vmFindModuleSymbols( PZH_SYMB pSym, PZH_SYMB * pSymbols,
+ZH_BOOL zh_vmFindModuleSymbols( PZH_SYMBOL pSym, PZH_SYMBOL * pSymbols,
                                 ZH_USHORT * puiSymbols )
 {
    if( pSym )
@@ -7400,9 +7405,9 @@ ZH_BOOL zh_vmFindModuleSymbols( PZH_SYMB pSym, PZH_SYMB * pSymbols,
    return ZH_FALSE;
 }
 
-PZH_SYMB zh_vmFindFuncSym( const char * szFuncName, void * hDynLib )
+PZH_SYMBOL zh_vmFindFuncSym( const char * szFuncName, void * hDynLib )
 {
-   static PZH_SYMB pFuncSym = NULL;
+   static PZH_SYMBOL pFuncSym = NULL;
 
    if( szFuncName )
    {
@@ -7416,7 +7421,7 @@ PZH_SYMB zh_vmFindFuncSym( const char * szFuncName, void * hDynLib )
 
             for( ui = 0; ui < pSymbols->uiModuleSymbols; ++ui )
             {
-               PZH_SYMB pSymbol = &pSymbols->pModuleSymbols[ ui ];
+               PZH_SYMBOL pSymbol = &pSymbols->pModuleSymbols[ ui ];
 
                if( ( pSymbol->scope.value & ZH_FS_LOCAL ) != 0 &&
                    zh_stricmp( pSymbol->szName, szFuncName ) == 0 )
@@ -7447,7 +7452,7 @@ static void zh_vmStaticsClear( void )
    {
       if( pLastSymbols->uiStaticsOffset )
       {
-         PZH_SYMB pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
+         PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
          PZH_ITEM pStatics = ZH_SYM_STATICSBASE( pSym );
          if( pStatics )
          {
@@ -7473,7 +7478,7 @@ static void zh_vmStaticsRelease( void )
    {
       if( pLastSymbols->uiStaticsOffset )
       {
-         PZH_SYMB pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
+         PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
          PZH_ITEM pStatics = ZH_SYM_STATICSBASE( pSym );
          if( pStatics )
          {
@@ -7496,7 +7501,7 @@ static ZH_SIZE zh_vmStaticsCount( void )
       {
          if( pLastSymbols->uiStaticsOffset )
          {
-            PZH_SYMB pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
+            PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
             PZH_ITEM pStatics = ZH_SYM_STATICSBASE( pSym );
             if( pStatics )
                nStatics += zh_arrayLen( pStatics );
@@ -7526,7 +7531,7 @@ static PZH_ITEM zh_vmStaticsArray( void )
       {
          if( pLastSymbols->uiStaticsOffset )
          {
-            PZH_SYMB pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
+            PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + pLastSymbols->uiStaticsOffset;
             PZH_ITEM pStatics = ZH_SYM_STATICSBASE( pSym );
             if( pStatics )
             {
@@ -7544,7 +7549,7 @@ static PZH_ITEM zh_vmStaticsArray( void )
    return pArray;
 }
 
-static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
+static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                         const char * szModuleName, ZH_ULONG ulID )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFindFreeModule(%p,%hu,%s,%lu)", ( void * ) pSymbols, uiSymbols, szModuleName, ulID ) );
@@ -7561,7 +7566,7 @@ static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
              pLastSymbols->szModuleName != NULL &&
              strcmp( pLastSymbols->szModuleName, szModuleName ) == 0 )
          {
-            PZH_SYMB pModuleSymbols = pLastSymbols->pModuleSymbols;
+            PZH_SYMBOL pModuleSymbols = pLastSymbols->pModuleSymbols;
             ZH_USHORT ui;
 
             for( ui = 0; ui < uiSymbols; ++ui )
@@ -7600,7 +7605,7 @@ void zh_vmFreeSymbols( PZH_SYMBOLS pSymbols )
 
          for( ui = 0; ui < pSymbols->uiModuleSymbols; ++ui )
          {
-            PZH_SYMB pSymbol = &pSymbols->pModuleSymbols[ ui ];
+            PZH_SYMBOL pSymbol = &pSymbols->pModuleSymbols[ ui ];
 
             /* do not overwrite already initialized statics' frame */
             if( ui == 0 || ui != pSymbols->uiStaticsOffset ||
@@ -7775,7 +7780,7 @@ void zh_vmExitSymbolGroup( void * hDynLib )
    }
 }
 
-PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols,
+PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols,
                                   const char * szModuleName, ZH_ULONG ulID,
                                   ZH_BOOL fDynLib, ZH_BOOL fClone,
                                   ZH_BOOL fOverLoad )
@@ -7785,6 +7790,8 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols,
    ZH_USHORT ui;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRegisterSymbols(%p,%hu,%s,%lu,%d,%d,%d)", ( void * ) pModuleSymbols, uiSymbols, szModuleName, ulID, ( int ) fDynLib, ( int ) fClone, ( int ) fOverLoad ) );
+
+   puts("hernad registerSymbols"); puts(szModuleName);
 
    pNewSymbols = s_ulFreeSymbols == 0 ? NULL :
                  zh_vmFindFreeModule( pModuleSymbols, uiSymbols, szModuleName, ulID );
@@ -7801,7 +7808,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols,
 
       if( fClone )
       {
-         ZH_SIZE nSymSize = uiSymbols * sizeof( ZH_SYMB );
+         ZH_SIZE nSymSize = uiSymbols * sizeof( ZH_SYMBOL );
          ZH_SIZE nSize;
          char * buffer;
 
@@ -7809,7 +7816,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols,
          for( ui = 0; ui < uiSymbols; ui++ )
             nSize += strlen( pModuleSymbols[ ui ].szName ) + 1;
          buffer = ( char * ) memcpy( zh_xgrab( nSize ), pModuleSymbols, nSymSize );
-         pModuleSymbols = ( PZH_SYMB ) buffer;
+         pModuleSymbols = ( PZH_SYMBOL ) buffer;
          for( ui = 0; ui < uiSymbols; ui++ )
          {
             buffer += nSymSize;
@@ -7846,9 +7853,11 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMB pModuleSymbols, ZH_USHORT uiSymbols,
       }
    }
 
+   // printf("hernad uiSymbolds %d\n", uiSymbols);
+
    for( ui = 0; ui < uiSymbols; ui++ ) /* register each public symbol on the dynamic symbol table */
    {
-      PZH_SYMB pSymbol = pNewSymbols->pModuleSymbols + ui;
+      PZH_SYMBOL pSymbol = pNewSymbols->pModuleSymbols + ui;
       ZH_SYMBOLSCOPE hSymScope;
       ZH_BOOL fPublic, fStatics;
 
@@ -7965,7 +7974,7 @@ static void zh_vmVerifySymbols( PZH_ITEM pArray )
 
       for( ui = 0; ui < uiSymbols; ++ui )
       {
-         PZH_SYMB pSym = pLastSymbols->pModuleSymbols + ui;
+         PZH_SYMBOL pSym = pLastSymbols->pModuleSymbols + ui;
 
          if( pSym->pDynSym &&
              zh_dynsymFind( pSym->szName ) != pSym->pDynSym )
@@ -8004,7 +8013,7 @@ static void zh_vmVerifyPCodeVersion( const char * szModuleName, ZH_USHORT uiPCod
 /*
  * module symbols initialization with extended information
  */
-PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiModuleSymbols,
+PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
                               const char * szModuleName, ZH_ULONG ulID,
                               ZH_USHORT uiPCodeVer )
 {
@@ -8016,7 +8025,7 @@ PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiModuleSymbols,
                                 ZH_FALSE )->pModuleSymbols;
 }
 
-PZH_SYMB zh_vmProcessDynLibSymbols( PZH_SYMB pSymbols, ZH_USHORT uiModuleSymbols,
+PZH_SYMBOL zh_vmProcessDynLibSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
                                     const char * szModuleName, ZH_ULONG ulID,
                                     ZH_USHORT uiPCodeVer )
 {
@@ -8859,7 +8868,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
    *pResult = NULL;
    if( s_fZHVMActive )
    {
-      PZH_SYMB pSymbol = NULL;
+      PZH_SYMBOL pSymbol = NULL;
 
       if( ZH_IS_STRING( pItem ) )
       {
@@ -9329,7 +9338,7 @@ void zh_xvmVFrame( int iLocals, int iParams )
    zh_vmVFrame( ( ZH_USHORT ) iLocals, ( unsigned char ) iParams );
 }
 
-void zh_xvmSFrame( PZH_SYMB pSymbol )
+void zh_xvmSFrame( PZH_SYMBOL pSymbol )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSFrame(%p)", ( void * ) pSymbol ) );
 
@@ -9412,7 +9421,7 @@ void zh_xvmRetInt( ZH_LONG lValue )
    zh_itemPutNL( zh_stackReturnItem(), lValue );
 }
 
-void zh_xvmStatics( PZH_SYMB pSymbol, ZH_USHORT uiStatics )
+void zh_xvmStatics( PZH_SYMBOL pSymbol, ZH_USHORT uiStatics )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmStatics(%p,%hu)", ( void * ) pSymbol, uiStatics ) );
 
@@ -9426,7 +9435,7 @@ void zh_xvmThreadStatics( ZH_USHORT uiStatics, const ZH_BYTE * statics )
    zh_vmInitThreadStatics( uiStatics, statics );
 }
 
-void zh_xvmParameter( PZH_SYMB pSymbol, int iParams )
+void zh_xvmParameter( PZH_SYMBOL pSymbol, int iParams )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9508,7 +9517,7 @@ void zh_xvmPopStatic( ZH_USHORT uiStatic )
    zh_vmPopStatic( uiStatic );
 }
 
-ZH_BOOL zh_xvmPushVariable( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushVariable( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9519,7 +9528,7 @@ ZH_BOOL zh_xvmPushVariable( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopVariable( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPopVariable( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9537,14 +9546,14 @@ ZH_BOOL zh_xvmPopVariable( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-void zh_xvmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+void zh_xvmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushBlockShort(%p, %p)", ( const void * ) pCode, ( void * ) pSymbols ) );
 
    zh_vmPushBlockShort( pCode, pSymbols, ZH_FALSE );
 }
 
-void zh_xvmPushBlock( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+void zh_xvmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushBlock(%p, %p)", ( const void * ) pCode, ( void * ) pSymbols ) );
 
@@ -9560,7 +9569,7 @@ void zh_xvmPushSelf( void )
    zh_vmPush( zh_stackSelfItem() );
 }
 
-void zh_xvmPushFuncSymbol( PZH_SYMB pSym )
+void zh_xvmPushFuncSymbol( PZH_SYMBOL pSym )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem;
@@ -9608,7 +9617,7 @@ ZH_BOOL zh_xvmSwapAlias( void )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushField( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushField( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9630,7 +9639,7 @@ ZH_BOOL zh_xvmPushAlias( void )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushAliasedField( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushAliasedField( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9641,7 +9650,7 @@ ZH_BOOL zh_xvmPushAliasedField( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushAliasedFieldExt( PZH_SYMB pAlias, PZH_SYMB pField )
+ZH_BOOL zh_xvmPushAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 {
    ZH_STACK_TLS_PRELOAD
    int iCurrArea;
@@ -9656,7 +9665,7 @@ ZH_BOOL zh_xvmPushAliasedFieldExt( PZH_SYMB pAlias, PZH_SYMB pField )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushAliasedVar( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushAliasedVar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9667,7 +9676,7 @@ ZH_BOOL zh_xvmPushAliasedVar( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopField( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPopField( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9679,7 +9688,7 @@ ZH_BOOL zh_xvmPopField( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushMemvar( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushMemvar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9690,7 +9699,7 @@ ZH_BOOL zh_xvmPushMemvar( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPushMemvarByRef( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPushMemvarByRef( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9701,7 +9710,7 @@ ZH_BOOL zh_xvmPushMemvarByRef( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopMemvar( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPopMemvar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9713,7 +9722,7 @@ ZH_BOOL zh_xvmPopMemvar( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopAliasedField( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPopAliasedField( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9724,7 +9733,7 @@ ZH_BOOL zh_xvmPopAliasedField( PZH_SYMB pSymbol )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopAliasedFieldExt( PZH_SYMB pAlias, PZH_SYMB pField )
+ZH_BOOL zh_xvmPopAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 {
    ZH_STACK_TLS_PRELOAD
    int iCurrArea;
@@ -9742,7 +9751,7 @@ ZH_BOOL zh_xvmPopAliasedFieldExt( PZH_SYMB pAlias, PZH_SYMB pField )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopAliasedVar( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmPopAliasedVar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -9875,7 +9884,7 @@ ZH_BOOL zh_xvmStaticAdd( ZH_USHORT uiStatic )
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmMemvarAdd( PZH_SYMB pSymbol )
+ZH_BOOL zh_xvmMemvarAdd( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pVal1, pVal2;
@@ -11682,7 +11691,7 @@ void zh_xvmWithObjectEnd( void )
    zh_stackPop();  /* remove implicit object */
 }
 
-void zh_xvmWithObjectMessage( PZH_SYMB pSymbol )
+void zh_xvmWithObjectMessage( PZH_SYMBOL pSymbol )
 {
    PZH_ITEM pWith;
 

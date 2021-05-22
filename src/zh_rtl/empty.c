@@ -51,7 +51,7 @@ ZH_FUNC( EMPTY )
 {
    PZH_ITEM pItem = zh_param( 1, ZH_IT_ANY );
    long lDate, lTime;
-   PZH_SYMB pSym;
+   PZH_SYMBOL pSym;
 
    switch( zh_itemType( pItem ) )
    {

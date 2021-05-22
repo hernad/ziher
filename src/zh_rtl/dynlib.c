@@ -240,7 +240,7 @@ ZH_FUNC( ZH_LIBGETFUNSYM )
 
       if( hDynLib )
       {
-         PZH_SYMB pSym = zh_vmFindFuncSym( szFuncName, hDynLib );
+         PZH_SYMBOL pSym = zh_vmFindFuncSym( szFuncName, hDynLib );
 
          if( pSym )
             zh_itemPutSymbol( zh_stackReturnItem(), pSym );

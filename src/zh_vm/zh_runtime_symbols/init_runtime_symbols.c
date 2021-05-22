@@ -111,7 +111,7 @@ ZH_FUNC_EXTERN( VAL );
 ZH_FUNC_EXTERN( WORD );
 ZH_FUNC_EXTERN( YEAR );
 
-static ZH_SYMB symbols[] = {
+static ZH_SYMBOL symbols[] = {
    { "AADD",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( AADD )      }, NULL },
    { "ABS",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ABS )       }, NULL },
    { "ASC",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ASC )       }, NULL },
@@ -184,5 +184,6 @@ void zh_vmSymbolInit_RT( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSymbolInit_RT()" ) );
 
-   zh_vmProcessSymbols( symbols, ZH_SIZEOFARRAY( symbols ), "", 0, 0 );
+   // puts("hernad zhbuiltin");
+   zh_vmProcessSymbols( symbols, ZH_SIZEOFARRAY( symbols ), "ZHBUILTIN", 0, 0 );
 }

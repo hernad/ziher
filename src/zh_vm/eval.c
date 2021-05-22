@@ -104,7 +104,7 @@ PZH_ITEM zh_evalLaunch( PZH_EVALINFO pEvalInfo )
    if( pEvalInfo )
    {
       PZH_ITEM pItem = pEvalInfo->pItems[ 0 ];
-      PZH_SYMB pSymbol = NULL;
+      PZH_SYMBOL pSymbol = NULL;
 
       if( ZH_IS_STRING( pItem ) )
       {
@@ -192,7 +192,7 @@ PZH_ITEM zh_itemDo( PZH_ITEM pItem, ZH_ULONG ulPCount, ... )
 
    if( pItem )
    {
-      PZH_SYMB pSymbol = NULL;
+      PZH_SYMBOL pSymbol = NULL;
 
       if( ZH_IS_STRING( pItem ) )
       {
@@ -398,7 +398,7 @@ ZH_FUNC( ZH_FORNEXT ) /* nStart, nEnd | bEnd, bCode, nStep */
  */
 ZH_FUNC( ZH_EXECFROMARRAY )
 {
-   PZH_SYMB pExecSym = NULL;
+   PZH_SYMBOL pExecSym = NULL;
    PZH_ITEM pFunc = NULL;
    PZH_ITEM pSelf = NULL;
    PZH_ITEM pArray = NULL;
@@ -516,7 +516,7 @@ ZH_BOOL zh_execFromArray( PZH_ITEM pParam )
 
    if( pParam )
    {
-      PZH_SYMB pExecSym = NULL;
+      PZH_SYMBOL pExecSym = NULL;
 
       if( ZH_IS_SYMBOL( pParam ) )
          pExecSym = zh_itemGetSymbol( pParam );

@@ -84,7 +84,7 @@ ZH_FUNC( PROCLINE )
 
 ZH_FUNC( PROCFILE )
 {
-   PZH_SYMB pSym = NULL;
+   PZH_SYMBOL pSym = NULL;
 
    if( ZH_ISSYMBOL( 1 ) )
    {
@@ -204,7 +204,7 @@ ZH_BOOL zh_procinfo( int iLevel, char * szName, ZH_USHORT * puiLine, char * szFi
    if( nOffset > 0 )
    {
       PZH_ITEM pBase, pSelf;
-      PZH_SYMB pSym;
+      PZH_SYMBOL pSym;
 
       pBase = zh_stackItem( nOffset );
       pSelf = zh_stackItem( nOffset + 1 );

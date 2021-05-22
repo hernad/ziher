@@ -455,17 +455,22 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
 static void zh_writeEndInit( ZH_COMP_DECL, FILE * yyc, const char * szModulname, const char * szSourceFile )
 {
    fprintf( yyc, "\nZH_INIT_SYMBOLS_EX_END( zh_vm_SymbolInit_%s, ", szModulname );
-   if( ZH_COMP_PARAM->fHideSource )
-      szSourceFile = "";
+   //hernad
+   //if( ZH_COMP_PARAM->fHideSource )
+   //   szSourceFile = "";
    zh_compGenCString( yyc, ( const ZH_BYTE * ) szSourceFile, strlen( szSourceFile ) );
    fprintf( yyc, ", 0x%lx, 0x%04x )\n\n", 0L, ZH_PCODE_VER );
 
    fprintf( yyc,
             "#if defined( ZH_PRAGMA_STARTUP )\n"
             "   #pragma startup zh_vm_SymbolInit_%s\n"
+            //"#pragma GCC diagnostic warning \"ZPRAGMA_STARTUP\"\n"
             "#elif defined( ZH_DATASEG_STARTUP )\n"
+            //"#pragma GCC diagnostic warning \"ZHDATASEG_STARTUP\"\n"
             "   #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( zh_vm_SymbolInit_%s )\n"
             "   #include \"zh_ini_seg.h\"\n"
+            //"#else\n"
+            //"#pragma GCC diagnostic warning \"NODEFINED_STARTUP\"\n"
             "#endif\n",
             szModulname, szModulname );
 }

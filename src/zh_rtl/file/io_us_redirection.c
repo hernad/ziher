@@ -64,7 +64,7 @@ typedef struct _ZH_IOUSR
    ZH_FILE_FUNCS  funcs;
    char *         prefix;
    int            prefix_len;
-   PZH_SYMB       prg_funcs[ IOUSR_METHODCOUNT ];
+   PZH_SYMBOL       prg_funcs[ IOUSR_METHODCOUNT ];
 }
 ZH_IOUSR, * PZH_IOUSR;
 

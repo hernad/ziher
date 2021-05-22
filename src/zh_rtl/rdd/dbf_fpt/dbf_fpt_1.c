@@ -5455,6 +5455,7 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_dbffpt_rdd_init_ )
 ZH_CALL_ON_STARTUP_END( _zh_dbffpt_rdd_init_ )
 
 #if defined( ZH_PRAGMA_STARTUP )
+   // https://www.geeksforgeeks.org/pragma-directive-in-c-c/
    #pragma startup dbffpt1__InitSymbols
    #pragma startup _zh_dbffpt_rdd_init_
 #elif defined( ZH_DATASEG_STARTUP )

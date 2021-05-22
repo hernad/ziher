@@ -264,7 +264,7 @@ extern ZH_EXPORT int         zh_stackCallDepth( void );
 extern ZH_EXPORT void        zh_stackBaseProcInfo( char * szProcName, ZH_USHORT * puiProcLine ); /* get current .zh function name and line number */
 
 extern ZH_EXPORT ZH_ISIZ     zh_stackBaseProcOffset( int iLevel );
-extern ZH_EXPORT ZH_ISIZ     zh_stackBaseSymbolOffset( PZH_SYMB pSymbol );
+extern ZH_EXPORT ZH_ISIZ     zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol );
 extern           void        zh_stackDispCall( void );
 
 /* thread specific data */

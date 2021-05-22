@@ -174,6 +174,7 @@ struct _ZH_SYMB;
 
 #endif /* ! _ZH_API_INTERNAL_ */
 
+
 /* symbol support structure */
 typedef struct _ZH_SYMB
 {
@@ -190,7 +191,7 @@ typedef struct _ZH_SYMB
       void *         pStaticsBase;  /* base offset to array of statics */
    } value;
    PZH_DYNS       pDynSym;          /* pointer to its dynamic symbol if defined */
-} ZH_SYMB, * PZH_SYMB;
+} ZH_SYMBOL, * PZH_SYMBOL;
 
 #define ZH_DYNS_FUNC( zhfunc )   ZH_BOOL zhfunc( PZH_DYNS pDynSymbol, void * Cargo )
 typedef ZH_DYNS_FUNC( ( * PZH_DYNS_FUNC ) );
@@ -227,7 +228,7 @@ typedef struct _ZH_FUNC_LIST
 
 #define ZH_FS_INITEXIT ( ZH_FS_INIT | ZH_FS_EXIT )
 
-extern ZH_EXPORT void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols ) ZH_FLATTEN_ATTR;  /* invokes the virtual machine */
+extern ZH_EXPORT void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols ) ZH_FLATTEN_ATTR;  /* invokes the virtual machine */
 
 ZH_EXTERN_END
 

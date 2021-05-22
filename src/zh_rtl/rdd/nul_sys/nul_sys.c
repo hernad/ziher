@@ -62,7 +62,7 @@ ZH_ERRCODE zh_rddSelectWorkAreaNumber( int iArea )
    return ZH_FAILURE;
 }
 
-ZH_ERRCODE zh_rddSelectWorkAreaSymbol( PZH_SYMB pSymAlias )
+ZH_ERRCODE zh_rddSelectWorkAreaSymbol( PZH_SYMBOL pSymAlias )
 {
    ZH_SYMBOL_UNUSED( pSymAlias );
 
@@ -74,7 +74,7 @@ int zh_rddGetCurrentWorkAreaNumber( void )
    return 0;
 }
 
-ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_SYMBOL_UNUSED( pItem );
    ZH_SYMBOL_UNUSED( pFieldSymbol );
@@ -82,7 +82,7 @@ ZH_ERRCODE zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
    return ZH_FAILURE;
 }
 
-ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_SYMBOL_UNUSED( pItem );
    ZH_SYMBOL_UNUSED( pFieldSymbol );
@@ -90,7 +90,7 @@ ZH_ERRCODE zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
    return ZH_FAILURE;
 }
 
-ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_SYMBOL_UNUSED( pItem );
    ZH_SYMBOL_UNUSED( pFieldSymbol );
@@ -98,7 +98,7 @@ ZH_ERRCODE zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
    return ZH_FAILURE;
 }
 
-ZH_ERRCODE zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol )
+ZH_ERRCODE zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol )
 {
    ZH_SYMBOL_UNUSED( pItem );
    ZH_SYMBOL_UNUSED( pFieldSymbol );

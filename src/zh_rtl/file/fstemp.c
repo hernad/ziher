@@ -358,10 +358,6 @@ ZH_ERRCODE zh_fsTempDir( char * pszTempDir )
 
       if( fsGetTempDirByCase( pszTempDir, pszTempDirEnv, ZH_FALSE ) )
          nResult = 0;
-#ifdef P_tmpdir
-      else if( fsGetTempDirByCase( pszTempDir, P_tmpdir, ZH_TRUE ) )
-         nResult = 0;
-#endif
       else if( fsGetTempDirByCase( pszTempDir, "/tmp", ZH_TRUE ) )
          nResult = 0;
 

@@ -268,7 +268,7 @@ struct zh_struString
 
 struct zh_struSymbol
 {
-   PZH_SYMB        value;
+   PZH_SYMBOL        value;
    PZH_STACK_STATE stackstate;      /* function stack state */
    ZH_USHORT       paramcnt;        /* number of passed parameters in function call */
    ZH_USHORT       paramdeclcnt;    /* number of declared parameters in function definition */
@@ -329,8 +329,8 @@ typedef struct _ZH_BASEHASH
 typedef struct _ZH_CODEBLOCK
 {
    const ZH_BYTE * pCode;    /* codeblock pcode */
-   PZH_SYMB    pSymbols;     /* codeblocks symbols */
-   PZH_SYMB    pDefSymb;     /* symbol where the codeblock was created */
+   PZH_SYMBOL    pSymbols;     /* codeblocks symbols */
+   PZH_SYMBOL    pDefSymb;     /* symbol where the codeblock was created */
    PZH_ITEM    pLocals;      /* table with referenced local variables */
    void *      pStatics;     /* STATICs base frame */
    ZH_USHORT   uiLocals;     /* number of referenced local variables */
@@ -375,7 +375,7 @@ typedef unsigned int ZH_ERRCODE;
 
 #if defined( _ZH_API_INTERNAL_ )
 /* NOTE: Deprecated. Use 'zh_vmPushEvalSym()' instead of 'zh_vmPushSymbol( &zh_symEval )' */
-extern ZH_SYMB zh_symEval;
+extern ZH_SYMBOL zh_symEval;
 #endif
 
 extern ZH_EXPORT void     zh_xinit( void );                           /* Initialize fixed memory subsystem */
@@ -683,7 +683,7 @@ extern ZH_EXPORT const char * zh_arrayGetCPtr( PZH_ITEM pArray, ZH_SIZE nIndex )
 extern ZH_EXPORT ZH_SIZE      zh_arrayGetCLen( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the string length contained on an array element */
 extern ZH_EXPORT void *       zh_arrayGetPtr( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the pointer contained on an array element */
 extern ZH_EXPORT void *       zh_arrayGetPtrGC( PZH_ITEM pArray, ZH_SIZE nIndex, const ZH_GC_FUNCS * pFuncs ); /* retrieves the GC pointer contained on an array element */
-extern ZH_EXPORT PZH_SYMB     zh_arrayGetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves symbol contained on an array element */
+extern ZH_EXPORT PZH_SYMBOL     zh_arrayGetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves symbol contained on an array element */
 extern ZH_EXPORT ZH_BOOL      zh_arrayGetL( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the logical value contained on an array element */
 extern ZH_EXPORT int          zh_arrayGetNI( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the int value contained on an array element */
 extern ZH_EXPORT long         zh_arrayGetNL( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the long numeric value contained on an array element */
@@ -717,7 +717,7 @@ extern ZH_EXPORT ZH_BOOL      zh_arraySetCLPtr( PZH_ITEM pArray, ZH_SIZE nIndex,
 extern ZH_EXPORT ZH_BOOL      zh_arraySetCConst( PZH_ITEM pArray, ZH_SIZE nIndex, const char * szText );
 extern ZH_EXPORT ZH_BOOL      zh_arraySetPtr( PZH_ITEM pArray, ZH_SIZE nIndex, void * pValue );
 extern ZH_EXPORT ZH_BOOL      zh_arraySetPtrGC( PZH_ITEM pArray, ZH_SIZE nIndex, void * pValue );
-extern ZH_EXPORT ZH_BOOL      zh_arraySetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex, PZH_SYMB pSymbol );
+extern ZH_EXPORT ZH_BOOL      zh_arraySetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex, PZH_SYMBOL pSymbol );
 extern ZH_EXPORT ZH_BOOL      zh_arrayFill( PZH_ITEM pArray, PZH_ITEM pValue, ZH_SIZE * pnStart, ZH_SIZE * pnCount ); /* fill an array with a given item */
 extern ZH_EXPORT ZH_SIZE      zh_arrayScanCase( PZH_ITEM pArray, PZH_ITEM pValue, ZH_SIZE * pnStart, ZH_SIZE * pnCount, ZH_BOOL fExact, ZH_BOOL fMatchCase ); /* scan an array for a given item, or until code-block item returns ZH_TRUE */
 extern ZH_EXPORT ZH_SIZE      zh_arrayRevScan( PZH_ITEM pArray, PZH_ITEM pValue, ZH_SIZE * pnStart, ZH_SIZE * pnCount, ZH_BOOL fExact ); /* scan an array for a given item, or until code-block item returns ZH_TRUE in reverted order */
@@ -895,15 +895,15 @@ extern ZH_EXPORT void      zh_put_le_uint64( const ZH_BYTE * ptr, double d );
 /* dynamic symbol table management */
 extern ZH_EXPORT PZH_DYNS  zh_dynsymGet( const char * szName );    /* finds and creates a dynamic symbol if not found */
 extern ZH_EXPORT PZH_DYNS  zh_dynsymGetCase( const char * szName );    /* finds and creates a dynamic symbol if not found - case sensitive */
-extern ZH_EXPORT PZH_DYNS  zh_dynsymNew( PZH_SYMB pSymbol ); /* creates a new dynamic symbol based on a local one */
+extern ZH_EXPORT PZH_DYNS  zh_dynsymNew( PZH_SYMBOL pSymbol ); /* creates a new dynamic symbol based on a local one */
 extern ZH_EXPORT PZH_DYNS  zh_dynsymFind( const char * szName );   /* finds a dynamic symbol */
 extern ZH_EXPORT PZH_DYNS  zh_dynsymFindName( const char * szName ); /* converts to uppercase and finds a dynamic symbol */
 extern ZH_EXPORT void      zh_dynsymRelease( void );         /* releases the memory of the dynamic symbol table */
 extern ZH_EXPORT void      zh_dynsymEval( PZH_DYNS_FUNC pFunction, void * Cargo ); /* enumerates all dynamic symbols */
 extern ZH_EXPORT void      zh_dynsymProtectEval( PZH_DYNS_FUNC pFunction, void * Cargo ); /* enumerates all dynamic symbols with global symbol table locked - can be used ONLY when user function does not try to access dynamic symbol table */
-extern ZH_EXPORT PZH_SYMB  zh_dynsymGetSymbol( const char * szName ); /* finds and creates a dynamic symbol if not found and return pointer to its ZH_SYMB structure */
-extern ZH_EXPORT PZH_SYMB  zh_dynsymFindSymbol( const char * szName ); /* finds a dynamic symbol and return pointer to its ZH_SYMB structure */
-extern ZH_EXPORT PZH_SYMB  zh_dynsymSymbol( PZH_DYNS pDynSym );
+extern ZH_EXPORT PZH_SYMBOL  zh_dynsymGetSymbol( const char * szName ); /* finds and creates a dynamic symbol if not found and return pointer to its ZH_SYMBOL structure */
+extern ZH_EXPORT PZH_SYMBOL  zh_dynsymFindSymbol( const char * szName ); /* finds a dynamic symbol and return pointer to its ZH_SYMBOL structure */
+extern ZH_EXPORT PZH_SYMBOL  zh_dynsymSymbol( PZH_DYNS pDynSym );
 extern ZH_EXPORT const char * zh_dynsymName( PZH_DYNS pDynSym ); /* return dynamic symbol name */
 extern ZH_EXPORT ZH_BOOL   zh_dynsymIsFunction( PZH_DYNS pDynSym );
 extern ZH_EXPORT ZH_BOOL   zh_dynsymIsMemvar( PZH_DYNS pDynSym );
@@ -918,7 +918,7 @@ extern           ZH_LONG   zh_dynsymCount( void ); /* number of dynamic symbols 
 #endif
 
 /* Symbol management */
-extern ZH_EXPORT PZH_SYMB  zh_symbolNew( const char * szName ); /* create a new symbol */
+extern ZH_EXPORT PZH_SYMBOL  zh_symbolNew( const char * szName ); /* create a new symbol */
 
 /* Command-line and environment argument management */
 extern ZH_EXPORT void          zh_cmdargInit( int argc, char * argv[] ); /* initialize command-line argument API's */
@@ -944,21 +944,21 @@ extern ZH_EXPORT void          zh_winmainArgVFree( void );
 /* Codeblock management */
 extern ZH_EXPORT void *       zh_codeblockId( PZH_ITEM pItem ); /* retrieves the codeblock unique ID */
 extern ZH_EXPORT ZH_COUNTER   zh_codeblockRefs( PZH_ITEM pItem ); /* retrieves number of references to the codeblock */
-extern PZH_CODEBLOCK    zh_codeblockNew( const ZH_BYTE * pBuffer, ZH_USHORT uiLocals, const ZH_BYTE * pLocalPosTable, PZH_SYMB pSymbols, ZH_SIZE nLen ); /* create a code-block */
+extern PZH_CODEBLOCK    zh_codeblockNew( const ZH_BYTE * pBuffer, ZH_USHORT uiLocals, const ZH_BYTE * pLocalPosTable, PZH_SYMBOL pSymbols, ZH_SIZE nLen ); /* create a code-block */
 extern PZH_CODEBLOCK    zh_codeblockMacroNew( const ZH_BYTE * pBuffer, ZH_SIZE nLen );
 extern PZH_ITEM         zh_codeblockGetVar( PZH_ITEM pItem, int iItemPos ); /* get local variable referenced in a codeblock */
 extern PZH_ITEM         zh_codeblockGetRef( PZH_CODEBLOCK pCBlock, int iItemPos ); /* get local variable passed by reference */
 
 /* memvars subsystem */
 extern           void       zh_memvarsClear( ZH_BOOL fAll ); /* clear all PUBLIC and PRIVATE variables optionally without GetList PUBLIC variable */
-extern ZH_EXPORT void       zh_memvarSetValue( PZH_SYMB pMemvarSymb, PZH_ITEM pItem ); /* copy an item into a symbol */
-extern ZH_EXPORT ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMB pMemvarSymb ); /* copy an symbol value into an item */
-extern           void       zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMB pMemvarSymb ); /* copy an symbol value into an item, with error trapping */
-extern           void       zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMB pMemvarSymb ); /* copy a reference to a symbol value into an item, with error trapping */
+extern ZH_EXPORT void       zh_memvarSetValue( PZH_SYMBOL pMemvarSymb, PZH_ITEM pItem ); /* copy an item into a symbol */
+extern ZH_EXPORT ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb ); /* copy an symbol value into an item */
+extern           void       zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb ); /* copy an symbol value into an item, with error trapping */
+extern           void       zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb ); /* copy a reference to a symbol value into an item, with error trapping */
 extern           ZH_SIZE    zh_memvarGetPrivatesBase( void ); /* retrieve current PRIVATE variables stack base */
 extern           void       zh_memvarSetPrivatesBase( ZH_SIZE nBase ); /* release PRIVATE variables created after specified base */
 extern           void       zh_memvarUpdatePrivatesBase( void ); /* Update PRIVATE base offset so they will not be removed when function return */
-extern           void       zh_memvarNewParameter( PZH_SYMB pSymbol, PZH_ITEM pValue );
+extern           void       zh_memvarNewParameter( PZH_SYMBOL pSymbol, PZH_ITEM pValue );
 extern           char *     zh_memvarGetStrValuePtr( char * szVarName, ZH_SIZE * pnLen );
 extern           void       zh_memvarCreateFromItem( PZH_ITEM pMemvar, int iScope, PZH_ITEM pValue );
 extern           int        zh_memvarScope( const char * szVarName, ZH_SIZE nLength ); /* retrieve scope of a dynamic variable symbol */
@@ -970,7 +970,7 @@ extern           void       zh_memvarRestoreFromArray( PZH_ITEM pArray );
 #ifdef _ZH_API_INTERNAL_
 extern void       zh_memvarValueIncRef( PZH_ITEM pValue ); /* increase the reference count of a global value */
 extern void       zh_memvarValueDecRef( PZH_ITEM pValue ); /* decrease the reference count of a global value */
-extern PZH_ITEM   zh_memvarGetItem( PZH_SYMB pMemvarSymb );
+extern PZH_ITEM   zh_memvarGetItem( PZH_SYMBOL pMemvarSymb );
 #if defined( _ZH_API_MACROS_ )
 #  define zh_memvarValueIncRef( p )       zh_xRefInc( p )
 #endif /* _ZH_API_MACROS_ */

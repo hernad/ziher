@@ -122,8 +122,8 @@ typedef struct
 {
    PZH_DYNS    pMessage;         /* Method symbolic name */
    PZH_DYNS    pAccMsg;          /* Corresponding access method symbolic name */
-   PZH_SYMB    pFuncSym;         /* Function symbol */
-   PZH_SYMB    pRealSym;         /* Real function symbol when wrapper is used */
+   PZH_SYMBOL    pFuncSym;         /* Function symbol */
+   PZH_SYMBOL    pRealSym;         /* Real function symbol when wrapper is used */
    ZH_TYPE     itemType;         /* Type of item in restricted assignment */
    ZH_USHORT   uiSprClass;       /* Original class handle (super or current class handle if not inherited). [RAC&JF] */
    ZH_USHORT   uiScope;          /* Scoping value */
@@ -145,14 +145,14 @@ typedef struct
    char *      szName;           /* Class name */
    PZH_DYNS    pClassSym;        /* Class symbolic name */
    PMETHOD     pMethods;         /* Class methods */
-   PZH_SYMB    pClassFuncSym;    /* Class function symbol */
-   PZH_SYMB    pFriendModule;    /* Class friend symbols */
+   PZH_SYMBOL    pClassFuncSym;    /* Class function symbol */
+   PZH_SYMBOL    pFriendModule;    /* Class friend symbols */
    PINITDATA   pInitData;        /* Class/instance Initialization data */
    PZH_ITEM    pClassDatas;      /* Ziher Array for Class Datas */
    PZH_ITEM    pSharedDatas;     /* Ziher Array for Class Shared Datas */
    PZH_ITEM    pInlines;         /* Array for inline codeblocks */
    PZH_ITEM    pMutex;           /* Class sync method mutex */
-   PZH_SYMB *  pFriendSyms;      /* Friend functions' symbols */
+   PZH_SYMBOL *  pFriendSyms;      /* Friend functions' symbols */
    PZH_CLSCAST pSuperClasses;    /* Super classes */
    ZH_U32      nOpFlags;         /* Flags for overloaded operators */
    ZH_USHORT   uiClass;          /* This class handle */
@@ -236,7 +236,7 @@ ZH_FUNC_STATIC( msgClassParent );
 /* The positions of items in symbol table below have to correspond
  * to ZH_OO_OP_* constants in zh_class_api.h, [druzus]
  */
-static ZH_SYMB s_opSymbols[ ZH_OO_MAX_OPERATOR + 1 ] = {
+static ZH_SYMBOL s_opSymbols[ ZH_OO_MAX_OPERATOR + 1 ] = {
    { "__OPPLUS",              {ZH_FS_MESSAGE}, {NULL}, NULL },  /* 00 */
    { "__OPMINUS",             {ZH_FS_MESSAGE}, {NULL}, NULL },  /* 01 */
    { "__OPMULT",              {ZH_FS_MESSAGE}, {NULL}, NULL },  /* 02 */
@@ -269,53 +269,53 @@ static ZH_SYMB s_opSymbols[ ZH_OO_MAX_OPERATOR + 1 ] = {
    { "__ENUMISLAST",          {ZH_FS_MESSAGE}, {NULL}, NULL },  /* 29 */
 };
 
-static ZH_SYMB s___msgDestructor  = { "__msgDestructor", {ZH_FS_MESSAGE}, {NULL},               NULL };
-static ZH_SYMB s___msgOnError     = { "__msgOnError",    {ZH_FS_MESSAGE}, {NULL},               NULL };
+static ZH_SYMBOL s___msgDestructor  = { "__msgDestructor", {ZH_FS_MESSAGE}, {NULL},               NULL };
+static ZH_SYMBOL s___msgOnError     = { "__msgOnError",    {ZH_FS_MESSAGE}, {NULL},               NULL };
 
-static ZH_SYMB s___msgSetData     = { "__msgSetData",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetData )},    NULL };
-static ZH_SYMB s___msgGetData     = { "__msgGetData",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetData )},    NULL };
-static ZH_SYMB s___msgSetClsData  = { "__msgSetClsData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetClsData )}, NULL };
-static ZH_SYMB s___msgGetClsData  = { "__msgGetClsData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetClsData )}, NULL };
-static ZH_SYMB s___msgSetShrData  = { "__msgSetShrData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetShrData )}, NULL };
-static ZH_SYMB s___msgGetShrData  = { "__msgGetShrData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetShrData )}, NULL };
-static ZH_SYMB s___msgEvalInline  = { "__msgEvalInline", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgEvalInline )}, NULL };
-static ZH_SYMB s___msgVirtual     = { "__msgVirtual",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgVirtual )},    NULL };
-static ZH_SYMB s___msgSuper       = { "__msgSuper",      {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSuper )},      NULL };
-static ZH_SYMB s___msgRealClass   = { "__msgRealClass",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgRealClass )},  NULL };
-static ZH_SYMB s___msgPerform     = { "__msgPerform",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgPerform )},    NULL };
-static ZH_SYMB s___msgDelegate    = { "__msgDelegate",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgDelegate )},   NULL };
-static ZH_SYMB s___msgSync        = { "__msgSync",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSync )},       NULL };
-static ZH_SYMB s___msgSyncClass   = { "__msgSyncClass",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSyncClass )},  NULL };
-static ZH_SYMB s___msgNoMethod    = { "__msgNoMethod",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNoMethod )},   NULL };
-static ZH_SYMB s___msgScopeErr    = { "__msgScopeErr",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgScopeErr )},   NULL };
-static ZH_SYMB s___msgTypeErr     = { "__msgTypeErr",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgTypeErr )},    NULL };
+static ZH_SYMBOL s___msgSetData     = { "__msgSetData",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetData )},    NULL };
+static ZH_SYMBOL s___msgGetData     = { "__msgGetData",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetData )},    NULL };
+static ZH_SYMBOL s___msgSetClsData  = { "__msgSetClsData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetClsData )}, NULL };
+static ZH_SYMBOL s___msgGetClsData  = { "__msgGetClsData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetClsData )}, NULL };
+static ZH_SYMBOL s___msgSetShrData  = { "__msgSetShrData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSetShrData )}, NULL };
+static ZH_SYMBOL s___msgGetShrData  = { "__msgGetShrData", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgGetShrData )}, NULL };
+static ZH_SYMBOL s___msgEvalInline  = { "__msgEvalInline", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgEvalInline )}, NULL };
+static ZH_SYMBOL s___msgVirtual     = { "__msgVirtual",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgVirtual )},    NULL };
+static ZH_SYMBOL s___msgSuper       = { "__msgSuper",      {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSuper )},      NULL };
+static ZH_SYMBOL s___msgRealClass   = { "__msgRealClass",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgRealClass )},  NULL };
+static ZH_SYMBOL s___msgPerform     = { "__msgPerform",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgPerform )},    NULL };
+static ZH_SYMBOL s___msgDelegate    = { "__msgDelegate",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgDelegate )},   NULL };
+static ZH_SYMBOL s___msgSync        = { "__msgSync",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSync )},       NULL };
+static ZH_SYMBOL s___msgSyncClass   = { "__msgSyncClass",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgSyncClass )},  NULL };
+static ZH_SYMBOL s___msgNoMethod    = { "__msgNoMethod",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNoMethod )},   NULL };
+static ZH_SYMBOL s___msgScopeErr    = { "__msgScopeErr",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgScopeErr )},   NULL };
+static ZH_SYMBOL s___msgTypeErr     = { "__msgTypeErr",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgTypeErr )},    NULL };
 
-static ZH_SYMB s___msgNew         = { "NEW",             {ZH_FS_MESSAGE}, {NULL},               NULL };
-static ZH_SYMB s___msgSymbol      = { "SYMBOL",          {ZH_FS_MESSAGE}, {NULL},               NULL };
+static ZH_SYMBOL s___msgNew         = { "NEW",             {ZH_FS_MESSAGE}, {NULL},               NULL };
+static ZH_SYMBOL s___msgSymbol      = { "SYMBOL",          {ZH_FS_MESSAGE}, {NULL},               NULL };
 
-static ZH_SYMB s___msgClassName   = { "CLASSNAME",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassName )},  NULL };
-static ZH_SYMB s___msgClassH      = { "CLASSH",          {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassH )},     NULL };
-static ZH_SYMB s___msgClassSel    = { "CLASSSEL",        {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassSel )},   NULL };
-static ZH_SYMB s___msgExec        = { "EXEC",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgName        = { "NAME",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgClassName   = { "CLASSNAME",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassName )},  NULL };
+static ZH_SYMBOL s___msgClassH      = { "CLASSH",          {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassH )},     NULL };
+static ZH_SYMBOL s___msgClassSel    = { "CLASSSEL",        {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassSel )},   NULL };
+static ZH_SYMBOL s___msgExec        = { "EXEC",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgName        = { "NAME",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
 #if 0
-static ZH_SYMB s___msgClsParent   = { "ISDERIVEDFROM",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassParent )},NULL };
-static ZH_SYMB s___msgClass       = { "CLASS",           {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClass )},      NULL };
+static ZH_SYMBOL s___msgClsParent   = { "ISDERIVEDFROM",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClassParent )},NULL };
+static ZH_SYMBOL s___msgClass       = { "CLASS",           {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgClass )},      NULL };
 #endif
-static ZH_SYMB s___msgKeys        = { "KEYS",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgValues      = { "VALUES",          {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgKeys        = { "KEYS",            {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgValues      = { "VALUES",          {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
 
 /* Default enumerator methods (FOR EACH) */
-static ZH_SYMB s___msgEnumIndex   = { "__ENUMINDEX",     {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgEnumBase    = { "__ENUMBASE",      {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgEnumKey     = { "__ENUMKEY",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgEnumValue   = { "__ENUMVALUE",     {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgEnumIsFirst = { "__ENUMISFIRST",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgEnumIsLast  = { "__ENUMISLAST",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumIndex   = { "__ENUMINDEX",     {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumBase    = { "__ENUMBASE",      {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumKey     = { "__ENUMKEY",       {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumValue   = { "__ENUMVALUE",     {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumIsFirst = { "__ENUMISFIRST",   {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgEnumIsLast  = { "__ENUMISLAST",    {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
 
 /* WITH OBJECT base value access/assign methods (:__withobject) */
-static ZH_SYMB s___msgWithObjectPush = { "__WITHOBJECT",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
-static ZH_SYMB s___msgWithObjectPop  = { "___WITHOBJECT", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgWithObjectPush = { "__WITHOBJECT",  {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
+static ZH_SYMBOL s___msgWithObjectPop  = { "___WITHOBJECT", {ZH_FS_MESSAGE}, {ZH_FUNCNAME( msgNull )},       NULL };
 
 /* --- */
 
@@ -871,7 +871,7 @@ static ZH_BOOL zh_clsUpdateHiddenMessages( PMETHOD pSrcMethod, PMETHOD pDstMetho
       {
          ZH_USHORT uiPrevCls = pDstMethod->uiPrevCls,
                    uiPrevMth = pDstMethod->uiPrevMth;
-         PZH_SYMB pFuncSym;
+         PZH_SYMBOL pFuncSym;
 
          memcpy( pDstMethod, pNewMethod, sizeof( METHOD ) );
          pDstMethod->uiPrevCls = uiPrevCls;
@@ -960,7 +960,7 @@ static void zh_clsDefineSuperClass( PCLASS pClass, ZH_USHORT uiSuperCls, ZH_BOOL
    }
    else
    {
-      PZH_SYMB pFuncSym = pMethod->pFuncSym;
+      PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
       if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
          pFuncSym = pMethod->pRealSym;
@@ -1050,7 +1050,7 @@ static void zh_clsCopyClass( PCLASS pClsDst, PCLASS pClsSrc )
    while( --nLimit );
 }
 
-static ZH_BOOL zh_clsIsFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
+static ZH_BOOL zh_clsIsFriendSymbol( PCLASS pClass, PZH_SYMBOL pSym )
 {
    ZH_USHORT uiCount;
 
@@ -1069,7 +1069,7 @@ static ZH_BOOL zh_clsIsFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
    return ZH_FALSE;
 }
 
-static void zh_clsAddFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
+static void zh_clsAddFriendSymbol( PCLASS pClass, PZH_SYMBOL pSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsAddFriendSymbol(%p,%p)", ( void * ) pClass, ( void * ) pSym ) );
 
@@ -1077,14 +1077,14 @@ static void zh_clsAddFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
    {
       if( pClass->uiFriendSyms == 0 )
       {
-         pClass->pFriendSyms = ( PZH_SYMB * ) zh_xgrab( sizeof( PZH_SYMB ) );
+         pClass->pFriendSyms = ( PZH_SYMBOL * ) zh_xgrab( sizeof( PZH_SYMBOL ) );
          pClass->pFriendSyms[ 0 ] = pSym;
          pClass->uiFriendSyms++;
       }
       else
       {
-         pClass->pFriendSyms = ( PZH_SYMB * ) zh_xrealloc( pClass->pFriendSyms,
-                           ( pClass->uiFriendSyms + 1 ) * sizeof( PZH_SYMB ) );
+         pClass->pFriendSyms = ( PZH_SYMBOL * ) zh_xrealloc( pClass->pFriendSyms,
+                           ( pClass->uiFriendSyms + 1 ) * sizeof( PZH_SYMBOL ) );
          pClass->pFriendSyms[ pClass->uiFriendSyms++ ] = pSym;
       }
    }
@@ -1093,7 +1093,7 @@ static void zh_clsAddFriendSymbol( PCLASS pClass, PZH_SYMB pSym )
 /* initialize Classy/OO system at ZHVM startup */
 void zh_clsInit( void )
 {
-   PZH_SYMB pOpSym;
+   PZH_SYMBOL pOpSym;
    ZH_USHORT uiOperator;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsInit()" ) );
@@ -1457,7 +1457,7 @@ const char * zh_clsFuncName( ZH_USHORT uiClass )
       return NULL;
 }
 
-PZH_SYMB zh_clsFuncSym( ZH_USHORT uiClass )
+PZH_SYMBOL zh_clsFuncSym( ZH_USHORT uiClass )
 {
    if( uiClass && uiClass <= s_uiClasses )
       return s_pClasses[ uiClass ]->pClassFuncSym;
@@ -1483,7 +1483,7 @@ static ZH_SIZE zh_clsGetVarIndexEx( ZH_USHORT uiClass, PZH_DYNS pVarSym,
    PMETHOD pMethod = zh_clsFindMsg( s_pClasses[ uiSuper ], pVarSym );
    if( pMethod )
    {
-      PZH_SYMB pFuncSym = pMethod->pFuncSym;
+      PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
       if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
          pFuncSym = pMethod->pRealSym;
@@ -1522,7 +1522,7 @@ ZH_USHORT zh_clsFindClass( const char * szClass, const char * szClassFunc )
    return 0;
 }
 
-static ZH_USHORT zh_clsFindClassByFunc( PZH_SYMB pClassFuncSym )
+static ZH_USHORT zh_clsFindClassByFunc( PZH_SYMBOL pClassFuncSym )
 {
    ZH_USHORT uiClass;
 
@@ -1537,14 +1537,14 @@ static ZH_USHORT zh_clsFindClassByFunc( PZH_SYMB pClassFuncSym )
 }
 
 /* Get the real method symbol for given stack symbol */
-PZH_SYMB zh_clsMethodSym( PZH_ITEM pBaseSymbol )
+PZH_SYMBOL zh_clsMethodSym( PZH_ITEM pBaseSymbol )
 {
    PZH_STACK_STATE pStack = pBaseSymbol->item.asSymbol.stackstate;
 
    if( pStack->uiClass )
    {
       PMETHOD pMethod = s_pClasses[ pStack->uiClass ]->pMethods + pStack->uiMethod;
-      PZH_SYMB pFuncSym = pMethod->pFuncSym;
+      PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
       if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
          pFuncSym = pMethod->pRealSym;
@@ -1649,9 +1649,9 @@ static ZH_USHORT zh_clsSenderMethodClass( void )
    return 0;
 }
 
-static PZH_SYMB zh_clsSenderSymbol( void )
+static PZH_SYMBOL zh_clsSenderSymbol( void )
 {
-   PZH_SYMB pSym = NULL;
+   PZH_SYMBOL pSym = NULL;
    ZH_ISIZ nOffset = zh_clsSenderOffset();
 
    if( nOffset > 0 )
@@ -1686,7 +1686,7 @@ static ZH_USHORT zh_clsSenderObjectClass( void )
    return 0;
 }
 
-static PZH_SYMB zh_clsValidScope( PMETHOD pMethod, PZH_STACK_STATE pStack )
+static PZH_SYMBOL zh_clsValidScope( PMETHOD pMethod, PZH_STACK_STATE pStack )
 {
    if( pMethod->uiScope & ( ZH_OO_CLSTP_HIDDEN | ZH_OO_CLSTP_PROTECTED |
                             ZH_OO_CLSTP_OVERLOADED ) )
@@ -1735,7 +1735,7 @@ static PZH_SYMB zh_clsValidScope( PMETHOD pMethod, PZH_STACK_STATE pStack )
       }
       else if( pMethod->uiScope & ( ZH_OO_CLSTP_HIDDEN | ZH_OO_CLSTP_PROTECTED ) )
       {
-         PZH_SYMB pSym = zh_clsSenderSymbol();
+         PZH_SYMBOL pSym = zh_clsSenderSymbol();
 
          if( ! zh_clsIsFriendSymbol( s_pClasses[ pMethod->uiSprClass ], pSym ) )
          {
@@ -1749,7 +1749,7 @@ static PZH_SYMB zh_clsValidScope( PMETHOD pMethod, PZH_STACK_STATE pStack )
    return pMethod->pFuncSym;
 }
 
-static PZH_SYMB zh_clsScalarMethod( PCLASS pClass, PZH_DYNS pMsg,
+static PZH_SYMBOL zh_clsScalarMethod( PCLASS pClass, PZH_DYNS pMsg,
                                     PZH_STACK_STATE pStack )
 {
    PMETHOD pMethod = zh_clsFindMsg( pClass, pMsg );
@@ -1789,7 +1789,7 @@ static void zh_clsMakeSuperObject( PZH_ITEM pDest, PZH_ITEM pObject,
  *
  * Internal function to the function pointer of a message of an object
  */
-PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
+PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                           PZH_STACK_STATE pStack )
 {
    ZH_STACK_TLS_PRELOAD
@@ -1863,7 +1863,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiArrayClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -1877,7 +1877,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiBlockClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -1979,7 +1979,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiSymbolClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2005,7 +2005,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiHashClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2057,7 +2057,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiCharacterClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2069,7 +2069,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiDateClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2081,7 +2081,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiTimeStampClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2093,7 +2093,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiNumericClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2105,7 +2105,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiLogicalClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2117,7 +2117,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiPointerClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2129,7 +2129,7 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
       {
          pClass = s_pClasses[ s_uiNilClass ];
          {
-            PZH_SYMB pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
+            PZH_SYMBOL pExecSym = zh_clsScalarMethod( pClass, pMsg, pStack );
             if( pExecSym )
                return pExecSym;
          }
@@ -2198,10 +2198,10 @@ PZH_SYMB zh_objGetMethod( PZH_ITEM pObject, PZH_SYMB pMessage,
    return NULL;
 }
 
-ZH_BOOL zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMB pMessage,
+ZH_BOOL zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                          PZH_STACK_STATE pStack )
 {
-   PZH_SYMB pExecSym;
+   PZH_SYMBOL pExecSym;
 
 #if defined( ZH_HASH_MSG_ITEMS )
    if( ZH_IS_HASH( pObject ) )
@@ -2537,7 +2537,7 @@ PZH_ITEM zh_objGetVarPtr( PZH_ITEM pObject, PZH_DYNS pVarMsg )
 
       if( pMethod )
       {
-         PZH_SYMB pFuncSym = pMethod->pFuncSym;
+         PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
          if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
             pFuncSym = pMethod->pRealSym;
@@ -2586,7 +2586,7 @@ static PZH_DYNS zh_objGetMsgSym( PZH_ITEM pMessage )
    return pDynSym;
 }
 
-static PZH_SYMB zh_objGetFuncSym( PZH_ITEM pItem )
+static PZH_SYMBOL zh_objGetFuncSym( PZH_ITEM pItem )
 {
    if( pItem )
    {
@@ -2878,7 +2878,7 @@ static ZH_BOOL zh_clsAddMsg( ZH_USHORT uiClass, const char * szMessage,
       PZH_DYNS  pMessage;
       PMETHOD   pNewMeth;
       ZH_USHORT uiOperator, uiSprClass = 0, uiIndex = 0, uiPrevCls, uiPrevMth;
-      PZH_SYMB  pOpSym, pFuncSym = NULL;
+      PZH_SYMBOL  pOpSym, pFuncSym = NULL;
       ZH_BOOL   fOK;
       ZH_U32    nOpFlags = 0;
 
@@ -3362,7 +3362,7 @@ ZH_FUNC( __CLSADDMSG )
  *                   module as pClassFunc are defined as friends
  */
 static ZH_USHORT zh_clsNew( const char * szClassName, ZH_USHORT uiDatas,
-                            PZH_ITEM pSuperArray, PZH_SYMB pClassFunc,
+                            PZH_ITEM pSuperArray, PZH_SYMBOL pClassFunc,
                             ZH_BOOL fModuleFriendly )
 {
    PCLASS pNewCls;
@@ -3480,7 +3480,7 @@ static ZH_USHORT zh_clsNew( const char * szClassName, ZH_USHORT uiDatas,
                      memcpy( pMethod, pSprCls->pMethods + n, sizeof( METHOD ) );
                      if( ! zh_clsUpdateHiddenMessages( pMethod, pMethod, pNewCls ) )
                      {
-                        PZH_SYMB pFuncSym = pMethod->pFuncSym;
+                        PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
                         if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
                            pFuncSym = pMethod->pRealSym;
@@ -3624,7 +3624,7 @@ ZH_FUNC( __CLSADDFRIEND )
 
       if( ! pClass->fLocked )
       {
-         PZH_SYMB pSym = zh_vmGetRealFuncSym( zh_itemGetSymbol( zh_param( 2,
+         PZH_SYMBOL pSym = zh_vmGetRealFuncSym( zh_itemGetSymbol( zh_param( 2,
                                                          ZH_IT_SYMBOL ) ) );
          if( pSym )
             zh_clsAddFriendSymbol( pClass, pSym );
@@ -3759,7 +3759,7 @@ ZH_FUNC( __CLSMODMSG )
 
          if( pMethod )
          {
-            PZH_SYMB pFuncSym = pMethod->pFuncSym;
+            PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
             if( pFuncSym == &s___msgSetData || pFuncSym == &s___msgGetData )
             {
@@ -3887,7 +3887,7 @@ ZH_FUNC( __OBJHASMSGASSIGNED )
    if( pMessage )
    {
       ZH_STACK_TLS_PRELOAD
-      PZH_SYMB pExecSym = zh_objGetMethod( zh_param( 1, ZH_IT_ANY ),
+      PZH_SYMBOL pExecSym = zh_objGetMethod( zh_param( 1, ZH_IT_ANY ),
                                            pMessage->pSymbol, NULL );
       zh_retl( pExecSym && pExecSym != &s___msgVirtual );
    }
@@ -3945,7 +3945,7 @@ ZH_FUNC( __CLSINSTSUPER )
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem = zh_param( 1, ZH_IT_STRING | ZH_IT_SYMBOL );
    ZH_USHORT uiClassH = 0, uiClass;
-   PZH_SYMB pClassFuncSym = NULL;
+   PZH_SYMBOL pClassFuncSym = NULL;
    char szDesc[ 128 ];
 
    if( pItem )
@@ -4361,7 +4361,7 @@ ZH_FUNC_STATIC( msgClassName )
 
 static int zh_methodType( PMETHOD pMethod )
 {
-   PZH_SYMB pFuncSym = pMethod->pFuncSym;
+   PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
    if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
       pFuncSym = pMethod->pRealSym;
@@ -4546,7 +4546,7 @@ ZH_FUNC_STATIC( msgPerform )
    if( pItem )
    {
       ZH_USHORT uiPCount = zh_pcount(), uiParam;
-      PZH_SYMB pSym = NULL;
+      PZH_SYMBOL pSym = NULL;
 
       if( ZH_IS_SYMBOL( pItem ) )
          pSym = pItem->item.asSymbol.value;
@@ -4581,7 +4581,7 @@ ZH_FUNC_STATIC( msgDelegate )
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass   = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
-   PZH_SYMB pExecSym = pClass->pMethods[ pMethod->uiData ].pFuncSym;
+   PZH_SYMBOL pExecSym = pClass->pMethods[ pMethod->uiData ].pFuncSym;
 
    if( pExecSym )
       ZH_VM_FUNCUNREF( pExecSym );
@@ -4601,7 +4601,7 @@ ZH_FUNC_STATIC( msgSync )
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
-   PZH_SYMB pExecSym = pMethod->pRealSym;
+   PZH_SYMBOL pExecSym = pMethod->pRealSym;
 
    if( pExecSym )
       ZH_VM_FUNCUNREF( pExecSym );
@@ -4633,7 +4633,7 @@ ZH_FUNC_STATIC( msgSyncClass )
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
-   PZH_SYMB pExecSym = pMethod->pRealSym;
+   PZH_SYMBOL pExecSym = pMethod->pRealSym;
 
    if( pExecSym )
       ZH_VM_FUNCUNREF( pExecSym );
@@ -4659,7 +4659,7 @@ ZH_FUNC_STATIC( msgSyncClass )
 ZH_FUNC_STATIC( msgNoMethod )
 {
    ZH_STACK_TLS_PRELOAD
-   PZH_SYMB pSym = zh_itemGetSymbol( zh_stackBaseItem() );
+   PZH_SYMBOL pSym = zh_itemGetSymbol( zh_stackBaseItem() );
    const char * szName = pSym ? pSym->szName : "";
 
 
@@ -4974,7 +4974,7 @@ void zh_mthAddTime( ZH_ULONG ulClockTicks )
 
    if( ZH_IS_BLOCK( pObject ) )
    {
-      PZH_SYMB pSym = zh_stackBaseItem()->item.asSymbol.value;
+      PZH_SYMBOL pSym = zh_stackBaseItem()->item.asSymbol.value;
 
       if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
       {
@@ -5082,7 +5082,7 @@ static PZH_ITEM zh_objGetIVars( PZH_ITEM pObject,
           ( uiScope == 0 || ( pMethod->uiScope & uiScope ) != 0 ) &&
           ( uiClass == pClass->uiClass || uiClass == pMethod->uiSprClass ) )
       {
-         PZH_SYMB pFuncSym = pMethod->pFuncSym;
+         PZH_SYMBOL pFuncSym = pMethod->pFuncSym;
 
          if( pFuncSym == &s___msgSync || pFuncSym == &s___msgSyncClass )
             pFuncSym = pMethod->pRealSym;
@@ -5521,7 +5521,7 @@ ZH_USHORT zh_clsCreate( ZH_USHORT usSize, const char * szClassName )
 
 void zh_clsAdd( ZH_USHORT usClassH, const char * szMethodName, PZH_FUNC pFuncPtr )
 {
-   PZH_SYMB pExecSym;
+   PZH_SYMBOL pExecSym;
    PZH_ITEM pFuncItem;
 
    /* We can use empty name "" for this symbol in zh_symbolNew()

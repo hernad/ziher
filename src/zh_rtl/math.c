@@ -481,7 +481,7 @@ static int zh_matherrblock( ZH_MATH_EXCEPTION * pexc )
 
       if( funcname == ZH_ERR_FUNCNAME )
       {
-         PZH_SYMB pSym = zh_itemGetSymbol( zh_stackBaseItem() );
+         PZH_SYMBOL pSym = zh_itemGetSymbol( zh_stackBaseItem() );
          if( pSym )
             funcname = pSym->szName;
       }

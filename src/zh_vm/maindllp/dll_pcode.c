@@ -83,19 +83,19 @@ ZH_EXTERN_BEGIN
 typedef PZH_FUNC ( *ZH_PROC_GET )( const char * szFuncName );
 
 /* zh_vmProcessSymbols() */
-typedef PZH_SYMB ( *ZH_VM_PROCESS_SYMBOLS )
-   ( PZH_SYMB pModuleSymbols, ZH_USHORT uiModuleSymbols,
+typedef PZH_SYMBOL ( *ZH_VM_PROCESS_SYMBOLS )
+   ( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiModuleSymbols,
    const char * szModuleName, ZH_ULONG ulID,
    ZH_USHORT uiPcodeVer );
-static PZH_SYMB s_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
+static PZH_SYMBOL s_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                     const char * szModuleName, ZH_ULONG ulID,
                                     ZH_USHORT uiPcodeVer );
 static ZH_VM_PROCESS_SYMBOLS s_pProcessSymbols = s_vmProcessSymbols;
 
 
 /* zh_vmExecute() */
-typedef void ( *ZH_VM_EXECUTE )( const ZH_BYTE * pCode, PZH_SYMB pSymbols );
-static void s_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols );
+typedef void ( *ZH_VM_EXECUTE )( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols );
+static void s_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols );
 static ZH_VM_EXECUTE s_pExecute = s_vmExecute;
 
 
@@ -143,7 +143,7 @@ BOOL WINAPI ZH_DLL_ENTRY_POINT( HINSTANCE hInstance, DWORD dwReason, PVOID pvRes
 }
 
 
-static PZH_SYMB s_dummy_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
+static PZH_SYMBOL s_dummy_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                           const char * szModuleName, ZH_ULONG ulID,
                                           ZH_USHORT uiPcodeVer )
 {
@@ -155,7 +155,7 @@ static PZH_SYMB s_dummy_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols
    return pSymbols;
 }
 
-static PZH_SYMB s_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
+static PZH_SYMBOL s_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                     const char * szModuleName, ZH_ULONG ulID,
                                     ZH_USHORT uiPcodeVer )
 {
@@ -175,20 +175,20 @@ static PZH_SYMB s_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
    }
 }
 
-PZH_SYMB zh_vmProcessSymbols( PZH_SYMB pSymbols, ZH_USHORT uiSymbols,
+PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                               const char * szModuleName, ZH_ULONG ulID,
                               ZH_USHORT uiPcodeVer )
 {
    return s_pProcessSymbols( pSymbols, uiSymbols, szModuleName, ulID, uiPcodeVer );
 }
 
-static void s_dummy_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+static void s_dummy_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    ZH_SYMBOL_UNUSED( pCode );
    ZH_SYMBOL_UNUSED( pSymbols );
 }
 
-static void s_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+static void s_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    ZH_VM_EXECUTE pExecute = ( ZH_VM_EXECUTE )
                             zh_dllGetProcAddress( "zh_vmExecute" );
@@ -205,7 +205,7 @@ static void s_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
    }
 }
 
-void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMB pSymbols )
+void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
    s_pExecute( pCode, pSymbols );
 }

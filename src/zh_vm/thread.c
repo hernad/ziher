@@ -959,7 +959,7 @@ ZH_FUNC( ZH_THREADSTART )
 {
    ZH_ULONG ulAttr = 0, ulStart = 1;
    const char * szFuncName = NULL;
-   PZH_SYMB pSymbol = NULL;
+   PZH_SYMBOL pSymbol = NULL;
    PZH_ITEM pStart;
 
    pStart = zh_param( ulStart, ZH_IT_ANY );

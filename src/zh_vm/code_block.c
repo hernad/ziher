@@ -123,7 +123,7 @@ static const ZH_GC_FUNCS s_gcCodeblockFuncs =
 PZH_CODEBLOCK zh_codeblockNew( const ZH_BYTE * pBuffer,
                                ZH_USHORT uiLocals,
                                const ZH_BYTE * pLocalPosTable,
-                               PZH_SYMB pSymbols,
+                               PZH_SYMBOL pSymbols,
                                ZH_SIZE nLen )
 {
    ZH_STACK_TLS_PRELOAD

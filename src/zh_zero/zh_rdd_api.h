@@ -1157,14 +1157,14 @@ extern void zh_rddCloseDetachedAreas( void );
 
 /* RDD virtual machine integration functions */
 extern ZH_EXPORT void         zh_rddShutDown( void );
-extern ZH_EXPORT ZH_ERRCODE   zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol );
-extern ZH_EXPORT ZH_ERRCODE   zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMB pFieldSymbol );
-extern ZH_EXPORT ZH_ERRCODE   zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMB pFieldSymbol );
-extern ZH_EXPORT ZH_ERRCODE   zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMB pFieldSymbol );
+extern ZH_EXPORT ZH_ERRCODE   zh_rddGetFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol );
+extern ZH_EXPORT ZH_ERRCODE   zh_rddPutFieldValue( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol );
+extern ZH_EXPORT ZH_ERRCODE   zh_rddFieldGet( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol );
+extern ZH_EXPORT ZH_ERRCODE   zh_rddFieldPut( PZH_ITEM pItem, PZH_SYMBOL pFieldSymbol );
 extern ZH_EXPORT int          zh_rddGetCurrentWorkAreaNumber( void );
 extern ZH_EXPORT ZH_ERRCODE   zh_rddSelectWorkAreaNumber( int iArea );
 extern ZH_EXPORT ZH_ERRCODE   zh_rddSelectWorkAreaAlias( const char * szAlias );
-extern ZH_EXPORT ZH_ERRCODE   zh_rddSelectWorkAreaSymbol( PZH_SYMB pSymAlias );
+extern ZH_EXPORT ZH_ERRCODE   zh_rddSelectWorkAreaSymbol( PZH_SYMBOL pSymAlias );
 extern ZH_EXPORT ZH_ERRCODE   zh_rddGetAliasNumber( const char * szAlias, int * iArea );
 
 /* other functions */

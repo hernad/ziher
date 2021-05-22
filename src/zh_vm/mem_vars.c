@@ -347,7 +347,7 @@ static void zh_memvarResetPrivatesBase( void )
  * pItem   - value to store in memvar
  *
  */
-void zh_memvarSetValue( PZH_SYMB pMemvarSymb, PZH_ITEM pItem )
+void zh_memvarSetValue( PZH_SYMBOL pMemvarSymb, PZH_ITEM pItem )
 {
    PZH_DYNS pDyn;
 
@@ -379,7 +379,7 @@ void zh_memvarSetValue( PZH_SYMB pMemvarSymb, PZH_ITEM pItem )
       zh_errInternal( ZH_EI_MVBADSYMBOL, NULL, pMemvarSymb->szName, NULL );
 }
 
-ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
+ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 {
    PZH_DYNS pDyn;
    ZH_ERRCODE errCode = ZH_FAILURE;
@@ -412,7 +412,7 @@ ZH_ERRCODE zh_memvarGet( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
    return errCode;
 }
 
-void zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
+void zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGetValue(%p, %p)", ( void * ) pItem, ( void * ) pMemvarSymb ) );
 
@@ -437,7 +437,7 @@ void zh_memvarGetValue( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
    }
 }
 
-void zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
+void zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMBOL pMemvarSymb )
 {
    PZH_DYNS pDyn;
 
@@ -499,7 +499,7 @@ void zh_memvarGetRefer( PZH_ITEM pItem, PZH_SYMB pMemvarSymb )
       zh_errInternal( ZH_EI_MVBADSYMBOL, NULL, pMemvarSymb->szName, NULL );
 }
 
-PZH_ITEM zh_memvarGetItem( PZH_SYMB pMemvarSymb )
+PZH_ITEM zh_memvarGetItem( PZH_SYMBOL pMemvarSymb )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGetItem(%p)", ( void * ) pMemvarSymb ) );
 
@@ -520,7 +520,7 @@ PZH_ITEM zh_memvarGetItem( PZH_SYMB pMemvarSymb )
 
 /*
  */
-void zh_memvarNewParameter( PZH_SYMB pSymbol, PZH_ITEM pValue )
+void zh_memvarNewParameter( PZH_SYMBOL pSymbol, PZH_ITEM pValue )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarNewParameter(%p, %p)", ( void * ) pSymbol, ( void * ) pValue ) );
 
@@ -1020,7 +1020,7 @@ void zh_memvarRestoreFromArray( PZH_ITEM pArray )
       PZH_ITEM pItem = zh_arrayGetItemPtr( pArray, nPos );
       if( pItem )
       {
-         PZH_SYMB pSymbol = zh_arrayGetSymbol( pItem, 1 );
+         PZH_SYMBOL pSymbol = zh_arrayGetSymbol( pItem, 1 );
          PZH_ITEM pMemRef = zh_arrayGetItemPtr( pItem, 2 );
          if( pSymbol && pMemRef )
          {

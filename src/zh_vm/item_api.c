@@ -740,7 +740,7 @@ void * zh_itemGetPtrGC( PZH_ITEM pItem, const ZH_GC_FUNCS * pFuncs )
       return NULL;
 }
 
-PZH_SYMB zh_itemGetSymbol( PZH_ITEM pItem )
+PZH_SYMBOL zh_itemGetSymbol( PZH_ITEM pItem )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemGetSymbol(%p)", ( void * ) pItem ) );
 
@@ -1376,7 +1376,7 @@ PZH_ITEM zh_itemPutPtrRawGC( PZH_ITEM pItem, void * pValue )
    return pItem;
 }
 
-PZH_ITEM zh_itemPutSymbol( PZH_ITEM pItem, PZH_SYMB pSym )
+PZH_ITEM zh_itemPutSymbol( PZH_ITEM pItem, PZH_SYMBOL pSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemPutSymbol(%p,%p)", ( void * ) pItem, ( void * ) pSym ) );
 
@@ -2812,7 +2812,7 @@ char * zh_itemString( PZH_ITEM pItem, ZH_SIZE * nLen, ZH_BOOL * bFreeReq )
 
       case ZH_IT_SYMBOL:
       {
-         PZH_SYMB pSymbol = zh_itemGetSymbol( pItem );
+         PZH_SYMBOL pSymbol = zh_itemGetSymbol( pItem );
          const char * szName = pSymbol ? pSymbol->szName : "?";
 
          *bFreeReq = ZH_TRUE;

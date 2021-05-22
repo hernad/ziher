@@ -57,7 +57,7 @@ typedef struct
 
 typedef struct _ZH_SYM_HOLDER
 {
-   ZH_SYMB  symbol;
+   ZH_SYMBOL  symbol;
    struct _ZH_SYM_HOLDER * pNext;
    char     szName[ 1 ];
 }
@@ -85,7 +85,7 @@ static int         s_iDynIdxSize = 0;
 /* Insert new symbol into dynamic symbol table.
  * In MT mode caller should protected it by ZH_DYNSYM_LOCK()
  */
-static PZH_DYNS zh_dynsymInsert( PZH_SYMB pSymbol, ZH_UINT uiPos )
+static PZH_DYNS zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
 {
    PZH_DYNS pDynSym;
 
@@ -154,7 +154,7 @@ static PZH_DYNS zh_dynsymPos( const char * szName, ZH_UINT * puiPos )
 /* Create new symbol.
  * In MT mode caller should protected it by ZH_DYNSYM_LOCK()
  */
-static PZH_SYMB zh_symbolAlloc( const char * szName )
+static PZH_SYMBOL zh_symbolAlloc( const char * szName )
 {
    PZH_SYM_HOLDER pHolder;
    int iLen;
@@ -209,9 +209,9 @@ PZH_DYNS zh_dynsymFind( const char * szName )
 }
 
 /* Create new symbol */
-PZH_SYMB zh_symbolNew( const char * szName )
+PZH_SYMBOL zh_symbolNew( const char * szName )
 {
-   PZH_SYMB pSymbol;
+   PZH_SYMBOL pSymbol;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_symbolNew(%s)", szName ) );
 
@@ -225,7 +225,7 @@ PZH_SYMB zh_symbolNew( const char * szName )
 }
 
 /* creates a new dynamic symbol */
-PZH_DYNS zh_dynsymNew( PZH_SYMB pSymbol )
+PZH_DYNS zh_dynsymNew( PZH_SYMBOL pSymbol )
 {
    PZH_DYNS pDynSym;
    ZH_UINT uiPos;
@@ -421,14 +421,14 @@ PZH_DYNS zh_dynsymFindName( const char * szName )  /* finds a symbol */
    return zh_dynsymFind( szUprName );
 }
 
-PZH_SYMB zh_dynsymGetSymbol( const char * szName )
+PZH_SYMBOL zh_dynsymGetSymbol( const char * szName )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymGetSymbol(%s)", szName ) );
 
    return zh_dynsymGet( szName )->pSymbol;
 }
 
-PZH_SYMB zh_dynsymFindSymbol( const char * szName )
+PZH_SYMBOL zh_dynsymFindSymbol( const char * szName )
 {
    PZH_DYNS pDynSym;
 
@@ -438,7 +438,7 @@ PZH_SYMB zh_dynsymFindSymbol( const char * szName )
    return pDynSym ? pDynSym->pSymbol : NULL;
 }
 
-PZH_SYMB zh_dynsymSymbol( PZH_DYNS pDynSym )
+PZH_SYMBOL zh_dynsymSymbol( PZH_DYNS pDynSym )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymSymbol(%p)", ( void * ) pDynSym ) );
 

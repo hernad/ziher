@@ -56,8 +56,10 @@
 #if defined( ZH_OS_UNIX )
 #  include <unistd.h>
 #  include <signal.h>
+ // sigaltstack controls, SIGSTKSZ        8192
 #  if defined( SIGSTKSZ ) && \
       ( defined( _XOPEN_SOURCE ) && _XOPEN_SOURCE >= 500 )
+      // https://stackoverflow.com/questions/5378778/what-does-d-xopen-source-do-mean
 #     define ZH_SIGNAL_EXCEPTION_HANDLER
 #  endif
 #elif defined( ZH_OS_WIN )

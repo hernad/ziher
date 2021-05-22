@@ -70,7 +70,7 @@ typedef struct
    ZH_BOOL     fInit;                           /* should be INIT functions executed */
    ZH_BOOL     fExit;                           /* should be EXIT functions executed */
    ZH_LONG     lSymStart;                       /* Startup Symbol */
-   PZH_SYMB    pSymRead;                        /* Symbols read */
+   PZH_SYMBOL    pSymRead;                        /* Symbols read */
    PZH_DYNF    pDynFunc;                        /* Functions read */
    PZH_SYMBOLS pModuleSymbols;
 } ZZH_BODY, * PZZH_BODY;
@@ -313,7 +313,7 @@ static PZZH_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
       char * buffer, ch;
       ZH_USHORT usBind = ( usMode & ZH_ZZH_BIND_MODEMASK );
 
-      PZH_SYMB pSymRead;           /* Symbols read */
+      PZH_SYMBOL pSymRead;           /* Symbols read */
       PZH_DYNF pDynFunc;           /* Functions read */
       PZH_DYNS pDynSym;
 
@@ -364,8 +364,8 @@ static PZZH_BODY zh_zhbLoad( const char * szHrbBody, ZH_SIZE nBodySize, ZH_USHOR
       }
 
       nBodyOffset = nPos;
-      ul = pHrbBody->ulSymbols * sizeof( ZH_SYMB );
-      pSymRead = ( PZH_SYMB ) zh_xgrab( nSize + ul );
+      ul = pHrbBody->ulSymbols * sizeof( ZH_SYMBOL );
+      pSymRead = ( PZH_SYMBOL ) zh_xgrab( nSize + ul );
       buffer = ( ( char * ) pSymRead ) + ul;
 
       for( ul = 0; ul < pHrbBody->ulSymbols; ul++ )  /* Read symbols in .zhb */
@@ -817,7 +817,7 @@ ZH_FUNC( ZH_ZHBGETFUNSYM )
 
    if( pHrbBody && szName )
    {
-      PZH_SYMB pSym;
+      PZH_SYMBOL pSym;
       ZH_ULONG nPos;
 
       for( nPos = 0, pSym = pHrbBody->pSymRead; nPos < pHrbBody->ulSymbols; ++pSym, ++nPos )
@@ -841,7 +841,7 @@ ZH_FUNC( ZH_ZHBGETFUNLIST )
 
    if( pHrbBody )
    {
-      PZH_SYMB pSym;
+      PZH_SYMBOL pSym;
       ZH_ULONG nPos;
       PZH_ITEM paList = zh_itemArrayNew( 0 );
       PZH_ITEM pFuncName = zh_itemNew( NULL );

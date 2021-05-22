@@ -687,7 +687,7 @@ void * zh_arrayGetPtrGC( PZH_ITEM pArray, ZH_SIZE nIndex, const ZH_GC_FUNCS * pF
       return NULL;
 }
 
-PZH_SYMB zh_arrayGetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex )
+PZH_SYMBOL zh_arrayGetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_arrayGetSymbol(%p, %" ZH_PFS "u)", ( void * ) pArray, nIndex ) );
 
@@ -944,7 +944,7 @@ ZH_BOOL zh_arraySetPtrGC( PZH_ITEM pArray, ZH_SIZE nIndex, void * pValue )
       return ZH_FALSE;
 }
 
-ZH_BOOL zh_arraySetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex, PZH_SYMB pSymbol )
+ZH_BOOL zh_arraySetSymbol( PZH_ITEM pArray, ZH_SIZE nIndex, PZH_SYMBOL pSymbol )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_arraySetSymbol(%p, %" ZH_PFS "u, %p)", ( void * ) pArray, nIndex, ( void * ) pSymbol ) );
 
