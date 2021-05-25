@@ -52,7 +52,7 @@
 #if defined( ZH_OS_WIN )
 
 #define ZH_VM_STARTUP
-#include "hbwmain.c"
+#include "zh_wmain.h"
 
 #endif
 

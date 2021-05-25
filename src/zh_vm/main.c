@@ -52,7 +52,7 @@
 #if defined( ZH_MAIN_STD )
    #include "main_std.h"
 #elif defined( ZH_MAIN_WIN )
-   #include "mainwin.h"
+   #include "main_win.h"
 #else
    #include "main_std.h" /* Use the standard ANSI C entry point if not specified */
 #endif

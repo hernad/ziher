@@ -78,8 +78,7 @@ METHOD LoadFromText( cObjectText, lIgnoreErrors ) CLASS ZHPersistent
       RETURN .F.
    ENDIF
 
-   bError := iif( zh_defaultValue( lIgnoreErrors, .F. ), ;
-                  __BreakBlock(), ErrorBlock() )
+   bError := iif( zh_defaultValue( lIgnoreErrors, .F. ), __BreakBlock(), ErrorBlock() )
 
    FOR EACH cLine IN zh_ATokens( cObjectText, .T. )
 

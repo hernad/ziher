@@ -134,13 +134,7 @@
       [vszakats]
  */
 
-#if   defined( __alpha__ ) || \
-      defined( __alpha ) || \
-      defined( alpha ) || \
-      defined( _M_ALPHA )
-   #define ZH_CPU_ALPHA
-
-#elif defined( __amd64__ ) || \
+#if defined( __amd64__ ) || \
       defined( __amd64 ) || \
       defined( __AMD64__ ) || \
       defined( __x86_64__ ) || \
@@ -195,39 +189,6 @@
       defined( _M_MRX000 ) || \
       defined( _M_MIPS )
    #define ZH_CPU_MIPS
-
-
-#elif defined( __THW_RS6000 ) || \
-      defined( _IBMR2 ) || \
-      defined( _POWER ) || \
-      defined( _ARCH_PWR ) || \
-      defined( _ARCH_PWR2 )
-   #define ZH_CPU_POWER
-
-#elif defined( __sparc__ ) || \
-      defined( __sparc )
-   #if defined( __arch64__ ) || \
-       defined( __sparcv9 ) || \
-       defined( __sparc_v9__ )
-      #define ZH_CPU_SPARC_64
-   #else
-      #define ZH_CPU_SPARC
-   #endif
-
-#elif defined( __sh__ ) || \
-      defined( _SH3 ) || \
-      defined( __sh4__ ) || \
-      defined( __SH4__ ) || \
-      defined( _M_SH )
-   #define ZH_CPU_SH
-
-#elif defined( __370__ ) || \
-      defined( __THW_370__ )
-   #define ZH_CPU_SYS370
-
-#elif defined( __s390__ ) || \
-      defined( __s390x__ )
-   #define ZH_CPU_SYS390
 
 #elif defined( __SYSC_ZARCH__ )
    #define ZH_CPU_ZARCH

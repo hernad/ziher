@@ -1219,6 +1219,8 @@ printf("init step 20\n");
          zh_vmProc( 0 );
       }
 
+   } else {
+      printf("init step 27\n");
    }
 }
 
