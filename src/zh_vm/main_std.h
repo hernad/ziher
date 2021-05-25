@@ -57,5 +57,5 @@ int main( int argc, char * argv[] )
 
    zh_cmdargInit( argc, argv );
    zh_vmInit( ZH_TRUE, ZH_TRUE );
-   return zh_vmQuit();
+   return zh_vmQuit( ZH_TRUE );
 }

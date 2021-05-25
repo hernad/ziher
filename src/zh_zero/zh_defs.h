@@ -1407,11 +1407,6 @@ typedef ZH_U32 ZH_FATTR;
 
 /* Function declaration macros */
 
-/* NOTE: The prefix is "ZH_FUN_" currently, this is needed to
-         avoid collision with any other declared symbol.
-         Note that "ZH_" is not enough, since the Ziher internals
-         are also prefixed with ZH_. [vszakats] */
-
 #define ZH_FUNCNAME( funcname )        ZH_FUN_##funcname
 #define ZH_INIT_FUNCNAME( funcname )   ZH_FUN_init_##funcname
 #define ZH_EXIT_FUNCNAME( funcname )   ZH_FUN_exit_##funcname
@@ -1426,24 +1421,24 @@ typedef ZH_U32 ZH_FATTR;
 #endif
 
 #define ZH_FUNC_EXEC( funcname )   ZH_FUN_##funcname()
-#define ZH_FUNC( funcname )        ZH_EXTERN_C_ ZH_EXPORT ZIHER ZH_FUN_##funcname ( void )
-#define ZH_FUNC_EXTERN( funcname ) ZH_EXTERN_C_ ZH_EXTERN_ ZIHER ZH_EXPORT ZH_FUN_##funcname ( void )
-#define ZH_FUNC_STATIC( funcname ) static ZIHER ZH_FUN_##funcname ( void )
-#define ZH_FUNC_INIT( funcname )   static ZIHER ZH_FUN_init_##funcname ( void )
-#define ZH_FUNC_EXIT( funcname )   static ZIHER ZH_FUN_exit_##funcname ( void )
-#define ZH_FUNC_INITSTATICS()      static ZIHER zh_INITSTATICS( void )
-#define ZH_FUNC_INITLINES()        static ZIHER zh_INITLINES( void )
+#define ZH_FUNC( funcname )        ZH_EXTERN_C_ ZH_EXPORT ZIHERF ZH_FUN_##funcname ( void )
+#define ZH_FUNC_EXTERN( funcname ) ZH_EXTERN_C_ ZH_EXTERN_ ZIHERF ZH_EXPORT ZH_FUN_##funcname ( void )
+#define ZH_FUNC_STATIC( funcname ) static ZIHERF ZH_FUN_##funcname ( void )
+#define ZH_FUNC_INIT( funcname )   static ZIHERF ZH_FUN_init_##funcname ( void )
+#define ZH_FUNC_EXIT( funcname )   static ZIHERF ZH_FUN_exit_##funcname ( void )
+#define ZH_FUNC_INITSTATICS()      static ZIHERF zh_INITSTATICS( void )
+#define ZH_FUNC_INITLINES()        static ZIHERF zh_INITLINES( void )
 #define ZH_FUNC_TRANSLATE( w, o )  ZH_FUNC_EXTERN( o ); ZH_FUNC( w ) { ZH_FUNC_EXEC( o ); }
 
 
 #if defined( ZH_FUNC_CALLCONV )
-   #define ZIHER void ZH_FUNC_CALLCONV
+   #define ZIHERF void ZH_FUNC_CALLCONV
 #else
-   #define ZIHER void
+   #define ZIHERF void
 #endif
 
 ZH_EXTERN_BEGIN
-   typedef ZIHER ( * PZH_FUNC )( void );
+   typedef ZIHERF ( * PZH_FUNC )( void );
 ZH_EXTERN_END
 
 typedef ZH_SHORT ZH_SYMBOLSCOPE;   /* stores symbol's scope */

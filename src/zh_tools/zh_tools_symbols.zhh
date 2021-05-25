@@ -418,9 +418,9 @@ DYNAMIC XToC
 DYNAMIC ZeroInsert
 DYNAMIC ZeroRemove
 DYNAMIC _WStack
-DYNAMIC __hbct_DspTime
-DYNAMIC __hbct_key_c_to_n
-DYNAMIC __hbct_key_n_to_c
+DYNAMIC __zhct_DspTime
+DYNAMIC __zhct_key_c_to_n
+DYNAMIC __zhct_key_n_to_c
 
 #if defined( __ZHEXTREQ__ ) .OR. defined( __ZHEXTERN__HBCT__REQUEST )
    #uncommand DYNAMIC <fncs,...> => EXTERNAL <fncs>

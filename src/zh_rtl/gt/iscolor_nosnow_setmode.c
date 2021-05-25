@@ -55,7 +55,7 @@ ZH_FUNC( ISCOLOR )
 
 ZH_FUNC( NOSNOW )
 {
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_gtSetSnowFlag( zh_parl( 1 ) );
 }
 

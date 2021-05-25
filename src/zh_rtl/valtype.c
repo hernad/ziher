@@ -60,7 +60,7 @@ ZH_FUNC( ZH_ISNUMERIC )
 
 ZH_FUNC( ZH_ISLOGICAL )
 {
-   zh_retl( ZH_ISLOG( 1 ) );
+   zh_retl( ZH_ISLOGICAL( 1 ) );
 }
 
 ZH_FUNC( ZH_ISDATE )

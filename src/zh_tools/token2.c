@@ -549,7 +549,7 @@ ZH_FUNC( TOKENAT )
    TOKEN_ENVIRONMENT sTokenEnvironment;
    TOKEN_POSITION *psTokenPosition;
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       iSeparatorPos = zh_parl( 1 );
 
    sTokenEnvironment = sTokGet( 3, ZH_TRUE );

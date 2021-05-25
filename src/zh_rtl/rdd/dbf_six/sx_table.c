@@ -464,9 +464,9 @@ ZH_FUNC( _SXOPENINIT )
       zh_itemRelease( pItem );
       if( pInfo )
       {
-         if( ZH_ISLOG( 2 ) )
+         if( ZH_ISLOGICAL( 2 ) )
             pInfo->fShared = zh_parl( 2 );
-         if( ZH_ISLOG( 3 ) )
+         if( ZH_ISLOGICAL( 3 ) )
             pInfo->fReadonly = zh_parl( 2 );
          if( ZH_ISCHAR( 4 ) )
          {

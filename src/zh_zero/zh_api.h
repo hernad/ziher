@@ -135,7 +135,7 @@ ZH_EXTERN_BEGIN
 #define ZH_ISNIL( n )         ( zh_extIsNil( n ) )                         /* NOTE: Intentionally using a different method */
 #define ZH_ISCHAR( n )        ( zh_param( n, ZH_IT_STRING ) != NULL )
 #define ZH_IS_PARAM_NUM( n )         ( zh_param( n, ZH_IT_NUMERIC ) != NULL )
-#define ZH_ISLOG( n )         ( zh_param( n, ZH_IT_LOGICAL ) != NULL )
+#define ZH_ISLOGICAL( n )         ( zh_param( n, ZH_IT_LOGICAL ) != NULL )
 #define ZH_ISDATE( n )        ( zh_param( n, ZH_IT_DATE ) != NULL )
 #define ZH_ISTIMESTAMP( n )   ( zh_param( n, ZH_IT_TIMESTAMP ) != NULL )
 #define ZH_ISMEMO( n )        ( zh_param( n, ZH_IT_MEMOFLAG ) != NULL )

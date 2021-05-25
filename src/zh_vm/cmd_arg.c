@@ -520,6 +520,7 @@ static char * zh_cmdargGet( const char * pszName, ZH_BOOL bRetValue )
       /* Step through all envvar switches. */
 
       i = ( int ) strlen( pszName );
+      ZH_TRACE( ZH_TR_INFO, ("envar ZIHER=%s\n", pszName) );
       while( *pszNext )
       {
          static const char * s_szSeparator = " ;,\t";

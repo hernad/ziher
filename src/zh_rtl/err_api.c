@@ -165,7 +165,7 @@ ZH_FUNC_STATIC( CANDEFAULT )
 
 ZH_FUNC_STATIC( _CANDEFAULT )
 {
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
    {
       PZH_ITEM pError = zh_stackSelfItem();
       ZH_BOOL fCan = zh_parl( 1 );
@@ -187,7 +187,7 @@ ZH_FUNC_STATIC( CANRETRY )
 
 ZH_FUNC_STATIC( _CANRETRY )
 {
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
    {
       PZH_ITEM pError = zh_stackSelfItem();
       ZH_BOOL fCan = zh_parl( 1 );
@@ -209,7 +209,7 @@ ZH_FUNC_STATIC( CANSUBST )
 
 ZH_FUNC_STATIC( _CANSUBST )
 {
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
    {
       PZH_ITEM pError = zh_stackSelfItem();
       ZH_BOOL fCan = zh_parl( 1 );

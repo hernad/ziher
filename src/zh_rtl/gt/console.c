@@ -106,7 +106,7 @@ static PZH_PRNPOS zh_prnPos( void )
    return ( PZH_PRNPOS ) zh_stackGetTSD( &s_prnPos );
 }
 
-void zh_conInit( void )
+ZH_EXTERN void zh_conInit( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_conInit()" ) );
 
@@ -122,17 +122,17 @@ void zh_conInit( void )
 
 #endif
 
-   {
+   //{
       /* switch //STDERR:x */
-      int iStderr = zh_cmdargNum( "STDERR" );
+   //   int iStderr = zh_cmdargNum( "STDERR" );
 
-      if( iStderr == 0 || iStderr == 1 )  /* //STDERR with no parameter or 0 */
-         s_hFilenoStderr = s_hFilenoStdout;
+   //   if( iStderr == 0 || iStderr == 1 )  /* //STDERR with no parameter or 0 */
+   //      s_hFilenoStderr = s_hFilenoStdout;
       /* disabled in default builds. It's not multi-platform and very
        * dangerous because it can redirect error messages to data files
        * [druzus]
        */
-   }
+   //}
 
    /*
     * Some compilers open stdout and stderr in text mode, but
@@ -152,7 +152,7 @@ void zh_conInit( void )
    }
 }
 
-void zh_conRelease( void )
+ZH_EXPORT void zh_conRelease( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_conRelease()" ) );
 

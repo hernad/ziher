@@ -147,7 +147,7 @@ ZH_FUNC( DMY )
    else
       zh_dateToday( &iYear, &iMonth, &iDay );
 
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
       bMode = zh_parl( 2 );
 
    if( iMonth >= 1 && iMonth <= 12 )

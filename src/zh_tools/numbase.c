@@ -63,7 +63,7 @@ ZH_FUNC( CTON )
 #ifdef ZH_CT3_STRICT32
       nMax = UINT32_MAX;
 #else
-      ZH_BOOL fStrict = ZH_ISLOG( 3 );
+      ZH_BOOL fStrict = ZH_ISLOGICAL( 3 );
       if( fStrict )
          nMax = UINT32_MAX;
       else

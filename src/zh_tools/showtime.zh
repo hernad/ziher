@@ -52,7 +52,7 @@ FUNCTION ShowTime( nRow, nCol, lNoSec, cColor, l12, lAmPm )
       IF t_hTimer != NIL
          zh_idleDel( t_hTimer )
       ENDIF
-      t_hTimer := zh_idleAdd( {|| __hbct_DspTime( nRow, nCol, lNoSec, cColor, ;
+      t_hTimer := zh_idleAdd( {|| __zhct_DspTime( nRow, nCol, lNoSec, cColor, ;
          l12, lAmPm ) } )
    ELSEIF t_hTimer != NIL
       zh_idleDel( t_hTimer )

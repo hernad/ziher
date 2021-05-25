@@ -61,5 +61,5 @@ File Type: EXECUTABLE IMAGE
    puts("");
    puts("************************ end run_hello_dbf win ****************************");
 
-   return zh_vmQuit();
+   return zh_vmQuit( 1 );
 }

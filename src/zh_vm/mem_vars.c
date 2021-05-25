@@ -1434,7 +1434,7 @@ ZH_FUNC( __MVSAVE )
 {
    ZH_STACK_TLS_PRELOAD
 
-   if( zh_pcount() == 3 && ZH_ISCHAR( 1 ) && ZH_ISCHAR( 2 ) && ZH_ISLOG( 3 ) )
+   if( zh_pcount() == 3 && ZH_ISCHAR( 1 ) && ZH_ISCHAR( 2 ) && ZH_ISLOGICAL( 3 ) )
    {
       const char * pszFileName = zh_parc( 1 );
       PZH_ITEM pError = NULL;
@@ -1494,7 +1494,7 @@ ZH_FUNC( __MVSAVE )
 ZH_FUNC( __MVRESTORE )
 {
 
-   if( ZH_ISCHAR( 1 ) && ZH_ISLOG( 2 ) )
+   if( ZH_ISCHAR( 1 ) && ZH_ISLOGICAL( 2 ) )
    {
       ZH_STACK_TLS_PRELOAD
       const char * pszFileName = zh_parc( 1 );

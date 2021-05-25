@@ -128,7 +128,7 @@ static void zh_compGenArgList( int iFirst, int iLast,
    if( pMsgFunc )
    {
       *pMsgFunc = NULL;
-      if( ZH_ISLOG( iFirst ) )
+      if( ZH_ISLOGICAL( iFirst ) )
       {
          if( zh_parl( iFirst ) )
             *pMsgFunc = s_pp_msg;

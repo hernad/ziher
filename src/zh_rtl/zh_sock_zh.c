@@ -1487,7 +1487,7 @@ ZH_FUNC( ZH_SOCKETAUTOSHUTDOWN )
    if( pSock )
    {
       zh_retl( zh_sockexGetShutDown( pSock ) );
-      if( ZH_ISLOG( 2 ) )
+      if( ZH_ISLOGICAL( 2 ) )
          zh_sockexSetShutDown( pSock, zh_parl( 2 ) );
    }
 }

@@ -127,7 +127,7 @@ typedef enum
    ZH_SET_DEFEXTENSIONS = 109,
    ZH_SET_EOL           = 110,
    ZH_SET_TRIMFILENAME  = 111,
-   ZH_SET_HBOUTLOG      = 112,
+   ZH_SET_ZHOUTLOG      = 112,
    ZH_SET_ZHOUTLOGINFO  = 113,
    ZH_SET_CODEPAGE      = 114,
    ZH_SET_OSCODEPAGE    = 115,
@@ -208,7 +208,7 @@ typedef struct
    ZH_BOOL    ZH_SET_DEFEXTENSIONS;
    char *     ZH_SET_EOL;
    ZH_BOOL    ZH_SET_TRIMFILENAME;
-   char *     ZH_SET_HBOUTLOG;
+   char *     ZH_SET_ZHOUTLOG;
    char *     ZH_SET_ZHOUTLOGINFO;
    char *     ZH_SET_TIMEFORMAT;
 

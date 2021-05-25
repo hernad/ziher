@@ -80,7 +80,7 @@ ZH_FUNC( SETBLINK )
 
    zh_gtGetBlink( &bPreviousBlink );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_gtSetBlink( zh_parl( 1 ) );
 
    zh_retl( bPreviousBlink );

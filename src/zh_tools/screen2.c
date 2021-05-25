@@ -411,7 +411,7 @@ ZH_FUNC( STRSCREEN )  /* TODO: Unicode support */
    zh_retc_null();
 }
 
-ZH_FUNC( __HBCT_DSPTIME )  /* Helper function for ShowTime() */
+ZH_FUNC( __ZHCT_DSPTIME )  /* Helper function for ShowTime() */
 {
    int iRow, iCol;
    int iColor, iLen;

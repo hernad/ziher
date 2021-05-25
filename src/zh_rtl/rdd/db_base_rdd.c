@@ -297,7 +297,7 @@ ZH_FUNC( DBCREATE )
    szFileName = zh_parc( 1 );
    pStruct = zh_param( 2, ZH_IT_ARRAY );
    szDriver = zh_parc( 3 );
-   fKeepOpen = ZH_ISLOG( 4 );
+   fKeepOpen = ZH_ISLOGICAL( 4 );
    fCurrArea = fKeepOpen && ! zh_parl( 4 );
    szAlias = zh_parc( 5 );
    pDelim = zh_param( 6, ZH_IT_ANY );
@@ -398,7 +398,7 @@ ZH_FUNC( __DBOPENSDF )
    szFileName = zh_parc( 1 );
    pStruct = zh_param( 2, ZH_IT_ARRAY );
    szDriver = zh_parc( 3 );
-   fKeepOpen = ZH_ISLOG( 4 );
+   fKeepOpen = ZH_ISLOGICAL( 4 );
    fCurrArea = fKeepOpen && ! zh_parl( 4 );
    szAlias = zh_parc( 5 );
    pDelim = zh_param( 6, ZH_IT_ANY );
@@ -647,7 +647,7 @@ ZH_FUNC( DBSEEK )
       if( ! ZH_ISNIL( 1 ) )
       {
          PZH_ITEM pKey = zh_param( 1, ZH_IT_ANY );
-         ZH_BOOL bSoftSeek = ZH_ISLOG( 2 ) ? ( ZH_BOOL ) zh_parl( 2 ) : zh_setGetSoftSeek();
+         ZH_BOOL bSoftSeek = ZH_ISLOGICAL( 2 ) ? ( ZH_BOOL ) zh_parl( 2 ) : zh_setGetSoftSeek();
          ZH_BOOL bFindLast = zh_parl( 3 ) /* ZH_EXTENSION */, fFound = ZH_FALSE;
          if( SELF_SEEK( pArea, bSoftSeek, pKey, bFindLast ) == ZH_SUCCESS )
          {
@@ -846,7 +846,7 @@ ZH_FUNC( DBUSEAREA )
 {
    zh_retl( zh_rddOpenTable( zh_parc( 3 ), zh_parc( 2 ),
          zh_parl( 1 ) ? 0 : ( ZH_AREANO ) zh_rddGetCurrentWorkAreaNumber(),
-         zh_parc( 4 ), ZH_ISLOG( 5 ) ? zh_parl( 5 ) : ! zh_setGetExclusive(),
+         zh_parc( 4 ), ZH_ISLOGICAL( 5 ) ? zh_parl( 5 ) : ! zh_setGetExclusive(),
          zh_parl( 6 ), zh_parc( 7 ), zh_parnl( 8 ), NULL, NULL ) == ZH_SUCCESS );
 }
 
@@ -1082,7 +1082,7 @@ ZH_FUNC( NETERR )
 {
    zh_retl( zh_rddGetNetErr() );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_rddSetNetErr( zh_parl( 1 ) );
 }
 
@@ -1233,7 +1233,7 @@ ZH_FUNC( ORDCREATE )
       dbOrderInfo.abBagName = zh_parcx( 1 );
       dbOrderInfo.atomBagName = zh_parcx( 2 );
       dbOrderInfo.itmOrder = NULL;
-      dbOrderInfo.fUnique = ZH_ISLOG( 5 ) ? ( ZH_BOOL ) zh_parl( 5 ) : zh_setGetUnique();
+      dbOrderInfo.fUnique = ZH_ISLOGICAL( 5 ) ? ( ZH_BOOL ) zh_parl( 5 ) : zh_setGetUnique();
       dbOrderInfo.abExpr = zh_param( 3, ZH_IT_STRING );
       if( ( ( dbOrderInfo.abBagName == NULL || dbOrderInfo.abBagName[ 0 ] == 0 ) &&
             ( dbOrderInfo.atomBagName == NULL || dbOrderInfo.atomBagName[ 0 ] == 0 ) ) ||
@@ -1724,7 +1724,7 @@ ZH_FUNC( DBSETRELATION )
 
       if( zh_pcount() < 2 ||
           zh_param( 1, ZH_IT_NUMERIC | ZH_IT_STRING ) == NULL ||
-          ! ( ZH_ISNIL( 4 ) || ZH_ISLOG( 4 ) ) )
+          ! ( ZH_ISNIL( 4 ) || ZH_ISLOGICAL( 4 ) ) )
       {
          zh_errRT_DBCMD( EG_ARG, EDBCMD_REL_BADPARAMETER, NULL, ZH_ERR_FUNCNAME );
          return;

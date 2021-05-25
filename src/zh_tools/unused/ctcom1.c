@@ -139,7 +139,7 @@ ZH_FUNC( COM_RTS )
 {
    int iMCR, iClr = 0, iSet = 0;
 
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       if( zh_parl( 2 ) )
          iSet = ZH_COM_MCR_RTS;
@@ -156,7 +156,7 @@ ZH_FUNC( COM_DTR )
 {
    int iMCR, iClr = 0, iSet = 0;
 
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       if( zh_parl( 2 ) )
          iSet = ZH_COM_MCR_DTR;
@@ -231,7 +231,7 @@ ZH_FUNC( COM_HARD )
                              ( ZH_COM_FLOW_IRTSCTS | ZH_COM_FLOW_ORTSCTS );
       fResult = ( iFlow & iMask ) == iMask;
 
-      if( ZH_ISLOG( 2 ) )
+      if( ZH_ISLOGICAL( 2 ) )
       {
          iFlow &= ~( ZH_COM_FLOW_IDTRDSR | ZH_COM_FLOW_ODTRDSR |
                      ZH_COM_FLOW_IRTSCTS | ZH_COM_FLOW_ORTSCTS );
@@ -256,7 +256,7 @@ ZH_FUNC( COM_SOFT )
       iMask = ( ZH_COM_FLOW_XON | ZH_COM_FLOW_XOFF );
       fResult = ( iFlow & iMask ) == iMask;
 
-      if( ZH_ISLOG( 2 ) )
+      if( ZH_ISLOGICAL( 2 ) )
       {
          if( zh_parl( 2 ) )
             iFlow |= iMask;
@@ -277,7 +277,7 @@ ZH_FUNC( COM_SOFT_R )
    ZH_BOOL fResult = ZH_FALSE;
    int iPort = zh_parni( 1 ), iMode;
 
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
       zh_comFlowSet( iPort, ZH_COM_FL_SOFT |
                             ( zh_parl( 2 ) ? ZH_COM_FL_OOFF : ZH_COM_FL_OON ) );
 

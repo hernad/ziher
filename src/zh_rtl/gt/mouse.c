@@ -68,7 +68,7 @@ ZH_FUNC( MSETCURSOR )
 {
    zh_retl( zh_mouseGetCursor() );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_mouseSetCursor( zh_parl( 1 ) );
 }
 

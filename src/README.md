@@ -22,3 +22,9 @@ Install [bazel.build](https://bazel.build/).
 
     #~/.bazelrc 
     build --strategy=CppCompile=standalone
+
+
+## Trace
+
+    export ZH_TR_OUTPUT=trace.log
+    export ZH_TR_LEVEL=5 #debug

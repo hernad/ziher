@@ -116,7 +116,7 @@ ZH_FUNC( CSETSAFETY )
 {
    zh_retl( ct_getsafety() );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       ct_setsafety( zh_parl( 1 ) );
 }
 

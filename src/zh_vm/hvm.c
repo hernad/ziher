@@ -139,7 +139,7 @@ static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM, PZH_SYMBOL );  /* select the wo
 static void       zh_vmSwapAlias( void );           /* swaps items on the eval stack and pops the workarea number */
 
 /* Execution */
-static ZIHER zh_vmDoBlock( void );             /* executes a codeblock */
+static ZIHERF zh_vmDoBlock( void );             /* executes a codeblock */
 static void    zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and params supplied */
 static void    zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and variable number of params supplied */
 static void    zh_vmSFrame( PZH_SYMBOL pSym );     /* sets the statics frame for a function */
@@ -1224,7 +1224,7 @@ printf("init step 20\n");
    }
 }
 
-ZH_EXPORT int zh_vmQuit( void )
+ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -1249,9 +1249,8 @@ ZH_EXPORT int zh_vmQuit( void )
     */
    zh_stackSetActionRequest( 0 );
    zh_rddCloseAll();             /* close all workareas */
-   // hernad ne diraj rdd drajvere
-   //zh_rddShutDown();             /* remove all registered RDD drivers */
-   // hernad ne diraj rdd
+   if (bInitRT)
+      zh_rddShutDown();             /* remove all registered RDD drivers */
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
    zh_i18n_exit();               /* unregister i18n module */
@@ -1270,21 +1269,22 @@ ZH_EXPORT int zh_vmQuit( void )
    zh_stackDestroyTSD();
 
    // hernad ne diraj ovo
-   //zh_breakBlockRelease();
-   //zh_errExit();
-   //zh_clsReleaseAll();
-   // end hernad
+   if (bInitRT) {
+     zh_breakBlockRelease();
+     zh_errExit();
+     zh_clsReleaseAll();
+   }
 
    zh_vmStaticsRelease();
 
    /* release all remaining items */
 
    zh_conRelease();                 /* releases Console */
-
    zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
-   //hernad ne diraj dynamic sym table
-   //zh_dynsymRelease();              /* releases the dynamic symbol table */
+   if (bInitRT) {
+      zh_dynsymRelease();              /* releases the dynamic symbol table */
+   }
 
    zh_itemClear( zh_stackReturnItem() );
    zh_gcCollectAll( ZH_TRUE );
@@ -1301,10 +1301,11 @@ ZH_EXPORT int zh_vmQuit( void )
    }
    zh_threadExit();
 
-   //hernad ne diraj ovo 
-   //zh_langReleaseAll();             /* release lang modules */
-   //zh_cdpReleaseAll();              /* releases codepages */
-   // hernad end ne diraj ovo
+
+   if (bInitRT) {
+     zh_langReleaseAll();             /* release lang modules */
+     zh_cdpReleaseAll();              /* releases codepages */
+   }
 
    /* release all known garbage */
    if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
@@ -6113,7 +6114,7 @@ void zh_vmEval( ZH_USHORT uiParams )
    zh_stackOldFrame( &sStackState );
 }
 
-static ZIHER zh_vmDoBlock( void )
+static ZIHERF zh_vmDoBlock( void )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pBlock, pBase;
@@ -7853,7 +7854,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRegisterSymbols(%p,%hu,%s,%lu,%d,%d,%d)", ( void * ) pModuleSymbols, uiSymbols, szModuleName, ulID, ( int ) fDynLib, ( int ) fClone, ( int ) fOverLoad ) );
 
-   puts("hernad registerSymbols"); puts(szModuleName);
+   //puts("hernad registerSymbols"); puts(szModuleName);
 
    pNewSymbols = s_ulFreeSymbols == 0 ? NULL :
                  zh_vmFindFreeModule( pModuleSymbols, uiSymbols, szModuleName, ulID );
@@ -12018,7 +12019,7 @@ ZH_FUNC( __SETPROFILER )
    zh_retl( ZH_FALSE );
 #else
    zh_retl( zh_bProfiler );
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_bProfiler = zh_parl( 1 );
 #endif
 }
@@ -12062,7 +12063,7 @@ ZH_FUNC( __TRACEPRGCALLS )
    ZH_STACK_TLS_PRELOAD
 #if defined( ZH_PRG_TRACE )
    zh_retl( zh_bTracePrgCalls );
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       zh_bTracePrgCalls = zh_parl( 1 );
 #else
    zh_retl( ZH_FALSE );

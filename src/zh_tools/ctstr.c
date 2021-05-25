@@ -283,7 +283,7 @@ ZH_FUNC( CSETREF )
 {
    zh_retl( ct_getref() );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       ct_setref( zh_parl( 1 ) );
    else if( zh_pcount() > 0 ) /* 1 params, but is not logical ! */
    {
@@ -319,7 +319,7 @@ ZH_FUNC( CSETATMUPA )
 {
    zh_retl( ct_getatmupa() );
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
       ct_setatmupa( zh_parl( 1 ) );
    else if( zh_pcount() > 0 ) /* 1 params, but is not logical ! */
    {

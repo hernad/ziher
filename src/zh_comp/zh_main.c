@@ -4224,7 +4224,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
              * intentionally to not create name conflicts when -n2 switch
              * is used and we compile code not encapsulated in function.
              */
-            zh_compFunctionAdd( ZH_COMP_PARAM, "__hbInit", ZH_FS_STATIC,
+            zh_compFunctionAdd( ZH_COMP_PARAM, "__zhInit", ZH_FS_STATIC,
                                 ZH_FUNF_PROCEDURE | ZH_FUNF_FILE_FIRST | ZH_FUNF_FILE_DECL );
          else
          {

@@ -61,7 +61,7 @@ ZH_FUNC( ZH_PROCESSOPEN )
        ( pStdIn  || ZH_ISNIL( 2 ) ) &&
        ( pStdOut || ZH_ISNIL( 3 ) ) &&
        ( pStdErr || ZH_ISNIL( 4 ) ) &&
-       ( ZH_ISLOG( 5 ) || ZH_ISNIL( 5 ) ) &&
+       ( ZH_ISLOGICAL( 5 ) || ZH_ISNIL( 5 ) ) &&
        ( ZH_ISBYREF( 6 ) || ZH_ISNIL( 6 ) ) &&
        ( ! pStdIn || ( pStdIn != pStdOut && pStdIn != pStdErr ) ) )
    {
@@ -97,7 +97,7 @@ ZH_FUNC( ZH_PROCESSVALUE )
 {
    ZH_FHANDLE hProcess = zh_numToHandle( zh_parnint( 1 ) );
 
-   if( hProcess != 0 && hProcess != FS_ERROR && ( zh_pcount() < 2 || ZH_ISLOG( 2 ) ) )
+   if( hProcess != 0 && hProcess != FS_ERROR && ( zh_pcount() < 2 || ZH_ISLOGICAL( 2 ) ) )
    {
       int iResult = zh_fsProcessValue( hProcess, zh_pcount() < 2 || zh_parl( 2 ) );
       zh_fsSetFError( zh_fsError() );
@@ -111,7 +111,7 @@ ZH_FUNC( ZH_PROCESSCLOSE )
 {
    ZH_FHANDLE hProcess = zh_numToHandle( zh_parnint( 1 ) );
 
-   if( hProcess != 0 && hProcess != FS_ERROR && ( zh_pcount() < 2 || ZH_ISLOG( 2 ) ) )
+   if( hProcess != 0 && hProcess != FS_ERROR && ( zh_pcount() < 2 || ZH_ISLOGICAL( 2 ) ) )
    {
       ZH_BOOL fResult = zh_fsProcessClose( hProcess, zh_pcount() < 2 || zh_parl( 2 ) );
       zh_fsSetFError( zh_fsError() );
@@ -135,7 +135,7 @@ ZH_FUNC( ZH_PROCESSRUN )
        ( szStdIn || ZH_ISNIL( 2 ) ) &&
        ( pStdOut || ZH_ISNIL( 3 ) ) &&
        ( pStdErr || ZH_ISNIL( 4 ) ) &&
-       ( ZH_ISLOG( 5 ) || ZH_ISNIL( 5 ) ) )
+       ( ZH_ISLOGICAL( 5 ) || ZH_ISNIL( 5 ) ) )
    {
       ZH_SIZE nStdOut, nStdErr;
       char * pStdOutBuf, * pStdErrBuf;

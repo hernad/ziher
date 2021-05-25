@@ -63,7 +63,7 @@ static void SetGet( int iFlag )
       gtInfo.pResult = NULL;
    }
 
-   if( ZH_ISLOG( 1 ) )
+   if( ZH_ISLOGICAL( 1 ) )
    {
       gtInfo.pNewVal = zh_itemPutNI( gtInfo.pNewVal,
          zh_parl( 1 ) ? ( iState | iFlag ) : ( iState & ~iFlag ) );

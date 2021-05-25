@@ -203,7 +203,7 @@ ZH_FUNC( SETFONT )
       offset = zh_parni( 3 );
    if( ZH_IS_PARAM_NUM( 4 ) )
       count = zh_parni( 4 );
-   if( ZH_ISLOG( 3 ) && zh_parl( 3 ) && count != 0 )
+   if( ZH_ISLOGICAL( 3 ) && zh_parl( 3 ) && count != 0 )
       height = len / count;
 
 #if defined( __DJGPP__ )

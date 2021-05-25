@@ -11,7 +11,8 @@
         "zh_regex.h": "c",
         "dbf_cdx_1.h": "c",
         "zh_zlib.h": "c",
-        "zh_vm.h": "c"
+        "zh_vm.h": "c",
+        "random": "c"
     },
     "git.ignoreLimitWarning": true
 }

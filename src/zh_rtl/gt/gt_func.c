@@ -53,7 +53,7 @@ ZH_FUNC( ZH_SETDISPCP )
 {
    if( ZH_ISCHAR( 1 ) )
    {
-      if( zh_pcount() == 2 && ZH_ISLOG( 2 ) )
+      if( zh_pcount() == 2 && ZH_ISLOGICAL( 2 ) )
          zh_gtSetDisplayCodepage( zh_parc( 1 ), NULL, zh_parl( 2 ) );
       else
          zh_gtSetDisplayCodepage( zh_parc( 1 ), zh_parc( 2 ), zh_parl( 3 ) );
@@ -74,7 +74,7 @@ ZH_FUNC( ZH_SETTERMCP )
 {
    if( ZH_ISCHAR( 1 ) )
    {
-      if( zh_pcount() == 2 && ZH_ISLOG( 2 ) )
+      if( zh_pcount() == 2 && ZH_ISLOGICAL( 2 ) )
       {
          zh_gtSetDisplayCodepage( zh_parc( 1 ), NULL, zh_parl( 2 ) );
          zh_gtSetKeyboardCodepage( zh_parc( 1 ), NULL );

@@ -315,7 +315,7 @@ STATIC sc_hCnv := { ;
    KS_PAD_0          => 0                 , ; /* no Ziher equivalent */
    KS_PAD_DECIMAL    => 0                 }   /* no Ziher equivalent */
 
-FUNCTION __hbct_key_c_to_n( cKey )
+FUNCTION __zhct_key_c_to_n( cKey )
 
    IF ZH_ISSTRING( cKey )
       RETURN zh_HGetDef( sc_hCnv, cKey, 0 )
@@ -323,7 +323,7 @@ FUNCTION __hbct_key_c_to_n( cKey )
 
    RETURN NIL
 
-FUNCTION __hbct_key_n_to_c( nKey )
+FUNCTION __zhct_key_n_to_c( nKey )
 
    LOCAL hKey
 

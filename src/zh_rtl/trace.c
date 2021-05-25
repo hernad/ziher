@@ -81,19 +81,19 @@ static void zh_trace_message( char * buffer, ZH_SIZE nSize, int iParam, int iCou
 
 ZH_FUNC( ZH_TRACESTATE )
 {
-   zh_retl( zh_tracestate( ZH_ISLOG( 1 ) ? zh_parl( 1 ) :
+   zh_retl( zh_tracestate( ZH_ISLOGICAL( 1 ) ? zh_parl( 1 ) :
                                            zh_parnidef( 1, -1 ) ) );
 }
 
 ZH_FUNC( ZH_TRACESYSOUT )
 {
-   zh_retl( zh_tracesysout( ZH_ISLOG( 1 ) ? zh_parl( 1 ) :
+   zh_retl( zh_tracesysout( ZH_ISLOGICAL( 1 ) ? zh_parl( 1 ) :
                                             zh_parnidef( 1, -1 ) ) );
 }
 
 ZH_FUNC( ZH_TRACEFLUSH )
 {
-   zh_retl( zh_traceflush( ZH_ISLOG( 1 ) ? zh_parl( 1 ) :
+   zh_retl( zh_traceflush( ZH_ISLOGICAL( 1 ) ? zh_parl( 1 ) :
                                            zh_parnidef( 1, -1 ) ) );
 }
 

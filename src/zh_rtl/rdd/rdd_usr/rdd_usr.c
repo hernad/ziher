@@ -2976,7 +2976,7 @@ ZH_FUNC( USRRDD_AREARESULT )
 
 ZH_FUNC( USRRDD_SETBOF )
 {
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       AREAP pArea;
 
@@ -2992,7 +2992,7 @@ ZH_FUNC( USRRDD_SETBOF )
 
 ZH_FUNC( USRRDD_SETEOF )
 {
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       AREAP pArea;
 
@@ -3008,7 +3008,7 @@ ZH_FUNC( USRRDD_SETEOF )
 
 ZH_FUNC( USRRDD_SETFOUND )
 {
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       AREAP pArea;
 
@@ -3024,7 +3024,7 @@ ZH_FUNC( USRRDD_SETFOUND )
 
 ZH_FUNC( USRRDD_SETTOP )
 {
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       AREAP pArea;
 
@@ -3040,7 +3040,7 @@ ZH_FUNC( USRRDD_SETTOP )
 
 ZH_FUNC( USRRDD_SETBOTTOM )
 {
-   if( ZH_ISLOG( 2 ) )
+   if( ZH_ISLOGICAL( 2 ) )
    {
       AREAP pArea;
 

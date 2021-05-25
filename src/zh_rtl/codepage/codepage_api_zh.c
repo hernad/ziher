@@ -95,7 +95,7 @@ ZH_FUNC( ZH_CDPISCHARIDX )
    if( cdp )
    {
       fResult = ZH_CODEPAGE_ISCHARIDX( cdp );
-      if( ZH_CODEPAGE_ISCUSTOM( cdp ) && ZH_ISLOG( 2 ) )
+      if( ZH_CODEPAGE_ISCUSTOM( cdp ) && ZH_ISLOGICAL( 2 ) )
       {
          if( zh_parl( 2 ) )
             cdp->type |= ZH_CODEPAGE_TYPE_CHARIDX;

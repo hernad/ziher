@@ -74,7 +74,7 @@ void zh_errInternalRaw( ZH_ERRCODE errCode, const char * szText, const char * sz
    fStack = zh_stackId() != NULL;
    fLang = fStack && zh_langID() != NULL;
 
-   szFile = fStack ? zh_setGetCPtr( ZH_SET_HBOUTLOG ) : NULL;
+   szFile = fStack ? zh_setGetCPtr( ZH_SET_ZHOUTLOG ) : NULL;
    if( ! szFile )
       szFile = "zh_out.log";
 
