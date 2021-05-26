@@ -693,10 +693,7 @@ int zh_iswin9x( void )
 #endif
 }
 
-ZH_BOOL zh_iswince( void )
-{
-   return ZH_FALSE;
-}
+
 
 /* NOTE: The caller must free the returned buffer. [vszakats] */
 

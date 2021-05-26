@@ -275,10 +275,6 @@ ZH_FUNC( ZH_OSISWIN7 )
    zh_retl( zh_iswin7() );
 }
 
-ZH_FUNC( ZH_OSISWINCE )
-{
-   zh_retl( zh_iswince() );
-}
 
 /* Legacy functions */
 

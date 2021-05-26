@@ -1078,7 +1078,6 @@ extern ZH_EXPORT ZH_BOOL zh_iswin7( void );     /* return ZH_TRUE if OS == Windo
 extern ZH_EXPORT ZH_BOOL zh_iswin8( void );     /* return ZH_TRUE if OS == Windows 8 or newer */
 extern ZH_EXPORT ZH_BOOL zh_iswin81( void );    /* return ZH_TRUE if OS == Windows 8.1 or newer */
 extern ZH_EXPORT ZH_BOOL zh_iswin10( void );    /* return ZH_TRUE if OS == Windows 10 or newer */
-extern ZH_EXPORT ZH_BOOL zh_iswince( void );    /* return ZH_TRUE if OS is Windows CE or Windows Mobile */
 extern ZH_EXPORT ZH_BOOL zh_iswinver( int iMajor, int iMinor, int iType, ZH_BOOL fOrUpper );
 extern ZH_EXPORT ZH_BOOL zh_iswinsp( int iServicePackMajor, ZH_BOOL fOrUpper );
 
