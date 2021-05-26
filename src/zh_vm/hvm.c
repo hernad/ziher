@@ -157,7 +157,7 @@ static void    zh_vmPushMacroBlock( const ZH_BYTE * pCode, ZH_SIZE nSize, ZH_USH
 static void    zh_vmPushDoubleConst( double dNumber, int iWidth, int iDec ); /* Pushes a double constant (pcode) */
 static void    zh_vmPushLocal( int iLocal );       /* pushes the content of a local onto the stack */
 static void    zh_vmPushLocalByRef( int iLocal );  /* pushes a local by reference onto the stack */
-static void    zh_vmPushHBLong( ZH_MAXINT nNumber ); /* pushes a ZH_MAXINT number onto the stack */
+static void    zh_vmPushZHLong( ZH_MAXINT nNumber ); /* pushes a ZH_MAXINT number onto the stack */
 #if ! defined( ZH_LONG_LONG_OFF )
    static void zh_vmPushLongLongConst( ZH_LONGLONG lNumber );  /* Pushes a long long constant (pcode) */
 #endif
@@ -6621,7 +6621,7 @@ void zh_vmPushNumber( double dNumber, int iDec )
       zh_vmPushInteger( ( int ) dNumber );
 
    else if( ZH_DBL_LIM_LONG( dNumber ) )
-      zh_vmPushHBLong( ( ZH_MAXINT ) dNumber );
+      zh_vmPushZHLong( ( ZH_MAXINT ) dNumber );
 
    else
       zh_vmPushDouble( dNumber, zh_stackSetStruct()->ZH_SET_DECIMALS );
@@ -6704,16 +6704,16 @@ void zh_vmPushSize( ZH_ISIZ nNumber )
    if( ZH_LIM_INT( nNumber ) )
       zh_vmPushInteger( ( int ) nNumber );
    else
-      zh_vmPushHBLong( nNumber );
+      zh_vmPushZHLong( nNumber );
 #endif
 }
 
-static void zh_vmPushHBLong( ZH_MAXINT nNumber )
+static void zh_vmPushZHLong( ZH_MAXINT nNumber )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pItem = zh_stackAllocItem();
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushHBLong(%" PFHL "d)", nNumber ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushZHLong(%" PFHL "d)", nNumber ) );
 
    pItem->type = ZH_IT_LONG;
    pItem->item.asLong.value = nNumber;
@@ -6739,7 +6739,7 @@ void zh_vmPushNumInt( ZH_MAXINT nNumber )
    if( ZH_LIM_INT( nNumber ) )
       zh_vmPushInteger( ( int ) nNumber );
    else
-      zh_vmPushHBLong( nNumber );
+      zh_vmPushZHLong( nNumber );
 }
 
 void zh_vmPushDouble( double dNumber, int iDec )
