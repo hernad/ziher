@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jodreports.poms</groupId>
+    <artifactId>jodreports-parent</artifactId>
+    <version>1</version>
+  </parent>
+
+  <groupId>org.jodreports</groupId>
+  <artifactId>jodreports-library</artifactId>
+  <version>3.0.2</version>
+
+  <name>JODReports :: Library</name>
+  <description>JODReports generates dynamic documents and reports based on the OpenDocument Format and FreeMarker.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <url>http://jodreports.org/</url>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 2.1</name>
+      <url>http://www.gnu.org/licenses/lgpl.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>mnasato</id>
+      <name>Mirko Nasato</name>
+      <email>mirko@artofsolving.com</email>
+      <roles>
+        <role>founder</role>
+        <role>eremitus</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>terryliang</id>
+      <name>Yongtai Liang</name>
+      <email>terry@poloniouslive.com</email>
+    </developer>
+    <developer>
+      <id>ansgarkonermann</id>
+      <name>Ansgar Konermann</name>
+      <email>ansgar.konermann@googlemail.com</email>
+    </developer>
+    <developer>
+      <id>jacobf</id>
+      <name>Jacob Fahrenkrug</name>
+      <email>jacob.fahrenkrug@googlemail.com</email>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.16</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-jdk14</artifactId>
+      <version>1.6.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+	     <groupId>xml-apis</groupId>
+	     <artifactId>xml-apis</artifactId>
+	     <version>2.0.2</version>
+    </dependency>
+
+    <dependency>
+	    <groupId>org.bluestemsoftware.open.maven.tparty</groupId>
+	    <artifactId>xerces-impl</artifactId>
+	    <version>2.9.0</version>
+    </dependency>
+
+
+<dependency>
+	<groupId>xalan</groupId>
+	<artifactId>xalan</artifactId>
+	<version>2.5.1</version>
+</dependency>
+
+<dependency>
+	<groupId>jaxen</groupId>
+	<artifactId>jaxen</artifactId>
+	<version>1.1.6</version>
+</dependency>
+
+  </dependencies>
+
+
+
+  <scm>
+    <url>https://github.com/jodreports</url>
+    <connection>scm:git:git@github.com:jodreports/jodreports-library.git</connection>
+    <developerConnection>scm:git:git@github.com:jodreports/jodreports-library.git</developerConnection>
+  </scm>
+
+</project>
