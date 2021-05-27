@@ -14,5 +14,6 @@
         "zh_vm.h": "c",
         "random": "c"
     },
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "java.configuration.updateBuildConfiguration": "automatic"
 }
