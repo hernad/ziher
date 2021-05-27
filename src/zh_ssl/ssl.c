@@ -49,15 +49,6 @@
    #ifndef _CRT_SECURE_NO_WARNINGS
    #define _CRT_SECURE_NO_WARNINGS
    #endif
-#elif defined( __BORLANDC__ )
-   /* NOTE: To avoid these with BCC 5.5:
-            Warning W8065 openssl/applink.c 40: Call to function '_setmode' with no prototype in function app_fsetmod
-            Error E2451 openssl/applink.c 82: Undefined symbol '_lseek' in function OPENSSL_Applink
-    */
-   #include "io.h"
-   #define _setmode  setmode
-   #undef _lseek
-   #define _lseek    lseek
 #endif
 
 /* This must come before #include "zh_ssl.h".

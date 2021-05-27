@@ -56,7 +56,7 @@
 #include "ssl.zhh"
 
 #if OPENSSL_VERSION_NUMBER < 0x00906000L
-   /* #error "unsupported OpenSSL version, required 0.9.6 or higher" */
+   #error "unsupported OpenSSL version, required 0.9.6 or higher"
 #endif
 
 #if OPENSSL_VERSION_NUMBER < 0x00908030L

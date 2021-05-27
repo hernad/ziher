@@ -16,6 +16,7 @@ java_library(
       "@maven//:org_bluestemsoftware_open_maven_tparty_xerces_impl",
       "@maven//:xalan_xalan",
       "@maven//:jaxen_jaxen",
-    ]
+    ],
+    visibility = ["//visibility:public"],
 
 )
