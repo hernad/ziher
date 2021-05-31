@@ -526,11 +526,13 @@ pqDropConnection(PGconn *conn, bool flushInput)
 #endif
 	if (conn->sasl_state)
 	{
+#ifdef USE_SCRAM
 		/*
 		 * XXX: if support for more authentication mechanisms is added, this
 		 * needs to call the right 'free' function.
 		 */
 		pg_fe_scram_free(conn->sasl_state);
+#endif
 		conn->sasl_state = NULL;
 	}
 }

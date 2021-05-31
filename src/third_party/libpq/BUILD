@@ -1,9 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
-cc_library(
-    name = "libpq",
-    srcs = [
-        "fe-auth-scram.c",
+_C_SOURCES = [
+        #"fe-auth-scram.c",
         "fe-connect.c",
         "fe-exec.c",
         "fe-lobj.c",
@@ -16,7 +14,25 @@ cc_library(
         "libpq-events.c",
         "pqexpbuffer.c",
         "fe-auth.c",
-    ],
+        "top/port/snprintf.c",
+        "top/port/chklocale.c",
+        "top/port/strerror.c",
+        "top/port/inet_net_ntop.c",
+        "top/port/getpeereid.c",
+        "top/port/noblock.c",
+        "top/port/thread.c",
+        "top/port/strlcpy.c",
+        "top/port/pgstrcasecmp.c",
+        "top/common/ip.c",
+        "top/common/link-canary.c",
+        "top/common/string.c",
+        "top/common/wchar.c",
+        "top/common/md5.c",
+    ]
+
+cc_library(
+    name = "libpq",
+    srcs = _C_SOURCES,
     hdrs = glob([
         "*.h",
         "**/*.h",
@@ -26,9 +42,10 @@ cc_library(
     copts = [
         "-DFRONTEND",
         "-DUNSAFE_STAT_OK",
-        "-Itop/port",
+        #"-Itop/port",
         "-Ithird_party/libpq/top/include",
         "-Ithird_party/libpq/gen",
+        #"-DSO_PEERCRED=18",   #define SO_PASSCRED 17 #define SO_PEERCRED 18  # Linux: use getsockopt(SO_PEERCRED)  
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
@@ -36,9 +53,7 @@ cc_library(
 
 filegroup(
     name = "c_sources",
-    srcs = glob([
-        "*.c"
-    ]),
+    srcs = _C_SOURCES,
     visibility = ["//visibility:public"],
 )
 

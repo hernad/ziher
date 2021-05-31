@@ -406,6 +406,7 @@ pg_SSPI_startup(PGconn *conn, int use_negotiate, int payloadlen)
 }
 #endif							/* ENABLE_SSPI */
 
+#ifdef USE_SCRAM
 /*
  * Initialize SASL authentication exchange.
  */
@@ -611,7 +612,9 @@ oom_error:
 					  libpq_gettext("out of memory\n"));
 	return STATUS_ERROR;
 }
+#endif
 
+#ifdef USE_SCRAM
 /*
  * Exchange a message for SASL communication protocol with the backend.
  * This should be used after calling pg_SASL_init to set up the status of
@@ -677,6 +680,7 @@ pg_SASL_continue(PGconn *conn, int payloadlen, bool final)
 
 	return STATUS_OK;
 }
+#endif
 
 /*
  * Respond to AUTH_REQ_SCM_CREDS challenge.
@@ -829,6 +833,7 @@ check_expected_areq(AuthRequest areq, PGconn *conn)
 			case AUTH_REQ_SASL_CONT:
 			case AUTH_REQ_SASL_FIN:
 				break;
+#ifdef USE_SCRAM
 			case AUTH_REQ_OK:
 				if (!pg_fe_scram_channel_bound(conn->sasl_state))
 				{
@@ -837,6 +842,7 @@ check_expected_areq(AuthRequest areq, PGconn *conn)
 					result = false;
 				}
 				break;
+#endif
 			default:
 				printfPQExpBuffer(&conn->errorMessage,
 								  libpq_gettext("channel binding required but not supported by server's authentication request\n"));
@@ -1015,6 +1021,7 @@ pg_fe_sendauth(AuthRequest areq, int payloadlen, PGconn *conn)
 				break;
 			}
 
+#ifdef USE_SCRAM
 		case AUTH_REQ_SASL:
 
 			/*
@@ -1027,6 +1034,7 @@ pg_fe_sendauth(AuthRequest areq, int payloadlen, PGconn *conn)
 				return STATUS_ERROR;
 			}
 			break;
+#endif
 
 		case AUTH_REQ_SASL_CONT:
 		case AUTH_REQ_SASL_FIN:
@@ -1036,6 +1044,7 @@ pg_fe_sendauth(AuthRequest areq, int payloadlen, PGconn *conn)
 								  "fe_sendauth: invalid authentication request from server: AUTH_REQ_SASL_CONT without AUTH_REQ_SASL\n");
 				return STATUS_ERROR;
 			}
+#ifdef USE_SCRAM
 			if (pg_SASL_continue(conn, payloadlen,
 								 (areq == AUTH_REQ_SASL_FIN)) != STATUS_OK)
 			{
@@ -1045,6 +1054,7 @@ pg_fe_sendauth(AuthRequest areq, int payloadlen, PGconn *conn)
 									  "fe_sendauth: error in SASL authentication\n");
 				return STATUS_ERROR;
 			}
+#endif
 			break;
 
 		case AUTH_REQ_SCM_CREDS:
@@ -1245,6 +1255,7 @@ PQencryptPasswordConn(PGconn *conn, const char *passwd, const char *user,
 		strcmp(algorithm, "off") == 0)
 		algorithm = "md5";
 
+#ifdef USE_SCRAM
 	/*
 	 * Ok, now we know what algorithm to use
 	 */
@@ -1252,7 +1263,9 @@ PQencryptPasswordConn(PGconn *conn, const char *passwd, const char *user,
 	{
 		crypt_pwd = pg_fe_scram_build_secret(passwd);
 	}
-	else if (strcmp(algorithm, "md5") == 0)
+	else
+#endif 
+	if (strcmp(algorithm, "md5") == 0)
 	{
 		crypt_pwd = malloc(MD5_PASSWD_LEN + 1);
 		if (crypt_pwd)

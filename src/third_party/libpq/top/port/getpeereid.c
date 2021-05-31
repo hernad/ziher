@@ -36,7 +36,15 @@ getpeereid(int sock, uid_t *uid, gid_t *gid)
 {
 #if defined(SO_PEERCRED)
 	/* Linux: use getsockopt(SO_PEERCRED) */
-	struct ucred peercred;
+	// https://unix.stackexchange.com/questions/496577/different-order-for-getsockopt-so-peercred-in-linux-and-openbsd
+	struct ucred {
+        unsigned int   pid;
+        unsigned int   uid;
+        unsigned int   gid;
+    } peercred;
+	
+	//struct ucred peercred;
+
 	ACCEPT_TYPE_ARG3 so_len = sizeof(peercred);
 
 	if (getsockopt(sock, SOL_SOCKET, SO_PEERCRED, &peercred, &so_len) != 0 ||

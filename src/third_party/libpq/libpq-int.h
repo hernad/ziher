@@ -691,6 +691,7 @@ extern void pq_reset_sigpipe(sigset_t *osigset, bool sigpipe_pending,
 							 bool got_epipe);
 #endif
 
+#ifdef USE_SSL
 /* === SSL === */
 
 /*
@@ -744,6 +745,7 @@ extern bool pgtls_read_pending(PGconn *conn);
  * to determine whether to continue/retry after error.
  */
 extern ssize_t pgtls_write(PGconn *conn, const void *ptr, size_t len);
+#endif
 
 /*
  * Get the hash of the server certificate, for SCRAM channel binding type

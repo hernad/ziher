@@ -12,7 +12,8 @@
         "dbf_cdx_1.h": "c",
         "zh_zlib.h": "c",
         "zh_vm.h": "c",
-        "random": "c"
+        "random": "c",
+        "socket.h": "c"
     },
     "git.ignoreLimitWarning": true,
     "java.configuration.updateBuildConfiguration": "automatic"
