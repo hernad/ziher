@@ -27,7 +27,8 @@ cc_library(
         "-DFRONTEND",
         "-DUNSAFE_STAT_OK",
         "-Itop/port",
-        "-Ithird_party/libpq/top/include"
+        "-Ithird_party/libpq/top/include",
+        "-Ithird_party/libpq/gen",
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
