@@ -46,6 +46,7 @@
 
 #define SLASH  PathSeparator()
 
+
 FUNCTION zh_HPDF_IsVersion( ma, mi, mu )
 
    LOCAL HPDF_MAJOR_VERSION, HPDF_MINOR_VERSION, HPDF_BUGFIX_VERSION
@@ -205,7 +206,8 @@ FUNCTION PDF_open_dokument( cFile )
    LOCAL cCmd, nRet
 
    IF is_windows()
-      cCmd := PDF_cmd()
+      alert("PDF_cmd dummy")
+      cCmd := "vako_nako_pdf_run"
       nRet := windows_run_invisible( cCmd, cFile )
    ELSE
       nRet := f18_open_mime_document( cFile )
@@ -226,3 +228,5 @@ FUNCTION f18_template_path()
 
 FUNCTION f18_template_file_name( cTemplate )
    RETURN f18_exe_path() + f18_template_path() + cTemplate
+
+
