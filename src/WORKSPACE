@@ -71,13 +71,13 @@ new_local_repository(
 
 new_local_repository(
     name = "postgresql_x86_windows",
-    path = "c:/PostgreSQL-x86/10/include",
+    path = "c:/dev/PostgreSQL/x86/10/include",
     build_file="postgresql_windows.BUILD"
 )
 
 new_local_repository(
     name = "postgresql_x86_windows_lib",
-    path = "c:/PostgreSQL-x86/10/lib",
+    path = "c:/dev/PostgreSQL/x86/10/lib",
     build_file = "postgresql_windows_lib.BUILD"
 )
 

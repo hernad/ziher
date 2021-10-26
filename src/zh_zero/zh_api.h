@@ -978,7 +978,7 @@ extern PZH_ITEM   zh_memvarGetItem( PZH_SYMBOL pMemvarSymb );
 
 /* console I/O subsystem */
 extern void zh_conInit( void );     /* initialize the console API system */
-extern void zh_conRelease( void );  /* release the console API system */
+extern ZH_EXPORT void zh_conRelease( void );  /* release the console API system */
 extern ZH_EXPORT const char * zh_conNewLine( void ); /* retrieve a pointer to a static buffer containing new-line characters */
 extern ZH_EXPORT void         zh_conOutStd( const char * pStr, ZH_SIZE nLen ); /* output an string to STDOUT */
 extern ZH_EXPORT void         zh_conOutErr( const char * pStr, ZH_SIZE nLen ); /* output an string to STDERR */
