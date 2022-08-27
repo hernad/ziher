@@ -18,7 +18,7 @@ load("//bazel:shared_library.bzl", "windows_dll_library")
 #)
 
 cc_binary(
-    name = "hello_world",
+    name = "hello_world_static",
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
@@ -31,8 +31,8 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_world_zh_lib_c",
-    ],
-    linkopts = L_OPTS_2,
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_rtl"
     ],
@@ -41,7 +41,7 @@ cc_binary(
 )
 
 cc_binary(
-    name = "hello_threads",
+    name = "hello_threads_static",
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
@@ -54,8 +54,8 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_threads_zh_lib_c",
-    ],
-    linkopts = L_OPTS_2,
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_rtl"
     ],
@@ -119,7 +119,7 @@ zh_comp_all(
 
 
 cc_binary(
-    name = "hello_code_block",
+    name = "hello_code_block_static",
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm",
@@ -132,12 +132,62 @@ cc_binary(
         "//zh_rtl/rdd:zh_rtl_rdd",
         "//zh_rtl/rdd:zh_rtl_rdd_zh_c",
         ":hello_code_block_zh_lib_c",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_rtl"
     ],
-    linkopts = ["-lz", "-ldl", "-lpthread", "-lpq"],
     linkstatic = True,
     visibility = ["//visibility:public"],
 )
 
+cc_binary(
+    name = "run_hello_code_block",
+    srcs = ["run_hello_code_block.c"],
+    deps = [
+        "//zh_zero:headers",
+        ":hello_code_block",
+        "@python_windows//:headers_deps"
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-DZH_DYNIMP",
+        #"-DZH_TR_LEVEL=5",
+    ],
+    #linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+
+windows_dll_library(
+    name = "hello_code_block",
+    #srcs = select({
+    #    ":is_flag_at_top_enabled": ["top.txt"],
+    #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    #}),
+    #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    srcs = [ ":hello_code_block_zh_lib" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + POSTGRESQL_HEADERS,
+    deps = [ 
+        ":ziher",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+)
 
 cc_library(
     name = "hello_code_block_zh_lib_c",
@@ -145,6 +195,9 @@ cc_library(
     hdrs = glob([
         "*.h",
     ]),
+    copts = [
+        "-Izh_rtl"
+    ],
     deps = [ 
        "//zh_zero:zh_zero", 
        "//zh_rtl:zh_rtl",

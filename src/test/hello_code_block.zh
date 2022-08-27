@@ -3,5 +3,5 @@ PROCEDURE Main()
    LOCAL bAdd
 
    bAdd := {| a, b |  a + b }
-   Alert("Hello code block: 1+1 = " + AllTrim(ValToStr(Eval(bAdd, 1, 1))))
+   Alert("Hello code block (proc main): 1+1 = " + AllTrim(ValToStr(Eval(bAdd, 1, 1))))
    RETURN
