@@ -36,7 +36,8 @@ _WINDOWS_LOPTS_2 = [
     "libpq.lib",
     "libssl.lib",
     "libcrypto.lib",
-    "/LIBPATH:external/postgresql_windows_lib"
+    "/LIBPATH:external/postgresql_windows_lib",
+    "/LIBPATH:external/python_windows_lib",
 ]
 _WINDOWS_X86_LOPTS_2 = [
     "kernel32.lib",
@@ -47,7 +48,8 @@ _WINDOWS_X86_LOPTS_2 = [
     "libpq.lib",
     "libssl.lib",
     "libcrypto.lib",
-    "/LIBPATH:external/postgresql_x86_windows_lib"
+    "/LIBPATH:external/postgresql_x86_windows_lib",
+    "/LIBPATH:external/python_x86_windows_lib"
 ]
 
 _LINUX_LOPTS = [
@@ -65,6 +67,7 @@ _LINUX_LOPTS_2 = [
 
 _LINUX_POSTGRESQL_HEADERS = [ "@postgresql_linux//:headers" ]
 _WINDOWS_POSTGRESQL_HEADERS = [ "@postgresql_windows//:headers" ]
+
 _WINDOWS_X86_POSTGRESQL_HEADERS = [ "@postgresql_x86_windows//:headers" ]
 
 _LINUX_POSTGRESQL_LIB = [ "@postgresql_linux_lib//:postgresql_lib" ]
@@ -78,6 +81,21 @@ _WINDOWS_POSTGRESQL_COPT = [
 ]
 _WINDOWS_X86_POSTGRESQL_COPT = [ 
     "/Iexternal/postgresql_x86_windows" 
+]
+
+_LINUX_PYTHON_HEADERS = [ "@python_linux//:headers" ]
+_WINDOWS_PYTHON_HEADERS = [ "@python_windows//:headers" ]
+_WINDOWS_X86_PYTHON_HEADERS = [ "@python_x86_windows//:headers" ]
+
+_WINDOWS_PYTHON_LIB = [ "@python_windows_lib//:python_lib" ]
+
+
+_LINUX_PYTHON_COPT = [ "-Iexternal/python_linux" ]
+_WINDOWS_X86_PYTHON_COPT = [ 
+    "/Iexternal/python_x86_windows" 
+]
+_WINDOWS_PYTHON_COPT = [ 
+    "/Iexternal/python_windows" 
 ]
 
 # C:\dev\ziher-32\src>c:\dev\bazel-x86.exe  query @bazel_tools//src/conditions:all
@@ -141,6 +159,25 @@ POSTGRESQL_COPT = select({
         "//bazel:windows_x64": _WINDOWS_POSTGRESQL_COPT,
         "@bazel_tools//src/conditions:darwin": _LINUX_POSTGRESQL_COPT,
         "//conditions:default": _LINUX_POSTGRESQL_COPT,
+    })
+
+PYTHON_HEADERS = select({
+        "//bazel:windows_x86": _WINDOWS_X86_PYTHON_HEADERS,
+        "//bazel:windows_x64": _WINDOWS_PYTHON_HEADERS,
+        "@bazel_tools//src/conditions:darwin": _LINUX_PYTHON_HEADERS,
+        "//conditions:default": _LINUX_PYTHON_HEADERS,
+    })
+    
+PYTHON_LIB = select({
+        "//bazel:windows_x64": _WINDOWS_PYTHON_LIB,
+        "//conditions:default": _WINDOWS_PYTHON_LIB,
+    })
+
+PYTHON_COPT = select({
+        "//bazel:windows_x86": _WINDOWS_X86_PYTHON_COPT,
+        "//bazel:windows_x64": _WINDOWS_PYTHON_COPT,
+        "@bazel_tools//src/conditions:darwin": _LINUX_PYTHON_COPT,
+        "//conditions:default": _LINUX_PYTHON_COPT,
     })
 
 ZH_COMP_OPTS= [

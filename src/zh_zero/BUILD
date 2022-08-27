@@ -1,14 +1,15 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
-load("//bazel:variables.bzl", "C_OPTS")
+load("//bazel:variables.bzl", "C_OPTS",
+    "PYTHON_HEADERS", "PYTHON_COPT" )
 
 #load("//:shared_library.bzl", "windows_dll_library")
 
 cc_library(
     name = "zh_zero",
     srcs = glob( ["*.c"]),
-    hdrs = glob( ["*.h", "*.zhh"]),
+    hdrs = glob( ["*.h", "*.zhh"]) + PYTHON_HEADERS,
     #alwayslink = 1,
-    copts = C_OPTS,
+    copts = C_OPTS + PYTHON_COPT,
     visibility = ["//visibility:public"],
     # https://github.com/bazelbuild/bazel/issues/92
     includes = ["."],

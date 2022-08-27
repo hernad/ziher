@@ -1,0 +1,2 @@
+FUNCTION pdf_cmd()
+   RETURN .F.

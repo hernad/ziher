@@ -914,7 +914,7 @@ extern ZH_EXPORT PZH_DYNSYMBOL  zh_dynsymFromNum( int iSymNum );
 #ifdef _ZH_API_INTERNAL_
 extern           PZH_ITEM  zh_dynsymGetMemvar( PZH_DYNSYMBOL pDynSym ); /* return memvar handle number bound with given dynamic symbol */
 extern           void      zh_dynsymSetMemvar( PZH_DYNSYMBOL pDynSym, PZH_ITEM pMemvar ); /* set memvar handle for a given dynamic symbol */
-extern           ZH_LONG   zh_dynsymCount( void ); /* number of dynamic symbols */
+extern ZH_EXPORT   ZH_LONG   zh_dynsymCount( void ); /* number of dynamic symbols */
 #endif
 
 /* Symbol management */
@@ -977,7 +977,7 @@ extern PZH_ITEM   zh_memvarGetItem( PZH_SYMBOL pMemvarSymb );
 #endif /* _ZH_API_INTERNAL_ */
 
 /* console I/O subsystem */
-extern void zh_conInit( void );     /* initialize the console API system */
+extern ZH_EXPORT void zh_conInit( void );     /* initialize the console API system */
 extern ZH_EXPORT void zh_conRelease( void );  /* release the console API system */
 extern ZH_EXPORT const char * zh_conNewLine( void ); /* retrieve a pointer to a static buffer containing new-line characters */
 extern ZH_EXPORT void         zh_conOutStd( const char * pStr, ZH_SIZE nLen ); /* output an string to STDOUT */

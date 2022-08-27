@@ -1,6 +1,9 @@
 load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "L_OPTS", "L_OPTS_2", "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", 
+   "L_OPTS", "L_OPTS_2",
+   "PYTHON_HEADERS", "PYTHON_COPT", "PYTHON_LIB", 
+   "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
 load("//bazel:shared_library.bzl", "windows_dll_library")
 
 #load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
@@ -165,6 +168,7 @@ cc_binary(
     deps = [
         "//zh_zero:headers",
         ":hello_dbf",
+        "@python_windows//:headers_deps"
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -248,7 +252,7 @@ windows_dll_library(
     hdrs = glob([
         "*.h",
         "*.zhh"
-    ]) + POSTGRESQL_HEADERS,
+    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
     deps = [ 
         "//zh_zero:headers",
         "//zh_vm:headers",
@@ -259,7 +263,7 @@ windows_dll_library(
         "//zh_rtl/rdd:headers",
         "//third_party/zlib:headers",
         "//third_party/pcre2:headers",
-    ] + POSTGRESQL_LIB,
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-DSUPPORT_UNICODE",
@@ -274,7 +278,7 @@ windows_dll_library(
         "-DZH_DYNLIB",
         #"-DZH_TR_LEVEL=4", #INFO
         #"-DZH_TR_LEVEL=5", DEBUG
-    ]  + POSTGRESQL_COPT,
+    ]  + PYTHON_COPT + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
     visibility = ["//visibility:public"],
