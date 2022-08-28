@@ -419,3 +419,150 @@ zh_comp_all(
     deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )
+
+
+# ---------------- hellopy module -------------------
+
+cc_binary(
+    name = "run_hello_py_ext",
+    srcs = ["run_hello_py_ext.c"],
+    deps = [
+        "//zh_zero:headers",
+        ":hellopy",
+        "@python_windows//:headers_deps"
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-DZH_DYNIMP",
+        #"-DZH_TR_LEVEL=5",
+    ],
+    #linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+windows_dll_library(
+    name = "hellopy",
+    srcs = [ "module_hellopy.c" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
+    deps = [ 
+        ":ziher",
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + PYTHON_COPT + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+)
+
+# ----------------------- py ext --------------------
+cc_binary(
+    name = "run_f18_hello_py_ext",
+    srcs = ["run_f18_hello_py_ext.c"],
+    deps = [
+        "//zh_zero:headers",
+        ":f18ziherpy",
+        ":hello_py",
+        "@python_windows//:headers_deps"
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-DZH_DYNIMP",
+        #"-DZH_TR_LEVEL=5",
+    ],
+    #linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+windows_dll_library(
+    name = "f18ziherpy",
+    srcs = [ "hello_py_ext.c" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
+    deps = [ 
+        ":ziher",
+        ":hello_py",
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + PYTHON_COPT + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+)
+
+# ----------------------- hello_py ------------------
+
+cc_binary(
+    name = "run_hello_py",
+    srcs = ["run_hello_py.c"],
+    deps = [
+        "//zh_zero:headers",
+        ":hello_py",
+        "@python_windows//:headers_deps"
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-DZH_DYNIMP",
+        #"-DZH_TR_LEVEL=5",
+    ],
+    #linkstatic = True,
+    visibility = ["//visibility:public"],
+)
+
+windows_dll_library(
+    name = "hello_py",
+    #srcs = select({
+    #    ":is_flag_at_top_enabled": ["top.txt"],
+    #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    #}),
+    #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    srcs = [ ":hello_py_zh_lib" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + POSTGRESQL_HEADERS,
+    deps = [ 
+        ":ziher",
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+)
+
+zh_comp_all(
+    name = "hello_py_zh_lib", 
+    srcs = [ "hello_py.zh" ],
+    args = ZH_COMP_OPTS,
+    deps = ZH_DEPS_STD,
+    visibility = ["//visibility:public"],
+)

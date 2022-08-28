@@ -18,6 +18,6 @@ int c_consumer_py_callback(int cva, int cvb);
 ZH_FUNC( PY_CALLBACK );
 
 //static 
-extern ZH_EXPORT PyObject *f18lib_set_callback(PyObject *self, PyObject *args);
+extern ZH_EXPORT PyObject *ziher_set_py_callback(PyObject *self, PyObject *args);
 
 void simple_printf(const char* fmt, ...);

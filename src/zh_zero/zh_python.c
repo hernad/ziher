@@ -42,7 +42,7 @@ int c_consumer_py_callback(int cva, int cvb) {
 
 //static 
 PyObject *
-f18lib_set_callback(PyObject *self, PyObject *args)
+ziher_set_py_callback(PyObject *self, PyObject *args)
 {
 
   
