@@ -68,7 +68,7 @@ File Type: DLL
 ## Ziher from python
 
 run parametri: MAIN - ime funkcije, 1 - init console, 1 - release console
-
+    
 <pre>
 >>> import f18ziherpy
 >>> f18ziherpy.vminit();f18ziherpy.run("MAIN",1,1);f18ziherpy.run("MAIN",1,1);quit()

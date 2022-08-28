@@ -17,6 +17,7 @@ load("//bazel:shared_library.bzl", "windows_dll_library")
 #    flag_values = {":arch_x86": "True"},
 #)
 
+
 cc_binary(
     name = "hello_world_static",
     deps = [ 
@@ -173,7 +174,7 @@ windows_dll_library(
         "*.zhh"
     ]) + POSTGRESQL_HEADERS,
     deps = [ 
-        ":ziher",
+        "//F18:ziher",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -247,7 +248,7 @@ windows_dll_library(
         "*.zhh"
     ]) + POSTGRESQL_HEADERS,
     deps = [ 
-        ":ziher",
+        "//F18:ziher",
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -285,57 +286,57 @@ windows_dll_library(
 #                         C57 zh_vmInit
 #                         71C zh_cmdargInit
 
-windows_dll_library(
-    name = "ziher",
-    srcs = [ 
-       "lib_hello_dbf_1.c",
-       "//zh_zero:c_sources",
-       "//zh_vm:c_sources", 
-       "//zh_vm:zh_vm_zh",
-       "//zh_macro:c_sources",
-       "//zh_rtl:c_sources",
-       "//zh_rtl:zh_rtl_zh",
-       "//zh_rtl/gt:c_sources",
-       "//zh_rtl/gt:zh_rtl_gt_zh",
-       "//zh_rtl/rdd:c_sources",
-       "//zh_rtl/rdd:zh_rtl_rdd_zh",
-       "//third_party/zlib:c_sources",
-       "//third_party/pcre2:c_sources"
-    ],
-    hdrs = glob([
-        "*.h",
-        "*.zhh"
-    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
-    deps = [ 
-        "//zh_zero:headers",
-        "//zh_vm:headers",
-        "//zh_macro:headers",
-        "//zh_comp:headers",
-        "//zh_rtl:headers",
-        "//zh_rtl/gt:headers",
-        "//zh_rtl/rdd:headers",
-        "//third_party/zlib:headers",
-        "//third_party/pcre2:headers",
-    ] + PYTHON_LIB + POSTGRESQL_LIB,
-    linkopts = L_OPTS + L_OPTS_2,
-    copts = [
-        "-DSUPPORT_UNICODE",
-        "-DHAVE_CONFIG_H",
-        "-DPCRE2_CODE_UNIT_WIDTH=8",
-        "-Izh_zero",
-        "-Izh_vm",
-        "-Izh_rtl",
-        "-Izh_rtl/rdd/rdd_sql",
-        "-Ithird_party/zlib",
-        "-Ithird_party/pcre2",
-        "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
-    ]  + PYTHON_COPT + POSTGRESQL_COPT,
-    #linkstatic = False,
-    #linkshared = True,
-    visibility = ["//visibility:public"],
-)
+#windows_dll_library(
+#    name = "ziher",
+#    srcs = [ 
+#       "lib_hello_dbf_1.c",
+#       "//zh_zero:c_sources",
+#       "//zh_vm:c_sources", 
+#       "//zh_vm:zh_vm_zh",
+#       "//zh_macro:c_sources",
+#       "//zh_rtl:c_sources",
+#       "//zh_rtl:zh_rtl_zh",
+#       "//zh_rtl/gt:c_sources",
+#       "//zh_rtl/gt:zh_rtl_gt_zh",
+#       "//zh_rtl/rdd:c_sources",
+#       "//zh_rtl/rdd:zh_rtl_rdd_zh",
+#       "//third_party/zlib:c_sources",
+#       "//third_party/pcre2:c_sources"
+#    ],
+#    hdrs = glob([
+#        "*.h",
+#        "*.zhh"
+#    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
+#    deps = [ 
+#        "//zh_zero:headers",
+#        "//zh_vm:headers",
+#        "//zh_macro:headers",
+#        "//zh_comp:headers",
+#        "//zh_rtl:headers",
+#        "//zh_rtl/gt:headers",
+#        "//zh_rtl/rdd:headers",
+#        "//third_party/zlib:headers",
+#        "//third_party/pcre2:headers",
+#    ] + PYTHON_LIB + POSTGRESQL_LIB,
+#    linkopts = L_OPTS + L_OPTS_2,
+#    copts = [
+#        "-DSUPPORT_UNICODE",
+#        "-DHAVE_CONFIG_H",
+#        "-DPCRE2_CODE_UNIT_WIDTH=8",
+#        "-Izh_zero",
+#        "-Izh_vm",
+#        "-Izh_rtl",
+#        "-Izh_rtl/rdd/rdd_sql",
+#        "-Ithird_party/zlib",
+#        "-Ithird_party/pcre2",
+#        "-DZH_DYNLIB",
+#        #"-DZH_TR_LEVEL=4", #INFO
+#        #"-DZH_TR_LEVEL=5", DEBUG
+#    ]  + PYTHON_COPT + POSTGRESQL_COPT,
+#    #linkstatic = False,
+#    #linkshared = True,
+#    visibility = ["//visibility:public"],
+#)
 
 
 cc_library(
@@ -449,7 +450,7 @@ windows_dll_library(
         "*.zhh"
     ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
     deps = [ 
-        ":ziher",
+        "//F18:ziher",
     ] + PYTHON_LIB + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -493,7 +494,8 @@ windows_dll_library(
         "*.zhh"
     ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
     deps = [ 
-        ":ziher",
+        "//F18:ziher",
+        "//F18:F18",
         ":hello_py",
     ] + PYTHON_LIB + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
@@ -543,7 +545,8 @@ windows_dll_library(
         "*.zhh"
     ]) + POSTGRESQL_HEADERS,
     deps = [ 
-        ":ziher",
+        "//F18:ziher",
+        "//F18:F18"
     ] + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
@@ -566,3 +569,6 @@ zh_comp_all(
     deps = ZH_DEPS_STD,
     visibility = ["//visibility:public"],
 )
+
+
+
