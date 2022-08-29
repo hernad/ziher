@@ -27,12 +27,12 @@ PROCEDURE Main()
   
    initial_settings()
 
-   /*
+   s_mtxMutex := zh_mutexCreate()
    IF zh_mutexLock( s_mtxMutex )
       s_hState := zh_Hash()
       zh_mutexUnlock( s_mtxMutex )
    ENDIF
-   */
+   
 
    AltD()
    cLoco1 := zh_UTF8ToStr( "Ernad Husremović" )
@@ -41,7 +41,7 @@ PROCEDURE Main()
    
    ? "hello world", p_cVariable, Round( 2, 2 ), AllTrim( cLoco1 )
    
-   //zh_threadStart(  @thread_proc_1() )
+   zh_threadStart(  @thread_proc_1() )
    
 
    //? "Press any key .."
