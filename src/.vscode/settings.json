@@ -16,5 +16,6 @@
         "socket.h": "c"
     },
     "git.ignoreLimitWarning": true,
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "cmake.configureOnOpen": false
 }

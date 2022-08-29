@@ -1,4 +1,4 @@
-#include "inkey.zhh"
+#include "hello_proj.zhh"
 
 REQUEST ZH_CODEPAGE_UTF8
 REQUEST ZH_CODEPAGE_SL852
