@@ -1,0 +1,35 @@
+PROCEDURE Main0()
+
+   Tone( 300, 3 )
+   Tone( 400, 3 )
+   Tone( 500, 3 )
+
+   Alert("Hello py/5")
+   RETURN
+
+
+FUNCTION py_callback_caller( x, y )
+   
+   LOCAL xRet
+
+   ? "py_callback(x,y):", xRet := py_callback(x,y)
+
+   RETURN xRet
+
+
+FUNCTION ziher_to_py( x )
+
+    LOCAL hRet := zh_hash()
+    LOCAL xRet
+
+    hRet["1"] := "OK"
+    hRet["2"] := "OK2"
+
+    ? "py_callback(10,7):", xRet := py_callback(10,7)
+    ALERT("py_callback xRet = " + Alltrim(STR(xRet)))
+
+    hRet["3"] := Alltrim(Str(py_callback(10,7)))
+    RETURN hRet
+
+
+
