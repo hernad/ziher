@@ -1,5 +1,5 @@
 /*
- * The Debugger (HBDbMenu class)
+ * The Debugger (ZhDbMenu class)
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  *
@@ -59,7 +59,7 @@
 #include "inkey.zhh"
 #include "set_curs.zhh"
 
-CREATE CLASS HBDbMenu
+CREATE CLASS ZhDbMenu
 
    METHOD aMenus SETGET
 
@@ -101,7 +101,7 @@ CREATE CLASS HBDbMenu
 
 ENDCLASS
 
-METHOD aMenus( xNewVal ) CLASS HBDbMenu
+METHOD aMenus( xNewVal ) CLASS ZhDbMenu
 
    THREAD STATIC t_aMenus
 
@@ -111,7 +111,7 @@ METHOD aMenus( xNewVal ) CLASS HBDbMenu
 
    RETURN t_aMenus
 
-METHOD New() CLASS HBDbMenu
+METHOD New() CLASS ZhDbMenu
 
    IF ::aMenus == NIL
       ::aMenus := {}
@@ -132,7 +132,7 @@ METHOD New() CLASS HBDbMenu
 
    RETURN Self
 
-METHOD AddItem( oMenuItem ) CLASS HBDbMenu
+METHOD AddItem( oMenuItem ) CLASS ZhDbMenu
 
    LOCAL oLastMenu := ATail( ::aMenus )
    LOCAL oLastMenuItem
@@ -155,7 +155,7 @@ METHOD AddItem( oMenuItem ) CLASS HBDbMenu
 
    RETURN oMenuItem
 
-METHOD PROCEDURE Build() CLASS HBDbMenu
+METHOD PROCEDURE Build() CLASS ZhDbMenu
 
    LOCAL nPos := 0
    LOCAL oMenuItem
@@ -189,7 +189,7 @@ METHOD PROCEDURE Build() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE ClosePopup( nPopup ) CLASS HBDbMenu
+METHOD PROCEDURE ClosePopup( nPopup ) CLASS ZhDbMenu
 
    LOCAL oPopup
 
@@ -206,7 +206,7 @@ METHOD PROCEDURE ClosePopup( nPopup ) CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE DeHilite() CLASS HBDbMenu
+METHOD PROCEDURE DeHilite() CLASS ZhDbMenu
 
    LOCAL oMenuItem := ::aItems[ ::nOpenPopup ]
 
@@ -214,7 +214,7 @@ METHOD PROCEDURE DeHilite() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE Display() CLASS HBDbMenu
+METHOD PROCEDURE Display() CLASS ZhDbMenu
 
    LOCAL oMenuItem
 
@@ -237,7 +237,7 @@ METHOD PROCEDURE Display() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE EvalAction() CLASS HBDbMenu
+METHOD PROCEDURE EvalAction() CLASS ZhDbMenu
 
    LOCAL oPopup := ::aItems[ ::nOpenPopup ]:bAction
    LOCAL oMenuItem := oPopup:aItems[ oPopup:nOpenPopup ]
@@ -249,7 +249,7 @@ METHOD PROCEDURE EvalAction() CLASS HBDbMenu
 
    RETURN
 
-METHOD GetHotKeyPos( cKey ) CLASS HBDbMenu
+METHOD GetHotKeyPos( cKey ) CLASS ZhDbMenu
 
    LOCAL oMenuItem
 
@@ -262,7 +262,7 @@ METHOD GetHotKeyPos( cKey ) CLASS HBDbMenu
 
    RETURN 0
 
-METHOD GetItemOrdByCoors( nRow, nCol ) CLASS HBDbMenu
+METHOD GetItemOrdByCoors( nRow, nCol ) CLASS ZhDbMenu
 
    LOCAL oMenuItem
 
@@ -275,7 +275,7 @@ METHOD GetItemOrdByCoors( nRow, nCol ) CLASS HBDbMenu
 
    RETURN 0
 
-METHOD GetItemByIdent( uIdent ) CLASS HBDbMenu
+METHOD GetItemByIdent( uIdent ) CLASS ZhDbMenu
 
    LOCAL oMenuItem
    LOCAL oItem
@@ -293,7 +293,7 @@ METHOD GetItemByIdent( uIdent ) CLASS HBDbMenu
 
    RETURN NIL
 
-METHOD PROCEDURE GoBottom() CLASS HBDbMenu
+METHOD PROCEDURE GoBottom() CLASS ZhDbMenu
 
    LOCAL oPopup
 
@@ -305,7 +305,7 @@ METHOD PROCEDURE GoBottom() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE GoLeft() CLASS HBDbMenu
+METHOD PROCEDURE GoLeft() CLASS ZhDbMenu
 
    LOCAL oMenuItem := ::aItems[ ::nOpenPopup ]
 
@@ -329,7 +329,7 @@ METHOD PROCEDURE GoLeft() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE GoRight() CLASS HBDbMenu
+METHOD PROCEDURE GoRight() CLASS ZhDbMenu
 
    LOCAL oMenuItem := ::aItems[ ::nOpenPopup ]
 
@@ -353,7 +353,7 @@ METHOD PROCEDURE GoRight() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE GoTop() CLASS HBDbMenu
+METHOD PROCEDURE GoTop() CLASS ZhDbMenu
 
    LOCAL oPopup
 
@@ -365,7 +365,7 @@ METHOD PROCEDURE GoTop() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE LoadColors() CLASS HBDbMenu
+METHOD PROCEDURE LoadColors() CLASS ZhDbMenu
 
    LOCAL aColors := __dbgColors()
    LOCAL oMenuItem
@@ -383,7 +383,7 @@ METHOD PROCEDURE LoadColors() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE Refresh() CLASS HBDbMenu
+METHOD PROCEDURE Refresh() CLASS ZhDbMenu
 
    LOCAL oMenuItem
 
@@ -401,7 +401,7 @@ METHOD PROCEDURE Refresh() CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE ShowPopup( nPopup ) CLASS HBDbMenu
+METHOD PROCEDURE ShowPopup( nPopup ) CLASS ZhDbMenu
 
    ::aItems[ nPopup ]:Display( ::cClrHilite, ::cClrHotFocus )
    ::nOpenPopup := nPopup
@@ -413,7 +413,7 @@ METHOD PROCEDURE ShowPopup( nPopup ) CLASS HBDbMenu
 
    RETURN
 
-METHOD PROCEDURE ProcessKey( nKey ) CLASS HBDbMenu
+METHOD PROCEDURE ProcessKey( nKey ) CLASS ZhDbMenu
 
    LOCAL nPopup
    LOCAL oPopup

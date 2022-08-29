@@ -6,7 +6,7 @@ procedure thread_proc_1()
    PUBLIC g_cPublic1 := "thread1"
 
    //OutStd("start ....")
-   altd()
+   //altd()
    @ 1, maxcol() - 5 SAY "START"
    
    // sleep 2 sec

@@ -362,7 +362,7 @@ METHOD New() CLASS ZHDebugger
 
    ::oPullDown := __dbgBuildMenu( Self )
 
-   ::oWndCode             := HBDbWindow():New( 1, 0, ;
+   ::oWndCode             := ZhDbWindow():New( 1, 0, ;
                                                ::nMaxRow - ::nCmdWndHight - 3, ;
                                                ::nMaxCol )
    ::oWndCode:bKeyPressed := {| nKey | ::CodeWindowProcessKey( nKey ) }
@@ -510,7 +510,7 @@ METHOD PROCEDURE BuildCommandWindow() CLASS ZHDebugger
 
    LOCAL nSize
 
-   ::oWndCommand := HBDbWindow():New( ::nMaxRow - ::nCmdWndHight - 2, 0, ;
+   ::oWndCommand := ZhDbWindow():New( ::nMaxRow - ::nCmdWndHight - 2, 0, ;
                                       ::nMaxRow - 1, ::nMaxCol, "Command" )
 
    ::oWndCommand:bKeyPressed := {| nKey | ::CommandWindowProcessKey( nKey ) }
@@ -692,7 +692,7 @@ METHOD PROCEDURE CodeWindowProcessKey( nKey ) CLASS ZHDebugger
 
 METHOD PROCEDURE Colors() CLASS ZHDebugger
 
-   LOCAL oWndColors := HBDbWindow():New( 4, 5, 16, ::nMaxCol - 5, ;
+   LOCAL oWndColors := ZhDbWindow():New( 4, 5, 16, ::nMaxCol - 5, ;
       "Debugger Colors[1..11]", ::ClrModal() )
    LOCAL aColors := { ;
       "Border", "Text", "Text High", "Text PPO", "Text Selected", ;
@@ -1658,7 +1658,7 @@ METHOD InputBox( cMsg, uValue, bValid, lEditable ) CLASS ZHDebugger
    LOCAL nWidth  := nRight - nLeft - 1
    LOCAL uTemp
    LOCAL lExit
-   LOCAL oWndInput := HBDbWindow():New( nTop, nLeft, nBottom, nRight, cMsg, ;
+   LOCAL oWndInput := ZhDbWindow():New( nTop, nLeft, nBottom, nRight, cMsg, ;
       ::oPullDown:cClrPopup )
 
    oWndInput:lShadow := .T.
@@ -1783,7 +1783,7 @@ METHOD ListBox( cCaption, aItems ) CLASS ZHDebugger
    nBottom := Int( ( ::nMaxRow / 2 ) + Min( nItems, ::nMaxRow - 5 ) / 2 + 1 )
    nLeft   := Int( ( ::nMaxCol / 2 ) - Min( nMaxWid, ::nMaxCol * 3 / 2 ) / 2 )
    nRight  := Int( ( ::nMaxCol / 2 ) + Min( nMaxWid, ::nMaxCol * 3 / 2 ) / 2 )
-   oWndList := HBDbWindow():new( nTop, nLeft, nBottom, nRight, cCaption, ;
+   oWndList := ZhDbWindow():new( nTop, nLeft, nBottom, nRight, cCaption, ;
       ::oPullDown:cClrPopup )
    oWndList:lShadow := .T.
    oWndList:Show()
@@ -2651,7 +2651,7 @@ METHOD PROCEDURE ShowCallStack() CLASS ZHDebugger
          ::aWindows[ ::nCurrentWindow ]:Show( .F. )
       ENDIF
 
-      ::oWndStack := HBDbWindow():New( 1, ::nMaxCol - 15, ;
+      ::oWndStack := ZhDbWindow():New( 1, ::nMaxCol - 15, ;
                                        ::nMaxRow - ::nCmdWndHight - 3, ;
                                        ::nMaxCol, "Calls" )
       ::oWndStack:bKeyPressed  := {| nKey | ::CallStackProcessKey( nKey ) }
@@ -2782,7 +2782,7 @@ METHOD PROCEDURE ShowVars() CLASS ZHDebugger
       nTop := iif( ::oWndPnt != NIL .AND. ::oWndPnt:lVisible, ::oWndPnt:nBottom + 1, 1 )
       nBottom := nTop + Min( MAX_VARS_HEIGHT, Len( ::aVars ) + 1 )
 
-      ::oWndVars := HBDbWindow():New( nTop, 0, nBottom, ;
+      ::oWndVars := ZhDbWindow():New( nTop, 0, nBottom, ;
          ::nMaxCol - iif( ::oWndStack != NIL, ::oWndStack:nWidth(), 0 ), ;
          "Monitor:" + ;
          iif( ::lShowGlobals, " Global", "" ) + iif( ::lShowLocals, " Local", "" ) + ;
@@ -3125,7 +3125,7 @@ METHOD VarSetValue( aVar, uValue ) CLASS ZHDebugger
 METHOD PROCEDURE ViewSets() CLASS ZHDebugger
 
    LOCAL aSets := __dbgGetSETs()
-   LOCAL oWndSets := HBDbWindow():New( 1, 7, ::nMaxRow - 2, ::nMaxCol - 7, ;
+   LOCAL oWndSets := ZhDbWindow():New( 1, 7, ::nMaxRow - 2, ::nMaxCol - 7, ;
       "System Settings[1.." + zh_ntos( aTail( aSets )[ ZH_DBG_SET_POS ] ) + "]", ::ClrModal() )
    LOCAL oBrwSets := HBDbBrowser():new( oWndSets:nTop + 1, oWndSets:nLeft + 1, ;
       oWndSets:nBottom - 1, oWndSets:nRight - 1 )
@@ -3318,7 +3318,7 @@ METHOD PROCEDURE WatchpointsShow() CLASS ZHDebugger
 
       nTop := iif( ::oWndVars != NIL .AND. ::oWndVars:lVisible, ::oWndVars:nBottom, 0 ) + 1
 
-      ::oWndPnt := HBDbWindow():New( nTop, ;
+      ::oWndPnt := ZhDbWindow():New( nTop, ;
          0, ;
          nTop + Min( 4, Len( ::aWatch ) ) + 1, ;
          ::nMaxCol - iif( ::oWndStack != NIL, ::oWndStack:nWidth(), 0 ), ;

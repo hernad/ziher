@@ -46,14 +46,14 @@
 
 #pragma -b-
 
-#xcommand MENU [<oMenu>] => [ <oMenu> := ] HBDbMenu():New()
+#xcommand MENU [<oMenu>] => [ <oMenu> := ] ZhDbMenu():New()
 #xcommand MENUITEM [ <oMenuItem> PROMPT ] <cPrompt> ;
           [ IDENT <nIdent> ] [ ACTION <uAction,...> ] ;
           [ CHECKED <bChecked> ] => ;
-   [ <oMenuItem> := ] HBDbMenu():AddItem( HBDbMenuItem():New( <cPrompt>, ;
+   [ <oMenuItem> := ] ZhDbMenu():AddItem( HBDbMenuItem():New( <cPrompt>, ;
    [{|| <uAction> }], [<bChecked>], [<nIdent>] ) )
-#xcommand SEPARATOR => HBDbMenu():AddItem( HBDbMenuItem():New( "-" ) )
-#xcommand ENDMENU => ATail( HBDbMenu():aMenus ):Build()
+#xcommand SEPARATOR => ZhDbMenu():AddItem( HBDbMenuItem():New( "-" ) )
+#xcommand ENDMENU => ATail( ZhDbMenu():aMenus ):Build()
 
 FUNCTION __dbgBuildMenu( oDebugger )  // Builds the debugger pulldown menu
 

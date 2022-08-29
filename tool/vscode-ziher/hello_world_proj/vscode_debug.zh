@@ -835,7 +835,7 @@ static function ExtractFileName(cFileName)
 		cFileName := alltrim(cFileName)
 #endif
 
-	idx := rat(zh_ps(), cFileName)
+	idx := rat(PathSeparator(), cFileName)
 	if idx>0
 		cFileName:=substr(cFileName,idx+1)
 	endif

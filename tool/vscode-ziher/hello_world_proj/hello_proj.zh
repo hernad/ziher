@@ -5,6 +5,12 @@ REQUEST ZH_CODEPAGE_SL852
 REQUEST ZH_CODEPAGE_SLISO
 REQUEST ZH_CODEPAGE_SLWIN
 
+//   REQUEST ZH_GT_WIN
+//   REQUEST ZH_GT_WIN_DEFAULT
+REQUEST ZH_GT_WVT
+REQUEST ZH_GT_WVT_DEFAULT
+
+
 STATIC s_hState := NIL
 STATIC s_mtxMutex
 
@@ -21,19 +27,21 @@ PROCEDURE Main()
   
    initial_settings()
 
+   /*
    IF zh_mutexLock( s_mtxMutex )
       s_hState := zh_Hash()
       zh_mutexUnlock( s_mtxMutex )
    ENDIF
+   */
 
+   AltD()
    cLoco1 := zh_UTF8ToStr( "Ernad Husremović" )
    
    CLEAR SCREEN
    
-   //AltD()
    ? "hello world", p_cVariable, Round( 2, 2 ), AllTrim( cLoco1 )
    
-   zh_threadStart(  @thread_proc_1() )
+   //zh_threadStart(  @thread_proc_1() )
    
 
    //? "Press any key .."
@@ -84,6 +92,7 @@ PROCEDURE initial_settings()
    SET ESCAPE ON
    SET SOFTSEEK ON
    CLEAR TYPEAHEAD
+   altd()
 
    RETURN
 

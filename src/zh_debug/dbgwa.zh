@@ -86,7 +86,7 @@ PROCEDURE __dbgShowWorkAreas()
 
    /* Window creation */
 
-   oDlg := HBDbWindow():New( 2, 2, 21, 79, "", cColor )
+   oDlg := ZhDbWindow():New( 2, 2, 21, 79, "", cColor )
 
    oDlg:bKeyPressed := {| nKey | DlgWorkAreaKey( nKey, oDlg, aBrw, aAlias, @aStruc, @aInfo ) }
    oDlg:bPainted    := {|| DlgWorkAreaPaint( oDlg, aBrw ) }

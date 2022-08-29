@@ -8,14 +8,14 @@
             "type": "ziher-dbg",
             "request": "launch",
             "name": "Launch hello_world_proj",
-            "program": "${workspaceRoot}/hello_world_proj",
+            "program": "${workspaceRoot}/../bazel-bin/hello_world_proj/hello_proj_static.exe",
             "workingDir": "${workspaceRoot}/",
             "sourcePaths": [
                 "${workspaceRoot}",
                 "${workspaceRoot}/common",
                 "${workspaceRoot}/threads"
             ],
-            //"preLaunchTask": "compileDebug",
+            "preLaunchTask": "compileDebug",
             "terminalType": "integrated"
         }
     ]

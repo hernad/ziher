@@ -6,10 +6,15 @@
         {
             "label": "compileDebug",
             "type": "shell",
-            "command": "hbmk2",
+            "command": "c:\\dev\\ziher\\bazel.exe",
             "args": [
-                "hello_world_proj.hbp"
+                "build",
+                "//hello_world_proj:hello_proj_static",
+                "--//bazel:windows_build=x64"
             ],
+            "options": {
+                "cwd": "C:\\dev\\ziher\\ziher_mono\\ziher\\src"
+            },
             "presentation": {
                 "echo": true,
                 "reveal": "always",
@@ -17,6 +22,11 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": true
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
         },
         {
@@ -36,12 +46,18 @@
             }
         },
         {
-            "label": "RunRelease",
+            "label": "runDebug",
             "dependsOn": [
-                "CompileRelease"   
+                "compileDebug"
             ],
             "type": "shell",
-            "command": "${workspaceFolder}\\release\\HelloZiher.exe",
+            "command": "bazel-bin\\hello_world_proj\\hello_proj_static.exe",
+            "options": {
+                "cwd": "C:\\dev\\ziher\\ziher_mono\\ziher\\src",
+                "env": {
+                    "ZH_DEBUG_PATH": "C:/dev/ziher/ziher_mono/ziher/src/hello_world_proj"
+                }
+            },
             "presentation": {
                 "echo": true,
                 "reveal": "always",
