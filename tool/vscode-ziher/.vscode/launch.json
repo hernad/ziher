@@ -9,7 +9,7 @@
 			"args": [
 				"--extensionDevelopmentPath=${workspaceRoot}", 
 				//"${workspaceRoot}/hello_world_proj" 
-				"/home/hernad/Z18/src" 
+				"C:/dev/ziher/ziher_mono/ziher/tool/vscode-ziher/hello_world_proj" 
 			],
 			"preLaunchTask": "prelanch"
         },

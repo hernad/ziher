@@ -32,8 +32,8 @@
         "vscode-uri": "^1.0.8"
     },
     "scripts": {
-        "vscode:prepublish": "webpack --mode production; webpack --config webpack.server.config.js --mode production",
-        "build-all": "webpack --mode development; webpack --config webpack.server.config.js --mode development",
+        "vscode:prepublish": "webpack --mode production && webpack --config webpack.server.config.js --mode production",
+        "build-all": "webpack --mode development && webpack --config webpack.server.config.js --mode development",
         "build-client": "webpack --mode development",
         "build-client-prod": "webpack --mode production",
         "build-server": "webpack --config webpack.server.config.js --mode development",
