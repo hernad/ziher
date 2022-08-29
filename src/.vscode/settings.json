@@ -5,7 +5,6 @@
         "zh_comp.h": "c",
         "zh_ver_bld.h": "c",
         "zh_date.h": "c",
-        "*.zhh": "c",
         "zh_set.h": "c",
         "zh_api.h": "c",
         "zh_regex.h": "c",
@@ -13,7 +12,8 @@
         "zh_zlib.h": "c",
         "zh_vm.h": "c",
         "random": "c",
-        "socket.h": "c"
+        "socket.h": "c",
+        "*.zhh": "Ziher"
     },
     "git.ignoreLimitWarning": true,
     "java.configuration.updateBuildConfiguration": "automatic",
