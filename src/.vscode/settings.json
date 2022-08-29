@@ -12,8 +12,7 @@
         "zh_zlib.h": "c",
         "zh_vm.h": "c",
         "random": "c",
-        "socket.h": "c",
-        "*.zhh": "Ziher"
+        "socket.h": "c"
     },
     "git.ignoreLimitWarning": true,
     "java.configuration.updateBuildConfiguration": "automatic",
