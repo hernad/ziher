@@ -114,6 +114,26 @@ new_local_repository(
     build_file="python_windows_lib.BUILD"    
 )
 
+#hernad@hped800g1u-1 src]$ rpm -ql python3-devel | grep Python.h
+#/usr/include/python3.9/Python.h
+
+
+new_local_repository(
+    name = "python_linux",
+    path="/usr/lib/python3.9",
+    build_file = "python_linux.BUILD"
+)
+
+#dnf provides */libpython3.9.so
+#[hernad@hped800g1u-1 src]$ rpm -ql python3-devel-3.9.14-1.el9_1.1 | grep so$
+#/usr/lib64/libpython3.9.so
+
+new_local_repository(
+    name = "python_linux_lib",
+    path="/usr/lib64",
+    build_file="python_linux_lib.BUILD"    
+)
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 RULES_JVM_EXTERNAL_TAG = "2.8"
