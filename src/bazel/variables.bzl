@@ -89,7 +89,7 @@ _WINDOWS_PYTHON_HEADERS = [ "@python_windows//:headers" ]
 _WINDOWS_X86_PYTHON_HEADERS = [ "@python_x86_windows//:headers" ]
 
 _WINDOWS_PYTHON_LIB = [ "@python_windows_lib//:python_lib" ]
-
+_LINUX_PYTHON_LIB = [ "@python_linux_lib//:python_lib" ]
 
 _LINUX_PYTHON_COPT = [ "-Iexternal/python_linux" ]
 _WINDOWS_X86_PYTHON_COPT = [ 
@@ -171,7 +171,7 @@ PYTHON_HEADERS = select({
     
 PYTHON_LIB = select({
         "//bazel:windows_x64": _WINDOWS_PYTHON_LIB,
-        "//conditions:default": _WINDOWS_PYTHON_LIB,
+        "//conditions:default": _LINUX_PYTHON_LIB,
     })
 
 PYTHON_COPT = select({
