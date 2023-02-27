@@ -1,3 +1,5 @@
+#!/bin/bash
+
 dnf install dnf-plugins-core
 dnf copr enable vbatts/bazel
 dnf install bazel
