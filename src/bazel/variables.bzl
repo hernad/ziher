@@ -91,7 +91,9 @@ _WINDOWS_X86_PYTHON_HEADERS = [ "@python_x86_windows//:headers" ]
 _WINDOWS_PYTHON_LIB = [ "@python_windows_lib//:python_lib" ]
 _LINUX_PYTHON_LIB = [ "@python_linux_lib//:python_lib" ]
 
-_LINUX_PYTHON_COPT = [ "-Iexternal/python_linux" ]
+_LINUX_PYTHON_COPT = [ 
+    "-Iexternal/python_linux" 
+]
 _WINDOWS_X86_PYTHON_COPT = [ 
     "/Iexternal/python_x86_windows" 
 ]

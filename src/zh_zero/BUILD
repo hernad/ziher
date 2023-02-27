@@ -20,7 +20,7 @@ cc_library(
     hdrs = glob([
         "*.h",
         "*.zhh",
-    ]),
+    ]) + PYTHON_HEADERS,
     visibility = ["//visibility:public"],
 )
 
