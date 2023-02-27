@@ -53,7 +53,8 @@ _WINDOWS_X86_LOPTS_2 = [
 ]
 
 _LINUX_LOPTS = [
-    "-lm"
+    "-lm",
+    "-lX11",
 ]
 
 _LINUX_LOPTS_2 = [
