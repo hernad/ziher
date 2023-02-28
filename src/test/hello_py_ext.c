@@ -4,7 +4,16 @@
 #include "zh_trace.h"
 #include "zh_init.h"
 
+#if defined(_MSC_VER)
 #include <windows.h>
+#endif
+
+#if defined( _MSC_VER )
+#define EXTERNAL extern __declspec( dllexport )
+#else
+#define EXTERNAL extern
+#endif
+
 
 #include "zh_api.h"
 #include "zh_item_api.h"
@@ -20,7 +29,7 @@ ZH_INIT_SYMBOLS_BEGIN( zh_vm_SymbolInit_F18_EXT_ZH )
 ZH_INIT_SYMBOLS_EX_END( zh_vm_SymbolInit_F18_EXT_ZH, "F18_EXT", 0x0, 0x0003 )
 
 
-extern __declspec( dllexport ) int hello_py_ext_101() {
+EXTERNAL int hello_py_ext_101() {
     return 101+1;
 }
 

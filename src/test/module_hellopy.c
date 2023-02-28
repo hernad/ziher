@@ -1,7 +1,13 @@
 #include <Python.h>
 #include <stdio.h>
 
-extern __declspec( dllexport ) int hello_py_ext_109() {
+#if defined( _MSC_VER )
+#define EXTERNAL extern __declspec( dllexport )
+#else
+#define EXTERNAL extern
+#endif
+
+EXTERNAL int hello_py_ext_109() {
     return 109;
 }
 

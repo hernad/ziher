@@ -4,7 +4,7 @@ load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD",
    "L_OPTS", "L_OPTS_2",
    "PYTHON_HEADERS", "PYTHON_COPT", "PYTHON_LIB", 
    "POSTGRESQL_HEADERS", "POSTGRESQL_COPT", "POSTGRESQL_LIB")
-load("//bazel:shared_library.bzl", "windows_dll_library")
+load("//bazel:shared_library.bzl", "shared_library", "windows_dll_library")
 
 #load("@bazel_skylib//rules:common_settings.bzl", "bool_flag")
 #bool_flag(
@@ -427,11 +427,10 @@ zh_comp_all(
 cc_binary(
     name = "run_hello_py_ext",
     srcs = ["run_hello_py_ext.c"],
-    deps = [
-        "//zh_zero:headers",
-        ":hellopy",
-        "@python_windows//:headers_deps"
-    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    deps = select({
+            "//bazel:windows": [ "//zh_zero:headers", ":hellopy", "@python_windows//:headers_deps"], 
+            "//conditions:default": [ "//zh_zero:headers", ":hellopy", "@python_linux//:headers_deps"],
+        }) + PYTHON_LIB + POSTGRESQL_LIB,
     linkopts = L_OPTS + L_OPTS_2,
     copts = [
         "-Izh_zero",
@@ -466,6 +465,65 @@ windows_dll_library(
     visibility = ["//visibility:public"],
 )
 
+shared_library(
+    name = "hellopy",
+    os = "linux",
+    srcs = [ "module_hellopy.c" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
+    deps = [ 
+        "//F18:ziher.so",
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2 + ["-lX11"],
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + PYTHON_COPT + POSTGRESQL_COPT,
+    visibility = ["//visibility:public"],
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ],
+)
+
+shared_library(
+    name = "f18ziherpy",
+    os = "linux",
+    srcs = [ "hello_py_ext.c" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + PYTHON_HEADERS + POSTGRESQL_HEADERS,
+    deps = [
+        "//F18:ziher.so",
+        "//F18:F18.so",
+        ":hello_py.so",
+        ":hello_py_import",
+        "//F18:ziher_import",
+        "//F18:F18_import"
+    ] + PYTHON_LIB + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + PYTHON_COPT + POSTGRESQL_COPT,
+    visibility = ["//visibility:public"],
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ]
+)
+
 # ----------------------- py ext --------------------
 cc_binary(
     name = "run_f18_hello_py_ext",
@@ -484,6 +542,10 @@ cc_binary(
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
+        exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:windows",
+    ]
 )
 
 windows_dll_library(
@@ -512,7 +574,8 @@ windows_dll_library(
     visibility = ["//visibility:public"],
 )
 
-# ----------------------- hello_py ------------------
+
+#----------------------- hello_py ------------------
 
 cc_binary(
     name = "run_hello_py",
@@ -560,6 +623,40 @@ windows_dll_library(
     #linkstatic = False,
     #linkshared = True,
     visibility = ["//visibility:public"],
+)
+
+shared_library(
+    name = "hello_py",
+    os = "linux",
+    #srcs = select({
+    #    ":is_flag_at_top_enabled": ["top.txt"],
+    #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    #}),
+    #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    srcs = [ ":hello_py_zh_lib" ], 
+    hdrs = glob([
+        "*.h",
+        "*.zhh"
+    ]) + POSTGRESQL_HEADERS,
+    deps = [ 
+        "//F18:ziher.so"
+    ] + POSTGRESQL_LIB,
+    linkopts = L_OPTS + L_OPTS_2,
+    copts = [
+        "-Izh_zero",
+        "-Izh_vm",
+        "-Izh_rtl",
+        "-DZH_DYNLIB",
+        #"-DZH_TR_LEVEL=4", #INFO
+        #"-DZH_TR_LEVEL=5", DEBUG
+    ]  + POSTGRESQL_COPT,
+    #linkstatic = False,
+    #linkshared = True,
+    visibility = ["//visibility:public"],
+    exec_compatible_with = [
+        "@platforms//cpu:x86_64",
+        "@platforms//os:linux",
+    ]
 )
 
 zh_comp_all(
