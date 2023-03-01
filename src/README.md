@@ -33,3 +33,25 @@ Install [bazel.build](https://bazel.build/).
 
     export ZH_TR_OUTPUT=trace.log
     export ZH_TR_LEVEL=5 #debug
+
+
+## vscode settings
+
+    [hernad@hped800g1u-1 src]$ cat ~/.config/Code/User/settings.json 
+    {
+        "workbench.startupEditor": "none",
+        "window.zoomLevel": 4,
+        "window.titleBarStyle": "custom",
+        "security.workspace.trust.untrustedFiles": "open",
+        "[python]": {
+            "editor.formatOnType": true
+        },
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "git.openRepositoryInParentFolders": "never",
+        "ziher.extraIncludePaths": [
+            "/home/hernad/ziher_mono/ziher/src/F18/include",
+            "/home/hernad/ziher_mono/ziher/src/zh_zero",
+            "/home/hernad/ziher_mono/ziher/src/zh_rtl",
+            "/home/hernad/ziher_mono/ziher/src/zh_harupdf"
+        ]
+    }
