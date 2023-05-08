@@ -144,9 +144,11 @@ new_local_repository(
 
 new_local_repository(
     name = "python_linux",
-    path="/usr/include/python3.9",
+    path="/nix/store/5bh6rpya1ar6l49vrhx1rg58dsa42906-python3-3.9.6/include/python3.9",
     build_file = "python_linux.BUILD"
 )
+
+
 
 #dnf provides */libpython3.9.so
 #[hernad@hped800g1u-1 src]$ rpm -ql python3-devel-3.9.14-1.el9_1.1 | grep so$
@@ -154,9 +156,17 @@ new_local_repository(
 
 new_local_repository(
     name = "python_linux_lib",
-    path="/usr/lib64",
+    path="/nix/store/5bh6rpya1ar6l49vrhx1rg58dsa42906-python3-3.9.6/lib",
     build_file="python_linux_lib.BUILD"    
 )
+
+new_local_repository(
+    name = "x11_linux_lib",
+    path="/nix/store/9mg4w9gk1bl4xx90painmfx47vn9acpl-libX11-1.7.2/lib",
+    build_file="x11_linux_lib.BUILD"    
+)
+
+
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 

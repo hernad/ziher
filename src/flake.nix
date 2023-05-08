@@ -19,7 +19,17 @@
       {
         devShells.default = with pkgs; mkShell {
           name = "flake-example-shell";
-          packages = [ gcc gnumake bazel_6 xorg.libX11 ];
+          
+          packages = [ gcc gnumake bazel_6  ];
+          
+          inputsFrom = [ 
+             python39
+             xorg.libX11
+          ];
+
+          shellHook = ''
+            echo "python39"
+          '';
         };
       });
 }
