@@ -1,23 +1,23 @@
 # https://docs.bazel.build/versions/2.0.0/skylark/tutorial-creating-a-macro.html
 
-def zh_comp(name, zhin, args="-n -izh_zero", **kwargs):
-  """Create preprocessed ziher.
-
-  """ 
-  native.genrule(
-    name = name,
-    srcs = [
-      "//zh_comp/main:zhcomp", 
-      "//zh_zero:headers_filegroup", 
-      "//zh_rtl:headers_filegroup", 
-      zhin
-    ],
-    outs = [zhin + ".c"],
-    # $< - src (one) file
-    # $@ - out (one) file
-    cmd = "$(location //zh_comp/main:zhcomp) $(execpath " + zhin + ")" + " " + args + " -o$(execpath " + zhin + ".c)",
-    **kwargs
-  )
+#def zh_comp(name, zhin, args="-n -izh_zero", **kwargs):
+#  """Create preprocessed ziher.
+#
+#  """ 
+#  native.genrule(
+#    name = name,
+#    srcs = [
+#      "//zh_comp/main:zhcomp", 
+#      "//zh_zero:headers_filegroup", 
+#      "//zh_rtl:headers_filegroup", 
+#      zhin
+#    ],
+#    outs = [zhin + ".c"],
+#    # $< - src (one) file
+#    # $@ - out (one) file
+#    cmd = "$(location //zh_comp/main:zhcomp) $(execpath " + zhin + ")" + " " + args + " -o$(execpath " + zhin + ".c)",
+#    **kwargs
+#  )
 
 
 #def zh_comp_all(name, srcs, args = "-n -izh_zero", **kwargs):
@@ -60,8 +60,9 @@ def _zh_comp_impl(ctx):
         outputs = [out] ,
         arguments = args,
         progress_message = "ZH>> ziher compiling: " + "  ".join(args),
-        #executable = "find"
+        #executable = "/tmp/test.sh",
         executable = ctx.executable.zh_comp,
+        use_default_shell_env = True,
       )
 
     return [DefaultInfo(files = depset(outs))]
@@ -98,3 +99,14 @@ zh_comp_all = rule(
     #https://github.com/bazelbuild/examples/blob/master/rules/implicit_output/hash.bzl
 
 )
+
+# ==============================
+# /tmp/test.sh
+# ==============================
+##!/nix/store/f01r6lmbi7mg0xg80mvzdwqhlmrzvy4v-bash-interactive-5.2-p15/bin/bash
+#
+##export LD_LIBRARY_PATH=/nix/store/hl09r5178s52savxh4pmkg86jjlakd4p-openssl-1.1.1l/lib:/nix/store/bnx161h5zclgpi2xp4shjijyh7qwkipc-postgresql-13.4-lib/lib:/nix/store/9mg4w9gk1bl4xx90painmfx47vn9acpl-libX11-1.7.2/lib:/nix/store/1l4r0r4ab3v3a3ppir4jwiah3icalk9d-zlib-1.2.11/lib
+#
+#echo "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" > /tmp/test.log
+#
+#/home/hernad/bazel/ziher/src/bazel-out/host/bin/zh_comp/main/zhcomp $@

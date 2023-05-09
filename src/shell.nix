@@ -34,5 +34,6 @@ mkShell {
             echo "postgresql.lib = ${postgresql.lib}"
             echo "openssl_1_1.out = ${openssl_1_1.out}"
             echo "zlib.out/lib = ${zlib.out}/lib"
+            export LD_LIBRARY_PATH="${openssl_1_1.out}/lib:${postgresql.lib}/lib:${xorg.libX11}/lib:${zlib.out}/lib"
   '';
 }

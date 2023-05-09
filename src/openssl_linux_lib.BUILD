@@ -2,7 +2,7 @@ cc_library(
     name = "openssl_lib",
     srcs = glob([
         "libssl.so",
-        "libcrypt.so",
+        "libcrypto.so",
     ]),
     visibility = ["//visibility:public"],
 )

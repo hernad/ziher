@@ -89,7 +89,12 @@ _WINDOWS_PYTHON_HEADERS = [ "@python_windows//:headers" ]
 _WINDOWS_X86_PYTHON_HEADERS = [ "@python_x86_windows//:headers" ]
 
 _WINDOWS_PYTHON_LIB = [ "@python_windows_lib//:python_lib" ]
-_LINUX_PYTHON_LIB = [ "@python_linux_lib//:python_lib", "@x11_linux_lib//:x11_lib", "@openssl_linux_lib//:openssl_lib", "@zlib_linux_lib//:zlib_lib" ]
+_LINUX_PYTHON_LIB = [ 
+    "@python_linux_lib//:python_lib", 
+    "@x11_linux_lib//:x11_lib", 
+    "@openssl_linux_lib//:openssl_lib", 
+    "@zlib_linux_lib//:zlib_lib" 
+]
 
 _LINUX_PYTHON_COPT = [ 
     "-Iexternal/python_linux", "-Iexternal/x11_linux", "-Iexternal/x11_xorgproto_linux"  
