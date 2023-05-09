@@ -1,3 +1,5 @@
+#include "zconf.h"
+
 /* crypt.h -- base code for crypt/uncrypt ZIPfile
 
 

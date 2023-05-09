@@ -1,6 +1,6 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//bazel:zh_comp.bzl", "zh_comp_all")
-load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "C_OPTS")
+load("//bazel:variables.bzl", "ZH_COMP_OPTS", "ZH_DEPS_STD", "C_OPTS", "PYTHON_COPT", "PYTHON_HEADERS")
 
 
 _WINDOWS_C_SRC = glob([
@@ -29,7 +29,7 @@ _LINUX_C_SRC = glob([
         "gt_xwc/*.c"
     ])
 
-_LINUX_C_HDR = glob( [
+_LINUX_C_HDR = glob([
         "*.h", 
         "*.zhh",
         "gt_std/*.h",
@@ -55,13 +55,14 @@ _C_HDR = select({
 cc_library(
     name = "zh_rtl_gt",
     srcs = _C_SRC,
-    hdrs = _C_HDR,
+    hdrs = _C_HDR + PYTHON_HEADERS,
     alwayslink = 1,
-    copts = C_OPTS,
+    copts = C_OPTS + PYTHON_COPT,
     deps = [ 
         "//zh_zero:zh_zero", 
         "//zh_vm:zh_vm", 
-        "//zh_rtl:zh_rtl" ],
+        "//zh_rtl:zh_rtl",
+      ],
     visibility = ["//visibility:public"],
 )
 
@@ -73,13 +74,13 @@ filegroup(
 
 cc_library(
     name = "headers",
-    hdrs = _C_HDR,
+    hdrs = _C_HDR + PYTHON_HEADERS,
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "headers_filegroup",
-    srcs = _C_HDR,
+    srcs = _C_HDR + PYTHON_HEADERS,
     visibility = ["//visibility:public"],
 )
 

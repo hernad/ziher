@@ -111,13 +111,13 @@ new_local_repository(
 
 new_local_repository(
     name = "postgresql_linux",
-    path = "/usr/include",
+    path = "/nix/store/3sj1pp1zn33ylzcflri1pai46xwgpq4c-postgresql-13.4/include",
     build_file  = "postgresql_linux.BUILD"
 )
 
 new_local_repository(
     name = "postgresql_linux_lib",
-    path = "/usr/lib64",
+    path = "/nix/store/bnx161h5zclgpi2xp4shjijyh7qwkipc-postgresql-13.4-lib/lib",
     build_file = "postgresql_linux_lib.BUILD"
 )
 
@@ -148,6 +148,17 @@ new_local_repository(
     build_file = "python_linux.BUILD"
 )
 
+new_local_repository(
+    name = "x11_linux",
+    path="/nix/store/n8d6lxz56x741rv84n2vn3z9pxhjqcgz-libX11-1.7.2-dev/include",
+    build_file="x11_linux.BUILD"    
+)
+
+new_local_repository(
+    name = "x11_xorgproto_linux",
+    path="/nix/store/4avf3mizws2s23sldkaf8k89a2kxz8gf-xorgproto-2021.5/include",
+    build_file="x11_xorgproto_linux.BUILD"    
+)
 
 
 #dnf provides */libpython3.9.so
@@ -166,7 +177,17 @@ new_local_repository(
     build_file="x11_linux_lib.BUILD"    
 )
 
+new_local_repository(
+    name = "zlib_linux_lib",
+    path="/nix/store/1l4r0r4ab3v3a3ppir4jwiah3icalk9d-zlib-1.2.11/lib",
+    build_file="zlib_linux_lib.BUILD"    
+)
 
+new_local_repository(
+    name = "openssl_linux_lib",
+    path="/nix/store/hl09r5178s52savxh4pmkg86jjlakd4p-openssl-1.1.1l/lib",
+    build_file="openssl_linux_lib.BUILD"    
+)
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 

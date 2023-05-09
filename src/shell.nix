@@ -17,10 +17,22 @@ mkShell {
   inputsFrom = [ 
              python39
              xorg.libX11
+             xorg.xorgproto
+             postgresql
+             openssl_1_1
+             zlib
           ];
+
+  #nix run github:bennofs/nix-index#nix-locate lib/libssl.so.1.1
 
   shellHook = ''
             echo "python39 = ${python39}"
             echo "libX11 = ${xorg.libX11}"
+            echo "xorg.xorproto = ${xorg.xorgproto}"
+            echo "libX11.dev = ${xorg.libX11.dev}"
+            echo "postgresql = ${postgresql}"
+            echo "postgresql.lib = ${postgresql.lib}"
+            echo "openssl_1_1.out = ${openssl_1_1.out}"
+            echo "zlib.out/lib = ${zlib.out}/lib"
   '';
 }

@@ -6,8 +6,8 @@ load("//bazel:variables.bzl", "C_OPTS",
 
 cc_library(
     name = "zh_zero",
-    srcs = glob( ["*.c"]),
-    hdrs = glob( ["*.h", "*.zhh"]) + PYTHON_HEADERS,
+    srcs = glob(["*.c"]),
+    hdrs = glob(["*.h", "*.zhh"]) + PYTHON_HEADERS,
     #alwayslink = 1,
     copts = C_OPTS + PYTHON_COPT,
     visibility = ["//visibility:public"],
