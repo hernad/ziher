@@ -15,7 +15,7 @@ ZH_INIT_SYMBOLS_EX_END( zh_vm_SymbolInit_HELLO_PY_ZH, "", 0x0, 0x0003 )
 int main( int argc, char * argv[] )
 {
 
-   dll_say_hello("HelloPY dll", "99");
+   //dll_say_hello("HelloPY dll", "99");
 
 
    puts("************************** run_hello_py win *****************************");

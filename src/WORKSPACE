@@ -86,7 +86,6 @@ new_local_repository(
     build_file = "postgresql_windows.BUILD"
 )
 
-
 new_local_repository(
     name = "postgresql_windows_lib",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/lib",
@@ -126,7 +125,7 @@ new_local_repository(
     name = "python_windows",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/include",
     #path = "c:/PostgreSQL/13/include",
-    path="C:\\dev\\Python\\Python311\\include",
+    path="C:\\Python312\\include",
     build_file = "python_windows.BUILD"
 )
 
@@ -134,7 +133,7 @@ new_local_repository(
     name = "python_windows_lib",
     #path = "c:/dev/F18_mono/F18_v3/conan/deploy/x86_64/libpq/lib",
     #path = "c:/PostgreSQL/13/lib",
-    path="C:\\dev\\Python\\Python311\\libs",
+    path="C:\\Python312\\libs",
     build_file="python_windows_lib.BUILD"    
 )
 
