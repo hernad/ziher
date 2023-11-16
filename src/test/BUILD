@@ -601,8 +601,8 @@ windows_dll_library(
     #    ":is_flag_at_top_enabled": ["top.txt"],
     #    "//conditions:default": [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
     #}),
-    #srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
-    srcs = [ ":hello_py_zh_lib" ], 
+    srcs = [ ":hello_dbf_zh_lib", "lib_hello_dbf_1.c"],
+    #srcs = [ ":hello_py_zh_lib" ], 
     hdrs = glob([
         "*.h",
         "*.zhh"
