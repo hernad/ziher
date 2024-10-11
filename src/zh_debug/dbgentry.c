@@ -122,6 +122,7 @@ typedef struct
    ZH_VARINFO * aScopes;
 } ZH_WATCHPOINT;
 
+
 typedef struct
 {
    char *       szModule;
