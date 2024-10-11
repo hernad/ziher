@@ -37,6 +37,7 @@
           shellHook = ''
             echo "python311", ${python311}
             echo "openssl.dev", ${openssl.dev}
+            echo "libX11/lib", ${xorg.libX11}/lib
             echo "libX11.dev", ${xorg.libX11.dev}
             echo "xorgproto", ${xorg.xorgproto}
             echo "zlib", ${zlib}
@@ -127,7 +128,7 @@
 
             new_local_repository(
                 name = "x11_linux_lib",
-                path="${xorg.libX11.dev}/lib",
+                path="${xorg.libX11}/lib",
                 build_file="x11_linux_lib.BUILD"    
             )
 
