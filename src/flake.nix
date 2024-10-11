@@ -28,18 +28,21 @@
           
           inputsFrom = [ 
              python311
-             xorg.libX11.dev
+             xorg.libX11
              xorg.xorgproto
-             openssl.dev
+             openssl
              zlib
           ];
    
           shellHook = ''
             echo "python311", ${python311}
-            echo "openssl.dev", ${openssl.dev}
+            #echo "openssl.dev", ${openssl.dev}
+            echo "openssl.out/lib", ${openssl.out}/lib
             echo "libX11/lib", ${xorg.libX11}/lib
             echo "libX11.dev", ${xorg.libX11.dev}
             echo "xorgproto", ${xorg.xorgproto}
+            echo "postgresql_14", ${postgresql_14}
+            echo "postgresql_14.lib", ${postgresql_14.lib}
             echo "zlib", ${zlib}
 
             echo Kreiram WORKSPACE.nix ...
@@ -98,7 +101,7 @@
 
             new_local_repository(
                 name = "postgresql_linux_lib",
-                path = "${postgresql_14}/lib",
+                path = "${postgresql_14.lib}/lib",
                 build_file = "postgresql_linux_lib.BUILD"
             )
 
@@ -140,7 +143,7 @@
 
             new_local_repository(
                 name = "openssl_linux_lib",
-                path="${openssl.dev}/lib",
+                path="${openssl.out}/lib",
                 build_file="openssl_linux_lib.BUILD"    
             )
 
