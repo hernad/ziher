@@ -1,5 +1,0 @@
-description=Miscellaneous user RDDs
-
-#incpaths=.
-
-libs=${_ZH_DYNPREF}${zh_name}${_ZH_DYNSUFF}

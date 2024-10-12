@@ -898,9 +898,6 @@ STATIC FUNCTION AR_APPEND( nWA, nRecords )
       oError:SubCode     := 1025 /* EDBF_READONLY */
       oError:Description := zh_langErrMsg( EG_READONLY )
       oError:FileName    := aOpenInfo[ UR_OI_NAME ]
-#if 0
-      oError:OsCode      := FError()
-#endif
       oError:CanDefault  := .T.
       oError:CanRetry    := .T.
       NetErr( .T. )
@@ -1516,9 +1513,6 @@ STATIC FUNCTION AR_DROP( nRddId, cFullName )
          "ARRAYRDD not inizialized)"
       oError:FileName    := cFullName
       oError:CanDefault  := .T.
-#if 0
-      UR_SUPER_ERROR( 0, oError )
-#endif
       THROW( oError )
    ENDIF
 

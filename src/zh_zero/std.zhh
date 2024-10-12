@@ -393,11 +393,6 @@
          __dbDelim( .T., <(f)>, <(delim)>, { <(fields)> }, ;
                     <{for}>, <{while}>, <next>, <rec>, <.rest.>, <cp> )
 
-#command COPY [TO <(f)>] [SDF] [FIELDS <fields,...>] ;
-              [FOR <for>] [WHILE <while>] [NEXT <next>] ;
-              [RECORD <rec>] [<rest:REST>] [ALL] [CODEPAGE <cp>] => ;
-         __dbSDF( .T., <(f)>, { <(fields)> }, ;
-                  <{for}>, <{while}>, <next>, <rec>, <.rest.>, <cp> )
 
 #command COPY [TO <(f)>] [FIELDS <fields,...>] ;
               [FOR <for>] [WHILE <while>] [NEXT <next>] ;
@@ -412,11 +407,7 @@
          __dbDelim( .F., <(f)>, <(delim)>, { <(fields)> }, ;
                     <{for}>, <{while}>, <next>, <rec>, <.rest.>, <cp> )
 
-#command APPEND [FROM <(f)>] [SDF] [FIELDS <fields,...>] ;
-                [FOR <for>] [WHILE <while>] [NEXT <next>] ;
-                [RECORD <rec>] [<rest:REST>] [ALL] [CODEPAGE <cp>] => ;
-         __dbSDF( .F., <(f)>, { <(fields)> }, ;
-                  <{for}>, <{while}>, <next>, <rec>, <.rest.>, <cp> )
+
 
 #command APPEND [FROM <(f)>] [FIELDS <fields,...>] ;
                 [FOR <for>] [WHILE <while>] [NEXT <next>] ;
