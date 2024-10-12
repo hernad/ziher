@@ -145,9 +145,6 @@ STATIC PROCEDURE ProcessKey( nKey, oDlg, oBrw, aTopics )
       EXIT
 
    CASE K_PGDN
-#if 0
-   CASE K_CTRL_F
-#endif
    CASE K_SPACE
 
       ShowTopic( oDlg, aTopics, oBrw:Cargo, 1 )  // Skip to next page
@@ -252,5 +249,9 @@ STATIC FUNCTION GetTopics()
    RETURN aTopics
 
 STATIC FUNCTION help_en()
-//  #pragma __streaminclude "en.txt" | RETURN %s
-    RETURN "dbg help"
+   #pragma __streaminclude "en.txt" | RETURN %s
+   // LOCAL cHelp := "Help engleski harbour"
+   // cHelp += + Chr(13) + Chr(10) + "vako nako"
+   // cHelp += + Chr(13) + Chr(10) + "kraj"
+   //
+   // RETURN cHelp

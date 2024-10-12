@@ -51,19 +51,6 @@
 #  if defined( ZH_OS_DARWIN )
 #     include <crt_externs.h>
 #     define environ  ( *_NSGetEnviron() )
-#  elif ! defined( __WATCOMC__ )
-      extern char ** environ;
-#  endif
-#elif defined( ZH_OS_DOS )
-#  if defined( __DJGPP__ )
-      extern char ** environ;
-#  elif ! defined( __WATCOMC__ )
-#     define environ _environ
-      extern char ** _environ;
-#  endif
-#elif defined( ZH_OS_OS2 )
-#  if ! defined( __WATCOMC__ )
-      extern char ** environ;
 #  endif
 #elif defined( ZH_OS_WIN )
 #  include "zh_win_unicode.h"
