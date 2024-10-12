@@ -341,7 +341,7 @@ ENDCLASS
 METHOD New() CLASS ZHDebugger
 
    LOCAL i
-   
+
    t_oDebugger := Self
 
    /* default the search path for files to the current directory
@@ -385,7 +385,7 @@ METHOD New() CLASS ZHDebugger
    FOR i := 1 to len(::aPathDirs)
       ? ::aPathDirs[i]
    next
-   inkey(0)
+   inkey(5)
 
    RETURN Self
 
