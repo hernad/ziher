@@ -148,9 +148,9 @@ typedef struct
    PZH_ITEM * pItems;         /* pointer to the stack items */
    PZH_ITEM * pBase;          /* stack frame position for the current function call */
    ZH_ITEM    Return;         /* latest returned value */
-   ZH_ISIZ    nItems;         /* total items that may be held on the stack */
-   ZH_ISIZ    nWithObject;    /* stack offset to base current WITH OBJECT item */
-   ZH_ISIZ    nRecoverBase;   /* current SEQUENCE envelope offset or 0 if no SEQUENCE is active */
+   ZH_I_SIZE    nItems;         /* total items that may be held on the stack */
+   ZH_I_SIZE    nWithObject;    /* stack offset to base current WITH OBJECT item */
+   ZH_I_SIZE    nRecoverBase;   /* current SEQUENCE envelope offset or 0 if no SEQUENCE is active */
    ZH_USHORT  uiActionRequest;/* request for some action - stop processing of opcodes */
    ZH_USHORT  uiQuitState;    /* ZHVM is quitting */
    ZH_STACK_STATE state;      /* first (default) stack state frame */
@@ -232,17 +232,17 @@ extern ZH_EXPORT void        zh_stackPush( void );       /* pushes an item on to
 extern           void        zh_stackPushReturn( void );
 extern           void        zh_stackPopReturn( void );
 
-extern ZH_EXPORT ZH_ISIZ     zh_stackTopOffset( void );
-extern ZH_EXPORT ZH_ISIZ     zh_stackBaseOffset( void );
-extern ZH_EXPORT ZH_ISIZ     zh_stackTotalItems( void );
-extern ZH_EXPORT PZH_ITEM    zh_stackItem( ZH_ISIZ nItemPos );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackTopOffset( void );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackBaseOffset( void );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackTotalItems( void );
+extern ZH_EXPORT PZH_ITEM    zh_stackItem( ZH_I_SIZE nItemPos );
 
 /* stack management functions */
 extern ZH_EXPORT int         zh_stackCallDepth( void );
 extern ZH_EXPORT void        zh_stackBaseProcInfo( char * szProcName, ZH_USHORT * puiProcLine ); /* get current .zh function name and line number */
 
-extern ZH_EXPORT ZH_ISIZ     zh_stackBaseProcOffset( int iLevel );
-extern ZH_EXPORT ZH_ISIZ     zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackBaseProcOffset( int iLevel );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol );
 extern           void        zh_stackDispCall( void );
 
 /* thread specific data */
@@ -265,7 +265,7 @@ extern void        zh_stackInit( void );       /* initializes the stack */
 extern void        zh_stackIncrease( void );   /* increase the stack size */
 extern void        zh_stackDec( void );
 extern void        zh_stackDecrease( ZH_SIZE nItems );
-extern void        zh_stackRemove( ZH_ISIZ nUntilPos );
+extern void        zh_stackRemove( ZH_I_SIZE nUntilPos );
 extern PZH_ITEM    zh_stackNewFrame( PZH_STACK_STATE pFrame, ZH_USHORT uiParams );
 extern void        zh_stackOldFrame( PZH_STACK_STATE pFrame );
 extern void        zh_stackClearMemvarsBase( void );
@@ -274,8 +274,8 @@ extern PZH_ITEM    zh_stackLocalVariable( int iLocal );
 extern PZH_ITEM    zh_stackLocalVariableAt( int * piFromBase );
 extern PZH_ITEM ** zh_stackItemBasePtr( void );
 
-extern ZH_EXPORT ZH_ISIZ     zh_stackGetRecoverBase( void );
-extern           void        zh_stackSetRecoverBase( ZH_ISIZ nBase );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackGetRecoverBase( void );
+extern           void        zh_stackSetRecoverBase( ZH_I_SIZE nBase );
 extern           ZH_USHORT   zh_stackGetActionRequest( void );
 extern           void        zh_stackSetActionRequest( ZH_USHORT uiAction );
 
@@ -283,8 +283,8 @@ extern void        zh_stackSetStaticsBase( void * pBase );
 extern void *      zh_stackGetStaticsBase( void );
 
 extern           PZH_ITEM    zh_stackWithObjectItem( void );
-extern ZH_EXPORT ZH_ISIZ     zh_stackWithObjectOffset( void );
-extern           void        zh_stackWithObjectSetOffset( ZH_ISIZ nOffset );
+extern ZH_EXPORT ZH_I_SIZE     zh_stackWithObjectOffset( void );
+extern           void        zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset );
 
 extern int *       zh_stackKeyPolls( void );
 extern ZH_BOOL *   zh_stackDebugRequest( void );
@@ -331,7 +331,7 @@ extern void        zh_stackUpdateAllocator( void *, PZH_ALLOCUPDT_FUNC, int );
 /* #define zh_stackTotalItems( )       ( zh_stack.nItems ) */
 #define zh_stackBaseItem( )         ( * zh_stack.pBase )
 #define zh_stackSelfItem( )         ( * ( zh_stack.pBase + 1 ) )
-#define zh_stackItem( iItemPos )    ( * ( zh_stack.pItems + ( ZH_ISIZ ) ( iItemPos ) ) )
+#define zh_stackItem( iItemPos )    ( * ( zh_stack.pItems + ( ZH_I_SIZE ) ( iItemPos ) ) )
 #define zh_stackReturnItem( )       ( &zh_stack.Return )
 #define zh_stackDateBuffer( )       ( zh_stack.szDate )
 #define zh_stackItemBasePtr( )      ( &zh_stack.pItems )

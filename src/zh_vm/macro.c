@@ -1230,7 +1230,7 @@ ZH_BOOL zh_macroIsValidMacroText( const char * szText, ZH_SIZE nLen )
    return ZH_FALSE;
 }
 
-ZH_SIZE zh_macroGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_macroGenJump( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( nOffset == 0 )
       zh_macroGenPCode4( ZH_P_JUMPFAR, 0, 0, 0, ZH_COMP_PARAM );
@@ -1246,7 +1246,7 @@ ZH_SIZE zh_macroGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL )
    return ZH_PCODE_DATA->nPCodePos - 3;
 }
 
-ZH_SIZE zh_macroGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_macroGenJumpFalse( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( nOffset == 0 )
       zh_macroGenPCode4( ZH_P_JUMPFALSEFAR, 0, 0, 0, ZH_COMP_PARAM );
@@ -1262,7 +1262,7 @@ ZH_SIZE zh_macroGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL )
    return ZH_PCODE_DATA->nPCodePos - 3;
 }
 
-ZH_SIZE zh_macroGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_macroGenJumpTrue( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( nOffset == 0 )
       zh_macroGenPCode4( ZH_P_JUMPTRUEFAR, 0, 0, 0, ZH_COMP_PARAM );
@@ -1281,7 +1281,7 @@ ZH_SIZE zh_macroGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL )
 void zh_macroGenJumpThere( ZH_SIZE nFrom, ZH_SIZE nTo, ZH_COMP_DECL )
 {
    ZH_BYTE * pCode = ZH_PCODE_DATA->pCode;
-   ZH_ISIZ nOffset = nTo - nFrom + 1;
+   ZH_I_SIZE nOffset = nTo - nFrom + 1;
 
    if( ZH_LIM_INT24( nOffset ) )
       ZH_PUT_LE_UINT24( &pCode[ nFrom ], nOffset );

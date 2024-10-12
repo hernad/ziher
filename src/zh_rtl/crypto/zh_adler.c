@@ -68,7 +68,7 @@ ZH_U32 zh_adler32( ZH_U32 adler, const void * buf, ZH_SIZE len )
       const unsigned char * ucbuf = ( const unsigned char * ) buf;
       do
       {
-         ZH_ISIZ n = len < NMAX ? len : NMAX;
+         ZH_I_SIZE n = len < NMAX ? len : NMAX;
          len -= n;
          if( n >= 16 )
          {

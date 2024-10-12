@@ -284,9 +284,9 @@ ZH_FUNC( ZH_USUBSTR )
    {
       PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * pszText = zh_itemGetCPtr( pText );
-      ZH_ISIZ nSize = zh_itemGetCLen( pText );
-      ZH_ISIZ nFrom = zh_parns( 2 );
-      ZH_ISIZ nCount = iPCount < 3 ? nSize : zh_parns( 3 );
+      ZH_I_SIZE nSize = zh_itemGetCLen( pText );
+      ZH_I_SIZE nFrom = zh_parns( 2 );
+      ZH_I_SIZE nCount = iPCount < 3 ? nSize : zh_parns( 3 );
 
       if( nFrom > 0 )
       {
@@ -331,9 +331,9 @@ ZH_FUNC( ZH_BSUBSTR )
    if( pText && ZH_IS_PARAM_NUM( 2 ) && ( iPCount < 3 || ZH_IS_PARAM_NUM( 3 ) ) )
    {
       const char * pszText = zh_itemGetCPtr( pText );
-      ZH_ISIZ nSize = zh_itemGetCLen( pText );
-      ZH_ISIZ nFrom = zh_parns( 2 );
-      ZH_ISIZ nCount = iPCount < 3 ? nSize : zh_parns( 3 );
+      ZH_I_SIZE nSize = zh_itemGetCLen( pText );
+      ZH_I_SIZE nFrom = zh_parns( 2 );
+      ZH_I_SIZE nCount = iPCount < 3 ? nSize : zh_parns( 3 );
 
       if( nFrom > 0 )
       {
@@ -375,7 +375,7 @@ ZH_FUNC( ZH_ULEFT )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nLen = zh_parns( 2 );
+      ZH_I_SIZE nLen = zh_parns( 2 );
       if( nLen <= 0 )
          zh_retc_null();
       else
@@ -401,7 +401,7 @@ ZH_FUNC( ZH_BLEFT )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nLen = zh_parns( 2 );
+      ZH_I_SIZE nLen = zh_parns( 2 );
       if( nLen <= 0 )
          zh_retc_null();
       else
@@ -423,7 +423,7 @@ ZH_FUNC( ZH_URIGHT )
 {
    PZH_ITEM pText = zh_param( 1, ZH_IT_STRING );
    ZH_SIZE nText = zh_itemGetCLen( pText );
-   ZH_ISIZ nLen = zh_parns( 2 );
+   ZH_I_SIZE nLen = zh_parns( 2 );
 
    if( nLen > 0 && nText > 0 )
    {
@@ -451,7 +451,7 @@ ZH_FUNC( ZH_BRIGHT )
 {
    PZH_ITEM pText = zh_param( 1, ZH_IT_STRING );
    ZH_SIZE nText = zh_itemGetCLen( pText );
-   ZH_ISIZ nLen = zh_parns( 2 );
+   ZH_I_SIZE nLen = zh_parns( 2 );
 
    if( nLen > 0 && nText > 0 )
    {
@@ -585,14 +585,14 @@ ZH_FUNC( ZH_BRAT )
    if( nSubLen )
    {
       ZH_SIZE nLen = zh_parclen( 2 );
-      ZH_ISIZ nTo = nLen - nSubLen;
+      ZH_I_SIZE nTo = nLen - nSubLen;
 
       if( nTo >= 0 )
       {
          const char * pszSub = zh_parc( 1 );
          const char * pszText = zh_parc( 2 );
-         ZH_ISIZ nStart = zh_parns( 3 );
-         ZH_ISIZ nFrom;
+         ZH_I_SIZE nStart = zh_parns( 3 );
+         ZH_I_SIZE nFrom;
 
          if( nStart <= 1 )
             nFrom = 0;
@@ -603,7 +603,7 @@ ZH_FUNC( ZH_BRAT )
          {
             if( ZH_IS_PARAM_NUM( 4 ) )
             {
-               ZH_ISIZ nEnd = zh_parns( 4 ) - nSubLen;
+               ZH_I_SIZE nEnd = zh_parns( 4 ) - nSubLen;
 
                if( nEnd < nTo )
                   nTo = nEnd;

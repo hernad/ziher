@@ -72,7 +72,7 @@ ZH_FUNC( PROCNAME )
 
 ZH_FUNC( PROCLINE )
 {
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( zh_parni( 1 ) + 1 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( zh_parni( 1 ) + 1 );
 
    if( nOffset > 0 )
       zh_retni( zh_stackItem( nOffset )->item.asSymbol.stackstate->uiLineNo );
@@ -99,7 +99,7 @@ ZH_FUNC( PROCFILE )
    }
    else
    {
-      ZH_ISIZ nOffset = zh_stackBaseProcOffset( zh_parni( 1 ) + 1 );
+      ZH_I_SIZE nOffset = zh_stackBaseProcOffset( zh_parni( 1 ) + 1 );
 
       if( nOffset > 0 )
       {
@@ -129,7 +129,7 @@ ZH_FUNC( PROCFILE )
 #define ZH_PROCBUF_LEN  ( ZH_SYMBOL_NAME_LEN + ZH_SYMBOL_NAME_LEN + 4 )
 char * zh_procname( int iLevel, char * szName, ZH_BOOL fMethodName )
 {
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( iLevel );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( iLevel );
 
    szName[ 0 ] = '\0';
    if( nOffset > 0 )
@@ -143,7 +143,7 @@ char * zh_procname( int iLevel, char * szName, ZH_BOOL fMethodName )
           pBase->item.asSymbol.value == &zh_symEval &&
           pBase->item.asSymbol.stackstate->uiClass )
       {
-         ZH_ISIZ nPrevOffset = zh_stackItem( nOffset )->item.asSymbol.stackstate->nBaseItem;
+         ZH_I_SIZE nPrevOffset = zh_stackItem( nOffset )->item.asSymbol.stackstate->nBaseItem;
 
          if( zh_stackItem( nPrevOffset )->item.asSymbol.stackstate->uiClass ==
              pBase->item.asSymbol.stackstate->uiClass &&
@@ -199,7 +199,7 @@ char * zh_procname( int iLevel, char * szName, ZH_BOOL fMethodName )
  */
 ZH_BOOL zh_procinfo( int iLevel, char * szName, ZH_USHORT * puiLine, char * szFile )
 {
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( iLevel );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( iLevel );
 
    if( nOffset > 0 )
    {

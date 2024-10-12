@@ -1506,7 +1506,7 @@ static int zh_pp_tokenStr( PZH_PP_TOKEN pToken, PZH_MEM_BUFFER pBuffer,
                            ZH_BOOL fSpaces, ZH_BOOL fQuote, ZH_USHORT ltype )
 {
    int iLines = 0;
-   ZH_ISIZ nSpace = fSpaces ? pToken->spaces : 0;
+   ZH_I_SIZE nSpace = fSpaces ? pToken->spaces : 0;
 
 
    if( nSpace == 0 && fQuote && ltype &&

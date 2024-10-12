@@ -61,7 +61,7 @@ ZH_FUNC( CHARPACK )
 
       while( n_in < len )
       {
-         ZH_ISIZ n_count = 1, n_max = ZH_MIN( 255, len - n_in );
+         ZH_I_SIZE n_count = 1, n_max = ZH_MIN( 255, len - n_in );
          ZH_UCHAR c = in[ n_in ];
 
          while( n_count < n_max && in[ n_in + n_count ] == c )

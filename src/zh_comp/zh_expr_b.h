@@ -913,7 +913,7 @@ static ZH_EXPR_FUNC( zh_compExprUseIIF )
       {
          /* this is called if all three parts of IIF expression should be generated
           */
-         ZH_ISIZ nPosFalse, nPosEnd;
+         ZH_I_SIZE nPosFalse, nPosEnd;
          PZH_EXPR pExpr = pSelf->value.asList.pExprList;
 
          ZH_EXPR_USE( pExpr, ZH_EA_PUSH_PCODE );
@@ -933,7 +933,7 @@ static ZH_EXPR_FUNC( zh_compExprUseIIF )
       {
          /* this is called if all three parts of IIF expression should be generated
           */
-         ZH_ISIZ nPosFalse, nPosEnd;
+         ZH_I_SIZE nPosFalse, nPosEnd;
          PZH_EXPR pExpr = pSelf->value.asList.pExprList;
 
          ZH_EXPR_USE( pExpr, ZH_EA_PUSH_PCODE );
@@ -1280,12 +1280,12 @@ static ZH_EXPR_FUNC( zh_compExprUseArrayAt )
          if( pIdx->ExprType == ZH_ET_NUMERIC )
          {
             PZH_EXPR pExpr = pSelf->value.asList.pExprList; /* the expression that holds an array */
-            ZH_ISIZ nIndex;
+            ZH_I_SIZE nIndex;
 
             if( pIdx->value.asNum.NumType == ZH_ET_LONG )
-               nIndex = ( ZH_ISIZ ) pIdx->value.asNum.val.l;
+               nIndex = ( ZH_I_SIZE ) pIdx->value.asNum.val.l;
             else
-               nIndex = ( ZH_ISIZ ) pIdx->value.asNum.val.d;
+               nIndex = ( ZH_I_SIZE ) pIdx->value.asNum.val.d;
 
             if( pExpr->ExprType == ZH_ET_ARRAY )   /* is it a literal array */
             {
@@ -2565,7 +2565,7 @@ static ZH_EXPR_FUNC( zh_compExprUseSetGet )
          break;
       case ZH_EA_PUSH_PCODE:
       {
-         ZH_ISIZ nPosFalse, nPosEnd;
+         ZH_I_SIZE nPosFalse, nPosEnd;
 
          /* <pVar>==NIL */
          ZH_EXPR_USE( pSelf->value.asSetGet.pVar, ZH_EA_PUSH_PCODE );
@@ -2601,7 +2601,7 @@ static ZH_EXPR_FUNC( zh_compExprUseSetGet )
       case ZH_EA_PUSH_POP:
       case ZH_EA_STATEMENT:
       {
-         ZH_ISIZ nPosFalse, nPosEnd;
+         ZH_I_SIZE nPosFalse, nPosEnd;
 
          /* <pVar>==NIL */
          ZH_EXPR_USE( pSelf->value.asSetGet.pVar, ZH_EA_PUSH_PCODE );
@@ -3230,7 +3230,7 @@ static ZH_EXPR_FUNC( zh_compExprUseOr )
       case ZH_EA_PUSH_PCODE:
          if( ZH_COMP_ISSUPPORTED( ZH_COMPFLAG_SHORTCUTS ) )
          {
-            ZH_ISIZ nEndPos;
+            ZH_I_SIZE nEndPos;
 
             ZH_EXPR_USE( pSelf->value.asOperator.pLeft, ZH_EA_PUSH_PCODE );
             ZH_GEN_FUNC1( PCode1, ZH_P_DUPLICATE );
@@ -3253,7 +3253,7 @@ static ZH_EXPR_FUNC( zh_compExprUseOr )
       case ZH_EA_PUSH_POP:
          if( ZH_COMP_ISSUPPORTED( ZH_COMPFLAG_SHORTCUTS ) )
          {
-            ZH_ISIZ nEndPos;
+            ZH_I_SIZE nEndPos;
             ZH_EXPR_USE( pSelf->value.asOperator.pLeft, ZH_EA_PUSH_PCODE );
             nEndPos = ZH_GEN_FUNC1( JumpTrue, 0 );
             /* NOTE: This will not generate a runtime error if incompatible
@@ -3315,7 +3315,7 @@ static ZH_EXPR_FUNC( zh_compExprUseAnd )
       case ZH_EA_PUSH_PCODE:
          if( ZH_COMP_ISSUPPORTED( ZH_COMPFLAG_SHORTCUTS ) )
          {
-            ZH_ISIZ nEndPos;
+            ZH_I_SIZE nEndPos;
 
             ZH_EXPR_USE( pSelf->value.asOperator.pLeft, ZH_EA_PUSH_PCODE );
             ZH_GEN_FUNC1( PCode1, ZH_P_DUPLICATE );
@@ -3338,7 +3338,7 @@ static ZH_EXPR_FUNC( zh_compExprUseAnd )
       case ZH_EA_PUSH_POP:
          if( ZH_COMP_ISSUPPORTED( ZH_COMPFLAG_SHORTCUTS ) )
          {
-            ZH_ISIZ nEndPos;
+            ZH_I_SIZE nEndPos;
             ZH_EXPR_USE( pSelf->value.asOperator.pLeft, ZH_EA_PUSH_PCODE );
             nEndPos = ZH_GEN_FUNC1( JumpFalse, 0 );
             /* NOTE: This will not generate a runtime error if incompatible

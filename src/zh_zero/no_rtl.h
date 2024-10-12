@@ -81,10 +81,10 @@ typedef struct _ZH_MEMINFO
 #endif
 
 static PZH_MEMINFO s_pMemBlocks         = NULL;
-static ZH_ISIZ     s_nMemoryBlocks      = 0; /* memory blocks used */
-static ZH_ISIZ     s_nMemoryMaxBlocks   = 0; /* maximum number of used memory blocks */
-static ZH_ISIZ     s_nMemoryMaxConsumed = 0; /* memory size consumed */
-static ZH_ISIZ     s_nMemoryConsumed    = 0; /* memory max size consumed */
+static ZH_I_SIZE     s_nMemoryBlocks      = 0; /* memory blocks used */
+static ZH_I_SIZE     s_nMemoryMaxBlocks   = 0; /* maximum number of used memory blocks */
+static ZH_I_SIZE     s_nMemoryMaxConsumed = 0; /* memory size consumed */
+static ZH_I_SIZE     s_nMemoryConsumed    = 0; /* memory max size consumed */
 
 #endif /* ZH_FM_STATISTICS */
 

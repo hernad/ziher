@@ -154,7 +154,7 @@ PZH_FNAME zh_fsFNameSplit( const char * pszFileName )
    if( pszFileName )
    {
       char * pszPos, cDirSep;
-      ZH_ISIZ iSize, iPos;
+      ZH_I_SIZE iSize, iPos;
 
       iPos = iSize = zh_strnlen( pszFileName, ZH_PATH_MAX - 1 );
       cDirSep = ( char ) zh_setGetDirSeparator();

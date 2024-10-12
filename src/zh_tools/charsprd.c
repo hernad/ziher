@@ -55,7 +55,7 @@ ZH_FUNC( CHARSPREAD )
       zh_retc_null();
    else
    {
-      ZH_ISIZ nSize = zh_parns( 2 );
+      ZH_I_SIZE nSize = zh_parns( 2 );
 
       if( nSize < 0 || ( ZH_SIZE ) nSize <= nLen )
          zh_itemReturn( zh_param( 1, ZH_IT_ANY ) );
@@ -63,7 +63,7 @@ ZH_FUNC( CHARSPREAD )
       {
          const char * szText = zh_parc( 1 );
          char cDelim = ' ';
-         ZH_ISIZ nTokens = 0;
+         ZH_I_SIZE nTokens = 0;
          ZH_SIZE nPos;
 
          if( ZH_ISCHAR( 3 ) )
@@ -85,7 +85,7 @@ ZH_FUNC( CHARSPREAD )
             zh_itemReturn( zh_param( 1, ZH_IT_ANY ) );
          else
          {
-            ZH_ISIZ iRepl, iRest, iFirst;
+            ZH_I_SIZE iRepl, iRest, iFirst;
             ZH_SIZE nDst, nRest;
             char * szDest;
 
@@ -100,7 +100,7 @@ ZH_FUNC( CHARSPREAD )
                szDest[ nDst++ ] = szText[ nPos ];
                if( szText[ nPos ] == cDelim )
                {
-                  ZH_ISIZ i;
+                  ZH_I_SIZE i;
 
                   while( nPos + 1 < nLen && szText[ nPos + 1 ] == cDelim )
                      szDest[ nDst++ ] = szText[ ++nPos ];

@@ -59,7 +59,7 @@ static void do_pad( int iSwitch )
       const char * pcString = zh_parc( 1 );
       ZH_SIZE sStrLen = zh_parclen( 1 );
       char * pcRet, * pc;
-      ZH_ISIZ nRetLen;
+      ZH_I_SIZE nRetLen;
       ZH_SIZE sRetLen;
       char cFill;
 

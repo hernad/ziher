@@ -133,7 +133,7 @@ ZH_SIZE zh_parinfa( int iParamNum, ZH_SIZE nArrayIndex )
       if( nArrayIndex == 0 )
          return zh_arrayLen( pArray );
       else
-         return ( ZH_ISIZ ) zh_arrayGetType( pArray, nArrayIndex );
+         return ( ZH_I_SIZE ) zh_arrayGetType( pArray, nArrayIndex );
    }
    else
       return 0;
@@ -567,7 +567,7 @@ long  zh_parnldef( int iParam, long lDefValue )
    return lDefValue;
 }
 
-ZH_ISIZ zh_parns( int iParam )
+ZH_I_SIZE zh_parns( int iParam )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -581,17 +581,17 @@ ZH_ISIZ zh_parns( int iParam )
          pItem = zh_itemUnRef( pItem );
 
       if( ZH_IS_LONG( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asLong.value;
+         return ( ZH_I_SIZE ) pItem->item.asLong.value;
       else if( ZH_IS_INTEGER( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asInteger.value;
+         return ( ZH_I_SIZE ) pItem->item.asInteger.value;
       else if( ZH_IS_DOUBLE( pItem ) )
-         return ZH_CAST_ISIZ( pItem->item.asDouble.value );
+         return ZH_CAST_I_SIZE( pItem->item.asDouble.value );
    }
 
    return 0;
 }
 
-ZH_ISIZ zh_parnsdef( int iParam, ZH_ISIZ nDefValue )
+ZH_I_SIZE zh_parnsdef( int iParam, ZH_I_SIZE nDefValue )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -605,11 +605,11 @@ ZH_ISIZ zh_parnsdef( int iParam, ZH_ISIZ nDefValue )
          pItem = zh_itemUnRef( pItem );
 
       if( ZH_IS_LONG( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asLong.value;
+         return ( ZH_I_SIZE ) pItem->item.asLong.value;
       else if( ZH_IS_INTEGER( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asInteger.value;
+         return ( ZH_I_SIZE ) pItem->item.asInteger.value;
       else if( ZH_IS_DOUBLE( pItem ) )
-         return ZH_CAST_ISIZ( pItem->item.asDouble.value );
+         return ZH_CAST_I_SIZE( pItem->item.asDouble.value );
    }
 
    return nDefValue;
@@ -1180,7 +1180,7 @@ long  zh_parvnl( int iParam, ... )
    return 0;
 }
 
-ZH_ISIZ zh_parvns( int iParam, ... )
+ZH_I_SIZE zh_parvns( int iParam, ... )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -1194,11 +1194,11 @@ ZH_ISIZ zh_parvns( int iParam, ... )
          pItem = zh_itemUnRef( pItem );
 
       if( ZH_IS_LONG( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asLong.value;
+         return ( ZH_I_SIZE ) pItem->item.asLong.value;
       else if( ZH_IS_INTEGER( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asInteger.value;
+         return ( ZH_I_SIZE ) pItem->item.asInteger.value;
       else if( ZH_IS_DOUBLE( pItem ) )
-         return ZH_CAST_ISIZ( pItem->item.asDouble.value );
+         return ZH_CAST_I_SIZE( pItem->item.asDouble.value );
       else if( ZH_IS_ARRAY( pItem ) )
       {
          va_list va;
@@ -1540,7 +1540,7 @@ void zh_retnl( long lNumber )
 }
 
 #undef zh_retns
-void zh_retns( ZH_ISIZ nNumber )
+void zh_retns( ZH_I_SIZE nNumber )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -1930,7 +1930,7 @@ int zh_stornl( long lValue, int iParam )
    return 0;
 }
 
-int zh_storns( ZH_ISIZ nValue, int iParam )
+int zh_storns( ZH_I_SIZE nValue, int iParam )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -2418,7 +2418,7 @@ int zh_storvnl( long lValue, int iParam, ... )
    return 0;
 }
 
-int zh_storvns( ZH_ISIZ nValue, int iParam, ... )
+int zh_storvns( ZH_I_SIZE nValue, int iParam, ... )
 {
    ZH_STACK_TLS_PRELOAD
 

@@ -65,7 +65,7 @@ ZH_FUNC( TABEXPAND )
 
       if( ZH_IS_PARAM_NUM( 2 ) )
          sTabWidth = zh_parns( 2 );
-      if( ( ZH_ISIZ ) sTabWidth <= 0 )
+      if( ( ZH_I_SIZE ) sTabWidth <= 0 )
          sTabWidth = 8;
 
       if( ZH_IS_PARAM_NUM( 3 ) )
@@ -217,7 +217,7 @@ ZH_FUNC( TABPACK )
 
       if( ZH_IS_PARAM_NUM( 2 ) )
          sTabWidth = zh_parns( 2 );
-      if( ( ZH_ISIZ ) sTabWidth <= 0 )
+      if( ( ZH_I_SIZE ) sTabWidth <= 0 )
          sTabWidth = 8;
 
       if( ZH_IS_PARAM_NUM( 3 ) )

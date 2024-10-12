@@ -80,7 +80,7 @@ static const char * s_zh_padGet( PZH_CODEPAGE cdp, ZH_SIZE * pnPad )
 
 static void s_zh_strPad( int iMode, PZH_CODEPAGE cdp )
 {
-   ZH_ISIZ nLen = zh_parns( 2 );
+   ZH_I_SIZE nLen = zh_parns( 2 );
 
    if( nLen > 0 )
    {

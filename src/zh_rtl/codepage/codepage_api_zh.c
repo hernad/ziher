@@ -119,7 +119,7 @@ ZH_FUNC( ZH_CDPISUTF8 )
 ZH_FUNC( ZH_CODEPAGELIST )
 {
    const char ** list = zh_codepageList();
-   ZH_ISIZ nPos;
+   ZH_I_SIZE nPos;
 
    nPos = 0;
    while( list[ nPos ] )

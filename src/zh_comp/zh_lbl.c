@@ -171,7 +171,7 @@ static ZH_LABEL_FUNC( zh_p_seqbegin )
 static ZH_LABEL_FUNC( zh_p_seqend )
 {
    ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 1 ];
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr );
    ZH_SIZE nNewPos = nPCodePos + nOffset;
 
    if( cargo->fSetSeqBegin || nOffset != 4 )

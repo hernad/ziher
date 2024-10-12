@@ -58,7 +58,7 @@ ZH_FUNC( RIGHT )
 
    if( pText && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nLen = zh_parns( 2 );
+      ZH_I_SIZE nLen = zh_parns( 2 );
       if( nLen <= 0 )
          zh_retc_null();
       else

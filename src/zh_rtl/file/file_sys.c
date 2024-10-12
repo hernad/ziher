@@ -2994,7 +2994,7 @@ ZH_FOFFSET zh_fsSeekLarge( ZH_FHANDLE hFileHandle, ZH_FOFFSET nOffset, ZH_USHORT
       zh_vmLock();
    }
 #else
-   nPos = ( ZH_FOFFSET ) zh_fsSeek( hFileHandle, ( ZH_ISIZ ) nOffset, uiFlags );
+   nPos = ( ZH_FOFFSET ) zh_fsSeek( hFileHandle, ( ZH_I_SIZE ) nOffset, uiFlags );
 #endif
 
    return nPos;

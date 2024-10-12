@@ -127,7 +127,7 @@ ZH_FUNC( ASIZE )
 
    if( pArray && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nSize = zh_parns( 2 );
+      ZH_I_SIZE nSize = zh_parns( 2 );
 
       zh_arraySize( pArray, ZH_MAX( nSize, 0 ) );
 
@@ -153,7 +153,7 @@ ZH_FUNC( AINS )
 
    if( pArray )
    {
-      ZH_ISIZ nPos = zh_parns( 2 );
+      ZH_I_SIZE nPos = zh_parns( 2 );
 
       if( nPos == 0 )
          nPos = 1;
@@ -170,7 +170,7 @@ ZH_FUNC( ADEL )
 
    if( pArray )
    {
-      ZH_ISIZ nPos = zh_parns( 2 );
+      ZH_I_SIZE nPos = zh_parns( 2 );
 
       if( nPos == 0 )
          nPos = 1;
@@ -194,7 +194,7 @@ ZH_FUNC( AFILL )
       if( pValue )
       {
          ZH_SIZE nStart, nCount;
-         ZH_ISIZ lStart = zh_parns( 3 ), lCount = zh_parns( 4 );
+         ZH_I_SIZE lStart = zh_parns( 3 ), lCount = zh_parns( 4 );
 
          /* Explicit lCount of 0 - Nothing to do! */
          if( ZH_IS_PARAM_NUM( 4 ) && lCount == 0 )
@@ -309,7 +309,7 @@ ZH_FUNC( ZH_AINS )
 
    if( pArray )
    {
-      ZH_ISIZ nPos = zh_parns( 2 );
+      ZH_I_SIZE nPos = zh_parns( 2 );
 
       if( nPos == 0 )
          nPos = 1;
@@ -337,7 +337,7 @@ ZH_FUNC( ZH_ADEL )
 
    if( pArray )
    {
-      ZH_ISIZ nPos = zh_parns( 2 );
+      ZH_I_SIZE nPos = zh_parns( 2 );
 
       if( nPos == 0 )
          nPos = 1;

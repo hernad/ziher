@@ -260,11 +260,11 @@ typedef struct _ZH_MEMINFO
 
 static ZH_BOOL s_fStatistic = ZH_FALSE;
 
-static ZH_ISIZ s_nMemoryBlocks      = 0; /* memory blocks used */
-static ZH_ISIZ s_nMemoryMaxBlocks   = 0; /* maximum number of used memory blocks */
-static ZH_ISIZ s_nMemoryConsumed    = 0; /* memory size consumed */
-static ZH_ISIZ s_nMemoryMaxConsumed = 0; /* memory max size consumed */
-static ZH_ISIZ s_nMemoryLimConsumed = 0; /* limit the size of memory consumed */
+static ZH_I_SIZE s_nMemoryBlocks      = 0; /* memory blocks used */
+static ZH_I_SIZE s_nMemoryMaxBlocks   = 0; /* maximum number of used memory blocks */
+static ZH_I_SIZE s_nMemoryConsumed    = 0; /* memory size consumed */
+static ZH_I_SIZE s_nMemoryMaxConsumed = 0; /* memory max size consumed */
+static ZH_I_SIZE s_nMemoryLimConsumed = 0; /* limit the size of memory consumed */
 
 static PZH_MEMINFO s_pFirstBlock = NULL;
 static PZH_MEMINFO s_pLastBlock  = NULL;
@@ -1462,7 +1462,7 @@ ZH_FUNC( __FM_ALLOCLIMIT )
       zh_retns( mspace_footprint_limit( zh_mspace() ) );
       if( ZH_IS_PARAM_NUM( 1 ) )
       {
-         ZH_ISIZ nLimit = zh_parns( 1 );
+         ZH_I_SIZE nLimit = zh_parns( 1 );
 
          if( nLimit <= 0 )
             nLimit = -1;
@@ -1472,7 +1472,7 @@ ZH_FUNC( __FM_ALLOCLIMIT )
       zh_retns( dlmalloc_footprint_limit() );
       if( ZH_IS_PARAM_NUM( 1 ) )
       {
-         ZH_ISIZ nLimit = zh_parns( 1 );
+         ZH_I_SIZE nLimit = zh_parns( 1 );
 
          if( nLimit <= 0 )
             nLimit = -1;
@@ -1482,7 +1482,7 @@ ZH_FUNC( __FM_ALLOCLIMIT )
       zh_retns( s_nMemoryLimConsumed ? s_nMemoryLimConsumed : -1 );
       if( ZH_IS_PARAM_NUM( 1 ) )
       {
-         ZH_ISIZ nLimit = zh_parns( 1 );
+         ZH_I_SIZE nLimit = zh_parns( 1 );
 
          s_nMemoryLimConsumed = ZH_MAX( nLimit, 0 );
       }

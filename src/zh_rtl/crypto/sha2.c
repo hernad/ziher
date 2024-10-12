@@ -212,9 +212,9 @@ static void sha256_transf(zh_sha256_ctx *ctx, const unsigned char *message,
     ZH_U32 wv[8];
     ZH_U32 t1, t2;
     const unsigned char *sub_block;
-    ZH_ISIZ i;
+    ZH_I_SIZE i;
 
-    for (i = 0; i < ( ZH_ISIZ ) block_nb; i++) {
+    for (i = 0; i < ( ZH_I_SIZE ) block_nb; i++) {
 #ifndef UNROLL_LOOPS
        int j;
 #endif
@@ -429,9 +429,9 @@ static void sha512_transf(zh_sha512_ctx *ctx, const unsigned char *message,
     ZH_U64 wv[8];
     ZH_U64 t1, t2;
     const unsigned char *sub_block;
-    ZH_ISIZ i;
+    ZH_I_SIZE i;
 
-    for (i = 0; i < ( ZH_ISIZ ) block_nb; i++) {
+    for (i = 0; i < ( ZH_I_SIZE ) block_nb; i++) {
 #ifndef UNROLL_LOOPS
        int j;
 #endif

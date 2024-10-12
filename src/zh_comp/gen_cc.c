@@ -150,7 +150,7 @@ static int zh_gencc_checkJumpCondAhead( ZH_LONG lValue, PZH_ZFUNC pFunc, ZH_SIZE
 {
    if( ZH_GENC_GETLABEL( nPCodePos + 1 ) == 0 )
    {
-      ZH_ISIZ nOffset = 0;
+      ZH_I_SIZE nOffset = 0;
       ZH_BOOL fNot = ZH_FALSE;
       int iSize = 0;
 
@@ -574,7 +574,7 @@ static ZH_GENC_FUNC( zh_p_instring )
 
 static ZH_GENC_FUNC( zh_p_jumpnear )
 {
-   ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -585,7 +585,7 @@ static ZH_GENC_FUNC( zh_p_jumpnear )
 
 static ZH_GENC_FUNC( zh_p_jump )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -596,7 +596,7 @@ static ZH_GENC_FUNC( zh_p_jump )
 
 static ZH_GENC_FUNC( zh_p_jumpfar )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -607,7 +607,7 @@ static ZH_GENC_FUNC( zh_p_jumpfar )
 
 static ZH_GENC_FUNC( zh_p_jumpfalsenear )
 {
-   ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -618,7 +618,7 @@ static ZH_GENC_FUNC( zh_p_jumpfalsenear )
 
 static ZH_GENC_FUNC( zh_p_jumpfalse )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &( pFunc->pCode[ nPCodePos + 1 ] ) );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &( pFunc->pCode[ nPCodePos + 1 ] ) );
 
    ZH_GENC_LABEL();
 
@@ -629,7 +629,7 @@ static ZH_GENC_FUNC( zh_p_jumpfalse )
 
 static ZH_GENC_FUNC( zh_p_jumpfalsefar )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &( pFunc->pCode[ nPCodePos + 1 ] ) );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &( pFunc->pCode[ nPCodePos + 1 ] ) );
 
    ZH_GENC_LABEL();
 
@@ -640,7 +640,7 @@ static ZH_GENC_FUNC( zh_p_jumpfalsefar )
 
 static ZH_GENC_FUNC( zh_p_jumptruenear )
 {
-   ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -651,7 +651,7 @@ static ZH_GENC_FUNC( zh_p_jumptruenear )
 
 static ZH_GENC_FUNC( zh_p_jumptrue )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 
@@ -662,7 +662,7 @@ static ZH_GENC_FUNC( zh_p_jumptrue )
 
 static ZH_GENC_FUNC( zh_p_jumptruefar )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &( pFunc->pCode[ nPCodePos + 1 ] ) );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &( pFunc->pCode[ nPCodePos + 1 ] ) );
 
    ZH_GENC_LABEL();
 
@@ -1629,7 +1629,7 @@ static ZH_GENC_FUNC( zh_p_seqbegin )
 
 static ZH_GENC_FUNC( zh_p_seqend )
 {
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
 
    ZH_GENC_LABEL();
 

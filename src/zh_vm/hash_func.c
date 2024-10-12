@@ -827,7 +827,7 @@ ZH_FUNC( ZH_HALLOCATE )
 
    if( pHash && pValue )
    {
-      ZH_ISIZ nMem = zh_itemGetNS( pValue );
+      ZH_I_SIZE nMem = zh_itemGetNS( pValue );
       if( nMem >= 0 )
          zh_hashPreallocate( pHash, nMem );
    }

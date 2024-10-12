@@ -837,7 +837,7 @@ static ZH_SIZE zh_memvarGetBaseOffset( int iProcLevel )
       int iLevel = zh_stackCallDepth();
       if( iProcLevel < iLevel )
       {
-         ZH_ISIZ nOffset = zh_stackBaseProcOffset( iLevel - iProcLevel - 1 );
+         ZH_I_SIZE nOffset = zh_stackBaseProcOffset( iLevel - iProcLevel - 1 );
          if( nOffset > 0 )
             return zh_stackItem( nOffset )->item.asSymbol.stackstate->nPrivateBase;
       }
@@ -848,7 +848,7 @@ static ZH_SIZE zh_memvarGetBaseOffset( int iProcLevel )
 
 /* Count the number of variables with given scope
  */
-static ZH_ISIZ zh_memvarCount( int iScope, int iLevel )
+static ZH_I_SIZE zh_memvarCount( int iScope, int iLevel )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarCount(%d,%d)", iScope, iLevel ) );
 
@@ -1662,7 +1662,7 @@ ZH_FUNC( __MVRESTORE )
 ZH_FUNC( __MVSETBASE )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 0 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 0 );
 
    if( nOffset > 0 )
       zh_stackItem( nOffset )->item.asSymbol.stackstate->nPrivateBase =

@@ -533,7 +533,7 @@ ZH_FUNC( ZH_PREAD )
 
       if( ZH_IS_PARAM_NUM( 3 ) )
       {
-         ZH_ISIZ nToRead = zh_parns( 3 );
+         ZH_I_SIZE nToRead = zh_parns( 3 );
 
          if( nToRead >= 0 && ( ZH_SIZE ) nToRead < nSize )
             nSize = nToRead;

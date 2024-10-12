@@ -58,7 +58,7 @@
 
 ZH_EXTERN_BEGIN
 
-extern ZH_ISIZ zh_compPCodeSize( PZH_ZFUNC, ZH_SIZE );
+extern ZH_I_SIZE zh_compPCodeSize( PZH_ZFUNC, ZH_SIZE );
 extern void zh_compPCodeEval( PZH_ZFUNC, const PZH_PCODE_FUNC *, void * );
 extern void zh_compPCodeTrace( PZH_ZFUNC, const PZH_PCODE_FUNC *, void * );
 
@@ -159,9 +159,9 @@ extern void zh_compLoopKill( PZH_ZFUNC );
 extern void zh_compGenError( ZH_COMP_DECL, const char * const szErrors[], char cPrefix, int iError, const char * szError1, const char * szError2 ); /* generic parsing error management function */
 extern void zh_compGenWarning( ZH_COMP_DECL, const char * const szWarnings[], char cPrefix, int iWarning, const char * szWarning1, const char * szWarning2); /* generic parsing warning management function */
 
-extern ZH_SIZE zh_compGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL );             /* generates the pcode to jump to a specific offset */
-extern ZH_SIZE zh_compGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL );        /* generates the pcode to jump if false */
-extern ZH_SIZE zh_compGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL );         /* generates the pcode to jump if true */
+extern ZH_SIZE zh_compGenJump( ZH_I_SIZE nOffset, ZH_COMP_DECL );             /* generates the pcode to jump to a specific offset */
+extern ZH_SIZE zh_compGenJumpFalse( ZH_I_SIZE nOffset, ZH_COMP_DECL );        /* generates the pcode to jump if false */
+extern ZH_SIZE zh_compGenJumpTrue( ZH_I_SIZE nOffset, ZH_COMP_DECL );         /* generates the pcode to jump if true */
 extern void    zh_compGenJumpHere( ZH_SIZE nOffset, ZH_COMP_DECL );        /* returns the pcode pos where to set a jump offset */
 extern void    zh_compGenJumpThere( ZH_SIZE nFrom, ZH_SIZE nTo, ZH_COMP_DECL );   /* sets a jump offset */
 
@@ -295,7 +295,7 @@ extern void zh_compPrintLogo( ZH_COMP_DECL );
 extern void zh_compPrintModes( ZH_COMP_DECL );
 
 /* Misc functions defined in ziher.c */
-extern void zh_compNOOPfill( PZH_ZFUNC pFunc, ZH_SIZE nFrom, ZH_ISIZ nCount, ZH_BOOL fPop, ZH_BOOL fCheck );
+extern void zh_compNOOPfill( PZH_ZFUNC pFunc, ZH_SIZE nFrom, ZH_I_SIZE nCount, ZH_BOOL fPop, ZH_BOOL fCheck );
 extern ZH_BOOL zh_compHasJump( PZH_ZFUNC pFunc, ZH_SIZE nPos );
 
 /* Misc functions defined in zhfix.c */

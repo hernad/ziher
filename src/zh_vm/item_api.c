@@ -659,20 +659,20 @@ long zh_itemGetNL( PZH_ITEM pItem )
    return 0;
 }
 
-ZH_ISIZ zh_itemGetNS( PZH_ITEM pItem )
+ZH_I_SIZE zh_itemGetNS( PZH_ITEM pItem )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemGetNS(%p)", ( void * ) pItem ) );
 
    if( pItem )
    {
       if( ZH_IS_LONG( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asLong.value;
+         return ( ZH_I_SIZE ) pItem->item.asLong.value;
 
       else if( ZH_IS_INTEGER( pItem ) )
-         return ( ZH_ISIZ ) pItem->item.asInteger.value;
+         return ( ZH_I_SIZE ) pItem->item.asInteger.value;
 
       else if( ZH_IS_DOUBLE( pItem ) )
-         return ZH_CAST_ISIZ( pItem->item.asDouble.value );
+         return ZH_CAST_I_SIZE( pItem->item.asDouble.value );
    }
 
    return 0;
@@ -982,7 +982,7 @@ PZH_ITEM zh_itemPutNL( PZH_ITEM pItem, long lNumber )
    return pItem;
 }
 
-PZH_ITEM zh_itemPutNS( PZH_ITEM pItem, ZH_ISIZ nNumber )
+PZH_ITEM zh_itemPutNS( PZH_ITEM pItem, ZH_I_SIZE nNumber )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemPutNS(%p, %" ZH_PFS "d)", ( void * ) pItem, nNumber ) );
 

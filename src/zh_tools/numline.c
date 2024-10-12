@@ -49,13 +49,13 @@
 
 ZH_FUNC( NUMLINE )
 {
-   ZH_ISIZ nLines = 0;
+   ZH_I_SIZE nLines = 0;
 
    if( ZH_ISCHAR( 1 ) )
    {
-      ZH_ISIZ nStrLen = zh_parclen( 1 );
+      ZH_I_SIZE nStrLen = zh_parclen( 1 );
       const char * pcString = zh_parc( 1 );
-      ZH_ISIZ nLineLength = zh_parnsdef( 2, 80 );
+      ZH_I_SIZE nLineLength = zh_parnsdef( 2, 80 );
 
       while( nStrLen > 0 )
       {

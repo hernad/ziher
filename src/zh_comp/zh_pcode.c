@@ -491,9 +491,9 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL                        /* ZH_P_PUSHAPARAMS           */
 };
 
-ZH_ISIZ zh_compPCodeSize( PZH_ZFUNC pFunc, ZH_SIZE nOffset )
+ZH_I_SIZE zh_compPCodeSize( PZH_ZFUNC pFunc, ZH_SIZE nOffset )
 {
-   ZH_ISIZ nSize = 0;
+   ZH_I_SIZE nSize = 0;
    ZH_BYTE opcode = pFunc->pCode[ nOffset ];
 
    if( opcode < ZH_P_LAST_PCODE )

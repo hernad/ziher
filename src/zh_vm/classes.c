@@ -1596,9 +1596,9 @@ const char * zh_objGetRealClsName( PZH_ITEM pObject, const char * szName )
 }
 
 #if defined( ZH_CLASSY_BLOCK_SCOPE )
-static ZH_ISIZ zh_clsSenderOffset( void )
+static ZH_I_SIZE zh_clsSenderOffset( void )
 {
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 1 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 1 );
 
    if( nOffset > 0 )
    {
@@ -1624,7 +1624,7 @@ static ZH_ISIZ zh_clsSenderOffset( void )
 #if 0
 static ZH_USHORT zh_clsSenderClass( void )
 {
-   ZH_ISIZ nOffset = zh_clsSenderOffset();
+   ZH_I_SIZE nOffset = zh_clsSenderOffset();
 
    if( nOffset > 0 )
       return zh_stackItem( nOffset )->item.asSymbol.stackstate->uiClass;
@@ -1635,7 +1635,7 @@ static ZH_USHORT zh_clsSenderClass( void )
 
 static ZH_USHORT zh_clsSenderMethodClass( void )
 {
-   ZH_ISIZ nOffset = zh_clsSenderOffset();
+   ZH_I_SIZE nOffset = zh_clsSenderOffset();
 
    if( nOffset > 0 )
    {
@@ -1652,7 +1652,7 @@ static ZH_USHORT zh_clsSenderMethodClass( void )
 static PZH_SYMBOL zh_clsSenderSymbol( void )
 {
    PZH_SYMBOL pSym = NULL;
-   ZH_ISIZ nOffset = zh_clsSenderOffset();
+   ZH_I_SIZE nOffset = zh_clsSenderOffset();
 
    if( nOffset > 0 )
    {
@@ -1673,7 +1673,7 @@ static PZH_SYMBOL zh_clsSenderSymbol( void )
 
 static ZH_USHORT zh_clsSenderObjectClass( void )
 {
-   ZH_ISIZ nOffset = zh_clsSenderOffset();
+   ZH_I_SIZE nOffset = zh_clsSenderOffset();
 
    if( nOffset > 0 )
    {
@@ -2643,7 +2643,7 @@ void zh_dbg_objSendMessage( int iProcLevel, PZH_ITEM pObject, PZH_ITEM pMessage,
          int iLevel = zh_stackCallDepth();
          if( iProcLevel < iLevel )
          {
-            ZH_ISIZ nOffset = zh_stackBaseProcOffset( iLevel - iProcLevel );
+            ZH_I_SIZE nOffset = zh_stackBaseProcOffset( iLevel - iProcLevel );
             if( nOffset > 0 )
             {
                PZH_ITEM pItem = zh_stackItem( nOffset );
@@ -4247,7 +4247,7 @@ ZH_FUNC( __CLSPARENT )
 ZH_FUNC( __SENDER )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 2 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 2 );
 
    if( nOffset > 0 )
    {
@@ -4278,7 +4278,7 @@ ZH_FUNC( __CLSSYNCWAIT )
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pMutex = NULL;
    ZH_ULONG ulMilliSec = ZH_THREAD_INFINITE_WAIT;
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 2 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 2 );
 
    if( nOffset > 0 )
    {

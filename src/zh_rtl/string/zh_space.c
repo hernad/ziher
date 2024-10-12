@@ -56,7 +56,7 @@ ZH_FUNC( SPACE )
 
    if( pItem )
    {
-      ZH_ISIZ nLen = zh_itemGetNS( pItem );
+      ZH_I_SIZE nLen = zh_itemGetNS( pItem );
 
       if( nLen > 0 )
       {

@@ -313,7 +313,7 @@ static ZH_OPT_FUNC( zh_p_duplicate )
          if( pFunc->pCode[ nPCodePos + 5 ] == ZH_P_POP )
          {
             ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 2 ];
-            ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr ), nLastOffset = 0;
+            ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr ), nLastOffset = 0;
             ZH_SIZE nNewPos = nPCodePos + 1 + nOffset;
             ZH_BOOL fNot = ZH_FALSE, fOK = ZH_TRUE, fRepeat = ZH_TRUE;
 
@@ -341,7 +341,7 @@ static ZH_OPT_FUNC( zh_p_duplicate )
                         ( pFunc->pCode[ nNewPos + 1 ] == ZH_P_JUMPTRUEFAR ||
                           pFunc->pCode[ nNewPos + 1 ] == ZH_P_JUMPFALSEFAR ) )
                {
-                  ZH_ISIZ nJump;
+                  ZH_I_SIZE nJump;
                   if( pFunc->pCode[ nNewPos + 1 ] != pFunc->pCode[ nPCodePos + 1 ] )
                      fNot = ! fNot;
                   nJump = fNot ? 4 : ZH_PCODE_MKINT24( &pFunc->pCode[ nNewPos + 2 ] );
@@ -424,7 +424,7 @@ static ZH_OPT_FUNC( zh_p_not )
              pFunc->pCode[ nPCodePos + 6 ] == ZH_P_POP )
          {
             ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 3 ];
-            ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr );
+            ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr );
 
             if( nOffset > 0 )
             {
@@ -471,7 +471,7 @@ static ZH_OPT_FUNC( zh_p_not )
 static ZH_OPT_FUNC( zh_p_jumpfar )
 {
    ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 1 ];
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr );
    ZH_SIZE nNewPos = nPCodePos + nOffset;
 
    ZH_SYMBOL_UNUSED( cargo );
@@ -528,7 +528,7 @@ static ZH_OPT_FUNC( zh_p_jumpfar )
 static ZH_OPT_FUNC( zh_p_jumpfalsefar )
 {
    ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 1 ];
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr );
    ZH_SIZE nNewPos = nPCodePos + nOffset;
    ZH_BOOL fLine = ZH_FALSE;
 
@@ -572,7 +572,7 @@ static ZH_OPT_FUNC( zh_p_jumpfalsefar )
 static ZH_OPT_FUNC( zh_p_jumptruefar )
 {
    ZH_BYTE * pAddr = &pFunc->pCode[ nPCodePos + 1 ];
-   ZH_ISIZ nOffset = ZH_PCODE_MKINT24( pAddr );
+   ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( pAddr );
    ZH_SIZE nNewPos = nPCodePos + nOffset;
    ZH_BOOL fLine = ZH_FALSE;
 
@@ -1020,7 +1020,7 @@ static ZH_SHORT zh_compLocalGetNumber( ZH_BYTE * pCode )
 }
 
 
-static ZH_ISIZ zh_compJumpGetOffset( ZH_BYTE * pCode )
+static ZH_I_SIZE zh_compJumpGetOffset( ZH_BYTE * pCode )
 {
    switch( *pCode )
    {

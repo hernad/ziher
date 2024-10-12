@@ -4539,7 +4539,7 @@ static void zh_vmSeqBlock( void )
 static ZH_GARBAGE_FUNC( zh_withObjectDestructor )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ * pnWithObjectBase = ( ZH_ISIZ * ) Cargo;
+   ZH_I_SIZE * pnWithObjectBase = ( ZH_I_SIZE * ) Cargo;
 
    zh_stackWithObjectSetOffset( *pnWithObjectBase );
 }
@@ -4554,13 +4554,13 @@ static const ZH_GC_FUNCS s_gcWithObjectFuncs =
 static void zh_vmWithObjectStart( void )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ * pnWithObjectBase;
+   ZH_I_SIZE * pnWithObjectBase;
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmWithObjectStart()" ) );
 
    pItem = zh_stackAllocItem();
-   pnWithObjectBase = ( ZH_ISIZ * ) zh_gcAllocRaw( sizeof( ZH_ISIZ ),
+   pnWithObjectBase = ( ZH_I_SIZE * ) zh_gcAllocRaw( sizeof( ZH_I_SIZE ),
                                                 &s_gcWithObjectFuncs );
    * pnWithObjectBase = zh_stackWithObjectOffset();
    pItem->type = ZH_IT_POINTER;
@@ -5452,7 +5452,7 @@ static void zh_vmArrayGen( ZH_SIZE nElements ) /* generates an nElements Array a
 static ZH_BOOL zh_vmArrayNew( PZH_ITEM pArray, ZH_USHORT uiDimension )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ  nElements;
+   ZH_I_SIZE  nElements;
    PZH_ITEM pDim;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmArrayNew(%p, %hu)", ( void * ) pArray, uiDimension ) );
@@ -5461,11 +5461,11 @@ static ZH_BOOL zh_vmArrayNew( PZH_ITEM pArray, ZH_USHORT uiDimension )
 
    /* use the proper type of number of elements */
    if( ZH_IS_INTEGER( pDim ) )
-      nElements = ( ZH_ISIZ ) pDim->item.asInteger.value;
+      nElements = ( ZH_I_SIZE ) pDim->item.asInteger.value;
    else if( ZH_IS_LONG( pDim ) )
-      nElements = ( ZH_ISIZ ) pDim->item.asLong.value;
+      nElements = ( ZH_I_SIZE ) pDim->item.asLong.value;
    else if( ZH_IS_DOUBLE( pDim ) )
-      nElements = ( ZH_ISIZ ) pDim->item.asDouble.value;
+      nElements = ( ZH_I_SIZE ) pDim->item.asDouble.value;
    else
       nElements = 0;
 
@@ -6696,7 +6696,7 @@ void zh_vmPushLong( long lNumber )
    ZH_ITEM_PUT_LONGRAW( pItem, lNumber );
 }
 
-void zh_vmPushSize( ZH_ISIZ nNumber )
+void zh_vmPushSize( ZH_I_SIZE nNumber )
 {
 #if ZH_SIZE_MAX <= ZH_VMUINT_MAX
    zh_vmPushInteger( ( int ) nNumber );
@@ -8705,7 +8705,7 @@ void zh_vmRequestEndProc( void )
 void zh_vmRequestBreak( PZH_ITEM pItem )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nRecoverBase;
+   ZH_I_SIZE nRecoverBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestBreak(%p)", ( void * ) pItem ) );
 
@@ -12076,7 +12076,7 @@ ZH_FUNC( __QUITCANCEL )
 
    if( ! zh_stackQuitState() )
    {
-      ZH_ISIZ nRecoverBase = zh_stackGetRecoverBase();
+      ZH_I_SIZE nRecoverBase = zh_stackGetRecoverBase();
 
       if( nRecoverBase )
       {
@@ -12175,7 +12175,7 @@ ZH_FUNC( __RECOVERERRORBLOCK )
 {
    ZH_STACK_TLS_PRELOAD
 
-   ZH_ISIZ nRecoverBase = zh_stackGetRecoverBase();
+   ZH_I_SIZE nRecoverBase = zh_stackGetRecoverBase();
 
    if( nRecoverBase > 0 && nRecoverBase < zh_stackTopOffset() )
    {

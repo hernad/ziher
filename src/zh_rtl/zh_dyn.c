@@ -271,7 +271,7 @@ static ZH_U64 zh_u64par( PZH_ITEM pParam, PZH_DYNARG pArg )
    return r;
 }
 
-static PZH_ITEM zh_u64ret( PZH_ITEM pItem, int iRetType, int iEncoding, ZH_DYNVAL value, ZH_ISIZ nLen )
+static PZH_ITEM zh_u64ret( PZH_ITEM pItem, int iRetType, int iEncoding, ZH_DYNVAL value, ZH_I_SIZE nLen )
 {
    switch( iRetType )
    {
@@ -649,7 +649,7 @@ static void zh_u32par( PZH_ITEM pParam, PZH_DYNARG pArg, ZH_U32 * r1, ZH_U32 * r
    }
 }
 
-static PZH_ITEM zh_u32ret( PZH_ITEM pItem, int iRetType, int iEncoding, ZH_DYNVAL value, ZH_ISIZ nLen )
+static PZH_ITEM zh_u32ret( PZH_ITEM pItem, int iRetType, int iEncoding, ZH_DYNVAL value, ZH_I_SIZE nLen )
 {
    switch( iRetType )
    {
@@ -963,7 +963,7 @@ void zh_dynCall( int iFuncFlags, void * pFunctionRaw, int iParams, int iFirst, i
 
                zh_itemParamStoreForward( ( ZH_USHORT ) ( iFirst + tmp ),
                   zh_u64ret( pItem, pArg[ tmp ].iType, pArg[ tmp ].iEncoding, pArg[ tmp ].value,
-                     ( pArg[ tmp ].iOptions & ZH_DYC_OPT_NULLTERM ) != 0 ? -1 : ( ZH_ISIZ ) zh_parclen( iFirst + tmp ) ) );
+                     ( pArg[ tmp ].iOptions & ZH_DYC_OPT_NULLTERM ) != 0 ? -1 : ( ZH_I_SIZE ) zh_parclen( iFirst + tmp ) ) );
 
                zh_itemRelease( pItem );
             }
@@ -1105,7 +1105,7 @@ void zh_dynCall( int iFuncFlags, void * pFunctionRaw, int iParams, int iFirst, i
 
                zh_itemParamStoreForward( ( ZH_USHORT ) ( iFirst + tmp ),
                   zh_u32ret( pItem, pArg[ tmp ].iType, pArg[ tmp ].iEncoding, pArg[ tmp ].value,
-                     ( pArg[ tmp ].iOptions & ZH_DYC_OPT_NULLTERM ) != 0 ? -1 : ( ZH_ISIZ ) zh_parclen( iFirst + tmp ) ) );
+                     ( pArg[ tmp ].iOptions & ZH_DYC_OPT_NULLTERM ) != 0 ? -1 : ( ZH_I_SIZE ) zh_parclen( iFirst + tmp ) ) );
 
                zh_itemRelease( pItem );
             }

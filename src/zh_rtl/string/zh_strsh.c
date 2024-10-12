@@ -54,13 +54,13 @@ ZH_FUNC( ZH_STRSHRINK )
 
    if( pText )
    {
-      ZH_ISIZ nShrinkBy = zh_parnldef( 2, 1 );
+      ZH_I_SIZE nShrinkBy = zh_parnldef( 2, 1 );
 
       if( nShrinkBy > 0 )
       {
          const char * pszText = zh_itemGetCPtr( pText );
-         ZH_ISIZ nText = zh_itemGetCLen( pText );
-         ZH_ISIZ nLen;
+         ZH_I_SIZE nText = zh_itemGetCLen( pText );
+         ZH_I_SIZE nLen;
          PZH_CODEPAGE cdp = zh_vmCodepage();
 
          if( ZH_CODEPAGE_ISCHARIDX( cdp ) )

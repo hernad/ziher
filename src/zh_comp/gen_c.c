@@ -829,9 +829,9 @@ static ZH_GENC_FUNC( zh_p_jumpnear )
             pFunc->pCode[ nPCodePos + 1 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
 
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 2;
@@ -844,9 +844,9 @@ static ZH_GENC_FUNC( zh_p_jump )
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
 
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 3;
@@ -860,8 +860,8 @@ static ZH_GENC_FUNC( zh_p_jumpfar )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 4;
@@ -873,8 +873,8 @@ static ZH_GENC_FUNC( zh_p_jumpfalsenear )
             pFunc->pCode[ nPCodePos + 1 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 2;
@@ -887,8 +887,8 @@ static ZH_GENC_FUNC( zh_p_jumpfalse )
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 3;
@@ -902,8 +902,8 @@ static ZH_GENC_FUNC( zh_p_jumpfalsefar )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 4;
@@ -915,8 +915,8 @@ static ZH_GENC_FUNC( zh_p_jumptruenear )
             pFunc->pCode[ nPCodePos + 1 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ( signed char ) ( pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 2;
@@ -929,8 +929,8 @@ static ZH_GENC_FUNC( zh_p_jumptrue )
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKSHORT( &pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %05" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 3;
@@ -944,8 +944,8 @@ static ZH_GENC_FUNC( zh_p_jumptruefar )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
-      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_ISIZ ) ( nPCodePos + nOffset ) );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "i) */", nOffset, ( ZH_I_SIZE ) ( nPCodePos + nOffset ) );
    }
    fprintf( cargo->yyc, "\n" );
    return 4;
@@ -1926,7 +1926,7 @@ static ZH_GENC_FUNC( zh_p_seqbegin )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
       fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "u) */", nOffset, nPCodePos + nOffset );
    }
    fprintf( cargo->yyc, "\n" );
@@ -1945,7 +1945,7 @@ static ZH_GENC_FUNC( zh_p_seqend )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
       fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "u) */", nOffset, nPCodePos + nOffset );
    }
    fprintf( cargo->yyc, "\n" );
@@ -1969,7 +1969,7 @@ static ZH_GENC_FUNC( zh_p_seqalways )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
       fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "u) */", nOffset, nPCodePos + nOffset );
    }
    fprintf( cargo->yyc, "\n" );
@@ -1991,7 +1991,7 @@ static ZH_GENC_FUNC( zh_p_alwaysbegin )
             pFunc->pCode[ nPCodePos + 3 ] );
    if( cargo->bVerbose )
    {
-      ZH_ISIZ nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
+      ZH_I_SIZE nOffset = ZH_PCODE_MKINT24( &pFunc->pCode[ nPCodePos + 1 ] );
       fprintf( cargo->yyc, "\t/* %" ZH_PFS "i (abs: %08" ZH_PFS "u) */", nOffset, nPCodePos + nOffset );
    }
    fprintf( cargo->yyc, "\n" );

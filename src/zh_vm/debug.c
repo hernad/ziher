@@ -140,8 +140,8 @@ ZH_FUNC( __DBGVMSTKGLIST )
    if( zh_vmInternalsEnabled() )
    {
       PZH_ITEM pReturn;
-      ZH_ISIZ nLen = zh_stackTopOffset();
-      ZH_ISIZ nPos;
+      ZH_I_SIZE nLen = zh_stackTopOffset();
+      ZH_I_SIZE nPos;
 
       pReturn = zh_itemArrayNew( nLen );  /* Create a transfer array */
 
@@ -157,9 +157,9 @@ ZH_FUNC( __DBGVMSTKGLIST )
 /* zh_stackLen( <nProcLevel> ) --> <nVars>
  * Returns params plus locals amount of the nProcLevel function
  */
-static ZH_ISIZ zh_stackLen( int iLevel )
+static ZH_I_SIZE zh_stackLen( int iLevel )
 {
-   ZH_ISIZ nBaseOffset, nPrevOffset, nLen;
+   ZH_I_SIZE nBaseOffset, nPrevOffset, nLen;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackLen()" ) );
 
@@ -204,8 +204,8 @@ ZH_FUNC( __DBGVMSTKLLIST )
    if( zh_vmInternalsEnabled() )
    {
       PZH_ITEM pReturn;
-      ZH_ISIZ nLen, n;
-      ZH_ISIZ nBaseOffset, nPrevOffset;
+      ZH_I_SIZE nLen, n;
+      ZH_I_SIZE nBaseOffset, nPrevOffset;
 
       nBaseOffset = zh_stackBaseOffset();
       nPrevOffset = zh_stackItem( nBaseOffset - 1 )->item.asSymbol.stackstate->nBaseItem;
@@ -226,7 +226,7 @@ ZH_FUNC( __DBGVMLOCALLIST )
    if( zh_vmInternalsEnabled() )
    {
       PZH_ITEM pArray;
-      ZH_ISIZ nBaseOffset, nPrevOffset, nLen, n;
+      ZH_I_SIZE nBaseOffset, nPrevOffset, nLen, n;
       int iLevel = zh_parni( 1 ) + 1;
 
       nBaseOffset = zh_stackBaseOffset();
@@ -268,7 +268,7 @@ ZH_FUNC( __DBGVMPARLLIST )
 PZH_ITEM zh_dbg_vmVarLGet( int iLevel, int iLocal )
 {
    PZH_ITEM pLocal = NULL;
-   ZH_ISIZ nBaseOffset;
+   ZH_I_SIZE nBaseOffset;
 
    nBaseOffset = zh_stackBaseOffset();
    while( iLevel-- > 0 && nBaseOffset > 1 )
@@ -323,7 +323,7 @@ ZH_FUNC( __DBGVMVARLSET )
    {
       int iLevel = zh_parni( 1 ) + 1;
       int iLocal = zh_parni( 2 );
-      ZH_ISIZ nBaseOffset;
+      ZH_I_SIZE nBaseOffset;
 
       nBaseOffset = zh_stackBaseOffset();
       while( iLevel-- > 0 && nBaseOffset > 1 )

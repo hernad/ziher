@@ -748,7 +748,7 @@ ZH_FUNC( ZH_JSONDECODE )
 
    if( ZH_ISBYREF( 2 ) )
    {
-      zh_retns( ( ZH_ISIZ ) nSize );
+      zh_retns( ( ZH_I_SIZE ) nSize );
       zh_itemParamStoreForward( 2, pItem );
       zh_itemRelease( pItem );
    }

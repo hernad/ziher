@@ -170,8 +170,8 @@ ZH_FUNC( ZH_UTF8SUBSTR )
    {
       char * szDest = NULL;
       ZH_SIZE nLen = zh_parclen( 1 ), nDest = 0;
-      ZH_ISIZ nFrom = zh_parns( 2 );
-      ZH_ISIZ nCount = iPCount < 3 ? ( ZH_ISIZ ) nLen : zh_parns( 3 );
+      ZH_I_SIZE nFrom = zh_parns( 2 );
+      ZH_I_SIZE nCount = iPCount < 3 ? ( ZH_I_SIZE ) nLen : zh_parns( 3 );
 
       if( nFrom < 0 )
       {
@@ -200,7 +200,7 @@ ZH_FUNC( ZH_UTF8LEFT )
 
    if( szString && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nLenReq = zh_parns( 2 );
+      ZH_I_SIZE nLenReq = zh_parns( 2 );
       ZH_SIZE nDest = 0;
       char * szDest = NULL;
 
@@ -223,13 +223,13 @@ ZH_FUNC( ZH_UTF8RIGHT )
 
    if( szString && ZH_IS_PARAM_NUM( 2 ) )
    {
-      ZH_ISIZ nLenReq = zh_parns( 2 );
+      ZH_I_SIZE nLenReq = zh_parns( 2 );
       ZH_SIZE nLen = zh_parclen( 1 ), nDest = 0;
       char * szDest = NULL;
 
       if( nLen && nLenReq > 0 )
       {
-         ZH_ISIZ nFrom = zh_cdpUTF8StringLength( szString, nLen ) - nLenReq;
+         ZH_I_SIZE nFrom = zh_cdpUTF8StringLength( szString, nLen ) - nLenReq;
          if( nFrom < 0 )
             nFrom = 0;
          szDest = zh_cdpUTF8StringSubstr( szString, nLen,

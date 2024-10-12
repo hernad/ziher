@@ -51,7 +51,7 @@
 
 ZH_FUNC( ZH_PVALUE )
 {
-   ZH_ISIZ nOffset = zh_stackBaseItem()->item.asSymbol.stackstate->nBaseItem;
+   ZH_I_SIZE nOffset = zh_stackBaseItem()->item.asSymbol.stackstate->nBaseItem;
    ZH_USHORT uiParam = ( ZH_USHORT ) zh_parni( 1 );
 
    if( uiParam && uiParam <= zh_stackItem( nOffset )->item.asSymbol.paramcnt )

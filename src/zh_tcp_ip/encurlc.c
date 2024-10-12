@@ -54,12 +54,12 @@ ZH_FUNC( TIP_URLENCODE )
 
    if( pszData )
    {
-      ZH_ISIZ nLen = zh_parclen( 1 );
+      ZH_I_SIZE nLen = zh_parclen( 1 );
 
       if( nLen )
       {
          ZH_BOOL bComplete = zh_parldef( 2, ZH_TRUE );
-         ZH_ISIZ nPos = 0, nPosRet = 0;
+         ZH_I_SIZE nPos = 0, nPosRet = 0;
 
          /* Giving maximum final length possible */
          char * pszRet = ( char * ) zh_xgrab( nLen * 3 + 1 );
@@ -114,11 +114,11 @@ ZH_FUNC( TIP_URLDECODE )
 
    if( pszData )
    {
-      ZH_ISIZ nLen = zh_parclen( 1 );
+      ZH_I_SIZE nLen = zh_parclen( 1 );
 
       if( nLen )
       {
-         ZH_ISIZ nPos = 0, nPosRet = 0;
+         ZH_I_SIZE nPos = 0, nPosRet = 0;
 
          /* maximum possible length */
          char * pszRet = ( char * ) zh_xgrab( nLen );

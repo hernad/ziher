@@ -64,7 +64,7 @@ ZH_FUNC( ZH_USERLANG )
 
    if( ietf != NULL )
    {
-      ZH_ISIZ tmp;
+      ZH_I_SIZE tmp;
 
       for( tmp = 0; ietf[ tmp ] && ietf[ tmp ] != '.'; tmp++ )
       {

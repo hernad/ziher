@@ -162,7 +162,7 @@ struct _ZH_EXTREF;
 
 typedef struct _ZH_STACK_STATE
 {
-   ZH_ISIZ   nBaseItem;        /* stack base offset of previous func/proc */
+   ZH_I_SIZE   nBaseItem;        /* stack base offset of previous func/proc */
    ZH_SIZE   nPrivateBase;     /* memvars base offset of previous func/proc */
    void *    pStatics;         /* statics frame of previous func/proc */
    ZH_USHORT uiClass;          /* class when message is sent */
@@ -242,15 +242,15 @@ struct zh_struRefer
       struct _ZH_ITEM * itemPtr;          /* item pointer */
       struct _ZH_ITEM ** *itemsbasePtr;   /* local variables */
    } BasePtr;
-   ZH_ISIZ offset;                        /* 0 for static variables */
-   ZH_ISIZ value;
+   ZH_I_SIZE offset;                        /* 0 for static variables */
+   ZH_I_SIZE value;
 };
 
 struct zh_struEnum
 {
    struct _ZH_ITEM * basePtr;             /* base item pointer */
    struct _ZH_ITEM * valuePtr;            /* value item pointer */
-   ZH_ISIZ offset;
+   ZH_I_SIZE offset;
 };
 
 struct zh_struExtRef
@@ -518,8 +518,8 @@ extern ZH_EXPORT int          zh_parni( int iParam ); /* retrieve a numeric para
 extern ZH_EXPORT int          zh_parnidef( int iParam, int iDefValue ); /* retrieve a numeric parameter as a integer, return default value if parameter isn't numeric */
 extern ZH_EXPORT long         zh_parnl( int iParam ); /* retrieve a numeric parameter as a long */
 extern ZH_EXPORT long         zh_parnldef( int iParam, long lDefValue ); /* retrieve a numeric parameter as a long, return default value if parameter isn't numeric */
-extern ZH_EXPORT ZH_ISIZ      zh_parns( int iParam ); /* retrieve a numeric parameter as a ZH_SIZE */
-extern ZH_EXPORT ZH_ISIZ      zh_parnsdef( int iParam, ZH_ISIZ nDefValue ); /* retrieve a numeric parameter as a ZH_SIZE, return default value if parameter isn't numeric */
+extern ZH_EXPORT ZH_I_SIZE      zh_parns( int iParam ); /* retrieve a numeric parameter as a ZH_SIZE */
+extern ZH_EXPORT ZH_I_SIZE      zh_parnsdef( int iParam, ZH_I_SIZE nDefValue ); /* retrieve a numeric parameter as a ZH_SIZE, return default value if parameter isn't numeric */
 extern ZH_EXPORT ZH_MAXINT    zh_parnint( int iParam ); /* retrieve a numeric parameter as a ZH_MAXINT */
 extern ZH_EXPORT ZH_MAXINT    zh_parnintdef( int iParam, ZH_MAXINT nDefValue ); /* retrieve a numeric parameter as a ZH_MAXINT, return default value if parameter isn't numeric */
 extern ZH_EXPORT void *       zh_parptr( int iParam ); /* retrieve a parameter as a pointer */
@@ -541,7 +541,7 @@ extern ZH_EXPORT int          zh_parvl( int iParam, ... ); /* retrieve a logical
 extern ZH_EXPORT double       zh_parvnd( int iParam, ... ); /* retrieve a numeric parameter as a double */
 extern ZH_EXPORT int          zh_parvni( int iParam, ... ); /* retrieve a numeric parameter as a integer */
 extern ZH_EXPORT long         zh_parvnl( int iParam, ... ); /* retrieve a numeric parameter as a long */
-extern ZH_EXPORT ZH_ISIZ      zh_parvns( int iParam, ... ); /* retrieve a numeric parameter as a ZH_SIZE */
+extern ZH_EXPORT ZH_I_SIZE      zh_parvns( int iParam, ... ); /* retrieve a numeric parameter as a ZH_SIZE */
 extern ZH_EXPORT ZH_MAXINT    zh_parvnint( int iParam, ... ); /* retrieve a numeric parameter as a ZH_MAXINT */
 extern ZH_EXPORT void *       zh_parvptr( int iParam, ... ); /* retrieve a parameter as a pointer */
 extern ZH_EXPORT void *       zh_parvptrGC( const ZH_GC_FUNCS * pFuncs, int iParam, ... ); /* retrieve a parameter as a pointer if it's a pointer to GC allocated block */
@@ -567,7 +567,7 @@ extern ZH_EXPORT void   zh_retl( int iTrueFalse ); /* returns a logical integer 
 extern ZH_EXPORT void   zh_retnd( double dNumber ); /* returns a double */
 extern ZH_EXPORT void   zh_retni( int iNumber ); /* returns a integer number */
 extern ZH_EXPORT void   zh_retnl( long lNumber ); /* returns a long number */
-extern ZH_EXPORT void   zh_retns( ZH_ISIZ nNumber ); /* returns a size */
+extern ZH_EXPORT void   zh_retns( ZH_I_SIZE nNumber ); /* returns a size */
 extern ZH_EXPORT void   zh_retnint( ZH_MAXINT nNumber ); /* returns a long number */
 extern ZH_EXPORT void   zh_retnlen( double dNumber, int iWidth, int iDec ); /* returns a double, with specific width and decimals */
 extern ZH_EXPORT void   zh_retndlen( double dNumber, int iWidth, int iDec ); /* returns a double, with specific width and decimals */
@@ -632,7 +632,7 @@ extern ZH_EXPORT int    zh_stortdt( long lJulian, long lMilliSec, int iParam ); 
 extern ZH_EXPORT int    zh_storl( int iLogical, int iParam ); /* stores a logical integer on a variable by reference */
 extern ZH_EXPORT int    zh_storni( int iValue, int iParam ); /* stores an integer on a variable by reference */
 extern ZH_EXPORT int    zh_stornl( long lValue, int iParam ); /* stores a long on a variable by reference */
-extern ZH_EXPORT int    zh_storns( ZH_ISIZ nValue, int iParam ); /* stores a ZH_SIZE on a variable by reference */
+extern ZH_EXPORT int    zh_storns( ZH_I_SIZE nValue, int iParam ); /* stores a ZH_SIZE on a variable by reference */
 extern ZH_EXPORT int    zh_stornd( double dValue, int iParam ); /* stores a double on a variable by reference */
 extern ZH_EXPORT int    zh_stornint( ZH_MAXINT nValue, int iParam ); /* stores a ZH_MAXINT on a variable by reference */
 extern ZH_EXPORT int    zh_storptr( void * pointer, int iParam ); /* stores a pointer on a variable by reference */
@@ -651,7 +651,7 @@ extern ZH_EXPORT int    zh_storvtdt( long lJulian, long lMilliSec, int iParam, .
 extern ZH_EXPORT int    zh_storvl( int iLogical, int iParam, ... ); /* stores a logical integer on a variable by reference */
 extern ZH_EXPORT int    zh_storvni( int iValue, int iParam, ... ); /* stores an integer on a variable by reference */
 extern ZH_EXPORT int    zh_storvnl( long lValue, int iParam, ... ); /* stores a long on a variable by reference */
-extern ZH_EXPORT int    zh_storvns( ZH_ISIZ nValue, int iParam, ... ); /* stores a ZH_SIZE on a variable by reference */
+extern ZH_EXPORT int    zh_storvns( ZH_I_SIZE nValue, int iParam, ... ); /* stores a ZH_SIZE on a variable by reference */
 extern ZH_EXPORT int    zh_storvnd( double dValue, int iParam, ... ); /* stores a double on a variable by reference */
 extern ZH_EXPORT int    zh_storvnint( ZH_MAXINT nValue, int iParam, ... ); /* stores a ZH_MAXINT on a variable by reference */
 extern ZH_EXPORT int    zh_storvptr( void * pointer, int iParam, ... ); /* stores a pointer on a variable by reference */
@@ -687,7 +687,7 @@ extern ZH_EXPORT PZH_SYMBOL     zh_arrayGetSymbol( PZH_ITEM pArray, ZH_SIZE nInd
 extern ZH_EXPORT ZH_BOOL      zh_arrayGetL( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the logical value contained on an array element */
 extern ZH_EXPORT int          zh_arrayGetNI( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the int value contained on an array element */
 extern ZH_EXPORT long         zh_arrayGetNL( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the long numeric value contained on an array element */
-extern ZH_EXPORT ZH_ISIZ      zh_arrayGetNS( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the ZH_SIZE value contained on an array element */
+extern ZH_EXPORT ZH_I_SIZE      zh_arrayGetNS( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the ZH_SIZE value contained on an array element */
 extern ZH_EXPORT ZH_MAXINT    zh_arrayGetNInt( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the ZH_MAXINT value contained on an array element */
 extern ZH_EXPORT double       zh_arrayGetND( PZH_ITEM pArray, ZH_SIZE nIndex ); /* retrieves the double value contained on an array element */
 extern ZH_EXPORT char *       zh_arrayGetDS( PZH_ITEM pArray, ZH_SIZE nIndex, char * szDate ); /* retrieves the date value contained in an array element */
@@ -704,7 +704,7 @@ extern ZH_EXPORT ZH_BOOL      zh_arraySetTDT( PZH_ITEM pArray, ZH_SIZE nIndex, l
 extern ZH_EXPORT ZH_BOOL      zh_arraySetL( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_BOOL fValue );
 extern ZH_EXPORT ZH_BOOL      zh_arraySetNI( PZH_ITEM pArray, ZH_SIZE nIndex, int iNumber );
 extern ZH_EXPORT ZH_BOOL      zh_arraySetNL( PZH_ITEM pArray, ZH_SIZE nIndex, long lNumber );
-extern ZH_EXPORT ZH_BOOL      zh_arraySetNS( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_ISIZ nNumber );
+extern ZH_EXPORT ZH_BOOL      zh_arraySetNS( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_I_SIZE nNumber );
 #ifndef ZH_LONG_LONG_OFF
 extern ZH_EXPORT ZH_BOOL      zh_arraySetNLL( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_LONGLONG llNumber );
 #endif
@@ -837,7 +837,7 @@ extern ZH_EXPORT ZH_BOOL   zh_strEmpty( const char * szText, ZH_SIZE nLen ); /* 
 extern ZH_EXPORT void      zh_strDescend( char * szStringTo, const char * szStringFrom, ZH_SIZE nLen ); /* copy a string to a buffer, inverting each character */
 extern ZH_EXPORT ZH_SIZE   zh_strAt( const char * szSub, ZH_SIZE nSubLen, const char * szText, ZH_SIZE nLen ); /* returns an index to a sub-string within another string */
 extern ZH_EXPORT ZH_SIZE   zh_strAtI( const char * szSub, ZH_SIZE nSubLen, const char * szText, ZH_SIZE nLen ); /* returns an index to a sub-string within another, ignore the case of the characters */
-extern ZH_EXPORT ZH_ISIZ   zh_strAtTBM( const char * needle, ZH_ISIZ m, const char * haystack, ZH_ISIZ n );
+extern ZH_EXPORT ZH_I_SIZE   zh_strAtTBM( const char * needle, ZH_I_SIZE m, const char * haystack, ZH_I_SIZE n );
 
 /* Warning: this functions works only with byte oriented CPs */
 extern ZH_EXPORT char *    zh_strUpper( char * szText, ZH_SIZE nLen ); /* convert an existing string buffer to upper case */

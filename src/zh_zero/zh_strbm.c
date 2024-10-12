@@ -52,9 +52,9 @@
 
 #define ASIZE  UCHAR_MAX
 
-static void preBmBc( const char * needle, ZH_ISIZ m, ZH_ISIZ bmBc[] )
+static void preBmBc( const char * needle, ZH_I_SIZE m, ZH_I_SIZE bmBc[] )
 {
-   ZH_ISIZ i;
+   ZH_I_SIZE i;
 
    for( i = 0; i < ASIZE; ++i )
       bmBc[ i ] = m;
@@ -62,9 +62,9 @@ static void preBmBc( const char * needle, ZH_ISIZ m, ZH_ISIZ bmBc[] )
       bmBc[ ( ZH_UCHAR ) needle[ i ] ] = m - i - 1;
 }
 
-static void suffixes( const char * needle, ZH_ISIZ m, ZH_ISIZ * suff )
+static void suffixes( const char * needle, ZH_I_SIZE m, ZH_I_SIZE * suff )
 {
-   ZH_ISIZ f, g, i;
+   ZH_I_SIZE f, g, i;
 
    f = 0; /* NOTE: Fix added by me [vszakats] */
    suff[ m - 1 ] = m;
@@ -85,10 +85,10 @@ static void suffixes( const char * needle, ZH_ISIZ m, ZH_ISIZ * suff )
    }
 }
 
-static void preBmGs( const char * needle, ZH_ISIZ m, ZH_ISIZ bmGs[] )
+static void preBmGs( const char * needle, ZH_I_SIZE m, ZH_I_SIZE bmGs[] )
 {
-   ZH_ISIZ i, j;
-   ZH_ISIZ * suff = ( ZH_ISIZ * ) zh_xgrab( m * sizeof( ZH_ISIZ ) );
+   ZH_I_SIZE i, j;
+   ZH_I_SIZE * suff = ( ZH_I_SIZE * ) zh_xgrab( m * sizeof( ZH_I_SIZE ) );
 
    suffixes( needle, m, suff );
 
@@ -109,12 +109,12 @@ static void preBmGs( const char * needle, ZH_ISIZ m, ZH_ISIZ bmGs[] )
    zh_xfree( suff );
 }
 
-ZH_ISIZ zh_strAtTBM( const char * needle, ZH_ISIZ m, const char * haystack, ZH_ISIZ n )
+ZH_I_SIZE zh_strAtTBM( const char * needle, ZH_I_SIZE m, const char * haystack, ZH_I_SIZE n )
 {
-   ZH_ISIZ r = 0, j, shift, u;
-   ZH_ISIZ bmBc[ ASIZE ];
+   ZH_I_SIZE r = 0, j, shift, u;
+   ZH_I_SIZE bmBc[ ASIZE ];
 
-   ZH_ISIZ * bmGs = ( ZH_ISIZ * ) zh_xgrab( m * sizeof( ZH_ISIZ ) );
+   ZH_I_SIZE * bmGs = ( ZH_I_SIZE * ) zh_xgrab( m * sizeof( ZH_I_SIZE ) );
 
    /* Preprocessing */
    preBmGs( needle, m, bmGs );
@@ -125,7 +125,7 @@ ZH_ISIZ zh_strAtTBM( const char * needle, ZH_ISIZ m, const char * haystack, ZH_I
    shift = m;
    while( j <= n - m )
    {
-      ZH_ISIZ i = m - 1;
+      ZH_I_SIZE i = m - 1;
       while( i >= 0 && needle[ i ] == haystack[ i + j ] )
       {
          --i;
@@ -144,9 +144,9 @@ ZH_ISIZ zh_strAtTBM( const char * needle, ZH_ISIZ m, const char * haystack, ZH_I
       }
       else
       {
-         ZH_ISIZ v = m - 1 - i;
-         ZH_ISIZ turboShift = u - v;
-         ZH_ISIZ bcShift = bmBc[ ( ZH_UCHAR ) haystack[ i + j ] ] - m + 1 + i;
+         ZH_I_SIZE v = m - 1 - i;
+         ZH_I_SIZE turboShift = u - v;
+         ZH_I_SIZE bcShift = bmBc[ ( ZH_UCHAR ) haystack[ i + j ] ] - m + 1 + i;
          shift = ZH_MAX( turboShift, bcShift );
          shift = ZH_MAX( shift, bmGs[ i ] );
          if( shift == bmGs[ i ] )

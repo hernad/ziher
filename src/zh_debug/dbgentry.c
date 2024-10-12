@@ -853,7 +853,7 @@ static void zh_dbgAddStatic( ZH_DEBUGINFO * info, const char * szName, int nInde
 
 static void zh_dbgAddStopLines( PZH_ITEM pItem )
 {
-   ZH_ISIZ i, nLinesLen;
+   ZH_I_SIZE i, nLinesLen;
 
    ZH_DBGCOMMON_LOCK();
 
@@ -863,8 +863,8 @@ static void zh_dbgAddStopLines( PZH_ITEM pItem )
    }
    else
    {
-      ZH_ISIZ j;
-      ZH_ISIZ nItemLen = zh_itemSize( pItem );
+      ZH_I_SIZE j;
+      ZH_I_SIZE nItemLen = zh_itemSize( pItem );
 
       nLinesLen = zh_itemSize( s_common.pStopLines );
 
@@ -882,17 +882,17 @@ static void zh_dbgAddStopLines( PZH_ITEM pItem )
             if( FILENAME_EQUAL( zh_arrayGetCPtr( pLines, 1 ), szModule ) )
             {
                /* Merge stopline info */
-               ZH_ISIZ nOrigMin = zh_arrayGetNS( pLines, 2 );
-               ZH_ISIZ nNewMin = zh_arrayGetNS( pEntry, 2 );
-               ZH_ISIZ nOrigLen = zh_arrayGetCLen( pLines, 3 );
-               ZH_ISIZ nNewLen = zh_arrayGetCLen( pEntry, 3 );
-               ZH_ISIZ nMin = ZH_MIN( nNewMin, nOrigMin );
-               ZH_ISIZ nMax = ZH_MAX( nNewMin + ( nNewLen << 3 ) - 1,
+               ZH_I_SIZE nOrigMin = zh_arrayGetNS( pLines, 2 );
+               ZH_I_SIZE nNewMin = zh_arrayGetNS( pEntry, 2 );
+               ZH_I_SIZE nOrigLen = zh_arrayGetCLen( pLines, 3 );
+               ZH_I_SIZE nNewLen = zh_arrayGetCLen( pEntry, 3 );
+               ZH_I_SIZE nMin = ZH_MIN( nNewMin, nOrigMin );
+               ZH_I_SIZE nMax = ZH_MAX( nNewMin + ( nNewLen << 3 ) - 1,
                                       nOrigMin + ( nOrigLen << 3 ) - 1 );
                const char * pOrigBuffer = zh_arrayGetCPtr( pLines, 3 );
                const char * pNewBuffer = zh_arrayGetCPtr( pEntry, 3 );
-               ZH_ISIZ nLen = ( ( nMax - nMin ) >> 3 ) + 1;
-               ZH_ISIZ k;
+               ZH_I_SIZE nLen = ( ( nMax - nMin ) >> 3 ) + 1;
+               ZH_I_SIZE k;
                char * pBuffer = ( char * ) zh_xgrabz( nLen + 1 );
 
                /* the bitfields with line numbers should use
@@ -1218,7 +1218,7 @@ static PZH_ITEM zh_dbgEvalMakeBlock( ZH_WATCHPOINT * watch )
    PZH_ITEM pBlock;
    ZH_BOOL bAfterId = ZH_FALSE;
    char * szBlock, * szOrig = NULL;
-   ZH_ISIZ buffsize;
+   ZH_I_SIZE buffsize;
 
    watch->nVars = 0;
    while( watch->szExpr[ i ] )
@@ -1532,8 +1532,8 @@ PZH_ITEM zh_dbgGetWatchValue( void * handle, int nWatch )
 PZH_ITEM zh_dbgGetSourceFiles( void * handle )
 {
    PZH_ITEM ret;
-   ZH_ISIZ nModules;
-   ZH_ISIZ i;
+   ZH_I_SIZE nModules;
+   ZH_I_SIZE i;
 
 #if 0
    ZH_DEBUGINFO * info = ( ZH_DEBUGINFO * ) handle;
@@ -1553,7 +1553,7 @@ PZH_ITEM zh_dbgGetSourceFiles( void * handle )
 
 static ZH_BOOL zh_dbgIsAltD( void )
 {
-   ZH_ISIZ nOffset = zh_stackBaseProcOffset( 1 );
+   ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 1 );
 
    return nOffset > 0 &&
           ! strcmp( zh_itemGetSymbol( zh_stackItem( nOffset ) )->szName, "ALTD" );
@@ -1584,8 +1584,8 @@ ZH_BOOL zh_dbgIsValidStopLine( void * handle, const char * szModule, int nLine )
 
    if( szModule )
    {
-      ZH_ISIZ nModules;
-      ZH_ISIZ i;
+      ZH_I_SIZE nModules;
+      ZH_I_SIZE i;
 
 #if 0
       ZH_DEBUGINFO * info = ( ZH_DEBUGINFO * ) handle;

@@ -142,13 +142,13 @@ static _ZH_INLINE_ void arc4_addrandom( const ZH_U8 * dat, int datlen )
 }
 
 #if defined( ZH_OS_UNIX )
-static ZH_ISIZ read_all( int fd, ZH_U8 * buf, size_t count )
+static ZH_I_SIZE read_all( int fd, ZH_U8 * buf, size_t count )
 {
    ZH_SIZE numread = 0;
 
    while( numread < count )
    {
-      ZH_ISIZ result = read( fd, buf + numread, count - numread );
+      ZH_I_SIZE result = read( fd, buf + numread, count - numread );
 
       if( result < 0 )
          return -1;
@@ -158,7 +158,7 @@ static ZH_ISIZ read_all( int fd, ZH_U8 * buf, size_t count )
       numread += result;
    }
 
-   return ( ZH_ISIZ ) numread;
+   return ( ZH_I_SIZE ) numread;
 }
 #endif /* ZH_OS_UNIX */
 

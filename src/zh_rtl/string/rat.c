@@ -55,7 +55,7 @@ ZH_FUNC( RAT )
 
    if( nSubLen )
    {
-      ZH_ISIZ nTo = zh_parclen( 2 ) - nSubLen;
+      ZH_I_SIZE nTo = zh_parclen( 2 ) - nSubLen;
 
       if( nTo >= 0 )
       {
@@ -90,15 +90,15 @@ ZH_FUNC( ZH_RAT )
    if( nSubLen )
    {
       ZH_SIZE nLen = zh_parclen( 2 );
-      ZH_ISIZ nTo = nLen - nSubLen;
+      ZH_I_SIZE nTo = nLen - nSubLen;
 
       if( nTo >= 0 )
       {
          PZH_CODEPAGE cdp = zh_vmCodepage();
          const char * pszSub = zh_parc( 1 );
          const char * pszText = zh_parc( 2 );
-         ZH_ISIZ nStart = zh_parns( 3 );
-         ZH_ISIZ nFrom;
+         ZH_I_SIZE nStart = zh_parns( 3 );
+         ZH_I_SIZE nFrom;
 
          if( nStart <= 1 )
             nFrom = 0;
@@ -111,7 +111,7 @@ ZH_FUNC( ZH_RAT )
          {
             if( ZH_IS_PARAM_NUM( 4 ) )
             {
-               ZH_ISIZ nEnd = zh_parns( 4 ) - 1;
+               ZH_I_SIZE nEnd = zh_parns( 4 ) - 1;
 
                if( nEnd > 0 && ZH_CODEPAGE_ISCHARIDX( cdp ) )
                   nEnd = zh_cdpTextPos( cdp, pszText, nLen, nEnd );

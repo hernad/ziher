@@ -585,7 +585,7 @@ long zh_arrayGetNL( PZH_ITEM pArray, ZH_SIZE nIndex )
       return 0;
 }
 
-ZH_ISIZ zh_arrayGetNS( PZH_ITEM pArray, ZH_SIZE nIndex )
+ZH_I_SIZE zh_arrayGetNS( PZH_ITEM pArray, ZH_SIZE nIndex )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_arrayGetNS(%p, %" ZH_PFS "u)", ( void * ) pArray, nIndex ) );
 
@@ -799,7 +799,7 @@ ZH_BOOL zh_arraySetNL( PZH_ITEM pArray, ZH_SIZE nIndex, long lNumber )
       return ZH_FALSE;
 }
 
-ZH_BOOL zh_arraySetNS( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_ISIZ nNumber )
+ZH_BOOL zh_arraySetNS( PZH_ITEM pArray, ZH_SIZE nIndex, ZH_I_SIZE nNumber )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_arraySetNS(%p, %" ZH_PFS "u, %" ZH_PFS "d)", ( void * ) pArray, nIndex, nNumber ) );
 
@@ -1618,7 +1618,7 @@ PZH_ITEM zh_arrayFromParams( int iLevel )
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM pArray;
    ZH_USHORT uiPos, uiPCount;
-   ZH_ISIZ nBaseOffset;
+   ZH_I_SIZE nBaseOffset;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_arrayFromParams(%d)", iLevel ) );
 

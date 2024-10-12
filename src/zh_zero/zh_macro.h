@@ -110,11 +110,11 @@ extern void zh_macroGenPCode3( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_C
 extern void zh_macroGenPCode4( ZH_BYTE byte1, ZH_BYTE byte2, ZH_BYTE byte3, ZH_BYTE byte4, ZH_COMP_DECL );
 extern void zh_macroGenPCodeN( const ZH_BYTE * pBuffer, ZH_SIZE nSize, ZH_COMP_DECL );
 
-extern ZH_SIZE zh_macroGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL );
-extern ZH_SIZE zh_macroGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL );
+extern ZH_SIZE zh_macroGenJump( ZH_I_SIZE nOffset, ZH_COMP_DECL );
+extern ZH_SIZE zh_macroGenJumpFalse( ZH_I_SIZE nOffset, ZH_COMP_DECL );
 extern void zh_macroGenJumpThere( ZH_SIZE nFrom, ZH_SIZE nTo, ZH_COMP_DECL );
 extern void zh_macroGenJumpHere( ZH_SIZE nOffset, ZH_COMP_DECL );
-extern ZH_SIZE zh_macroGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL );
+extern ZH_SIZE zh_macroGenJumpTrue( ZH_I_SIZE nOffset, ZH_COMP_DECL );
 
 extern void zh_macroGenPushSymbol( const char * szSymbolName, ZH_BOOL bFunction, ZH_COMP_DECL );
 extern void zh_macroGenPushLong( ZH_MAXINT nNumber, ZH_COMP_DECL );

@@ -92,7 +92,7 @@ extern ZH_EXPORT double       zh_itemGetND     ( PZH_ITEM pItem );
 extern ZH_EXPORT double       zh_itemGetNDDec  ( PZH_ITEM pItem, int * piDec );
 extern ZH_EXPORT int          zh_itemGetNI     ( PZH_ITEM pItem );
 extern ZH_EXPORT long         zh_itemGetNL     ( PZH_ITEM pItem );
-extern ZH_EXPORT ZH_ISIZ      zh_itemGetNS     ( PZH_ITEM pItem );
+extern ZH_EXPORT ZH_I_SIZE      zh_itemGetNS     ( PZH_ITEM pItem );
 extern ZH_EXPORT ZH_MAXINT    zh_itemGetNInt   ( PZH_ITEM pItem );
 extern ZH_EXPORT void         zh_itemGetNLen   ( PZH_ITEM pItem, int * piWidth, int * piDec );
 extern ZH_EXPORT void *       zh_itemGetPtr    ( PZH_ITEM pItem );
@@ -119,7 +119,7 @@ extern ZH_EXPORT PZH_ITEM     zh_itemPutL      ( PZH_ITEM pItem, ZH_BOOL bValue 
 extern ZH_EXPORT PZH_ITEM     zh_itemPutND     ( PZH_ITEM pItem, double dNumber );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNI     ( PZH_ITEM pItem, int iNumber );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNL     ( PZH_ITEM pItem, long lNumber );
-extern ZH_EXPORT PZH_ITEM     zh_itemPutNS     ( PZH_ITEM pItem, ZH_ISIZ nNumber );
+extern ZH_EXPORT PZH_ITEM     zh_itemPutNS     ( PZH_ITEM pItem, ZH_I_SIZE nNumber );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNInt   ( PZH_ITEM pItem, ZH_MAXINT nNumber );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNIntLen( PZH_ITEM pItem, ZH_MAXINT nNumber, int iWidth );
 extern ZH_EXPORT PZH_ITEM     zh_itemPutNLen   ( PZH_ITEM pItem, double dNumber, int iWidth, int iDec );

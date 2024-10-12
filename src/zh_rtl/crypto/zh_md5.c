@@ -245,7 +245,7 @@ void zh_md5( const void * data, ZH_SIZE nLen, char * digest )
    const unsigned char * ucdata = ( const unsigned char * ) data;
    ZH_UCHAR buf[ 128 ];
    MD5_BUF md5;
-   ZH_ISIZ i, n;
+   ZH_I_SIZE i, n;
 
    /* perform startup procedures */
    zh_md5accinit( md5.accum );

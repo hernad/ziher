@@ -135,7 +135,7 @@ static void zh_mlGetEOLs( PZH_MLC_INFO pMLC, int iParam )
 
 static ZH_BOOL zh_mlInit( PZH_MLC_INFO pMLC, int iParAdd )
 {
-   ZH_ISIZ nSize = zh_parnsdef( 2, 79 );
+   ZH_I_SIZE nSize = zh_parnsdef( 2, 79 );
 
    pMLC->pszString = zh_parc( 1 );
    if( pMLC->pszString && nSize > 0 )
@@ -294,7 +294,7 @@ static ZH_SIZE zh_mlGetLine( PZH_MLC_INFO pMLC )
  */
 ZH_FUNC( MEMOLINE )
 {
-   ZH_ISIZ nLine = zh_parnsdef( 3, 1 );
+   ZH_I_SIZE nLine = zh_parnsdef( 3, 1 );
    char * szLine = NULL;
    ZH_SIZE nLen = 0;
 
@@ -415,7 +415,7 @@ ZH_FUNC( MLCOUNT )
 ZH_FUNC( MLPOS )
 {
    ZH_MLC_INFO MLC;
-   ZH_ISIZ nLine = zh_parnsdef( 3, 1 );
+   ZH_I_SIZE nLine = zh_parnsdef( 3, 1 );
    ZH_SIZE nOffset = 0;
 
    if( nLine >= 1 )
@@ -487,7 +487,7 @@ ZH_FUNC( MLCTOPOS )
  */
 ZH_FUNC( MPOSTOLC )
 {
-   ZH_ISIZ nPos    = zh_parns( 3 );
+   ZH_I_SIZE nPos    = zh_parns( 3 );
    ZH_SIZE nLine   = 0;
    ZH_SIZE nCol    = 0;
 
@@ -531,7 +531,7 @@ ZH_FUNC( ZH_MLEVAL )
 {
    const char * pszString = zh_parc( 1 );
    PZH_ITEM pBlock = zh_param( 2, ZH_IT_EVALITEM );
-   ZH_ISIZ nSize = zh_parnsdef( 3, 79 );
+   ZH_I_SIZE nSize = zh_parnsdef( 3, 79 );
    ZH_SIZE nRowPos = 0, nColPos = 0, nLines = 0;
 
    if( pszString && pBlock && nSize > 0 )

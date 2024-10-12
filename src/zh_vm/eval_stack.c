@@ -104,7 +104,7 @@ static ZH_SYMBOL s_initSymbol = { "zh_stackInit", { ZH_FS_STATIC }, { NULL }, NU
 
 static void zh_stack_init( PZH_STACK pStack )
 {
-   ZH_ISIZ n;
+   ZH_I_SIZE n;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stack_init(%p)", ( void * ) pStack ) );
 
@@ -153,7 +153,7 @@ static void zh_stack_destroy_TSD( PZH_STACK pStack )
 
 static void zh_stack_free( PZH_STACK pStack )
 {
-   ZH_ISIZ n;
+   ZH_I_SIZE n;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stack_free(%p)", ( void * ) pStack ) );
 
@@ -554,9 +554,9 @@ void zh_stackPushReturn( void )
 void zh_stackIncrease( void )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nBaseIndex;   /* index of stack base */
-   ZH_ISIZ nCurrIndex;   /* index of current top item */
-   ZH_ISIZ nEndIndex;    /* index of current top item */
+   ZH_I_SIZE nBaseIndex;   /* index of stack base */
+   ZH_I_SIZE nCurrIndex;   /* index of current top item */
+   ZH_I_SIZE nEndIndex;    /* index of current top item */
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackIncrease()" ) );
 
@@ -582,7 +582,7 @@ void zh_stackIncrease( void )
    while( ++nEndIndex < zh_stack.nItems );
 }
 
-void zh_stackRemove( ZH_ISIZ nUntilPos )
+void zh_stackRemove( ZH_I_SIZE nUntilPos )
 {
    ZH_STACK_TLS_PRELOAD
    PZH_ITEM * pEnd = zh_stack.pItems + nUntilPos;
@@ -746,7 +746,7 @@ void zh_stackOldFrame( PZH_STACK_STATE pFrame )
 }
 
 #undef zh_stackItem
-PZH_ITEM zh_stackItem( ZH_ISIZ nItemPos )
+PZH_ITEM zh_stackItem( ZH_I_SIZE nItemPos )
 {
    ZH_STACK_TLS_PRELOAD
    if( nItemPos < 0 )
@@ -850,7 +850,7 @@ PZH_ITEM zh_stackReturnItem( void )
 }
 
 #undef zh_stackTopOffset
-ZH_ISIZ zh_stackTopOffset( void )
+ZH_I_SIZE zh_stackTopOffset( void )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -858,7 +858,7 @@ ZH_ISIZ zh_stackTopOffset( void )
 }
 
 #undef zh_stackBaseOffset
-ZH_ISIZ zh_stackBaseOffset( void )
+ZH_I_SIZE zh_stackBaseOffset( void )
 {
    ZH_STACK_TLS_PRELOAD
 
@@ -866,7 +866,7 @@ ZH_ISIZ zh_stackBaseOffset( void )
 }
 
 #undef zh_stackTotalItems
-ZH_ISIZ zh_stackTotalItems( void )
+ZH_I_SIZE zh_stackTotalItems( void )
 {
    if( zh_stack_ready() )
    {
@@ -958,14 +958,14 @@ void zh_stackSetStaticsBase( void * pBase )
 }
 
 #undef zh_stackGetRecoverBase
-ZH_ISIZ zh_stackGetRecoverBase( void )
+ZH_I_SIZE zh_stackGetRecoverBase( void )
 {
    ZH_STACK_TLS_PRELOAD
    return zh_stack.nRecoverBase;
 }
 
 #undef zh_stackSetRecoverBase
-void zh_stackSetRecoverBase( ZH_ISIZ nBase )
+void zh_stackSetRecoverBase( ZH_I_SIZE nBase )
 {
    ZH_STACK_TLS_PRELOAD
    zh_stack.nRecoverBase = nBase;
@@ -994,14 +994,14 @@ PZH_ITEM zh_stackWithObjectItem( void )
 }
 
 #undef zh_stackWithObjectOffset
-ZH_ISIZ zh_stackWithObjectOffset( void )
+ZH_I_SIZE zh_stackWithObjectOffset( void )
 {
    ZH_STACK_TLS_PRELOAD
    return zh_stack.nWithObject;
 }
 
 #undef zh_stackWithObjectSetOffset
-void zh_stackWithObjectSetOffset( ZH_ISIZ nOffset )
+void zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset )
 {
    ZH_STACK_TLS_PRELOAD
    zh_stack.nWithObject = nOffset;
@@ -1075,7 +1075,7 @@ void zh_stackClearMemvarsBase( void )
 int zh_stackCallDepth( void )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nOffset = zh_stack.pBase - zh_stack.pItems;
+   ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
    int iLevel = 0;
 
    while( nOffset > 0 )
@@ -1087,10 +1087,10 @@ int zh_stackCallDepth( void )
    return iLevel;
 }
 
-ZH_ISIZ zh_stackBaseProcOffset( int iLevel )
+ZH_I_SIZE zh_stackBaseProcOffset( int iLevel )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nOffset = zh_stack.pBase - zh_stack.pItems;
+   ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
 
    while( iLevel-- > 0 && nOffset > 0 )
       nOffset = ( *( zh_stack.pItems + nOffset ) )->item.asSymbol.stackstate->nBaseItem;
@@ -1101,10 +1101,10 @@ ZH_ISIZ zh_stackBaseProcOffset( int iLevel )
       return -1;
 }
 
-ZH_ISIZ zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol )
+ZH_I_SIZE zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
-   ZH_ISIZ nOffset = zh_stack.pBase - zh_stack.pItems;
+   ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
 
    while( nOffset > 0 )
    {
@@ -1240,7 +1240,7 @@ static void zh_stackIsTsdRef( PZH_STACK pStack, PZH_TSD_FUNC pCleanFunc )
 void zh_stackIsStackRef( void * pStackId, PZH_TSD_FUNC pCleanFunc )
 {
    PZH_STACK pStack;
-   ZH_ISIZ nCount;
+   ZH_I_SIZE nCount;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackIsStackRef()" ) );
 

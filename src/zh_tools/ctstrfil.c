@@ -177,18 +177,18 @@ ZH_FUNC( FILESTR )
       {
          ZH_FOFFSET nFileSize = zh_fileSize( hFile );
          ZH_FOFFSET nPos = zh_fileSeek( hFile, ( ZH_FOFFSET ) zh_parnint( 3 ), FS_SET );
-         ZH_ISIZ nLength;
+         ZH_I_SIZE nLength;
          char * pcResult, * pCtrlZ;
          ZH_BOOL bCtrlZ = zh_parl( 4 );
 
          if( ZH_IS_PARAM_NUM( 2 ) )
          {
             nLength = zh_parns( 2 );
-            if( nLength > ( ZH_ISIZ ) ( nFileSize - nPos ) )
-               nLength = ( ZH_ISIZ ) ( nFileSize - nPos );
+            if( nLength > ( ZH_I_SIZE ) ( nFileSize - nPos ) )
+               nLength = ( ZH_I_SIZE ) ( nFileSize - nPos );
          }
          else
-            nLength = ( ZH_ISIZ ) ( nFileSize - nPos );
+            nLength = ( ZH_I_SIZE ) ( nFileSize - nPos );
 
          pcResult = ( char * ) zh_xgrab( nLength + 1 );
          if( nLength > 0 )

@@ -159,7 +159,7 @@ extern ZH_EXPORT void     zh_vmPushNumber( double dNumber, int iDec ); /* pushes
 extern ZH_EXPORT void     zh_vmPushInteger( int iNumber ); /* pushes a integer number onto the stack */
 extern ZH_EXPORT void     zh_vmPushLong( long lNumber ); /* pushes a long number onto the stack */
 extern ZH_EXPORT void     zh_vmPushDouble( double dNumber, int iDec ); /* pushes a double number onto the stack */
-extern ZH_EXPORT void     zh_vmPushSize( ZH_ISIZ nNumber ); /* pushes a ZH_SIZE number onto the stack */
+extern ZH_EXPORT void     zh_vmPushSize( ZH_I_SIZE nNumber ); /* pushes a ZH_SIZE number onto the stack */
 extern ZH_EXPORT void     zh_vmPushNumInt( ZH_MAXINT nNumber );  /* pushes a number on to the stack and decides if it is integer or ZH_MAXINT */
 extern ZH_EXPORT void     zh_vmPushLogical( ZH_BOOL bValue );    /* pushes a logical value onto the stack */
 extern ZH_EXPORT void     zh_vmPushString( const char * szText, ZH_SIZE length );  /* pushes a string on to the stack */

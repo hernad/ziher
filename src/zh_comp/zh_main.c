@@ -1324,7 +1324,7 @@ static void zh_compOptimizeJumps( ZH_COMP_DECL )
 
    for( iPass = 0; iPass < 4 && ! ZH_COMP_PARAM->fExit; ++iPass )
    {
-      ZH_ISIZ nOffset;
+      ZH_I_SIZE nOffset;
 
       if( iPass == 3 && fLineStrip )
       {
@@ -1495,13 +1495,13 @@ static void zh_compOptimizeJumps( ZH_COMP_DECL )
 
       if( ZH_COMP_PARAM->functions.pLast->nJumps )
       {
-         ZH_ISIZ * plSizes, * plShifts;
+         ZH_I_SIZE * plSizes, * plShifts;
          ZH_SIZE nSize;
 
          pJumps = ZH_COMP_PARAM->functions.pLast->pJumps;
-         nSize = sizeof( ZH_ISIZ ) * ZH_COMP_PARAM->functions.pLast->nJumps;
-         plSizes = ( ZH_ISIZ * ) zh_xgrab( nSize );
-         plShifts = ( ZH_ISIZ * ) zh_xgrab( nSize );
+         nSize = sizeof( ZH_I_SIZE ) * ZH_COMP_PARAM->functions.pLast->nJumps;
+         plSizes = ( ZH_I_SIZE * ) zh_xgrab( nSize );
+         plShifts = ( ZH_I_SIZE * ) zh_xgrab( nSize );
 
          for( nJump = 0; nJump < ZH_COMP_PARAM->functions.pLast->nJumps; nJump++ )
             plSizes[ nJump ] = plShifts[ nJump ] = 0;
@@ -2323,7 +2323,7 @@ static void zh_compPrepareJumps( ZH_COMP_DECL )
    pFunc->pJumps[ pFunc->nJumps++ ] = ( ZH_SIZE ) ( pFunc->nPCodePos - 4 );
 }
 
-ZH_SIZE zh_compGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_compGenJump( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( ! ZH_LIM_INT24( nOffset ) )
       zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'F', ZH_COMP_ERR_JUMP_TOO_LONG, NULL, NULL );
@@ -2334,7 +2334,7 @@ ZH_SIZE zh_compGenJump( ZH_ISIZ nOffset, ZH_COMP_DECL )
    return ZH_COMP_PARAM->functions.pLast->nPCodePos - 3;
 }
 
-ZH_SIZE zh_compGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_compGenJumpFalse( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( ! ZH_LIM_INT24( nOffset ) )
       zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'F', ZH_COMP_ERR_JUMP_TOO_LONG, NULL, NULL );
@@ -2345,7 +2345,7 @@ ZH_SIZE zh_compGenJumpFalse( ZH_ISIZ nOffset, ZH_COMP_DECL )
    return ZH_COMP_PARAM->functions.pLast->nPCodePos - 3;
 }
 
-ZH_SIZE zh_compGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL )
+ZH_SIZE zh_compGenJumpTrue( ZH_I_SIZE nOffset, ZH_COMP_DECL )
 {
    if( ! ZH_LIM_INT24( nOffset ) )
       zh_compGenError( ZH_COMP_PARAM, zh_comp_szErrors, 'F', ZH_COMP_ERR_JUMP_TOO_LONG, NULL, NULL );
@@ -2359,7 +2359,7 @@ ZH_SIZE zh_compGenJumpTrue( ZH_ISIZ nOffset, ZH_COMP_DECL )
 void zh_compGenJumpThere( ZH_SIZE nFrom, ZH_SIZE nTo, ZH_COMP_DECL )
 {
    ZH_BYTE * pCode = ZH_COMP_PARAM->functions.pLast->pCode;
-   ZH_ISIZ nOffset = nTo - nFrom + 1;
+   ZH_I_SIZE nOffset = nTo - nFrom + 1;
 
    if( ZH_LIM_INT24( nOffset ) )
    {
@@ -3080,7 +3080,7 @@ void zh_compGenPushString( const char * szText, ZH_SIZE nStrLen, ZH_COMP_DECL )
    }
 }
 
-void zh_compNOOPfill( PZH_ZFUNC pFunc, ZH_SIZE nFrom, ZH_ISIZ nCount, ZH_BOOL fPop, ZH_BOOL fCheck )
+void zh_compNOOPfill( PZH_ZFUNC pFunc, ZH_SIZE nFrom, ZH_I_SIZE nCount, ZH_BOOL fPop, ZH_BOOL fCheck )
 {
    while( nCount-- )
    {

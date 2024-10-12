@@ -65,7 +65,7 @@ ZH_FUNC( ZH_RAND32 ) /* returns an integer between 0 and 0xFFFFFFFF (inclusive) 
 
 ZH_FUNC( ZH_RANDSTR )
 {
-   ZH_ISIZ len = zh_parns( 1 );
+   ZH_I_SIZE len = zh_parns( 1 );
 
    if( len > 0 )
    {

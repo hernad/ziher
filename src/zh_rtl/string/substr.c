@@ -61,9 +61,9 @@ ZH_FUNC( SUBSTR )
    {
       PZH_CODEPAGE cdp = zh_vmCodepage();
       const char * pszText = zh_itemGetCPtr( pText );
-      ZH_ISIZ nSize = zh_itemGetCLen( pText );
-      ZH_ISIZ nFrom = zh_parns( 2 );
-      ZH_ISIZ nCount = iPCount < 3 ? nSize : zh_parns( 3 );
+      ZH_I_SIZE nSize = zh_itemGetCLen( pText );
+      ZH_I_SIZE nFrom = zh_parns( 2 );
+      ZH_I_SIZE nCount = iPCount < 3 ? nSize : zh_parns( 3 );
 
       if( nFrom > 0 )
       {

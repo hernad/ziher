@@ -94,14 +94,14 @@ ZH_FUNC( TIP_HTMLSPECIALCHARS )
 {
    if( ZH_ISCHAR( 1 ) )
    {
-      ZH_ISIZ nLen = zh_parclen( 1 );
+      ZH_I_SIZE nLen = zh_parclen( 1 );
 
       if( nLen )
       {
          const char * pszData = zh_parc( 1 );
          char *       pszRet;
-         ZH_ISIZ      nPos    = 0;
-         ZH_ISIZ      nPosRet = 0;
+         ZH_I_SIZE      nPos    = 0;
+         ZH_I_SIZE      nPosRet = 0;
 
          while( nLen && ZH_ISSPACE( pszData[ nLen - 1 ] ) )
             nLen--;
@@ -197,14 +197,14 @@ ZH_FUNC( TIP_JSONSPECIALCHARS )
 {
    if( ZH_ISCHAR( 1 ) )
    {
-      ZH_ISIZ nLen = zh_parclen( 1 );
+      ZH_I_SIZE nLen = zh_parclen( 1 );
 
       if( nLen )
       {
          const char * pszData = zh_parc( 1 );
          char *       pszRet;
-         ZH_ISIZ      nPos    = 0;
-         ZH_ISIZ      nPosRet = 0;
+         ZH_I_SIZE      nPos    = 0;
+         ZH_I_SIZE      nPosRet = 0;
 
          while( nLen && ZH_ISSPACE( pszData[ nLen - 1 ] ) )
             nLen--;

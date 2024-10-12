@@ -57,7 +57,7 @@ ZH_FUNC( REPLICATE )
    if( pItem && ZH_IS_PARAM_NUM( 2 ) )
    {
       ZH_SIZE nLen = zh_itemGetCLen( pItem );
-      ZH_ISIZ nTimes = zh_parns( 2 );
+      ZH_I_SIZE nTimes = zh_parns( 2 );
 
       if( nLen > 0 && nTimes > 0 )
       {

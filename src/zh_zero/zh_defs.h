@@ -175,8 +175,8 @@ typedef unsigned int        ZH_UINT;
 #  else
       typedef ZH_ULONG            ZH_SIZE;        /* TODO: Currently 'unsigned', to be changed 'signed' */
 #  endif
-   typedef ZH_LONG             ZH_ISIZ;           /* TODO: Change to ZH_SIZE, after ZH_SIZE has been converted to signed type. TEMPORARY type. */
-   typedef ZH_ULONG            ZH_USIZ;           /* TEMPORARY type. Do not use it. */
+   typedef ZH_LONG             ZH_I_SIZE;           /* TODO: Change to ZH_SIZE, after ZH_SIZE has been converted to signed type. TEMPORARY type. */
+   typedef ZH_ULONG            ZH_U_SIZE;           /* TEMPORARY type. Do not use it. */
 #endif
 
 /* Ziher abstract types */
@@ -347,17 +347,14 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
 #define ZH_CAST_LONG( d )     ( ( long ) ( ZH_MAXINT ) ( d ) )
 #define ZH_CAST_LONGLONG( d ) ( ( ZH_LONGLONG ) ( d ) )
 #define ZH_CAST_MAXINT( d )   ( ( ZH_MAXINT ) ( d ) )
-#define ZH_CAST_ISIZ( d )     ( ( ZH_ISIZ ) ( ZH_MAXINT ) ( d ) )
+#define ZH_CAST_I_SIZE( d )     ( ( ZH_I_SIZE ) ( ZH_MAXINT ) ( d ) )
 
 /*
  * It's a hack for compilers which don't support LL suffix for LONGLONG
  * numeric constant. This suffix is necessary for some compilers -
  * without it they cut the number to ZH_LONG
  */
-#if defined( __BORLANDC__ )
-#  define ZH_LL( num )           num##i64
-#  define ZH_ULL( num )          num##ui64
-#elif defined( _MSC_VER )
+#if defined( _MSC_VER )
 #  define ZH_LL( num )           num
 #  define ZH_ULL( num )          num
 #else
