@@ -2854,9 +2854,6 @@ ZH_FUNC( USRRDD_GETFUNCTABLE )
    puiCount    = ( ZH_USHORT * ) zh_parptr( 1 );
    pSelfTable  = ( RDDFUNCS * ) zh_parptr( 2 );
    pSuperTable = ( RDDFUNCS * ) zh_parptr( 3 );
-#if 0
-   uiRddID = zh_parni( 4 );
-#endif
    szSuperRDD = zh_parc( 5 );
    pMethods = zh_param( 6, ZH_IT_ARRAY );
    puiSuperRddId = ( ZH_USHORT * ) zh_parptr( 7 );
