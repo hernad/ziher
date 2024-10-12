@@ -1,5 +1,5 @@
 /*
- * DELIM RDD
+ * SDF RDD
  *
  * Copyright 2006 Przemyslaw Czerpak
  *
@@ -44,41 +44,30 @@
  *
  */
 
-#ifndef ZH_RDDDEL_H_
-#define ZH_RDDDEL_H_
+#ifndef ZH_RDDSDF_H_
+#define ZH_RDDSDF_H_
 
 #include "zh_rdd_api.h"
 
 ZH_EXTERN_BEGIN
 
-/* DELIMITED default file extensions */
-#define DELIM_TABLEEXT                    ".txt"
-
-#define DELIMNODE_DATA( r )   ( ( LPDELIMDATA ) zh_stackGetTSD( ( PZH_TSD ) ( r )->lpvCargo ) )
-
-/*
- * Private DELIM RDD data kept in RDDNODE
- */
-typedef struct _DELIMDATA
-{
-   char      szTableExt[ ZH_MAX_FILE_EXT + 1 ];
-   ZH_USHORT uiSetHeader;      /* RDDI_SETHEADER */
-} DELIMDATA, * LPDELIMDATA;
+/* SDF default file extensions */
+#define SDF_TABLEEXT                      ".txt"
 
 
 /*
- *  DELIM WORKAREA
+ *  SDF WORKAREA
  *  ------------
- *  The Workarea Structure of DELIM RDD
+ *  The Workarea Structure of SDF RDD
  *
  */
 
-typedef struct _DELIMAREA
+typedef struct _SDFAREA
 {
    AREA area;
 
    /*
-   *  DELIM's additions to the workarea structure
+   *  SDFS's additions to the workarea structure
    *
    *  Warning: The above section MUST match WORKAREA exactly!  Any
    *  additions to the structure MUST be added below, as in this
@@ -89,33 +78,30 @@ typedef struct _DELIMAREA
    char *      szFileName;          /* Name of data file */
    char *      szEol;               /* EOL marker */
    ZH_USHORT   uiEolLen;            /* Size of EOL marker */
-   char        cDelim;              /* Character field delimiter */
-   char        cSeparator;          /* Field separator */
    ZH_USHORT   uiRecordLen;         /* Size of record */
    ZH_USHORT * pFieldOffset;        /* Pointer to field offset array */
    ZH_BYTE *   pRecord;             /* Buffer of record data */
    ZH_BYTE *   pBuffer;             /* Read/Write */
    ZH_SIZE     nBufferSize;         /* IO buffer size */
    ZH_SIZE     nBufferRead;         /* Number of bytes in read buffer */
-   ZH_SIZE     nBufferAtRead;       /* The index in the buffer where we should read next peace of data */
    ZH_SIZE     nBufferIndex;        /* Index to read read buffer */
    ZH_ULONG    ulRecNo;             /* Current record */
    ZH_ULONG    ulRecCount;          /* Number of records (in export) */
    ZH_BOOL     fTransRec;           /* Can put whole records */
-   ZH_BOOL     fFlush;              /* Data was written to table and not committed */
+   ZH_BOOL     fFlush;              /* Data was written to SDF and not committed */
    ZH_BOOL     fShared;             /* Shared file */
    ZH_BOOL     fReadonly;           /* Read only file */
    ZH_BOOL     fPositioned;         /* Positioned record */
    ZH_BOOL     fRecordChanged;      /* Record.zhhanged */
    ZH_BOOL     fAnyEol;             /* Check for CRLF, LF, CR and LFCR EOLs */
-} DELIMAREA;
+} SDFAREA;
 
-typedef DELIMAREA * LPDELIMAREA;
+typedef SDFAREA * LPSDFAREA;
 
-#ifndef DELIMAREAP
-#define DELIMAREAP LPDELIMAREA
+#ifndef SDFAREAP
+#define SDFAREAP LPSDFAREA
 #endif
 
 ZH_EXTERN_END
 
-#endif /* ZH_RDDDEL_H_ */
+#endif /* ZH_RDDSDF_H_ */

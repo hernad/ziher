@@ -54,7 +54,7 @@
 #include "zh_item_api.h"
 #include "zh_lang_api.h"
 #include "zh_error_api.h"
-#include "zh_rdd_del.h"
+#include "zh_rdd_delim.h"
 #include "dbf_cdx/zh_dbf_error.h"
 #include "zh_rtl/rdd_sys.zhh"
 
