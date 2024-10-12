@@ -103,7 +103,7 @@ METHOD addWindows( hHash, nRow ) CLASS HBDbHash
    oWndSets:lFocused := .T.
    AAdd( ::aWindows, oWndSets )
 
-   oBrwSets := HBDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
+   oBrwSets := ZHDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
    oBrwSets:ColorSpec := __dbg():ClrModal()
    oBrwSets:Cargo := { 1, {} }  // Actual highlighted row
    AAdd( oBrwSets:Cargo[ 2 ], hHash )

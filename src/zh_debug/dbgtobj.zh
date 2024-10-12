@@ -132,7 +132,7 @@ METHOD addWindows( nRow ) CLASS HBDbObject
    oWndSets:lFocused := .T.
    AAdd( ::aWindows, oWndSets )
 
-   oBrwSets := HBDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
+   oBrwSets := ZHDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
 
    oBrwSets:ColorSpec := __dbg():ClrModal()
    oBrwSets:GoTopBlock := {|| ::Arrayindex := 1 }

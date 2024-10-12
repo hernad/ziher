@@ -93,7 +93,7 @@ PROCEDURE __dbgShowWorkAreas()
 
    /* Alias browse */
 
-   aBrw[ 1 ] := HBDbBrowser():new( oDlg:nTop + 1, oDlg:nLeft + 1, oDlg:nBottom - 1, oDlg:nLeft + 11 )
+   aBrw[ 1 ] := ZHDbBrowser():new( oDlg:nTop + 1, oDlg:nLeft + 1, oDlg:nBottom - 1, oDlg:nLeft + 11 )
 
    aBrw[ 1 ]:Cargo         := ( n1 := cur_id )
    aBrw[ 1 ]:ColorSpec     := oDlg:cColor
@@ -116,7 +116,7 @@ PROCEDURE __dbgShowWorkAreas()
 
    aInfo := ( aAlias[ n1 ][ 1 ] )->( DbfInfo() )
 
-   aBrw[ 2 ] := HBDbBrowser():new( oDlg:nTop + 7, oDlg:nLeft + 13, oDlg:nBottom - 1, oDlg:nLeft + 52 )
+   aBrw[ 2 ] := ZHDbBrowser():new( oDlg:nTop + 7, oDlg:nLeft + 13, oDlg:nBottom - 1, oDlg:nLeft + 52 )
 
    aBrw[ 2 ]:Cargo         := ( n2 := 1 )
    aBrw[ 2 ]:ColorSpec     := oDlg:cColor
@@ -135,7 +135,7 @@ PROCEDURE __dbgShowWorkAreas()
 
    aStruc := ( aAlias[ n1 ][ 1 ] )->( dbStruct() )
 
-   aBrw[ 3 ] := HBDbBrowser():new( oDlg:nTop + 1, oDlg:nLeft + 54, oDlg:nBottom - 1, oDlg:nLeft + 76 )
+   aBrw[ 3 ] := ZHDbBrowser():new( oDlg:nTop + 1, oDlg:nLeft + 54, oDlg:nBottom - 1, oDlg:nLeft + 76 )
 
    aBrw[ 3 ]:Cargo         := n3 := 1
    aBrw[ 3 ]:ColorSpec     := oDlg:cColor

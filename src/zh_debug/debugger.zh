@@ -340,6 +340,8 @@ ENDCLASS
 
 METHOD New() CLASS ZHDebugger
 
+   LOCAL i
+   
    t_oDebugger := Self
 
    /* default the search path for files to the current directory
@@ -360,6 +362,7 @@ METHOD New() CLASS ZHDebugger
    ::nMaxRow := MaxRow()
    ::nMaxCol := MaxCol()
 
+
    ::oPullDown := __dbgBuildMenu( Self )
 
    ::oWndCode             := ZhDbWindow():New( 1, 0, ;
@@ -376,6 +379,13 @@ METHOD New() CLASS ZHDebugger
       ::LoadSettings()
       ::lGo := ::lRunAtStartup // Once again after settings file is loaded
    ENDIF
+
+
+   ? "Path for files debugger:", len(::aPathDirs), 
+   FOR i := 1 to len(::aPathDirs)
+      ? ::aPathDirs[i]
+   next
+   inkey(0)
 
    RETURN Self
 
@@ -488,7 +498,7 @@ METHOD PROCEDURE BuildBrowseStack() CLASS ZHDebugger
 
    IF ::oBrwStack == NIL
       aColors := __dbgColors()
-      ::oBrwStack := HBDbBrowser():New( 2, ::nMaxCol - 14, ::nMaxRow - ::nCmdWndHight - 4, ::nMaxCol - 1 )
+      ::oBrwStack := ZHDbBrowser():New( 2, ::nMaxCol - 14, ::nMaxRow - ::nCmdWndHight - 4, ::nMaxCol - 1 )
       ::oBrwStack:ColorSpec := aColors[ 3 ] + "," + aColors[ 4 ] + "," + aColors[ 5 ] + "," + aColors[ 6 ]
       ::oBrwStack:goTopBlock := {|| ::oBrwStack:Cargo := 1 }
       ::oBrwStack:goBottomBlock := {|| ::oBrwStack:Cargo := Len( ::aProcStack ) }
@@ -699,7 +709,7 @@ METHOD PROCEDURE Colors() CLASS ZHDebugger
       "Text High Sel.", "Text PPO Sel.", "Menu", "Menu High", ;
       "Menu Selected", "Menu High Sel." }
 
-   LOCAL oBrwColors := HBDbBrowser():New( oWndColors:nTop + 1, oWndColors:nLeft + 1, ;
+   LOCAL oBrwColors := ZHDbBrowser():New( oWndColors:nTop + 1, oWndColors:nLeft + 1, ;
       oWndColors:nBottom - 1, oWndColors:nRight - 1 )
    LOCAL nWidth := oWndColors:nRight - oWndColors:nLeft - 1
    LOCAL oCol
@@ -2836,7 +2846,7 @@ METHOD PROCEDURE ShowVars() CLASS ZHDebugger
    ENDIF
 
    IF Len( ::aVars ) > 0 .AND. ::oBrwVars == NIL
-      ::oBrwVars := HBDbBrowser():New( nTop + 1, 1, nBottom - 1, ;
+      ::oBrwVars := ZHDbBrowser():New( nTop + 1, 1, nBottom - 1, ;
          ::nMaxCol - iif( ::oWndStack != NIL, ::oWndStack:nWidth(), 0 ) - 1 )
       aColors := __dbgColors()
       ::oBrwVars:Cargo := { 1, {} } // Actual highlighted row
@@ -3127,7 +3137,7 @@ METHOD PROCEDURE ViewSets() CLASS ZHDebugger
    LOCAL aSets := __dbgGetSETs()
    LOCAL oWndSets := ZhDbWindow():New( 1, 7, ::nMaxRow - 2, ::nMaxCol - 7, ;
       "System Settings[1.." + zh_ntos( aTail( aSets )[ ZH_DBG_SET_POS ] ) + "]", ::ClrModal() )
-   LOCAL oBrwSets := HBDbBrowser():new( oWndSets:nTop + 1, oWndSets:nLeft + 1, ;
+   LOCAL oBrwSets := ZHDbBrowser():new( oWndSets:nTop + 1, oWndSets:nLeft + 1, ;
       oWndSets:nBottom - 1, oWndSets:nRight - 1 )
    LOCAL nWidth := oWndSets:nRight - oWndSets:nLeft - 1
    LOCAL oCol
@@ -3335,7 +3345,7 @@ METHOD PROCEDURE WatchpointsShow() CLASS ZHDebugger
       ::oWndPnt:bLDblClick   := {| nMRow, nMCol | ::EditVar( ::oBrwPnt:Cargo[ 1 ] ) }
 #endif
 
-      ::oBrwPnt := HBDbBrowser():New( nTop + 1, 1, ::oWndPnt:nBottom - 1, ::nMaxCol - iif( ::oWndStack != NIL, ;
+      ::oBrwPnt := ZHDbBrowser():New( nTop + 1, 1, ::oWndPnt:nBottom - 1, ::nMaxCol - iif( ::oWndStack != NIL, ;
          ::oWndStack:nWidth(), 0 ) - 1 )
 
       ::oWndPnt:Browser := ::oBrwPnt
@@ -3649,7 +3659,7 @@ FUNCTION __dbgAChoice( nTop, nLeft, nBottom, nRight, aItems, cColors )
    LOCAL nRow
    LOCAL nLen
 
-   oBrw := HBDbBrowser():New( nTop, nLeft, nBottom, nRight )
+   oBrw := ZHDbBrowser():New( nTop, nLeft, nBottom, nRight )
    oBrw:colorSpec := cColors
    nLen := nRight - nLeft + 1
    nRow := 1

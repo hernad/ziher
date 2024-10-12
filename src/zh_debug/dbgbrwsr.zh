@@ -50,12 +50,12 @@
 #define ZH_CLS_NOTOBJECT      /* do not inherit from ZHObject class */
 #include "class.zhh"
 
-/* HBDbBrowser
+/* ZHDbBrowser
  *
  * A minimalistic TBrowse implementation just enough for use in
  * the debugger instead of the HBBrowse monster
  */
-CREATE CLASS HBDbBrowser
+CREATE CLASS ZHDbBrowser
 
    VAR Window
    VAR cargo
@@ -111,7 +111,7 @@ CREATE CLASS HBDbBrowser
 
 ENDCLASS
 
-METHOD New( nTop, nLeft, nBottom, nRight, oParentWindow ) CLASS HBDbBrowser
+METHOD New( nTop, nLeft, nBottom, nRight, oParentWindow ) CLASS ZHDbBrowser
 
    ::Window := oParentWindow
    ::nTop := nTop
@@ -121,7 +121,7 @@ METHOD New( nTop, nLeft, nBottom, nRight, oParentWindow ) CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD Configure() CLASS HBDbBrowser
+METHOD Configure() CLASS ZHDbBrowser
 
    ::rowCount := ::nBottom - ::nTop + 1
    IF ::rowPos > ::rowCount
@@ -133,7 +133,7 @@ METHOD Configure() CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD SetColorSpec( cColors ) CLASS HBDbBrowser
+METHOD SetColorSpec( cColors ) CLASS ZHDbBrowser
 
    IF ZH_ISSTRING( cColors )
       ::cColorSpec := cColors
@@ -142,7 +142,7 @@ METHOD SetColorSpec( cColors ) CLASS HBDbBrowser
 
    RETURN ::cColorSpec
 
-METHOD MoveCursor( nSkip ) CLASS HBDbBrowser
+METHOD MoveCursor( nSkip ) CLASS ZHDbBrowser
 
    LOCAL nSkipped
 
@@ -160,7 +160,7 @@ METHOD MoveCursor( nSkip ) CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD DispRow( nRow, lHiLite ) CLASS HBDbBrowser
+METHOD DispRow( nRow, lHiLite ) CLASS ZHDbBrowser
 
    LOCAL nColX, nWid, aClr, nClr
    LOCAL xData
@@ -197,7 +197,7 @@ METHOD DispRow( nRow, lHiLite ) CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD ForceStable() CLASS HBDbBrowser
+METHOD ForceStable() CLASS ZHDbBrowser
 
    LOCAL nRow
 
@@ -217,7 +217,7 @@ METHOD ForceStable() CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD GoTo( nRow ) CLASS HBDbBrowser
+METHOD GoTo( nRow ) CLASS ZHDbBrowser
 
    LOCAL nOldRow := ::nFirstVisible + ::rowPos - 1
    LOCAL nSkipped := 0
@@ -232,7 +232,7 @@ METHOD GoTo( nRow ) CLASS HBDbBrowser
 
    RETURN nSkipped - nOldRow + 1
 
-METHOD GoBottom() CLASS HBDbBrowser
+METHOD GoBottom() CLASS ZHDbBrowser
 
    LOCAL nScroll
 
@@ -247,7 +247,7 @@ METHOD GoBottom() CLASS HBDbBrowser
 
    RETURN Self
 
-METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS HBDbBrowser
+METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS ZHDbBrowser
 
    LOCAL lResize := .F.
 
