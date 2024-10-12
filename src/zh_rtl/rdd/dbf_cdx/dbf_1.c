@@ -60,10 +60,10 @@
 #include "error.zhh"
 
 #include "zh_rtl/rdd_sys.zhh"
-#include "zh_rtl/dbf_six.zhh"
+//#include "zh_rtl/dbf_six.zhh"
 #include "zh_codepage_api.h"
 
-#include "../dbf_six/zh_sx_func.h"
+//#include "../dbf_six/zh_sx_func.h"
 
 static ZH_USHORT s_uiRddId = ( ZH_USHORT ) -1;
 static RDDFUNCS  dbfSuper;
@@ -585,68 +585,9 @@ static void zh_dbfClearNullFlag( ZH_BYTE * pRecord, ZH_USHORT uiNullOffset, ZH_U
    pRecord[ uiNullOffset + ( uiBit >> 3 ) ] &= ~( 1 << ( uiBit & 0x07 ) );
 }
 
-/*
- * Executes user trigger function
- */
-static ZH_BOOL zh_dbfTriggerDo( DBFAREAP pArea, int iEvent,
-                                int iField, PZH_ITEM pItem )
-{
-   ZH_BOOL fResult = ZH_TRUE;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfTriggerDo(%p,%d,%d,%p)", ( void * ) pArea, iEvent, iField, pItem ) );
 
-   if( zh_vmRequestQuery() == 0 )
-   {
-      if( zh_vmRequestReenter() )
-      {
-         zh_vmPushDynSym( pArea->pTriggerSym );
-         zh_vmPushNil();
-         /* nEvent */
-         zh_vmPushInteger( iEvent );
-         /* nArea */
-         zh_vmPushInteger( pArea->area.uiArea );
-         /* nFieldPos (GET/PUT) */
-         zh_vmPushInteger( iField );
-         /* xTrigVal (PREUSE/GET/PUT) */
-         if( pItem )
-         {
-#ifdef ZH_TRIGVAR_BYREF
-            zh_vmPushItemRef( pItem );
-#else
-            zh_vmPush( pItem );
-#endif
-            zh_vmProc( 4 );
-         }
-         else
-         {
-            #if 0
-            zh_vmPushInteger( 0 );  /* SIx3 makes this */
-            #endif
-            zh_vmProc( 3 );
-         }
-         fResult = zh_parl( -1 );
-         zh_vmRequestRestore();
-      }
-   }
 
-   return fResult;
-}
-
-/*
- * Set user trigger function
- */
-static void zh_dbfTriggerSet( DBFAREAP pArea, PZH_ITEM pTrigger )
-{
-   const char * szName;
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfTriggerSet(%p,%p)", ( void * ) pArea, ( void * ) pTrigger ) );
-
-   szName = zh_itemGetCPtr( pTrigger );
-   pArea->pTriggerSym = *szName ? zh_dynsymFindName( szName ) : NULL;
-   if( pArea->pTriggerSym && ! zh_dynsymIsFunction( pArea->pTriggerSym ) )
-      pArea->pTriggerSym = NULL;
-   pArea->fTrigger = pArea->pTriggerSym != NULL;
-}
 
 /*
  * Return the total number of records.
@@ -1898,11 +1839,6 @@ static ZH_ERRCODE zh_dbfAppend( DBFAREAP pArea, ZH_BOOL bUnLockAll )
    if( SELF_GOCOLD( &pArea->area ) == ZH_FAILURE )
       return ZH_FAILURE;
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_APPEND, 0, NULL ) )
-         return ZH_FAILURE;
-   }
 
    if( pArea->fReadonly )
    {
@@ -1978,11 +1914,6 @@ static ZH_ERRCODE zh_dbfDeleteRec( DBFAREAP pArea )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfDeleteRec(%p)", ( void * ) pArea ) );
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_DELETE, 0, NULL ) )
-         return ZH_FAILURE;
-   }
 
    if( pArea->lpdbPendingRel )
    {
@@ -2357,12 +2288,6 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
       return ZH_FAILURE;
    }
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_GET, uiIndex + 1, pItem ) )
-         return ZH_FAILURE;
-   }
-
    return ZH_SUCCESS;
 }
 
@@ -2389,18 +2314,6 @@ static ZH_ERRCODE zh_dbfGoCold( DBFAREAP pArea )
 
    if( pArea->fRecordChanged )
    {
-      if( pArea->fTrigger )
-      {
-         /* The pending relation may move the record pointer so we should
-            disable them for trigger evaluation */
-         LPDBRELINFO lpdbPendingRel = pArea->lpdbPendingRel;
-         pArea->lpdbPendingRel = NULL;
-
-         zh_dbfTriggerDo( pArea, EVENT_UPDATE, 0, NULL );
-
-         /* Restore disabled pending relation */
-         pArea->lpdbPendingRel = lpdbPendingRel;
-      }
 
       if( pArea->fModStamp )
          zh_dbfUpdateStampFields( pArea );
@@ -2535,11 +2448,6 @@ static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfPutValue(%p, %hu, %p)", ( void * ) pArea, uiIndex, ( void * ) pItem ) );
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_PUT, uiIndex, pItem ) )
-         return ZH_FAILURE;
-   }
 
    if( pArea->lpdbPendingRel )
    {
@@ -2847,11 +2755,6 @@ static ZH_ERRCODE zh_dbfRecall( DBFAREAP pArea )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfRecall(%p)", ( void * ) pArea ) );
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_RECALL, 0, NULL ) )
-         return ZH_FAILURE;
-   }
 
    if( pArea->lpdbPendingRel )
    {
@@ -2948,12 +2851,6 @@ static ZH_ERRCODE zh_dbfClose( DBFAREAP pArea )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfClose(%p)", ( void * ) pArea ) );
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_PRECLOSE, 0, NULL ) )
-         return ZH_FAILURE;
-   }
-
    /* Reset parent rel struct */
    pArea->lpdbPendingRel = NULL;
 
@@ -3036,12 +2933,6 @@ static ZH_ERRCODE zh_dbfClose( DBFAREAP pArea )
    {
       zh_xfree( pArea->szMemoFileName );
       pArea->szMemoFileName = NULL;
-   }
-
-   if( pArea->fTrigger )
-   {
-      zh_dbfTriggerDo( pArea, EVENT_POSTCLOSE, 0, NULL );
-      pArea->fTrigger = ZH_FALSE;
    }
 
    return ZH_SUCCESS;
@@ -3767,17 +3658,6 @@ static ZH_ERRCODE zh_dbfInfo( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem 
          zh_dbfPasswordSet( pArea, pItem, ZH_FALSE );
          break;
 
-      case DBI_TRIGGER:
-         if( ZH_IS_LOGICAL( pItem ) )
-            pArea->fTrigger = pArea->pTriggerSym && zh_itemGetL( pItem );
-         else
-         {
-            PZH_DYNSYMBOL pTriggerSym = pArea->pTriggerSym;
-            if( ZH_IS_STRING( pItem ) )
-               zh_dbfTriggerSet( pArea, pItem );
-            zh_itemPutC( pItem, pTriggerSym ? zh_dynsymName( pTriggerSym ) : NULL );
-         }
-         break;
 
       case DBI_OPENINFO:
          zh_itemPutPtr( pItem, pArea->lpdbOpenInfo );
@@ -4087,37 +3967,8 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
 
    pItem = zh_itemNew( NULL );
 
-   if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PENDINGTRIGGER,
-                     pOpenInfo->ulConnection, pItem ) == ZH_SUCCESS )
-   {
-      if( ZH_IS_STRING( pItem ) )
-         zh_dbfTriggerSet( pArea, pItem );
-   }
 
-   if( ! pArea->fTrigger )
-   {
-      zh_itemClear( pItem );
-      if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_TRIGGER,
-                        pOpenInfo->ulConnection, pItem ) == ZH_SUCCESS )
-      {
-         if( ZH_IS_STRING( pItem ) )
-            zh_dbfTriggerSet( pArea, pItem );
-      }
-   }
-
-   if( pArea->fTrigger )
-   {
-      zh_itemPutC( pItem, pOpenInfo->abName );
-      if( ! zh_dbfTriggerDo( pArea, EVENT_PREUSE, 0, pItem ) )
-      {
-         zh_itemRelease( pItem );
-         pArea->lpdbOpenInfo = NULL;
-         return ZH_FAILURE;
-      }
-      zh_strncpy( szFileName, zh_itemGetCPtr( pItem ), sizeof( szFileName ) - 1 );
-   }
-   else
-      zh_strncpy( szFileName, pOpenInfo->abName, sizeof( szFileName ) - 1 );
+   zh_strncpy( szFileName, pOpenInfo->abName, sizeof( szFileName ) - 1 );
 
    if( ! pArea->bLockType )
    {
@@ -4650,8 +4501,6 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
    /* Position cursor at the first record */
    errCode = SELF_GOTOP( &pArea->area );
 
-   if( pArea->fTrigger )
-      zh_dbfTriggerDo( pArea, EVENT_POSTUSE, 0, NULL );
 
    pArea->lpdbOpenInfo = NULL;
 
@@ -4711,11 +4560,6 @@ static ZH_ERRCODE zh_dbfPack( DBFAREAP pArea )
       return ZH_FAILURE;
    }
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_PACK, 0, NULL ) )
-         return ZH_FAILURE;
-   }
 
    if( SELF_GOCOLD( &pArea->area ) != ZH_SUCCESS )
       return ZH_FAILURE;
@@ -5538,11 +5382,6 @@ static ZH_ERRCODE zh_dbfZap( DBFAREAP pArea )
       return ZH_FAILURE;
    }
 
-   if( pArea->fTrigger )
-   {
-      if( ! zh_dbfTriggerDo( pArea, EVENT_ZAP, 0, NULL ) )
-         return ZH_FAILURE;
-   }
 
    if( SELF_GOCOLD( &pArea->area ) != ZH_SUCCESS )
       return ZH_FAILURE;

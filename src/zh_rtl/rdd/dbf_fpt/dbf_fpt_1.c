@@ -70,7 +70,7 @@
 #include "zh_rtl/rdd_sys.zhh"
 #include "zh_codepage_api.h"
 
-#include "../dbf_six/zh_sx_func.h"
+//#include "../dbf_six/zh_sx_func.h"
 
 #define FPT_TRANS_NONE     0
 #define FPT_TRANS_CP       1

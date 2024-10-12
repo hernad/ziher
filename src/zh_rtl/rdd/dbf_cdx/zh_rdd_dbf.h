@@ -222,13 +222,11 @@ typedef struct _DBFAREA
    ZH_BOOL     fHeaderLocked;       /* ZH_TRUE if DBF header is locked */
    ZH_BOOL     fPackMemo;           /* Pack memo file in pack operation */
    ZH_BOOL     fTransRec;           /* ZH_TRUE if records are transferred to this area, allow to change autoupdate fields and disable their initialization */
-   ZH_BOOL     fTrigger;            /* Execute trigger function */
    LPDBOPENINFO lpdbOpenInfo;       /* Pointer to current dbOpenInfo structure in OPEN/CREATE methods */
    LPDBRELINFO lpdbPendingRel;      /* Pointer to parent relation struct */
    ZH_ULONG *  pLocksPos;           /* List of records locked */
    ZH_ULONG    ulNumLocksPos;       /* Number of records locked */
    char *      pCryptKey;           /* Pointer to encryption key */
-   PZH_DYNSYMBOL    pTriggerSym;         /* DynSym pointer to trigger function */
 } DBFAREA;
 
 typedef DBFAREA * LPDBFAREA;
