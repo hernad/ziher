@@ -215,7 +215,6 @@ typedef struct _DBFAREA
    ZH_BOOL     fRecordChanged;      /* Record.zhhanged */
    ZH_BOOL     fAppend;             /* ZH_TRUE if new record is added */
    ZH_BOOL     fDeleted;            /* ZH_TRUE if record is deleted */
-   ZH_BOOL     fEncrypted;          /* ZH_TRUE if record is encrypted */
    ZH_BOOL     fTableEncrypted;     /* ZH_TRUE if table is encrypted */
    ZH_BOOL     fUpdateHeader;       /* Update header of file */
    ZH_BOOL     fFLocked;            /* ZH_TRUE if file is locked */

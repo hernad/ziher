@@ -3320,9 +3320,7 @@ static ZH_ERRCODE zh_fptGetVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
       else
          uiType = 0;
 
-      if( pField->uiLen == 3 || uiType == ZH_VF_DATE )
-         zh_itemPutDL( pItem, zh_sxPtoD( ( char * ) pFieldBuf ) );
-      else if( pField->uiLen == 4 || uiType == ZH_VF_INT )
+      if( pField->uiLen == 4 || uiType == ZH_VF_INT )
          zh_itemPutNIntLen( pItem, ( ZH_MAXINT ) ZH_GET_LE_INT32( pFieldBuf ), 10 );
       else if( pField->uiLen == 2 )
          zh_itemPutNIntLen( pItem, ( int ) ZH_GET_LE_INT16( pFieldBuf ), 10 );
@@ -3624,6 +3622,7 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
 #endif
          zh_fptFileUnLockEx( pArea );
       }
+      /*
       else if( pField->uiLen == 3 )
       {
          if( ! ZH_IS_DATETIME( pItem ) )
@@ -3632,6 +3631,7 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
          }
          zh_sxDtoP( ( char * ) pFieldBuf, zh_itemGetDL( pItem ) );
       }
+      */
       else if( pField->uiLen == 4 )
       {
          ZH_MAXINT lVal;
@@ -3681,12 +3681,7 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
             }
          }
 
-         if( ZH_IS_DATETIME( pItem ) )
-         {
-            zh_sxDtoP( ( char * ) pFieldBuf, zh_itemGetDL( pItem ) );
-            uiType = ZH_VF_DATE;
-         }
-         else if( ZH_IS_LOGICAL( pItem ) )
+         if( ZH_IS_LOGICAL( pItem ) )
          {
             pFieldBuf[ 0 ] = zh_itemGetL( pItem ) ? 1 : 0;
             uiType = ZH_VF_LOG;

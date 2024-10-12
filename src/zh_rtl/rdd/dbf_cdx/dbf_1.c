@@ -668,147 +668,8 @@ static ZH_BOOL zh_dbfWriteRecord( DBFAREAP pArea )
    return ZH_TRUE;
 }
 
-/*
- * Set encryption password
- */
-static ZH_BOOL zh_dbfPasswordSet( DBFAREAP pArea, PZH_ITEM pPasswd, ZH_BOOL fRaw )
-{
-   char pKeyBuffer[ 8 ];
-   ZH_SIZE nLen;
-   ZH_BOOL fKeySet = ZH_FALSE, fSet;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfPasswordSet(%p,%p,%d)", ( void * ) pArea, ( void * ) pPasswd, fRaw ) );
 
-   nLen = zh_itemGetCLen( pPasswd );
-
-   fSet = ! pArea->fHasMemo && ZH_IS_STRING( pPasswd ) && ( ! fRaw || nLen == 8 );
-   if( fSet )
-   {
-      if( nLen > 0 )
-      {
-         if( nLen < 8 )
-         {
-            memcpy( pKeyBuffer, zh_itemGetCPtr( pPasswd ), nLen );
-            memset( pKeyBuffer + nLen, '\0', 8 - nLen );
-         }
-         else
-            memcpy( pKeyBuffer, zh_itemGetCPtr( pPasswd ), 8 );
-      }
-   }
-
-   if( pArea->pCryptKey )
-      zh_itemPutCL( pPasswd, pArea->pCryptKey, 8 );
-   else
-      zh_itemClear( pPasswd );
-
-   if( fSet )
-   {
-      if( pArea->pRecord && pArea->fPositioned )
-      {
-         SELF_GOCOLD( &pArea->area );
-         pArea->fValidBuffer = ZH_FALSE;
-      }
-      if( pArea->pCryptKey )
-      {
-         /* clean the memory with password key - though it's not
-          * a serious actions in such case ;-)
-          */
-         memset( pArea->pCryptKey, '\0', 8 );
-         zh_xfree( pArea->pCryptKey );
-         pArea->pCryptKey = NULL;
-      }
-      if( nLen > 0 )
-      {
-         /* at this moment only one encryption method is used,
-            I'll add other later, [druzus] */
-         pArea->bCryptType = DB_CRYPT_SIX;
-         pArea->pCryptKey = ( char * ) zh_xgrab( 8 );
-
-         /* SIX encode the key with its own value before use */
-         if( ! fRaw )
-            zh_sxEnCrypt( pKeyBuffer, pArea->pCryptKey, pKeyBuffer, 8 );
-         else
-            memcpy( pArea->pCryptKey, pKeyBuffer, 8 );
-         fKeySet = ZH_TRUE;
-      }
-   }
-
-   return fKeySet;
-}
-
-/*
- * Encrypt/Decrypt table
- */
-static void zh_dbfTableCrypt( DBFAREAP pArea, PZH_ITEM pPasswd, ZH_BOOL fEncrypt )
-{
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dbfTableCrypt(%p,%p,%d)", ( void * ) pArea, ( void * ) pPasswd, fEncrypt ) );
-
-   if( ! pArea->fReadonly && ! pArea->fShared &&
-       fEncrypt ? ! pArea->fTableEncrypted && ! pArea->fHasMemo :
-                    pArea->fTableEncrypted )
-   {
-      ZH_ULONG ulRecords, ulRecNo;
-
-      if( SELF_RECCOUNT( &pArea->area, &ulRecords ) == ZH_SUCCESS )
-      {
-         ZH_ERRCODE errCode = ZH_SUCCESS;
-         char * pOldCryptKey, * pNewCryptKey;
-
-         pOldCryptKey = pArea->pCryptKey;
-         pArea->pCryptKey = NULL;
-         zh_dbfPasswordSet( pArea, pPasswd, ZH_FALSE );
-         pNewCryptKey = pArea->pCryptKey;
-         if( ! fEncrypt )
-         {
-            if( pNewCryptKey )
-            {
-               if( pOldCryptKey )
-                  zh_xfree( pNewCryptKey );
-               else
-                  pOldCryptKey = pNewCryptKey;
-               pNewCryptKey = NULL;
-            }
-         }
-         else if( ! pNewCryptKey )
-            pNewCryptKey = pOldCryptKey;
-
-         for( ulRecNo = 1; ulRecNo <= ulRecords; ++ulRecNo )
-         {
-            pArea->pCryptKey = pOldCryptKey;
-            errCode = SELF_GOTO( &pArea->area, ulRecNo );
-            if( errCode != ZH_SUCCESS )
-               break;
-            if( ! zh_dbfReadRecord( pArea ) )
-            {
-               errCode = ZH_FAILURE;
-               break;
-            }
-            pArea->pCryptKey = pNewCryptKey;
-            /* Buffer is hot? */
-            if( ! pArea->fRecordChanged )
-            {
-               errCode = SELF_GOHOT( &pArea->area );
-               if( errCode != ZH_SUCCESS )
-                  break;
-            }
-            /* Force record encryption/decryption */
-            pArea->fEncrypted = fEncrypt;
-            /* Save encrypted record */
-            errCode = SELF_GOCOLD( &pArea->area );
-            if( errCode != ZH_SUCCESS )
-               break;
-         }
-         pArea->pCryptKey = pNewCryptKey;
-         if( pOldCryptKey && pOldCryptKey != pNewCryptKey )
-            zh_xfree( pOldCryptKey );
-         if( errCode == ZH_SUCCESS )
-         {
-            pArea->fTableEncrypted = fEncrypt;
-            SELF_WRITEDBHEADER( &pArea->area );
-         }
-      }
-   }
-}
 
 /*
  * Unlock all records.
@@ -1657,7 +1518,7 @@ static ZH_ERRCODE zh_dbfGoTo( DBFAREAP pArea, ZH_ULONG ulRecNo )
    {
       pArea->ulRecNo = pArea->ulRecCount + 1;
       pArea->area.fBof = pArea->area.fEof = pArea->fValidBuffer = ZH_TRUE;
-      pArea->fPositioned = pArea->fDeleted = pArea->fEncrypted = ZH_FALSE;
+      pArea->fPositioned = pArea->fDeleted = ZH_FALSE;
 
       /* Clear record buffer */
       zh_dbfSetBlankRecord( pArea, ZH_BLANK_EOF );
@@ -1894,7 +1755,6 @@ static ZH_ERRCODE zh_dbfAppend( DBFAREAP pArea, ZH_BOOL bUnLockAll )
    pArea->ulRecNo = pArea->ulRecCount;
    pArea->fDeleted = pArea->area.fBof = pArea->area.fEof =
    pArea->area.fFound = ZH_FALSE;
-   pArea->fEncrypted = pArea->pCryptKey != NULL && ! pArea->fHasMemo;
 
    if( pArea->fShared )
    {
@@ -2010,24 +1870,7 @@ static ZH_ERRCODE zh_dbfGetRec( DBFAREAP pArea, ZH_BYTE ** pBuffer )
 
       *pBuffer = pArea->pRecord;
    }
-   else
-   {
-      if( pArea->pRecord[ 0 ] == 'D' || pArea->pRecord[ 0 ] == 'E' )
-      {
-         pArea->fEncrypted = ZH_TRUE;
-         pArea->pRecord[ 0 ] = pArea->pRecord[ 0 ] == 'D' ? '*' : ' ';
-         if( pArea->pCryptKey && pArea->bCryptType == DB_CRYPT_SIX )
-         {
-            zh_sxDeCrypt( ( const char * ) pArea->pRecord + 1,
-                          ( char * ) pArea->pRecord + 1,
-                          pArea->pCryptKey, pArea->uiRecordLen - 1 );
-         }
-      }
-      else
-      {
-         pArea->fEncrypted = ZH_FALSE;
-      }
-   }
+
    return ZH_SUCCESS;
 }
 
@@ -2260,15 +2103,6 @@ static ZH_ERRCODE zh_dbfGetValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
                           ( int ) pField->uiDec );
          break;
 
-      case ZH_FT_ANY:
-         if( pField->uiLen == 3 )
-            zh_itemPutDL( pItem, zh_sxPtoD( ( char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ] ) );
-         else if( pField->uiLen == 4 )
-            zh_itemPutNIntLen( pItem, ( ZH_MAXINT ) ZH_GET_LE_INT32( pArea->pRecord + pArea->pFieldOffset[ uiIndex ] ), 10 );
-         else
-            fError = ZH_TRUE;
-         break;
-
       case ZH_FT_MEMO:
       default:
          fError = ZH_TRUE;
@@ -2381,15 +2215,9 @@ static ZH_ERRCODE zh_dbfPutRec( DBFAREAP pArea, const ZH_BYTE * pBuffer )
       /* Copy data to buffer */
       memcpy( pArea->pRecord, pBuffer, pArea->uiRecordLen );
 
-      /*
-       * TODO: such operation should be forbidden
-       * maybe it will be good to return ZH_FAILURE when
-       *    pArea->pRecord[ 0 ] != '*' && pArea->pRecord[ 0 ] != ' '
-       */
-      if( pArea->pRecord[ 0 ] == 'D' || pArea->pRecord[ 0 ] == 'E' )
+    
+      if( pArea->pRecord[ 0 ] == 'D')
       {
-         if( ! pArea->fHasMemo )
-            pArea->fEncrypted = ZH_TRUE;
          pArea->pRecord[ 0 ] = pArea->pRecord[ 0 ] == 'D' ? '*' : ' ';
       }
 
@@ -2400,22 +2228,7 @@ static ZH_ERRCODE zh_dbfPutRec( DBFAREAP pArea, const ZH_BYTE * pBuffer )
       ZH_BYTE * pRecord = pArea->pRecord;
       ZH_SIZE nWritten;
 
-      if( pArea->pCryptKey )
-      {
-         /* This enables record encryption in update operation */
-         if( pArea->bCryptType == DB_CRYPT_SIX && ! pArea->fHasMemo )
-            pArea->fEncrypted = ZH_TRUE;
-
-         if( pArea->bCryptType == DB_CRYPT_SIX && pArea->fEncrypted )
-         {
-            pRecord = ( ZH_BYTE * ) zh_xgrab( pArea->uiRecordLen );
-            pRecord[ 0 ] = pArea->fDeleted ? 'D' : 'E';
-            zh_sxEnCrypt( ( const char * ) pArea->pRecord + 1,
-                          ( char * ) pRecord + 1,
-                          pArea->pCryptKey, pArea->uiRecordLen - 1 );
-         }
-      }
-
+      
       /* Write data to file */
       nWritten = zh_fileWriteAt( pArea->pDataFile, pRecord, pArea->uiRecordLen,
                                  ( ZH_FOFFSET ) pArea->uiHeaderLen +
@@ -2589,11 +2402,6 @@ static ZH_ERRCODE zh_dbfPutValue( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pI
                ptr += 4;
             }
             ZH_PUT_LE_UINT32( ptr, lTime );
-         }
-         else if( pField->uiType == ZH_FT_ANY && pField->uiLen == 3 )
-         {
-            zh_sxDtoP( ( char * ) pArea->pRecord + pArea->pFieldOffset[ uiIndex ],
-                       zh_itemGetDL( pItem ) );
          }
          else
             errCode = EDBF_DATATYPE;
@@ -3366,25 +3174,7 @@ static ZH_ERRCODE zh_dbfCreate( DBFAREAP pArea, LPDBOPENINFO pCreateInfo )
    else
       pArea->area.cdPage = zh_vmCodepage();
 
-   pItem = zh_itemNew( NULL );
-   if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PENDINGPASSWORD,
-                     pCreateInfo->ulConnection, pItem ) == ZH_SUCCESS )
-   {
-      if( zh_dbfPasswordSet( pArea, pItem, ZH_FALSE ) )
-         pArea->fTableEncrypted = ZH_TRUE;
-   }
-   else
-   {
-      zh_itemClear( pItem );
-      if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PASSWORD,
-                        pCreateInfo->ulConnection, pItem ) == ZH_SUCCESS )
-      {
-         if( zh_dbfPasswordSet( pArea, pItem, ZH_FALSE ) )
-            pArea->fTableEncrypted = ZH_TRUE;
-      }
-   }
-   zh_itemRelease( pItem );
-
+ 
    if( ! fRawBlob )
    {
       /* Write header */
@@ -3567,19 +3357,6 @@ static ZH_ERRCODE zh_dbfInfo( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem 
          zh_itemPutL( pItem, pArea->fPositioned );
          break;
 
-      case DBI_ISENCRYPTED:
-         zh_itemPutL( pItem, pArea->fTableEncrypted );
-         break;
-
-      case DBI_DECRYPT:
-         zh_dbfTableCrypt( pArea, pItem, ZH_FALSE );
-         zh_itemPutL( pItem, ! pArea->fTableEncrypted );
-         break;
-
-      case DBI_ENCRYPT:
-         zh_dbfTableCrypt( pArea, pItem, ZH_TRUE );
-         zh_itemPutL( pItem, pArea->fTableEncrypted );
-         break;
 
       case DBI_LOCKCOUNT:
          zh_itemPutNL( pItem, pArea->ulNumLocksPos );
@@ -3652,10 +3429,6 @@ static ZH_ERRCODE zh_dbfInfo( DBFAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pItem 
                pArea->fRecordChanged = pArea->fValidBuffer = ZH_FALSE;
             }
          }
-         break;
-
-      case DBI_PASSWORD:
-         zh_dbfPasswordSet( pArea, pItem, ZH_FALSE );
          break;
 
 
@@ -3838,12 +3611,6 @@ static ZH_ERRCODE zh_dbfRecInfo( DBFAREAP pArea, PZH_ITEM pRecID, ZH_USHORT uiIn
          zh_itemPutL( pInfo, ulRecNo == pArea->ulRecNo && pArea->fRecordChanged );
          break;
 
-      case DBRI_ENCRYPTED:
-         if( ! pArea->fValidBuffer && ! zh_dbfReadRecord( pArea ) )
-            errResult = ZH_FAILURE;
-         else
-            zh_itemPutL( pInfo, pArea->fEncrypted );
-         break;
 
       case DBRI_RAWRECORD:
          if( ! pArea->fValidBuffer && ! zh_dbfReadRecord( pArea ) )
@@ -4450,23 +4217,7 @@ static ZH_ERRCODE zh_dbfOpen( DBFAREAP pArea, LPDBOPENINFO pOpenInfo )
       return errCode;
    }
 
-   pItem = zh_itemNew( NULL );
-   if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PENDINGPASSWORD,
-                     pOpenInfo->ulConnection, pItem ) == ZH_SUCCESS )
-   {
-      zh_dbfPasswordSet( pArea, pItem, ZH_FALSE );
-   }
-   else
-   {
-      zh_itemClear( pItem );
-      if( SELF_RDDINFO( SELF_RDDNODE( &pArea->area ), RDDI_PASSWORD,
-                        pOpenInfo->ulConnection, pItem ) == ZH_SUCCESS )
-      {
-         zh_dbfPasswordSet( pArea, pItem, ZH_FALSE );
-      }
-   }
-   zh_itemRelease( pItem );
-
+  
    /* Open memo file if exists */
    if( pArea->fHasMemo )
    {
@@ -5934,10 +5685,6 @@ static ZH_ERRCODE zh_dbfReadDBHeader( DBFAREAP pArea )
                   pArea->fHasMemo = ZH_TRUE;
                }
                pArea->bTableType = DB_DBF_VFP;
-               break;
-
-            case 0x03:
-            case 0x07:  /* DBFNTX and ANSI CP */
                break;
 
             case 0x83:

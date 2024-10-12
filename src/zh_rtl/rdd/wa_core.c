@@ -387,7 +387,7 @@ const char * zh_rddDefaultDrv( const char * szDriver )
    }
    else if( ! pRddInfo->szDefaultRDD && zh_rddGetNode( 0 ) )
    {
-      const char * szDrvTable[] = { "DBFNTX", "DBFCDX", "DBFFPT", "DBF" };
+      const char * szDrvTable[] = { "DBFCDX", "DBFFPT", "DBF" };
       int i;
 
       pRddInfo->szDefaultRDD = "";
@@ -431,7 +431,7 @@ const char * zh_rddFindDrv( const char * szDriver, const char * szFileName )
       }
       else if( zh_rddGetNode( 0 ) )
       {
-         const char * szDrvTable[] = { "DBFNTX", "DBFCDX", "DBFFPT", "DBF" };
+         const char * szDrvTable[] = { "DBFCDX", "DBFFPT", "DBF" };
          int i;
 
          pRddInfo->szDefaultRDD = "";
