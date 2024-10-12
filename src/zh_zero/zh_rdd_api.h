@@ -548,10 +548,6 @@ typedef void ( * ZH_EVALSCOPE_FUNC )( ZH_ULONG, ZH_BYTE *, ZH_ULONG, void * );
 typedef struct _AREA
 {
    struct _RDDFUNCS * lprfsHost; /* Virtual method table for this workarea */
-#if 0
-   /* I'll add this soon, Druzus */
-   struct _RDDFUNCS * lprfsSuper;/* Virtual super method table for this workarea */
-#endif
    ZH_USHORT uiArea;             /* The number assigned to this workarea */
    ZH_USHORT rddID;              /* RDD id */
    void * atomAlias;             /* Pointer to the alias symbol for this workarea */
