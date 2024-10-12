@@ -1,6 +1,4 @@
 /*
- * xZiher compatible wrapper functions
- *
  * Copyright 2007 Przemyslaw Czerpak
  * Copyright 2010 Viktor Szakats (vszakats.net/ziher)
  * Copyright 2000 David G. Holm <dholm@jsd-llc.com> (zh_F_Eof())
