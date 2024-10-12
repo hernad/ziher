@@ -133,7 +133,7 @@ static const char * const s_pp_szErrors[] =
    "File %s is too long",                                               /* C30?? */
 
    "Can't create preprocessed output file",                             /* C3006 */
-   "Can't open #include file '%s'",                                     /* C3007 */
+   "Ne mogu otvoriti #include file '%s'",                               /* C3007 */
    "Bad filename in #include",                                          /* C3008 */
    "Too many nested #includes",                                         /* C3009 */
    "Invalid name follows #",                                            /* C3010 */
@@ -2184,6 +2184,8 @@ static void zh_pp_pragmaStreamFile( PZH_PP_STATE pState, const char * szFileName
    PZH_PP_FILE pFile = zh_pp_FileNew( pState, szFileName, ZH_FALSE, NULL, NULL,
                                       ZH_TRUE, pState->pOpenFunc,
                                       pState->iStreamDump == ZH_PP_STREAM_BINARY );
+
+   //printf("fajl: %s", szFileName);
 
    if( pFile )
    {

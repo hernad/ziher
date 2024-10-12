@@ -51,6 +51,8 @@
 #  if defined( ZH_OS_DARWIN )
 #     include <crt_externs.h>
 #     define environ  ( *_NSGetEnviron() )
+#  else
+      extern char ** environ;
 #  endif
 #elif defined( ZH_OS_WIN )
 #  include "zh_win_unicode.h"

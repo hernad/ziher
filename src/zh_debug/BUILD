@@ -45,9 +45,9 @@ zh_comp_all(
         "*.zh"
     ]),
     hdrs = glob( [
-        "en.txt"
+        "*.txt"
     ]),
-    deps = ZH_DEPS_STD,
+    deps = ZH_DEPS_STD + [ "//zh_debug:headers_filegroup" ],
     args = ZH_COMP_OPTS + [ "-ithird_party/xlsxwriter" ],
     #args = ZH_COMP_OPTS,
     #deps = [ 
@@ -81,6 +81,7 @@ filegroup(
     srcs = glob([
         "*.h",
         "*.zhh",
+        "*.txt"
     ]),
     visibility = ["//visibility:public"],
 )
