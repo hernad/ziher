@@ -7940,9 +7940,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
 
       hSymScope = pSymbol->scope.value;
       pNewSymbols->hScope |= hSymScope;
-#if 0
-      fPublic = ( hSymScope & ( ZH_FS_PUBLIC | ZH_FS_MESSAGE | ZH_FS_MEMVAR ) ) != 0;
-#endif
+
       fPublic = ( hSymScope & ( ZH_FS_INITEXIT | ZH_FS_STATIC | ZH_FS_FRAME ) ) == 0;
       if( fStatics )
       {
