@@ -203,8 +203,6 @@ static ZH_GT_FUNCS SuperTable;
 #define K_MOUSETERM        0x10004
 #define K_RESIZE           0x10005
 
-#if defined( ZH_OS_UNIX )
-
 #define TIMEVAL_GET( tv )           gettimeofday( &( tv ), NULL )
 #define TIMEVAL_LESS( tv1, tv2 )    ( ( ( tv1 ).tv_sec == ( tv2 ).tv_sec ) ? \
                                       ( ( tv1 ).tv_usec < ( tv2 ).tv_usec ) : \
@@ -218,13 +216,6 @@ static ZH_GT_FUNCS SuperTable;
       } \
    } while( 0 )
 
-#else
-
-#define TIMEVAL_GET( tv )           do { ( tv ) = zh_dateSeconds(); } while( 0 )
-#define TIMEVAL_LESS( tv1, tv2 )    ( ( tv1 ) < ( tv2 ) )
-#define TIMEVAL_ADD( dst, src, n )  do { ( dst ) = ( src ) + n / 1000; } while( 0 )
-
-#endif
 
 typedef struct
 {
@@ -249,15 +240,9 @@ typedef struct
    int mbup_row, mbup_col;
    int mbdn_row, mbdn_col;
    /* to analize DBLCLK on xterm */
-#if defined( ZH_OS_UNIX )
    struct timeval BL_time;
    struct timeval BR_time;
    struct timeval BM_time;
-#else
-   double BL_time;
-   double BR_time;
-   double BM_time;
-#endif
 } mouseEvent;
 
 typedef struct _keyTab
@@ -322,10 +307,8 @@ typedef struct _ZH_GTTRM
    int        terminal_type;
    int        terminal_ext;
 
-#if defined( ZH_OS_UNIX )
    struct termios saved_TIO, curr_TIO;
    ZH_BOOL    fRestTTY;
-#endif
 
    double     dToneSeconds;
 
@@ -369,9 +352,7 @@ typedef struct _ZH_GTTRM
 } ZH_TERM_STATE, ZH_GTTRM, * PZH_GTTRM;
 
 /* static variables use by signal handler */
-#if defined( ZH_OS_UNIX )
    static volatile ZH_BOOL s_WinSizeChangeFlag = ZH_FALSE;
-#endif
 #if defined( ZH_OS_UNIX ) && defined( SA_NOCLDSTOP )
    static volatile ZH_BOOL s_fRestTTY = ZH_FALSE;
 #endif
@@ -740,11 +721,7 @@ static void chk_mevtdblck( PZH_GTTRM pTerm )
 
    if( newbuttons != 0 )
    {
-#if defined( ZH_OS_UNIX )
       struct timeval tv;
-#else
-      double tv;
-#endif
 
       TIMEVAL_GET( tv );
       if( newbuttons & M_BUTTON_LEFT )
@@ -857,11 +834,7 @@ static int read_bufch( PZH_GTTRM pTerm, int fd )
       unsigned char buf[ STDIN_BUFLEN ];
       int i;
 
-#if defined( ZH_OS_UNIX )
       n = read( fd, buf, STDIN_BUFLEN - pTerm->stdin_inbuf );
-#else
-      n = zh_fsRead( fd, buf, STDIN_BUFLEN - pTerm->stdin_inbuf );
-#endif
 
       for( i = 0; i < n; i++ )
       {
@@ -1020,13 +993,11 @@ static int wait_key( PZH_GTTRM pTerm, int milisec )
    int nKey, esc, n, i, ch, counter;
    keyTab * ptr;
 
-#if defined( ZH_OS_UNIX )
    if( s_WinSizeChangeFlag )
    {
       s_WinSizeChangeFlag = ZH_FALSE;
       return K_RESIZE;
    }
-#endif
 
 restart:
    counter = ++( pTerm->key_counter );
@@ -1325,13 +1296,11 @@ static ZH_BOOL zh_gt_trm_XtermSetMode( PZH_GTTRM pTerm, int * piRows, int * piCo
    zh_gt_trm_termOut( pTerm, escseq, strlen( escseq ) );
    zh_gt_trm_termFlush( pTerm );
 
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
    /* dirty hack - wait for SIGWINCH */
    if( *piRows != iHeight || *piCols != iWidth )
       sleep( 3 );
    if( s_WinSizeChangeFlag )
       s_WinSizeChangeFlag = ZH_FALSE;
-#endif
 
    zh_gt_trm_getSize( pTerm, piRows, piCols );
 
@@ -1715,9 +1684,6 @@ static void zh_gt_trm_AnsiSetTermMode( PZH_GTTRM pTerm, int iAM )
        * disabled until I'll find good PC-ANSI terminal documentation with
        * detail Auto Margin and Auto Line Wrapping description, [druzus]
        */
-#if 0
-      zh_gt_trm_termOut( pTerm, iAM ? "\x1B[?7h" : "\x1B[?7l", 5 );
-#endif
       pTerm->iAM = iAM;
    }
 }
@@ -1797,14 +1763,9 @@ static ZH_BOOL zh_gt_trm_AnsiGetCursorPos( PZH_GTTRM pTerm, int * iRow, int * iC
             break;
          else
          {
-#if defined( ZH_OS_UNIX )
             if( zh_fsCanRead( pTerm->hFilenoStdin, timeout ) <= 0 )
                break;
             i = read( pTerm->hFilenoStdin, rdbuf + n, sizeof( rdbuf ) - n );
-#else
-            int iTODO;
-            break;
-#endif
 
             if( i <= 0 )
                break;
@@ -3061,10 +3022,8 @@ static void zh_gt_trm_Exit( PZH_GT pGT )
 
    if( pTerm )
    {
-#if defined( ZH_OS_UNIX )
       if( pTerm->fRestTTY )
          tcsetattr( pTerm->hFilenoStdin, TCSANOW, &pTerm->saved_TIO );
-#endif
       if( pTerm->nLineBufSize > 0 )
          zh_xfree( pTerm->pLineBuf );
       if( pTerm->iOutBufSize > 0 )
@@ -3222,10 +3181,8 @@ static ZH_BOOL zh_gt_trm_Suspend( PZH_GT pGT )
    pTerm = ZH_GTTRM_GET( pGT );
    if( pTerm->mouse_type & MOUSE_XTERM )
       zh_gt_trm_termOut( pTerm, s_szMouseOff, strlen( s_szMouseOff ) );
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
    if( pTerm->fRestTTY )
       tcsetattr( pTerm->hFilenoStdin, TCSANOW, &pTerm->saved_TIO );
-#endif
    /* Enable line wrap when cursor set after last column */
    pTerm->SetTermMode( pTerm, 1 );
    return ZH_TRUE;
