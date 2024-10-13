@@ -305,14 +305,6 @@ typedef struct _ZH_GTTRM
 
    ZH_BOOL    fUTF8;
 
-#ifndef ZH_GT_UNICODE_BUF
-   PZH_CODEPAGE cdpIn;
-   PZH_CODEPAGE cdpHost;
-   PZH_CODEPAGE cdpTerm;
-   PZH_CODEPAGE cdpBox;
-
-   ZH_UCHAR   keyTransTbl[ 256 ];
-#endif
 
    int        charmap[ 256 ];
 
@@ -569,50 +561,6 @@ static void zh_gt_trm_termOut( PZH_GTTRM pTerm, const char * pStr, int iLen )
    }
 }
 
-#ifndef ZH_GT_UNICODE_BUF
-static void zh_gt_trm_termOutTrans( PZH_GTTRM pTerm, const char * pStr, int iLen, int iAttr )
-{
-   if( pTerm->iOutBufSize )
-   {
-      PZH_CODEPAGE cdp = NULL;
-
-      if( pTerm->fUTF8 )
-      {
-         if( ( iAttr & ( ZH_GTTRM_ATTR_ACSC | ZH_GTTRM_ATTR_BOX ) ) &&
-             pTerm->cdpBox )
-            cdp = pTerm->cdpBox;
-         else if( pTerm->cdpHost )
-            cdp = pTerm->cdpHost;
-         else
-            cdp = zh_vmCodepage();
-      }
-
-      if( cdp )
-      {
-         while( iLen > 0 )
-         {
-            int i = ( pTerm->iOutBufSize - pTerm->iOutBufIndex ) >> 2;
-            if( i < 4 )
-            {
-               zh_gt_trm_termFlush( pTerm );
-               i = pTerm->iOutBufSize >> 2;
-            }
-            if( i > iLen )
-               i = iLen;
-            pTerm->iOutBufIndex += zh_cdpStrToUTF8Disp( cdp, pStr, i,
-                                    pTerm->pOutBuf + pTerm->iOutBufIndex,
-                                    pTerm->iOutBufSize - pTerm->iOutBufIndex );
-            pStr += i;
-            iLen -= i;
-         }
-      }
-      else
-      {
-         zh_gt_trm_termOut( pTerm, pStr, iLen );
-      }
-   }
-}
-#endif
 
 /* ************************************************************************* */
 
@@ -1202,7 +1150,6 @@ again:
          pTerm->key_flag = 0;
       }
 
-#ifdef ZH_GT_UNICODE_BUF
       if( ! pTerm->fUTF8 )
       {
          if( nKey != 0 )
@@ -1233,37 +1180,6 @@ again:
             }
          }
       }
-#else
-      if( nKey >= 32 && nKey <= 255 && pTerm->fUTF8 && pTerm->cdpIn )
-      {
-         ZH_USHORT uc = 0;
-         n = i = 0;
-         if( zh_cdpGetFromUTF8( pTerm->cdpIn, ( ZH_UCHAR ) nKey, &n, &uc ) )
-         {
-            while( n > 0 )
-            {
-               ch = test_bufch( pTerm, i++, pTerm->esc_delay );
-               if( ch < 0 || ch > 255 )
-                  break;
-               if( ! zh_cdpGetFromUTF8( pTerm->cdpIn, ch, &n, &uc ) )
-                  n = -1;
-            }
-            if( n == 0 )
-            {
-               free_bufch( pTerm, i );
-               nKey = uc;
-            }
-         }
-      }
-
-/*
-      if( pTerm->nation_transtbl && pTerm->nation_mode &&
-           nKey >= 32 && nKey < 128 && pTerm->nation_transtbl[nKey] )
-         nKey = pTerm->nation_transtbl[nKey];
- */
-      if( nKey > 0 && nKey <= 255 && pTerm->keyTransTbl[ nKey ] )
-         nKey = pTerm->keyTransTbl[ nKey ];
-#endif
       if( nKey )
          nKey = getClipKey( nKey );
    }
@@ -2206,11 +2122,7 @@ static void zh_gt_trm_PutStr( PZH_GTTRM pTerm, int iRow, int iCol, int iAttr, co
    {
       pTerm->SetCursorPos( pTerm, iRow, iCol );
       pTerm->SetAttributes( pTerm, iAttr & pTerm->iAttrMask );
-#ifdef ZH_GT_UNICODE_BUF
       zh_gt_trm_termOut( pTerm, pStr, iLen );
-#else
-      zh_gt_trm_termOutTrans( pTerm, pStr, iLen, iAttr );
-#endif
    }
 
    pTerm->iCol += iChars;
@@ -2249,20 +2161,6 @@ static void zh_gt_trm_SetTitle( PZH_GTTRM pTerm, const char * szTitle )
    }
 }
 
-#ifndef ZH_GT_UNICODE_BUF
-static void zh_gt_trm_SetKeyTrans( PZH_GTTRM pTerm )
-{
-   PZH_CODEPAGE cdpTerm = ZH_GTSELF_INCP( pTerm->pGT ),
-                cdpHost = ZH_GTSELF_HOSTCP( pTerm->pGT );
-   int i;
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_SetKeyTrans(%p,%p,%p)", ( void * ) pTerm, ( void * ) cdpTerm, ( void * ) cdpHost ) );
-
-   for( i = 0; i < 256; ++i )
-      pTerm->keyTransTbl[ i ] = ( unsigned char )
-                           zh_cdpTranslateChar( i, cdpTerm, cdpHost );
-}
-#endif
 
 static void zh_gt_trm_SetDispTrans( PZH_GTTRM pTerm, int box )
 {
@@ -3037,11 +2935,6 @@ static void zh_gt_trm_SetTerm( PZH_GTTRM pTerm )
 
    zh_gt_chrmapinit( pTerm->charmap, szTerm, pTerm->terminal_type == TERM_XTERM );
 
-#ifndef ZH_GT_UNICODE_BUF
-   pTerm->cdpHost = pTerm->cdpIn = NULL;
-   pTerm->cdpBox = zh_cdpFind( "EN" );
-#endif
-
    add_efds( pTerm, pTerm->hFilenoStdin, O_RDONLY, NULL, NULL );
    init_keys( pTerm );
    mouse_init( pTerm );
@@ -3134,9 +3027,6 @@ static void zh_gt_trm_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
 #endif
    if( ! pTerm->fUTF8 )
    {
-#ifndef ZH_GT_UNICODE_BUF
-      zh_gt_trm_SetKeyTrans( pTerm );
-#endif
       zh_gt_trm_SetDispTrans( pTerm, 0 );
    }
    ZH_GTSELF_SETBLINK( pGT, ZH_TRUE );
@@ -3447,21 +3337,6 @@ static ZH_BOOL zh_gt_trm_SetDispCP( PZH_GT pGT, const char * pszTermCDP, const c
    return ZH_FALSE;
 }
 
-#ifndef ZH_GT_UNICODE_BUF
-static ZH_BOOL zh_gt_trm_SetKeyCP( PZH_GT pGT, const char * pszTermCDP, const char * pszHostCDP )
-{
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_SetKeyCP(%p,%s,%s)", ( void * ) pGT, pszTermCDP, pszHostCDP ) );
-
-   if( ZH_GTSUPER_SETKEYCP( pGT, pszTermCDP, pszHostCDP ) )
-   {
-      if( ! ZH_GTTRM_GET( pGT )->fUTF8 )
-         zh_gt_trm_SetKeyTrans( ZH_GTTRM_GET( pGT ) );
-      return ZH_TRUE;
-   }
-   return ZH_FALSE;
-}
-#endif
-
 static void zh_gt_trm_Redraw( PZH_GT pGT, int iRow, int iCol, int iSize )
 {
    PZH_GTTRM pTerm;
@@ -3480,7 +3355,6 @@ static void zh_gt_trm_Redraw( PZH_GT pGT, int iRow, int iCol, int iSize )
       iSize--;
    while( iSize-- )
    {
-#ifdef ZH_GT_UNICODE_BUF
       if( pTerm->fUTF8 )
       {
          if( ! ZH_GTSELF_GETSCRCHAR( pGT, iRow, iCol + iChars, &iColor, &bAttr, &usChar ) )
@@ -3520,36 +3394,7 @@ static void zh_gt_trm_Redraw( PZH_GT pGT, int iRow, int iCol, int iSize )
       else
          pTerm->pLineBuf[ iLen++ ] = ( char ) usChar;
       ++iChars;
-#else
-      if( ! ZH_GTSELF_GETSCRCHAR( pGT, iRow, iCol + iChars, &iColor, &bAttr, &usChar ) )
-         break;
-      usChar &= 0xff;
-      if( bAttr & ZH_GT_ATTR_BOX )
-      {
-         iColor |= ( pTerm->boxattr[ usChar ] & ~ZH_GTTRM_ATTR_CHAR );
-         if( ! pTerm->fUTF8 )
-            usChar = pTerm->boxattr[ usChar ] & ZH_GTTRM_ATTR_CHAR;
-         else
-            iColor |= ZH_GTTRM_ATTR_BOX;
-      }
-      else
-      {
-         iColor |= ( pTerm->chrattr[ usChar ] & ~ZH_GTTRM_ATTR_CHAR );
-         if( ! pTerm->fUTF8 )
-            usChar = pTerm->chrattr[ usChar ] & ZH_GTTRM_ATTR_CHAR;
-      }
-      if( iLen == 0 )
-         iAttribute = iColor;
-      else if( iColor != iAttribute )
-      {
-         zh_gt_trm_PutStr( pTerm, iRow, iCol, iAttribute, pTerm->pLineBuf, iLen, iChars );
-         iCol += iChars;
-         iLen = iChars = 0;
-         iAttribute = iColor;
-      }
-      pTerm->pLineBuf[ iLen++ ] = ( char ) usChar;
-      ++iChars;
-#endif
+
    }
    if( iLen )
       zh_gt_trm_PutStr( pTerm, iRow, iCol, iAttribute, pTerm->pLineBuf, iLen, iChars );
@@ -3567,11 +3412,7 @@ static void zh_gt_trm_Refresh( PZH_GT pGT )
 
    ZH_GTSELF_GETSIZE( pGT, &pTerm->iHeight, &pTerm->iWidth );
 
-#ifdef ZH_GT_UNICODE_BUF
    nLineBufSize = pTerm->iWidth * ( pTerm->fUTF8 ? 3 : 1 );
-#else
-   nLineBufSize = pTerm->iWidth;
-#endif
    if( pTerm->nLineBufSize != nLineBufSize )
    {
       pTerm->pLineBuf = ( char * ) zh_xrealloc( pTerm->pLineBuf, nLineBufSize );
@@ -3615,19 +3456,6 @@ static ZH_BOOL zh_gt_trm_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          pInfo->pResult = zh_itemPutL( pInfo->pResult, pTerm->fUTF8 );
          break;
 
-#ifndef ZH_GT_UNICODE_BUF
-      case ZH_GTI_BOXCP:
-         pInfo->pResult = zh_itemPutC( pInfo->pResult,
-                                       pTerm->cdpBox ? pTerm->cdpBox->id : NULL );
-         szVal = zh_itemGetCPtr( pInfo->pNewVal );
-         if( szVal && *szVal )
-         {
-            PZH_CODEPAGE cdpBox = zh_cdpFind( szVal );
-            if( cdpBox )
-               pTerm->cdpBox = cdpBox;
-         }
-         break;
-#endif
 
       case ZH_GTI_ESCDELAY:
          pInfo->pResult = zh_itemPutNI( pInfo->pResult, pTerm->esc_delay );
@@ -3661,21 +3489,13 @@ static ZH_BOOL zh_gt_trm_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          if( pTerm->fUTF8 )
             pInfo->pResult = zh_itemPutStrUTF8( pInfo->pResult, pTerm->szTitle );
          else
-#ifdef ZH_GT_UNICODE_BUF
             pInfo->pResult = zh_itemPutStr( pInfo->pResult, ZH_GTSELF_TERMCP( pGT ), pTerm->szTitle );
-#else
-            pInfo->pResult = zh_itemPutStr( pInfo->pResult, pTerm->cdpTerm, pTerm->szTitle );
-#endif
          if( zh_itemType( pInfo->pNewVal ) & ZH_IT_STRING )
          {
             if( pTerm->fUTF8 )
                szVal = zh_itemGetStrUTF8( pInfo->pNewVal, &hVal, NULL );
             else
-#ifdef ZH_GT_UNICODE_BUF
                szVal = zh_itemGetStr( pInfo->pNewVal, ZH_GTSELF_TERMCP( pGT ), &hVal, NULL );
-#else
-               szVal = zh_itemGetStr( pInfo->pNewVal, pTerm->cdpTerm, &hVal, NULL );
-#endif
 
             if( pTerm->szTitle )
                zh_xfree( pTerm->szTitle );
@@ -3750,9 +3570,6 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->SetMode                    = zh_gt_trm_SetMode;
    pFuncTable->SetBlink                   = zh_gt_trm_SetBlink;
    pFuncTable->SetDispCP                  = zh_gt_trm_SetDispCP;
-#ifndef ZH_GT_UNICODE_BUF
-   pFuncTable->SetKeyCP                   = zh_gt_trm_SetKeyCP;
-#endif
    pFuncTable->Tone                       = zh_gt_trm_Tone;
    pFuncTable->Bell                       = zh_gt_trm_Bell;
    pFuncTable->Info                       = zh_gt_trm_Info;
