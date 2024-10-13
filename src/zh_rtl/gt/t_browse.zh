@@ -1692,17 +1692,6 @@ METHOD setVisible() CLASS TBrowse
          ::nColPos := ::nLeftVisible
       ENDIF
 
-#if 0
-      /* Always try to locate visible column.
-       * CA-Cl*pper does not have such condition. [druzus]
-       */
-      IF ::nColPos >= 1 .AND. ::aColData[ ::nColPos ][ _TBCI_CELLWIDTH ] <= 0
-         nCol := _PREVCOLUMN( ::aColData, ::nColPos - 1 )
-         ::nColPos := iif( nCol == 0, ;
-                           _NEXTCOLUMN( ::aColData, ::nColPos + 1 ), nCol )
-      ENDIF
-#endif
-
       /* update column size and positions on the screen */
       nLeft := _TBR_COORD( ::n_Left )
       lFirst := .T.
