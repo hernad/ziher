@@ -807,3 +807,20 @@ ZH_FUNC( ORDSCOPE )
    else
       zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
 }
+
+ZH_FUNC( ORDCOUNT )
+{
+   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
+
+   if( pArea )
+   {
+      DBORDERINFO pOrderInfo;
+      memset( &pOrderInfo, 0, sizeof( pOrderInfo ) );
+      pOrderInfo.atomBagName = zh_param( 1, ZH_IT_STRING );
+      pOrderInfo.itmResult = zh_itemPutNI( NULL, 0 );
+      SELF_ORDINFO( pArea, DBOI_ORDERCOUNT, &pOrderInfo );
+      zh_itemReturnRelease( pOrderInfo.itmResult );
+   }
+   else
+      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
+}
