@@ -54,10 +54,6 @@
 
 #define IS_IN( str, list )  ( "|" + ( str ) + "|" $ "|" + ( list ) + "|" )
 
-/* NOTE: Ziher doesn't support CA-Cl*pper 5.3 GUI functionality, but
-         it has all related variables and methods. */
-
-
 /* Some helper constants for the ReadStats() calls. */
 #define SNLASTEXIT      6
 #define SNNEXTGET       12
@@ -590,9 +586,6 @@ METHOD ShowMsg( lMode ) CLASS ZHMenuSys
    ENDIF
 
    RETURN .T.
-
-/* NOTE: Generates the somewhat internal, yet widely used message line format of CA-Cl*pper 5.3
-         This format contradicts the one in the official docs. */
 
 METHOD GetMsgArray() CLASS ZHMenuSys
    RETURN {, ::nMsgRow, ::nMsgLeft, ::nMsgRight, ::cMsgColor, , , , , }

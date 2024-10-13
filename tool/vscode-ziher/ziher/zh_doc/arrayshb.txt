@@ -28,9 +28,6 @@
       destroy the original array and release the entire contents of the
       array. This depends, of course, on the data storage type of either
       the array or the variable with the same name as the array.
-
-      CA-Cl*pper v5.x compliant except that arrays in Ziher can have
-      an unlimited number of elements.
    $EXAMPLES$
       LOCAL aArray := Array( 10 ), tmp
       FOR tmp := 1 TO Len( aArray )

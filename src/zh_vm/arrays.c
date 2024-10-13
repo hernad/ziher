@@ -1420,9 +1420,6 @@ ZH_BOOL zh_arrayEval( PZH_ITEM pArray, PZH_ITEM bBlock, ZH_SIZE * pnStart, ZH_SI
       return ZH_FALSE;
 }
 
-/* NOTE: CA-Cl*pper 5.3a has a fix for the case when the starting position
-         is greater than the length of the array. [vszakats] */
-
 ZH_BOOL zh_arrayCopy( PZH_ITEM pSrcArray, PZH_ITEM pDstArray, ZH_SIZE * pnStart,
                       ZH_SIZE * pnCount, ZH_SIZE * pnTarget )
 {

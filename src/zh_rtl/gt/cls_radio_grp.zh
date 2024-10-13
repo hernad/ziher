@@ -88,12 +88,12 @@ CREATE CLASS RadioGroup FUNCTION ZHRadioGroup
    METHOD left( nLeft ) SETGET
    METHOD message( cMessage ) SETGET
    METHOD right( nRight ) SETGET
-   METHOD textValue() SETGET                   /* NOTE: Undocumented CA-Cl*pper var. */
+   METHOD textValue() SETGET 
    METHOD top( nTop ) SETGET
    METHOD typeOut() SETGET
-   METHOD value() SETGET                       /* NOTE: Undocumented CA-Cl*pper var. */
+   METHOD value() SETGET
 
-   METHOD New( nTop, nLeft, nBottom, nRight )  /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nTop, nLeft, nBottom, nRight )
 
    PROTECTED:
 

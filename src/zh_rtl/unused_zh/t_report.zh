@@ -214,8 +214,6 @@ METHOD PROCEDURE New( cFrmName AS STRING, ;
       err:subSystem := "FRMLBL"
       Eval( ErrorBlock(), err )
    ELSE
-      /* NOTE: CA-Cl*pper does an RTrim() on the filename here,
-               but in Ziher we're using _SET_TRIMFILENAME. */
       IF Set( _SET_DEFEXTENSIONS )
          cFRMName := zh_FNameExtSetDef( cFRMName, ".frm" )
       ENDIF

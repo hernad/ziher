@@ -47,14 +47,11 @@
 #include "zh_api.h"
 #include "zh_item_api.h"
 
-/* Dumb function to maintain dBase III+ and CA-Cl*pper compatibility */
 
 ZH_FUNC( FKMAX )
 {
    zh_retni( 40 ); /* IBM specific */
 }
-
-/* Dumb function to maintain dBase III+ and CA-Cl*pper compatibility */
 
 ZH_FUNC( FKLABEL )
 {

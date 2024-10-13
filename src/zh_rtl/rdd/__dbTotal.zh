@@ -47,13 +47,6 @@
 #include "db_struct.zhh"
 #include "error.zhh"
 
-/* NOTE: Compared to CA-Cl*pper, Ziher:
-         - will accept character expressions and symbols for xKey, xFor and xWhile.
-         - has three extra parameters (cRDD, nConnection, cCodePage).
-         - will default to active index key for xKey parameter.
-         - won't crash with "No exported method: EVAL" if xKey is not
-           block and table is not indexed. */
-
 FUNCTION __dbTotal( cFile, xKey, aFields, ;
                     xFor, xWhile, nNext, nRec, lRest, ;
                     cRDD, nConnection, cCodePage )

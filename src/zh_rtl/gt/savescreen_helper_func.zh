@@ -60,3 +60,38 @@ FUNCTION __XSaveGetAttr( cSaveScreen, nPos )
    RETURN iif( zh_gtInfo( ZH_GTI_COMPATBUFFER ), ;
       0, ;
       zh_BPeek( cSaveScreen, nPos * 4 + 4 ) )
+
+
+
+PROCEDURE __XSaveSetCell( /* @ */ cSaveScreen, nPos, xChar, nColor, nAttr )
+
+   IF zh_gtInfo( ZH_GTI_COMPATBUFFER )
+      nPos *= 2
+      DO CASE
+      CASE ZH_ISSTRING( xChar )
+         zh_BPoke( @cSaveScreen, nPos + 1, Asc( xChar ) )
+      CASE ZH_ISNUMERIC( xChar )
+         zh_BPoke( @cSaveScreen, nPos + 1, xChar )
+      ENDCASE
+      IF ZH_ISNUMERIC( nColor )
+         zh_BPoke( @cSaveScreen, nPos + 2, nColor )
+      ENDIF
+   ELSE
+      nPos *= 4
+      DO CASE
+      CASE ZH_ISSTRING( xChar )
+         zh_BPoke( @cSaveScreen, nPos + 1, zh_bitAnd( zh_UCode( xChar ), 0xff ) )
+         zh_BPoke( @cSaveScreen, nPos + 2, zh_UCode( xChar ) / 0x100 )
+      CASE ZH_ISNUMERIC( xChar )
+         zh_BPoke( @cSaveScreen, nPos + 1, zh_bitAnd( xChar, 0xff ) )
+         zh_BPoke( @cSaveScreen, nPos + 2, xChar / 0x100 )
+      ENDCASE
+      IF ZH_ISNUMERIC( nColor )
+         zh_BPoke( @cSaveScreen, nPos + 3, nColor )
+      ENDIF
+      IF ZH_ISNUMERIC( nAttr )
+         zh_BPoke( @cSaveScreen, nPos + 4, nAttr )
+      ENDIF
+   ENDIF
+
+   RETURN      

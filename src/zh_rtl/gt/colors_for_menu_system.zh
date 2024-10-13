@@ -115,40 +115,40 @@ FUNCTION GetClrBack( cColor )
 
 FUNCTION RadGrDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "W/N", "W+/N" ), ;
-      ApplyDefau( cColor, 3, 1, 4 ) )
+      ApplyDefaultColors( cColor, "W/N", "W/N", "W+/N" ), ;
+      ApplyDefaultColors( cColor, 3, 1, 4 ) )
 
 FUNCTION RadItDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N" ), ;
-      ApplyDefau( cColor, 5, 5, 2, 2, 1, 1, 4 ) )
+      ApplyDefaultColors( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N" ), ;
+      ApplyDefaultColors( cColor, 5, 5, 2, 2, 1, 1, 4 ) )
 
 FUNCTION ListBDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N" ), ;
-      ApplyDefau( cColor, 5, 5, 5, 2, 3, 1, 4 ) )
+      ApplyDefaultColors( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N" ), ;
+      ApplyDefaultColors( cColor, 5, 5, 5, 2, 3, 1, 4 ) )
 
 FUNCTION ComboDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N", "W/N" ), ;
-      ApplyDefau( cColor, 5, 5, 5, 2, 3, 1, 4, 1 ) )
+      ApplyDefaultColors( cColor, "W/N", "W+/N", "W+/N", "N/W", "W/N", "W/N", "W+/N", "W/N" ), ;
+      ApplyDefaultColors( cColor, 5, 5, 5, 2, 3, 1, 4, 1 ) )
 
 FUNCTION CheckDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "W+/N", "W/N", "W+/N" ), ;
-      ApplyDefau( cColor, 5, 2, 1, 4 ) )
+      ApplyDefaultColors( cColor, "W/N", "W+/N", "W/N", "W+/N" ), ;
+      ApplyDefaultColors( cColor, 5, 2, 1, 4 ) )
 
 FUNCTION ButtnDefCo( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "W/N", "N/W", "W+/N", "W+/N" ), ;
-      ApplyDefau( cColor, 5, 2, 1, 4 ) )
+      ApplyDefaultColors( cColor, "W/N", "N/W", "W+/N", "W+/N" ), ;
+      ApplyDefaultColors( cColor, 5, 2, 1, 4 ) )
 
 FUNCTION MenuDefCol( cColor )
    RETURN iif( IsDefColor(), ;
-      ApplyDefau( cColor, "N/W", "W/N", "W+/W", "W+/N", "N+/W", "W/N" ), ;
-      ApplyDefau( cColor, 5, 2, 4, 2, 1, 3 ) )
+      ApplyDefaultColors( cColor, "N/W", "W/N", "W+/W", "W+/N", "N+/W", "W/N" ), ;
+      ApplyDefaultColors( cColor, 5, 2, 4, 2, 1, 3 ) )
 
-FUNCTION ApplyDefau( cColor, xClr1, xClr2, xClr3, xClr4, xClr5, xClr6, xClr7, xClr8 )
+FUNCTION ApplyDefaultColors( cColor, xClr1, xClr2, xClr3, xClr4, xClr5, xClr6, xClr7, xClr8 )
 
    LOCAL cSetColor
    LOCAL aSetColor

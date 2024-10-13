@@ -46,9 +46,6 @@
 
 #include "db_struct.zhh"
 
-/* NOTE: Compared to CA-Cl*pper, Ziher has three extra parameters
-         (cRDD, nConnection, cCodePage). */
-
 FUNCTION __dbJoin( cAlias, cFile, aFields, bFor, cRDD, nConnection, cCodePage )
 
    LOCAL nMaster := Select()
@@ -62,8 +59,6 @@ FUNCTION __dbJoin( cAlias, cFile, aFields, bFor, cRDD, nConnection, cCodePage )
 
    dbSelectArea( nMaster )
    IF Empty( aStruct := __FieldTwo( cAlias, aFields ) )
-      /* NOTE: CA-Cl*pper will leave the wrong workarea (cAlias) selected here.
-               Ziher is bug compatible. [vszakats] */
       RETURN .F.
    ENDIF
 

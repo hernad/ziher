@@ -49,12 +49,7 @@
 
 /*
  * Normally it gives exactly the same result in all standard GT drivers
- * as MaxRow()/MaxCol(). The difference can appear in some extended
- * GT drivers which have additional functionality, e.g. CTW GT which
- * is upper level GT and add CTIII Window support. When it's activated
- * then MaxRow() will return current window max row and zh_ScrMaxRow() real
- * screen (window 0) max row what is the exact behavior of MaxRow()
- * in CT3, [druzus]
+ * as MaxRow()/MaxCol().
  */
 
 ZH_FUNC( ZH_SCRMAXROW ) /* Return the maximum screen row number (zero origin) */

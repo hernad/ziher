@@ -1,6 +1,5 @@
 /*
- * Compatibility functions from the SOURCE/SAMPLE directory of CA-Cl*pper.
- *
+
  * Copyright 1999-2016 Viktor Szakats
  *
  * This program is free software; you can redistribute it and/or modify

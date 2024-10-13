@@ -90,7 +90,7 @@ void zh_gtWPos( ZH_GT_WND * wnd, ZH_GT_RECT * rect )
    ZH_SYMBOL_UNUSED( rect );
 }
 
-ZH_BOOL zh_gtWVis( ZH_GT_WND * wnd, ZH_USHORT iStatus ) /* USHORT in CA-Cl*pper [vszakats] */
+ZH_BOOL zh_gtWVis( ZH_GT_WND * wnd, ZH_USHORT iStatus )
 {
    /* TODO: */
 
@@ -102,8 +102,6 @@ ZH_BOOL zh_gtWVis( ZH_GT_WND * wnd, ZH_USHORT iStatus ) /* USHORT in CA-Cl*pper 
 
 ZH_ERRCODE zh_gtSLR( ZH_GT_SLR * pSLR ) /* System-Level Request */
 {
-   /* Do nothing in Ziher, since the low-level GT API is
-      implemented with a different method than in CA-Cl*pper. */
 
    ZH_SYMBOL_UNUSED( pSLR );
 

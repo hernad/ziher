@@ -68,18 +68,6 @@ ZH_BOOL zh_evalNew( PZH_EVALINFO pEvalInfo, PZH_ITEM pItem )
       return ZH_FALSE;
 }
 
-/* NOTE: CA-Cl*pper is buggy and will not check if more parameters are
-         added than the maximum (9). [vszakats] */
-
-/* NOTE: CA-Cl*pper NG suggests that the Items passed as parameters should/may
-         be released by the programmer explicitly. But in fact zh_evalRelease()
-         will automatically release them all. The sample programs in the
-         NG are doing it that way. Releasing the parameters explicitly in
-         Ziher will cause an internal error, while it will be silently
-         ignored (?) in CA-Cl*pper. This is due to the different internal
-         handling of the Items, but IIRC it causes leak in CA-Cl*pper. All in
-         all, don't release the eval parameter Items explicitly to make both
-         Ziher and CA-Cl*pper happy. [vszakats] */
 
 ZH_BOOL zh_evalPutParam( PZH_EVALINFO pEvalInfo, PZH_ITEM pItem )
 {
@@ -147,10 +135,6 @@ PZH_ITEM zh_evalLaunch( PZH_EVALINFO pEvalInfo )
 
    return pResult;
 }
-
-/* NOTE: CA-Cl*pper NG states that zh_evalLaunch() must be called at least
-         once and only once before calling zh_evalRelease(). Ziher doesn't
-         have these requirements. [vszakats] */
 
 ZH_BOOL zh_evalRelease( PZH_EVALINFO pEvalInfo )
 {

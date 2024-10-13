@@ -3314,7 +3314,6 @@ static void zh_vmPlus( PZH_ITEM pResult, PZH_ITEM pItem1, PZH_ITEM pItem2 )
                                      pItem1->item.asDateTime.time +
                                      pItem2->item.asDateTime.time );
       else
-         /* NOTE: This is not a bug. CA-Cl*pper does exactly that for DATEs. */
          zh_itemPutDL( pResult, pItem1->item.asDateTime.julian +
                                 pItem2->item.asDateTime.julian );
    }

@@ -56,7 +56,7 @@ CREATE CLASS PushButton FUNCTION ZHPushButton
 
    EXPORTED:
 
-   VAR cargo                          /* NOTE: CA-Cl*pper 5.3 has a bug, where this var cannot be assigned NIL. */
+   VAR cargo 
 
    VAR bmpXOff    INIT -1             /* NOTE: Fully compatible behaviour not implemented. */
    VAR bmpYOff    INIT -1             /* NOTE: Fully compatible behaviour not implemented. */

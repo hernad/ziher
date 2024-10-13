@@ -49,7 +49,6 @@
 
 #include "tbrowse.zhh"
 
-/* NOTE: In CA-Cl*pper TBColumn class does not inherit from any other classes. */
 
 CREATE CLASS TBColumn
 
@@ -58,7 +57,7 @@ CREATE CLASS TBColumn
    VAR cargo                                         /* 01. User-definable variable */
    VAR nWidth       PROTECTED                        /* 02. */
    VAR bBlock       PROTECTED                        /* 03. */
-   VAR aDefColor    PROTECTED INIT { 1, 2 }          /* 04. NOTE: Default value for both CA-Cl*pper 5.2 and 5.3. */
+   VAR aDefColor    PROTECTED INIT { 1, 2 }         
    VAR bColorBlock  PROTECTED INIT {|| NIL }         /* 05. */
    VAR cHeading     PROTECTED INIT ""                /* 06. */
    VAR cHeadSep     PROTECTED                        /* 07. */
@@ -178,9 +177,6 @@ METHOD postBlock( bPostBlock ) CLASS TBColumn
 
 METHOD setStyle( nStyle, lNewValue ) CLASS TBColumn
 
-   /* NOTE: CA-Cl*pper 5.3 does no checks on the value of nStyle, so in case
-            it is zero or non-numeric, a regular RTE will happen. [vszakats] */
-
    IF nStyle > Len( ::aSetStyle ) .AND. nStyle <= 4096  /* Some reasonable limit for maximum number of styles */
       ASize( ::aSetStyle, nStyle )
    ENDIF
@@ -194,8 +190,8 @@ METHOD setStyle( nStyle, lNewValue ) CLASS TBColumn
 
 METHOD New( cHeading, bBlock ) CLASS TBColumn
 
-   ::cHeading := cHeading  /* NOTE: CA-Cl*pper allows any type here. [vszakats] */
-   ::bBlock := bBlock      /* NOTE: CA-Cl*pper allows any type here. [vszakats] */
+   ::cHeading := cHeading
+   ::bBlock := bBlock 
 
    RETURN Self
 

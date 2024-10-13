@@ -383,7 +383,6 @@ ZH_FUNC( ACOPY )
 
    if( pSrcArray && pDstArray )
    {
-      /* CA-Cl*pper works this way. */
       if( ! zh_arrayIsObject( pSrcArray ) && ! zh_arrayIsObject( pDstArray ) )
       {
          ZH_SIZE nStart = zh_parns( 3 );

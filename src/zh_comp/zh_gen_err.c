@@ -99,8 +99,6 @@ const char * const zh_comp_szErrors[] =
    "ENDSWITCH does not match SWITCH",
    "END SEQUENCE does not match BEGIN SEQUENCE",
    "Code block contains both macro and WITH OBJECT messages ':%s'",
-   /* Some historical, funny sounding error messages from original CA-Cl*pper.
-      They serve no purpose whatsoever. [vszakats] */
    "END wreaks terrible vengeance on control stack",
    "Control level closure leaves gaping wound in control stack",
    "Ford Maverick error number",

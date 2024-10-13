@@ -63,7 +63,6 @@ CREATE CLASS ListBox FUNCTION ZHListBox
 
    PROTECTED:
 
-   /* --- Start of CA-Cl*pper compatible instance area --- */
    VAR nBottom
    VAR xBuffer
    VAR cCaption   INIT ""
@@ -100,7 +99,7 @@ CREATE CLASS ListBox FUNCTION ZHListBox
    METHOD delItem( nPos )
    METHOD display()
    METHOD findText( cText, nPos, lCaseSensitive, lExact )
-   METHOD findData( xData, nPos, lCaseSensitive, lExact )  /* NOTE: Undocumented CA-Cl*pper method. */
+   METHOD findData( xData, nPos, lCaseSensitive, lExact )
    METHOD getData( nPos )
    METHOD getItem( nPos )
    METHOD getText( nPos )
@@ -135,15 +134,15 @@ CREATE CLASS ListBox FUNCTION ZHListBox
    METHOD message( cMessage ) SETGET
    METHOD right( nRight ) SETGET
    METHOD sBlock( bSBlock ) SETGET
-   METHOD style( cStyle ) SETGET                           /* NOTE: Undocumented CA-Cl*pper method. */
-   METHOD textValue() SETGET                               /* NOTE: Undocumented CA-Cl*pper method. */
+   METHOD style( cStyle ) SETGET        
+   METHOD textValue() SETGET       
    METHOD top( nTop ) SETGET
    METHOD topItem( nTopItem ) SETGET
    METHOD typeOut() SETGET
-   METHOD value() SETGET                                   /* NOTE: Undocumented CA-Cl*pper method. */
+   METHOD value() SETGET                     
    METHOD vScroll( oVScroll ) SETGET
 
-   METHOD New( nTop, nLeft, nBottom, nRight, lDropDown )   /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nTop, nLeft, nBottom, nRight, lDropDown )
 
    PROTECTED:
 

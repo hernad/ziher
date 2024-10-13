@@ -282,10 +282,6 @@ PZH_ITEM zh_itemPutCL( PZH_ITEM pItem, const char * szText, ZH_SIZE nLen )
    else
       pItem = zh_itemNew( NULL );
 
-   /* NOTE: CA-Cl*pper seems to be buggy here, it will return nLen bytes of
-            trash if the szText buffer is NULL, at least with zh_retclen().
-            [vszakats] */
-
    pItem->type = ZH_IT_STRING;
    pItem->item.asString.value     = szValue;
    pItem->item.asString.length    = nLen;

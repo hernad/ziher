@@ -51,10 +51,6 @@
 #include "zh_item_api.h"
 
 
-/* NOTE: This function is a new Ziher function implemented in the
-         original CA-Cl*pper namespace. This should have been
-         marked as ZH_EXTENSION, but it's not. */
-
 ZH_FUNC( ORDWILDSEEK )
 {
    AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();

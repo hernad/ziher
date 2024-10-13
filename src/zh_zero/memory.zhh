@@ -56,7 +56,6 @@
 #define ZH_MEM_BLOCK            1   /* Largest String (KB) */
 #define ZH_MEM_RUN              2   /* RUN Memory (KB) */
 
-/* CA-Cl*pper undocumented */
 #define ZH_MEM_VM               3   /* Virtual Memory (KB) */
 #define ZH_MEM_EMS              4   /* Free Expanded Memory (KB) (?) */
 #define ZH_MEM_FM             101   /* Fixed Memory/Heap (KB) (?) */

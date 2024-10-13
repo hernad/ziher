@@ -118,11 +118,7 @@ ZH_FUNC( FREAD )
 
       nRead = zh_parns( 3 );
 
-      /* NOTE: CA-Cl*pper determines the maximum size by calling _parcsiz()
-               instead of _parclen(), this means that the maximum read length
-               will be one more than the length of the passed buffer, because
-               the terminating zero could be used if needed. [vszakats] */
-
+      
       if( nRead <= zh_parcsiz( 2 ) &&
           zh_itemGetWriteCL( pBuffer, &buffer, &nSize ) )
       {

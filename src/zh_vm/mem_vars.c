@@ -1485,7 +1485,6 @@ ZH_FUNC( __MVSAVE )
          zh_itemRelease( pError );
    }
    else
-      /* NOTE: Undocumented error message in CA-Cl*pper 5.2e and 5.3b. [ckedem] */
       zh_errRT_BASE( EG_ARG, 2008, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
 
@@ -1649,7 +1648,6 @@ ZH_FUNC( __MVRESTORE )
          zh_itemRelease( pError );
    }
    else
-      /* NOTE: Undocumented error message in CA-Cl*pper 5.2e and 5.3b. [ckedem] */
       zh_errRT_BASE( EG_ARG, 2007, NULL, ZH_ERR_FUNCNAME, ZH_ERR_ARGS_BASEPARAMS );
 }
 

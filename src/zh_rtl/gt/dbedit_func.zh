@@ -88,7 +88,7 @@ FUNCTION dbEdit( nTop, nLeft, nBottom, nRight, ;
    oBrowse:colSep    := iif( ZH_ISSTRING( xColumnSeparators ), xColumnSeparators, zh_UTF8ToStrBox( " │ " ) )
    oBrowse:footSep   := zh_defaultValue( xFootingSeparators, "" )
    oBrowse:skipBlock := {| nRecs | Skipped( nRecs, lAppend ) }
-   oBrowse:autoLite  := .F.  /* Set to .F. just like in CA-Cl*pper. [vszakats] */
+   oBrowse:autoLite  := .F. 
 
    IF ZH_ISARRAY( acColumns )
       nColCount := 0
@@ -124,15 +124,7 @@ FUNCTION dbEdit( nTop, nLeft, nBottom, nRight, ;
          cHeading := cBlock
       ENDIF
 
-      /* Simplified logic compared to CA-Cl*pper. In the latter there
-         is logic to detect several typical cBlock types (memvar,
-         aliased field, field) and using MemVarBlock()/FieldWBlock()/FieldBlock()
-         calls to create codeblocks for them if possible. In Ziher,
-         simple macro compilation will result in faster code for all
-         situations. As Maurilio Longo has pointed, there is no point in
-         creating codeblocks which are able to _assign_ values, as dbEdit()
-         is a read-only function. [vszakats] */
-
+   
       bBlock := iif( Type( cBlock ) == "M", {|| "  <Memo>  " }, zh_macroBlock( cBlock ) )
 
       DO CASE
@@ -265,9 +257,6 @@ FUNCTION dbEdit( nTop, nLeft, nBottom, nRight, ;
    RETURN .T.
 
 
-/* NOTE: CA-Cl*pper uses intermediate function CallUser()
-         to execute user function. We're replicating this behavior
-         for code which may check ProcName() results in user function */
 STATIC FUNCTION CallUser( oBrowse, xUserFunc, nKeyStd, lAppend, lFlag )
 
    LOCAL nPrevRecNo
@@ -283,9 +272,6 @@ STATIC FUNCTION CallUser( oBrowse, xUserFunc, nKeyStd, lAppend, lFlag )
 
    nPrevRecNo := RecNo()
 
-   /* NOTE: CA-Cl*pper won't check the type of the return value here,
-            and will crash if it's a non-NIL, non-numeric type. We're
-            replicating this behavior. */
    nAction := ;
       iif( ZH_ISEVALITEM( xUserFunc ), ;
                          Eval( xUserFunc, nMode, oBrowse:colPos ), ;
@@ -339,8 +325,6 @@ STATIC FUNCTION CallUser( oBrowse, xUserFunc, nKeyStd, lAppend, lFlag )
    RETURN nAction != DE_ABORT
 
 
-/* helper function to detect empty tables. It's not perfect but
-   it functionally uses the same conditions as CA-Cl*pper */
 STATIC FUNCTION IsDbEmpty()
    RETURN LastRec() == 0 .OR. ;
       ( Bof() .AND. ( Eof() .OR. RecNo() == LastRec() + 1 ) )

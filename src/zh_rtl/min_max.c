@@ -109,7 +109,6 @@ ZH_FUNC( MAX )
 }
 
 /* returns the minimum of two date or numerics */
-/* NOTE: CA-Cl*pper returns 1st item when they are equal [druzus] */
 ZH_FUNC( MIN )
 {
    PZH_ITEM p1 = zh_param( 1, ZH_IT_ANY );

@@ -338,20 +338,10 @@ ZH_FUNC( TRANSFORM )
 
          if( uiPicFlags & PF_BRITISH )
          {
-            /* CA-Cl*pper do not check result size and always exchanges
-             * bytes 1-2 with bytes 4-5. It's buffer overflow bug and I do
-             * not want to replicate it. It also causes that the results of
-             * @E conversion used for strings smaller then 5 bytes behaves
-             * randomly.
-             * In fact precise tests can show that it's not random behavior
-             * but CA-Cl*pper uses static buffer for result and when current
-             * one is smaller then 5 bytes then first two bytes are exchanged
-             * with 4-5 bytes from previous result which was length enough,
-             * e.g.:
+            /* 
              *          ? Transform( "0123456789", "" )
              *          ? Transform( "AB", "@E" )
              *          ? Transform( "ab", "@E" )
-             * [druzus]
              */
             if( ZH_CODEPAGE_ISCHARIDX( cdp ) )
             {
@@ -642,14 +632,6 @@ ZH_FUNC( TRANSFORM )
 
          if( uiPicFlags & PF_BRITISH )
          {
-            /* When @E is used CA-Cl*pper do not update date format
-             * pattern but wrongly moves 4th and 5th bytes of
-             * formatted date to the beginning (see below). It causes
-             * that date formats formats different then MM?DD?YY[YY]
-             * are wrongly translated. The code below is not CA-Cl*pper
-             * compatible but it tries to respect user date format
-             * [druzus]
-             */
             const char * szBritish = zh_setGetCentury() ?
                                      "DDMMYYYY" : "DDMMYY";
             char cLast = 'x';
@@ -723,14 +705,6 @@ ZH_FUNC( TRANSFORM )
 
          if( szDateFormat && ( uiPicFlags & PF_BRITISH ) )
          {
-            /* When @E is used CA-Cl*pper do not update date format
-             * pattern but wrongly moves 4th and 5th bytes of
-             * formatted date to the beginning (see below). It causes
-             * that date formats formats different then MM?DD?YY[YY]
-             * are wrongly translated. The code below is not CA-Cl*pper
-             * compatible but it tries to respect user date format
-             * [druzus]
-             */
             const char * szBritish = zh_setGetCentury() ?
                                      "DDMMYYYY" : "DDMMYY";
             char cLast = 'x';

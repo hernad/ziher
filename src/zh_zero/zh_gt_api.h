@@ -242,8 +242,6 @@ typedef struct
 } ZH_GT_CORD;
 typedef ZH_GT_CORD * PZH_GT_CORD;
 
-/* Undocumented CA-Cl*pper 5.x GT API calls */
-
 #define ZH_GT_WND void
 #define ZH_GT_RGB void
 #define ZH_GT_SLR void

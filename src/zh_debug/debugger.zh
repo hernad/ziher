@@ -1871,9 +1871,7 @@ METHOD PROCEDURE LoadVars() CLASS ZhDebugger  // updates monitored variables
    ENDIF
 
    IF ::lShowPrivates
-      /* CA-Cl*pper shows only local private variables in monitor
-       * We are marking non local private variables with "^" character
-       */
+      
       nCount := __mvDbgInfo( ZH_MV_PRIVATE )
       IF nCount > 0
          m := __mvDbgInfo( ZH_MV_PRIVATE_LOCAL, ::nProcLevel )

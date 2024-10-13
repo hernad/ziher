@@ -44,10 +44,6 @@
  *
  */
 
-/* NOTE: DiskSpace() supports larger disks than 2 GiB. CA-Cl*pper will always
-         return a (long) value, Ziher may return a (double) for large
-         values, the decimal places are always set to zero, though. */
-
 #include "zh_api.h"
 #include "zh_error_api.h"
 #include "zh_fs_api.h"

@@ -911,13 +911,6 @@ static ZH_ERRCODE zh_waOrderInfo( AREAP pArea, ZH_USHORT uiIndex, LPDBORDERINFO 
    if( pInfo->itmResult )
       zh_itemClear( pInfo->itmResult );
 
-   /* CA-Cl*pper does not generate RT error when default ORDERINFO() method
-    * is called
-    */
-   #if 0
-   zh_errRT_DBCMD( EG_ARG, EDBCMD_BADPARAMETER, NULL, ZH_ERR_FUNCNAME );
-   #endif
-
    return ZH_FAILURE;
 }
 

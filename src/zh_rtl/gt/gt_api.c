@@ -337,11 +337,6 @@ ZH_ERRCODE zh_gtPostExt( void )
    return errCode;
 }
 
-/* NOTE: szColorString must be at least ZH_CLRSTR_LEN wide by the NG. It seems
-         that CA-Cl*pper SetColor() will return string lengths up to 131+EOF.
-         That seems like a 127+1 buffer size, plus lazy overflow checking.
-         [vszakats] */
-
 ZH_ERRCODE zh_gtGetColorStr( char * pszColorString )
 {
    PZH_GT pGT;

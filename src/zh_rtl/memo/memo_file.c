@@ -48,9 +48,6 @@
 #include "zh_item_api.h"
 #include "zh_fs_api.h"
 
-/* NOTE: CA-Cl*pper has ~64 KiB (65516 bytes exactly) limit on read, in Ziher
-         this limit is extended, so we are not *strictly* compatible here.
-         [vszakats] */
 
 static void zh_memoread( ZH_BOOL bHandleEOF )
 {
@@ -116,8 +113,6 @@ static ZH_BOOL zh_memowrit( ZH_BOOL bHandleEOF )
          }
          bRetVal = nSize == 0;
 
-         /* NOTE: CA-Cl*pper will add the EOF even if the write failed. [vszakats] */
-         /* NOTE: CA-Cl*pper will not return .F. when the EOF could not be written. [vszakats] */
          if( bHandleEOF && bRetVal )  /* if true, then write EOF */
          {
             char cEOF = ZH_CHAR_EOF;

@@ -61,7 +61,6 @@
 #define GET_CLR_CAPTION         2
 #define GET_CLR_ACCEL           3
 
-/* NOTE: In CA-Cl*pper, TGET class does not inherit from any other classes. */
 
 CREATE CLASS Get
 
@@ -77,25 +76,25 @@ CREATE CLASS Get
    VAR cInternal1     HIDDEN            /* 08. U2Bin( ::nRow ) + U2Bin( ::nCol ) + trash. Not implemented in Ziher. */
    VAR xExitState                       /* 09. */
    VAR bReader                          /* 10. */
-   VAR oControl                         /* 11. CA-Cl*pper 5.3 only. */
-   VAR cCaption                 INIT "" /* 12. CA-Cl*pper 5.3 only. */
-   VAR nCapCol                  INIT 0  /* 13. CA-Cl*pper 5.3 only. */
-   VAR nCapRow                  INIT 0  /* 14. CA-Cl*pper 5.3 only. */
-   VAR cMessage                 INIT "" /* 15. CA-Cl*pper 5.3 only. */
-   VAR nDispLen                         /* 16. CA-Cl*pper 5.3 places it here. */
-   VAR cType                            /* +1. Only accessible in CA-Cl*pper when ::hasFocus == .T. In CA-Cl*pper the field may contain random chars after the first one, which is the type. */
-   VAR cBuffer                          /* +2. Only accessible in CA-Cl*pper when ::hasFocus == .T. */
-   VAR xVarGet                          /* +3. Only accessible in CA-Cl*pper when ::hasFocus == .T. */
+   VAR oControl                         /* 11. */
+   VAR cCaption                 INIT "" /* 12. */
+   VAR nCapCol                  INIT 0  /* 13. */
+   VAR nCapRow                  INIT 0  /* 14. */
+   VAR cMessage                 INIT "" /* 15. */
+   VAR nDispLen                         /* 16. */
+   VAR cType                            /* +1. */
+   VAR cBuffer                          /* +2. */
+   VAR xVarGet                          /* +3. */
 
    EXPORTED:
 
-   VAR decPos         INIT 0   READONLY /* CA-Cl*pper NG says that it contains NIL, but in fact it contains zero. [vszakats] */
+   VAR decPos         INIT 0   READONLY
    VAR hasFocus       INIT .F. READONLY
    VAR original                READONLY
    VAR rejected       INIT .F. READONLY
    VAR typeOut        INIT .F. READONLY
 
-   METHOD New( nRow, nCol, bVarBlock, cVarName, cPicture, cColorSpec ) /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nRow, nCol, bVarBlock, cVarName, cPicture, cColorSpec )
 
    METHOD assign()
    METHOD badDate()
@@ -113,11 +112,11 @@ CREATE CLASS Get
    ASSIGN colorSpec METHOD setColorSpec( cColorSpec )
    METHOD display()
    METHOD hitTest( nMRow, nMCol )
-   METHOD control( oControl ) SETGET    /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
-   METHOD message( cMessage ) SETGET    /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
-   METHOD caption( cCaption ) SETGET    /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
-   METHOD capRow( nCapRow ) SETGET      /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
-   METHOD capCol( nCapCol ) SETGET      /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
+   METHOD control( oControl ) SETGET 
+   METHOD message( cMessage ) SETGET 
+   METHOD caption( cCaption ) SETGET 
+   METHOD capRow( nCapRow ) SETGET   
+   METHOD capCol( nCapCol ) SETGET   
    METHOD killFocus()
    ACCESS minus METHOD getMinus()
    ASSIGN minus METHOD setMinus( lMinus )
@@ -388,12 +387,12 @@ METHOD reset() CLASS Get
       ::cBuffer  := ::PutMask( ::varGet(), .F. )
       ::xVarGet  := ::original
       ::cType    := ValType( ::xVarGet )
-      ::pos      := ::FirstEditable() /* Simple 0 in CA-Cl*pper [vszakats] */
+      ::pos      := ::FirstEditable()
       ::lClear   := "K" $ ::cPicFunc .OR. ::cType == "N"
       ::lEdit    := .F.
       ::lMinus   := .F.
       ::rejected := .F.
-      ::typeOut  := ! ::type $ "CNDTL" .OR. ::nPos == 0  /* Simple .F. in CA-Cl*pper [vszakats] */
+      ::typeOut  := ! ::type $ "CNDTL" .OR. ::nPos == 0 
       ::display()
    ENDIF
 
@@ -442,7 +441,7 @@ METHOD setFocus() CLASS Get
          ENDIF
          ::lMinus2 := ( ::xVarGet < 0 )
       ELSE
-         ::decPos := 0 /* CA-Cl*pper NG says that it contains NIL, but in fact it contains zero. [vszakats] */
+         ::decPos := 0
       ENDIF
 
       ::display()
@@ -459,7 +458,7 @@ METHOD killFocus() CLASS Get
    ::lClear   := .F.
    ::lMinus   := .F.
    ::lChanged := .F.
-   ::decPos   := 0 /* CA-Cl*pper NG says that it contains NIL, but in fact it contains zero. [vszakats] */
+   ::decPos   := 0 
    ::typeOut  := .F.
 
    IF lHadFocus
@@ -890,7 +889,6 @@ METHOD setColorSpec( cColorSpec ) CLASS Get
          "," + zh_NToColor( iif( ( nClrOth := zh_ColorToN( zh_ColorIndex( cColorSpec, GET_CLR_ACCEL    ) ) ) != -1, nClrOth, nClrUns ) )
 
 
-   /* NOTE: CA-Cl*pper oddity. [vszakats] */
    ELSEIF ValType( cColorSpec ) $ "UNDTBA"
 
       RETURN NIL
@@ -935,9 +933,6 @@ METHOD setPos( nPos ) CLASS Get
             ::typeOut := .T.
 
          CASE nPos > 0
-
-            /* NOTE: CA-Cl*pper has a bug where negative nPos value will be translated to 16-bit unsigned int,
-                     so the behaviour will be different in this case. [vszakats] */
 
             FOR tmp := nPos TO ::nMaxLen
                IF ::IsEditable( tmp )
@@ -1648,11 +1643,6 @@ METHOD IsEditable( nPos ) CLASS Get
       RETURN .T.
    ENDIF
 
-   /* This odd behaviour helps to be more compatible with CA-Cl*pper in some
-      rare situations.
-      xVar := 98 ; o := _GET_( xVar, "xVar" ) ; o:SetFocus() ; o:picture := "99999" ; o:UnTransform() -> result
-      We're still not 100% compatible in slightly different situations because
-      the CA-Cl*pper behaviour is pretty much undefined here. [vszakats] */
    IF nPos > zh_ULen( ::cPicMask ) .AND. nPos <= ::nMaxLen
       RETURN .T.
    ENDIF
@@ -1664,7 +1654,7 @@ METHOD IsEditable( nPos ) CLASS Get
       CASE "N" ; RETURN cChar $ "9#$*"
       CASE "D"
       CASE "T" ; RETURN cChar == "9"
-      CASE "L" ; RETURN zh_asciiUpper( cChar ) $ "LY#" /* CA-Cl*pper 5.2 undocumented: # allow T,F,Y,N for Logical [ckedem] */
+      CASE "L" ; RETURN zh_asciiUpper( cChar ) $ "LY#"
       ENDSWITCH
    ENDIF
 
@@ -1784,8 +1774,6 @@ METHOD getBuffer() CLASS Get
 
 METHOD setBuffer( cBuffer ) CLASS Get
    RETURN iif( ::hasFocus, ::cBuffer := cBuffer, cBuffer )
-
-/* NOTE: In contrary to CA-Cl*pper docs, this var is assignable. [vszakats] */
 
 METHOD getChanged() CLASS Get
    RETURN ::lChanged

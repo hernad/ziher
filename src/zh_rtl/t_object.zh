@@ -85,7 +85,6 @@ FUNCTION ZHObject()
 
    ENDIF
 
-
    RETURN s_oClass:Instance()
 
 STATIC FUNCTION ZHObject_New( ... )

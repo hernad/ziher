@@ -279,9 +279,6 @@ ZH_SIZE zh_parcsiz( int iParam )
    {
       PZH_ITEM pItem = ( iParam == -1 ) ? zh_stackReturnItem() : zh_stackItemFromBase( iParam );
 
-      /* NOTE: zh_parcsiz() will only work for strings passed by reference.
-               CA-Cl*pper works like this. [vszakats] */
-
       if( ZH_IS_BYREF( pItem ) )
       {
          pItem = zh_itemUnRef( pItem );
@@ -841,9 +838,6 @@ ZH_SIZE zh_parvcsiz( int iParam, ... )
    {
       PZH_ITEM pItem = ( iParam == -1 ) ? zh_stackReturnItem() : zh_stackItemFromBase( iParam );
 
-      /* NOTE: zh_parvcsiz() will only work for strings passed by reference.
-               CA-Cl*pper works like this. [vszakats] */
-
       if( ZH_IS_BYREF( pItem ) )
       {
          pItem = zh_itemUnRef( pItem );
@@ -1161,7 +1155,6 @@ long  zh_parvnl( int iParam, ... )
          return ( long ) pItem->item.asInteger.value;
       else if( ZH_IS_DOUBLE( pItem ) )
          return ZH_CAST_LONG( pItem->item.asDouble.value );
-      /* CA-Cl*pper does it */
       else if( ZH_IS_DATETIME( pItem ) )
          return ( long ) pItem->item.asDateTime.julian;
       else if( ZH_IS_ARRAY( pItem ) )

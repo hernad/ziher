@@ -69,9 +69,6 @@ PZH_ITEM zh_fsDirectory( const char * pszDirSpec, const char * pszAttributes, ZH
    {
       if( ulMask != ZH_FA_LABEL )
       {
-         /* CA-Cl*pper compatible behavior - add all file mask when
-          * last character is directory or drive separator
-          */
          ZH_SIZE nLen = strlen( pszDirSpec ) - 1;
 #ifdef ZH_OS_HAS_DRIVE_LETTER
          if( pszDirSpec[ nLen ] == ZH_OS_PATH_DELIM_CHR ||

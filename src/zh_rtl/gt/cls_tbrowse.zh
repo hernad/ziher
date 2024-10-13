@@ -229,7 +229,6 @@ CREATE CLASS TBrowse
    METHOD stabilize()                           // performs incremental stabilization
    METHOD colorRect( aRect, aColors )           // alters the color of a rectangular group of cells
 
-   /* NOTE: nMode is an undocumented parameter in CA-Cl*pper */
    METHOD configure( nMode )                    // mark that the internal settings of the TBrowse object should be reconfigured
 
    METHOD new( nTop, nLeft, nBottom, nRight )   // constructor, NOTE: This method is a Ziher extension [vszakats]
@@ -333,12 +332,6 @@ STATIC PROCEDURE _DISP_FHSEP( nRow, nType, cColor, aColData )
          cSep := aCol[ nType ]
          nWidth := aCol[ _TBCI_COLWIDTH ]
 
-         /* This is in my opinion bug which should be fixed
-          * and the First column should be shown with the
-          * same conditions as first visible column.
-          * Now I replicated exact CA-Cl*pper behavior but
-          * probably in the future it will be changed. [druzus]
-          */
          IF lFirst
             lFirst := lFirstVisible := .F.
             cSep := Replicate( zh_URight( cSep, 1 ), nWidth + ;
@@ -514,7 +507,6 @@ METHOD colorRect( aRect, aColors ) CLASS TBrowse
    LOCAL nRow := ::rowCount
    LOCAL nCol := ::colCount
 
-   /* CA-Cl*pper checks all this conditions */
    IF ZH_ISARRAY( aRect ) .AND. Len( aRect ) >= 4 .AND. ;
       ZH_ISNUMERIC( aRect[ 1 ] ) .AND. ZH_ISNUMERIC( aRect[ 2 ] ) .AND. ;
       ZH_ISNUMERIC( aRect[ 3 ] ) .AND. ZH_ISNUMERIC( aRect[ 4 ] ) .AND. ;
@@ -696,13 +688,11 @@ METHOD setPosition() CLASS TBrowse
             ::lHitBottom := .T.
          ENDIF
          ::nLastRow := ::nBufferPos
-         /* CA-Cl*pper does not do that */
          AFill( ::aCellStatus, .F., ::nLastRow + 1 )
       ELSEIF nMoveOffset < 0
          IF nMoveOffset != 0 .AND. ::nBufferPos == ::nRowPos
             ::lHitTop := .T.
          ENDIF
-         /* CA-Cl*pper does not do that */
          IF ::nBufferPos > 1
             ::scrollBuffer( ::nBufferPos - 1 )
             ::nBufferPos := 1
@@ -827,7 +817,6 @@ METHOD colorValue( nColorIndex ) CLASS TBrowse
    IF ZH_ISNUMERIC( nColorIndex )
       IF nColorIndex >= 1 .AND. nColorIndex <= Len( ::aColors )
          RETURN ::aColors[ nColorIndex ]
-      /* In CA-Cl*pper index 0 has special meaning - it's always N/N color */
       ELSEIF nColorIndex == 0
          RETURN "N/N"
       ENDIF
@@ -868,16 +857,6 @@ STATIC FUNCTION _DECODECOLORS( cColorSpec )
 
    FOR nPos := 1 TO nColors
       cColor := zh_tokenGet( cColorSpec, nPos, "," )
-      /* For 1st two colors CA-Cl*pper checks if given color
-       * definition has at least one of the following characters:
-       * "*+/bBgGrRwWnNiIxXuU0123456789"
-       * If not then it takes default color value.
-       * In Ziher this validation is redirected to GT system which
-       * decides if passed string is valid color definition. The default
-       * GT implementation accepts exactly the same color definitions
-       * as CA-Cl*pper but some new GTs may accept extended color
-       * definitions and use a little bit different rules. [druzus]
-       */
       IF nPos <= 2 .AND. zh_ColorToN( cColor ) == -1
          cColor := iif( nPos == 1, "W/N", "N/W" )
       ENDIF
@@ -996,7 +975,6 @@ METHOD setUnstable() CLASS TBrowse
       ::doConfigure()
    ENDIF
 
-   /* CA-Cl*pper de-highlights the current cell */
    IF ::lHiLited
       ::deHilite()
    ENDIF
@@ -1024,10 +1002,6 @@ METHOD refreshAll() CLASS TBrowse
    Eval( ::bSkipBlock, 1 - ::nBufferPos )
    ::nBufferPos := 1
    ::lFrames := .T.
-   /* In CA-Cl*pper refreshAll() method does not discards
-    * record buffer here but only set's flag that the record
-    * buffer should be reloaded in stabilize method. [druzus]
-    */
    ::lRefresh := .T.
 
    RETURN Self
@@ -1128,7 +1102,6 @@ METHOD panLeft() CLASS TBrowse
    nNewPos := _PREVCOLUMN( ::aColData, Min( ::colCount, ::nLeftVisible - 1 ) )
 
    IF nNewPos != 0 .AND. nNewPos != ::nLeftVisible
-      /* It's replicated CA-Cl*pper behavior */
       ::nRightVisible := 0
       ::nLeftVisible := nNewPos
    ENDIF
@@ -1144,7 +1117,6 @@ METHOD panRight() CLASS TBrowse
    nNewPos := _NEXTCOLUMN( ::aColData, Max( 1, ::nRightVisible + 1 ) )
 
    IF nNewPos != 0 .AND. nNewPos != ::nRightVisible
-      /* It's replicated CA-Cl*pper behavior */
       ::nLeftVisible := 0
       ::nRightVisible := nNewPos
    ENDIF
@@ -1173,10 +1145,6 @@ METHOD goTop() CLASS TBrowse
    ::setUnstable()
 
    Eval( ::bGoTopBlock )
-   /* In CA-Cl*pper goTop() method does not discards
-    * record buffer here but only set's flag that the record
-    * buffer should be reloaded in stabilize method. [druzus]
-    */
    ::lRefresh := .T.
    ::nRowPos := 1
    ::nBufferPos := 1
@@ -1194,10 +1162,7 @@ METHOD goBottom() CLASS TBrowse
 
    Eval( ::bGoBottomBlock )
    nMoved := _SKIP_RESULT( Eval( ::bSkipBlock, -( ::rowCount - 1 ) ) )
-   /* In CA-Cl*pper goBottom() method does not discards
-    * record buffer here but only set's flag that the record
-    * buffer should be reloaded in stabilize method. [druzus]
-    */
+
    ::lRefresh := .T.
    ::nRowPos := 1
    ::nBufferPos := 1
@@ -1209,11 +1174,6 @@ METHOD goBottom() CLASS TBrowse
 
 METHOD configure( nMode ) CLASS TBrowse
 
-   /* method configure() does not touch the screen contents or
-    * cursor position. In CA-Cl*pper it only sets flag indicating
-    * that some internal data should be recalculated before
-    * accessing [druzus]
-    */
 
    IF ! ZH_ISNUMERIC( nMode ) .OR. nMode == 0 .OR. nMode > _TBR_CONF_ALL
       nMode := _TBR_CONF_ALL
@@ -1253,9 +1213,6 @@ METHOD doConfigure() CLASS TBrowse
    nColCount := Len( ::columns )
    ASize( ::aColData, nColCount )
    FOR EACH oCol, aCol IN ::columns, ::aColData
-      /* CA-Cl*pper always evaluates column block even if column is
-       * hidden by setting :width to 0. [druzus]
-       */
       xValue := Eval( oCol:block )
       cType  := ValType( xValue )
       nWidth := iif( cType $ "CMNDTL", ;
@@ -1398,9 +1355,6 @@ METHOD doConfigure() CLASS TBrowse
    ::nLastRow := nRowCount
    ::nLastScroll := 0
 
-   /* CA-Cl*pper update visible columns here but without
-    * colPos repositioning. [druzus]
-    */
    _SETVISIBLE( ::aColData, _TBR_COORD( ::n_Right ) - _TBR_COORD( ::n_Left ) + 1, ;
                 @::nFrozen, @::nLeftVisible, @::nRightVisible )
 
@@ -1446,9 +1400,6 @@ STATIC FUNCTION _DECODE_FH( cName, nHeight, nWidth )
    IF ZH_ISSTRING( cName )
 
       IF ! cName == ""
-         /* When last character of heading/footing is ';' then CA-Cl*pper
-          * does not calculate it as separator
-          */
          IF zh_URight( cName, 1 ) == _TBR_CHR_LINEDELIMITER
             cName := zh_StrShrink( cName )  /* FIXME: use zh_UStrShrink() */
          ENDIF
@@ -1496,10 +1447,6 @@ STATIC FUNCTION _MAXFREEZE( nColumns, aColData, nWidth )
       ENDIF
    NEXT
 
-   /* CA-Cl*pper allows to freeze all columns only when they
-    * are fully visible, otherwise it reserves at least one
-    * character for 1st unfrozen column [druzus]
-    */
    IF nWidth > 0 .OR. ;
       nWidth == 0 .AND. _NEXTCOLUMN( aColData, nColumns + 1 ) == 0
 
@@ -1591,20 +1538,10 @@ STATIC PROCEDURE _SETVISIBLE( aColData, nWidth, nFrozen, nLeft, nRight )
     */
    nFrozen := _MAXFREEZE( nFrozen, aColData, @nWidth )
 
-   /* CA-Cl*pper checks here only for columns number and does not check
-    * if at least one column is visible (oCol:width > 0) and if not then
-    * wrongly calculates visible columns and some internal indexes.
-    * Using linkers like EXOSPACE with memory protection it causes
-    * application crash with GPF. [druzus]
-    */
+
    IF nColCount == 0 .OR. _NEXTCOLUMN( aColData, 1 ) == 0
       nLeft := nRight := 0
    ELSE
-      /* This algorithms keeps CA-Cl*pper precedence in visible column
-       * updating. It's also important for proper working panLeft and
-       * panRight methods which use leftVisible and rightVisible values
-       * for horizontal scrolling just like in CA-Cl*pper. [druzus]
-       */
       IF nWidth >= 1
          lRight := nRight > nFrozen .AND. nRight <= nColCount .AND. ;
                    aColData[ nRight ][ _TBCI_CELLWIDTH ] > 0
@@ -1841,13 +1778,9 @@ METHOD freeze( nColumns ) CLASS TBrowse
          ::nFrozen := nCols
          ::lFrames := .T.
          ::nLastPos := 0
-         /* CA-Cl*pper update visible columns here but without
-          * colPos repositioning. [druzus]
-          */
          _SETVISIBLE( ::aColData, _TBR_COORD( ::n_Right ) - _TBR_COORD( ::n_Left ) + 1, ;
                       @::nFrozen, @::nLeftVisible, @::nRightVisible )
       ENDIF
-      /* NOTE: CA-Cl*pper compatible behaviour. [vszakats] */
       RETURN nCols
    ENDIF
 
@@ -1884,9 +1817,6 @@ METHOD rowCount() CLASS TBrowse
    RETURN iif( nRows > 0, nRows, 0 )
 
 
-/* NOTE: CA-Cl*pper has a bug where negative nRowPos value will be translated
-         to 16-bit unsigned int, so the behaviour will be different in this case.
-         [vszakats] */
 METHOD setRowPos( nRowPos ) CLASS TBrowse
 
    LOCAL nRow
@@ -1914,9 +1844,6 @@ METHOD getRowPos() CLASS TBrowse
    RETURN ::nRowPos
 
 
-/* NOTE: CA-Cl*pper has a bug where negative nRowPos value will be translated
-         to 16-bit unsigned int, so the behaviour will be different in this case.
-         [vszakats] */
 METHOD setColPos( nColPos ) CLASS TBrowse
 
    IF ::nConfigure != 0
@@ -2058,8 +1985,6 @@ METHOD rightVisible() CLASS TBrowse
 /* Adds a TBColumn object to the TBrowse object */
 METHOD addColumn( oCol ) CLASS TBrowse
 
-   /* NOTE: CA-Cl*pper doesn't check the parameters. */
-
    AAdd( ::columns, oCol )
    ::configure( _TBR_CONF_COLUMNS )
 
@@ -2101,9 +2026,6 @@ METHOD setColumn( nColumn, oCol ) CLASS TBrowse
 
       nColumn := checkVariableTypeAndValidBlock( Self, "COLUMN", nColumn, "N", 1001 )
       oCol := checkVariableTypeAndValidBlock( Self, "COLUMN", oCol, "O", 1001 )
-
-      /* NOTE: CA-Cl*pper doesn't check nColumn range (and type in C5.3 - I didn't implement this behaviour),
-               but crashes instead. */
 
       IF nColumn >= 1 .AND. nColumn <= ::colCount
          oPrevCol := ::columns[ nColumn ]
@@ -2170,7 +2092,6 @@ METHOD goTopBlock( bBlock ) CLASS TBrowse
 METHOD goBottomBlock( bBlock ) CLASS TBrowse
 
    IF bBlock != NIL
-      /* NOTE: In CA-Cl*pper the string is: "GOBOTTOMBL" */
       ::bGoBottomBlock := checkVariableTypeAndValidBlock( Self, "GOBOTTOMBLOCK", bBlock, "B", 1001 )
    ENDIF
 
@@ -2334,9 +2255,6 @@ METHOD hitTest( mRow, mCol ) CLASS TBrowse
                IF lFirst
                   lFirst := .F.
                ELSE
-                  /* NOTE: CA-Cl*pper has bug here, it takes the size of
-                   *       next column separator instead of the current one
-                   */
                   IF ( nLeft += aCol[ _TBCI_SEPWIDTH ] ) > mCol
                      nRet := HTCOLSEP
                      EXIT
@@ -2553,13 +2471,9 @@ METHOD setKey( nKey, bBlock ) CLASS TBrowse
 
 METHOD setStyle( nStyle, lNewValue ) CLASS TBrowse
 
-   /* NOTE: CA-Cl*pper 5.3 will initialize this var on the first
-            :setStyle() method call. [vszakats] */
 
    zh_default( @::styles, { .F., .F., .F., .F., .F., NIL } )
 
-   /* NOTE: CA-Cl*pper 5.3 does no checks on the value of nStyle, so in case
-            it is zero or non-numeric, a regular RTE will happen. [vszakats] */
 
    IF nStyle > zh_ULen( ::styles ) .AND. ;
       nStyle <= 4096 /* some reasonable limit for maximum number of styles */

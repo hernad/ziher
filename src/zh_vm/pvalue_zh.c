@@ -46,14 +46,6 @@
 
 #include "zh_defs.h"
 
-/* NOTE: This function is a new Ziher function implemented in the
-         original CA-Cl*pper namespace. It should have been marked as
-         ZH_EXTENSION, but it's not, because it's commonly used extension
-         in other xBase dialects, like Xbase++ and FlagShip.
-         Nevertheless this function must be kept in a separate
-         source file to avoid linking errors when a 3rd party
-         library or user code would also define this function.
-         [vszakats] */
 
 ZH_FUNC_TRANSLATE( PVALUE, ZH_PVALUE )
 

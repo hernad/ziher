@@ -44,10 +44,6 @@
  *
  */
 
-/* NOTE: The declaration of zh_gtSetPos(), zh_gtGetPos(), zh_gtWrite(),
-         zh_gtWriteAt(), zh_gtRepChar(), zh_gtBox(), zh_gtBoxS(), zh_gtBoxD()
-         zh_gtInit() differs in parameter types from the original CA-Cl*pper
-         versions. [vszakats] */
 
 #ifndef ZH_GTCORE_H_
 #define ZH_GTCORE_H_

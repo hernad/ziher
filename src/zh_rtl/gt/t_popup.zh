@@ -357,8 +357,6 @@ METHOD getShortCt( nKey ) CLASS PopupMenu
 
    RETURN 0
 
-/* NOTE: This method corrects one bug in CA-Cl*pper:
-         1) when a menuitem is disabled it will ignore the click [jlalin] */
 
 METHOD hitTest( nMRow, nMCol ) CLASS PopupMenu
 
@@ -498,8 +496,8 @@ METHOD setItem( nPos, oItem ) CLASS PopupMenu
       ::nWidth := Max( __CapMetrics( oItem ), ::nWidth )
    ENDIF
 
-   RETURN Self /* NOTE: CA-Cl*pper returns NIL, which is wrong. */
-
+   RETURN Self
+   
 METHOD setMetrics() CLASS PopupMenu
 
    IF ::nTop != NIL

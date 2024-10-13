@@ -857,7 +857,6 @@ PZH_EXPR zh_compExprReducePlus( PZH_EXPR pSelf, ZH_COMP_DECL )
       }
       else
       {
-         /* NOTE: This is not a bug. CA-Cl*pper does exactly that for DATEs. */
          pSelf->value.asDate.lDate = pLeft->value.asDate.lDate + pRight->value.asDate.lDate;
          pSelf->value.asDate.lTime = 0;
          pSelf->ExprType = ZH_ET_DATE;

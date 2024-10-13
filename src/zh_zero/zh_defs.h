@@ -396,11 +396,6 @@ typedef ZH_MAXUINT   ZH_VMMAXUINT;
 #  define ZH_LONG_EXPLENGTH( l ) ZH_LONG_LENGTH( l )
 #endif
 
-/* ZH_DBL_LENGTH() is used by Val() for strings longer then 10 characters
- * (counted to '.') and to set the size of math operations and new
- * double item - it's CA-Cl*pper compatible range. For doubles we do
- * not have separated limit for result of math operations. [druzus]
- */
 #define ZH_DBL_LENGTH( d ) ( ( (d) > 9999999999.0 || (d) < -999999999.0 ) ? 20 : 10 )
 
 /* type of ZH_ITEM */

@@ -79,9 +79,6 @@ static ZH_BOOL zh_itemIsLess( PZH_BASEARRAY pBaseArray, PZH_ITEM pBlock,
 
       pRet = zh_param( -1, ZH_IT_ANY );
 
-      /* CA-Cl*pper always takes return value as logical item
-       * accepting 0, 1 as numeric representation of ZH_FALSE/ZH_TRUE
-       */
       return ( ZH_IS_LOGICAL( pRet ) || ZH_IS_NUMERIC( pRet ) ) ?
              zh_itemGetL( pRet ) : ZH_TRUE;
    }
@@ -111,9 +108,6 @@ static ZH_BOOL zh_itemIsLess( PZH_BASEARRAY pBaseArray, PZH_ITEM pBlock,
       return zh_itemGetL( pItem1 ) < zh_itemGetL( pItem2 );
    else
    {
-      /* NOTE: For non-matching types CA-Cl*pper sorts always like this:
-               Array/Object Block String Logical Date Numeric NIL [jlalin] */
-
       int iWeight1;
       int iWeight2;
 

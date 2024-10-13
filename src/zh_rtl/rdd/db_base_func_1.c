@@ -271,10 +271,6 @@ ZH_FUNC( DBRSELECT )  /* (<nRelation>) --> nWorkArea */
    AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
 
    if( pArea )
-      /* undocumented CA-Cl*pper behavior:
-       * When parameter is missing, wrong or 0 then 1 is used as
-       * relation number [druzus]
-       */
       SELF_RELAREA( pArea, uiRelation ? uiRelation : 1, &uiWorkArea );
 
    zh_retni( uiWorkArea );

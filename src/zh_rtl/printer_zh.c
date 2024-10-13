@@ -82,27 +82,6 @@ ZH_BOOL zh_printerIsReady( const char * pszPrinterName )
    return bIsPrinter;
 }
 
-/* Contrary to popular beliefs and such (mis)feature implemented
-   in the Ziher derivative xZiher, [zh_]IsPrinter() functions
-   are only meant to work on direct _devices_ (e.g. LPT1:, \\server\queue,
-   tcp:localhost:9100, /dev/lp0, etc...). Those that are writable
-   just like a stream. Of these two functions, IsPrinter() will
-   always use the same, OS-specific predefined device name, just
-   like in Cl*pper, for compatibility. IOW, it doesn't accept
-   a parameter. See source code above what the predefined device
-   names are. zh_IsPrinter() _will_ accept such device name as its
-   1st and only parameter. However, because devices are typically
-   virtualized by modern OSes, they may not be offering the exact
-   Cl*pper behavior experienced under MS-DOS. To get the latter,
-   an MS-DOS build of Ziher is required. Because direct device
-   names don't have anything to do with high-level graphical
-   printers (and their names may even collide with valid device
-   names), such printer names are _not_ handled by these functions.
-   For such feature, explore the appropriate OS/desktop specific
-   printing libraries/APIs (or create a portable, printable document,
-   like a .pdf). As for these ones, regard them as legacy functions
-   for compatibility. [vszakats] */
-
 ZH_FUNC( ZH_ISPRINTER )
 {
    zh_retl( zh_printerIsReady( zh_parc( 1 ) ) );

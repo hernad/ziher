@@ -46,7 +46,7 @@
 
 #ifndef ZH_BUTTON_ZH_
 #define ZH_BUTTON_ZH_
-#define _BUTTON_DEFINED /* NOTE: For complete CA-Cl*pper compatibility */
+#define _BUTTON_DEFINED 
 
 /* orientation modes for scrollbar class */
 #define SCROLL_VERTICAL          1

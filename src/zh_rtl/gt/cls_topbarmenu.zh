@@ -418,7 +418,6 @@ METHOD right( nRight ) CLASS TopBarMenu
 METHOD row( nRow ) CLASS TopBarMenu
 
    IF nRow != NIL
-      /* NOTE: CA-Cl*pper 5.3 has a bug, where it would show "TOP" in case of an error. */
       ::nRow := checkVariableTypeAndValidBlock( Self, "ROW", nRow, "N", 1001 )
    ENDIF
 

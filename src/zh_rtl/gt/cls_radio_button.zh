@@ -55,7 +55,7 @@ CREATE CLASS RadioButtn FUNCTION ZHRadioButton
 
    EXPORTED:
 
-   VAR cargo                                 /* NOTE: CA-Cl*pper 5.3 has a bug, where this var is filled with NIL every time its value is read ( cargo := o:cargo ). */
+   VAR cargo  
 
    METHOD display()
    METHOD hitTest( nMRow, nMCol )
@@ -66,7 +66,7 @@ CREATE CLASS RadioButtn FUNCTION ZHRadioButton
 
    METHOD bitmaps( aBitmaps ) SETGET
    METHOD buffer() SETGET
-   METHOD data( cData ) SETGET               /* NOTE: Undocumented CA-Cl*pper 5.3 method. */
+   METHOD data( cData ) SETGET 
    METHOD capCol( nCapCol ) SETGET
    METHOD capRow( nCapRow ) SETGET
    METHOD caption( cCaption ) SETGET
@@ -78,7 +78,7 @@ CREATE CLASS RadioButtn FUNCTION ZHRadioButton
    METHOD sBlock( bSBlock ) SETGET
    METHOD style( cStyle ) SETGET
 
-   METHOD New( nRow, nCol, cCaption, cData )  /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nRow, nCol, cCaption, cData ) 
 
    PROTECTED:
 

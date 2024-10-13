@@ -237,9 +237,6 @@ ZH_FATTR zh_fsAttrToRaw( ZH_FATTR nAttr )
    return raw_attr;
 }
 
-/* Converts a CA-Cl*pper compatible file attribute string
-   to the internal representation. */
-
 ZH_FATTR zh_fsAttrEncode( const char * szAttr )
 {
    const char * pos = szAttr;
@@ -267,9 +264,6 @@ ZH_FATTR zh_fsAttrEncode( const char * szAttr )
    return nAttr;
 }
 
-/* Converts a file attribute (ffind->attr) to the CA-Cl*pper
-   compatible file attribute string format. */
-
 /* NOTE: szAttr buffer must be at least 16 chars long */
 
 char * zh_fsAttrDecode( ZH_FATTR nAttr, char * szAttr )
@@ -278,7 +272,6 @@ char * zh_fsAttrDecode( ZH_FATTR nAttr, char * szAttr )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_fsAttrDecode(%u, %p)", nAttr, ( void * ) szAttr ) );
 
-   /* Using the same order as CA-Cl*pper did: RHSVDA. */
    if( nAttr & ZH_FA_READONLY   ) *ptr++ = 'R';
    if( nAttr & ZH_FA_HIDDEN     ) *ptr++ = 'H';
    if( nAttr & ZH_FA_SYSTEM     ) *ptr++ = 'S';
@@ -657,15 +650,11 @@ PZH_FFIND zh_fsFindFirst( const char * pszFileMask, ZH_FATTR attrmask )
    return NULL;
 }
 
-/* Finds next matching file, and applies a filter which makes
-   searching CA-Cl*pper/MS-DOS compatible. */
 
 ZH_BOOL zh_fsFindNext( PZH_FFIND ffind )
 {
    while( zh_fsFindNextLow( ffind ) )
    {
-      /* Filter the result to stay MS-DOS and CA-Cl*pper compatible. */
-
       if( !( ( ( ffind->attrmask & ZH_FA_HIDDEN    ) == 0 && ( ffind->attr & ZH_FA_HIDDEN    ) != 0 ) ||
              ( ( ffind->attrmask & ZH_FA_SYSTEM    ) == 0 && ( ffind->attr & ZH_FA_SYSTEM    ) != 0 ) ||
              ( ( ffind->attrmask & ZH_FA_LABEL     ) == 0 && ( ffind->attr & ZH_FA_LABEL     ) != 0 ) ||

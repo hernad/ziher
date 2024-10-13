@@ -319,9 +319,6 @@ static void open_handle( PZH_SET_STRUCT pSet, const char * file_name,
       }
    }
 
-   /* free the old value before setting the new one (CA-Cl*pper does it).
-    * This code must be executed after setting szFileName, [druzus]
-    */
    close_handle( pSet, set_specifier );
    if( *set_value )
    {

@@ -89,8 +89,6 @@ FUNCTION __dbCopyXStruct( cFileName )
          FIELD->FIELD_LEN := aField[ DBS_LEN ], ;
          FIELD->FIELD_DEC := aField[ DBS_DEC ] } )
 
-   /* NOTE: CA-Cl*pper has a bug, where only a plain RECOVER statement is
-            used here (without the USING keyword), so oError will always be NIL. */
    RECOVER USING oError
       lError := .T.
    END SEQUENCE
@@ -105,10 +103,6 @@ FUNCTION __dbCopyXStruct( cFileName )
    ENDIF
 
    RETURN .T.
-
-/* NOTE: Compared to CA-Cl*pper, Ziher:
-         - has three extra parameters: <cCodePage>, <nConnection>, <lExtended>
-         - non-string, non-empty <cFileFrom> values do not cause an RTE */
 
 FUNCTION __dbCreate( cFileName, cFileFrom, cRDD, lNew, cAlias, cCodePage, nConnection, lExtended )
 
@@ -168,8 +162,6 @@ FUNCTION __dbCreate( cFileName, cFileFrom, cRDD, lNew, cAlias, cCodePage, nConne
    END SEQUENCE
 
    RETURN Used()
-
-/* NOTE: Internal helper function, CA-Cl*pper name is: __FLedit() */
 
 FUNCTION __dbStructFilter( aStruct, aFieldList )
 
