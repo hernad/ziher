@@ -633,9 +633,7 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_sslsock_init_ )
    zh_sockexRegister( &s_sockFilter );
 ZH_CALL_ON_STARTUP_END( _zh_sslsock_init_ )
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_sslsock_init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( _zh_sslsock_init_ )
    #include "zh_ini_seg.h"
 #endif

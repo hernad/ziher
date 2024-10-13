@@ -51,19 +51,11 @@ static const ZH_GT_INIT gtInit = { ZH_GT_DRVNAME( ZH_GT_NAME ),
 
 ZH_GT_ANNOUNCE( ZH_GT_NAME )
 
-#if defined( ZH_PRAGMA_STARTUP )
-ZH_CALL_ON_STARTUP_BEGIN( _zh_startup_gt_Init_ )
-   zh_gtRegister( &gtInit );
-ZH_CALL_ON_STARTUP_END( _zh_startup_gt_Init_ )
-#else
 ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
    zh_gtRegister( &gtInit );
 ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
-#endif
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_startup_gt_Init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \
       ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
    #include "..\zh_ini_seg.h"

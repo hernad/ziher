@@ -59,7 +59,7 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT 
    code with the exception for GCC which new versions show warning about
    defined but not used static variable initialized with this method. */
 #if defined( __cplusplus ) && ! defined( ZH_STATIC_STARTUP ) && \
-    ! defined( ZH_PRAGMA_STARTUP ) && ! defined( ZH_GNUC_STARTUP ) && \
+    ! defined( ZH_GNUC_STARTUP ) && \
     ! defined( ZH_INITSEG_STARTUP ) && ! defined( ZH_DATASEG_STARTUP ) && \
     ! defined( __GNUC__ )
    #define ZH_STATIC_STARTUP
@@ -82,7 +82,7 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT 
 
    // https://stackoverflow.com/questions/64897476/why-does-the-gcc-compiler-not-support-pragma-startup-and-pragma-exit-directive?rq=1
 
-   #if defined( ZH_PRAGMA_STARTUP ) || defined( ZH_DATASEG_STARTUP )
+   #if defined( ZH_DATASEG_STARTUP )
       #error Wrong macros set for startup code - clean your make/env settings.
    #endif
 
@@ -99,30 +99,6 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT 
 
    #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
       static void __attribute__ ((constructor)) func( void ) \
-      {
-
-   #define ZH_CALL_ON_STARTUP_END( func ) \
-      }
-
-#elif defined( ZH_PRAGMA_STARTUP )
-
-   #if ! defined( ZH_PRAGMA_STARTUP )
-      #define ZH_PRAGMA_STARTUP
-   #endif
-
-   #define ZH_INIT_SYMBOLS_BEGIN( func ) \
-      static ZH_SYMBOL symbols_table[] = {
-
-   #define ZH_INIT_SYMBOLS_EX_END( func, module, id, vpcode ) \
-      }; \
-      static PZH_SYMBOL symbols = symbols_table; \
-      static void func( void ) \
-      { \
-         symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-      }
-
-   #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
-      static void func( void ) \
       {
 
    #define ZH_CALL_ON_STARTUP_END( func ) \

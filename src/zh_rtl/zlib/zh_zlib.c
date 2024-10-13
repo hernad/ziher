@@ -510,9 +510,7 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_zlib_init_ )
                 s_zlibCompress, s_zlibUncompress );
 ZH_CALL_ON_STARTUP_END( _zh_zlib_init_ )
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_zlib_init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_zlib_init_ )
    #include "zh_ini_seg.h"
 #endif

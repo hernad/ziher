@@ -48,19 +48,11 @@
 
 ZH_LANG_ANNOUNCE( ZH_LANG_ID )
 
-#if defined( ZH_PRAGMA_STARTUP )
-ZH_CALL_ON_STARTUP_BEGIN( _zh_lang_Init_ )
-   zh_langRegister( &s_lang );
-ZH_CALL_ON_STARTUP_END( _zh_lang_Init_ )
-#else
 ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
    zh_langRegister( &s_lang );
 ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
-#endif
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_lang_Init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \
             ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_lang_Init_, ZH_LANG_ID ) )
    #include "../zh_ini_seg.h"

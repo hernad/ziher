@@ -10034,29 +10034,6 @@ static void zh_cdxRddInit( void * cargo )
    zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
 
-#if defined( ZH_SIXCDX )
-
-ZH_FUNC_TRANSLATE( SIXCDX, _DBF )
-
-ZH_INIT_SYMBOLS_BEGIN( _zh_sixcdx1_InitSymbols_ )
-{ "SIXCDX",              {ZH_FS_PUBLIC|ZH_FS_LOCAL}, {ZH_FUNCNAME( SIXCDX )}, NULL },
-{ "SIXCDX_GETFUNCTABLE", {ZH_FS_PUBLIC|ZH_FS_LOCAL}, {ZH_FUNCNAME( _GETFUNCTABLE )}, NULL }
-ZH_INIT_SYMBOLS_END( _zh_sixcdx1_InitSymbols_ )
-
-ZH_CALL_ON_STARTUP_BEGIN( _zh_sixcdx_rdd_init_ )
-   zh_vmAtInit( zh_cdxRddInit, NULL );
-ZH_CALL_ON_STARTUP_END( _zh_sixcdx_rdd_init_ )
-
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_sixcdx1_InitSymbols_
-   #pragma startup _zh_sixcdx_rdd_init_
-#elif defined( ZH_DATASEG_STARTUP )
-   #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_sixcdx1_InitSymbols_ ) \
-                              ZH_DATASEG_FUNC( _zh_sixcdx_rdd_init_ )
-   #include "zh_ini_seg.h"
-#endif
-
-#else
 
 ZH_FUNC_TRANSLATE( DBFCDX, _DBF )
 
@@ -10069,13 +10046,9 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_dbfcdx_rdd_init_ )
    zh_vmAtInit( zh_cdxRddInit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_dbfcdx_rdd_init_ )
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_dbfcdx1_InitSymbols_
-   #pragma startup _zh_dbfcdx_rdd_init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_dbfcdx1_InitSymbols_ ) \
                               ZH_DATASEG_FUNC( _zh_dbfcdx_rdd_init_ )
    #include "zh_ini_seg.h"
 #endif
 
-#endif

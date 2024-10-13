@@ -48,11 +48,7 @@
 
 ZH_CODEPAGE_ANNOUNCE( ZH_CP_ID )
 
-#if defined( ZH_PRAGMA_STARTUP )
-ZH_CALL_ON_STARTUP_BEGIN( _zh_codepage_Init_ )
-#else
 ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
-#endif
 
 #if defined( ZH_CP_RAW )
    #if defined( ZH_CP_CUSTOM )
@@ -145,11 +141,7 @@ ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
                       ZH_CP_UTF8_STR );
 #endif /* ZH_CP_RAW */
 
-#if defined( ZH_PRAGMA_STARTUP )
-ZH_CALL_ON_STARTUP_END( _zh_codepage_Init_ )
-#else
 ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
-#endif
 
 // help
 // #pragma startup [priority]
@@ -157,9 +149,7 @@ ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
 // pragma startup always execute the function before the main function 
 // pragma exit always execute the function after the main function.
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup _zh_codepage_Init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \
          ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_codepage_Init_, ZH_CP_ID ) )
    #include "../zh_ini_seg.h"

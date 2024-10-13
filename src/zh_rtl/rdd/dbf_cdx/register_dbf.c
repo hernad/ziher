@@ -6744,10 +6744,7 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_dbf_rdd_init_ )
    zh_vmAtInit( zh_dbfRddInit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_dbf_rdd_init_ )
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup dbf1__InitSymbols
-   #pragma startup _zh_dbf_rdd_init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( dbf1__InitSymbols ) \
                               ZH_DATASEG_FUNC( _zh_dbf_rdd_init_ )
    #include "zh_ini_seg.h"

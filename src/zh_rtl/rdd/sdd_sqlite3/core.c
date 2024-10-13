@@ -124,10 +124,7 @@ zh_vmAtInit( zh_sqlt3dd_init, NULL );
 zh_vmAtExit( zh_sqlt3dd_exit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_sqlt3dd_init_ )
 
-#if defined( ZH_PRAGMA_STARTUP )
-   #pragma startup sqlt3dd__InitSymbols
-   #pragma startup _zh_sqlt3dd_init_
-#elif defined( ZH_DATASEG_STARTUP )
+#if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY \
    ZH_DATASEG_FUNC( sqlt3dd__InitSymbols ) \
    ZH_DATASEG_FUNC( _zh_sqlt3dd_init_ )
