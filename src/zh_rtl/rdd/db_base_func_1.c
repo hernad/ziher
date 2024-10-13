@@ -54,91 +54,6 @@
 #include "zh_vm.h"
 #include "zh_set.h"
 
-/* The 5th parameter is Ziher extension */
-ZH_FUNC( AFIELDS )
-{
-   ZH_USHORT uiFields, uiCount;
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-   PZH_ITEM pName = zh_param( 1, ZH_IT_ARRAY );
-   PZH_ITEM pType = zh_param( 2, ZH_IT_ARRAY );
-   PZH_ITEM pLen = zh_param( 3, ZH_IT_ARRAY );
-   PZH_ITEM pDec = zh_param( 4, ZH_IT_ARRAY );
-
-   PZH_ITEM pFlags = NULL;
-
-   if( ! pArea || ( ! pName && ! pType && ! pLen && ! pDec && ! pFlags ) )
-   {
-      zh_retni( 0 );
-      return;
-   }
-
-   if( SELF_FIELDCOUNT( pArea, &uiFields ) != ZH_SUCCESS )
-      return;
-
-   if( pName )
-   {
-      ZH_USHORT uiArrayLen = ( ZH_USHORT ) zh_arrayLen( pName );
-      if( uiArrayLen < uiFields )
-         uiFields = uiArrayLen;
-   }
-   if( pType )
-   {
-      ZH_USHORT uiArrayLen = ( ZH_USHORT ) zh_arrayLen( pType );
-      if( uiArrayLen < uiFields )
-         uiFields = uiArrayLen;
-   }
-   if( pLen )
-   {
-      ZH_USHORT uiArrayLen = ( ZH_USHORT ) zh_arrayLen( pLen );
-      if( uiArrayLen < uiFields )
-         uiFields = uiArrayLen;
-   }
-   if( pDec )
-   {
-      ZH_USHORT uiArrayLen = ( ZH_USHORT ) zh_arrayLen( pDec );
-      if( uiArrayLen < uiFields )
-         uiFields = uiArrayLen;
-   }
-
-
-   if( pName )
-   {
-      for( uiCount = 1; uiCount <= uiFields; ++uiCount )
-      {
-         if( SELF_FIELDINFO( pArea, uiCount, DBS_NAME, zh_arrayGetItemPtr( pName, uiCount ) ) != ZH_SUCCESS )
-            return;
-      }
-   }
-   if( pType )
-   {
-      for( uiCount = 1; uiCount <= uiFields; ++uiCount )
-      {
-         if( SELF_FIELDINFO( pArea, uiCount, DBS_TYPE, zh_arrayGetItemPtr( pType, uiCount ) ) != ZH_SUCCESS )
-            return;
-      }
-   }
-   if( pLen )
-   {
-      for( uiCount = 1; uiCount <= uiFields; ++uiCount )
-      {
-         if( SELF_FIELDINFO( pArea, uiCount, DBS_LEN, zh_arrayGetItemPtr( pLen, uiCount ) ) != ZH_SUCCESS )
-            return;
-      }
-   }
-   if( pDec )
-   {
-      for( uiCount = 1; uiCount <= uiFields; ++uiCount )
-      {
-         if( SELF_FIELDINFO( pArea, uiCount, DBS_DEC, zh_arrayGetItemPtr( pDec, uiCount ) ) != ZH_SUCCESS )
-            return;
-      }
-   }
-
-
-   zh_retni( uiFields );
-}
-
-
 ZH_FUNC( DBEVAL )
 {
    AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
@@ -195,46 +110,6 @@ ZH_FUNC( DBEVAL )
       zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
 }
 
-ZH_FUNC( DBF )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      char szAlias[ ZH_RDD_MAX_ALIAS_LEN + 1 ];
-
-      if( SELF_ALIAS( pArea, szAlias ) == ZH_SUCCESS )
-      {
-         zh_retc( szAlias );
-         return;
-      }
-   }
-   zh_retc_null();
-}
-
-
-ZH_FUNC( __DBCONTINUE )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-      SELF_LOCATE( pArea, ZH_TRUE );
-   else
-      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
-}
-
-
-ZH_FUNC( __DBSETFOUND )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      PZH_ITEM pFound = zh_param( 1, ZH_IT_LOGICAL );
-      if( pFound )
-         pArea->fFound = zh_itemGetL( pFound );
-   }
-}
 
 ZH_FUNC( DBSETFILTER )
 {
