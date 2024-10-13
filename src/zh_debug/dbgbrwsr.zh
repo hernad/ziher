@@ -274,7 +274,7 @@ METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS ZHDbBrowser
 
    RETURN Self
 
-CREATE CLASS HBDbColumn
+CREATE CLASS ZHDbColumn
 
    EXPORTED:
 
@@ -287,12 +287,12 @@ CREATE CLASS HBDbColumn
 
 ENDCLASS
 
-METHOD New( cHeading, bBlock ) CLASS HBDbColumn
+METHOD New( cHeading, bBlock ) CLASS ZHDbColumn
 
    ZH_SYMBOL_UNUSED( cHeading )
    ::block := bBlock
 
    RETURN Self
 
-FUNCTION HBDbColumnNew( cHeading, bBlock )
-   RETURN HBDbColumn():New( cHeading, bBlock )
+FUNCTION ZHDbColumnNew( cHeading, bBlock )
+   RETURN ZHDbColumn():New( cHeading, bBlock )

@@ -134,7 +134,7 @@ METHOD New( nTop, nLeft, nBottom, nRight, cFileName, cColors, lLineNumbers ) CLA
 
    ::oBrw:colorSpec := cColors
 
-   oCol := HBDbColumnNew( "", {|| ::GetLineText() } )
+   oCol := ZHDbColumnNew( "", {|| ::GetLineText() } )
 
    oCol:colorBlock := {|| ::GetLineColor() }
 

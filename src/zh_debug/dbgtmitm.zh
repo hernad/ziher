@@ -1,5 +1,5 @@
 /*
- * The Debugger (HBDbMenuItem Class)
+ * The Debugger (ZhDbgMenuItem Class)
  *
  * Copyright 1999 Antonio Linares <alinares@fivetech.com>
  *
@@ -53,7 +53,7 @@
 #define ZH_CLS_NOTOBJECT      /* do not inherit from ZHObject class */
 #include "class.zhh"
 
-CREATE CLASS HBDbMenuItem
+CREATE CLASS ZhDbgMenuItem
 
    VAR nRow
    VAR nCol
@@ -71,7 +71,7 @@ CREATE CLASS HBDbMenuItem
 
 ENDCLASS
 
-METHOD New( cPrompt, bAction, lChecked, xIdent ) CLASS HBDbMenuItem
+METHOD New( cPrompt, bAction, lChecked, xIdent ) CLASS ZhDbgMenuItem
 
    ::cPrompt  := cPrompt
    ::bAction  := bAction
@@ -80,7 +80,7 @@ METHOD New( cPrompt, bAction, lChecked, xIdent ) CLASS HBDbMenuItem
 
    RETURN Self
 
-METHOD Display( cClrText, cClrHotKey ) CLASS HBDbMenuItem
+METHOD Display( cClrText, cClrHotKey ) CLASS ZhDbgMenuItem
 
    LOCAL nAt
 

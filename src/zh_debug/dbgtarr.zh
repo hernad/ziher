@@ -108,12 +108,12 @@ METHOD addWindows( aArray, nRow ) CLASS HBDbArray
    oBrwSets:Cargo := { 1, {} }  // Actual highlighted row
    AAdd( oBrwSets:Cargo[ 2 ], aArray )
 
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| ::arrayName + "[" + zh_ntos( oBrwSets:cargo[ 1 ] ) + "]" } ) )
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| ::arrayName + "[" + zh_ntos( oBrwSets:cargo[ 1 ] ) + "]" } ) )
    oCol:width := Len( ::arrayName + "[" + zh_ntos( Len( aArray ) ) + "]" )
    oCol:DefColor := { 1, 2 }
    nColWidth := oCol:Width
 
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| __dbgValToExp( aArray[ oBrwSets:cargo[ 1 ] ] ) } ) )
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| __dbgValToExp( aArray[ oBrwSets:cargo[ 1 ] ] ) } ) )
 
    oCol:width := oWndSets:nRight - oWndSets:nLeft - nColWidth - 2
    oCol:defColor := { 1, 3 }

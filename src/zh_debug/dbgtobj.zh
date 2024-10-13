@@ -57,7 +57,7 @@
 #define OMSG_VALUE      2
 #define OMSG_EDIT       3
 
-CREATE CLASS HBDbObject
+CREATE CLASS ZhDbgObject
 
    VAR aWindows       INIT {}
    VAR Theobj
@@ -74,7 +74,7 @@ CREATE CLASS HBDbObject
 
 ENDCLASS
 
-METHOD New( oObject, cVarName, lEditable ) CLASS HBDbObject
+METHOD New( oObject, cVarName, lEditable ) CLASS ZhDbgObject
 
    LOCAL cMsg, cMsgAcc
    LOCAL aMessages, aMethods
@@ -107,7 +107,7 @@ METHOD New( oObject, cVarName, lEditable ) CLASS HBDbObject
 
    RETURN Self
 
-METHOD addWindows( nRow ) CLASS HBDbObject
+METHOD addWindows( nRow ) CLASS ZhDbgObject
 
    LOCAL oBrwSets
    LOCAL nSize := Len( ::pItems )
@@ -143,12 +143,12 @@ METHOD addWindows( nRow ) CLASS HBDbObject
 
    nMaxLen := 0
    AEval( ::pItems, {| x | nMaxLen := Max( nMaxLen, Len( x[ OMSG_NAME ] ) ) } )
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| ::pItems[ ::arrayindex ][ OMSG_NAME ] } ) )
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| ::pItems[ ::arrayindex ][ OMSG_NAME ] } ) )
    oCol:width := nMaxLen
    oCol:DefColor := { 1, 2 }
    oBrwSets:Freeze := 1
 
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| iif( ! ::pItems[ ::ArrayIndex ][ OMSG_EDIT ], ;
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| iif( ! ::pItems[ ::ArrayIndex ][ OMSG_EDIT ], ;
       ::pItems[ ::ArrayIndex ][ OMSG_VALUE ], ;
       __dbgValToExp( __dbgObjGetValue( ::TheObj, ::pItems[ ::arrayindex ][ OMSG_NAME ] ) ) ) } ) )
 
@@ -164,7 +164,7 @@ METHOD addWindows( nRow ) CLASS HBDbObject
 
    RETURN Self
 
-METHOD PROCEDURE doGet( oBrowse ) CLASS HBDbObject
+METHOD PROCEDURE doGet( oBrowse ) CLASS ZhDbgObject
 
    LOCAL oErr
    LOCAL cValue
@@ -195,7 +195,7 @@ METHOD PROCEDURE doGet( oBrowse ) CLASS HBDbObject
 
    RETURN
 
-METHOD PROCEDURE SetsKeyPressed( nKey, oBrwSets ) CLASS HBDbObject
+METHOD PROCEDURE SetsKeyPressed( nKey, oBrwSets ) CLASS ZhDbgObject
 
    LOCAL aItemRef
 
@@ -238,10 +238,10 @@ METHOD PROCEDURE SetsKeyPressed( nKey, oBrwSets ) CLASS HBDbObject
          ENDIF
       CASE ZH_ISHASH( aItemRef[ OMSG_VALUE ] )
          IF Len( aItemRef[ OMSG_VALUE ] ) > 0
-            HBDbHash():New( aItemRef[ OMSG_VALUE ], aItemRef[ OMSG_NAME ] )
+            ZHDbHash():New( aItemRef[ OMSG_VALUE ], aItemRef[ OMSG_NAME ] )
          ENDIF
       CASE ZH_ISOBJECT( aItemRef[ OMSG_VALUE ] )
-         HBDbObject():New( aItemRef[ OMSG_VALUE ], aItemRef[ OMSG_NAME ] )
+         ZhDbgObject():New( aItemRef[ OMSG_VALUE ], aItemRef[ OMSG_NAME ] )
       CASE ! aItemRef[ OMSG_EDIT ] .OR. ;
            ZH_ISBLOCK( aItemRef[ OMSG_VALUE ] ) .OR. ;
            ZH_ISPOINTER( aItemRef[ OMSG_VALUE ] ) .OR. ;
@@ -261,7 +261,7 @@ METHOD PROCEDURE SetsKeyPressed( nKey, oBrwSets ) CLASS HBDbObject
    RETURN
 
 FUNCTION __dbgObject( oObject, cVarName, lEditable )
-   RETURN HBDbObject():New( oObject, cVarName, lEditable )
+   RETURN ZhDbgObject():New( oObject, cVarName, lEditable )
 
 STATIC FUNCTION __dbgObjGetValue( oObject, cVar, lCanAcc )
 

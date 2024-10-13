@@ -52,7 +52,7 @@
 #include "inkey.zhh"
 #include "set_curs.zhh"
 
-CREATE CLASS HBDbHash
+CREATE CLASS ZHDbHash
 
    VAR aWindows   INIT {}
    VAR TheHash
@@ -68,7 +68,7 @@ CREATE CLASS HBDbHash
 
 ENDCLASS
 
-METHOD New( hHash, cVarName, lEditable ) CLASS HBDbHash
+METHOD New( hHash, cVarName, lEditable ) CLASS ZHDbHash
 
    ::hashName := cVarName
    ::TheHash := hHash
@@ -78,7 +78,7 @@ METHOD New( hHash, cVarName, lEditable ) CLASS HBDbHash
 
    RETURN Self
 
-METHOD addWindows( hHash, nRow ) CLASS HBDbHash
+METHOD addWindows( hHash, nRow ) CLASS ZHDbHash
 
    LOCAL oBrwSets
    LOCAL nSize := Len( hHash )
@@ -108,7 +108,7 @@ METHOD addWindows( hHash, nRow ) CLASS HBDbHash
    oBrwSets:Cargo := { 1, {} }  // Actual highlighted row
    AAdd( oBrwSets:Cargo[ 2 ], hHash )
 
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| ::hashName + "[" + HashKeyString( hHash, oBrwSets:cargo[ 1 ] ) + "]" } ) )
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| ::hashName + "[" + HashKeyString( hHash, oBrwSets:cargo[ 1 ] ) + "]" } ) )
 
    // calculate max key length
    nKeyLen := 0
@@ -117,7 +117,7 @@ METHOD addWindows( hHash, nRow ) CLASS HBDbHash
    oCol:DefColor := { 1, 2 }
    nColWidth := oCol:Width
 
-   oBrwSets:AddColumn( oCol := HBDbColumnNew( "", {|| __dbgValToExp( zh_HValueAt( hHash, oBrwSets:cargo[ 1 ] ) ) } ) )
+   oBrwSets:AddColumn( oCol := ZHDbColumnNew( "", {|| __dbgValToExp( zh_HValueAt( hHash, oBrwSets:cargo[ 1 ] ) ) } ) )
 
    oCol:width := oWndSets:nRight - oWndSets:nLeft - nColWidth - 2
    oCol:DefColor := { 1, 3 }
@@ -136,7 +136,7 @@ METHOD addWindows( hHash, nRow ) CLASS HBDbHash
 
    RETURN Self
 
-METHOD PROCEDURE doGet( oBrowse, pItem, nSet ) CLASS HBDbHash
+METHOD PROCEDURE doGet( oBrowse, pItem, nSet ) CLASS ZHDbHash
 
    LOCAL oErr
    LOCAL cValue
@@ -159,7 +159,7 @@ METHOD PROCEDURE doGet( oBrowse, pItem, nSet ) CLASS HBDbHash
 
    RETURN
 
-METHOD SetsKeyPressed( nKey, oBrwSets, oWnd, cName, hHash ) CLASS HBDbHash
+METHOD SetsKeyPressed( nKey, oBrwSets, oWnd, cName, hHash ) CLASS ZHDbHash
 
    LOCAL nSet := oBrwSets:cargo[ 1 ]
    LOCAL cOldname := ::hashName
@@ -243,7 +243,7 @@ METHOD SetsKeyPressed( nKey, oBrwSets, oWnd, cName, hHash ) CLASS HBDbHash
    RETURN Self
 
 FUNCTION __dbgHashes( hHash, cVarName, lEditable )
-   RETURN HBDbHash():New( hHash, cVarName, lEditable )
+   RETURN ZHDbHash():New( hHash, cVarName, lEditable )
 
 STATIC FUNCTION GetTopPos( nPos )
    RETURN iif( ( MaxRow() - nPos ) < 5, MaxRow() - nPos, nPos )

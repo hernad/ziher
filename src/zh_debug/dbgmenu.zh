@@ -50,9 +50,9 @@
 #xcommand MENUITEM [ <oMenuItem> PROMPT ] <cPrompt> ;
           [ IDENT <nIdent> ] [ ACTION <uAction,...> ] ;
           [ CHECKED <bChecked> ] => ;
-   [ <oMenuItem> := ] ZhDbMenu():AddItem( HBDbMenuItem():New( <cPrompt>, ;
+   [ <oMenuItem> := ] ZhDbMenu():AddItem( ZhDbgMenuItem():New( <cPrompt>, ;
    [{|| <uAction> }], [<bChecked>], [<nIdent>] ) )
-#xcommand SEPARATOR => ZhDbMenu():AddItem( HBDbMenuItem():New( "-" ) )
+#xcommand SEPARATOR => ZhDbMenu():AddItem( ZhDbgMenuItem():New( "-" ) )
 #xcommand ENDMENU => ATail( ZhDbMenu():aMenus ):Build()
 
 FUNCTION __dbgBuildMenu( oDebugger )  // Builds the debugger pulldown menu

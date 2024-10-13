@@ -47,8 +47,7 @@
 #ifndef ZH__IO_H_
 #define ZH__IO_H_
 
-#if defined( ZH_OS_UNIX ) || \
-    ( defined( __GNUC__ ) && ! defined( __MINGW32__ ) )
+#if defined( ZH_OS_UNIX ) || defined( __GNUC__ )
    #include <unistd.h>
 #endif
 
