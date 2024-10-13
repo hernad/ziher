@@ -49,7 +49,7 @@
 #define ZH_CLS_NOTOBJECT      /* do not inherit from ZHObject class */
 #include "class.zhh"
 
-CREATE CLASS HBBrwText
+CREATE CLASS ZhBrwText
 
    VAR cFileName
    VAR aRows
@@ -116,7 +116,7 @@ CREATE CLASS HBBrwText
 
 ENDCLASS
 
-METHOD New( nTop, nLeft, nBottom, nRight, cFileName, cColors, lLineNumbers ) CLASS HBBrwText
+METHOD New( nTop, nLeft, nBottom, nRight, cFileName, cColors, lLineNumbers ) CLASS ZhBrwText
 
    LOCAL oCol
 
@@ -150,28 +150,28 @@ METHOD New( nTop, nLeft, nBottom, nRight, cFileName, cColors, lLineNumbers ) CLA
 
    RETURN Self
 
-METHOD GotoLine( n ) CLASS HBBrwText
+METHOD GotoLine( n ) CLASS ZhBrwText
 
    ::oBrw:MoveCursor( n - ::nRow )
    ::RefreshAll()
 
    RETURN Self
 
-METHOD SetActiveLine( n ) CLASS HBBrwText
+METHOD SetActiveLine( n ) CLASS ZhBrwText
 
    ::nActiveLine := n
    ::RefreshAll()
 
    RETURN Self
 
-METHOD GetLine() CLASS HBBrwText
+METHOD GetLine() CLASS ZhBrwText
    RETURN iif( ::lLineNumbers, zh_UPadR( zh_ntos( ::nRow ) + ":", ::nLineNoLen ), "" ) + ;
       MemoLine( ::aRows[ ::nRow ], ::nMaxLineLen, 1, ::nTabWidth, .F. )
 
-METHOD GetLineText() CLASS HBBrwText
+METHOD GetLineText() CLASS ZhBrwText
    RETURN zh_UPadR( zh_USubStr( ::GetLine(), ::nLineOffset ), ::nWidth )
 
-METHOD GetLineColor() CLASS HBBrwText
+METHOD GetLineColor() CLASS ZhBrwText
 
    LOCAL aColor
 
@@ -183,7 +183,7 @@ METHOD GetLineColor() CLASS HBBrwText
 
    RETURN aColor
 
-METHOD PROCEDURE LoadFile( cFileName ) CLASS HBBrwText
+METHOD PROCEDURE LoadFile( cFileName ) CLASS ZhBrwText
 
    LOCAL nMaxLineLen := 0
    LOCAL cLine
@@ -202,7 +202,7 @@ METHOD PROCEDURE LoadFile( cFileName ) CLASS HBBrwText
 
    RETURN
 
-METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS HBBrwText
+METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS ZhBrwText
 
    LOCAL lResize := .F.
 
@@ -229,7 +229,7 @@ METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS HBBrwText
 
    RETURN Self
 
-METHOD Search( cString, lCaseSensitive, nMode ) CLASS HBBrwText
+METHOD Search( cString, lCaseSensitive, nMode ) CLASS ZhBrwText
 
    LOCAL bMove
    LOCAL lFound := .F.
@@ -265,19 +265,19 @@ METHOD Search( cString, lCaseSensitive, nMode ) CLASS HBBrwText
 
    RETURN lFound
 
-METHOD GoFirst() CLASS HBBrwText
+METHOD GoFirst() CLASS ZhBrwText
 
    ::nRow := 1
 
    RETURN .T.
 
-METHOD GoLast() CLASS HBBrwText
+METHOD GoLast() CLASS ZhBrwText
 
    ::nRow := ::nRows
 
    RETURN .T.
 
-METHOD Skip( n ) CLASS HBBrwText
+METHOD Skip( n ) CLASS ZhBrwText
 
    LOCAL nSkipped := 0
 
@@ -295,7 +295,7 @@ METHOD Skip( n ) CLASS HBBrwText
 
    RETURN nSkipped
 
-METHOD GoPrev() CLASS HBBrwText
+METHOD GoPrev() CLASS ZhBrwText
 
    LOCAL lMoved := .F.
 
@@ -306,7 +306,7 @@ METHOD GoPrev() CLASS HBBrwText
 
    RETURN lMoved
 
-METHOD GoNext() CLASS HBBrwText
+METHOD GoNext() CLASS ZhBrwText
 
    LOCAL lMoved := .F.
 

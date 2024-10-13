@@ -2074,7 +2074,7 @@ METHOD PROCEDURE Open( cFileName ) CLASS ZHDebugger
       ::cPrgName := cFileName
       ::lPPO := ( Lower( zh_FNameExt( cFileName ) ) == ".ppo" )
       ::oPulldown:GetItemByIdent( "PPO" ):Checked := ::lPPO
-      ::oBrwText := HBBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
+      ::oBrwText := ZhBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
          ::oWndCode:nBottom - 1, ::oWndCode:nRight - 1, cFileName, ;
          __dbgColors()[ 2 ] + "," + __dbgColors()[ 5 ] + "," + ;
          __dbgColors()[ 3 ] + "," + __dbgColors()[ 6 ], ;
@@ -2118,7 +2118,7 @@ METHOD OpenPPO() CLASS ZHDebugger
    ENDIF
 
    IF lSuccess
-      ::oBrwText := HBBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
+      ::oBrwText := ZhBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
          ::oWndCode:nBottom - 1, ::oWndCode:nRight - 1, ::cPrgName, ;
          __dbgColors()[ 2 ] + "," + __dbgColors()[ 5 ] + "," + ;
          __dbgColors()[ 3 ] + "," + __dbgColors()[ 6 ], ::lLineNumbers, ::nTabWidth )
@@ -2735,7 +2735,7 @@ METHOD PROCEDURE ShowCodeLine( nProc ) CLASS ZHDebugger
             ENDIF
 
             IF ::oBrwText == NIL
-               ::oBrwText := HBBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
+               ::oBrwText := ZhBrwText():New( ::oWndCode:nTop + 1, ::oWndCode:nLeft + 1, ;
                   ::oWndCode:nBottom - 1, ::oWndCode:nRight - 1, cPrgName, ;
                   __dbgColors()[ 2 ] + "," + __dbgColors()[ 5 ] + "," + ;
                   __dbgColors()[ 3 ] + "," + __dbgColors()[ 6 ], ;

@@ -2137,11 +2137,11 @@ static ZH_BOOL zh_compRegisterFunc( ZH_COMP_DECL, PZH_ZFUNC pFunc, ZH_BOOL fErro
          pSym = zh_compSymbolAdd( ZH_COMP_PARAM, pFunc->szName, NULL, ZH_SYM_FUNCNAME );
       pSym->cScope |= pFunc->cScope | ZH_FS_LOCAL;
       pSym->pFunc = pFunc;
-
+/*
       FILE *filePtr = fopen("/tmp/functions.txt", "aw"); 
       fprintf(filePtr, "%s: %d %s\n", ZH_COMP_PARAM->szFile, pFunc->cScope, pFunc->szName);
       fclose(filePtr);
-
+*/
       return ZH_TRUE;
    }
    return ZH_FALSE;
