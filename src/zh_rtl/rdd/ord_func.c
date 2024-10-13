@@ -750,3 +750,60 @@ ZH_FUNC( ORDSETFOCUS )
    else
       zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
 }
+
+ZH_FUNC( INDEXORD )
+{
+   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
+
+   if( pArea )
+   {
+      DBORDERINFO pInfo;
+      memset( &pInfo, 0, sizeof( pInfo ) );
+      pInfo.itmResult = zh_itemPutNI( NULL, 0 );
+      SELF_ORDINFO( pArea, DBOI_NUMBER, &pInfo );
+      zh_retni( zh_itemGetNI( pInfo.itmResult ) );
+      zh_itemRelease( pInfo.itmResult );
+   }
+   else
+      zh_retni( 0 );
+}
+
+ZH_FUNC( ORDSCOPE )
+{
+   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
+
+   if( pArea )
+   {
+      DBORDERINFO pInfo;
+      ZH_USHORT uiAction;
+      int iScope = zh_parni( 1 );
+
+      memset( &pInfo, 0, sizeof( pInfo ) );
+      pInfo.itmResult = zh_itemNew( NULL );
+      if( iScope == 2 )
+      {
+         if( zh_pcount() > 1 && ! ZH_ISNIL( 2 ) )
+         {
+            uiAction = DBOI_SCOPESET;
+            pInfo.itmNewVal = zh_param( 2, ZH_IT_ANY);
+         }
+         else
+            uiAction = DBOI_SCOPECLEAR;
+      }
+      else
+      {
+         uiAction = ( iScope == 0 ) ? DBOI_SCOPETOP : DBOI_SCOPEBOTTOM;
+         if( zh_pcount() > 1 )
+         {
+            if( ZH_ISNIL( 2 ) )
+               uiAction = ( iScope == 0 ) ? DBOI_SCOPETOPCLEAR : DBOI_SCOPEBOTTOMCLEAR;
+            else
+               pInfo.itmNewVal = zh_param( 2, ZH_IT_ANY );
+         }
+      }
+      SELF_ORDINFO( pArea, uiAction, &pInfo );
+      zh_itemReturnRelease( pInfo.itmResult );
+   }
+   else
+      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
+}

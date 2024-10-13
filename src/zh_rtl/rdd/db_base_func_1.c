@@ -111,83 +111,6 @@ ZH_FUNC( DBEVAL )
 }
 
 
-ZH_FUNC( DBSETFILTER )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      PZH_ITEM pBlock, pText;
-      DBFILTERINFO pFilterInfo;
-
-      pBlock = zh_param( 1, ZH_IT_BLOCK );
-      pText = zh_param( 2, ZH_IT_STRING );
-      /* Cl*pper allows to set text filter without codeblock. In local
-         RDDs it effectively does nothing and only dbFilter() returns it
-         but RDDs with automatic filter optimization like CL53/DBFCDX /
-         COMIX/ClipMore or RDDs working with remote data base servers
-         may use only text version of filter and ignore or use with
-         lower priority the codeblock so Ziher has to work like
-         Cl*pper here. [druzus] */
-      if( pBlock || zh_itemGetCLen( pText ) > 0 )
-      {
-         pFilterInfo.itmCobExpr = pBlock;
-         if( pText )
-            pFilterInfo.abFilterText = pText;
-         else
-            pFilterInfo.abFilterText = zh_itemPutC( NULL, NULL );
-         pFilterInfo.fFilter = ZH_TRUE;
-         pFilterInfo.lpvCargo = NULL;
-         pFilterInfo.fOptimized = ZH_FALSE;
-         SELF_SETFILTER( pArea, &pFilterInfo );
-         if( ! pText )
-            zh_itemRelease( pFilterInfo.abFilterText );
-      }
-      else
-      {
-         SELF_CLEARFILTER( pArea );
-      }
-   }
-   else
-      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
-}
-
-ZH_FUNC( DBCLEARFILTER )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-      SELF_CLEARFILTER( pArea );
-   else
-      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
-}
-
-ZH_FUNC( DBFILTER )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      PZH_ITEM pFilter = zh_itemPutC( NULL, NULL );
-      SELF_FILTERTEXT( pArea, pFilter );
-      zh_itemReturnRelease( pFilter );
-   }
-   else
-      zh_retc_null();
-}
-
-/* Ziher extension to retrieve filter codeblock */
-ZH_FUNC( ZH_DBGETFILTER )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-      zh_itemReturn( pArea->dbfi.itmCobExpr );
-   else
-      zh_ret();
-}
-
-
 ZH_FUNC( DBTABLEEXT )
 {
    AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
@@ -232,23 +155,6 @@ ZH_FUNC( HEADER )
    }
 }
 
-ZH_FUNC( INDEXORD )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      DBORDERINFO pInfo;
-      memset( &pInfo, 0, sizeof( pInfo ) );
-      pInfo.itmResult = zh_itemPutNI( NULL, 0 );
-      SELF_ORDINFO( pArea, DBOI_NUMBER, &pInfo );
-      zh_retni( zh_itemGetNI( pInfo.itmResult ) );
-      zh_itemRelease( pInfo.itmResult );
-   }
-   else
-      zh_retni( 0 );
-}
-
 
 ZH_FUNC( LUPDATE )
 {
@@ -274,66 +180,6 @@ ZH_FUNC( NETERR )
 }
 
 
-ZH_FUNC( RDDLIST )
-{
-   zh_itemReturnRelease( zh_rddList( ( ZH_USHORT ) zh_parni( 1 ) ) );
-}
-
-ZH_FUNC( RDDNAME )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      char szRddName[ ZH_RDD_MAX_DRIVERNAME_LEN + 1 ];
-
-      SELF_SYSNAME( pArea, szRddName );
-      zh_retc( szRddName );
-   }
-   else
-      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
-}
-
-ZH_FUNC( RDDREGISTER )
-{
-   ZH_USHORT uiLen = ( ZH_USHORT ) zh_parclen( 1 );
-
-   if( uiLen > 0 )
-   {
-      char szDriver[ ZH_RDD_MAX_DRIVERNAME_LEN + 1 ];
-
-      if( uiLen > ZH_RDD_MAX_DRIVERNAME_LEN )
-         uiLen = ZH_RDD_MAX_DRIVERNAME_LEN;
-
-      zh_strncpyUpper( szDriver, zh_parc( 1 ), uiLen );
-      /*
-       * zh_rddRegister returns:
-       *
-       * 0: Ok, RDD registered
-       * 1: RDD already registerd
-       * > 1: error
-       */
-      if( zh_rddRegister( szDriver, ( ZH_USHORT ) zh_parni( 2 ) ) > 1 )
-      {
-         zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
-      }
-   }
-}
-
-/* Same as LastRec() */
-ZH_FUNC_TRANSLATE( RECCOUNT, LASTREC )
-
-ZH_FUNC( RECNO )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-   PZH_ITEM pRecNo = zh_itemPutNL( NULL, 0 );
-
-   if( pArea )
-   {
-      SELF_RECID( pArea, pRecNo );
-   }
-   zh_itemReturnRelease( pRecNo );
-}
 
 ZH_FUNC( RECSIZE )
 {
@@ -391,16 +237,6 @@ ZH_FUNC( USED )
    zh_retl( zh_rddGetCurrentWorkAreaPointer() != NULL );
 }
 
-ZH_FUNC( RDDSETDEFAULT )
-{
-   zh_retc( zh_rddDefaultDrv( NULL ) );
-
-   if( zh_parclen( 1 ) > 0 )
-   {
-      if( ! zh_rddDefaultDrv( zh_parc( 1 ) ) )
-         zh_errRT_DBCMD( EG_ARG, EDBCMD_BADPARAMETER, NULL, ZH_ERR_FUNCNAME );
-   }
-}
 
 ZH_FUNC( DBSETDRIVER )
 {
@@ -413,45 +249,6 @@ ZH_FUNC( DBSETDRIVER )
    }
 }
 
-ZH_FUNC( ORDSCOPE )
-{
-   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
-
-   if( pArea )
-   {
-      DBORDERINFO pInfo;
-      ZH_USHORT uiAction;
-      int iScope = zh_parni( 1 );
-
-      memset( &pInfo, 0, sizeof( pInfo ) );
-      pInfo.itmResult = zh_itemNew( NULL );
-      if( iScope == 2 )
-      {
-         if( zh_pcount() > 1 && ! ZH_ISNIL( 2 ) )
-         {
-            uiAction = DBOI_SCOPESET;
-            pInfo.itmNewVal = zh_param( 2, ZH_IT_ANY);
-         }
-         else
-            uiAction = DBOI_SCOPECLEAR;
-      }
-      else
-      {
-         uiAction = ( iScope == 0 ) ? DBOI_SCOPETOP : DBOI_SCOPEBOTTOM;
-         if( zh_pcount() > 1 )
-         {
-            if( ZH_ISNIL( 2 ) )
-               uiAction = ( iScope == 0 ) ? DBOI_SCOPETOPCLEAR : DBOI_SCOPEBOTTOMCLEAR;
-            else
-               pInfo.itmNewVal = zh_param( 2, ZH_IT_ANY );
-         }
-      }
-      SELF_ORDINFO( pArea, uiAction, &pInfo );
-      zh_itemReturnRelease( pInfo.itmResult );
-   }
-   else
-      zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
-}
 
 ZH_FUNC( DBRELATION )  /* (<nRelation>) --> cLinkExp */
 {

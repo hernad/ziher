@@ -638,3 +638,18 @@ ZH_FUNC( LOCK )
    else
       zh_errRT_DBCMD( EG_NOTABLE, EDBCMD_NOTABLE, NULL, ZH_ERR_FUNCNAME );
 }
+
+/* Same as LastRec() */
+ZH_FUNC_TRANSLATE( RECCOUNT, LASTREC )
+
+ZH_FUNC( RECNO )
+{
+   AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();
+   PZH_ITEM pRecNo = zh_itemPutNL( NULL, 0 );
+
+   if( pArea )
+   {
+      SELF_RECID( pArea, pRecNo );
+   }
+   zh_itemReturnRelease( pRecNo );
+}
