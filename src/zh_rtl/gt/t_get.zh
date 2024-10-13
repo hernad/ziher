@@ -271,8 +271,6 @@ METHOD display() CLASS Get
       nDispPos := 1
    ENDIF
 
-   /* Handle C5.3 caption. */
-
    IF ! Empty( ::cCaption )
 
       cCaption := ::cCaption
@@ -536,8 +534,6 @@ METHOD varGet() CLASS Get
 
    RETURN xValue
 
-/* NOTE: CA-Cl*pper will corrupt memory if cChar contains
-         multiple chars. [vszakats] */
 
 METHOD overStrike( cChar ) CLASS Get
 
@@ -586,9 +582,6 @@ METHOD overStrike( cChar ) CLASS Get
    ENDIF
 
    RETURN Self
-
-/* NOTE: CA-Cl*pper will corrupt memory if cChar contains
-         multiple chars. [vszakats] */
 
 METHOD insert( cChar ) CLASS Get
 
@@ -1827,17 +1820,11 @@ METHOD setMinus( lMinus ) CLASS Get
 
    RETURN .F.
 
-/* NOTE: CA-Cl*pper has a bug where negative nRow value will be translated to 16-bit unsigned int,
-         so the behaviour will be different in this case. [vszakats] */
-
 METHOD getRow() CLASS Get
    RETURN ::nRow
 
 METHOD setRow( nRow ) CLASS Get
    RETURN ::nRow := iif( ZH_ISNUMERIC( nRow ), Int( nRow ), 0 )
-
-/* NOTE: CA-Cl*pper has a bug where negative nCol value will be translated to 16-bit unsigned int,
-         so the behaviour will be different in this case. [vszakats] */
 
 METHOD getCol() CLASS Get
    RETURN ::nCol

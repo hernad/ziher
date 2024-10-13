@@ -89,12 +89,6 @@
 # include <sys/ioctl.h>
 # include <sys/wait.h>
 #endif
-#if defined( ZH_HAS_GPM )
-# include <gpm.h>
-#  define KG_SHIFT      0
-#  define KG_CTRL       2
-#  define KG_ALT        3
-#endif
 
 #ifndef O_ACCMODE
 #  define O_ACCMODE        ( O_RDONLY | O_WRONLY | O_RDWR )
@@ -209,7 +203,7 @@ static ZH_GT_FUNCS SuperTable;
 #define K_MOUSETERM        0x10004
 #define K_RESIZE           0x10005
 
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
+#if defined( ZH_OS_UNIX )
 
 #define TIMEVAL_GET( tv )           gettimeofday( &( tv ), NULL )
 #define TIMEVAL_LESS( tv1, tv2 )    ( ( ( tv1 ).tv_sec == ( tv2 ).tv_sec ) ? \
@@ -255,7 +249,7 @@ typedef struct
    int mbup_row, mbup_col;
    int mbdn_row, mbdn_col;
    /* to analize DBLCLK on xterm */
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
+#if defined( ZH_OS_UNIX )
    struct timeval BL_time;
    struct timeval BR_time;
    struct timeval BM_time;
@@ -355,9 +349,6 @@ typedef struct _ZH_GTTRM
    int nTermMouseChars;
    unsigned char cTermMouseBuf[ 3 ];
    mouseEvent mLastEvt;
-#if defined( ZH_HAS_GPM )
-   Gpm_Connect Conn;
-#endif
 
    unsigned char stdin_buf[STDIN_BUFLEN];
    int stdin_ptr_l;
@@ -686,24 +677,6 @@ static int add_efds( PZH_GTTRM pTerm, int fd, int mode,
    return fd;
 }
 
-#if defined( ZH_HAS_GPM )
-static void del_efds( PZH_GTTRM pTerm, int fd )
-{
-   int i, n = -1;
-
-   for( i = 0; i < pTerm->efds_no && n == -1; i++ )
-      if( pTerm->event_fds[ i ]->fd == fd )
-         n = i;
-
-   if( n != -1 )
-   {
-      zh_xfree( pTerm->event_fds[ n ] );
-      pTerm->efds_no--;
-      for( i = n; i < pTerm->efds_no; i++ )
-         pTerm->event_fds[ i ] = pTerm->event_fds[ i + 1 ];
-   }
-}
-#endif
 
 static void del_all_efds( PZH_GTTRM pTerm )
 {
@@ -895,85 +868,12 @@ static void set_tmevt( PZH_GTTRM pTerm, unsigned char * cMBuf, mouseEvent * mEvt
          break;
    }
    chk_mevtdblck( pTerm );
-   #if 0
-   printf( "\r\nmouse event: %02x, %02x, %02x\r\n", cMBuf[ 0 ], cMBuf[ 1 ], cMBuf[ 2 ] );
-   #endif
 }
 
-#if defined( ZH_HAS_GPM )
-static int set_gpmevt( int fd, int mode, void * cargo )
-{
-   int nKey = 0;
-   PZH_GTTRM pTerm;
-   Gpm_Event gEvt;
-
-   ZH_SYMBOL_UNUSED( fd );
-   ZH_SYMBOL_UNUSED( mode );
-
-   pTerm = ( PZH_GTTRM ) cargo;
-
-   if( Gpm_GetEvent( &gEvt ) > 0 )
-   {
-      pTerm->mLastEvt.flags = 0;
-      if( gEvt.modifiers & ( 1 << KG_SHIFT ) )
-         pTerm->mLastEvt.flags |= ZH_KF_SHIFT;
-      if( gEvt.modifiers & ( 1 << KG_CTRL ) )
-         pTerm->mLastEvt.flags |= ZH_KF_CTRL;
-      if( gEvt.modifiers & ( 1 << KG_ALT ) )
-         pTerm->mLastEvt.flags |= ZH_KF_ALT;
-
-      pTerm->mLastEvt.row = gEvt.y;
-      pTerm->mLastEvt.col = gEvt.x;
-      if( gEvt.type & ( GPM_MOVE | GPM_DRAG ) )
-         pTerm->mLastEvt.buttonstate |= M_CURSOR_MOVE;
-      if( gEvt.type & GPM_DOWN )
-      {
-         if( gEvt.buttons & GPM_B_LEFT )
-            pTerm->mLastEvt.buttonstate |= M_BUTTON_LEFT;
-         if( gEvt.buttons & GPM_B_MIDDLE )
-            pTerm->mLastEvt.buttonstate |= M_BUTTON_MIDDLE;
-         if( gEvt.buttons & GPM_B_RIGHT )
-            pTerm->mLastEvt.buttonstate |= M_BUTTON_RIGHT;
-      }
-      else if( gEvt.type & GPM_UP )
-      {
-         if( gEvt.buttons & GPM_B_LEFT )
-            pTerm->mLastEvt.buttonstate &= ~M_BUTTON_LEFT;
-         if( gEvt.buttons & GPM_B_MIDDLE )
-            pTerm->mLastEvt.buttonstate &= ~M_BUTTON_MIDDLE;
-         if( gEvt.buttons & GPM_B_RIGHT )
-            pTerm->mLastEvt.buttonstate &= ~M_BUTTON_RIGHT;
-      }
-   }
-   chk_mevtdblck( pTerm );
-   nKey = getMouseKey( &pTerm->mLastEvt );
-
-   return nKey ? ( ZH_INKEY_ISEXT( nKey ) ? nKey : SET_CLIPKEY( nKey ) ) : 0;
-}
-
-static void flush_gpmevt( PZH_GTTRM pTerm )
-{
-   if( gpm_fd >= 0 )
-   {
-      while( zh_fsCanRead( gpm_fd, 0 ) > 0 )
-         set_gpmevt( gpm_fd, O_RDONLY, ( void * ) pTerm );
-
-      while( getMouseKey( &pTerm->mLastEvt ) ) ;
-   }
-}
-#endif
 
 static void disp_mousecursor( PZH_GTTRM pTerm )
 {
-#if defined( ZH_HAS_GPM )
-   if( ( pTerm->mouse_type & MOUSE_GPM ) && gpm_visiblepointer )
-   {
-      Gpm_DrawPointer( pTerm->mLastEvt.col, pTerm->mLastEvt.row,
-                       gpm_consolefd );
-   }
-#else
    ZH_SYMBOL_UNUSED( pTerm );
-#endif
 }
 
 static void mouse_init( PZH_GTTRM pTerm )
@@ -987,42 +887,7 @@ static void mouse_init( PZH_GTTRM pTerm )
       pTerm->mouse_type |= MOUSE_XTERM;
       pTerm->mButtons = 3;
    }
-#if defined( ZH_HAS_GPM )
-   if( pTerm->terminal_type == TERM_LINUX )
-   {
-      pTerm->Conn.eventMask =
-         GPM_MOVE | GPM_DRAG | GPM_UP | GPM_DOWN | GPM_SINGLE | GPM_DOUBLE;
-      /* give me move events but handle them anyway */
-      pTerm->Conn.defaultMask = GPM_MOVE | GPM_HARD;
-      /* report Ctrl,Alt,Shift events */
-      pTerm->Conn.minMod = 0;
-      pTerm->Conn.maxMod = ( ( 1 << KG_SHIFT ) | ( 1 << KG_CTRL ) | ( 1 << KG_ALT ) );
-      gpm_zerobased = 1;
-      gpm_visiblepointer = 0;
-      if( Gpm_Open( &pTerm->Conn, 0 ) >= 0 && gpm_fd >= 0 )
-      {
-         int flags;
 
-         if( ( flags = fcntl( gpm_fd, F_GETFL, 0 ) ) != -1 )
-            fcntl( gpm_fd, F_SETFL, flags | O_NONBLOCK );
-
-         pTerm->mouse_type |= MOUSE_GPM;
-         memset( ( void * ) &pTerm->mLastEvt, 0, sizeof( pTerm->mLastEvt ) );
-         flush_gpmevt( pTerm );
-         add_efds( pTerm, gpm_fd, O_RDONLY, set_gpmevt, ( void * ) pTerm );
-
-         /*
-          * In recent GPM versions it produce unpleasure noice on the screen
-          * so I covered it with this macro, [druzus]
-          */
-#ifdef ZH_GPM_USE_XTRA
-         pTerm->mButtons = Gpm_GetSnapshot( NULL );
-#else
-         pTerm->mButtons = 3;
-#endif
-      }
-   }
-#endif
 }
 
 static void mouse_exit( PZH_GTTRM pTerm )
@@ -1032,13 +897,7 @@ static void mouse_exit( PZH_GTTRM pTerm )
       zh_gt_trm_termOut( pTerm, s_szMouseOff, strlen( s_szMouseOff ) );
       zh_gt_trm_termFlush( pTerm );
    }
-#if defined( ZH_HAS_GPM )
-   if( ( pTerm->mouse_type & MOUSE_GPM ) && gpm_fd >= 0 )
-   {
-      del_efds( pTerm, gpm_fd );
-      Gpm_Close();
-   }
-#endif
+
 }
 
 static int read_bufch( PZH_GTTRM pTerm, int fd )
@@ -1050,7 +909,7 @@ static int read_bufch( PZH_GTTRM pTerm, int fd )
       unsigned char buf[ STDIN_BUFLEN ];
       int i;
 
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
+#if defined( ZH_OS_UNIX )
       n = read( fd, buf, STDIN_BUFLEN - pTerm->stdin_inbuf );
 #else
       n = zh_fsRead( fd, buf, STDIN_BUFLEN - pTerm->stdin_inbuf );
@@ -3338,10 +3197,6 @@ static void zh_gt_trm_mouse_Show( PZH_GT pGT )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_mouse_Show(%p)", ( void * ) pGT ) );
 
    pTerm = ZH_GTTRM_GET( pGT );
-#if defined( ZH_HAS_GPM )
-   if( pTerm->mouse_type & MOUSE_GPM )
-      gpm_visiblepointer = 1;
-#endif
    disp_mousecursor( pTerm );
 }
 
@@ -3349,14 +3204,7 @@ static void zh_gt_trm_mouse_Hide( PZH_GT pGT )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_mouse_Hide(%p)", ( void * ) pGT ) );
 
-#if defined( ZH_HAS_GPM )
-   if( ZH_GTTRM_GET( pGT )->mouse_type & MOUSE_GPM )
-   {
-      gpm_visiblepointer = 0;
-   }
-#else
    ZH_SYMBOL_UNUSED( pGT );
-#endif
 }
 
 static void zh_gt_trm_mouse_GetPos( PZH_GT pGT, int * piRow, int * piCol )

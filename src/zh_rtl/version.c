@@ -174,10 +174,7 @@ ZH_FUNC( ZH_VERSION )
          #if defined( ZH_HAS_ZLIB )
             zh_strncat( pszOptions, " zlib", sizeof( pszOptions ) - 1 );
          #endif
-         #if defined( ZH_HAS_GPM )
-            zh_strncat( pszOptions, " gpm", sizeof( pszOptions ) - 1 );
-         #endif
-        
+         
 
          zh_retc( pszOptions + ( pszOptions[ 0 ] == ' ' ? 1 : 0 ) );
 
