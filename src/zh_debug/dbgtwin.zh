@@ -60,7 +60,7 @@
 #include "inkey.zhh"
 #include "set_curs.zhh"
 
-CREATE CLASS ZhDbWindow // Debugger windows and dialogs
+CREATE CLASS ZhDbgWindow // Debugger windows and dialogs
 
    VAR nTop
    VAR nLeft
@@ -104,7 +104,7 @@ CREATE CLASS ZhDbWindow // Debugger windows and dialogs
 
 ENDCLASS
 
-METHOD New( nTop, nLeft, nBottom, nRight, cCaption, cColor ) CLASS ZhDbWindow
+METHOD New( nTop, nLeft, nBottom, nRight, cCaption, cColor ) CLASS ZhDbgWindow
 
    ::nTop     := nTop
    ::nLeft    := nLeft
@@ -115,13 +115,13 @@ METHOD New( nTop, nLeft, nBottom, nRight, cCaption, cColor ) CLASS ZhDbWindow
 
    RETURN Self
 
-METHOD PROCEDURE Clear() CLASS ZhDbWindow
+METHOD PROCEDURE Clear() CLASS ZhDbgWindow
 
    zh_Scroll( ::nTop + 1, ::nLeft + 1, ::nBottom - 1, ::nRight - 1,,, ::cColor )
 
    RETURN
 
-METHOD PROCEDURE Hide() CLASS ZhDbWindow
+METHOD PROCEDURE Hide() CLASS ZhDbgWindow
 
    __dbgRestScreen( ::nTop, ::nLeft, ::nBottom + iif( ::lShadow, 1, 0 ), ;
                     ::nRight + iif( ::lShadow, 2, 0 ), ::cBackImage )
@@ -130,25 +130,25 @@ METHOD PROCEDURE Hide() CLASS ZhDbWindow
 
    RETURN
 
-METHOD IsOver( nRow, nCol ) CLASS ZhDbWindow
+METHOD IsOver( nRow, nCol ) CLASS ZhDbgWindow
 
    RETURN ;
       nRow >= ::nTop .AND. nRow <= ::nBottom .AND. ;
       nCol >= ::nLeft .AND. nCol <= ::nRight
 
-METHOD PROCEDURE ScrollUp( nLines ) CLASS ZhDbWindow
+METHOD PROCEDURE ScrollUp( nLines ) CLASS ZhDbgWindow
 
    zh_Scroll( ::nTop + 1, ::nLeft + 1, ::nBottom - 1, ::nRight - 1, zh_defaultValue( nLines, 1 ),, ::cColor )
 
    RETURN
 
-METHOD PROCEDURE SetCaption( cCaption ) CLASS ZhDbWindow
+METHOD PROCEDURE SetCaption( cCaption ) CLASS ZhDbgWindow
 
    ::cCaption := cCaption
 
    RETURN
 
-METHOD PROCEDURE ShowCaption() CLASS ZhDbWindow
+METHOD PROCEDURE ShowCaption() CLASS ZhDbgWindow
 
    IF ! Empty( ::cCaption )
       zh_DispOutAt( ::nTop, ::nLeft + ( ( ::nRight - ::nLeft ) / 2 ) - ;
@@ -158,7 +158,7 @@ METHOD PROCEDURE ShowCaption() CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE SetFocus( lOnOff ) CLASS ZhDbWindow
+METHOD PROCEDURE SetFocus( lOnOff ) CLASS ZhDbgWindow
 
    IF ! lOnOff .AND. ZH_ISEVALITEM( ::bLostFocus )
       Eval( ::bLostFocus, Self )
@@ -172,7 +172,7 @@ METHOD PROCEDURE SetFocus( lOnOff ) CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE Refresh() CLASS ZhDbWindow
+METHOD PROCEDURE Refresh() CLASS ZhDbgWindow
 
    DispBegin()
 
@@ -189,7 +189,7 @@ METHOD PROCEDURE Refresh() CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE Show( lFocused ) CLASS ZhDbWindow
+METHOD PROCEDURE Show( lFocused ) CLASS ZhDbgWindow
 
    ::cBackImage := __dbgSaveScreen( ::nTop, ::nLeft, ;
                                     ::nBottom + iif( ::lShadow, 1, 0 ), ;
@@ -206,7 +206,7 @@ METHOD PROCEDURE Show( lFocused ) CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE ShowModal() CLASS ZhDbWindow
+METHOD PROCEDURE ShowModal() CLASS ZhDbgWindow
 
    LOCAL lExit := .F.
    LOCAL nKey
@@ -240,7 +240,7 @@ METHOD PROCEDURE ShowModal() CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE LButtonDown( nMRow, nMCol ) CLASS ZhDbWindow
+METHOD PROCEDURE LButtonDown( nMRow, nMCol ) CLASS ZhDbgWindow
 
    IF ZH_ISEVALITEM( ::bLButtonDown )
       Eval( ::bLButtonDown, nMRow, nMCol )
@@ -248,7 +248,7 @@ METHOD PROCEDURE LButtonDown( nMRow, nMCol ) CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE LDblClick( nMRow, nMCol ) CLASS ZhDbWindow
+METHOD PROCEDURE LDblClick( nMRow, nMCol ) CLASS ZhDbgWindow
 
    IF ZH_ISEVALITEM( ::bLDblClick )
       Eval( ::bLDblClick, nMRow, nMCol )
@@ -256,7 +256,7 @@ METHOD PROCEDURE LDblClick( nMRow, nMCol ) CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE Move() CLASS ZhDbWindow
+METHOD PROCEDURE Move() CLASS ZhDbgWindow
 
    LOCAL nOldTop    := ::nTop
    LOCAL nOldLeft   := ::nLeft
@@ -316,13 +316,10 @@ METHOD PROCEDURE Move() CLASS ZhDbWindow
       ENDIF
    ENDDO
 
-#if 0
-   zh_keySetLast( 0 )
-#endif
 
    RETURN
 
-METHOD PROCEDURE KeyPressed( nKey ) CLASS ZhDbWindow
+METHOD PROCEDURE KeyPressed( nKey ) CLASS ZhDbgWindow
 
    IF ZH_ISEVALITEM( ::bKeyPressed )
       Eval( ::bKeyPressed, nKey, Self )
@@ -330,7 +327,7 @@ METHOD PROCEDURE KeyPressed( nKey ) CLASS ZhDbWindow
 
    RETURN
 
-METHOD PROCEDURE LoadColors() CLASS ZhDbWindow
+METHOD PROCEDURE LoadColors() CLASS ZhDbgWindow
 
    LOCAL aClr := __dbgColors()
 
@@ -342,7 +339,7 @@ METHOD PROCEDURE LoadColors() CLASS ZhDbWindow
 
    RETURN
 
-METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS ZhDbWindow
+METHOD Resize( nTop, nLeft, nBottom, nRight ) CLASS ZhDbgWindow
 
    LOCAL lShow
 

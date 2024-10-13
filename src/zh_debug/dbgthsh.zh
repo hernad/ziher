@@ -89,21 +89,21 @@ METHOD addWindows( hHash, nRow ) CLASS ZHDbHash
 
    IF nSize < MaxRow() - 2
       IF ZH_ISNUMERIC( nRow )
-         oWndSets := ZhDbWindow():New( GetTopPos( nRow ), 5, getBottomPos( nRow + nSize + 1 ), MaxCol() - 5, ;
+         oWndSets := ZhDbgWindow():New( GetTopPos( nRow ), 5, getBottomPos( nRow + nSize + 1 ), MaxCol() - 5, ;
             ::hashName + "[1.." + zh_ntos( nSize ) + "]", "N/W" )
       ELSE
-         oWndSets := ZhDbWindow():New( 1, 5, 2 + nSize, MaxCol() - 5, ;
+         oWndSets := ZhDbgWindow():New( 1, 5, 2 + nSize, MaxCol() - 5, ;
             ::hashName + "[1.." + zh_ntos( nSize ) + "]", "N/W" )
       ENDIF
    ELSE
-      oWndSets := ZhDbWindow():New( 1, 5, MaxRow() - 2, MaxCol() - 5, ;
+      oWndSets := ZhDbgWindow():New( 1, 5, MaxRow() - 2, MaxCol() - 5, ;
          ::hashName + "[1.." + zh_ntos( nSize ) + "]", "N/W" )
    ENDIF
    ::nCurWindow++
    oWndSets:lFocused := .T.
    AAdd( ::aWindows, oWndSets )
 
-   oBrwSets := ZHDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
+   oBrwSets := ZhDbgBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
    oBrwSets:ColorSpec := __dbg():ClrModal()
    oBrwSets:Cargo := { 1, {} }  // Actual highlighted row
    AAdd( oBrwSets:Cargo[ 2 ], hHash )

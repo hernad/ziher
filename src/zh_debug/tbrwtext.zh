@@ -130,7 +130,7 @@ METHOD New( nTop, nLeft, nBottom, nRight, cFileName, cColors, lLineNumbers ) CLA
 
    ::lLineNumbers := lLineNumbers
 
-   ::oBrw := ZHDbBrowser():New( ::nTop, ::nLeft, ::nBottom, ::nRight )
+   ::oBrw := ZhDbgBrowser():New( ::nTop, ::nLeft, ::nBottom, ::nRight )
 
    ::oBrw:colorSpec := cColors
 

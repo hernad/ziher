@@ -54,7 +54,7 @@
 #include "set_curs.zhh"
 
 
-CREATE CLASS ZhDbInput
+CREATE CLASS ZhDbgInput
 
    HIDDEN:
 
@@ -80,7 +80,7 @@ CREATE CLASS ZhDbInput
 
 ENDCLASS
 
-METHOD new( nRow, nCol, nWidth, cValue, cColor, nSize ) CLASS ZhDbInput
+METHOD new( nRow, nCol, nWidth, cValue, cColor, nSize ) CLASS ZhDbgInput
 
    ::nRow   := nRow
    ::nCol   := nCol
@@ -92,7 +92,7 @@ METHOD new( nRow, nCol, nWidth, cValue, cColor, nSize ) CLASS ZhDbInput
 
    RETURN Self
 
-METHOD SetColor( cColor ) CLASS ZhDbInput
+METHOD SetColor( cColor ) CLASS ZhDbgInput
 
    ::acColor := { zh_ColorIndex( cColor, CLR_STANDARD ), ;
                   zh_ColorIndex( cColor, CLR_ENHANCED ) }
@@ -102,24 +102,24 @@ METHOD SetColor( cColor ) CLASS ZhDbInput
 
    RETURN Self
 
-METHOD newPos( nRow, nCol ) CLASS ZhDbInput
+METHOD newPos( nRow, nCol ) CLASS ZhDbgInput
 
    ::nRow := nRow
    ::nCol := nCol
 
    RETURN Self
 
-METHOD getValue() CLASS ZhDbInput
+METHOD getValue() CLASS ZhDbgInput
    RETURN ::cValue
 
-METHOD setValue( cValue ) CLASS ZhDbInput
+METHOD setValue( cValue ) CLASS ZhDbgInput
 
    ::cValue := zh_UPadR( cValue, ::nSize )
    ::nPos := Min( ::nSize, zh_ULen( RTrim( ::cValue ) ) + 1 )
 
    RETURN Self
 
-METHOD display() CLASS ZhDbInput
+METHOD display() CLASS ZhDbgInput
 
    IF ::nPos < ::nFirst
       ::nFirst := ::nPos
@@ -131,14 +131,14 @@ METHOD display() CLASS ZhDbInput
 
    RETURN Self
 
-METHOD showCursor() CLASS ZhDbInput
+METHOD showCursor() CLASS ZhDbgInput
 
    SetPos( ::nRow, ::nCol + ::nPos - ::nFirst )
    SetCursor( iif( Set( _SET_INSERT ), SC_INSERT, SC_NORMAL ) )
 
    RETURN Self
 
-METHOD applyKey( nKey ) CLASS ZhDbInput
+METHOD applyKey( nKey ) CLASS ZhDbgInput
 
    LOCAL lUpdate := .T.
 

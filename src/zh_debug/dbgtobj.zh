@@ -117,14 +117,14 @@ METHOD addWindows( nRow ) CLASS ZhDbgObject
 
    IF nSize < MaxRow() - 2
       IF ZH_ISNUMERIC( nRow )
-         oWndSets := ZhDbWindow():New( nRow, 5, iif( nRow + nSize + 1 < MaxRow() - 2, nRow + nSize + 1, MaxRow() - 2 ), MaxCol() - 5, ;
+         oWndSets := ZhDbgWindow():New( nRow, 5, iif( nRow + nSize + 1 < MaxRow() - 2, nRow + nSize + 1, MaxRow() - 2 ), MaxCol() - 5, ;
             ::objname + " is of class: " + ::TheObj:ClassName(), "N/W" )
       ELSE
-         oWndSets := ZhDbWindow():New( 1, 5, 2 + nSize, MaxCol() - 5, ;
+         oWndSets := ZhDbgWindow():New( 1, 5, 2 + nSize, MaxCol() - 5, ;
             ::objname + " is of class: " + ::TheObj:ClassName(), "N/W" )
       ENDIF
    ELSE
-      oWndSets := ZhDbWindow():New( 1, 5, MaxRow() - 2, MaxCol() - 5, ;
+      oWndSets := ZhDbgWindow():New( 1, 5, MaxRow() - 2, MaxCol() - 5, ;
          ::objname + " is of class: " + ::TheObj:ClassName(), "N/W" )
    ENDIF
 
@@ -132,7 +132,7 @@ METHOD addWindows( nRow ) CLASS ZhDbgObject
    oWndSets:lFocused := .T.
    AAdd( ::aWindows, oWndSets )
 
-   oBrwSets := ZHDbBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
+   oBrwSets := ZhDbgBrowser():New( oWndSets:nTop + 1, oWndSets:nLeft + 1, oWndSets:nBottom - 1, oWndSets:nRight - 1 )
 
    oBrwSets:ColorSpec := __dbg():ClrModal()
    oBrwSets:GoTopBlock := {|| ::Arrayindex := 1 }
