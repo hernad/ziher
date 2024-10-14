@@ -430,22 +430,22 @@ extern ZH_EXPORT void * zh_xmemset( void * pDestArg, int iFill, ZH_SIZE nLen ); 
 /* virtual memory */
 typedef unsigned long ZH_VMHANDLE;
 
-extern ZH_EXPORT ZH_VMHANDLE zh_xvalloc( ZH_SIZE nSize, ZH_USHORT nFlags );
-extern ZH_EXPORT void        zh_xvfree( ZH_VMHANDLE h );
-extern ZH_EXPORT ZH_VMHANDLE zh_xvrealloc( ZH_VMHANDLE h, ZH_SIZE nSize, ZH_USHORT nFlags );
-extern ZH_EXPORT void *      zh_xvlock( ZH_VMHANDLE h );
-extern ZH_EXPORT void        zh_xvunlock( ZH_VMHANDLE h );
-extern ZH_EXPORT void *      zh_xvwire( ZH_VMHANDLE h );
-extern ZH_EXPORT void        zh_xvunwire( ZH_VMHANDLE h );
-extern ZH_EXPORT ZH_SIZE     zh_xvlockcount( ZH_VMHANDLE h );
-extern ZH_EXPORT ZH_SIZE     zh_xvsize( ZH_VMHANDLE h );
-extern ZH_EXPORT ZH_VMHANDLE zh_xvheapnew( ZH_SIZE nSize );
-extern ZH_EXPORT void        zh_xvheapdestroy( ZH_VMHANDLE h );
-extern ZH_EXPORT ZH_VMHANDLE zh_xvheapresize( ZH_VMHANDLE h, ZH_SIZE nSize );
-extern ZH_EXPORT ZH_SIZE     zh_xvheapalloc( ZH_VMHANDLE h, ZH_SIZE nSize );
-extern ZH_EXPORT void        zh_xvheapfree( ZH_VMHANDLE h, ZH_SIZE nOffset );
-extern ZH_EXPORT void *      zh_xvheaplock( ZH_VMHANDLE h, ZH_SIZE nOffset );
-extern ZH_EXPORT void        zh_xvheapunlock( ZH_VMHANDLE h, ZH_SIZE nOffset );
+//extern ZH_EXPORT ZH_VMHANDLE zh_xvalloc( ZH_SIZE nSize, ZH_USHORT nFlags );
+//extern ZH_EXPORT void        zh_xvfree( ZH_VMHANDLE h );
+//extern ZH_EXPORT ZH_VMHANDLE zh_xvrealloc( ZH_VMHANDLE h, ZH_SIZE nSize, ZH_USHORT nFlags );
+//extern ZH_EXPORT void *      zh_xvlock( ZH_VMHANDLE h );
+//extern ZH_EXPORT void        zh_xvunlock( ZH_VMHANDLE h );
+//extern ZH_EXPORT void *      zh_xvwire( ZH_VMHANDLE h );
+//extern ZH_EXPORT void        zh_xvunwire( ZH_VMHANDLE h );
+//extern ZH_EXPORT ZH_SIZE     zh_xvlockcount( ZH_VMHANDLE h );
+//extern ZH_EXPORT ZH_SIZE     zh_xvsize( ZH_VMHANDLE h );
+//extern ZH_EXPORT ZH_VMHANDLE zh_xvheapnew( ZH_SIZE nSize );
+//extern ZH_EXPORT void        zh_xvheapdestroy( ZH_VMHANDLE h );
+//extern ZH_EXPORT ZH_VMHANDLE zh_xvheapresize( ZH_VMHANDLE h, ZH_SIZE nSize );
+//extern ZH_EXPORT ZH_SIZE     zh_xvheapalloc( ZH_VMHANDLE h, ZH_SIZE nSize );
+//extern ZH_EXPORT void        zh_xvheapfree( ZH_VMHANDLE h, ZH_SIZE nOffset );
+//extern ZH_EXPORT void *      zh_xvheaplock( ZH_VMHANDLE h, ZH_SIZE nOffset );
+//extern ZH_EXPORT void        zh_xvheapunlock( ZH_VMHANDLE h, ZH_SIZE nOffset );
 
 /* garbage collector */
 #define ZH_GARBAGE_FUNC( zhfunc )   void zhfunc( void * Cargo ) /* callback function for cleaning garbage memory pointer */

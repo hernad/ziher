@@ -13,8 +13,21 @@ echo "ZH_DEBUG_PATH: $ZH_DEBUG_PATH"
 
 export ZH_DEBUG_PATH
 
+fn="MAIN"
+python scripts/run_f18.py $fn 1 1
 
-python scripts/run_f18.py
+echo "============== kraj prvog poziva F18 ============================="
+read
+
+fn="NASLOVNI_EKRAN_SPLASH_SCREEN"
+python scripts/run_f18.py $fn 1 1
+
+
+echo "============== kraj splash ============================="
+
+fn="MAIN"
+python scripts/run_f18.py $fn 1 1
+
 
 # kad stavis pip u python onda ne radi input
 #cat <<EOF | python 

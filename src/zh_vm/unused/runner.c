@@ -55,7 +55,7 @@
 #include "zh_vm.h"
 #include "zh_pcode.h"
 #include "zh_set.h"
-#include "zh_ioARB
+#include "zh_io.h"
 typedef struct
 {
    char *        szName;                        /* Name of the function */

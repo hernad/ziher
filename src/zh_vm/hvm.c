@@ -423,24 +423,6 @@ static void zh_vmDoInitZHVM( void )
 
 }
 
-/* call __SetHelpK() if HELP() function is linked */
-static void zh_vmDoInitHelp( void )
-{
-
-   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "HELP" );
-
-   if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
-   {
-      pDynSym = zh_dynsymFind( "__SETHELPK" );
-      if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
-      {
-         zh_vmPushSymbol( pDynSym->pSymbol );
-         zh_vmPushNil();
-         zh_vmProc( 0 );
-      }
-   }
-}
-
 
 static ZH_CRITICAL_NEW( s_vmMtx );
 static ZH_COND_NEW( s_vmCond );
@@ -648,9 +630,7 @@ void zh_vmTerminateThreads( void )
          zh_threadCondWait( &s_vmCond, &s_vmMtx );
 
       ++s_iRunningCount;
-      #if 0
-      zh_vmThreadRequest &= ~ZH_THREQUEST_QUIT;
-      #endif
+
       zh_vmThreadRequest = 0;
 
       ZH_VM_UNLOCK();
@@ -1033,12 +1013,12 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    if (bInitRT)
       zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
    
-   printf("init step 1\n");
+   //printf("init step 1\n");
    zh_threadInit();
-   printf("init step 2\n");
+   //printf("init step 2\n");
    zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
    
-   printf("init step 3\n");
+   //printf("init step 3\n");
    s_pSymbolsMtx = zh_threadMutexCreate();
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
@@ -1051,37 +1031,36 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
-   printf("init step 4\n");
+   //printf("init step 4\n");
    if (bInitRT)
       zh_cmdargUpdate();
 
-   printf("init step 5\n");
+   //printf("init step 5\n");
    if (bInitRT)
       zh_clsInit(); /* initialize Classy/OO system */
-   printf("init step 6\n");
+   //printf("init step 6\n");
    if (bInitRT)
       zh_errInit();
-   printf("init step 7\n");
+   //printf("init step 7\n");
    if (bInitRT)
       zh_breakBlock();
 
-printf("init step 8\n");
+   //printf("init step 8\n");
    /* initialize dynamic symbol for evaluating codeblocks and break function */
    zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
    s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
 
-printf("init step 9\n");
+   //printf("init step 9\n");
    //if (bInitRT)
    zh_conInit();
 
    /* Check for some internal switches */
-   printf("init step 10\n");
-
+   //printf("init step 10\n");
 
    if (bInitRT)
      zh_cmdargProcess();
 
-   printf("init step 11\n");
+   //printf("init step 11\n");
    if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
 
@@ -1101,11 +1080,11 @@ printf("init step 9\n");
    /* enable executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_TRUE;
 
-printf("init step 12\n");
+   //printf("init step 12\n");
    /* lock main ZHVM thread */
    zh_vmLock();
 
-printf("init step 13\n");
+   //printf("init step 13\n");
    s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
    if( s_pDynsDbgEntry )
    {
@@ -1120,39 +1099,32 @@ printf("init step 13\n");
     * Static variables have to be initialized before any INIT functions
     * because INIT function can use static variables
     */
-   printf("init step 14\n");
+   //printf("init step 14\n");
    if (bInitRT)
      zh_vmDoInitStatics();
 
-printf("init step 15\n");
+   //printf("init step 15\n");
    /* call __ZZHVMINIT() function to initialize GetList public variable
     * and set ErrorBlock() by ErrorSys() function.
     */
    if (bInitRT)
      zh_vmDoInitZHVM();
 
-printf("init step 16\n");
+   //printf("init step 16\n");
    if (bInitRT)
       zh_clsDoInit();                     /* initialize Class(y) .zh functions */
 
-printf("init step 17\n");
+   //printf("init step 17\n");
    if (bInitRT)
      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
 
-printf("init step 18\n");
+   //printf("init step 18\n");
+   zh_vmDoInitFunctions( ZH_TRUE );    /* process registered CLIPINIT INIT procedures */
 
-      zh_vmDoInitFunctions( ZH_TRUE );    /* process registered CLIPINIT INIT procedures */
+   //printf("init step 19\n");
+   zh_vmDoInitFunctions( ZH_FALSE );   /* process registered other INIT procedures */
 
-printf("init step 19\n");
-     zh_vmDoInitFunctions( ZH_FALSE );   /* process registered other INIT procedures */
-
-printf("init step 20\n");
-   /* Call __SetHelpK() function to redirect K_F1 to HELP() function
-    * if it is linked.
-    */
-   if (bInitRT)
-      zh_vmDoInitHelp();
-
+  
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
       PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "_APPMAIN" );
@@ -1179,12 +1151,12 @@ printf("init step 20\n");
             puts("ZH_START_PROCEDURE = \"MAIN\"");
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
-            printf("init step 20\n");
+            //printf("init step 20\n");
             if( ! ( pDynSym && pDynSym->pSymbol->value.pFunPtr ) )
             {
                if( s_vm_pszLinkedMain )
                {
-                  printf("init step 21\n");
+                  //printf("init step 21\n");
                   pszMain = s_vm_pszLinkedMain;
                   pDynSym = zh_dynsymFind( pszMain );
                }
@@ -1206,21 +1178,21 @@ printf("init step 20\n");
 
    if( bStartMainProc && s_pSymStart )
    {
-      printf("init step 22\n");
+      //printf("init step 22\n");
       zh_vmPushSymbol( s_pSymStart ); /* pushes first ZH_FS_PUBLIC defined symbol to the stack */
-      printf("init step 23\n");
+      //printf("init step 23\n");
       zh_vmPushNil();                 /* places NIL at self */
-      printf("init step 24\n");
+      //printf("init step 24\n");
       if (bInitRT) {
-         printf("init step 25\n");
+         //printf("init step 25\n");
           zh_vmProc( ( ZH_USHORT ) zh_cmdargPushArgs() ); /* invoke it with number of supplied parameters */
       } else {
-         printf("init step 26\n");
+         //printf("init step 26\n");
          zh_vmProc( 0 );
       }
 
    } else {
-      printf("init step 27\n");
+      //printf("init step 27\n");
    }
 }
 

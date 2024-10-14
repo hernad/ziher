@@ -352,8 +352,6 @@ ZH_FUNC( ZH_ADEL )
    }
 }
 
-/* TODO: In Xbase++ fifth parameter determines whether array elements
-         are passed by reference to the code block. [vszakats] */
 
 ZH_FUNC( AEVAL )
 {
