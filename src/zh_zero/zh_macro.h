@@ -48,7 +48,7 @@
 #define ZH_MACRO_H_
 
 #include "zh_api.h"
-#include "zh_compdf.h"
+#include "zh_comp_macro_shared.h"
 #include "zh_item_api.h"
 #include "zh_error_api.h"
 #include "zh_vm.h"

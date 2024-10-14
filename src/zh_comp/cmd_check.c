@@ -743,8 +743,6 @@ static const char * zh_compChkParseSwitch( ZH_COMP_DECL, const char * szSwitch,
             break;
 
          case 'T':
-            /* NOTE: ignored for Cl*pper compatibility:
-                     /t<path> path for temp file creation */
             zh_compChkIgnoredInfo( ZH_COMP_PARAM, "-t<path>" );
             szSwPtr = zh_compChkOptionGet( szSwPtr + 1, NULL, fEnv );
             break;

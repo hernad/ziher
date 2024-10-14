@@ -1115,7 +1115,7 @@ extern ZH_EXPORT char *  zh_username( void );
 ZH_EXTERN_END
 
 #if defined( ZH_MACRO_SUPPORT )
-#include "zh_compdf.h"
+#include "zh_comp_macro_shared.h"
 #endif
 
 #endif /* ZH_APIEXT_H_ */

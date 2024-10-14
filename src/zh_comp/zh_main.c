@@ -4257,6 +4257,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
             if( ZH_COMP_PARAM->iSyntaxCheckOnly >= 2 )
                zh_compParserRun( ZH_COMP_PARAM );
             else
+               printf("syntax only - zh_comp_yyparse\n");
                zh_comp_yyparse( ZH_COMP_PARAM );
             ZH_COMP_PARAM->iExitLevel = ZH_MAX( iExitLevel, ZH_COMP_PARAM->iExitLevel );
          }

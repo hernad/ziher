@@ -13,13 +13,6 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
-#bison_cc_library(
-#    name = "zh_comp_y",
-#    src = "zh_comp.y",
-#    deps = ["//zh_zero:zh_zero" ],
-#)
-
-
 cc_library(
     name = "headers",
     hdrs = glob( ["*.h", "*.zhh"]),

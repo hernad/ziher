@@ -52,8 +52,8 @@
 #include "zh_item_api.h"
 #include "zh_error_api.h"
 #include "zh_fs_api.h" /* for __mvSave()/__mvRestore() */
-#include "zh_date.h"  /* for __mvSave()/__mvRestore() */
-#include "zh_comp.h"  /* for ZH_VSCOMP_* macros */
+#include "zh_date.h"   /* for __mvSave()/__mvRestore() */
+#include "zh_comp.h"   /* for ZH_VSCOMP_* macros */
 #include "error.zhh"
 #include "memvar.zhh"
 #include "zh_set.h"
