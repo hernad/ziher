@@ -49,11 +49,6 @@
  *
  */
 
-#if defined( ZH_FPT_NO_READLOCK )
-#  undef ZH_MEMO_SAFELOCK
-#else
-/*#  define ZH_MEMO_SAFELOCK */
-#endif
 
 #include "zh_api.h"
 #include "zh_item_api.h"
@@ -2215,62 +2210,7 @@ static ZH_ERRCODE zh_fptPutMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
    return errCode;
 }
 
-#ifdef ZH_MEMO_SAFELOCK
-/*
- * Check if memo field has any data
- */
-static ZH_BOOL zh_fptHasMemoData( FPTAREAP pArea, ZH_USHORT uiIndex )
-{
-   if( --uiIndex < pArea->area.uiFieldCount )
-   {
-      LPFIELD pField = pArea->area.lpFields + uiIndex;
 
-      if( pField->uiType == ZH_FT_ANY )
-      {
-         if( pField->uiLen >= 6 )
-         {
-            ZH_BYTE * pFieldBuf = pArea->pRecord + pArea->pFieldOffset[ uiIndex ];
-            ZH_USHORT uiType = ZH_GET_LE_UINT16( pFieldBuf + pField->uiLen - 2 );
-
-            switch( uiType )
-            {
-               case ZH_VF_ARRAY:
-               case ZH_VF_BLOB:
-               case ZH_VF_BLOBCOMPRESS:
-               case ZH_VF_BLOBENCRYPT:
-                  return ZH_TRUE;
-               case ZH_VF_DNUM:
-                  return pField->uiLen <= 12;
-               default:
-                  return uiType <= ZH_VF_CHAR && pField->uiLen - 2 < uiType;
-            }
-         }
-      }
-      else if( pField->uiType == ZH_FT_MEMO ||
-               pField->uiType == ZH_FT_IMAGE ||
-               pField->uiType == ZH_FT_BLOB ||
-               pField->uiType == ZH_FT_OLE )
-      {
-         ZH_BYTE * pFieldBuf = pArea->pRecord + pArea->pFieldOffset[ uiIndex ];
-         ZH_USHORT uiLen = pField->uiLen;
-
-         if( uiLen == 4 )
-            return ZH_GET_LE_UINT32( pFieldBuf ) != 0;
-         if( uiLen == 10 )
-         {
-            do
-            {
-               if( *pFieldBuf >= '1' && *pFieldBuf <= '9' )
-                  return ZH_TRUE;
-               ++pFieldBuf;
-            }
-            while( --uiLen );
-         }
-      }
-   }
-   return ZH_FALSE;
-}
-#endif
 
 static ZH_ERRCODE zh_fptLockForRead( FPTAREAP pArea, ZH_USHORT uiIndex, ZH_BOOL * fUnLock )
 {
@@ -2278,48 +2218,9 @@ static ZH_ERRCODE zh_fptLockForRead( FPTAREAP pArea, ZH_USHORT uiIndex, ZH_BOOL 
    ZH_BOOL fLocked;
 
    *fUnLock = ZH_FALSE;
-#ifdef ZH_MEMO_SAFELOCK
-   if( pArea->lpdbPendingRel )
-   {
-      errCode = SELF_FORCEREL( &pArea->area );
-      if( errCode != ZH_SUCCESS )
-         return errCode;
-   }
 
-   if( ( uiIndex > 0 && pArea->area.lpFields[ uiIndex - 1 ].uiType == ZH_FT_ANY &&
-         pArea->area.lpFields[ uiIndex - 1 ].uiLen < 6 ) ||
-       ! pArea->fPositioned || ! pArea->fShared ||
-       pArea->fFLocked || pArea->fRecordChanged )
-   {
-      fLocked = ZH_TRUE;
-   }
-   else
-   {
-      PZH_ITEM pRecNo = zh_itemNew( NULL ), pResult = zh_itemNew( NULL );
-
-      errCode = SELF_RECINFO( &pArea->area, pRecNo, DBRI_LOCKED, pResult );
-      fLocked = zh_itemGetL( pResult );
-      zh_itemRelease( pRecNo );
-      zh_itemRelease( pResult );
-      if( errCode != ZH_SUCCESS )
-         return errCode;
-   }
-
-   if( ! fLocked )
-   {
-      if( ! pArea->fValidBuffer || uiIndex == 0 ||
-          zh_fptHasMemoData( pArea, uiIndex ) )
-      {
-         if( ! zh_fptFileLockSh( pArea, ZH_TRUE ) )
-            return ZH_FAILURE;
-
-         *fUnLock = ZH_TRUE;
-         pArea->fValidBuffer = ZH_FALSE;
-      }
-   }
-#else
    ZH_SYMBOL_UNUSED( uiIndex );
-#endif
+
    /* update any pending relations and reread record if necessary */
    errCode = SELF_DELETED( &pArea->area, &fLocked );
 
@@ -2635,13 +2536,6 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
                                   ( pField->uiFlags & ZH_FF_UNICODE ) != 0 ? FPT_TRANS_UNICODE :
                                   ( ( pField->uiFlags & ZH_FF_BINARY ) == 0 &&
                                     zh_vmCodepage() != pArea->area.cdPage ? FPT_TRANS_CP : FPT_TRANS_NONE ) );
-#if defined( ZH_MEMO_SAFELOCK )
-         if( errCode == ZH_SUCCESS )
-         {
-            /* Force writer record to eliminate race condition */
-            SELF_GOCOLD( &pArea->area );
-         }
-#endif
          zh_fptFileUnLockEx( pArea );
       }
       /*
@@ -2798,10 +2692,6 @@ static ZH_ERRCODE zh_fptPutVarField( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM
                {
                   if( ulNewSize )
                      ZH_PUT_LE_UINT32( pFieldBuf + pField->uiLen - 6, ulOldBlock );
-#if defined( ZH_MEMO_SAFELOCK )
-                  /* Force writer record to eliminate race condition */
-                  SELF_GOCOLD( &pArea->area );
-#endif
                }
                zh_fptFileUnLockEx( pArea );
             }
@@ -3367,13 +3257,6 @@ static ZH_ERRCODE zh_fptPutValueFile( FPTAREAP pArea, ZH_USHORT uiIndex, const c
                                        ulType, ulSize, &ulBlock );
          if( errCode == ZH_SUCCESS )
             errCode = zh_dbfSetMemoData( ( DBFAREAP ) pArea, uiIndex - 1, ulBlock, ulSize, ulType );
-#if defined( ZH_MEMO_SAFELOCK )
-         if( errCode == ZH_SUCCESS )
-         {
-            /* Force writer record to eliminate race condition */
-            SELF_GOCOLD( &pArea->area );
-         }
-#endif
          zh_fptFileUnLockEx( pArea );
          zh_fileClose( pFile );
       }
@@ -4136,11 +4019,7 @@ static ZH_ERRCODE zh_fptRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
          break;
 
       case RDDI_MEMOREADLOCK:
-#if defined( ZH_MEMO_SAFELOCK )
-         zh_itemPutL( pItem, pRDD->rddID != s_uiRddIdBLOB );
-#else
          zh_itemPutL( pItem, ZH_FALSE );
-#endif
          break;
       case RDDI_MEMOREUSE:
          zh_itemPutL( pItem, ZH_TRUE );
