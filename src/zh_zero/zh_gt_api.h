@@ -246,20 +246,20 @@ typedef ZH_GT_CORD * PZH_GT_CORD;
 #define ZH_GT_RGB void
 #define ZH_GT_SLR void
 
-extern ZH_EXPORT void       zh_gtWCreate( ZH_GT_RECT * rect, ZH_GT_WND ** wnd );
-extern ZH_EXPORT void       zh_gtWDestroy( ZH_GT_WND * wnd );
-extern ZH_EXPORT ZH_BOOL    zh_gtWFlash( void );
-extern ZH_EXPORT void       zh_gtWApp( ZH_GT_WND ** wnd );
-extern ZH_EXPORT void       zh_gtWCurrent( ZH_GT_WND * wnd );
-extern ZH_EXPORT void       zh_gtWPos( ZH_GT_WND * wnd, ZH_GT_RECT * rect );
-extern ZH_EXPORT ZH_BOOL    zh_gtWVis( ZH_GT_WND * wnd, ZH_USHORT uiStatus );
-
-extern ZH_EXPORT ZH_ERRCODE zh_gtSLR( ZH_GT_SLR * pSLR ); /* System-Level Request */
-extern ZH_EXPORT ZH_ERRCODE zh_gtModalRead( void * );
-extern ZH_EXPORT ZH_ERRCODE zh_gtFlushCursor( void );
-extern ZH_EXPORT ZH_ERRCODE zh_gtSetColor( ZH_GT_RGB * color );
-extern ZH_EXPORT ZH_ERRCODE zh_gtGetColor( ZH_GT_RGB * color );
-extern ZH_EXPORT ZH_ERRCODE zh_gtSetBorder( ZH_GT_RGB * color );
+//extern ZH_EXPORT void       zh_gtWCreate( ZH_GT_RECT * rect, ZH_GT_WND ** wnd );
+//extern ZH_EXPORT void       zh_gtWDestroy( ZH_GT_WND * wnd );
+//extern ZH_EXPORT ZH_BOOL    zh_gtWFlash( void );
+//extern ZH_EXPORT void       zh_gtWApp( ZH_GT_WND ** wnd );
+//extern ZH_EXPORT void       zh_gtWCurrent( ZH_GT_WND * wnd );
+//extern ZH_EXPORT void       zh_gtWPos( ZH_GT_WND * wnd, ZH_GT_RECT * rect );
+//extern ZH_EXPORT ZH_BOOL    zh_gtWVis( ZH_GT_WND * wnd, ZH_USHORT uiStatus );
+//
+//extern ZH_EXPORT ZH_ERRCODE zh_gtSLR( ZH_GT_SLR * pSLR ); /* System-Level Request */
+//extern ZH_EXPORT ZH_ERRCODE zh_gtModalRead( void * );
+//extern ZH_EXPORT ZH_ERRCODE zh_gtFlushCursor( void );
+//extern ZH_EXPORT ZH_ERRCODE zh_gtSetColor( ZH_GT_RGB * color );
+//extern ZH_EXPORT ZH_ERRCODE zh_gtGetColor( ZH_GT_RGB * color );
+//extern ZH_EXPORT ZH_ERRCODE zh_gtSetBorder( ZH_GT_RGB * color );
 
 
 /* Keyboard related declarations */
