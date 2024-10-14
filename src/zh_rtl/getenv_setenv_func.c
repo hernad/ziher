@@ -48,8 +48,6 @@
 #include "zh_api.h"
 #include "zh_item_api.h"
 
-
-
 ZH_FUNC( GETENV )
 {
    PZH_ITEM pName = zh_param( 1, ZH_IT_STRING );
