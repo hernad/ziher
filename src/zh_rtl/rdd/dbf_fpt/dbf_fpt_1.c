@@ -648,14 +648,9 @@ static ZH_ERRCODE zh_fptGCgetFreeBlock( FPTAREAP pArea, LPMEMOGCTABLE pGCtable,
    int i;
 
 
-   else if( pArea->bMemoType == DB_MEMO_FPT )
+   if( pArea->bMemoType == DB_MEMO_FPT )
    {
       ulSize = ( ulByteSize + sizeof( FPTBLOCK ) + pArea->ulMemoBlockSize - 1 ) /
-               pArea->ulMemoBlockSize;
-   }
-   else if( pArea->bMemoType == DB_MEMO_DBT )
-   {
-      ulSize = ( ulByteSize + pArea->ulMemoBlockSize ) /
                pArea->ulMemoBlockSize;
    }
    else
