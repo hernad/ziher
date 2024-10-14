@@ -133,8 +133,6 @@ static const char * zh_memoDefaultFileExt( int iType, ZH_USHORT uiRdd )
          return DBT_MEMOEXT;
       case DB_MEMO_FPT:
          return FPT_MEMOEXT;
-      case DB_MEMO_SMT:
-         return SMT_MEMOEXT;
    }
    return NULL;
 }
@@ -236,8 +234,7 @@ static ZH_BOOL zh_fptFileUnLockSh( FPTAREAP pArea )
 static ZH_BOOL zh_fptHasDirectAccess( FPTAREAP pArea )
 {
    return pArea->bMemoType == DB_MEMO_FPT &&
-          ( pArea->uiMemoVersion == DB_MEMOVER_FLEX ||
-            pArea->uiMemoVersion == DB_MEMOVER_CLIP );
+          ( pArea->uiMemoVersion == DB_MEMOVER_FLEX );
 }
 
 /*
@@ -505,8 +502,7 @@ static ZH_ERRCODE zh_fptWriteGCitems( FPTAREAP pArea, LPMEMOGCTABLE pGCtable, ZH
    {
       if( pGCtable->pGCitems[ i ].fChanged )
       {
-         if( ( pArea->uiMemoVersion == DB_MEMOVER_FLEX ||
-               pArea->uiMemoVersion == DB_MEMOVER_CLIP ) &&
+         if( ( pArea->uiMemoVersion == DB_MEMOVER_FLEX ) &&
              /* TODO: check what FLEX/CL53 exactly does in such situations */
              /* Tests show that FLEX/CL53 does not reuse larger blocks
                 which can leave 8 or less dummy bytes so such problem
@@ -652,11 +648,6 @@ static ZH_ERRCODE zh_fptGCgetFreeBlock( FPTAREAP pArea, LPMEMOGCTABLE pGCtable,
    int i;
 
 
-   if( pArea->bMemoType == DB_MEMO_SMT || fRaw )
-   {
-      ulSize = ( ulByteSize + pArea->ulMemoBlockSize - 1 ) /
-               pArea->ulMemoBlockSize;
-   }
    else if( pArea->bMemoType == DB_MEMO_FPT )
    {
       ulSize = ( ulByteSize + sizeof( FPTBLOCK ) + pArea->ulMemoBlockSize - 1 ) /
@@ -746,35 +737,11 @@ static ZH_ERRCODE zh_fptReadGCdata( FPTAREAP pArea, LPMEMOGCTABLE pGCtable )
    {
       int i;
 
-      if( pArea->bMemoType == DB_MEMO_SMT || pArea->bMemoType == DB_MEMO_DBT )
-         pGCtable->ulNextBlock = ZH_GET_LE_UINT32( pGCtable->fptHeader.nextBlock );
-      else
-         pGCtable->ulNextBlock = ZH_GET_BE_UINT32( pGCtable->fptHeader.nextBlock );
+      pGCtable->ulNextBlock = ZH_GET_BE_UINT32( pGCtable->fptHeader.nextBlock );
       pGCtable->ulPrevBlock = pGCtable->ulNextBlock;
 
-      if( pArea->uiMemoVersion == DB_MEMOVER_SIX ||
-          pArea->bMemoType == DB_MEMO_SMT )
-      {
-         pGCtable->bType = DB_MEMOVER_SIX;
-         pGCtable->usMaxItem = MAX_SIXFREEBLOCKS;
-         pGCtable->usItems = ZH_GET_LE_UINT16( pGCtable->fptHeader.nGCitems );
-         if( pGCtable->usItems > pGCtable->usMaxItem )
-         {
-            return EDBF_CORRUPT;
-         }
-
-         pGCtable->pGCitems = ( LPMEMOGCITEM ) zh_xgrab( sizeof( MEMOGCITEM ) * ( pGCtable->usMaxItem + 1 ) );
-
-         for( i = 0; i < pGCtable->usItems; i++ )
-         {
-            pGCtable->pGCitems[ i ].ulSize   = ZH_GET_LE_UINT16( &pGCtable->fptHeader.reserved2[ i * 6 ] );
-            pGCtable->pGCitems[ i ].ulOffset = ZH_GET_LE_UINT32( &pGCtable->fptHeader.reserved2[ i * 6 + 2 ] );
-            pGCtable->pGCitems[ i ].fChanged = ZH_FALSE;
-         }
-      }
-      else if( pArea->bMemoType == DB_MEMO_FPT &&
-               ( pArea->uiMemoVersion == DB_MEMOVER_FLEX ||
-                 pArea->uiMemoVersion == DB_MEMOVER_CLIP ) )
+      if( pArea->bMemoType == DB_MEMO_FPT &&
+               ( pArea->uiMemoVersion == DB_MEMOVER_FLEX ) )
       {
          FPTBLOCK fptBlock;
          ZH_BYTE * bPageBuf;
@@ -841,21 +808,7 @@ static ZH_ERRCODE zh_fptWriteGCdata( FPTAREAP pArea, LPMEMOGCTABLE pGCtable )
       ZH_ULONG ulHdrSize = 512;
       int i, j;
 
-      if( pGCtable->bType == DB_MEMOVER_SIX )
-      {
-         ZH_USHORT usItems = ZH_MIN( pGCtable->usItems, pGCtable->usMaxItem );
-         ZH_PUT_LE_UINT16( pGCtable->fptHeader.nGCitems, usItems );
-         memset( pGCtable->fptHeader.reserved2, 0, sizeof( pGCtable->fptHeader.reserved2 ) );
-         j = pGCtable->usItems - usItems;
-         for( i = j; i < pGCtable->usItems; i++ )
-         {
-            ZH_PUT_LE_UINT16( &pGCtable->fptHeader.reserved2[ ( i - j ) * 6 ],
-                              ( ( ZH_USHORT ) pGCtable->pGCitems[ i ].ulSize ) );
-            ZH_PUT_LE_UINT32( &pGCtable->fptHeader.reserved2[ ( i - j ) * 6 + 2 ],
-                              pGCtable->pGCitems[ i ].ulOffset );
-         }
-      }
-      else if( pGCtable->bType == DB_MEMOVER_FLEX )
+      if( pGCtable->bType == DB_MEMOVER_FLEX )
       {
          ulHdrSize = sizeof( FPTHEADER );
          pGCtable->ulCounter++;
@@ -953,10 +906,7 @@ static ZH_ERRCODE zh_fptWriteGCdata( FPTAREAP pArea, LPMEMOGCTABLE pGCtable )
       }
       if( errCode == ZH_SUCCESS )
       {
-         if( pArea->bMemoType == DB_MEMO_SMT || pArea->bMemoType == DB_MEMO_DBT )
-            ZH_PUT_LE_UINT32( pGCtable->fptHeader.nextBlock, pGCtable->ulNextBlock );
-         else
-            ZH_PUT_BE_UINT32( pGCtable->fptHeader.nextBlock, pGCtable->ulNextBlock );
+         ZH_PUT_BE_UINT32( pGCtable->fptHeader.nextBlock, pGCtable->ulNextBlock );
          if( zh_fileWriteAt( pArea->pMemoFile, &pGCtable->fptHeader,
                              ulHdrSize, 0 ) != ulHdrSize )
          {
@@ -1101,26 +1051,7 @@ static const char * zh_fptGetMemoType( FPTAREAP pArea, ZH_USHORT uiIndex )
          }
          return "U";
       }
-      else if( pArea->bMemoType == DB_MEMO_SMT )
-      {
-         switch( ulType )
-         {
-            case SMT_IT_NIL:
-               return "U";
-            case SMT_IT_CHAR:
-               return "M";
-            case SMT_IT_INT:
-            case SMT_IT_DOUBLE:
-               return "N";
-            case SMT_IT_DATE:
-               return "D";
-            case SMT_IT_LOGICAL:
-               return "L";
-            case SMT_IT_ARRAY:
-               return "A";
-         }
-         return "U";
-      }
+      
       return "M";
    }
 
@@ -1616,11 +1547,6 @@ static ZH_ULONG zh_fptCountSixItemLength( FPTAREAP pArea, PZH_ITEM pItem,
          ( *pulArrayCount )++;
          ulSize = SIX_ITEM_BUFSIZE;
          ulLen = ( ZH_ULONGCAST ) zh_arrayLen( pItem );
-         if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
-         {
-            /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-            ulLen = ZH_MIN( ulLen, 0xFFFF );
-         }
          for( u = 1; u <= ulLen; u++ )
          {
             ulSize += zh_fptCountSixItemLength( pArea, zh_arrayGetItemPtr( pItem, u ), pulArrayCount, iTrans );
@@ -1629,8 +1555,7 @@ static ZH_ULONG zh_fptCountSixItemLength( FPTAREAP pArea, PZH_ITEM pItem,
       case ZH_IT_MEMO:
       case ZH_IT_STRING:
          ulSize = SIX_ITEM_BUFSIZE;
-         /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-         u = pArea->uiMemoVersion == DB_MEMOVER_SIX ? 0xFFFF : ULONG_MAX;
+         u = ULONG_MAX;
          if( iTrans == FPT_TRANS_UNICODE )
          {
             ulLen = ( ZH_ULONGCAST ) zh_itemCopyStrU16( pItem, ZH_CODEPAGE_ENDIAN_LITTLE, NULL, u ) * sizeof( ZH_WCHAR );
@@ -1678,11 +1603,6 @@ static ZH_ULONG zh_fptStoreSixItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_BYTE ** b
       case ZH_IT_ARRAY: /* ZH_IT_OBJECT == ZH_IT_ARRAY */
          ZH_PUT_LE_UINT16( &( *bBufPtr )[ 0 ], FPTIT_SIX_ARRAY );
          ulLen = ( ZH_ULONGCAST ) zh_arrayLen( pItem );
-         if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
-         {
-            /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-            ulLen = ZH_MIN( ulLen, 0xFFFF );
-         }
          ZH_PUT_LE_UINT32( &( *bBufPtr )[ 2 ], ulLen );
          *bBufPtr += SIX_ITEM_BUFSIZE;
          for( u = 1; u <= ulLen; u++ )
@@ -1743,8 +1663,7 @@ static ZH_ULONG zh_fptStoreSixItem( FPTAREAP pArea, PZH_ITEM pItem, ZH_BYTE ** b
       case ZH_IT_STRING:
       case ZH_IT_MEMO:
          ZH_PUT_LE_UINT16( &( *bBufPtr )[ 0 ], FPTIT_SIX_CHAR );
-         /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-         u = pArea->uiMemoVersion == DB_MEMOVER_SIX ? 0xFFFF : ULONG_MAX;
+         u = ULONG_MAX;
          if( iTrans == FPT_TRANS_UNICODE )
          {
             ulLen = ( ZH_ULONGCAST ) zh_itemCopyStrU16( pItem, ZH_CODEPAGE_ENDIAN_LITTLE, NULL, u );
@@ -1818,10 +1737,6 @@ static ZH_ERRCODE zh_fptReadSixItem( FPTAREAP pArea, ZH_BYTE ** pbMemoBuf, ZH_BY
 
          case FPTIT_SIX_CHAR:
             ulLen = ZH_GET_LE_UINT32( &( *pbMemoBuf )[ 2 ] );
-            if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
-            {
-               ulLen &= 0xFFFF; /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-            }
             ( *pbMemoBuf ) += SIX_ITEM_BUFSIZE;
             if( bBufEnd - ( *pbMemoBuf ) >= ( ZH_LONG ) ulLen )
             {
@@ -1848,17 +1763,9 @@ static ZH_ERRCODE zh_fptReadSixItem( FPTAREAP pArea, ZH_BYTE ** pbMemoBuf, ZH_BY
                errCode = EDBF_CORRUPT;
 
             break;
-#if 0
-         case FPTIT_SIX_BLOCK:
-         case FPTIT_SIX_VREF:
-         case FPTIT_SIX_MREF:
-#endif
+
          case FPTIT_SIX_ARRAY:
             ulLen = ZH_GET_LE_UINT32( &( *pbMemoBuf )[ 2 ] );
-            if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
-            {
-               ulLen &= 0xFFFF;   /* only 2 bytes (ZH_SHORT) for SIX compatibility */
-            }
             ( *pbMemoBuf ) += SIX_ITEM_BUFSIZE;
             zh_arrayNew( pItem, ulLen );
             for( u = 1; u <= ulLen; u++ )
@@ -2637,11 +2544,6 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
             if( ulType != FPTIT_TEXT && ulType != FPTIT_PICT )
                ulStart = ulCount = 0;
          }
-         else if( pArea->bMemoType == DB_MEMO_SMT )
-         {
-            if( ulType != SMT_IT_CHAR )
-               ulStart = ulCount = 0;
-         }
       }
 
       if( ulStart >= ulSize )
@@ -2704,43 +2606,6 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
          zh_itemSetCMemo( pItem );
          pBuffer = NULL;
       }
-      else if( pArea->bMemoType == DB_MEMO_SMT )
-      {
-         if( ulType == SMT_IT_CHAR )
-         {
-            if( iTrans == FPT_TRANS_UNICODE )
-            {
-               zh_itemPutStrLenU16( pItem, ZH_CODEPAGE_ENDIAN_LITTLE,
-                                    ( const ZH_WCHAR * ) pBuffer, ulSize >> 1 );
-               zh_xfree( pBuffer );
-            }
-            else
-            {
-               if( iTrans == FPT_TRANS_CP && ulSize != 0 )
-               {
-                  ZH_SIZE nSize = ulSize;
-                  ZH_SIZE nBufSize = ulSize + 1;
-                  zh_cdpnDup3( pBuffer, ulSize, pBuffer, &nSize,
-                               &pBuffer, &nBufSize,
-                               pArea->area.cdPage, zh_vmCodepage() );
-                  ulSize = ( ZH_ULONG ) nSize;
-               }
-               zh_itemPutCLPtr( pItem, pBuffer, ulSize );
-            }
-            zh_itemSetCMemo( pItem );
-            pBuffer = NULL;
-         }
-         else if( ! ulSize || pBuffer[ 0 ] != ( char ) ulType )
-         {
-            errCode = EDBF_CORRUPT;
-            zh_itemClear( pItem );
-         }
-         else
-         {
-            bMemoBuf = ( ZH_BYTE * ) pBuffer;
-            errCode = zh_fptReadSMTItem( pArea, &bMemoBuf, bMemoBuf + ulSize, pItem, iTrans );
-         }
-      }
       else
       {
          switch( ulType )
@@ -2751,11 +2616,6 @@ static ZH_ERRCODE zh_fptGetMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
             case FPTIT_SIX_LOG:
             case FPTIT_SIX_CHAR:
             case FPTIT_SIX_ARRAY:
-#if 0
-            case FPTIT_SIX_BLOCK:
-            case FPTIT_SIX_VREF:
-            case FPTIT_SIX_MREF:
-#endif
                bMemoBuf = ( ZH_BYTE * ) pBuffer;
                errCode = zh_fptReadSixItem( pArea, &bMemoBuf, bMemoBuf + ulSize, pItem, iTrans );
                break;
@@ -3021,47 +2881,6 @@ static ZH_ERRCODE zh_fptPutMemo( FPTAREAP pArea, ZH_USHORT uiIndex, PZH_ITEM pIt
             ulSize = ( ZH_ULONG ) nSize;
          }
       }
-      if( pArea->bMemoType == DB_MEMO_SMT )
-      {
-         ulType = SMT_IT_CHAR;
-      }
-   }
-   else if( pArea->bMemoType == DB_MEMO_DBT )
-   {
-      return EDBF_DATATYPE;
-   }
-   else if( pArea->bMemoType == DB_MEMO_SMT )
-   {
-      ulSize = zh_fptCountSMTItemLength( pArea, pItem, &ulArrayCount, iTrans );
-      if( ulSize == 0 )
-         return EDBF_DATATYPE;
-      pbTmp = bBufAlloc = ( ZH_BYTE * ) zh_xgrab( ulSize );
-      zh_fptStoreSMTItem( pArea, pItem, &pbTmp, iTrans );
-      ulType = ( ZH_ULONG ) bBufAlloc[ 0 ];
-      bBufPtr = bBufAlloc;
-   }
-   else if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
-   {
-      if( ZH_IS_NIL( pItem ) )
-      {
-         ulType = FPTIT_SIX_NIL;
-         ulSize = 0;
-      }
-      else
-      {
-         ulSize = zh_fptCountSixItemLength( pArea, pItem, &ulArrayCount, iTrans );
-         if( ulSize > 0 )
-         {
-            pbTmp = bBufAlloc = ( ZH_BYTE * ) zh_xgrab( ulSize );
-            zh_fptStoreSixItem( pArea, pItem, &pbTmp, iTrans );
-            ulType = ( ZH_ULONG ) ZH_GET_LE_UINT16( bBufAlloc );
-            bBufPtr = bBufAlloc;
-         }
-         else
-         {
-            return EDBF_DATATYPE;
-         }
-      }
    }
    else if( pArea->uiMemoVersion == DB_MEMOVER_FLEX )
    {
@@ -3225,8 +3044,6 @@ static ZH_BOOL zh_fptHasMemoData( FPTAREAP pArea, ZH_USHORT uiIndex )
             return ZH_GET_LE_UINT32( pFieldBuf ) != 0;
          if( uiLen == 10 )
          {
-            if( pArea->bMemoType == DB_MEMO_SMT )
-               return ZH_GET_LE_UINT32( ( ( LPSMTFIELD ) pFieldBuf )->block ) != 0;
             do
             {
                if( *pFieldBuf >= '1' && *pFieldBuf <= '9' )
@@ -3956,16 +3773,8 @@ static ZH_ERRCODE zh_fptCreateMemFile( FPTAREAP pArea, LPDBOPENINFO pCreateInfo 
             return ZH_FAILURE;
          }
          pArea->bMemoType = ( ZH_BYTE ) zh_itemGetNI( pItem );
-#if 0
-         if( ! pArea->bMemoType )
-         {
-            pArea->bMemoType = DB_MEMO_FPT;
-            pArea->uiMemoVersion = DB_MEMOVER_FLEX;
-         }
-#endif
-         if( pArea->bMemoType != DB_MEMO_DBT &&
-             pArea->bMemoType != DB_MEMO_FPT &&
-             pArea->bMemoType != DB_MEMO_SMT )
+
+         if( pArea->bMemoType != DB_MEMO_FPT )
          {
             zh_memoErrorRT( pArea, EG_CREATE, EDBF_MEMOTYPE,
                             pCreateInfo->abName, 0, 0 );
@@ -3975,9 +3784,7 @@ static ZH_ERRCODE zh_fptCreateMemFile( FPTAREAP pArea, LPDBOPENINFO pCreateInfo 
       }
       if( ! pArea->uiMemoVersion )
       {
-         if( pArea->bMemoType == DB_MEMO_SMT )
-            pArea->uiMemoVersion = DB_MEMOVER_SIX;
-         else if( pArea->bMemoType == DB_MEMO_FPT )
+         if( pArea->bMemoType == DB_MEMO_FPT )
          {
             pItem = zh_itemPutNil( pItem );
             if( SELF_INFO( &pArea->area, DBI_MEMOVERSION, pItem ) != ZH_SUCCESS )
@@ -4068,35 +3875,22 @@ static ZH_ERRCODE zh_fptCreateMemFile( FPTAREAP pArea, LPDBOPENINFO pCreateInfo 
 
    memset( &fptHeader, 0, sizeof( fptHeader ) );
    ulSize = 512;
-   if( pArea->uiMemoVersion == DB_MEMOVER_SIX )
+   memcpy( fptHeader.signature1, "Ziher", 8 );
+   if( pArea->uiMemoVersion == DB_MEMOVER_FLEX )
    {
-      memcpy( fptHeader.signature1, "SIxMemo", 8 );
-   }
-   else
-   {
-      memcpy( fptHeader.signature1, "Ziher", 8 );
-      if( pArea->uiMemoVersion == DB_MEMOVER_FLEX ||
-          pArea->uiMemoVersion == DB_MEMOVER_CLIP )
+      memcpy( fptHeader.signature2, "FlexFile3\003", 11 );
+      ulSize = sizeof( FPTHEADER );
+      if( pArea->area.rddID == s_uiRddIdBLOB )
       {
-         memcpy( fptHeader.signature2, "FlexFile3\003", 11 );
-         ulSize = sizeof( FPTHEADER );
-         if( pArea->area.rddID == s_uiRddIdBLOB )
-         {
-            ZH_PUT_LE_UINT16( fptHeader.flexSize, ( ZH_U16 ) pArea->ulMemoBlockSize );
-         }
+         ZH_PUT_LE_UINT16( fptHeader.flexSize, ( ZH_U16 ) pArea->ulMemoBlockSize );
       }
    }
+   
    ulNextBlock = ( ulSize + pArea->ulMemoBlockSize - 1 ) / pArea->ulMemoBlockSize;
-   if( pArea->bMemoType == DB_MEMO_SMT || pArea->bMemoType == DB_MEMO_DBT )
-   {
-      ZH_PUT_LE_UINT32( fptHeader.nextBlock, ulNextBlock );
-      ZH_PUT_LE_UINT32( fptHeader.blockSize, ( ZH_U32 ) pArea->ulMemoBlockSize );
-   }
-   else
-   {
-      ZH_PUT_BE_UINT32( fptHeader.nextBlock, ulNextBlock );
-      ZH_PUT_BE_UINT32( fptHeader.blockSize, ( ZH_U32 ) pArea->ulMemoBlockSize );
-   }
+
+   ZH_PUT_BE_UINT32( fptHeader.nextBlock, ulNextBlock );
+   ZH_PUT_BE_UINT32( fptHeader.blockSize, ( ZH_U32 ) pArea->ulMemoBlockSize );
+   
    if( zh_fileWriteAt( pArea->pMemoFile, &fptHeader, ulSize, 0 ) != ulSize )
       return ZH_FAILURE;
 
@@ -4195,9 +3989,7 @@ static ZH_ERRCODE zh_fptOpenMemFile( FPTAREAP pArea, LPDBOPENINFO pOpenInfo )
       pArea->bMemoType = DB_MEMO_FPT;
       pArea->uiMemoVersion = DB_MEMOVER_FLEX;
    }
-   else if( pArea->bMemoType != DB_MEMO_DBT &&
-            pArea->bMemoType != DB_MEMO_FPT &&
-            pArea->bMemoType != DB_MEMO_SMT )
+   else if( pArea->bMemoType != DB_MEMO_FPT )
    {
       zh_memoErrorRT( pArea, EG_OPEN, EDBF_MEMOTYPE,
                       pOpenInfo->abName, 0, 0 );
@@ -4273,28 +4065,14 @@ static ZH_ERRCODE zh_fptOpenMemFile( FPTAREAP pArea, LPDBOPENINFO pOpenInfo )
          if( nRead >= 512 && nRead != ( ZH_SIZE ) FS_ERROR )
          {
             pArea->uiMemoVersion = DB_MEMOVER_STD;
-            if( pArea->bMemoType == DB_MEMO_SMT )
-               pArea->ulMemoBlockSize = ZH_GET_LE_UINT32( fptHeader.blockSize );
-            else
-               pArea->ulMemoBlockSize = ZH_GET_BE_UINT32( fptHeader.blockSize );
+            pArea->ulMemoBlockSize = ZH_GET_BE_UINT32( fptHeader.blockSize );
             /* hack for some buggy 3rd part memo code implementations */
             if( pArea->ulMemoBlockSize > 0x10000 &&
                 ( pArea->ulMemoBlockSize & 0xFFFF ) != 0 )
             {
                pArea->ulMemoBlockSize &= 0xFFFF;
             }
-            /* Check for compatibility with SIX memo headers */
-            if( memcmp( fptHeader.signature1, "SIxMemo", 7 ) == 0 )
-            {
-               pArea->uiMemoVersion = DB_MEMOVER_SIX;
-            }
-            /* Check for compatibility with CLIP (www.itk.ru) memo headers */
-            else if( memcmp( fptHeader.signature1, "Made by CLIP", 12 ) == 0 )
-            {
-               pArea->uiMemoVersion = DB_MEMOVER_CLIP;
-            }
-            if( pArea->uiMemoVersion != DB_MEMOVER_SIX &&
-                memcmp( fptHeader.signature2, "FlexFile3\003", 10 ) == 0 )
+            if( memcmp( fptHeader.signature2, "FlexFile3\003", 10 ) == 0 )
             {
                ZH_USHORT usSize = ZH_GET_LE_UINT16( fptHeader.flexSize );
                pArea->uiMemoVersion = DB_MEMOVER_FLEX;
@@ -4408,11 +4186,7 @@ static ZH_ERRCODE zh_fptPutValueFile( FPTAREAP pArea, ZH_USHORT uiIndex, const c
             ulSize = ( ZH_ULONG ) ZH_MIN( size, ( ZH_FOFFSET ) ( 0xFFFFFFFFUL - sizeof( FPTBLOCK ) ) );
          }
 
-         if( pArea->bMemoType == DB_MEMO_SMT )
-            ulType = SMT_IT_CHAR;
-         else
-            ulType = FPTIT_BINARY;
-
+         ulType = FPTIT_BINARY;
 
          errCode = zh_dbfGetMemoData( ( DBFAREAP ) pArea, uiIndex - 1,
                                       &ulBlock, &ulOldSize, &ulOldType );
@@ -4656,11 +4430,7 @@ static ZH_ERRCODE zh_fptDoPack( FPTAREAP pArea, ZH_ULONG ulBlockSize,
 
                ulNextBlock = ( ZH_ULONG ) ( ( size + pArea->ulNewBlockSize - 1 ) /
                                             pArea->ulNewBlockSize );
-               if( pArea->bMemoType == DB_MEMO_SMT ||
-                   pArea->bMemoType == DB_MEMO_DBT )
-                  ZH_PUT_LE_UINT32( buffer, ulNextBlock );
-               else
-                  ZH_PUT_BE_UINT32( buffer, ulNextBlock );
+               ZH_PUT_BE_UINT32( buffer, ulNextBlock );
                zh_fileWriteAt( pArea->pMemoTmpFile, buffer, sizeof( buffer ), 0 );
                errCode = zh_fptCopyToFile( pArea->pMemoTmpFile, 0,
                                            pArea->pMemoFile, 0, size );
@@ -4755,11 +4525,7 @@ static ZH_ERRCODE zh_fptPack( FPTAREAP pArea )
 
                ulNextBlock = ( ZH_ULONG ) ( ( size + pArea->ulNewBlockSize - 1 ) /
                                             pArea->ulNewBlockSize );
-               if( pArea->bMemoType == DB_MEMO_SMT ||
-                   pArea->bMemoType == DB_MEMO_DBT )
-                  ZH_PUT_LE_UINT32( buffer, ulNextBlock );
-               else
-                  ZH_PUT_BE_UINT32( buffer, ulNextBlock );
+               ZH_PUT_BE_UINT32( buffer, ulNextBlock );
                zh_fileWriteAt( pArea->pMemoTmpFile, buffer, sizeof( buffer ), 0 );
 
                errCode = zh_fptCopyToFile( pArea->pMemoTmpFile, 0,
@@ -5160,18 +4926,8 @@ static ZH_ERRCODE zh_fptRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
             zh_itemPutNI( pItem, iOldSize );
          else
          {
-            switch( zh_memoDefaultType( pRDD, ulConnect ) )
-            {
-               case DB_MEMO_DBT:
-                  zh_itemPutNI( pItem, DBT_DEFBLOCKSIZE );
-                  break;
-               case DB_MEMO_SMT:
-                  zh_itemPutNI( pItem, SMT_DEFBLOCKSIZE );
-                  break;
-               default:
-                  zh_itemPutNI( pItem, FPT_DEFBLOCKSIZE );
-                  break;
-            }
+            zh_itemPutNI( pItem, FPT_DEFBLOCKSIZE );
+            break;            
          }
          if( iSize > 0 && ( iSize <= 0x10000 || ( iSize & 0xFFFF ) == 0 ) )
             pData->ulMemoBlockSize = iSize;
@@ -5187,9 +4943,7 @@ static ZH_ERRCODE zh_fptRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
          {
             switch( iType )
             {
-               case DB_MEMO_DBT:
                case DB_MEMO_FPT:
-               case DB_MEMO_SMT:
                   pData->bMemoType = ( ZH_BYTE ) iType;
             }
          }
@@ -5204,9 +4958,7 @@ static ZH_ERRCODE zh_fptRddInfo( LPRDDNODE pRDD, ZH_USHORT uiIndex, ZH_ULONG ulC
          switch( iType )
          {
             case DB_MEMOVER_STD:
-            case DB_MEMOVER_SIX:
             case DB_MEMOVER_FLEX:
-            case DB_MEMOVER_CLIP:
                pData->bMemoExtType = ( ZH_BYTE ) iType;
          }
          break;
