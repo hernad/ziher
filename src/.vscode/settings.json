@@ -15,7 +15,8 @@
         "random": "c",
         "socket.h": "c",
         "zh_item_api.h": "c",
-        "zh_macro.h": "c"
+        "zh_macro.h": "c",
+        "*.zhh": "c"
     },
     "git.ignoreLimitWarning": true,
     "java.configuration.updateBuildConfiguration": "automatic",

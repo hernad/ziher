@@ -9977,11 +9977,7 @@ static const RDDFUNCS cdxTable =
 };
 
 
-#if defined( ZH_SIXCDX )
-#  define ZH_CDXRDD  "SIXCDX"
-#else
 #  define ZH_CDXRDD  "DBFCDX"
-#endif
 
 ZH_FUNC_STATIC( _GETFUNCTABLE )
 {
@@ -10033,6 +10029,7 @@ static void zh_cdxRddInit( void * cargo )
 
    zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
 }
+
 
 
 ZH_FUNC_TRANSLATE( DBFCDX, _DBF )

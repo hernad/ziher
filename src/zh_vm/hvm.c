@@ -1051,8 +1051,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
 
    //printf("init step 9\n");
-   //if (bInitRT)
-   zh_conInit();
+   if (bInitRT)
+     zh_conInit();
 
    /* Check for some internal switches */
    //printf("init step 10\n");
@@ -1148,7 +1148,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
          }
          else
          {
-            puts("ZH_START_PROCEDURE = \"MAIN\"");
+            //puts("ZH_START_PROCEDURE = \"MAIN\"");
             pszMain = ZH_START_PROCEDURE;
             pDynSym = zh_dynsymFind( pszMain );
             //printf("init step 20\n");
