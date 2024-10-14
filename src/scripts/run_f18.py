@@ -36,7 +36,7 @@ elif arg1 == "func_hello_ziher_2":
    ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 0, 1)
    textual_run(header=ziher_header)
    f18klijentlib.run("NASLOVNI_EKRAN_SPLASH_SCREEN", 1, 1)
-   f18klijentlib.run("MAIN", 1, 1)
+   #f18klijentlib.run("MAIN", 1, 1)
    ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 0, 1)
    textual_run(header=ziher_header)
    ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 0, 1)
@@ -50,14 +50,17 @@ elif arg1 == "func_hello_ziher_2":
    #   #__import__("f18klijentlib")
    #reload(f18klijentlib)
 
-   f18klijentlib.fill_dyntable()
-   print("step 20")
-   s = input()
-   f18klijentlib.vminit(False, False, True) # 1. start main, 2. init RT, 3. release console
-   print("step 21")
-   s = input()
-   
+
+   f18klijentlib.vminit(False, True, True) # 1. start main, 2. init RT, 3. release console
+   f18klijentlib.fill_dyntable_0()
    f18klijentlib.run("__ZHVMINIT", 1, 1)
+
+   f18klijentlib.fill_dyntable()
+
+   #print("step 21")
+   #s = input()
+   
+   
    ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
    
    textual_run(header=ziher_header)
