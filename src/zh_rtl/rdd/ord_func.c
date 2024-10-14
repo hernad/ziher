@@ -260,7 +260,6 @@ ZH_FUNC( ORDISUNIQUE )
       memset( &pOrderInfo, 0, sizeof( pOrderInfo ) );
       pOrderInfo.itmOrder = zh_param( 1, ZH_IT_STRING | ZH_IT_NUMERIC );
       pOrderInfo.atomBagName = zh_param( 2, ZH_IT_STRING );
-      /* Ziher extension: NewVal to set/reset unique flag */
       pOrderInfo.itmNewVal = zh_param( 3, ZH_IT_LOGICAL );
       pOrderInfo.itmResult = zh_itemPutL( NULL, ZH_FALSE );
       SELF_ORDINFO( pArea, DBOI_UNIQUE, &pOrderInfo );

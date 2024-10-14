@@ -118,22 +118,22 @@ ZH_FUNC( DRIVETYPE )
    switch( uiType )
    {
       case DRIVE_RAMDISK:
-         uiType = 0;           /* RAM Drive - Clipper compatible */
+         uiType = 0;      
          break;
       case DRIVE_REMOVABLE:
-         uiType = 2;           /* Floppy Drive - Clipper compatible */
+         uiType = 2;     
          break;
       case DRIVE_FIXED:
-         uiType = 3;           /* Hard Drive  - Clipper compatible */
+         uiType = 3;          
          break;
       case DRIVE_CDROM:
-         uiType = 4;           /* CD-Rom Drive - xZiher extension */ /* ZH_EXTENSION */
+         uiType = 4;          
          break;
       case DRIVE_REMOTE:
-         uiType = 5;           /* Network Drive - xZiher extension */ /* ZH_EXTENSION */
+         uiType = 5;         
          break;
       default:
-         uiType = 9;           /* Unknown Drive - xZiher extension */ /* ZH_EXTENSION */
+         uiType = 9; 
          break;
    }
    zh_retni( uiType );

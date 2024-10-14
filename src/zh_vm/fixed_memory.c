@@ -1396,21 +1396,21 @@ ZH_SIZE zh_xquery( int iMode )
 #endif
          break;
 
-      case ZH_MEM_STACKITEMS: /* Ziher extension (Total items allocated for the stack) */
+      case ZH_MEM_STACKITEMS: /* (Total items allocated for the stack) */
          nResult = zh_stackTotalItems();
          break;
 
-      case ZH_MEM_STACK:      /* Ziher extension (Total memory size used by the stack [bytes]) */
+      case ZH_MEM_STACK:      /* (Total memory size used by the stack [bytes]) */
          nResult = zh_stackTotalItems() * sizeof( ZH_ITEM );
          break;
 
-      case ZH_MEM_STACK_TOP:  /* Ziher extension (Total items currently on the stack) */
+      case ZH_MEM_STACK_TOP:  /* (Total items currently on the stack) */
       {
          ZH_STACK_TLS_PRELOAD
          nResult = zh_stackTopOffset();
          break;
       }
-      case ZH_MEM_STATISTICS: /* Ziher extension (Is FM statistic enabled?) */
+      case ZH_MEM_STATISTICS: /* (Is FM statistic enabled?) */
 #ifdef ZH_FM_STATISTICS
          nResult = s_fStatistic;
 #else
@@ -1418,7 +1418,7 @@ ZH_SIZE zh_xquery( int iMode )
 #endif
          break;
 
-      case ZH_MEM_CANLIMIT:   /* Ziher extension (Is used memory limit supported?) */
+      case ZH_MEM_CANLIMIT:   /* (Is used memory limit supported?) */
          if( zh_vmInternalsEnabled() )
          {
 #if defined( ZH_FM_DLMT_ALLOC )

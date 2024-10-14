@@ -49,7 +49,7 @@
 #ifndef _SETCURS_ZH
 #define _SETCURS_ZH
 
-#define SC_UNDEF        -1  /* NOTE: This is a Ziher extension. */
+#define SC_UNDEF        -1
 #define SC_NONE         0
 #define SC_NORMAL       1
 #define SC_INSERT       2

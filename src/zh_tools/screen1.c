@@ -2,7 +2,7 @@
  * CT3 video functions:
  * ScreenAttr(), ScreenMix(), SayScreen(),
  * ClearWin(), InvertWin(), UnTextWin(), CharWin(), ColorWin(), ColorRepl()
- * and Ziher extension: ScreenText()
+ * and ScreenText()
  *
  * Copyright 2007 Przemyslaw Czerpak
  *

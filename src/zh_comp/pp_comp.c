@@ -346,7 +346,6 @@ static ZH_BOOL zh_pp_CompilerSwitch( void * cargo, const char * szSwitch,
       else
          fError = ZH_TRUE;
    }
-   /* xZiher extension */
    else if( i >= 4 && zh_strnicmp( szSwitch, "TEXTHIDDEN", i ) == 0 )
    {
       if( fSet )

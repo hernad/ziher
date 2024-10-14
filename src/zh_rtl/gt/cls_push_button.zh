@@ -84,7 +84,7 @@ CREATE CLASS PushButton FUNCTION ZHPushButton
    METHOD typeOut() SETGET
    METHOD style( cStyle ) SETGET
 
-   METHOD New( nRow, nCol, cCaption ) /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nRow, nCol, cCaption )
 
    PROTECTED:
 

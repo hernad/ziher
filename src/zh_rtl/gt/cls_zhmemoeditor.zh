@@ -139,8 +139,6 @@ METHOD Edit() CLASS ZHMemoEditor
             LOOP
          ENDIF
 
-         // Is it a configurable key?
-         // K_ALT_W is a Ziher extension, it is Ctrl+W in Cl*pper
          IF nKeyStd $ hConfigurableKeys .OR. ;
             ( zh_bitAnd( zh_keyMod( nKey ), ZH_KF_CTRL ) != 0 .AND. Upper( zh_keyChar( zh_keyVal( nKey ) ) ) == "W" )
             ::HandleUserKey( nKey, ::xDo( iif( ::lDirty, ME_UNKEYX, ME_UNKEY ) ) )

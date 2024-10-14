@@ -73,7 +73,7 @@ CREATE CLASS ScrollBar FUNCTION ZHScrollBar
    METHOD update()
    METHOD hitTest( nMRow, nMCol )
 
-   METHOD New( nStart, nEnd, nOffset, bSBlock, nOrient )  /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nStart, nEnd, nOffset, bSBlock, nOrient )
 
    PROTECTED:
 

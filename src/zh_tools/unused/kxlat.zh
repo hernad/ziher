@@ -380,7 +380,6 @@ FUNCTION GetKXTab()
 
    RETURN cTrs
 
-/* Ziher extensions using standard numeric key values */
 
 FUNCTION hbct_SetKXLat( nOrgKeyValue, nNewKeyValue )
 

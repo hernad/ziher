@@ -68,13 +68,13 @@ CREATE CLASS MenuItem FUNCTION ZHMenuItem
    METHOD shortcut( nShortcut ) SETGET
    METHOD style( cStyle ) SETGET
 
-   VAR __col      INIT -1  AS NUMERIC                   /* NOTE: This is a Ziher extension. */
-   VAR __row      INIT -1  AS NUMERIC                   /* NOTE: This is a Ziher extension. */
-   VAR __issep    INIT .F. AS LOGICAL                   /* NOTE: This is a Ziher extension. */
+   VAR __col      INIT -1  AS NUMERIC
+   VAR __row      INIT -1  AS NUMERIC
+   VAR __issep    INIT .F. AS LOGICAL
 
    METHOD isPopUp()
 
-   METHOD New( cCaption, boData, nShortcut, cMessage, nID ) /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( cCaption, boData, nShortcut, cMessage, nID )
 
    PROTECTED:
 

@@ -119,7 +119,6 @@ ZH_FUNC( DBFILTER )
       zh_retc_null();
 }
 
-/* Ziher extension to retrieve filter codeblock */
 ZH_FUNC( ZH_DBGETFILTER )
 {
    AREAP pArea = ( AREAP ) zh_rddGetCurrentWorkAreaPointer();

@@ -244,8 +244,6 @@ PZH_COMP zh_comp_new( void )
 
       pComp->pLex->pPP = pPP;
 
-      /* various compatibility flags (-k switch)
-         activate Ziher extensions by default. */
       pComp->supported = ZH_COMPFLAG_ZIHER   |
                          ZH_COMPFLAG_XBASE     |
                          ZH_COMPFLAG_ZH_INLINE |

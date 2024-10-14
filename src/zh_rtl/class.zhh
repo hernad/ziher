@@ -116,7 +116,6 @@
    #xtranslate __ZH_CLS_MTHNAME <!ClassName!> <MethodName> => <ClassName>_<MethodName>
 #endif
 
-/* parameters list passed throw - it's Ziher extension */
 #ifndef ZH_CLS_PARAM_LIST
    #define ZH_CLS_PARAM_LIST ...
 #endif
@@ -519,7 +518,6 @@
    #xcommand SYNC METHOD <!MethodName1!>[([<params,...>])], <!MethodName2!>[([<params,...>])] [, <!MethodNameN!>[([<params,...>])]] => ;
              SYNC METHOD <MethodName1> [ ; SYNC METHOD <MethodName2> ] [ ; SYNC METHOD <MethodNameN> ]
 
-   /* FUNCTION/PROCEDURE is a Ziher extension */
    #xcommand METHOD [<type: FUNCTION, PROCEDURE>] <!className!>:<!methodName!>[([<params,...>])] => ;
              METHOD <type> <methodName>( <params> ) CLASS <className>
 

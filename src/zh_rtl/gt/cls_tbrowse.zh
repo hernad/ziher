@@ -231,7 +231,7 @@ CREATE CLASS TBrowse
 
    METHOD configure( nMode )                    // mark that the internal settings of the TBrowse object should be reconfigured
 
-   METHOD new( nTop, nLeft, nBottom, nRight )   // constructor, NOTE: This method is a Ziher extension [vszakats]
+   METHOD new( nTop, nLeft, nBottom, nRight )
 
    PROTECTED:
 

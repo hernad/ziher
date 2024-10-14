@@ -62,9 +62,7 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
 
    RETURN zh_gtAlert( cMessage, aOptionsOK, xColorNorm, xColorHigh )
 
-/* NOTE: xMessage can be of any type, xColorNorm can be numeric.
-         These are Ziher extensions over Alert(). */
-/* NOTE: nDelay parameter is a Ziher extension over Alert(). */
+/* NOTE: xMessage can be of any type, xColorNorm can be numeric.*/
 
 FUNCTION zh_Alert( xMessage, aOptions, xColorNorm, nDelay )
 

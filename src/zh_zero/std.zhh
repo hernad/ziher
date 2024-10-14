@@ -56,7 +56,6 @@
 
 #command END SEQUENCE      => endsequence
 
-/* Ziher extensions */
 #command END SWITCH        => endswitch
 #command END WITH          => endwith
 #command END OBJECT        => endwith
@@ -654,7 +653,6 @@
 
 
 
-/* Ziher extensions */
 #command SET FILECASE <(x)>            => Set( _SET_FILECASE, <(x)> )
 #command SET FILECASE (<x>)            => Set( _SET_FILECASE, <x> )
 #command SET DIRCASE <(x)>             => Set( _SET_DIRCASE, <(x)> )

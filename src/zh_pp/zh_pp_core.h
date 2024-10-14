@@ -2702,7 +2702,6 @@ static void zh_pp_pragmaNew( PZH_PP_STATE pState, PZH_PP_TOKEN pToken )
          pValue = zh_pp_pragmaGetInt( pToken->pNext, &pState->iMaxCycles );
          fError = pValue == NULL;
       }
-      /* xZiher extension */
       else if( zh_pp_tokenValueCmp( pToken, "TEXTHIDDEN", ZH_PP_CMP_DBASE ) )
       {
          pValue = zh_pp_pragmaGetInt( pToken->pNext, &iValue );
@@ -5336,8 +5335,6 @@ static void zh_pp_preprocessToken( PZH_PP_STATE pState )
                fDirective = ZH_TRUE;
                break;
             }
-            /* Ziher extension: concatenate keywords without spaces between
-               them */
             zh_pp_concatenateKeywords( pState, &pState->pFile->pTokenList );
             if( zh_pp_processDefine( pState, &pState->pFile->pTokenList ) )
                continue;

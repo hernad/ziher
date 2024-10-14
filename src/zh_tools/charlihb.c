@@ -1,7 +1,7 @@
 /*
  * CT3 string functions
- *     - CharSList()  (Ziher extension)
- *     - CharHist()  (Ziher extension)
+ *     - CharSList()
+ *     - CharHist()
  *
  * Copyright 2001 IntTec GmbH, Neunlindenstr 32, 79106 Freiburg, Germany
  *        Author: Martin Vogel <vogel@inttec.de>

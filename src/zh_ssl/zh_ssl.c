@@ -1,5 +1,5 @@
 /*
- * OpenSSL API (SSL) - Ziher extensions
+ * OpenSSL API (SSL)
  *
  * Copyright 2009 Viktor Szakats (vszakats.net/ziher)
  *

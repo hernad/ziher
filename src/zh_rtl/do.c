@@ -50,8 +50,6 @@
 #include "zh_vm.h"
 #include "zh_stack.h"
 
-/* NOTE: Do() as a function is a Ziher extension. [vszakats] */
-
 /* NOTE: use zh_stackItemFromBase( uiParam ) instead of
  *       zh_param( uiParam, ZH_IT_ANY ) to keep references to
  *       parameters passed by refeence. [druzus]

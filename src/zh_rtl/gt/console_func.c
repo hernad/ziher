@@ -122,17 +122,6 @@ ZH_EXTERN void zh_conInit( void )
 
 #endif
 
-   //{
-      /* switch //STDERR:x */
-   //   int iStderr = zh_cmdargNum( "STDERR" );
-
-   //   if( iStderr == 0 || iStderr == 1 )  /* //STDERR with no parameter or 0 */
-   //      s_hFilenoStderr = s_hFilenoStdout;
-      /* disabled in default builds. It's not multi-platform and very
-       * dangerous because it can redirect error messages to data files
-       * [druzus]
-       */
-   //}
 
    /*
     * Some compilers open stdout and stderr in text mode, but
@@ -610,8 +599,6 @@ ZH_FUNC( DISPOUTAT )  /* writes a single value to the screen at specific positio
          zh_xfree( pszString );
    }
 }
-
-/* Ziher extension, works like DispOutAt() but does not change cursor position */
 
 ZH_FUNC( ZH_DISPOUTAT )
 {

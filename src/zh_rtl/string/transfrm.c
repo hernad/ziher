@@ -67,7 +67,7 @@
 #define PF_EMPTY      0x0200   /* @Z */
 #define PF_WIDTH      0x0400   /* @S */
 #define PF_PARNEGWOS  0x0800   /* @) Similar to PF_PARNEG but without leading spaces */
-#define PF_TIME       0x1000   /* @T only time part from timestamp items, Ziher extension */
+#define PF_TIME       0x1000   /* @T only time part from timestamp items */
 
 ZH_FUNC( TRANSFORM )
 {

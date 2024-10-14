@@ -82,7 +82,7 @@ CREATE CLASS TBColumn
    METHOD postBlock( bPostBlock ) SETGET             /* Code block validating values */
    METHOD setStyle( nStyle, lNewValue )
 
-   METHOD New( cHeading, bBlock )                    /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( cHeading, bBlock )
 
 ENDCLASS
 

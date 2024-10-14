@@ -107,7 +107,6 @@ ZH_FUNC( LTRIM )
 
 /* trims trailing spaces from a string */
 
-/* NOTE: The second parameter is a Ziher extension. */
 
 ZH_FUNC( RTRIM )
 {
@@ -136,7 +135,6 @@ ZH_FUNC_TRANSLATE( TRIM, RTRIM )
 
 /* trims leading and trailing spaces from a string */
 
-/* NOTE: The second parameter is a Ziher extension. */
 
 ZH_FUNC( ALLTRIM )
 {

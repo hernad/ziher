@@ -1,10 +1,10 @@
 /*
  * CT3 string functions
- *     - CharSub()  (Ziher extension)
- *     - CharShl()  (Ziher extension)
- *     - CharShr()  (Ziher extension)
- *     - CharRll()  (Ziher extension)
- *     - CharRlr()  (Ziher extension)
+ *     - CharSub()
+ *     - CharShl()
+ *     - CharShr()
+ *     - CharRll()
+ *     - CharRlr()
  *
  * Copyright 2001 IntTec GmbH, Neunlindenstr 32, 79106 Freiburg, Germany
  *        Author: Martin Vogel <vogel@inttec.de>

@@ -86,7 +86,7 @@ CREATE CLASS PopupMenu FUNCTION ZHPopupMenu
    METHOD top( nTop ) SETGET
    METHOD width() SETGET
 
-   METHOD New( nTop, nLeft, nBottom, nRight ) /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nTop, nLeft, nBottom, nRight )
 
    PROTECTED:
 

@@ -68,7 +68,7 @@ CREATE CLASS TopBarMenu FUNCTION ZHTopBarMenu
    METHOD getNext()
    METHOD getPrev()
    METHOD getAccel( nKey )
-   METHOD getShortCt( nKey )                        /* NOTE: This method exists but it is not documented in the manuals nor the NG's [jlalin] */
+   METHOD getShortCt( nKey ) 
    METHOD hitTest( nMRow, nMCol )
    METHOD insItem( nPos, oItem )
    METHOD select( nPos )
@@ -81,7 +81,7 @@ CREATE CLASS TopBarMenu FUNCTION ZHTopBarMenu
    METHOD right( nRight ) SETGET
    METHOD row( nRow ) SETGET
 
-   METHOD New( nRow, nLeft, nRight )                /* NOTE: This method is a Ziher extension [vszakats] */
+   METHOD New( nRow, nLeft, nRight )
 
    PROTECTED:
 
