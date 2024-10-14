@@ -61,19 +61,14 @@
 #  if ! defined( ZH_HAS_TERMIOS )
 #     define ZH_HAS_TERMIOS
 #  endif
-#endif
-
-#if defined( ZH_OS_UNIX )
-#  if defined( ZH_HAS_TERMIOS )
-#     include <unistd.h>
-#     include <termios.h>
-#     include <sys/ioctl.h>
-#     include <signal.h>
-#     include <errno.h>
-#     include <sys/time.h>
-#     include <sys/types.h>
-#     include <sys/wait.h>
-#  endif
+#  include <unistd.h>
+#  include <termios.h>
+#  include <sys/ioctl.h>
+#  include <signal.h>
+#  include <errno.h>
+#  include <sys/time.h>
+#  include <sys/types.h>
+#  include <sys/wait.h>
 #else
 #  if defined( ZH_OS_WIN )
 #     include <windows.h>
@@ -214,8 +209,7 @@ static void zh_gt_std_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
    ZH_GTSUPER_INIT( pGT, hFilenoStdin, hFilenoStdout, hFilenoStderr );
 
 /* SA_NOCLDSTOP in #if is a hack to detect POSIX compatible environment */
-#if defined( ZH_HAS_TERMIOS ) && \
-    defined( SA_NOCLDSTOP )
+#if defined( ZH_HAS_TERMIOS ) && defined( SA_NOCLDSTOP )
 
    if( pGTSTD->fStdinConsole )
    {

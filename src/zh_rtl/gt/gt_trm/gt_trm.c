@@ -77,7 +77,6 @@
 #include <string.h>
 #include <fcntl.h>
 
-#if defined( ZH_OS_UNIX )
 # include <errno.h>
 # include <time.h>
 # include <unistd.h>
@@ -88,7 +87,6 @@
 # include <sys/time.h>
 # include <sys/ioctl.h>
 # include <sys/wait.h>
-#endif
 
 #ifndef O_ACCMODE
 #  define O_ACCMODE        ( O_RDONLY | O_WRONLY | O_RDWR )
@@ -152,7 +150,6 @@ static ZH_GT_FUNCS SuperTable;
 #define KEY_KPADMASK       0x08000000
 #define KEY_EXTDMASK       0x10000000
 #define KEY_CLIPMASK       0x20000000
-/* 0x40000000 reserved for Ziher extended keys */
 #define KEY_MASK           0xFF000000
 
 #define CLR_KEYMASK( x )   ( ( x ) & ~KEY_MASK )
@@ -336,7 +333,6 @@ typedef struct _ZH_GTTRM
    int efds_no;
 
    /* terminal functions */
-
    void     (* Init) ( ZH_GTTRM_PTR );
    void     (* Exit) ( ZH_GTTRM_PTR );
    void     (* SetTermMode) ( ZH_GTTRM_PTR, int );
@@ -2917,6 +2913,12 @@ static void zh_gt_trm_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
 
    zh_gt_trm_SetTerm( pTerm );
 
+// https://www.gnu.org/software/libc/manual/html_node/Flags-for-Sigaction.html
+// Macro: int SA_NOCLDSTOP
+// This flag is meaningful only for the SIGCHLD signal. When the flag is set, the system delivers the signal for a terminated child process but not for one that is stopped. By default, SIGCHLD is delivered for both terminated children and stopped children.
+
+// Setting this flag for a signal other than SIGCHLD has no effect.
+
 /* SA_NOCLDSTOP in #if is a hack to detect POSIX compatible environment */
 #if defined( ZH_OS_UNIX ) && defined( SA_NOCLDSTOP )
 
@@ -3196,7 +3198,7 @@ static ZH_BOOL zh_gt_trm_Resume( PZH_GT pGT )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_Resume(%p)", ( void * ) pGT ) );
 
    pTerm = ZH_GTTRM_GET( pGT );
-#if defined( ZH_OS_UNIX ) || defined( __DJGPP__ )
+#if defined( ZH_OS_UNIX )
    if( pTerm->fRestTTY )
       tcsetattr( pTerm->hFilenoStdin, TCSANOW, &pTerm->curr_TIO );
 #endif
