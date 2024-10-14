@@ -45,3 +45,5 @@ python scripts/run_f18.py $fn 1 1
 #
 #EOF
 
+
+reset

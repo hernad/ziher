@@ -2506,9 +2506,9 @@ static void zh_compGenVariablePCode( ZH_COMP_DECL, ZH_BYTE bPCode, const char * 
       if( ZH_COMP_PARAM->functions.pLast->iEarlyEvalPass == 0 || ZH_SUPPORT_MACRODECL )
          zh_compGenWarning( ZH_COMP_PARAM, zh_comp_szWarnings, 'W', ZH_COMP_WARN_MEMVAR_ASSUMED, szVarName, NULL );
 
-      if( bPCode == ZH_P_POPVARIABLE )
+      if( bPCode == ZH_P_POPVAR )
          bPCode = ZH_P_POPMEMVAR;
-      else if( bPCode == ZH_P_PUSHVARIABLE )
+      else if( bPCode == ZH_P_PUSHVAR )
          bPCode = ZH_P_PUSHMEMVAR;
       else
          bPCode = ZH_P_PUSHMEMVARREF;
@@ -2683,7 +2683,7 @@ void zh_compGenPopVar( const char * szVarName, ZH_COMP_DECL ) /* generates the p
 
    if( ! pVar ) /* undeclared variable */
    {
-      zh_compGenVariablePCode( ZH_COMP_PARAM, ZH_P_POPVARIABLE, szVarName );
+      zh_compGenVariablePCode( ZH_COMP_PARAM, ZH_P_POPVAR, szVarName );
    }
 }
 
@@ -2753,7 +2753,7 @@ void zh_compGenPushVar( const char * szVarName, ZH_COMP_DECL )
 
    if( ! pVar ) /* undeclared variable */
    {
-      zh_compGenVariablePCode( ZH_COMP_PARAM, ZH_P_PUSHVARIABLE, szVarName );
+      zh_compGenVariablePCode( ZH_COMP_PARAM, ZH_P_PUSHVAR, szVarName );
    }
 }
 
@@ -4257,7 +4257,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
             if( ZH_COMP_PARAM->iSyntaxCheckOnly >= 2 )
                zh_compParserRun( ZH_COMP_PARAM );
             else
-               printf("syntax only - zh_comp_yyparse\n");
+               //printf("syntax only - zh_comp_yyparse\n");
                zh_comp_yyparse( ZH_COMP_PARAM );
             ZH_COMP_PARAM->iExitLevel = ZH_MAX( iExitLevel, ZH_COMP_PARAM->iExitLevel );
          }

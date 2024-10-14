@@ -198,7 +198,7 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    2,        /* ZH_P_POPLOCALNEAR          */
    3,        /* ZH_P_POPMEMVAR             */
    3,        /* ZH_P_POPSTATIC             */
-   3,        /* ZH_P_POPVARIABLE           */
+   3,        /* ZH_P_POPVAR           */
    1,        /* ZH_P_POWER                 */
    1,        /* ZH_P_PUSHALIAS             */
    3,        /* ZH_P_PUSH_ALIASED_FIELD      */
@@ -224,7 +224,7 @@ const ZH_BYTE zh_comp_pcode_len[] = {
    0,        /* ZH_P_PUSHSTRSHORT          */
    3,        /* ZH_P_PUSHSYM               */
    2,        /* ZH_P_PUSHSYMNEAR           */
-   3,        /* ZH_P_PUSHVARIABLE          */
+   3,        /* ZH_P_PUSHVAR          */
    1,        /* ZH_P_RETVALUE              */
    3,        /* ZH_P_SEND                  */
    2,        /* ZH_P_SENDSHORT             */
@@ -390,7 +390,7 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    NULL,                       /* ZH_P_POPLOCALNEAR          */
    NULL,                       /* ZH_P_POPMEMVAR             */
    NULL,                       /* ZH_P_POPSTATIC             */
-   NULL,                       /* ZH_P_POPVARIABLE           */
+   NULL,                       /* ZH_P_POPVAR           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
    NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
@@ -416,7 +416,7 @@ static const PZH_PCODE_FUNC s_psize_table[] =
    zh_p_pushstrshort,          /* ZH_P_PUSHSTRSHORT          */
    NULL,                       /* ZH_P_PUSHSYM               */
    NULL,                       /* ZH_P_PUSHSYMNEAR           */
-   NULL,                       /* ZH_P_PUSHVARIABLE          */
+   NULL,                       /* ZH_P_PUSHVAR          */
    NULL,                       /* ZH_P_RETVALUE              */
    NULL,                       /* ZH_P_SEND                  */
    NULL,                       /* ZH_P_SENDSHORT             */

@@ -226,7 +226,7 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    zh_p_localnearerr,          /* ZH_P_POPLOCALNEAR          */
    NULL,                       /* ZH_P_POPMEMVAR             */
    NULL,                       /* ZH_P_POPSTATIC             */
-   NULL,                       /* ZH_P_POPVARIABLE           */
+   NULL,                       /* ZH_P_POPVAR           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
    NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
@@ -252,7 +252,7 @@ static const PZH_FIX_FUNC s_fixlocals_table[] =
    NULL,                       /* ZH_P_PUSHSTRSHORT          */
    NULL,                       /* ZH_P_PUSHSYM               */
    NULL,                       /* ZH_P_PUSHSYMNEAR           */
-   NULL,                       /* ZH_P_PUSHVARIABLE          */
+   NULL,                       /* ZH_P_PUSHVAR          */
    NULL,                       /* ZH_P_RETVALUE              */
    NULL,                       /* ZH_P_SEND                  */
    NULL,                       /* ZH_P_SENDSHORT             */

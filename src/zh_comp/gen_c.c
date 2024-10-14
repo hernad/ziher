@@ -1362,7 +1362,7 @@ static ZH_GENC_FUNC( zh_p_popstatic )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_popvariable )
+static ZH_GENC_FUNC( zh_p_popvar )
 {
    fprintf( cargo->yyc, "\tZH_P_POPVARIABLE, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
@@ -1863,7 +1863,7 @@ static ZH_GENC_FUNC( zh_p_pushfuncsym )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_pushvariable )
+static ZH_GENC_FUNC( zh_p_pushvar )
 {
    fprintf( cargo->yyc, "\tZH_P_PUSHVARIABLE, %u, %u,",
             pFunc->pCode[ nPCodePos + 1 ],
@@ -2631,7 +2631,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_poplocalnear,
    zh_p_popmemvar,
    zh_p_popstatic,
-   zh_p_popvariable,
+   zh_p_popvar,
    zh_p_power,
    zh_p_pushalias,
    zh_p_pushaliasedfield,
@@ -2657,7 +2657,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_pushstrshort,
    zh_p_pushsym,
    zh_p_pushsymnear,
-   zh_p_pushvariable,
+   zh_p_pushvar,
    zh_p_retvalue,
    zh_p_send,
    zh_p_sendshort,

@@ -2437,7 +2437,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
             pCode += 3;
             break;
 
-         case ZH_P_PUSHVARIABLE:
+         case ZH_P_PUSHVAR:
             /* Push a value of variable of unknown type onto the eval stack
              */
             zh_vmPushVariable( pSymbols + ZH_PCODE_MKUSHORT( &pCode[ 1 ] ) );
@@ -2534,7 +2534,7 @@ void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
             pCode += 3;
             break;
 
-         case ZH_P_POPVARIABLE:
+         case ZH_P_POPVAR:
          {
 
             zh_memvarSetValue( pSymbols + ZH_PCODE_MKUSHORT( &pCode[ 1 ] ),
@@ -9549,30 +9549,24 @@ void zh_xvmPopStatic( ZH_USHORT uiStatic )
    zh_vmPopStatic( uiStatic );
 }
 
-ZH_BOOL zh_xvmPushVariable( PZH_SYMBOL pSymbol )
+ZH_BOOL zh_xvmPushVar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
-   ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushVariable(%p)", ( void * ) pSymbol ) );
+   ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushVar(%p)", ( void * ) pSymbol ) );
 
    zh_vmPushVariable( pSymbol );
 
    ZH_XVM_RETURN
 }
 
-ZH_BOOL zh_xvmPopVariable( PZH_SYMBOL pSymbol )
+ZH_BOOL zh_xvmPopVar( PZH_SYMBOL pSymbol )
 {
    ZH_STACK_TLS_PRELOAD
 
-   ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopVariable(%p)", ( void * ) pSymbol ) );
+   ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopVar(%p)", ( void * ) pSymbol ) );
 
-   /* See the note above in ZH_P_POPVARIABLE */
-#if 0
-   if( pSymbol->pDynSym && zh_dynsymGetMemvar( pSymbol->pDynSym ) )
-      zh_memvarSetValue( pSymbol, zh_stackItemFromTop( -1 ) );
-   else if( zh_rddFieldPut( zh_stackItemFromTop( -1 ), pSymbol ) == ZH_FAILURE )
-#endif
-      zh_memvarSetValue( pSymbol, zh_stackItemFromTop( -1 ) );
+   zh_memvarSetValue( pSymbol, zh_stackItemFromTop( -1 ) );
    zh_stackPop();
 
    ZH_XVM_RETURN

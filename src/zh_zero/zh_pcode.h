@@ -147,7 +147,7 @@ typedef enum
    ZH_P_POPLOCALNEAR,          /*  80 pops the contents of the virtual machine stack onto a local variable */
    ZH_P_POPMEMVAR,             /*  81 pops the contents of a memvar variable to the virtual machine stack */
    ZH_P_POPSTATIC,             /*  82 pops the contents of the virtual machine stack onto a static variable */
-   ZH_P_POPVARIABLE,           /*  83 pops the contents of an undeclared variable from the virtual machine stack */
+   ZH_P_POPVAR,           /*  83 pops the contents of an undeclared variable from the virtual machine stack */
    ZH_P_POWER,                 /*  84 calculates the power of the two values on the stack, removing them and leaving the result */
    ZH_P_PUSHALIAS,             /*  85 saves the current workarea number on the eval stack */
    ZH_P_PUSH_ALIASED_FIELD,      /*  86 pushes aliased field */
@@ -173,7 +173,7 @@ typedef enum
    ZH_P_PUSHSTRSHORT,          /* 106 places a string on the virtual machine stack */
    ZH_P_PUSHSYM,               /* 107 places a symbol on the virtual machine stack */
    ZH_P_PUSHSYMNEAR,           /* 108 places a symbol on the virtual machine stack */
-   ZH_P_PUSHVARIABLE,          /* 109 pushes the contents of an undeclared variable to the virtual machine stack */
+   ZH_P_PUSHVAR,          /* 109 pushes the contents of an undeclared variable to the virtual machine stack */
    ZH_P_RETVALUE,              /* 110 instructs the virtual machine to return the latest stack value */
    ZH_P_SEND,                  /* 111 send operator */
    ZH_P_SENDSHORT,             /* 112 send operator */

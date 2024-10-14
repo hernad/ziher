@@ -439,7 +439,7 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_POPLOCALNEAR          */
    zh_p_default,               /* ZH_P_POPMEMVAR             */
    zh_p_default,               /* ZH_P_POPSTATIC             */
-   zh_p_default,               /* ZH_P_POPVARIABLE           */
+   zh_p_default,               /* ZH_P_POPVAR           */
    zh_p_default,               /* ZH_P_POWER                 */
    zh_p_default,               /* ZH_P_PUSHALIAS             */
    zh_p_default,               /* ZH_P_PUSH_ALIASED_FIELD      */
@@ -465,7 +465,7 @@ static const PZH_CODETRACE_FUNC s_codeTraceFuncTable[] =
    zh_p_default,               /* ZH_P_PUSHSTRSHORT          */
    zh_p_default,               /* ZH_P_PUSHSYM               */
    zh_p_default,               /* ZH_P_PUSHSYMNEAR           */
-   zh_p_default,               /* ZH_P_PUSHVARIABLE          */
+   zh_p_default,               /* ZH_P_PUSHVAR          */
    zh_p_default,               /* ZH_P_RETVALUE              */
    zh_p_default,               /* ZH_P_SEND                  */
    zh_p_default,               /* ZH_P_SENDSHORT             */

@@ -1022,11 +1022,11 @@ static ZH_GENC_FUNC( zh_p_popstatic )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_popvariable )
+static ZH_GENC_FUNC( zh_p_popvar )
 {
    ZH_GENC_LABEL();
 
-   fprintf( cargo->yyc, "\tif( zh_xvmPopVariable( symbols + %hu ) ) break;\n",
+   fprintf( cargo->yyc, "\tif( zh_xvmPopVar( symbols + %hu ) ) break;\n",
             ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] ) );
    return 3;
 }
@@ -1541,11 +1541,11 @@ static ZH_GENC_FUNC( zh_p_pushfuncsym )
    return 3;
 }
 
-static ZH_GENC_FUNC( zh_p_pushvariable )
+static ZH_GENC_FUNC( zh_p_pushvar )
 {
    ZH_GENC_LABEL();
 
-   fprintf( cargo->yyc, "\tif( zh_xvmPushVariable( symbols + %hu ) ) break;\n",
+   fprintf( cargo->yyc, "\tif( zh_xvmPushVar( symbols + %hu ) ) break;\n",
             ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 1 ] ) );
    return 3;
 }
@@ -2284,7 +2284,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_poplocalnear,
    zh_p_popmemvar,
    zh_p_popstatic,
-   zh_p_popvariable,
+   zh_p_popvar,
    zh_p_power,
    zh_p_pushalias,
    zh_p_pushaliasedfield,
@@ -2310,7 +2310,7 @@ static const PZH_GENC_FUNC s_verbose_table[] = {
    zh_p_pushstrshort,
    zh_p_pushsym,
    zh_p_pushsymnear,
-   zh_p_pushvariable,
+   zh_p_pushvar,
    zh_p_retvalue,
    zh_p_send,
    zh_p_sendshort,

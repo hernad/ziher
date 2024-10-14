@@ -102,8 +102,8 @@ extern ZH_EXPORT ZH_BOOL zh_xvmPushObjectVarRef( void );
 extern ZH_EXPORT void    zh_xvmPushStatic( ZH_USHORT uiStatic );
 extern ZH_EXPORT void    zh_xvmPushStaticByRef( ZH_USHORT uiStatic );
 extern ZH_EXPORT void    zh_xvmPopStatic( ZH_USHORT uiStatic );
-extern ZH_EXPORT ZH_BOOL zh_xvmPushVariable( PZH_SYMBOL pSymbol );
-extern ZH_EXPORT ZH_BOOL zh_xvmPopVariable( PZH_SYMBOL pSymbol );
+extern ZH_EXPORT ZH_BOOL zh_xvmPushVar( PZH_SYMBOL pSymbol );
+extern ZH_EXPORT ZH_BOOL zh_xvmPopVar( PZH_SYMBOL pSymbol );
 extern ZH_EXPORT void    zh_xvmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols ); /* creates a codeblock */
 extern ZH_EXPORT void    zh_xvmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols ); /* creates a codeblock */
 extern ZH_EXPORT void    zh_xvmPushBlockLarge( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols ); /* creates a codeblock */

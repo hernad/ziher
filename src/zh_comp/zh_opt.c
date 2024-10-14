@@ -823,7 +823,7 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_POPLOCALNEAR          */
    NULL,                       /* ZH_P_POPMEMVAR             */
    NULL,                       /* ZH_P_POPSTATIC             */
-   NULL,                       /* ZH_P_POPVARIABLE           */
+   NULL,                       /* ZH_P_POPVAR           */
    NULL,                       /* ZH_P_POWER                 */
    NULL,                       /* ZH_P_PUSHALIAS             */
    NULL,                       /* ZH_P_PUSH_ALIASED_FIELD      */
@@ -849,7 +849,7 @@ static const PZH_OPT_FUNC s_opt_table[] =
    NULL,                       /* ZH_P_PUSHSTRSHORT          */
    NULL,                       /* ZH_P_PUSHSYM               */
    NULL,                       /* ZH_P_PUSHSYMNEAR           */
-   NULL,                       /* ZH_P_PUSHVARIABLE          */
+   NULL,                       /* ZH_P_PUSHVAR          */
    NULL,                       /* ZH_P_RETVALUE              */
    NULL,                       /* ZH_P_SEND                  */
    NULL,                       /* ZH_P_SENDSHORT             */
@@ -1129,7 +1129,7 @@ static void zh_compPCodeEnumScanLocals( PZH_ZFUNC pFunc, PZH_OPT_LOCAL pLocals )
                      bCodeNext == ZH_P_PUSHSTATIC ||
                      bCodeNext == ZH_P_PUSHSTR ||
                      bCodeNext == ZH_P_PUSHSTRSHORT ||
-                     bCodeNext == ZH_P_PUSHVARIABLE ||
+                     bCodeNext == ZH_P_PUSHVAR ||
                      bCodeNext == ZH_P_ONE ||
                      bCodeNext == ZH_P_ZERO ||
                      bCodeNext == ZH_P_PUSHLONGLONG ||
@@ -1416,7 +1416,7 @@ static void zh_compPCodeEnumAssignedUnused( ZH_COMP_DECL, PZH_ZFUNC pFunc, PZH_O
             case ZH_P_PUSHSTATIC:
             case ZH_P_PUSHSTR:
             case ZH_P_PUSHSTRSHORT:
-            case ZH_P_PUSHVARIABLE:
+            case ZH_P_PUSHVAR:
             case ZH_P_ONE:
             case ZH_P_ZERO:
             case ZH_P_PUSHLONGLONG:
