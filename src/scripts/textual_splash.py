@@ -3,6 +3,8 @@ from textual.widgets import Button
 
 class ButtonApp(App):
 
+    header = None
+
     CSS = """
     Screen {
        align: center middle;
@@ -15,11 +17,13 @@ class ButtonApp(App):
            self.exit()
 
     def compose(self) -> ComposeResult:
-        yield Button("PUSH 01", id="push01")
+        yield Button(self.header, id="push01")
 
-def run():
+def run( header: str | None):
     app = ButtonApp()
+    app.header = header if header else "PUSH 01" 
+
     app.run()
 
 if __name__ == "__main__":
-	run()
+	run(None)
