@@ -109,7 +109,7 @@ FUNCTION __zhdoc_LoadDir( cDir, cName, aErrMsg )
    IF ZH_ISSTRING( cDir )
 
       cDir := zh_DirSepAdd( cDir )
-
+      __ReportForm
       IF zh_vfDirExists( cDir + _ZHDOC_SRC_SUBDIR )
 
          aEntry := {}
@@ -151,7 +151,7 @@ STATIC PROCEDURE __zhdoc__read_langdir( aEntry, cDir, hMeta, aErrMsg )
    RETURN
 
 STATIC PROCEDURE __zhdoc__read_file( aEntry, cFileName, hMeta, aErrMsg )
-
+   __ReportForm
    LOCAL aFilenameTemplateMap := { ;
       "FUNCTION"   => "func_"  , ;
       "C FUNCTION" => "cfunc_" , ;
