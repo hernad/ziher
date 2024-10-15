@@ -84,13 +84,13 @@ elif arg1 == "func_hello_ziher_2":
    print("dyntable count:", f18klijentlib.dyntable_count())
   
    bInitConsole = 0
-   bReleaseConsole = 1
+   bReleaseConsole = 0
    returnType = 1 # integer
    func = "ZH_GTCOUNT"
    print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
    s = input()
 
-   bInitConsole = 0
+   bInitConsole = 1
    bReleaseConsole = 1
    returnType = 0 # string
    print("func_hello_ziher_2 before")
