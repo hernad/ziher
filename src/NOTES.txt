@@ -31,3 +31,224 @@ ZH_CODEPAGE_ANNOUNCE( UTF8 )
 ZH_CODEPAGE_ANNOUNCE( EN )
 
 ZH_GT_ANNOUNCE( ZH_GT_NAME )
+
+
+[hernad@len16-1:~/ziher/ziher_src/src]$ strings ~/ziher/ziher/lib/ziher.so | grep _zh_startup_gt_Init_
+_zh_startup_gt_Init_STD
+_zh_startup_gt_Init_TRM
+_zh_startup_gt_Init_XWC
+
+
+ZH_BOOL zh_gtRegister( const ZH_GT_INIT * gtInit )
+{
+   if( s_iGtCount < ZH_GT_MAX_ && zh_gt_FindEntry( gtInit->id ) < -1 )
+   {
+      if( gtInit->pGtId )
+         *gtInit->pGtId = s_iGtCount;
+      s_gtInit[ s_iGtCount++ ] = gtInit;
+      return ZH_TRUE;
+   }
+   return ZH_FALSE;
+}
+
+
+static const ZH_GT_INIT gtInit = { ZH_GT_DRVNAME( ZH_GT_NAME ),
+                                   zh_gt_FuncInit,
+                                   ZH_GTSUPER,
+                                   ZH_GTID_PTR };
+
+ZH_GT_ANNOUNCE( ZH_GT_NAME )
+
+ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+   zh_gtRegister( &gtInit );
+ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+
+#if defined( ZH_DATASEG_STARTUP )
+   #define ZH_DATASEG_BODY    \
+      ZH_DATASEG_FUNC( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+   #include "..\zh_ini_seg.h"
+#endif
+
+
+ZH_BOOL zh_gtReload( const char * szGtName,
+                     ZH_FHANDLE hFilenoStdin,
+                     ZH_FHANDLE hFilenoStdout,
+                     ZH_FHANDLE hFilenoStderr )
+{
+   ZH_BOOL fResult = ZH_FALSE;
+
+   if( szGtName && zh_gt_FindEntry( szGtName ) >= -1 )
+   {
+      zh_gtRelease( NULL );
+      zh_stackSetGT( zh_gtLoad( szGtName, NULL, NULL ) );
+      fResult = zh_stackGetGT() != NULL;
+      zh_gtInit( hFilenoStdin, hFilenoStdout, hFilenoStderr );
+   }
+   return fResult;
+}
+
+
+void zh_gtRelease( void * hGT )
+{
+   PZH_GT pGT;
+
+   if( hGT )
+   {
+      pGT = ( PZH_GT ) hGT;
+      if( ! ZH_GTSELF_LOCK( pGT ) )
+         pGT = NULL;
+   }
+   else
+      pGT = zh_gt_Base();
+
+   if( pGT )
+   {
+      if( --pGT->iUsed == 0 )
+      {
+         while( ZH_GTSELF_DISPCOUNT( pGT ) )
+            ZH_GTSELF_DISPEND( pGT );
+         ZH_GTSELF_FLUSH( pGT );
+         ZH_GTSELF_EXIT( pGT );
+      }
+      else
+         zh_gt_BaseFree( pGT );
+   }
+}
+
+
+
+ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
+{
+   ZH_STACK_TLS_PRELOAD
+
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
+
+   zh_vmTerminateThreads();
+
+   zh_vmDoExitFunctions();          /* process defined EXIT functions */
+   zh_vmDoModuleExitFunctions();    /* process AtExit registered functions */
+
+   /* release all known items stored in subsystems */
+   zh_itemClear( zh_stackReturnItem() );
+   zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
+
+   /* intentionally here to allow executing object destructors for all
+    * cross referenced items before we release classy subsystem
+    */
+   zh_gcCollectAll( ZH_TRUE );
+
+   /* Clear any pending actions so RDD shutdown process
+    * can be cleanly executed
+    */
+   zh_stackSetActionRequest( 0 );
+   zh_rddCloseAll();             /* close all workareas */
+   if (bInitRT)
+      zh_rddShutDown();             /* remove all registered RDD drivers */
+   zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
+   zh_vmSetI18N( NULL );         /* remove i18n translation table */
+   zh_i18n_exit();               /* unregister i18n module */
+
+   zh_itemClear( zh_stackReturnItem() );
+   zh_gcCollectAll( ZH_TRUE );
+   /* deactivate debugger */
+   zh_vmDebuggerExit( ZH_TRUE );
+
+   /* stop executing PCODE (ZHVM reenter request) */
+   s_fZHVMActive = ZH_FALSE;
+
+   zh_vmStaticsClear();
+
+   /* release thread specific data */
+   zh_stackDestroyTSD();
+
+   // hernad ne diraj ovo
+   if (bInitRT) {
+     zh_breakBlockRelease();
+     zh_errExit();
+     zh_clsReleaseAll();
+   }
+
+   zh_vmStaticsRelease();
+
+   /* release all remaining items */
+
+   zh_conRelease();                 /* releases Console */
+   zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
+   
+   if (bInitRT) {
+      zh_dynsymRelease();              /* releases the dynamic symbol table */
+   }
+
+   zh_itemClear( zh_stackReturnItem() );
+   zh_gcCollectAll( ZH_TRUE );
+
+   zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
+   
+   zh_vmCleanModuleFunctions();
+
+   zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
+   if( s_pSymbolsMtx )
+   {
+      zh_itemRelease( s_pSymbolsMtx );
+      s_pSymbolsMtx = NULL;
+   }
+   zh_threadExit();
+
+
+   if (bInitRT) {
+     zh_langReleaseAll();             /* release lang modules */
+     zh_cdpReleaseAll();              /* releases codepages */
+   }
+
+   /* release all known garbage */
+   if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
+      zh_gcReleaseAll();
+
+   zh_vmUnsetExceptionHandler();
+
+   zh_xexit();
+
+#if defined( ZH_OS_WIN )
+   zh_winmainArgVFree();
+#endif
+
+   return s_nErrorLevel;
+}
+
+
+void zh_langReleaseAll( void )
+{
+   int iPos;
+
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_langReleaseAll()" ) );
+
+   for( iPos = 0; iPos < ZH_LANG_MAX_; iPos++ )
+      zh_langRelease( &s_langList[ iPos ] );
+}
+
+
+static PZH_CODEPAGE s_cdpList = NULL;
+
+
+void zh_cdpReleaseAll( void )
+{
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_cdpReleaseAll()" ) );
+
+   while( s_cdpList )
+   {
+      void * buffer = s_cdpList->buffer;
+      if( s_cdpList->uniTable->uniTrans )
+      {
+         zh_xfree( s_cdpList->uniTable->uniTrans );
+         s_cdpList->uniTable->uniTrans = NULL;
+      }
+      s_cdpList = s_cdpList->next;
+      if( buffer )
+         zh_xfree( buffer );
+   }
+   if( s_rev_ctrl != NULL )
+   {
+      zh_xfree( s_rev_ctrl );
+      s_rev_ctrl = NULL;
+   }
+}
