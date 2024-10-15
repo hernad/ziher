@@ -74,7 +74,7 @@ ZH_SYM_HOLDER, * PZH_SYM_HOLDER;
 
 
 static PDYNZH_ITEM s_pDynItems = NULL;    /* Pointer to dynamic items */
-static ZH_USHORT   s_uiDynSymbols = 0;    /* Number of symbols present */
+static ZH_USHORT   s_uiDynSymbolsCount = 0;    /* Number of symbols present */
 
 static PZH_SYM_HOLDER s_pAllocSyms = NULL;/* symbols allocated dynamically */
 
@@ -91,25 +91,25 @@ static PZH_DYNSYMBOL zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymInsert(%p, %u)", ( void * ) pSymbol, uiPos ) );
 
-   if( ++s_uiDynSymbols == 0 )
+   if( ++s_uiDynSymbolsCount == 0 )
    {
-      --s_uiDynSymbols;
+      --s_uiDynSymbolsCount;
       zh_errInternal( 6004, "Internal error: size of dynamic symbol table exceed", NULL, NULL );
    }
-   else if( s_uiDynSymbols == 1 )
+   else if( s_uiDynSymbolsCount == 1 )
    {
       s_pDynItems = ( PDYNZH_ITEM ) zh_xgrab( sizeof( DYNZH_ITEM ) );
    }
    else
    {
-      s_pDynItems = ( PDYNZH_ITEM ) zh_xrealloc( s_pDynItems, s_uiDynSymbols * sizeof( DYNZH_ITEM ) );
+      s_pDynItems = ( PDYNZH_ITEM ) zh_xrealloc( s_pDynItems, s_uiDynSymbolsCount * sizeof( DYNZH_ITEM ) );
       memmove( &s_pDynItems[ uiPos + 1 ], &s_pDynItems[ uiPos ],
-               sizeof( DYNZH_ITEM ) * ( s_uiDynSymbols - uiPos - 1 ) );
+               sizeof( DYNZH_ITEM ) * ( s_uiDynSymbolsCount - uiPos - 1 ) );
    }
 
    pDynSym = ( PZH_DYNSYMBOL ) zh_xgrabz( sizeof( ZH_DYNSYMBOL ) );
    pDynSym->pSymbol  = pSymbol;
-   pDynSym->uiSymNum = s_uiDynSymbols;
+   pDynSym->uiSymNum = s_uiDynSymbolsCount;
 
    pSymbol->pDynSym = s_pDynItems[ uiPos ].pDynSym = pDynSym;
 
@@ -127,7 +127,7 @@ static PZH_DYNSYMBOL zh_dynsymPos( const char * szName, ZH_UINT * puiPos )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymPos(%s, %p)", szName, ( void * ) puiPos ) );
 
    uiFirst = 0;
-   uiLast = s_uiDynSymbols;
+   uiLast = s_uiDynSymbolsCount;
    uiMiddle = uiLast >> 1;
 
    while( uiFirst < uiLast )
@@ -185,7 +185,7 @@ PZH_DYNSYMBOL zh_dynsymFind( const char * szName )
    ZH_DYNSYM_LOCK();
 
    uiFirst = 0;
-   uiLast = s_uiDynSymbols;
+   uiLast = s_uiDynSymbolsCount;
 
    while( uiFirst < uiLast )
    {
@@ -500,7 +500,7 @@ static PZH_DYNSYMBOL zh_dynsymGetByIndex( ZH_LONG lIndex )
 
    ZH_DYNSYM_LOCK();
 
-   if( lIndex >= 1 && lIndex <= s_uiDynSymbols )
+   if( lIndex >= 1 && lIndex <= s_uiDynSymbolsCount )
       pDynSym = s_pDynItems[ lIndex - 1 ].pDynSym;
 
    ZH_DYNSYM_UNLOCK();
@@ -512,7 +512,7 @@ ZH_LONG zh_dynsymCount( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymCount()" ) );
 
-   return s_uiDynSymbols;
+   return s_uiDynSymbolsCount;
 }
 
 int zh_dynsymToNum( PZH_DYNSYMBOL pDynSym )
@@ -577,11 +577,11 @@ void zh_dynsymEval( PZH_DYNS_FUNC pFunction, void * Cargo )
           */
          while( s_pDynItems[ uiPos ].pDynSym != pDynSym )
          {
-            if( ++uiPos >= s_uiDynSymbols )
+            if( ++uiPos >= s_uiDynSymbolsCount )
                break;
          }
       }
-      if( ++uiPos < s_uiDynSymbols )
+      if( ++uiPos < s_uiDynSymbolsCount )
          pDynSym = s_pDynItems[ uiPos ].pDynSym;
       else
          pDynSym = NULL;
@@ -601,7 +601,7 @@ void zh_dynsymProtectEval( PZH_DYNS_FUNC pFunction, void * Cargo )
 
    ZH_DYNSYM_LOCK();
 
-   while( uiPos < s_uiDynSymbols )
+   while( uiPos < s_uiDynSymbolsCount )
    {
       if( ! ( pFunction ) ( s_pDynItems[ uiPos++ ].pDynSym, Cargo ) )
          break;
@@ -623,13 +623,13 @@ void zh_dynsymRelease( void )
       s_iDynIdxSize = 0;
    }
 
-   if( s_uiDynSymbols )
+   if( s_uiDynSymbolsCount )
    {
       do
       {
-         zh_xfree( ( s_pDynItems + --s_uiDynSymbols )->pDynSym );
+         zh_xfree( ( s_pDynItems + --s_uiDynSymbolsCount )->pDynSym );
       }
-      while( s_uiDynSymbols );
+      while( s_uiDynSymbolsCount );
       zh_xfree( s_pDynItems );
       s_pDynItems = NULL;
    }
@@ -647,7 +647,7 @@ void zh_dynsymRelease( void )
 ZH_FUNC( __DYNSCOUNT ) /* How much symbols do we have: dsCount = __dynsymCount() */
 {
    ZH_STACK_TLS_PRELOAD
-   zh_retnint( s_uiDynSymbols );
+   zh_retnint( s_uiDynSymbolsCount );
 }
 
 ZH_FUNC( __DYNSGETNAME ) /* Get name of symbol: cSymbol = __dynsymGetName( dsIndex ) */
@@ -769,7 +769,7 @@ static int zh_dynsymVerify( void )
 
    ZH_DYNSYM_LOCK();
 
-   while( iResult == 0 && uiPos < s_uiDynSymbols )
+   while( iResult == 0 && uiPos < s_uiDynSymbolsCount )
    {
       PZH_DYNSYMBOL pDynSym = s_pDynItems[ uiPos ].pDynSym;
       ZH_UINT uiAt;

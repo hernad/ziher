@@ -49,6 +49,12 @@
 #include "zh_item_api.h"
 #include "zh_error_api.h"
 
+ZH_FUNC( ZH_GTCOUNT )
+{
+   ZH_TRACE( ZH_TR_INFO, ( "zh_gtcount(%d)", gtcount() ) );
+   zh_retni( gtcount() );
+}
+
 ZH_FUNC( ZH_SETDISPCP )
 {
    if( ZH_ISCHAR( 1 ) )

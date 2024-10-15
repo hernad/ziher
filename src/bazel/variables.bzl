@@ -18,7 +18,9 @@ _WINDOWS_X86_COPTS = [
 
 _LINUX_COPTS = [
     "-DUNICODE",
-    "-DZH_OS_LINUX"
+    "-DZH_OS_LINUX",
+    #"-DZH_TR_LEVEL=4" #INFO
+    "-DZH_TR_LEVEL=5" #DEBUG
 ]
 
 _WINDOWS_LOPTS = [
@@ -210,7 +212,9 @@ ZH_Z18_COMP_OPTS=[
     "-izh_harupdf",
     #"-DGT_DEFAULT_CONSOLE",
     "-DF18_DEBUG",
-    "-b"
+    "-b",
+    #"-DZH_TR_LEVEL=4", #INFO
+    "-DZH_TR_LEVEL=5", #DEBUG
 ]
 
 ZH_DEPS_F18=[

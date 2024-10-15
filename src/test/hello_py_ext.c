@@ -165,7 +165,7 @@ f18_run_get(PyObject *self, PyObject *args)
       //PZH_ITEM pResult = zh_itemNew( zh_stackReturnItem() );
       //PZH_ITEM pResult = zh_stackReturnItem();
       const char * ret = zh_parc( -1 );
-      printf("return: %s\n", ret);
+      //printf("return: %s\n", ret);
       pyValue = Py_BuildValue("s", ret);
       
    

@@ -412,14 +412,13 @@ static void zh_vmDoInitZHVM( void )
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
-      //puts("hernad __ZHVMINIT");
+      ZH_TRACE( ZH_TR_DEBUG, ( "__ZHVMINIT before push" ) );
+
       zh_vmPushSymbol( pDynSym->pSymbol );
       zh_vmPushNil();
       zh_vmProc( 0 );
    }; 
-   
-   //else
-   //puts("hernad NO __ZHVMINIT");
+
 
 }
 
@@ -1253,7 +1252,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
    if (bInitRT) {
-      zh_dynsymRelease();              /* releases the dynamic symbol table */
+      zh_dynsymRelease();   /* releases the dynamic symbol table */
    }
 
    zh_itemClear( zh_stackReturnItem() );
@@ -8979,11 +8978,12 @@ ZH_BOOL zh_vmIsActive( void )
 
 ZH_BOOL zh_vmIsReady( void )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsReady()" ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsReady(%d)", s_fZHVMActive ) );
 
    if( s_fZHVMActive )
    {
       ZH_STACK_TLS_PRELOAD
+      ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsReady(%d) == zh_stackId() != NULL", zh_stackId() != NULL ) );
       return zh_stackId() != NULL;
    }
    else

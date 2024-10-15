@@ -252,3 +252,77 @@ void zh_cdpReleaseAll( void )
       s_rev_ctrl = NULL;
    }
 }
+
+
+
+
+void zh_clsDoInit( void )
+{
+   static const char * s_pszFuncNames[] =
+      { "ZHARRAY", "ZHBLOCK", "ZHCHARACTER",
+        "ZHDATE", "ZHTIMESTAMP",
+        "ZHHASH", "ZHLOGICAL", "ZHNIL", "ZHNUMERIC",
+        "ZHSYMBOL", "ZHPOINTER",
+        "ZHObject" };
+   static ZH_USHORT * s_puiHandles[] =
+      { &s_uiArrayClass, &s_uiBlockClass, &s_uiCharacterClass,
+        &s_uiDateClass, &s_uiTimeStampClass,
+        &s_uiHashClass, &s_uiLogicalClass, &s_uiNilClass, &s_uiNumericClass,
+        &s_uiSymbolClass, &s_uiPointerClass,
+        &s_uiObjectClass };
+
+   ZH_STACK_TLS_PRELOAD
+   int i;
+
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsDoInit()" ) );
+
+   for( i = 0; i < ( int ) ZH_SIZEOFARRAY( s_puiHandles ); ++i )
+   {
+      PZH_DYNSYMBOL pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
+      if( pFuncSym && zh_dynsymIsFunction( pFuncSym ) )
+      {
+         PZH_ITEM pReturn = zh_stackReturnItem();
+         zh_itemSetNil( pReturn );
+         zh_vmPushDynSym( pFuncSym );
+         zh_vmPushNil();
+         zh_vmProc( 0 );
+         if( ZH_IS_OBJECT( pReturn ) )
+            *( s_puiHandles[ i ] ) = pReturn->item.asArray.value->uiClass;
+      }
+   }
+}
+
+
+
+/* Find symbol in dynamic symbol table */
+PZH_DYNSYMBOL zh_dynsymFind( const char * szName )
+{
+   ZH_UINT uiFirst, uiLast;
+
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymFind(%s)", szName ) );
+
+   ZH_DYNSYM_LOCK();
+
+   uiFirst = 0;
+   uiLast = s_uiDynSymbolsCount;
+
+   while( uiFirst < uiLast )
+   {
+      ZH_UINT uiMiddle = ( uiFirst + uiLast ) >> 1;
+      int iCmp = strcmp( s_pDynItems[ uiMiddle ].pDynSym->pSymbol->szName, szName );
+
+      if( iCmp == 0 )
+      {
+         ZH_DYNSYM_UNLOCK();
+         return s_pDynItems[ uiMiddle ].pDynSym;
+      }
+      else if( iCmp < 0 )
+         uiLast = uiMiddle;
+      else /* if( iCmp > 0 ) */
+         uiFirst = uiMiddle + 1;
+   }
+
+   ZH_DYNSYM_UNLOCK();
+
+   return NULL;
+}

@@ -343,6 +343,7 @@ extern ZH_EXPORT void zh_gt_BaseLock( PZH_GT pGT );
 extern ZH_EXPORT void zh_gtSleep( PZH_GT pGT, double dSeconds );
 extern ZH_EXPORT PZH_GT zh_gt_ItemBase( PZH_ITEM pItemGT );
 extern ZH_EXPORT void zh_gt_gcMark( void );
+extern ZH_EXPORT int gtcount( void );
 
 #define ZH_GTLOCAL(g)   (g)->pGTData[*ZH_GTID_PTR]
 

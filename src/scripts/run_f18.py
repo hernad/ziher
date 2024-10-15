@@ -29,19 +29,38 @@ elif arg1 == "func_hello_ziher_2":
    sys.path.append(ziher_home + "/lib")
    import f18klijentlib
 
-   f18klijentlib.vminit(False, True, True) # 1. start main, 2. init RT, 3. release console
+   bStartMainProc = False
+   bInitRT = True
+   bReleaseConsole = True
+   f18klijentlib.vminit(bStartMainProc, bInitRT, bReleaseConsole)
    
-   ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 0, 1)
+   bInitConsole = 0
+   bReleaseConsole = 1
+   returnType = 1 # integer
+   func = "ZH_GTCOUNT"
+   print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
+   s = input()
+
+   ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 1, 1)
+   print("PY after func_hello_ziher")
+   s = input()
    textual_run(header=ziher_header)
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 0, 1)
+   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   print("PY after func_hello_ziher_2")
+   s = input()
    textual_run(header=ziher_header)
    f18klijentlib.run("NASLOVNI_EKRAN_SPLASH_SCREEN", 1, 1)
    #f18klijentlib.run("MAIN", 1, 1)
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 0, 1)
+   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   print("PY after func_hello_ziher_2")
+   s = input()
    textual_run(header=ziher_header)
    ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 0, 1)
+   print("PY after func_hello_ziher")
+   s = input()
    textual_run(header=ziher_header)
-   f18klijentlib.vmquit(True)
+   bInitRT = False
+   f18klijentlib.vmquit(bInitRT)
    textual_run(header="ziher vm ugašena...")
 
    #if 'f18klijentlib' in sys.modules:  
@@ -50,19 +69,34 @@ elif arg1 == "func_hello_ziher_2":
    #   #__import__("f18klijentlib")
    #reload(f18klijentlib)
 
+   bStartMainProc = False
+   bInitRT = False
+   bReleaseConsole = True
+   f18klijentlib.vminit(bStartMainProc, bInitRT, bReleaseConsole)
+   #f18klijentlib.fill_dyntable_0()
 
-   f18klijentlib.vminit(False, True, True) # 1. start main, 2. init RT, 3. release console
-   f18klijentlib.fill_dyntable_0()
-   f18klijentlib.run("__ZHVMINIT", 1, 1)
+   #print("__zhvminit")
+   #bInitConsole = 0
+   #bReleaseConsole = 0
+   #fun = "__ZHVMINIT"
+   #f18klijentlib.run(fun, bInitConsole, bReleaseConsole)
 
-   f18klijentlib.fill_dyntable()
+   print("dyntable count:", f18klijentlib.dyntable_count())
+  
+   bInitConsole = 0
+   bReleaseConsole = 1
+   returnType = 1 # integer
+   func = "ZH_GTCOUNT"
+   print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
+   s = input()
 
-   #print("step 21")
-   #s = input()
-   
-   
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
-   
+   bInitConsole = 0
+   bReleaseConsole = 1
+   returnType = 0 # string
+   print("func_hello_ziher_2 before")
+   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+   print("func_hello_ziher_2 end")
+   s = input()
    textual_run(header=ziher_header)
 else:
 
@@ -70,7 +104,10 @@ else:
    print("ziher_home:", ziher_home)
    sys.path.append(ziher_home + "/lib")
    import f18klijentlib
-   f18klijentlib.vminit()
+   bStartMainProc = False
+   bInitRT = True
+   bReleaseConsole = True
+   f18klijentlib.vminit(bStartMainProc, bInitRT, bReleaseConsole)
    f18klijentlib.run(arg1, arg2, arg3)
 
 

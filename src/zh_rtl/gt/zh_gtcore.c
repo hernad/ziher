@@ -3531,6 +3531,11 @@ static int s_iGtCount = 0;
 
 ZH_FUNC_EXTERN( ZH_GTSYS );
 
+int gtcount()
+{
+  return s_iGtCount;
+}
+
 static const char * zh_gt_FindDefault( void )
 {
    char szFuncName[ 15 + ZH_GT_NAME_MAX_ ];
