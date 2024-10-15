@@ -118,7 +118,6 @@ void zh_rddCloseAll( void ) {}
 
 void zh_rddShutDown( void ) {}
 
-
 ZH_FUNC( RDDSYS ) {}
 
 ZH_FUNC( RDDNAME ) { zh_retc_null(); }
@@ -207,7 +206,6 @@ ZH_FUNC( HEADER ) { zh_retni( 0 ); }
 
 ZH_FUNC( LUPDATE ) { zh_retds( NULL ); }
 
-
 ZH_FUNC( INDEXORD ) { zh_parni( 1 ); }
 
 ZH_FUNC( INDEXKEY ) { zh_retc_null(); }
@@ -217,7 +215,6 @@ ZH_FUNC( ORDNAME ) { zh_retc_null(); }
 ZH_FUNC( ORDKEY ) { zh_retc_null(); }
 
 ZH_FUNC( ORDFOR ) { zh_retc_null(); }
-
 
 ZH_FUNC( ZH_DBDROP ) { zh_retl( ZH_FALSE ); }
 

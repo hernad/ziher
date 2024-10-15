@@ -8,3 +8,26 @@ zh_init.h
       //    return 0; \
       // } \
       // ZH_EXTERN_END
+
+
+__ZHVMInit()
+
+ANNOUNCE SYSINIT
+
+ZH_FUNC( ZH_GTSYS )
+{
+}
+
+
+ANNOUNCE ZH_GTSYS
+REQUEST ZH_GT_CGI_DEFAULT
+
+
+REQUEST ZH_LANG_EN
+
+
+ZH_CODEPAGE_ANNOUNCE( UTF8 )
+
+ZH_CODEPAGE_ANNOUNCE( EN )
+
+ZH_GT_ANNOUNCE( ZH_GT_NAME )

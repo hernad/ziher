@@ -1,3 +1,0 @@
-description=RDDSQL core RDD
-
-libs=${_ZH_DYNPREF}${zh_name}${_ZH_DYNSUFF}

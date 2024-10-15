@@ -44,8 +44,6 @@
  *
  */
 
-/* Standard Ziher RDDSys system */
-
 ANNOUNCE RDDSYS
 
 REQUEST _DBF
