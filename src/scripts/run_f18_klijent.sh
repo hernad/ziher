@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -o errexit
+
+trap "read; reset" EXIT
+
 ZH_SRC=/home/hernad/ziher/ziher_src/src
 
 ZH_DEBUG_PATH="$ZH_SRC/F18"
@@ -22,7 +26,6 @@ fn="textual"
 python scripts/run_f18.py $fn 0 0
 echo "============== kraj py textual ============================="
 
-
 fn="func_hello_ziher"
 python scripts/run_f18.py $fn 0 0
 echo "============== kraj ziher then textual ============================="
@@ -30,7 +33,6 @@ echo "============== kraj ziher then textual ============================="
 fn="func_hello_ziher_2"
 python scripts/run_f18.py $fn 0 0
 echo "============== kraj ziher then textual ============================="
-
 
 fn="NASLOVNI_EKRAN_SPLASH_SCREEN"
 python scripts/run_f18.py $fn 1 1

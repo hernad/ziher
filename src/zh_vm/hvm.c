@@ -187,7 +187,7 @@ static void    zh_vmPopStatic( ZH_USHORT uiStatic ); /* pops the stack latest va
 
 /* misc */
 static void    zh_vmDoInitStatics( void );        /* executes all _INITSTATICS functions */
-static void    zh_vmDoInitFunctions( ZH_BOOL );   /* executes all defined PRGs INIT functions */
+static void    zh_vmDoInitFunctions( void );   /* executes all defined PRGs INIT functions */
 static void    zh_vmDoExitFunctions( void );      /* executes all defined PRGs EXIT functions */
 static void    zh_vmReleaseLocalSymbols( void );  /* releases the memory of the local symbols linked list */
 
@@ -1013,12 +1013,12 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    if (bInitRT)
       zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
    
-   //printf("init step 1\n");
+   printf("init step 1\n");
    zh_threadInit();
-   //printf("init step 2\n");
+   printf("init step 2\n");
    zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
    
-   //printf("init step 3\n");
+   printf("init step 3\n");
    s_pSymbolsMtx = zh_threadMutexCreate();
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
@@ -1031,17 +1031,17 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
-   //printf("init step 4\n");
+   printf("init step 4\n");
    if (bInitRT)
       zh_cmdargUpdate();
 
-   //printf("init step 5\n");
+   printf("init step 5\n");
    if (bInitRT)
       zh_clsInit(); /* initialize Classy/OO system */
-   //printf("init step 6\n");
+   printf("init step 6\n");
    if (bInitRT)
       zh_errInit();
-   //printf("init step 7\n");
+   printf("init step 7\n");
    if (bInitRT)
       zh_breakBlock();
 
@@ -1050,7 +1050,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
    s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
 
-   //printf("init step 9\n");
+   printf("init step 9\n");
    if (bInitRT)
      zh_conInit();
 
@@ -1060,7 +1060,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    if (bInitRT)
      zh_cmdargProcess();
 
-   //printf("init step 11\n");
+   printf("init step 11\n");
    if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
 
@@ -1110,7 +1110,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    if (bInitRT)
      zh_vmDoInitZHVM();
 
-   //printf("init step 16\n");
+   printf("init step 16\n");
    if (bInitRT)
       zh_clsDoInit();                     /* initialize Class(y) .zh functions */
 
@@ -1119,12 +1119,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
 
    //printf("init step 18\n");
-   zh_vmDoInitFunctions( ZH_TRUE );    /* process registered CLIPINIT INIT procedures */
+   zh_vmDoInitFunctions();    /* process registered INIT procedures */
 
-   //printf("init step 19\n");
-   zh_vmDoInitFunctions( ZH_FALSE );   /* process registered other INIT procedures */
+   
 
-  
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
       PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "_APPMAIN" );
@@ -8120,11 +8118,12 @@ static void zh_vmDoInitStatics( void )
    }
 }
 
-static void zh_vmDoInitFunctions( ZH_BOOL fClipInit )
+static void zh_vmDoInitFunctions()
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions(%d)", fClipInit ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions(%d)", fClipInit ) );
+   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions()") );
 
    while( pLastSymbols && zh_vmRequestQuery() == 0 )
    {
@@ -8137,9 +8136,10 @@ static void zh_vmDoInitFunctions( ZH_BOOL fClipInit )
          {
             ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_INITEXIT;
 
-            if( scope == ZH_FS_INIT &&
-                ( strcmp( ( pLastSymbols->pModuleSymbols + ui )->szName,
-                          "CLIPINIT$" ) == 0 ? fClipInit : ! fClipInit ) )
+            if( scope == ZH_FS_INIT )
+            //&&
+            //    ( strcmp( ( pLastSymbols->pModuleSymbols + ui )->szName,
+            //              "CLIPINIT$" ) == 0 ? fClipInit : ! fClipInit ) )
             {
                zh_vmPushSymbol( pLastSymbols->pModuleSymbols + ui );
                zh_vmPushNil();

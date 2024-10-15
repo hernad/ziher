@@ -95,14 +95,8 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT 
       static void __attribute__ ((constructor)) func( void ) \
       { \
          symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-      } \
-      ZH_EXTERN_BEGIN \
-      void ext_##func( void ) \
-      { \
-         symbols = zh_vmProcessSymbols( symbols_table, ( ZH_USHORT ) ZH_INIT_SYMBOLS_COUNT, (module), (id), (vpcode) ); \
-         return 0; \
-      } \
-      ZH_EXTERN_END
+      } 
+
 
    #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
       static void __attribute__ ((constructor)) func( void ) \

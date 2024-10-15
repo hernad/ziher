@@ -380,12 +380,13 @@ METHOD New() CLASS ZhDebugger
       ::lGo := ::lRunAtStartup // Once again after settings file is loaded
    ENDIF
 
-
+   /* hernad_debug
    ? "Path for files debugger:", len(::aPathDirs), 
    FOR i := 1 to len(::aPathDirs)
       ? ::aPathDirs[i]
    next
    inkey(5)
+   */
 
    RETURN Self
 
