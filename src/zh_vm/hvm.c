@@ -236,8 +236,6 @@ static const char * s_vm_pszLinkedMain = NULL; /* name of startup function set b
 
 /* virtual machine state */
 
-PZH_SYMBOL pZhsymEval;
-PZH_SYMBOL pZhsymBreak;
 
 //ZH_SYMBOL zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* symbol to evaluate codeblocks */
 //static ZH_SYMBOL  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
@@ -283,7 +281,7 @@ static PZH_ITEM zh_breakBlock( void )
          zh_codeblockNew( s_pCode,  /* pcode buffer         */
                           0,        /* number of referenced local variables */
                           NULL,     /* table with referenced local variables */
-                          pZhsymBreak,
+                          pZhSymBreak,
                           sizeof( s_pCode ) );
       s_breakBlock->type = ZH_IT_BLOCK;
       s_breakBlock->item.asBlock.paramcnt = 1;
@@ -445,12 +443,20 @@ static void zh_vmDoInitZHObject( void )
 
    char * sFunc2 = "ZHCLASS_VMINIT";
    PZH_DYNSYMBOL pDynSym2 = zh_dynsymFind( sFunc2 );
-
-
    if( pDynSym2 && pDynSym2->pSymbol->value.pFunPtr )
    {
       printf(">>>>>>>>>>>>>>> ZHCLASS_VMINIT %p  %p\n", pDynSym2, pDynSym2->pSymbol->value.pFunPtr);
       zh_vmPushSymbol( pDynSym2->pSymbol );
+      zh_vmPushNil();
+      zh_vmProc( 0 );
+   }; 
+
+   char * sFunc2b = "ZHCLASS_VMINIT2";
+   PZH_DYNSYMBOL pDynSym2b = zh_dynsymFind( sFunc2b );
+   if( pDynSym2b && pDynSym2b->pSymbol->value.pFunPtr )
+   {
+      printf(">>>>>>>>>>>>>>> ZHCLASS_VMINIT2 %p  %p\n", pDynSym2b, pDynSym2b->pSymbol->value.pFunPtr);
+      zh_vmPushSymbol( pDynSym2b->pSymbol );
       zh_vmPushNil();
       zh_vmProc( 0 );
    }; 
@@ -1104,27 +1110,14 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    //printf("init step 4\n");
    if (bInitRT) {
       zh_cmdargUpdate();
-      printf("init step 5\n");
+      //printf("init step 5\n");
       zh_clsInit(); /* initialize Classy/OO system */
-      printf("init step 6\n");
+      //printf("init step 6\n");
       zh_errInit();
-      printf("init step 7\n");
+      //printf("init step 7\n");
       zh_breakBlock();
    }
 
-   
-   //if (! zh_symEval.pDynSym) { 
-       //   printf("EVAL zh_dynsymGetCase\n");
-
-      /* initialize dynamic symbol for evaluating codeblocks and break function */
-      // EVAL
-      //zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
-      // BREAK
-      //s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
-
-      pZhsymEval = zh_dynsymFindSymbol("EVAL"); 
-      pZhsymBreak =  zh_dynsymFindSymbol("BREAK");
-   //}
 
 
    printf("init step 9\n");
@@ -1189,6 +1182,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
       printf("init step 15\n");
       zh_vmDoInitZHVM();
+
+      zh_vmDoInitZHObject();
 
       printf("init step 16f\n");
       
@@ -1984,25 +1979,19 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          ext_zh_vm_SymbolInit_ZH_INI_ZH();
          ext_zh_vm_SymbolInit_ZHOBJECT_FUNC_ZH();
          ext_zh_vm_SymbolInit_ZH_OTHERS_ZH();
-   }
+   } 
+   
+   
+      zh_clsDoInit();          
+
 
       printf("init step 18\n");
       
-      //if (vmInitCount == 0) {
-      //   vmInitCount = 1;
-      //} else {
-         
-         
-      zh_vmDoInitZHObject();
-      
-      
-      //}
 
-    
 
-      zh_clsDoInit();                     /* initialize Class(y) .zh functions */
+                 /* initialize Class(y) .zh functions */
       
-   //}
+   
 
    //printf("init step 18\n");
    //zh_vmDoInitFunctions();    /* process registered INIT procedures */
@@ -7766,7 +7755,7 @@ void zh_vmPushEvalSym( void )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushEvalSym()" ) );
 
    pItem->type = ZH_IT_SYMBOL;
-   pItem->item.asSymbol.value = pZhsymEval;
+   pItem->item.asSymbol.value = pZhSymEval;
    pItem->item.asSymbol.stackstate = NULL;
 }
 
@@ -8400,12 +8389,22 @@ static void zh_vmStaticsClear( void )
          if( pStatics )
          {
             ZH_SIZE nLen = zh_arrayLen( pStatics ), ul;
-
             for( ul = 1; ul <= nLen; ++ul )
             {
                PZH_ITEM pItem = zh_arrayGetItemPtr( pStatics, ul );
-               if( pItem && ZH_IS_COMPLEX( pItem ) )
+               
+               if( pItem && ZH_IS_COMPLEX( pItem ) ){
+                  //printf("static complex %d\n", ul);
                   zh_itemClear( pItem );
+               } else {
+                  //printf("static simple %d\n", ul);
+                  zh_itemSetNil( pItem );
+               }
+
+               //if ( pItem && ZH_IS_POINTER( pItem) ) {
+               //    pItem = zh_itemPutNil(pItem);
+               //}
+
             }
          }
       }
@@ -8427,6 +8426,7 @@ static void zh_vmStaticsRelease( void )
          {
             zh_itemRelease( pStatics );
             pSym->value.pStaticsBase = NULL;
+
          }
       }
       pLastSymbols = pLastSymbols->pNext;
@@ -9830,7 +9830,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
       }
       else if( ZH_IS_BLOCK( pItem ) )
       {
-         pSymbol = pZhsymEval;
+         pSymbol = pZhSymEval;
       }
 
       if( pSymbol && zh_vmRequestReenter() )

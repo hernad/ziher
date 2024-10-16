@@ -50,7 +50,7 @@ PROCEDURE ErrorSys()
 
    //ErrorBlock( {| oError | DefError( oError ) } )
    //ErrorBlock( {| oError | Break( oError ) } )
-   ErrorBlock( {| oError | Qout(ErrorMessage( oError )) } )
+   ErrorBlock( {| oError | Qout("ERRRRROR:", ErrorMessage( oError )), Break(oError) } )
 
    RETURN
 
@@ -153,7 +153,10 @@ STATIC FUNCTION DefError( oError )
 STATIC FUNCTION ErrorMessage( oError )
 
    // start error message
-   LOCAL cMessage := iif( oError:severity > ES_WARNING, "Error", "Warning" ) + " "
+   //LOCAL cMessage := iif( oError:severity > ES_WARNING, "Error", "Warning" ) + " "
+   LOCAL cMessage := "ERROR "
+
+   ? "oError:", oError
 
    // add subsystem name if available
    IF ZH_ISSTRING( oError:subsystem )

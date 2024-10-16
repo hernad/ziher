@@ -925,6 +925,12 @@ void zh_clsInit( void )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsInit()" ) );
 
+   s_pClassMtx = NULL;
+   s_pClasses  = NULL;
+   s_uiClsSize = 0;
+   s_uiClasses = 0;
+
+
    for( uiOperator = 0, pOpSym = s_opSymbols; uiOperator <= ZH_OO_MAX_OPERATOR;
         ++uiOperator, ++pOpSym )
    {
@@ -1092,6 +1098,7 @@ void zh_clsReleaseAll( void )
 
    if( s_pClassMtx )
    {
+      zh_threadMutexUnlock( s_pClassMtx );
       zh_itemRelease( s_pClassMtx );
       s_pClassMtx = NULL;
    }
@@ -1106,39 +1113,7 @@ void zh_clsIsClassRef( void )
     * GC knows them and scan itself so it's not necessary
     * to repeat scanning here [druzus].
     */
-#if 0
-   ZH_USHORT uiClass = s_uiClasses;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsIsClassRef()" ) );
-
-   while( uiClass )
-   {
-      PCLASS pClass = s_pClasses[ uiClass-- ];
-
-      if( pClass->pInlines )
-         zh_gcItemRef( pClass->pInlines );
-
-      if( pClass->pClassDatas )
-         zh_gcItemRef( pClass->pClassDatas );
-
-      if( pClass->pSharedDatas )
-         zh_gcItemRef( pClass->pSharedDatas );
-
-      if( pClass->uiInitDatas )
-      {
-         ZH_USHORT ui = pClass->uiInitDatas;
-         PINITDATA pInitData = pClass->pInitData;
-
-         do
-         {
-            if( ZH_IS_GCITEM( pInitData->pInitValue ) )
-               zh_gcItemRef( pInitData->pInitValue );
-            ++pInitData;
-         }
-         while( --ui );
-      }
-   }
-#endif
 }
 
 ZH_BOOL zh_clsIsParent( ZH_USHORT uiClass, const char * szParentName )
@@ -1443,9 +1418,9 @@ static ZH_I_SIZE zh_clsSenderOffset( void )
    {
       /* Is it inline method? */
       if( nOffset > 0 && ZH_IS_BLOCK( zh_stackItem( nOffset + 1 ) ) &&
-          ( zh_stackItem( nOffset )->item.asSymbol.value == pZhSynEval ||
+          ( zh_stackItem( nOffset )->item.asSymbol.value == pZhSymEval ||
             zh_stackItem( nOffset )->item.asSymbol.value->pDynSym ==
-            zh_symEval.pDynSym ) )
+            pZhSymEval->pDynSym ) )
       {
          nOffset = zh_stackItem( nOffset )->item.asSymbol.stackstate->nBaseItem;
 
@@ -1498,7 +1473,7 @@ static PZH_SYMBOL zh_clsSenderSymbol( void )
       
       pSym = zh_stackItem( nOffset )->item.asSymbol.value;
 
-      if( pSym == pZhsynEval || pSym->pDynSym == pZhSynEval.pDynSym )
+      if( pSym == pZhSymEval || pSym->pDynSym == pZhSymEval->pDynSym )
       {
          PZH_ITEM pBlock = zh_stackItem( nOffset + 1 );
 
@@ -1812,7 +1787,7 @@ PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                return pExecSym;
          }
       }
-      if( pMsg == s___msgExec.pDynSym || pMsg == zh_symEval.pDynSym )
+      if( pMsg == s___msgExec.pDynSym || pMsg == pZhSymEval->pDynSym )
       {
          if( ! pObject->item.asSymbol.value->value.pFunPtr &&
                pObject->item.asSymbol.value->pDynSym )
@@ -2710,8 +2685,10 @@ static ZH_BOOL zh_clsAddMsg( ZH_USHORT uiClass, const char * szMessage,
       ZH_BOOL   fOK;
       ZH_U32    nOpFlags = 0;
 
-      if( pClass->fLocked )
+      if( pClass->fLocked ){
+         printf("pclass flockeddddddddddddddddddddddd\n");
          return ZH_FALSE;
+      }
 
       if( ! ( uiScope & ( ZH_OO_CLSTP_EXPORTED | ZH_OO_CLSTP_PROTECTED | ZH_OO_CLSTP_HIDDEN ) ) )
          uiScope |= ZH_OO_CLSTP_EXPORTED;
@@ -4083,7 +4060,7 @@ ZH_FUNC( __SENDER )
 
       /* Is it inline method? */
       if( nOffset > 0 && ZH_IS_BLOCK( pSelf ) &&
-          zh_stackItem( nOffset )->item.asSymbol.value == &zh_symEval )
+          zh_stackItem( nOffset )->item.asSymbol.value == pZhSymEval )
       {
          pSelf = zh_stackItem( zh_stackItem( nOffset )->
                                item.asSymbol.stackstate->nBaseItem + 1 );
@@ -4124,7 +4101,7 @@ ZH_FUNC( __CLSSYNCWAIT )
             PZH_ITEM pSelf = zh_stackItem( nOffset + 1 );
 
             /* Is it inline method? */
-            if( ZH_IS_BLOCK( pSelf ) && pBase->item.asSymbol.value == &zh_symEval )
+            if( ZH_IS_BLOCK( pSelf ) && pBase->item.asSymbol.value == pZhSymEval )
                pSelf = zh_stackItem( pBase->item.asSymbol.stackstate->nBaseItem + 1 );
 
             uiClass = zh_objGetClass( pSelf );
@@ -4804,7 +4781,7 @@ void zh_mthAddTime( ZH_ULONG ulClockTicks )
    {
       PZH_SYMBOL pSym = zh_stackBaseItem()->item.asSymbol.value;
 
-      if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
+      if( pSym == pZhSymEval || pSym->pDynSym == pZhSymEval->pDynSym )
       {
          pSym->pDynSym->ulCalls++;
          if( --pSym->pDynSym->ulRecurse == 0 )
@@ -5268,16 +5245,19 @@ ZH_FUNC( __CLSLOCKDEF )
    PZH_ITEM pClsItm = zh_param( 1, ZH_IT_BYREF );
    ZH_BOOL fLocked = ZH_FALSE;
 
+   //printf("pClsItm: %p %p %d Mtx: %p\n", pClsItm, s_pClassMtx, ZH_IS_NIL( pClsItm ), s_pClassMtx);
    if( pClsItm && ZH_IS_NIL( pClsItm ) )
    {
       if( ! s_pClassMtx || zh_threadMutexLock( s_pClassMtx ) )
       {
+         //printf("======================= lock uspjesan ================================\n");
          if( ZH_IS_NIL( pClsItm ) )
             fLocked = ZH_TRUE;
          else if( s_pClassMtx )
             zh_threadMutexUnlock( s_pClassMtx );
       }
    }
+   //printf("_clsl-end\n");
    zh_retl( fLocked );
 }
 

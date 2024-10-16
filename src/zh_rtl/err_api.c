@@ -55,7 +55,6 @@
 #include "zh_vm.h"
 #include "zh_stack.h"
 
-
 #define ZH_ERROR_LAUNCH_MAX    8
 
 /* Error class instance variables offsets */
@@ -74,12 +73,11 @@
 
 #define ZH_TERROR_IVARCOUNT    12
 
-ZH_FUNC_EXTERN( ERRORNEW );
+//ZH_FUNC_EXTERN( ERRORNEW );
 
 
 static PZH_ITEM s_pError = NULL;
 
-static ZH_SYMBOL s_symErrorNew = { "ERRORNEW", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( ERRORNEW ) }, NULL };
 
 typedef struct
 {
@@ -115,8 +113,10 @@ static ZH_BOOL zh_errGetNumCode( int * piValue, const char * szOperation )
          return ZH_FALSE;
       }
 
-      if( ! ZH_IS_NUMERIC( pItem ) )
+      if( ! ZH_IS_NUMERIC( pItem ) ) {
+         printf("===== 1 errrrrrr ========\n");
          zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
+      }
 
       *piValue = zh_itemGetNI( pItem );
       zh_itemRelease( pItem );
@@ -374,6 +374,7 @@ ZH_FUNC_STATIC( _TRIES )
 
 static ZH_USHORT zh_errClassCreate( void )
 {
+   printf("errclass step 1\n");
    ZH_USHORT usClassH = zh_clsCreate( ZH_TERROR_IVARCOUNT, "ERROR" );
 
    zh_clsAdd( usClassH, "ARGS"          , ZH_FUNCNAME( ARGS )         );
@@ -405,6 +406,8 @@ static ZH_USHORT zh_errClassCreate( void )
    zh_clsAdd( usClassH, "TRIES"         , ZH_FUNCNAME( TRIES )        );
    zh_clsAdd( usClassH, "_TRIES"        , ZH_FUNCNAME( _TRIES )       );
 
+   printf("errclass step 100\n");
+
    return usClassH;
 }
 
@@ -416,6 +419,7 @@ ZH_FUNC( ERRORNEW )
 
 ZH_FUNC( __ERRINHANDLER )
 {
+   printf("===== 2 errrrrrr ========\n");
    zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
 }
 
@@ -471,12 +475,15 @@ void zh_errInit( void )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_errInit()" ) );
 
    /* error function */
-   zh_dynsymNew( &s_symErrorNew );
+   //zh_dynsymNew( pZhSymErrorNew );
 
    /* Create error class and base object */
    s_pError = zh_itemNew( NULL );
    zh_clsAssociate( zh_errClassCreate() );
    zh_itemMove( s_pError, zh_stackReturnItem() );
+
+   printf("=============s_pError: %d  zh_is_object s_pError: %d=====================\n", s_pError, ZH_IS_OBJECT( s_pError ) );
+
 }
 
 void zh_errExit( void )
@@ -491,8 +498,10 @@ PZH_ITEM zh_errNew( void )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_errNew()" ) );
 
-   if( ! s_pError || ! ZH_IS_OBJECT( s_pError ) )
+   if( ! s_pError || ! ZH_IS_OBJECT( s_pError ) ) {
+      printf("====3=errNew ========s_pError: %d  zh_is_object s_pError: %d=====================\n", s_pError, ZH_IS_OBJECT( s_pError ) );
       zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
+   }
 
    return zh_arrayClone( s_pError );
 }
@@ -568,12 +577,16 @@ ZH_USHORT zh_errLaunch( PZH_ITEM pError )
 
          zh_itemRelease( pResult );
 
-         if( bFailure )
+         if( bFailure ) {
+            printf("===== 4 errrrrrr ========\n");
             zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
+         }
 
       }
-      else
+      else {
+         printf("===== 5 errrrrrr ========\n");
          zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
+      }
    }
    else
       uiAction = E_RETRY;
@@ -647,8 +660,10 @@ PZH_ITEM zh_errLaunchSubst( PZH_ITEM pError )
       {
          /* If the canSubstitute flag has not been set,
             consider it as a failure. */
-         if( ! ( uiFlags & EF_CANSUBSTITUTE ) )
+         if( ! ( uiFlags & EF_CANSUBSTITUTE ) ) {
+            printf("===== 7 errrrrrr ========\n");
             zh_errInternal( ZH_EI_ERRRECFAILURE, NULL, NULL, NULL );
+         }
       }
    }
    else

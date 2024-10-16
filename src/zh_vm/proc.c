@@ -106,7 +106,7 @@ ZH_FUNC( PROCFILE )
          PZH_ITEM pBase = zh_stackItem( nOffset );
 
          pSym = pBase->item.asSymbol.value;
-         if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
+         if( pSym == pZhSymEval || pSym->pDynSym == pZhSymEval->pDynSym )
          {
             PZH_ITEM pSelf = zh_stackItem( nOffset + 1 );
 
@@ -140,7 +140,7 @@ char * zh_procname( int iLevel, char * szName, ZH_BOOL fMethodName )
       pSelf = zh_stackItem( nOffset + 1 );
 
       if( fMethodName && nOffset > 0 &&
-          pBase->item.asSymbol.value == &zh_symEval &&
+          pBase->item.asSymbol.value == pZhSymEval &&
           pBase->item.asSymbol.stackstate->uiClass )
       {
          ZH_I_SIZE nPrevOffset = zh_stackItem( nOffset )->item.asSymbol.stackstate->nBaseItem;
@@ -155,8 +155,8 @@ char * zh_procname( int iLevel, char * szName, ZH_BOOL fMethodName )
          }
       }
 
-      if( pBase->item.asSymbol.value == &zh_symEval ||
-          pBase->item.asSymbol.value->pDynSym == zh_symEval.pDynSym )
+      if( pBase->item.asSymbol.value == pZhSymEval ||
+          pBase->item.asSymbol.value->pDynSym == pZhSymEval->pDynSym )
       {
          zh_strncat( szName, "(b)", ZH_PROCBUF_LEN );
          /* it is a method name? */
@@ -214,7 +214,7 @@ ZH_BOOL zh_procinfo( int iLevel, char * szName, ZH_USHORT * puiLine, char * szFi
       if( szName )
       {
          szName[ 0 ] = '\0';
-         if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
+         if( pSym == pZhSymEval || pSym->pDynSym == pZhSymEval->pDynSym )
          {
             zh_strncat( szName, "(b)", ZH_PROCBUF_LEN );
 
@@ -244,7 +244,7 @@ ZH_BOOL zh_procinfo( int iLevel, char * szName, ZH_USHORT * puiLine, char * szFi
          const char * szModule;
 
          if( ZH_IS_BLOCK( pSelf ) &&
-             ( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym ) )
+             ( pSym == pZhSymEval || pSym->pDynSym == pZhSymEval->pDynSym ) )
             pSym = pSelf->item.asBlock.value->pDefSymb;
          else if( pBase->item.asSymbol.stackstate->uiClass )
             pSym = zh_clsMethodSym( pBase );

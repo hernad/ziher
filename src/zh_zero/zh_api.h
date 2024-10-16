@@ -373,10 +373,11 @@ typedef unsigned int ZH_ERRCODE;
 #define ZH_SUCCESS         0
 #define ZH_FAILURE         1
 
-#if defined( _ZH_API_INTERNAL_ )
-/* NOTE: Deprecated. Use 'zh_vmPushEvalSym()' instead of 'zh_vmPushSymbol( &zh_symEval )' */
-extern PZH_SYMBOL zhSynEval;
-#endif
+
+extern PZH_SYMBOL pZhSymEval;
+extern PZH_SYMBOL pZhSymBreak;
+extern PZH_SYMBOL pZhSymErrorNew;
+
 
 extern ZH_EXPORT void     zh_xinit( void );                           /* Initialize fixed memory subsystem */
 extern ZH_EXPORT void     zh_xexit( void );                           /* Deinitialize fixed memory subsystem */
@@ -483,11 +484,6 @@ extern void       zh_gcReleaseAll( void ); /* release all memory blocks uncondit
 
 extern ZH_COUNTER zh_gcRefCount( void * pAlloc );  /* return number of references */
 
-#if 0
-#define zh_gcRefInc( p )      zh_xRefInc( ZH_GC_PTR( p ) )
-#define zh_gcRefCount( p )    zh_xRefCount( ZH_GC_PTR( p ) )
-#define zh_gcFunc( p )        ( ZH_GC_PTR( p )->pFunc )
-#endif
 
 #endif /* _ZH_API_INTERNAL_ */
 extern ZH_EXPORT void         zh_gcCollect( void ); /* checks if a single memory block can be released */

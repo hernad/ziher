@@ -54,7 +54,6 @@
 
 FUNCTION ReadModal( GetList, nPos, oMenu, nMsgRow, nMsgLeft, nMsgRight, cMsgColor )
 
-
    LOCAL oGetList
    LOCAL oSaveGetList
 

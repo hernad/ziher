@@ -1109,6 +1109,8 @@ int zh_gtAlert( PZH_ITEM pMessage, PZH_ITEM pOptions,
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtAlert(%p, %p, %d, %d, %f)", ( void * ) pMessage, ( void * ) pOptions, iClrNorm, iClrHigh, dDelay ) );
 
+   printf("============zh_gtAlert start===========================\n");
+
    pGT = zh_gt_Base();
    if( pGT )
    {
@@ -1117,6 +1119,7 @@ int zh_gtAlert( PZH_ITEM pMessage, PZH_ITEM pOptions,
       zh_gt_BaseFree( pGT );
    }
    return iResult;
+
 }
 
 int zh_gtSetFlag( int iType, int iNewValue )

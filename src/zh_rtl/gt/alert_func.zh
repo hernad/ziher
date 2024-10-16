@@ -11,7 +11,6 @@
 #include "set_curs.zhh"
 #include "gt_info.zhh"
 
-
 STATIC s_lNoAlert
 
 FUNCTION Alert( cMessage, aOptions, xColorNorm )
@@ -21,14 +20,16 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
    LOCAL cOption
    LOCAL nPos
 
-   IF s_lNoAlert == NIL
-      s_lNoAlert := zh_argCheck( "NOALERT" )
-   ENDIF
+   ? "aleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+   inkey(0)
 
-   IF s_lNoAlert
-      RETURN NIL
-   ENDIF
+   //IF s_lNoAlert == NIL
+   //   s_lNoAlert := zh_argCheck( "NOALERT" )
+   //ENDIF
 
+   //IF s_lNoAlert
+   //   RETURN NIL
+   //ENDIF
 
    IF ! ZH_ISSTRING( cMessage )
       RETURN NIL
@@ -60,6 +61,9 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
 
    ENDCASE
 
+   ? "aleeeeeeeee2222eeeeeeeeeeeeeeeeeeeeeeee"
+   inkey(0)
+
    RETURN zh_gtAlert( cMessage, aOptionsOK, xColorNorm, xColorHigh )
 
 /* NOTE: xMessage can be of any type, xColorNorm can be numeric.*/
@@ -71,6 +75,7 @@ FUNCTION zh_Alert( xMessage, aOptions, xColorNorm, nDelay )
    LOCAL aOptionsOK
    LOCAL cString
    LOCAL nPos
+
 
    IF s_lNoAlert == NIL
       s_lNoAlert := zh_argCheck( "NOALERT" )

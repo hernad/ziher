@@ -68,7 +68,7 @@
 #define MSGRIGHT        4
 #define MSGCOLOR        5
 
-CREATE CLASS ZHGetList
+CREATE CLASS ZHGetList INHERIT ZHObject
 
    EXPORTED:
 
@@ -227,10 +227,6 @@ METHOD Reader( oMenu, aMsg ) CLASS ZHGetList
          IF oGet:typeOut
             oGet:exitState := GE_ENTER
          ENDIF
-
-//       IF oGet:buffer == NIL
-//          oGet:exitState := GE_ENTER
-//       ENDIF
 
          DO WHILE oGet:exitState == GE_NOEXIT .AND. ! ::lKillRead
             SetCursor( iif( ::nSaveCursor == SC_NONE, SC_NORMAL, ::nSaveCursor ) )
@@ -1599,10 +1595,11 @@ METHOD EraseGetMsg( aMsg ) CLASS ZHGetList
 
    RETURN Self
 
-/* --- */
+
 
 METHOD New( GetList ) CLASS ZHGetList
 
+   ? "ZHGetList New GetList"
    ::aGetList := GetList
 
    IF ZH_ISARRAY( GetList ) .AND. Len( GetList ) >= 1

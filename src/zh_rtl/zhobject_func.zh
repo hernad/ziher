@@ -59,6 +59,10 @@ FUNCTION ZHObject()
    STATIC s_oClass := NIL
    LOCAL oClass
 
+   //IF PCount() == 1 .AND. lInit
+   //   s_oClass := NIL
+   //   lInit := NIL
+   //ENDIF
 
    IF s_oClass == NIL .AND. __clsLockDef( @s_oClass )
 

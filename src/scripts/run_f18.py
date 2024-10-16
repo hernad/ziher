@@ -40,27 +40,33 @@ elif arg1 == "func_hello_ziher_2":
    returnType = 1 # integer
    func = "ZH_GTCOUNT"
    print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
-   s = input()
+   #s = input()
 
    #ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 1, 1)
    #print("PY after func_hello_ziher")
    #s = input()
    #textual_run(header=ziher_header)
+   
    ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   
    #print("PY after func_hello_ziher_2")
-   #s = input()
+   s = input()
    textual_run(header=ziher_header)
    
    #f18klijentlib.run("NASLOVNI_EKRAN_SPLASH_SCREEN", 1, 1)
    #f18klijentlib.run("MAIN", 1, 1)
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   
+   #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   
    #print("PY after func_hello_ziher_2")
-   s = input()
-   textual_run(header=ziher_header)
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
-   print("PY after func_hello_ziher")
-   s = input()
-   textual_run(header=ziher_header)
+   #s = input()
+   #textual_run(header=ziher_header)
+   
+   #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+
+   #print("PY after func_hello_ziher")
+   #s = input()
+   #textual_run(header=ziher_header)
 
    bInitRT = True
    f18klijentlib.vmquit(bInitRT)
@@ -76,23 +82,24 @@ elif arg1 == "func_hello_ziher_2":
    bInitRT = True
    bInitConsole = True
    bReleaseConsole = True
-   print("=========== after vmQuit =====================================")
+   print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
+   s = input()
    f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole, bReleaseConsole)
    #f18klijentlib.fill_dyntable_0()
 
-   bInitConsole = 1
-   bReleaseConsole = 1
-   fun = "__ZHVMINIT"
-   f18klijentlib.run(fun, bInitConsole, bReleaseConsole)
+   #bInitConsole = 1
+   #bReleaseConsole = 1
+   #fun = "__ZHVMINIT"
+   #f18klijentlib.run(fun, bInitConsole, bReleaseConsole)
    
    #print("dyntable count:", f18klijentlib.dyntable_count())
   
    bInitConsole = 1
    bReleaseConsole = 1
    returnType = 1 # integer
-   func = "ZH_GTCOUNT"
-   print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
-   s = input()
+   #func = "ZH_GTCOUNT"
+   #print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
+   #s = input()
 
    
    bInitConsole = 1

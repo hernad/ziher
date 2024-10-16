@@ -111,7 +111,7 @@ PZH_ITEM zh_evalLaunch( PZH_EVALINFO pEvalInfo )
       }
       else if( ZH_IS_BLOCK( pItem ) )
       {
-         pSymbol = &zh_symEval;
+         pSymbol = pZhSymEval;
       }
 
       if( pSymbol )
@@ -195,7 +195,7 @@ PZH_ITEM zh_itemDo( PZH_ITEM pItem, ZH_ULONG ulPCount, ... )
       }
       else if( ZH_IS_BLOCK( pItem ) )
       {
-         pSymbol = &zh_symEval;
+         pSymbol = pZhSymEval;
       }
 
       if( pSymbol )
@@ -438,7 +438,7 @@ ZH_FUNC( ZH_EXECFROMARRAY )
       else if( ZH_IS_BLOCK( pFunc ) && ! pSelf )
       {
          pSelf = pFunc;
-         pExecSym = &zh_symEval;
+         pExecSym = pZhSymEval;
       }
    }
 
@@ -509,7 +509,7 @@ ZH_BOOL zh_execFromArray( PZH_ITEM pParam )
       else if( ZH_IS_BLOCK( pParam ) && ! pSelf )
       {
          pSelf = pParam;
-         pExecSym = &zh_symEval;
+         pExecSym = pZhSymEval;
       }
 
       if( pExecSym )

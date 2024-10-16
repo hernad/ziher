@@ -124,11 +124,20 @@ ZH_FUNC_EXTERN(SCROLL);
 
 ZH_FUNC_EXTERN(ZHOBJECT_VMINIT);
 ZH_FUNC_EXTERN(ZHCLASS_VMINIT);
+ZH_FUNC_EXTERN(ZHCLASS_VMINIT2);
+
 ZH_FUNC_EXTERN(GET_VMINIT);
 ZH_FUNC_EXTERN(__GET_VMINIT);
 //ZH_FUNC_EXTERN(ERROR_VMINIT);
 
 ZH_EXTERN_C_ ZH_EXTERN_ ZIHERF ZH_EXPORT zh_vmDoBlock ( void );
+
+ZH_FUNC_EXTERN(ERRORNEW);
+ZH_FUNC_EXTERN(ALERT);
+
+ZH_FUNC_EXTERN(ZH_GTALERT);
+ZH_FUNC_EXTERN(ZH_DEFAULTVALUE);
+
 
 //ZH_FUNC_EXTERN(ZHOBJECT);
 //ZH_FUNC_EXTERN(__CLSADDMSG);
@@ -147,8 +156,14 @@ ZH_EXTERN_C_ ZH_EXTERN_ ZIHERF ZH_EXPORT zh_vmDoBlock ( void );
 //ZH_EXTERN_C zh_INITSTATICS;
    
 
+PZH_SYMBOL pZhSymEval = NULL;
+PZH_SYMBOL pZhSymBreak = NULL;
+PZH_SYMBOL pZhSymErrorNew = NULL;
+
 static ZH_SYMBOL symbols[] = {
    { "AADD",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( AADD )      }, NULL },
+   { "ALERT",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ALERT )      }, NULL },
+   { "ZH_GTALERT", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZH_GTALERT )  }, NULL },
    { "ABS",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ABS )       }, NULL },
    { "ASC",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ASC )       }, NULL },
    { "AT",        { ZH_FS_PUBLIC }, { ZH_FUNCNAME( AT )        }, NULL },
@@ -159,6 +174,7 @@ static ZH_SYMBOL symbols[] = {
    { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }, /* symbol to evaluate codeblocks */
    { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }, /* symbol to generate break */
 
+   { "ERRORNEW", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( ERRORNEW ) }, NULL },
 
    { "CDOW",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( CDOW )      }, NULL },
    { "CHR",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( CHR )       }, NULL },
@@ -213,6 +229,7 @@ static ZH_SYMBOL symbols[] = {
    { "SETPOSBS",  { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SETPOSBS )  }, NULL },
    { "SPACE",     { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SPACE )     }, NULL },
    { "SQRT",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQRT )      }, NULL },
+   { "ZH_DEFAULTVALUE",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZH_DEFAULTVALUE )      }, NULL },
    { "STR",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( STR )       }, NULL },
    { "SUBSTR",    { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SUBSTR )    }, NULL },
    { "TIME",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( TIME )      }, NULL },
@@ -228,6 +245,7 @@ static ZH_SYMBOL symbols[] = {
    { "ZH_GTCOUNT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZH_GTCOUNT ) }, NULL },
    { "ZHOBJECT_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZHOBJECT_VMINIT ) }, NULL },
    { "ZHCLASS_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZHCLASS_VMINIT ) }, NULL },
+   { "ZHCLASS_VMINIT2",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZHCLASS_VMINIT2 ) }, NULL },
    { "GET_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( GET_VMINIT ) }, NULL },
    { "__GET_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( __GET_VMINIT ) }, NULL },
 
@@ -279,4 +297,10 @@ void zh_vmSymbolInit_RT( void )
    //printf("dynsumcount before:%d\n", zh_dynsymCount());
    zh_vmProcessSymbols( symbols, ZH_SIZEOFARRAY( symbols ), "ZHBUILTIN", 0, 0 );
    //printf("dynsumcount after:%d\n", zh_dynsymCount());
+
+   pZhSymEval = zh_dynsymFindSymbol("EVAL"); 
+   pZhSymBreak =  zh_dynsymFindSymbol("BREAK");
+   pZhSymErrorNew =  zh_dynsymFindSymbol("ERRORNEW");
+
+
 }

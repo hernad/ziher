@@ -65,20 +65,28 @@
 
 REQUEST ZHObject
 
+
+   
+
 FUNCTION ZHClass()
 
-   STATIC s_hClass := NIL  /* NOTE: Automatically defaults to NIL */
+   STATIC s_hClass /* NOTE: Automatically defaults to NIL */
    LOCAL hClass
+
+   //IF PCount() == 1 .AND. lInit
+   //   s_hClass := NIL
+   //   ? "Shclass lInit SET NIL ====================", s_hClass
+   //   lInit := NIL
+   //ENDIF
 
 
    IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
 
       BEGIN SEQUENCE
 
-
            hClass := __clsNew( "ZHCLASS", 16,, @ZHClass() )
-
          __clsAddMsg( hClass, "New"            , @New()            , ZH_OO_MSG_METHOD )
+
          __clsAddMsg( hClass, "Create"         , @Create()         , ZH_OO_MSG_METHOD )
          __clsAddMsg( hClass, "AddData"        , @AddData()        , ZH_OO_MSG_METHOD )
          __clsAddMsg( hClass, "AddMultiData"   , @AddMultiData()   , ZH_OO_MSG_METHOD )
@@ -129,6 +137,8 @@ FUNCTION ZHClass()
          __clsAddMsg( hClass, "_asFriendFunc"  , 15, ZH_OO_MSG_ASSIGN )
          __clsAddMsg( hClass, "sClassFunc"     , 16, ZH_OO_MSG_ACCESS )
          __clsAddMsg( hClass, "_sClassFunc"    , 16, ZH_OO_MSG_ASSIGN )
+         //? "ZHC-9"
+         //inkey(0)
 
       ALWAYS
 
@@ -137,6 +147,7 @@ FUNCTION ZHClass()
       END SEQUENCE
 
    ENDIF
+       //? "ZHC-XXX"
 
    RETURN __clsInst( s_hClass )
 
@@ -434,11 +445,27 @@ STATIC FUNCTION InitClass()
 
 #include "zh_api.h"
 #include "zh_fs_api.h"
+#include "zh_vm.h"
+#include "zh_item_api.h"
+
 
 ZH_FUNC( ZHCLASS_VMINIT )
 {
    printf("zhclass_vminit ziher fn\n");
    zh_INITSTATICS();
+   
+   //s_hClass == NUL;
+
 }
 
-#pragma ENDDUMP 
+#pragma ENDDUMP
+
+FUNCTION ZHCLASS_VMINIT2
+   //s_hClass := NIL
+   //? "s_hClass je nedodirljiva ?", s_hClass
+
+   //ZHCLASS(.T.)
+   //ZHOBJECT(.T.)
+
+   //inkey(0)
+RETURN NIL
