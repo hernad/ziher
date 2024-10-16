@@ -829,7 +829,7 @@ void * zh_xrealloc( void * pMem, ZH_SIZE nSize )       /* reallocates memory */
 
 void zh_xfree( void * pMem )            /* frees fixed memory */
 {
-   ZH_TRACE_FM( ZH_TR_DEBUG, ( "zh_xfree(%p)", pMem ) );
+   //ZH_TRACE_FM( ZH_TR_DEBUG, ( "zh_xfree(%p)", pMem ) );
 
    if( pMem )
    {

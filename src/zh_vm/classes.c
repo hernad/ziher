@@ -1443,7 +1443,7 @@ static ZH_I_SIZE zh_clsSenderOffset( void )
    {
       /* Is it inline method? */
       if( nOffset > 0 && ZH_IS_BLOCK( zh_stackItem( nOffset + 1 ) ) &&
-          ( zh_stackItem( nOffset )->item.asSymbol.value == &zh_symEval ||
+          ( zh_stackItem( nOffset )->item.asSymbol.value == pZhSynEval ||
             zh_stackItem( nOffset )->item.asSymbol.value->pDynSym ==
             zh_symEval.pDynSym ) )
       {
@@ -1498,7 +1498,7 @@ static PZH_SYMBOL zh_clsSenderSymbol( void )
       
       pSym = zh_stackItem( nOffset )->item.asSymbol.value;
 
-      if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
+      if( pSym == pZhsynEval || pSym->pDynSym == pZhSynEval.pDynSym )
       {
          PZH_ITEM pBlock = zh_stackItem( nOffset + 1 );
 
@@ -1699,8 +1699,8 @@ PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
    }
    else if( ZH_IS_BLOCK( pObject ) )
    {
-      if( pMsg == zh_symEval.pDynSym )
-         return &zh_symEval;
+      if( pMsg == pZhSymEval->pDynSym )
+         return pZhSymEval;
       else if( s_uiBlockClass )
       {
          pClass = s_pClasses[ s_uiBlockClass ];

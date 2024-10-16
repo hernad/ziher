@@ -1610,3 +1610,17 @@ METHOD New( GetList ) CLASS ZHGetList
    ENDIF
 
    RETURN Self
+
+
+#pragma BEGINDUMP
+
+#include "zh_api.h"
+#include "zh_fs_api.h"
+
+ZH_FUNC( GETLIST_VMINIT )
+{
+   printf("GETLIST_VMINIT ziher fn\n");
+   zh_INITSTATICS();
+}
+   
+#pragma ENDDUMP      

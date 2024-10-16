@@ -126,6 +126,10 @@ ZH_FUNC_EXTERN(ZHOBJECT_VMINIT);
 ZH_FUNC_EXTERN(ZHCLASS_VMINIT);
 ZH_FUNC_EXTERN(GET_VMINIT);
 ZH_FUNC_EXTERN(__GET_VMINIT);
+//ZH_FUNC_EXTERN(ERROR_VMINIT);
+
+ZH_EXTERN_C_ ZH_EXTERN_ ZIHERF ZH_EXPORT zh_vmDoBlock ( void );
+
 //ZH_FUNC_EXTERN(ZHOBJECT);
 //ZH_FUNC_EXTERN(__CLSADDMSG);
 //ZH_FUNC_EXTERN(__CLSLOCKDEF);
@@ -151,6 +155,11 @@ static ZH_SYMBOL symbols[] = {
    { "ATAIL", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ATAIL ) }, NULL },
    { "BOF",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BOF )       }, NULL },
    { "BREAK",     { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK )     }, NULL },
+
+   { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }, /* symbol to evaluate codeblocks */
+   { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }, /* symbol to generate break */
+
+
    { "CDOW",      { ZH_FS_PUBLIC }, { ZH_FUNCNAME( CDOW )      }, NULL },
    { "CHR",       { ZH_FS_PUBLIC }, { ZH_FUNCNAME( CHR )       }, NULL },
    { "CMONTH",    { ZH_FS_PUBLIC }, { ZH_FUNCNAME( CMONTH )    }, NULL },
@@ -221,6 +230,9 @@ static ZH_SYMBOL symbols[] = {
    { "ZHCLASS_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ZHCLASS_VMINIT ) }, NULL },
    { "GET_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( GET_VMINIT ) }, NULL },
    { "__GET_VMINIT",   { ZH_FS_PUBLIC }, { ZH_FUNCNAME( __GET_VMINIT ) }, NULL },
+
+   //{ "ERROR_VMINIT", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( ERROR_VMINIT ) }, NULL },
+
 
 
    /*

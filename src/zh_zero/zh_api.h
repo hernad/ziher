@@ -375,7 +375,7 @@ typedef unsigned int ZH_ERRCODE;
 
 #if defined( _ZH_API_INTERNAL_ )
 /* NOTE: Deprecated. Use 'zh_vmPushEvalSym()' instead of 'zh_vmPushSymbol( &zh_symEval )' */
-extern ZH_SYMBOL zh_symEval;
+extern PZH_SYMBOL zhSynEval;
 #endif
 
 extern ZH_EXPORT void     zh_xinit( void );                           /* Initialize fixed memory subsystem */

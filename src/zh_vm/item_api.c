@@ -1509,7 +1509,7 @@ void zh_itemClear( PZH_ITEM pItem )
 {
    ZH_TYPE type;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemClear(%p)", ( void * ) pItem ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemClear(%p)", ( void * ) pItem ) );
 
    type = ZH_ITEM_TYPERAW( pItem );
    pItem->type = ZH_IT_NIL;

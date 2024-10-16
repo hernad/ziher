@@ -89,7 +89,7 @@ static PZH_DYNSYMBOL zh_dynsymInsert( PZH_SYMBOL pSymbol, ZH_UINT uiPos )
 {
    PZH_DYNSYMBOL pDynSym;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymInsert(%p, %u)", ( void * ) pSymbol, uiPos ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymInsert(%p, %u)", ( void * ) pSymbol, uiPos ) );
 
    if( ++s_uiDynSymbolsCount == 0 )
    {
@@ -124,7 +124,7 @@ static PZH_DYNSYMBOL zh_dynsymPos( const char * szName, ZH_UINT * puiPos )
 {
    ZH_UINT uiFirst, uiLast, uiMiddle;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymPos(%s, %p)", szName, ( void * ) puiPos ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymPos(%s, %p)", szName, ( void * ) puiPos ) );
 
    uiFirst = 0;
    uiLast = s_uiDynSymbolsCount;
@@ -230,7 +230,7 @@ PZH_DYNSYMBOL zh_dynsymNew( PZH_SYMBOL pSymbol )
    PZH_DYNSYMBOL pDynSym;
    ZH_UINT uiPos;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymNew(%p)", ( void * ) pSymbol ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymNew(%p)", ( void * ) pSymbol ) );
 
    ZH_DYNSYM_LOCK();
 

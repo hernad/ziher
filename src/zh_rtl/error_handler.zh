@@ -49,7 +49,8 @@
 PROCEDURE ErrorSys()
 
    //ErrorBlock( {| oError | DefError( oError ) } )
-   ErrorBlock( {| oError | Break( oError ) } )
+   //ErrorBlock( {| oError | Break( oError ) } )
+   ErrorBlock( {| oError | Qout(ErrorMessage( oError )) } )
 
    RETURN
 
@@ -182,3 +183,5 @@ STATIC FUNCTION ErrorMessage( oError )
    ENDCASE
 
    RETURN cMessage
+
+

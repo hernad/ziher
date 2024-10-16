@@ -554,7 +554,6 @@ static int add_efds( PZH_GTTRM pTerm, int fd, int mode,
    if( eventFunc == NULL && mode != O_RDONLY )
       return -1;
 
-#if defined( ZH_OS_UNIX )
    {
       int fl;
       if( ( fl = fcntl( fd, F_GETFL, 0 ) ) == -1 )
@@ -565,7 +564,6 @@ static int add_efds( PZH_GTTRM pTerm, int fd, int mode,
            ( fl == O_WRONLY && mode == O_RDONLY ) )
          return -1;
    }
-#endif
 
    for( i = 0; i < pTerm->efds_no && ! pefd; i++ )
       if( pTerm->event_fds[ i ]->fd == fd )

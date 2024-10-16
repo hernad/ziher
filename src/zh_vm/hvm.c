@@ -76,6 +76,7 @@
 #  include <time.h>
 #endif
 
+ZIHERF zh_vmDoBlock( void );
 
 ZH_FUNC_EXTERN( SYSINIT );
 ZH_FUNC_EXTERN( BREAK );
@@ -138,7 +139,7 @@ static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM, PZH_SYMBOL );  /* select the wo
 static void       zh_vmSwapAlias( void );           /* swaps items on the eval stack and pops the workarea number */
 
 /* Execution */
-static ZIHERF zh_vmDoBlock( void );             /* executes a codeblock */
+
 static void    zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and params supplied */
 static void    zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams ); /* increases the stack pointer for the amount of locals and variable number of params supplied */
 static void    zh_vmSFrame( PZH_SYMBOL pSym );     /* sets the statics frame for a function */
@@ -235,8 +236,11 @@ static const char * s_vm_pszLinkedMain = NULL; /* name of startup function set b
 
 /* virtual machine state */
 
-ZH_SYMBOL zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* symbol to evaluate codeblocks */
-static ZH_SYMBOL  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
+PZH_SYMBOL pZhsymEval;
+PZH_SYMBOL pZhsymBreak;
+
+//ZH_SYMBOL zh_symEval = { "EVAL",  { ZH_FS_PUBLIC }, { zh_vmDoBlock }, NULL }; /* symbol to evaluate codeblocks */
+//static ZH_SYMBOL  s_symBreak = { "BREAK", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( BREAK ) }, NULL }; /* symbol to generate break */
 static PZH_ITEM s_breakBlock = NULL;
 
 static ZH_BOOL  s_fZHVMActive = ZH_FALSE;  /* is ZHVM ready for PCODE executing */
@@ -279,7 +283,7 @@ static PZH_ITEM zh_breakBlock( void )
          zh_codeblockNew( s_pCode,  /* pcode buffer         */
                           0,        /* number of referenced local variables */
                           NULL,     /* table with referenced local variables */
-                          &s_symBreak,
+                          pZhsymBreak,
                           sizeof( s_pCode ) );
       s_breakBlock->type = ZH_IT_BLOCK;
       s_breakBlock->item.asBlock.paramcnt = 1;
@@ -470,6 +474,16 @@ static void zh_vmDoInitZHObject( void )
       zh_vmPushNil();
       zh_vmProc( 0 );
    }; 
+
+   //char * sFunc5 = "ERROR_VMINIT";
+   //PZH_DYNSYMBOL pDynSym5 = zh_dynsymFind( sFunc5 );
+   //if( pDynSym5 && pDynSym5->pSymbol->value.pFunPtr )
+   //{
+   //   printf(">>>>>>>>>>>>>>> ERROR_VMINIT %p  %p\n", pDynSym5, pDynSym5->pSymbol->value.pFunPtr);
+   //   zh_vmPushSymbol( pDynSym5->pSymbol );
+   //   zh_vmPushNil();
+   //   zh_vmProc( 0 );
+   //}; 
 }
 
 
@@ -1099,15 +1113,18 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    }
 
    
-   if (! zh_symEval.pDynSym) { 
-      printf("EVAL zh_dynsymGetCase\n");
+   //if (! zh_symEval.pDynSym) { 
+       //   printf("EVAL zh_dynsymGetCase\n");
 
       /* initialize dynamic symbol for evaluating codeblocks and break function */
       // EVAL
-      zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
+      //zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
       // BREAK
-      s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
-   }
+      //s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
+
+      pZhsymEval = zh_dynsymFindSymbol("EVAL"); 
+      pZhsymBreak =  zh_dynsymFindSymbol("BREAK");
+   //}
 
 
    printf("init step 9\n");
@@ -6976,13 +6993,14 @@ void zh_vmEval( ZH_USHORT uiParams )
    zh_stackOldFrame( &sStackState );
 }
 
-static ZIHERF zh_vmDoBlock( void )
+//static ZIHERF zh_vmDoBlock( void )
+ZIHERF zh_vmDoBlock( void )
 {
    
    PZH_ITEM pBlock, pBase;
    int iParam;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoBlock()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoBlock()" ) );
 
    pBlock = zh_stackSelfItem();
    if( ! ZH_IS_BLOCK( pBlock ) )
@@ -7748,7 +7766,7 @@ void zh_vmPushEvalSym( void )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushEvalSym()" ) );
 
    pItem->type = ZH_IT_SYMBOL;
-   pItem->item.asSymbol.value = &zh_symEval;
+   pItem->item.asSymbol.value = pZhsymEval;
    pItem->item.asSymbol.stackstate = NULL;
 }
 
@@ -8940,7 +8958,7 @@ PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
                               const char * szModuleName, ZH_ULONG ulID,
                               ZH_USHORT uiPCodeVer )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmProcessSymbols(%p,%hu,%s,%lu,%hu)", ( void * ) pSymbols, uiModuleSymbols, szModuleName, ulID, uiPCodeVer ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmProcessSymbols(%p,%hu,%s,%lu,%hu)", ( void * ) pSymbols, uiModuleSymbols, szModuleName, ulID, uiPCodeVer ) );
 
    zh_vmVerifyPCodeVersion( szModuleName, uiPCodeVer );
    return zh_vmRegisterSymbols( pSymbols, uiModuleSymbols, szModuleName, ulID,
@@ -9812,7 +9830,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
       }
       else if( ZH_IS_BLOCK( pItem ) )
       {
-         pSymbol = &zh_symEval;
+         pSymbol = pZhsymEval;
       }
 
       if( pSymbol && zh_vmRequestReenter() )

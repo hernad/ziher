@@ -213,8 +213,8 @@ ZH_Z18_COMP_OPTS=[
     #"-DGT_DEFAULT_CONSOLE",
     "-DF18_DEBUG",
     "-b",
-    #"-DZH_TR_LEVEL=4", #INFO
-    #"-DZH_TR_LEVEL=5", #DEBUG
+    #"-DZH_TR_LEVEL=4" #INFO
+    #"-DZH_TR_LEVEL=5" #DEBUG
 ]
 
 ZH_DEPS_F18=[
