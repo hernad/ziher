@@ -66,7 +66,6 @@
    #include <malloc.h>
  */
 
-#define ZH_STACK_PRELOAD
 
 #include "zh_vm_opt.h"
 #include "zh_api.h"

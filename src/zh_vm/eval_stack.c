@@ -44,7 +44,6 @@
  *
  */
 
-#define ZH_STACK_PRELOAD
 
 #include "zh_vm_opt.h"
 #include "zh_api.h"
@@ -88,10 +87,6 @@
       #error "TLS support undefined for this compiler"
 #  endif /* ZH_USE_TLS */
 
-#  if ! defined( ZH_STACK_PRELOAD )
-#     undef zh_stack
-#     define zh_stack   ( * zh_stack_ptr )
-#  endif
 
 
 

@@ -187,22 +187,13 @@ typedef struct
 #     else
          #error "TLS support undefined for this compiler" 
 #     endif
-#     if defined( ZH_STACK_PRELOAD ) && ! defined( ZH_USE_TLS )
+#     if ! defined( ZH_USE_TLS )
          #error "TLS support undefined for this compiler" 
 #     else
 #        define zh_stack            ( * zh_stack_ptr )
 #        define zh_stack_ref()      ( zh_stack_ptr )
 #     endif
 
-#endif
-#if ! defined(  )
-#  if defined( ZH_STACK_PRELOAD )
-#     define 
-#     define ZH_STACK_TLS_RELOAD
-#     undef  ZH_STACK_PRELOAD
-#  elif defined( _ZH_STACK_MACROS_ )
-#     define 
-#  endif
 #endif
 
 #endif /* _ZH_API_INTERNAL_ */

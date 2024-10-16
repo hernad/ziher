@@ -48,7 +48,6 @@
  *
  */
 
-#define ZH_STACK_PRELOAD
 
 #include "zh_vm_opt.h"
 #include "zh_api.h"
@@ -8857,7 +8856,7 @@ ZH_BOOL zh_vmRequestReenterExt( void )
          ZH_VM_UNLOCK();
 
          zh_vmThreadInit( NULL );
-         ZH_STACK_TLS_RELOAD
+      
 
          ZH_VM_LOCK();
          s_iRunningCount--;
