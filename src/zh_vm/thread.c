@@ -881,7 +881,7 @@ PZH_THREADSTATE zh_threadStateNew( void )
 
 PZH_THREADSTATE zh_threadStateClone( ZH_ULONG ulAttr, PZH_ITEM pParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_THREADSTATE pThread;
 
    pThread = zh_threadStateNew();
@@ -996,7 +996,7 @@ ZH_FUNC( ZH_THREADSTART )
 
    if( pStart )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_THREADSTATE pThread;
       PZH_ITEM pReturn, pParams;
       ZH_SIZE nPCount;
@@ -1069,7 +1069,7 @@ ZH_FUNC( ZH_THREADSELF )
 
 ZH_FUNC( ZH_THREADID )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_THREADSTATE pThread;
 
    if( zh_pcount() > 0 )
@@ -1090,7 +1090,7 @@ ZH_FUNC( ZH_THREADID )
 
 ZH_FUNC( ZH_THREADISMAIN )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_pcount() > 0 )
    {
@@ -1192,7 +1192,7 @@ ZH_FUNC( ZH_THREADJOIN )
 
    if( pThread )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_BOOL fResult = ZH_FALSE;
 
       if( pThread->th_h )
@@ -1222,7 +1222,7 @@ ZH_FUNC( ZH_THREADDETACH )
 
    if( pThread )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_BOOL fResult = ZH_FALSE;
 
       if( pThread->th_h && zh_threadDetach( pThread->th_h ) )
@@ -1240,7 +1240,7 @@ ZH_FUNC( ZH_THREADQUITREQUEST )
 
    if( pThread )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_BOOL fResult = ZH_FALSE;
 
       if( pThread->fActive )
@@ -1255,7 +1255,7 @@ ZH_FUNC( ZH_THREADQUITREQUEST )
 ZH_FUNC( ZH_THREADWAIT )
 {
 #  define ZH_THREAD_WAIT_ALLOC  16
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_ULONG ulMilliSec = ZH_THREAD_INFINITE_WAIT;
    PZH_THREADSTATE * pThreads, pAlloc[ ZH_THREAD_WAIT_ALLOC ];
    int iThreads = -1;
@@ -1342,7 +1342,7 @@ ZH_FUNC( ZH_THREADONCE )
 
    if( pItem && ZH_ISBYREF( 1 ) && ( ZH_IS_NIL( pItem ) || ZH_IS_LOGICAL( pItem ) ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_BOOL fFirstCall = ZH_FALSE;
       if( ZH_IS_NIL( pItem ) || ! zh_itemGetL( pItem ) )
       {
@@ -1388,7 +1388,7 @@ ZH_FUNC( ZH_THREADONCEINIT )
 
    if( pItem && pValue && ZH_ISBYREF( 1 ) && ! ZH_ISBYREF( 2 ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_BOOL fInitialized = ZH_FALSE;
 
       if( ZH_IS_NIL( pItem ) && ! ZH_IS_NIL( pValue ) )
@@ -1960,7 +1960,7 @@ PZH_ITEM zh_threadMutexSubscribe( PZH_ITEM pItem, ZH_BOOL fClear )
 
    if( pMutex )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       int lock_count = 0;
 
       zh_vmUnlock();
@@ -2056,7 +2056,7 @@ PZH_ITEM zh_threadMutexTimedSubscribe( PZH_ITEM pItem, ZH_ULONG ulMilliSec, ZH_B
 
    if( pMutex )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       int lock_count = 0;
 
       zh_vmUnlock();
@@ -2160,7 +2160,7 @@ PZH_ITEM zh_threadMutexTimedSubscribe( PZH_ITEM pItem, ZH_ULONG ulMilliSec, ZH_B
 
 ZH_FUNC( ZH_MUTEXEXISTS )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retl( zh_itemGetPtrGC( zh_param( 1, ZH_IT_POINTER ), &s_gcMutexFuncs ) != NULL );
 }
 
@@ -2175,7 +2175,7 @@ ZH_FUNC( ZH_MUTEXLOCK )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       if( ZH_IS_PARAM_NUM( 2 ) )
       {
          ZH_ULONG ulMilliSec = 0;
@@ -2195,7 +2195,7 @@ ZH_FUNC( ZH_MUTEXUNLOCK )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_retl( zh_threadMutexUnlock( pItem ) );
    }
 }
@@ -2222,7 +2222,7 @@ ZH_FUNC( ZH_MUTEXSUBSCRIBE )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pResult;
 
       if( ZH_IS_PARAM_NUM( 2 ) )
@@ -2253,7 +2253,7 @@ ZH_FUNC( ZH_MUTEXSUBSCRIBENOW )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pResult;
 
       if( ZH_IS_PARAM_NUM( 2 ) )
@@ -2288,7 +2288,7 @@ ZH_FUNC( ZH_MUTEXEVAL )
 
       if( pEval )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          int iPCount = zh_pcount(), iParam;
 
          if( zh_threadMutexLock( pItem ) )
@@ -2316,7 +2316,7 @@ ZH_FUNC( ZH_MUTEXQUEUEINFO )
 
       if( pMutex )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          zh_storni( pMutex->waiters, 2 );
          zh_storns( pMutex->events ? zh_arrayLen( pMutex->events ) : 0, 3 );
          zh_retl( ZH_TRUE );
@@ -2326,7 +2326,7 @@ ZH_FUNC( ZH_MUTEXQUEUEINFO )
 
 ZH_FUNC( ZH_MTVM )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retl( ZH_TRUE );
 }
 

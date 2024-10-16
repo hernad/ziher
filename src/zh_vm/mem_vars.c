@@ -201,7 +201,7 @@ PZH_ITEM zh_memvarDetachLocal( PZH_ITEM pLocal )
  */
 static void zh_memvarAddPrivate( PZH_DYNSYMBOL pDynSym, PZH_ITEM pValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_PRIVATE_STACK pPrivateStack;
    PZH_ITEM pMemvar;
 
@@ -278,7 +278,7 @@ static void zh_memvarAddPrivate( PZH_DYNSYMBOL pDynSym, PZH_ITEM pValue )
  */
 ZH_SIZE zh_memvarGetPrivatesBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_SIZE nBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarGetPrivatesBase()" ) );
@@ -293,7 +293,7 @@ ZH_SIZE zh_memvarGetPrivatesBase( void )
  */
 void zh_memvarSetPrivatesBase( ZH_SIZE nBase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_PRIVATE_STACK pPrivateStack;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarSetPrivatesBase(%" ZH_PFS "u)", nBase ) );
@@ -320,7 +320,7 @@ void zh_memvarSetPrivatesBase( ZH_SIZE nBase )
  */
 void zh_memvarUpdatePrivatesBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarUpdatePrivatesBase()" ) );
 
@@ -332,7 +332,7 @@ void zh_memvarUpdatePrivatesBase( void )
  */
 static void zh_memvarResetPrivatesBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarResetPrivatesBase()" ) );
 
@@ -689,7 +689,7 @@ static void zh_memvarRelease( PZH_ITEM pMemvar )
 
       if( pDynSymbol && zh_dynsymGetMemvar( pDynSymbol ) )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          ZH_SIZE nBase = zh_stackGetPrivateStack()->count;
 
          /* Find the variable with a requested name that is currently visible
@@ -726,7 +726,7 @@ static void zh_memvarRelease( PZH_ITEM pMemvar )
  */
 static void zh_memvarReleaseWithMask( const char * szMask, ZH_BOOL bInclude )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_SIZE nBase, nCount;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarReleaseWithMask(%s, %d)", szMask, ( int ) bInclude ) );
@@ -762,7 +762,7 @@ static int zh_memvarScopeGet( PZH_DYNSYMBOL pDynVar )
       return ZH_MV_UNKNOWN;
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_SIZE nBase = zh_stackGetPrivateStack()->count;    /* start from the top of the stack */
 
       while( nBase )
@@ -799,7 +799,7 @@ int zh_memvarScope( const char * szVarName, ZH_SIZE nLength )
 /* Clear all memvar variables optionally without GetList PUBLIC variable */
 void zh_memvarsClear( ZH_BOOL fAll )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_DYNSYMBOL pGetList;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_memvarsClear(%d)", ( int ) fAll ) );
@@ -830,7 +830,7 @@ static ZH_DYNS_FUNC( zh_memvarCountPublics )
 
 static ZH_SIZE zh_memvarGetBaseOffset( int iProcLevel )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( iProcLevel > 0 )
    {
@@ -861,7 +861,7 @@ static ZH_I_SIZE zh_memvarCount( int iScope, int iLevel )
    }
    else  /* number of PRIVATE variables */
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       if( iScope == ZH_MV_PRIVATE_LOCAL )
          return zh_stackGetPrivateStack()->count - zh_memvarGetBaseOffset( iLevel );
@@ -927,7 +927,7 @@ static PZH_ITEM zh_memvarDebugVariable( int iScope, int iPos, const char ** pszN
       }
       else
       {
-         ZH_STACK_TLS_PRELOAD
+         
          if( ( ZH_SIZE ) iPos < zh_stackGetPrivateStack()->count )
          {
             PZH_DYNSYMBOL pDynSym = zh_stackGetPrivateStack()->stack[ iPos ].pDynSym;
@@ -959,7 +959,7 @@ static ZH_DYNS_FUNC( zh_memvarCountVisible )
 
 PZH_ITEM zh_memvarSaveInArray( int iScope, ZH_BOOL fCopy )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    struct mv_memvarArray_info MVInfo;
    PZH_ITEM pArray;
 
@@ -1049,7 +1049,7 @@ static const char * zh_memvarGetMask( int iParam )
 
 ZH_FUNC( __MVPUBLIC )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCount = zh_pcount();
 
    if( iCount )
@@ -1084,7 +1084,7 @@ ZH_FUNC( __MVPUBLIC )
 
 ZH_FUNC( __MVPRIVATE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCount = zh_pcount();
 
    if( iCount )
@@ -1121,7 +1121,7 @@ ZH_FUNC( __MVPRIVATE )
 
 ZH_FUNC( __MVXRELEASE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCount = zh_pcount();
 
    if( iCount )
@@ -1156,7 +1156,7 @@ ZH_FUNC( __MVXRELEASE )
 
 ZH_FUNC( __MVRELEASE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCount = zh_pcount();
 
    if( iCount && ZH_ISCHAR( 1 ) )
@@ -1173,7 +1173,7 @@ ZH_FUNC( __MVRELEASE )
 
 ZH_FUNC( __MVSCOPE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iMemvar = ZH_MV_ERROR;
 
    if( zh_pcount() )
@@ -1195,7 +1195,7 @@ ZH_FUNC( __MVCLEAR )
 
 ZH_FUNC( __MVDBGINFO )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCount = zh_pcount();
 
    if( iCount == 1 || iCount == 2 )          /* request for a number of variables */
@@ -1223,7 +1223,7 @@ ZH_FUNC( __MVDBGINFO )
 
 ZH_FUNC( __MVEXIST )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_DYNSYMBOL pDyn;
 
    pDyn = zh_memvarFindSymbol( zh_parc( 1 ), zh_parclen( 1 ) );
@@ -1236,7 +1236,7 @@ ZH_FUNC( __MVGET )
 
    if( pName )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_DYNSYMBOL pDynVar = zh_memvarFindSymbol( pName->item.asString.value,
                                               pName->item.asString.length );
 
@@ -1432,7 +1432,7 @@ static ZH_DYNS_FUNC( zh_memvarSave )
 
 ZH_FUNC( __MVSAVE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_pcount() == 3 && ZH_ISCHAR( 1 ) && ZH_ISCHAR( 2 ) && ZH_ISLOGICAL( 3 ) )
    {
@@ -1495,7 +1495,7 @@ ZH_FUNC( __MVRESTORE )
 
    if( ZH_ISCHAR( 1 ) && ZH_ISLOGICAL( 2 ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       const char * pszFileName = zh_parc( 1 );
       PZH_ITEM pError = NULL;
       PZH_FILE fhnd;
@@ -1659,7 +1659,7 @@ ZH_FUNC( __MVRESTORE )
  */
 ZH_FUNC( __MVSETBASE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 0 );
 
    if( nOffset > 0 )

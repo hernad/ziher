@@ -1155,7 +1155,7 @@ void zh_clsDoInit( void )
         &s_uiSymbolClass, &s_uiPointerClass,
         &s_uiObjectClass };
 
-   ZH_STACK_TLS_PRELOAD
+   
    int i;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsDoInit()" ) );
@@ -1639,7 +1639,7 @@ static ZH_USHORT zh_clsSenderMethodClass( void )
 
    if( nOffset > 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_STACK_STATE pStack = zh_stackItem( nOffset )->item.asSymbol.stackstate;
 
       if( pStack->uiClass )
@@ -1656,7 +1656,7 @@ static PZH_SYMBOL zh_clsSenderSymbol( void )
 
    if( nOffset > 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       pSym = zh_stackItem( nOffset )->item.asSymbol.value;
 
       if( pSym == &zh_symEval || pSym->pDynSym == zh_symEval.pDynSym )
@@ -1677,7 +1677,7 @@ static ZH_USHORT zh_clsSenderObjectClass( void )
 
    if( nOffset > 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pSender = zh_stackItem( nOffset + 1 );
 
       if( ZH_IS_ARRAY( pSender ) )
@@ -1792,7 +1792,7 @@ static void zh_clsMakeSuperObject( PZH_ITEM pDest, PZH_ITEM pObject,
 PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                           PZH_STACK_STATE pStack )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PCLASS pClass = NULL;
    PZH_DYNSYMBOL pMsg;
 
@@ -2206,7 +2206,7 @@ ZH_BOOL zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMBOL pMessage,
 #if defined( ZH_HASH_MSG_ITEMS )
    if( ZH_IS_HASH( pObject ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pIndex = zh_itemPutCConst( zh_stackAllocItem(), pMessage->szName + 1 );
       PZH_ITEM pValue = zh_hashGetItemRefPtr( pObject, pIndex );
       zh_stackPop();
@@ -2219,7 +2219,7 @@ ZH_BOOL zh_objGetVarRef( PZH_ITEM pObject, PZH_SYMBOL pMessage,
    pExecSym = zh_objGetMethod( pObject, pMessage, pStack );
    if( pExecSym )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       if( pExecSym == &s___msgSetData )
       {
          ZH_USHORT uiObjClass = pObject->item.asArray.value->uiClass;
@@ -2290,7 +2290,7 @@ ZH_BOOL zh_clsHasDestructor( ZH_USHORT uiClass )
 static void zh_objSuperDestructorCall( PZH_ITEM pObject, PCLASS pClass )
 {
 #if 0
-   ZH_STACK_TLS_PRELOAD
+   
    PMETHOD pMethod = pClass->pMethods;
    ZH_SIZE nLimit = zh_clsMthNum( pClass );
    char * pcClasses;
@@ -2338,7 +2338,7 @@ static void zh_objSuperDestructorCall( PZH_ITEM pObject, PCLASS pClass )
 
    zh_xfree( pcClasses );
 #else
-   ZH_STACK_TLS_PRELOAD
+   
    PMETHOD pDtorMethod = zh_clsFindMsg( pClass, s___msgDestructor.pDynSym );
 
    if( pDtorMethod )
@@ -2423,7 +2423,7 @@ ZH_BOOL zh_objOperatorCall( ZH_USHORT uiOperator, PZH_ITEM pResult, PZH_ITEM pOb
 
    if( zh_objHasOperator( pObject, uiOperator ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_vmPushSymbol( s_opSymbols + uiOperator );
       zh_vmPush( pObject );
       zh_itemSetNil( zh_stackReturnItem() );
@@ -2498,7 +2498,7 @@ PZH_ITEM zh_objSendMessage( PZH_ITEM pObject, PZH_DYNSYMBOL pMsgSym, ZH_ULONG ul
       zh_errRT_BASE( EG_ARG, 3000, NULL, "__objSendMessage()", 0 );
 
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return zh_stackReturnItem();
    }
 }
@@ -2522,7 +2522,7 @@ PZH_ITEM zh_objSendMsg( PZH_ITEM pObject, const char * szMsg, ZH_ULONG ulArg, ..
    zh_vmSend( ( ZH_USHORT ) ulArg );
 
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return zh_stackReturnItem();
    }
 }
@@ -2629,7 +2629,7 @@ PZH_ITEM zh_objCloneTo( PZH_ITEM pDest, PZH_ITEM pObject )
 /* send message which allows to set execution context for debugger */
 void zh_dbg_objSendMessage( int iProcLevel, PZH_ITEM pObject, PZH_ITEM pMessage, int iParamOffset )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_DYNSYMBOL pMsgSym;
 
    pMsgSym = zh_objGetMsgSym( pMessage );
@@ -3599,7 +3599,7 @@ ZH_FUNC( __CLSNEW )
        ( ! pClassFunc || ZH_IS_SYMBOL( pClassFunc ) ) &&
        ( ! pModFriend || ZH_IS_LOGICAL( pModFriend ) ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_USHORT uiClass;
       uiClass = zh_clsNew( szClassName, ( ZH_USHORT ) zh_itemGetNI( pDatas ),
                            pSuperArray, zh_itemGetSymbol( pClassFunc ),
@@ -3846,7 +3846,7 @@ ZH_FUNC( __CLSMODMSG )
  */
 ZH_FUNC( __OBJGETCLSNAME )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_param( 1, ZH_IT_OBJECT );
    ZH_USHORT uiClass;
 
@@ -3869,7 +3869,7 @@ ZH_FUNC( __OBJHASMSG )
 
    if( pMessage )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_retl( zh_objHasMessage( zh_param( 1, ZH_IT_ANY ), pMessage ) );
    }
    else
@@ -3886,7 +3886,7 @@ ZH_FUNC( __OBJHASMSGASSIGNED )
 
    if( pMessage )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_SYMBOL pExecSym = zh_objGetMethod( zh_param( 1, ZH_IT_ANY ),
                                            pMessage->pSymbol, NULL );
       zh_retl( pExecSym && pExecSym != &s___msgVirtual );
@@ -3905,7 +3905,7 @@ ZH_FUNC( __OBJSENDMSG )
 
    if( pMessage )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_USHORT uiPCount = zh_pcount();
       ZH_USHORT uiParam;
 
@@ -3927,7 +3927,7 @@ ZH_FUNC( __OBJSENDMSG )
  */
 ZH_FUNC( __OBJCLONE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_param( 1, ZH_IT_OBJECT );
 
    if( pObject )
@@ -3942,7 +3942,7 @@ ZH_FUNC( __OBJCLONE )
  */
 ZH_FUNC( __CLSINSTSUPER )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_param( 1, ZH_IT_STRING | ZH_IT_SYMBOL );
    ZH_USHORT uiClassH = 0, uiClass;
    PZH_SYMBOL pClassFuncSym = NULL;
@@ -4037,7 +4037,7 @@ ZH_FUNC( __CLSINSTSUPER )
  */
 ZH_FUNC( __CLSASSOCTYPE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
    PZH_ITEM pType = zh_param( 2, ZH_IT_ANY );
    ZH_BOOL fResult = ZH_FALSE;
@@ -4101,7 +4101,7 @@ ZH_FUNC( __CLSASSOCTYPE )
  */
 ZH_FUNC( __CLSCNTCLASSES )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retni( ( int ) s_uiClasses );
 }
 
@@ -4111,7 +4111,7 @@ ZH_FUNC( __CLSCNTCLASSES )
  */
 ZH_FUNC( __CLS_CNTCLSDATA )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
 
    zh_retni( uiClass && uiClass <= s_uiClasses ?
@@ -4124,7 +4124,7 @@ ZH_FUNC( __CLS_CNTCLSDATA )
  */
 ZH_FUNC( __CLS_CNTSHRDATA )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
 
    zh_retni( uiClass && uiClass <= s_uiClasses ?
@@ -4137,7 +4137,7 @@ ZH_FUNC( __CLS_CNTSHRDATA )
  */
 ZH_FUNC( __CLS_CNTDATA )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
 
    zh_retni( uiClass && uiClass <= s_uiClasses ?
@@ -4150,7 +4150,7 @@ ZH_FUNC( __CLS_CNTDATA )
  */
 ZH_FUNC( __CLS_DECDATA )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
 
    if( uiClass && uiClass <= s_uiClasses &&
@@ -4170,7 +4170,7 @@ ZH_FUNC( __CLS_DECDATA )
  */
 ZH_FUNC( __CLS_INCDATA )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
 
    if( uiClass && uiClass <= s_uiClasses )
@@ -4190,7 +4190,7 @@ ZH_FUNC_TRANSLATE( __CLASSADD, __CLSADDMSG )
 
 ZH_FUNC( __CLASSNAME )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retc( zh_clsName( ( ZH_USHORT ) zh_parni( 1 ) ) );
 }
 
@@ -4225,7 +4225,7 @@ ZH_FUNC( __CLASSSEL )
 /* to be used from Classes ERROR HANDLER method */
 ZH_FUNC( __GETMESSAGE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retc( zh_stackItem ( zh_stackBaseItem()->item.asSymbol.stackstate->nBaseItem )->item.asSymbol.value->szName );
 }
 
@@ -4234,7 +4234,7 @@ ZH_FUNC( __GETMESSAGE )
  */
 ZH_FUNC( __CLSPARENT )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szParentName = zh_parc( 2 );
 
    zh_retl( szParentName &&
@@ -4246,7 +4246,7 @@ ZH_FUNC( __CLSPARENT )
  */
 ZH_FUNC( __SENDER )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 2 );
 
    if( nOffset > 0 )
@@ -4275,7 +4275,7 @@ ZH_FUNC( __CLSSYNCSIGNAL )
 
 ZH_FUNC( __CLSSYNCWAIT )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pMutex = NULL;
    ZH_ULONG ulMilliSec = ZH_THREAD_INFINITE_WAIT;
    ZH_I_SIZE nOffset = zh_stackBaseProcOffset( 2 );
@@ -4324,7 +4324,7 @@ ZH_FUNC( __CLSSYNCWAIT )
  */
 ZH_FUNC( __CLASSH )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_param( 1, ZH_IT_ANY );
 
    zh_retni( pObject ? zh_objGetClassH( pObject ) : 0 );
@@ -4338,7 +4338,7 @@ ZH_FUNC( __CLASSH )
  */
 ZH_FUNC_STATIC( msgClassH )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retni( zh_stackBaseItem()->item.asSymbol.stackstate->uiClass );
 }
 
@@ -4349,7 +4349,7 @@ ZH_FUNC_STATIC( msgClassH )
  */
 ZH_FUNC_STATIC( msgClassName )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = zh_stackBaseItem()->item.asSymbol.stackstate->uiClass;
 
    if( uiClass )
@@ -4410,7 +4410,7 @@ static int zh_methodType( PMETHOD pMethod )
  */
 ZH_FUNC_STATIC( msgClassSel )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiClass = zh_stackBaseItem()->item.asSymbol.stackstate->uiClass;
 
    if( uiClass && uiClass <= s_uiClasses )
@@ -4513,7 +4513,7 @@ ZH_FUNC_STATIC( msgClassParent )
  */
 ZH_FUNC_STATIC( msgEvalInline )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass   = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
@@ -4540,7 +4540,7 @@ ZH_FUNC_STATIC( msgEvalInline )
 
 ZH_FUNC_STATIC( msgPerform )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_param( 1, ZH_IT_ANY );
 
    if( pItem )
@@ -4577,7 +4577,7 @@ ZH_FUNC_STATIC( msgPerform )
 
 ZH_FUNC_STATIC( msgDelegate )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass   = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
@@ -4597,7 +4597,7 @@ ZH_FUNC_STATIC( msgDelegate )
 
 ZH_FUNC_STATIC( msgSync )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
@@ -4629,7 +4629,7 @@ ZH_FUNC_STATIC( msgSync )
 
 ZH_FUNC_STATIC( msgSyncClass )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
    PCLASS pClass = s_pClasses[ pStack->uiClass ];
    PMETHOD pMethod = pClass->pMethods + pStack->uiMethod;
@@ -4658,7 +4658,7 @@ ZH_FUNC_STATIC( msgSyncClass )
  */
 ZH_FUNC_STATIC( msgNoMethod )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SYMBOL pSym = zh_itemGetSymbol( zh_stackBaseItem() );
    const char * szName = pSym ? pSym->szName : "";
 
@@ -4687,7 +4687,7 @@ ZH_FUNC_STATIC( msgNoMethod )
  */
 ZH_FUNC_STATIC( msgScopeErr )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    char * pszProcName;
    PZH_ITEM pObject = zh_stackSelfItem();
    PMETHOD pMethod = s_pClasses[
@@ -4705,7 +4705,7 @@ ZH_FUNC_STATIC( msgScopeErr )
 
 ZH_FUNC_STATIC( msgTypeErr )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    char * pszProcName;
    PZH_ITEM pObject = zh_stackSelfItem();
    PMETHOD pMethod = s_pClasses[
@@ -4724,7 +4724,7 @@ ZH_FUNC_STATIC( msgTypeErr )
  */
 ZH_FUNC_STATIC( msgSuper )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_STACK_STATE pStack = zh_stackBaseItem()->item.asSymbol.stackstate;
 
    zh_clsMakeSuperObject( zh_stackReturnItem(), zh_stackSelfItem(),
@@ -4738,7 +4738,7 @@ ZH_FUNC_STATIC( msgSuper )
  */
 ZH_FUNC_STATIC( msgRealClass )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_stackSelfItem();
    ZH_USHORT uiClass = zh_clsSenderMethodClass();
    ZH_USHORT uiCurClass = zh_objGetClassH( pObject );
@@ -4760,7 +4760,7 @@ ZH_FUNC_STATIC( msgRealClass )
  */
 ZH_FUNC_STATIC( msgGetClsData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PCLASS pClass   = s_pClasses[
                   zh_stackBaseItem()->item.asSymbol.stackstate->uiClass ];
    PMETHOD pMethod = pClass->pMethods +
@@ -4776,7 +4776,7 @@ ZH_FUNC_STATIC( msgGetClsData )
  */
 ZH_FUNC_STATIC( msgSetClsData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PCLASS pClass   = s_pClasses[
                   zh_stackBaseItem()->item.asSymbol.stackstate->uiClass ];
    PMETHOD pMethod = pClass->pMethods +
@@ -4811,7 +4811,7 @@ ZH_FUNC_STATIC( msgSetClsData )
  */
 ZH_FUNC_STATIC( msgGetShrData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PCLASS pClass   = s_pClasses[
                   zh_stackBaseItem()->item.asSymbol.stackstate->uiClass ];
    PMETHOD pMethod = pClass->pMethods +
@@ -4827,7 +4827,7 @@ ZH_FUNC_STATIC( msgGetShrData )
  */
 ZH_FUNC_STATIC( msgSetShrData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PCLASS pClass   = s_pClasses[
                   zh_stackBaseItem()->item.asSymbol.stackstate->uiClass ];
    PMETHOD pMethod = pClass->pMethods +
@@ -4863,7 +4863,7 @@ ZH_FUNC_STATIC( msgSetShrData )
  */
 ZH_FUNC_STATIC( msgGetData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject  = zh_stackSelfItem();
 
    if( ZH_IS_ARRAY( pObject ) )
@@ -4895,7 +4895,7 @@ ZH_FUNC_STATIC( msgGetData )
  */
 ZH_FUNC_STATIC( msgSetData )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject  = zh_stackSelfItem();
 
    if( ZH_IS_ARRAY( pObject ) )
@@ -4959,7 +4959,7 @@ ZH_FUNC_STATIC( msgNull )
 #ifndef ZH_NO_PROFILER
 void zh_mthAddTime( ZH_ULONG ulClockTicks )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_stackSelfItem();
    PCLASS pClass = s_pClasses[ zh_objGetClassH( pObject ) ];
    ZH_USHORT uiMethod = zh_stackBaseItem()->item.asSymbol.stackstate->uiMethod;
@@ -4989,7 +4989,7 @@ void zh_mthAddTime( ZH_ULONG ulClockTicks )
 /* __GetMsgPrf( <hClass>, <cMsg> ) --> <aMethodInfo> { { <nTimes>, <nTime> }, ... } */
 ZH_FUNC( __GETMSGPRF ) /* profiler: returns a method called and consumed times */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 #ifndef ZH_NO_PROFILER
    ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
    const char * cMsg = zh_parc( 2 );
@@ -5362,7 +5362,7 @@ ZH_FUNC( __CLSGETANCESTORS )
 
    if( uiClass && uiClass <= s_uiClasses )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pReturn = zh_stackReturnItem();
       PCLASS pClass = s_pClasses[ uiClass ];
       ZH_SIZE nPos = 0;
@@ -5391,7 +5391,7 @@ ZH_FUNC( __CLSMSGTYPE )
 
    if( pMessage )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_USHORT uiClass = ( ZH_USHORT ) zh_parni( 1 );
       PMETHOD pMethod = NULL;
 
@@ -5413,7 +5413,7 @@ ZH_FUNC( __CLSMSGTYPE )
  */
 ZH_FUNC( __CLSPREALLOCATE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lNewSize = zh_parnl( 1 );
 
    if( lNewSize > ( ZH_LONG ) USHRT_MAX )
@@ -5436,7 +5436,7 @@ ZH_FUNC( __CLSPREALLOCATE )
 /* __clsLockDef( <clsItem> ) --> <lLocked> */
 ZH_FUNC( __CLSLOCKDEF )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pClsItm = zh_param( 1, ZH_IT_BYREF );
    ZH_BOOL fLocked = ZH_FALSE;
 
@@ -5497,7 +5497,7 @@ ZH_FUNC( __OBJSETCLASS )
  */
 ZH_FUNC( __OBJSETCLASSHANDLE )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pObject = zh_param( 1, ZH_IT_OBJECT );
    ZH_USHORT uiPrevClassHandle = 0;
 
@@ -5546,7 +5546,7 @@ void zh_clsAssociate( ZH_USHORT usClassH )
       zh_itemReturnRelease( pSelf );
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_ret();
    }
 }

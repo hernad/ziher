@@ -187,7 +187,7 @@ static void zh_stack_free( PZH_STACK pStack )
 
 void zh_stackDestroyTSD( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDestroyTSD()" ) );
 
@@ -196,7 +196,7 @@ void zh_stackDestroyTSD( void )
 
 void * zh_stackGetTSD( PZH_TSD pTSD )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackGetTSD(%p)", ( void * ) pTSD ) );
 
@@ -231,7 +231,7 @@ void * zh_stackGetTSD( PZH_TSD pTSD )
 
 void * zh_stackTestTSD( PZH_TSD pTSD )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackTestTSD(%p)", ( void * ) pTSD ) );
 
@@ -241,7 +241,7 @@ void * zh_stackTestTSD( PZH_TSD pTSD )
 
 void zh_stackReleaseTSD( PZH_TSD pTSD )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackReleaseTSD(%p)", ( void * ) pTSD ) );
 
@@ -267,7 +267,7 @@ void zh_stackInit( void )
 
    zh_stack_alloc();
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_stack_init( &zh_stack );
       zh_xinit_thread();
    }
@@ -275,7 +275,7 @@ void zh_stackInit( void )
 
 void zh_stackFree( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackFree()" ) );
 
@@ -287,7 +287,7 @@ void zh_stackFree( void )
 #undef zh_stackList
 void * zh_stackList( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackList()" ) );
 
@@ -297,7 +297,7 @@ void * zh_stackList( void )
 #undef zh_stackListSet
 void zh_stackListSet( void * pStackLst )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackListSet(%p)", pStackLst ) );
 
@@ -313,7 +313,7 @@ void zh_stackIdSetActionRequest( void * pStackId, ZH_USHORT uiAction )
 #undef zh_stackDynHandlesCount
 int zh_stackDynHandlesCount( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDynHandlesCount()" ) );
 
@@ -322,7 +322,7 @@ int zh_stackDynHandlesCount( void )
 
 PZH_DYN_HANDLES zh_stackGetDynHandle( PZH_DYNSYMBOL pDynSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackGetDynHandle()" ) );
@@ -342,7 +342,7 @@ PZH_DYN_HANDLES zh_stackGetDynHandle( PZH_DYNSYMBOL pDynSym )
 
 void zh_stackClearMemvars( int iExcept )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iDynSym;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackClearMemvars(%d)", iExcept ) );
@@ -362,42 +362,42 @@ void zh_stackClearMemvars( int iExcept )
 #undef zh_stackQuitState
 ZH_BOOL zh_stackQuitState( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.uiQuitState != 0;
 }
 
 #undef zh_stackSetQuitState
 void zh_stackSetQuitState( ZH_USHORT uiState )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.uiQuitState = uiState;
 }
 
 #undef zh_stackUnlock
 int zh_stackUnlock( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return ++zh_stack.iUnlocked;
 }
 
 #undef zh_stackLock
 int zh_stackLock( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return --zh_stack.iUnlocked;
 }
 
 #undef zh_stackLockCount
 int zh_stackLockCount( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.iUnlocked;
 }
 
 #undef zh_stackKeyPolls
 int * zh_stackKeyPolls( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackKeyPolls()" ) );
 
@@ -407,7 +407,7 @@ int * zh_stackKeyPolls( void )
 #undef zh_stackDebugRequest
 ZH_BOOL * zh_stackDebugRequest( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDebugRequest()" ) );
 
@@ -417,7 +417,7 @@ ZH_BOOL * zh_stackDebugRequest( void )
 #undef zh_stackDebugInfo
 void ** zh_stackDebugInfo( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDebugInfo()" ) );
 
@@ -427,7 +427,7 @@ void ** zh_stackDebugInfo( void )
 #undef zh_stackGetPrivateStack
 PZH_PRIVATE_STACK zh_stackGetPrivateStack( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackGetPrivateStack()" ) );
 
@@ -437,7 +437,7 @@ PZH_PRIVATE_STACK zh_stackGetPrivateStack( void )
 #undef zh_stackSetStruct
 PZH_SET_STRUCT zh_stackSetStruct( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackSetStruct()" ) );
 
@@ -451,7 +451,7 @@ void * zh_stackId( void )
 
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return ( void * ) &zh_stack;
    }
    else
@@ -461,7 +461,7 @@ void * zh_stackId( void )
 #undef zh_stackPop
 void zh_stackPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackPop()" ) );
 
@@ -475,7 +475,7 @@ void zh_stackPop( void )
 #undef zh_stackPopReturn
 void zh_stackPopReturn( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackPopReturn()" ) );
 
@@ -491,7 +491,7 @@ void zh_stackPopReturn( void )
 #undef zh_stackDec
 void zh_stackDec( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDec()" ) );
 
@@ -502,7 +502,7 @@ void zh_stackDec( void )
 #undef zh_stackDecrease
 void zh_stackDecrease( ZH_SIZE nItems )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDecrease()" ) );
 
@@ -513,7 +513,7 @@ void zh_stackDecrease( ZH_SIZE nItems )
 #undef zh_stackPush
 void zh_stackPush( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackPush()" ) );
 
@@ -525,7 +525,7 @@ void zh_stackPush( void )
 #undef zh_stackAllocItem
 PZH_ITEM zh_stackAllocItem( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackAllocItem()" ) );
 
@@ -540,7 +540,7 @@ PZH_ITEM zh_stackAllocItem( void )
 #undef zh_stackPushReturn
 void zh_stackPushReturn( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackPushReturn()" ) );
 
@@ -553,7 +553,7 @@ void zh_stackPushReturn( void )
 
 void zh_stackIncrease( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nBaseIndex;   /* index of stack base */
    ZH_I_SIZE nCurrIndex;   /* index of current top item */
    ZH_I_SIZE nEndIndex;    /* index of current top item */
@@ -584,7 +584,7 @@ void zh_stackIncrease( void )
 
 void zh_stackRemove( ZH_I_SIZE nUntilPos )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM * pEnd = zh_stack.pItems + nUntilPos;
 
    while( zh_stack.pPos > pEnd )
@@ -600,7 +600,7 @@ void zh_stackRemove( ZH_I_SIZE nUntilPos )
 static void zh_stackDispLocal( void )
 {
    char buffer[ 1024 ];
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM * pBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDispLocal()" ) );
@@ -694,7 +694,7 @@ static void zh_stackDispLocal( void )
 
 PZH_ITEM zh_stackNewFrame( PZH_STACK_STATE pFrame, ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM * pBase, pItem;
 
    pBase = zh_stack.pPos - uiParams - 2;
@@ -728,7 +728,7 @@ PZH_ITEM zh_stackNewFrame( PZH_STACK_STATE pFrame, ZH_USHORT uiParams )
 
 void zh_stackOldFrame( PZH_STACK_STATE pFrame )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    if( zh_stack.pPos <= zh_stack.pBase )
       zh_errInternal( ZH_EI_STACKUFLOW, NULL, NULL, NULL );
 
@@ -748,7 +748,7 @@ void zh_stackOldFrame( PZH_STACK_STATE pFrame )
 #undef zh_stackItem
 PZH_ITEM zh_stackItem( ZH_I_SIZE nItemPos )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    if( nItemPos < 0 )
       zh_errInternal( ZH_EI_STACKUFLOW, NULL, NULL, NULL );
 
@@ -758,7 +758,7 @@ PZH_ITEM zh_stackItem( ZH_I_SIZE nItemPos )
 #undef zh_stackItemFromTop
 PZH_ITEM zh_stackItemFromTop( int iFromTop )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    if( iFromTop >= 0 )
       zh_errInternal( ZH_EI_STACKUFLOW, NULL, NULL, NULL );
 
@@ -768,7 +768,7 @@ PZH_ITEM zh_stackItemFromTop( int iFromTop )
 #undef zh_stackItemFromBase
 PZH_ITEM zh_stackItemFromBase( int iFromBase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    if( iFromBase < 0 )
       zh_errInternal( ZH_EI_STACKUFLOW, NULL, NULL, NULL );
 
@@ -778,7 +778,7 @@ PZH_ITEM zh_stackItemFromBase( int iFromBase )
 #undef zh_stackLocalVariable
 PZH_ITEM zh_stackLocalVariable( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBase = *zh_stack.pBase;
 
 /*
@@ -802,7 +802,7 @@ PZH_ITEM zh_stackLocalVariable( int iLocal )
 #undef zh_stackLocalVariableAt
 PZH_ITEM zh_stackLocalVariableAt( int * piFromBase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBase = *zh_stack.pBase;
 
 /*
@@ -826,7 +826,7 @@ PZH_ITEM zh_stackLocalVariableAt( int * piFromBase )
 #undef zh_stackBaseItem
 PZH_ITEM zh_stackBaseItem( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return *zh_stack.pBase;
 }
 
@@ -835,14 +835,14 @@ PZH_ITEM zh_stackBaseItem( void )
 #undef zh_stackSelfItem
 PZH_ITEM zh_stackSelfItem( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return *( zh_stack.pBase + 1 );
 }
 
 #undef zh_stackReturnItem
 PZH_ITEM zh_stackReturnItem( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackReturnItem()" ) );
 
@@ -852,7 +852,7 @@ PZH_ITEM zh_stackReturnItem( void )
 #undef zh_stackTopOffset
 ZH_I_SIZE zh_stackTopOffset( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return zh_stack.pPos - zh_stack.pItems;
 }
@@ -860,7 +860,7 @@ ZH_I_SIZE zh_stackTopOffset( void )
 #undef zh_stackBaseOffset
 ZH_I_SIZE zh_stackBaseOffset( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return zh_stack.pBase - zh_stack.pItems + 1;
 }
@@ -870,7 +870,7 @@ ZH_I_SIZE zh_stackTotalItems( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       return zh_stack.nItems;
    }
@@ -881,7 +881,7 @@ void * zh_stackAllocator( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       return zh_stack.allocator;
    }
@@ -891,7 +891,7 @@ void * zh_stackAllocator( void )
 #undef zh_stackDateBuffer
 char * zh_stackDateBuffer( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return zh_stack.szDate;
 }
@@ -900,7 +900,7 @@ char * zh_stackDirBuffer( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       if( ! zh_stack.pDirBuffer )
          zh_stack.pDirBuffer = ( char * ) zh_xgrab( ZH_PATH_MAX );
       return zh_stack.pDirBuffer;
@@ -912,7 +912,7 @@ PZH_IOERRORS zh_stackIOErrors( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return &zh_stack.IOErrors;
    }
    return &s_IOErrors;
@@ -922,7 +922,7 @@ void * zh_stackGetGT( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return zh_stack.hGT;
    }
    else
@@ -931,14 +931,14 @@ void * zh_stackGetGT( void )
 
 void zh_stackSetGT( void * hGT )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.hGT = hGT;
 }
 
 
 PZH_STACKRDD zh_stackRDD( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return &zh_stack.rdd;
 }
 
@@ -946,49 +946,49 @@ PZH_STACKRDD zh_stackRDD( void )
 #undef zh_stackGetStaticsBase
 void * zh_stackGetStaticsBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.pStatics;
 }
 
 #undef zh_stackSetStaticsBase
 void zh_stackSetStaticsBase( void * pBase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.pStatics = pBase;
 }
 
 #undef zh_stackGetRecoverBase
 ZH_I_SIZE zh_stackGetRecoverBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.nRecoverBase;
 }
 
 #undef zh_stackSetRecoverBase
 void zh_stackSetRecoverBase( ZH_I_SIZE nBase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.nRecoverBase = nBase;
 }
 
 #undef zh_stackGetActionRequest
 ZH_USHORT zh_stackGetActionRequest( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.uiActionRequest;
 }
 
 #undef zh_stackSetActionRequest
 void zh_stackSetActionRequest( ZH_USHORT uiAction )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.uiActionRequest = uiAction;
 }
 
 #undef zh_stackWithObjectItem
 PZH_ITEM zh_stackWithObjectItem( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.nWithObject ?
                         * ( zh_stack.pItems + zh_stack.nWithObject ) : NULL;
 }
@@ -996,69 +996,69 @@ PZH_ITEM zh_stackWithObjectItem( void )
 #undef zh_stackWithObjectOffset
 ZH_I_SIZE zh_stackWithObjectOffset( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.nWithObject;
 }
 
 #undef zh_stackWithObjectSetOffset
 void zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.nWithObject = nOffset;
 }
 
 #undef zh_stackGetCodepage
 void * zh_stackGetCodepage( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.pCDP;
 }
 
 #undef zh_stackSetCDP
 void zh_stackSetCDP( void * pCDP )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.pCDP = pCDP;
 }
 
 #undef zh_stackGetLang
 void * zh_stackGetLang( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.pLang;
 }
 
 #undef zh_stackSetLang
 void zh_stackSetLang( void * pLang )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.pLang = pLang;
 }
 
 #undef zh_stackGetI18N
 void * zh_stackGetI18N( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stack.pI18N;
 }
 
 #undef zh_stackSetI18N
 void zh_stackSetI18N( void * pI18N )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stack.pI18N = pI18N;
 }
 
 #undef zh_stackItemBasePtr
 PZH_ITEM ** zh_stackItemBasePtr( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return &zh_stack.pItems;
 }
 
 void zh_stackClearMemvarsBase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackClearMemvarsBase()" ) );
@@ -1074,7 +1074,7 @@ void zh_stackClearMemvarsBase( void )
 
 int zh_stackCallDepth( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
    int iLevel = 0;
 
@@ -1089,7 +1089,7 @@ int zh_stackCallDepth( void )
 
 ZH_I_SIZE zh_stackBaseProcOffset( int iLevel )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
 
    while( iLevel-- > 0 && nOffset > 0 )
@@ -1103,7 +1103,7 @@ ZH_I_SIZE zh_stackBaseProcOffset( int iLevel )
 
 ZH_I_SIZE zh_stackBaseSymbolOffset( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nOffset = zh_stack.pBase - zh_stack.pItems;
 
    while( nOffset > 0 )
@@ -1133,7 +1133,7 @@ void zh_stackBaseProcInfo( char * szProcName, ZH_USHORT * puiProcLine )
    }
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       if( zh_stack.pPos > zh_stack.pBase )
       {
          zh_strncpy( szProcName, ( *zh_stack.pBase )->item.asSymbol.value->szName,
@@ -1280,7 +1280,7 @@ PZH_TRACEINFO zh_traceinfo( void )
 {
    if( zh_stack_ready() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return &zh_stack.traceInfo;
    }
    return &s_traceInfo;

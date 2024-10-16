@@ -646,13 +646,13 @@ void zh_dynsymRelease( void )
 
 ZH_FUNC( __DYNSCOUNT ) /* How much symbols do we have: dsCount = __dynsymCount() */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retnint( s_uiDynSymbolsCount );
 }
 
 ZH_FUNC( __DYNSGETNAME ) /* Get name of symbol: cSymbol = __dynsymGetName( dsIndex ) */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_DYNSYMBOL pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
 
    zh_retc( pDynSym ? pDynSym->pSymbol->szName : NULL );
@@ -660,7 +660,7 @@ ZH_FUNC( __DYNSGETNAME ) /* Get name of symbol: cSymbol = __dynsymGetName( dsInd
 
 ZH_FUNC( __DYNSGETINDEX ) /* Gimme index number of symbol: dsIndex = __dynsymGetIndex( cSymbol ) */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_UINT uiPos = 0;
    const char * szName = zh_parc( 1 );
 
@@ -684,7 +684,7 @@ ZH_FUNC( __DYNSGETINDEX ) /* Gimme index number of symbol: dsIndex = __dynsymGet
 ZH_FUNC( ZH_ISFUNCTION ) /* returns .T. if a symbol has a function/procedure pointer,
                             given its name */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szProc = zh_parc( 1 );
    ZH_BOOL fResult = ZH_FALSE;
 
@@ -701,7 +701,7 @@ ZH_FUNC( ZH_ISFUNCTION ) /* returns .T. if a symbol has a function/procedure poi
 ZH_FUNC( __DYNSISFUN ) /* returns .T. if a symbol has a function/procedure pointer,
                           given its symbol index or name */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szName = zh_parc( 1 );
    PZH_DYNSYMBOL pDynSym = szName ? zh_dynsymFindName( szName ) :
                                zh_dynsymGetByIndex( zh_parnl( 1 ) );
@@ -713,7 +713,7 @@ ZH_FUNC( __DYNSGETPRF ) /* profiler: It returns an array with a function or proc
                                      called and consumed times { nTimes, nTime },
                                      given the dynamic symbol index */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 #ifndef ZH_NO_PROFILER
    PZH_DYNSYMBOL pDynSym = zh_dynsymGetByIndex( zh_parnl( 1 ) );
 #endif
@@ -736,7 +736,7 @@ ZH_FUNC( __DYNSGETPRF ) /* profiler: It returns an array with a function or proc
 
 ZH_FUNC( __DYNSN2PTR )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szName = zh_parc( 1 );
 
    zh_retptr( szName ? zh_dynsymGet( szName ) : NULL );
@@ -744,7 +744,7 @@ ZH_FUNC( __DYNSN2PTR )
 
 ZH_FUNC( __DYNSN2SYM )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szName = zh_parc( 1 );
 
    if( szName )
@@ -753,7 +753,7 @@ ZH_FUNC( __DYNSN2SYM )
 
 ZH_FUNC( __DYNSP2NAME )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_DYNSYMBOL pDynSym = ( PZH_DYNSYMBOL ) zh_parptr( 1 );
 
    zh_retc( pDynSym != NULL ? pDynSym->pSymbol->szName : NULL );
@@ -794,7 +794,7 @@ static int zh_dynsymVerify( void )
 
 ZH_FUNC( __DYNSVERIFY )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_retni( zh_dynsymVerify() );
 }

@@ -452,7 +452,7 @@ static void zh_vmRequestTest( void )
    {
       if( zh_vmThreadRequest & ZH_THREQUEST_QUIT )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          if( ! zh_stackQuitState() )
          {
             zh_stackSetQuitState( ZH_TRUE );
@@ -477,7 +477,7 @@ void zh_vmUnlock( void )
 {
    if( s_fZHVMActive )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
@@ -510,7 +510,7 @@ void zh_vmLock( void )
 {
    if( s_fZHVMActive )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
@@ -543,7 +543,7 @@ void zh_vmLockForce( void )
 {
    if( s_fZHVMActive )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       if( zh_stackId() )   /* check if thread has associated ZHVM stack */
       {
@@ -611,7 +611,7 @@ void zh_vmResumeThreads( void )
  */
 void zh_vmTerminateThreads( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( s_main_thread == zh_stackId() )
    {
@@ -641,7 +641,7 @@ void zh_vmTerminateThreads( void )
  */
 void zh_vmWaitForThreads( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( s_main_thread == zh_stackId() )
    {
@@ -662,7 +662,7 @@ void zh_vmWaitForThreads( void )
 
 void * zh_vmThreadState( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmThreadState()" ) );
 
@@ -679,7 +679,7 @@ ZH_BOOL zh_vmThreadIsMain( void * Cargo )
       return s_main_thread == ( ( PZH_THREADSTATE ) Cargo )->pStackId;
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       return s_main_thread == zh_stackId();
    }
 }
@@ -750,7 +750,7 @@ static void zh_vmStackInit( PZH_THREADSTATE pState )
 
    ZH_VM_LOCK();
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       zh_stackUnlock();
       pState->pStackId = zh_stackId();
@@ -763,7 +763,7 @@ static void zh_vmStackInit( PZH_THREADSTATE pState )
 
 static void zh_vmStackRelease( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL fLocked;
    PZH_ITEM pThItm;
 
@@ -843,7 +843,7 @@ void zh_vmThreadInit( void * Cargo )
    zh_vmStackInit( pState );  /* initialize ZHVM thread stack */
    zh_vmLock();
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       zh_codepageSelectID( pState->pszCDP );
       zh_langSelectID( pState->pszLang );
@@ -886,7 +886,7 @@ void zh_vmThreadInit( void * Cargo )
 /* thread leave point */
 void zh_vmThreadQuit( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_THREADSTATE pState;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmThreadQuit()" ) );
@@ -1024,7 +1024,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
    zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
    {
-      ZH_STACK_TLS_PRELOAD
+      
       s_main_thread = zh_stackId();
       /* _SET_* initialization */
       zh_setInitialize( zh_stackSetStruct() );
@@ -1195,7 +1195,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
 
 ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
 
@@ -1293,7 +1293,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
 void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL bCanRecover = ZH_FALSE;
    ZH_BOOL bDynCode = pSymbols == NULL || ( pSymbols->scope.value & ZH_FS_DYNCODE ) != 0;
 
@@ -3059,14 +3059,14 @@ static void zh_vmAddInt( PZH_ITEM pResult, ZH_LONG lAdd )
    }
    else if( zh_objHasOperator( pResult, ZH_OO_OP_PLUS ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_vmPushLong( lAdd );
       zh_objOperatorCall( ZH_OO_OP_PLUS, pResult, pResult, zh_stackItemFromTop( -1 ), NULL );
       zh_stackPop();
    }
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pSubst;
 
       zh_vmPushLong( lAdd );
@@ -3082,7 +3082,7 @@ static void zh_vmAddInt( PZH_ITEM pResult, ZH_LONG lAdd )
 
 static void zh_vmNegate( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmNegate()" ) );
@@ -3732,7 +3732,7 @@ static void zh_vmDec( PZH_ITEM pItem )
 
 static void zh_vmFuncPtr( void )  /* pushes a function address pointer. Removes the symbol from the stack */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFuncPtr()" ) );
@@ -3757,7 +3757,7 @@ static void zh_vmFuncPtr( void )  /* pushes a function address pointer. Removes 
 
 static void zh_vmExactlyEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -3886,7 +3886,7 @@ static void zh_vmExactlyEqual( void )
 
 static void zh_vmEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -3986,7 +3986,7 @@ static void zh_vmEqual( void )
 
 static void zh_vmNotEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -4088,7 +4088,7 @@ static void zh_vmNotEqual( void )
 
 static void zh_vmLess( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -4158,7 +4158,7 @@ static void zh_vmLess( void )
 
 static void zh_vmLessEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -4228,7 +4228,7 @@ static void zh_vmLessEqual( void )
 
 static void zh_vmGreater( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -4298,7 +4298,7 @@ static void zh_vmGreater( void )
 
 static void zh_vmGreaterEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -4368,7 +4368,7 @@ static void zh_vmGreaterEqual( void )
 
 static void zh_vmInstring( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem1;
    PZH_ITEM pItem2;
 
@@ -4422,7 +4422,7 @@ static void zh_vmInstring( void )
  */
 static void zh_vmForTest( void )        /* Test to check the end point of the FOR */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pStep;
    ZH_BOOL fBack;
 
@@ -4482,7 +4482,7 @@ static const ZH_GC_FUNCS s_gcSeqBlockFuncs =
 
 static void zh_vmSeqBlock( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSeqBlock()" ) );
@@ -4506,7 +4506,7 @@ static void zh_vmSeqBlock( void )
 /* With object auto destructor */
 static ZH_GARBAGE_FUNC( zh_withObjectDestructor )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE * pnWithObjectBase = ( ZH_I_SIZE * ) Cargo;
 
    zh_stackWithObjectSetOffset( *pnWithObjectBase );
@@ -4521,7 +4521,7 @@ static const ZH_GC_FUNCS s_gcWithObjectFuncs =
 
 static void zh_vmWithObjectStart( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE * pnWithObjectBase;
    PZH_ITEM pItem;
 
@@ -4544,7 +4544,7 @@ static void zh_vmWithObjectStart( void )
  */
 void zh_vmEnumRelease( PZH_ITEM pBase, PZH_ITEM pValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmEnumRelease(%p,%p)", ( void * ) pBase, ( void * ) pValue ) );
 
@@ -4645,7 +4645,7 @@ static void zh_vmEnumReference( PZH_ITEM pBase )
 /* Test to check the start point of the FOR EACH loop */
 static void zh_vmEnumStart( int nVars, int nDescend )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL fStart = ZH_TRUE;
    int i;
 
@@ -4753,7 +4753,7 @@ static void zh_vmEnumStart( int nVars, int nDescend )
  */
 static void zh_vmEnumNext( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int i;
 
    for( i = ( int ) zh_stackItemFromTop( -1 )->item.asInteger.value; i > 0; --i )
@@ -4834,7 +4834,7 @@ static void zh_vmEnumNext( void )
  */
 static void zh_vmEnumPrev( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int i;
 
    for( i = zh_stackItemFromTop( -1 )->item.asInteger.value; i > 0; --i )
@@ -4913,7 +4913,7 @@ static void zh_vmEnumPrev( void )
  */
 static void zh_vmEnumEnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iVars;
 
    /* remove number of iterators */
@@ -4929,7 +4929,7 @@ static void zh_vmEnumEnd( void )
 
 static PZH_ITEM zh_vmSwitchGet( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pSwitch = zh_stackItemFromTop( -1 );
 
    if( ! ( ZH_IS_NUMINT( pSwitch ) || ZH_IS_STRING( pSwitch ) ) )
@@ -4948,7 +4948,7 @@ static PZH_ITEM zh_vmSwitchGet( void )
 
 static const ZH_BYTE * zh_vmSwitch( const ZH_BYTE * pCode, ZH_USHORT casesCnt )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pSwitch = zh_vmSwitchGet();
 
    if( pSwitch )
@@ -5020,7 +5020,7 @@ static const ZH_BYTE * zh_vmSwitch( const ZH_BYTE * pCode, ZH_USHORT casesCnt )
 
 static void zh_vmNot( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmNot()" ) );
@@ -5046,7 +5046,7 @@ static void zh_vmNot( void )
 
 static void zh_vmAnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -5079,7 +5079,7 @@ static void zh_vmAnd( void )
 
 static void zh_vmOr( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem2;
    PZH_ITEM pItem1;
 
@@ -5116,7 +5116,7 @@ static void zh_vmOr( void )
 
 static void zh_vmArrayPush( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pIndex;
    PZH_ITEM pArray;
    ZH_SIZE nIndex;
@@ -5194,7 +5194,7 @@ static void zh_vmArrayPush( void )
 
 static void zh_vmArrayPushRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pIndex;
    PZH_ITEM pArray;
    PZH_ITEM pRefer;
@@ -5290,7 +5290,7 @@ static void zh_vmArrayPushRef( void )
 
 static void zh_vmArrayPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pValue;
    PZH_ITEM pIndex;
    PZH_ITEM pArray;
@@ -5387,7 +5387,7 @@ static void zh_vmArrayPop( void )
 
 static void zh_vmArrayGen( ZH_SIZE nElements ) /* generates an nElements Array and fills it from the stack values */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmArrayGen(%" ZH_PFS "u)", nElements ) );
@@ -5419,7 +5419,7 @@ static void zh_vmArrayGen( ZH_SIZE nElements ) /* generates an nElements Array a
  */
 static ZH_BOOL zh_vmArrayNew( PZH_ITEM pArray, ZH_USHORT uiDimension )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE  nElements;
    PZH_ITEM pDim;
 
@@ -5458,7 +5458,7 @@ static ZH_BOOL zh_vmArrayNew( PZH_ITEM pArray, ZH_USHORT uiDimension )
 
 static void zh_vmArrayDim( ZH_USHORT uiDimensions ) /* generates an uiDimensions Array and initialize those dimensions from the stack values */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmArrayDim(%hu)", uiDimensions ) );
 
@@ -5478,7 +5478,7 @@ static void zh_vmArrayDim( ZH_USHORT uiDimensions ) /* generates an uiDimensions
 
 static void zh_vmHashGen( ZH_SIZE nElements ) /* generates an nElements Hash and fills it from the stack values */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pHash;
    int iPos;
 
@@ -5513,7 +5513,7 @@ static void zh_vmHashGen( ZH_SIZE nElements ) /* generates an nElements Hash and
 
 static void zh_vmMacroPushIndex( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_SIZE nIndexes;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmMacroPushIndex()" ) );
@@ -5571,7 +5571,7 @@ static void zh_vmMacroPushIndex( void )
  */
 static ZH_LONG zh_vmArgsJoin( ZH_LONG lLevel, ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lArgs;
    PZH_ITEM pArgs = zh_stackItemFromTop( lLevel ) ;
 
@@ -5599,7 +5599,7 @@ static ZH_LONG zh_vmArgsJoin( ZH_LONG lLevel, ZH_USHORT uiArgSets )
 
 static void zh_vmMacroDo( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lArgs;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmMacroDo(%hu)", uiArgSets ) );
@@ -5611,7 +5611,7 @@ static void zh_vmMacroDo( ZH_USHORT uiArgSets )
 
 static void zh_vmMacroFunc( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lArgs;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmMacroFunc(%hu)", uiArgSets ) );
@@ -5625,7 +5625,7 @@ static void zh_vmMacroFunc( ZH_USHORT uiArgSets )
 
 static void zh_vmMacroSend( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lArgs;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmMacroSend(%hu)", uiArgSets ) );
@@ -5639,7 +5639,7 @@ static void zh_vmMacroSend( ZH_USHORT uiArgSets )
 
 static void zh_vmMacroArrayGen( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_LONG lArgs;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmMacroArrayGen(%hu)", uiArgSets ) );
@@ -5651,7 +5651,7 @@ static void zh_vmMacroArrayGen( ZH_USHORT uiArgSets )
 
 static void zh_vmPushVParams( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iPCount, iFirst, i = 0;
    PZH_ITEM pBase;
 
@@ -5670,7 +5670,7 @@ static void zh_vmPushVParams( void )
 
 static void zh_vmPushAParams( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushAParams()" ) );
@@ -5704,7 +5704,7 @@ static void zh_vmPushAParams( void )
 
 static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM pAlias, PZH_SYMBOL pField )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_ERRCODE errCode;
    ZH_BOOL fRepeat;
 
@@ -5812,7 +5812,7 @@ static ZH_ERRCODE zh_vmSelectWorkarea( PZH_ITEM pAlias, PZH_SYMBOL pField )
  */
 static void zh_vmSwapAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
    PZH_ITEM pWorkArea;
 
@@ -5891,7 +5891,7 @@ void zh_vmProc( ZH_USHORT uiParams )
 
 void zh_vmDo( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_STACK_STATE sStackState;
    PZH_SYMBOL pSym;
    PZH_ITEM pSelf;
@@ -5973,7 +5973,7 @@ void zh_vmDo( ZH_USHORT uiParams )
 
 void zh_vmSend( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_STACK_STATE sStackState;
    PZH_SYMBOL pSym;
    PZH_SYMBOL pExecSym;
@@ -6030,7 +6030,7 @@ void zh_vmSend( ZH_USHORT uiParams )
 
 static void zh_vmPushObjectVarRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_STACK_STATE sStackState;
    PZH_ITEM pItem;
    PZH_SYMBOL pSym;
@@ -6084,7 +6084,7 @@ void zh_vmEval( ZH_USHORT uiParams )
 
 static ZIHERF zh_vmDoBlock( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBlock, pBase;
    int iParam;
 
@@ -6118,7 +6118,7 @@ static ZIHERF zh_vmDoBlock( void )
  */
 PZH_ITEM zh_vmEvalBlock( PZH_ITEM pBlock )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmEvalBlock(%p)", ( void * ) pBlock ) );
 
@@ -6138,7 +6138,7 @@ PZH_ITEM zh_vmEvalBlock( PZH_ITEM pBlock )
  */
 PZH_ITEM zh_vmEvalBlockV( PZH_ITEM pBlock, ZH_ULONG ulArgCount, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    va_list va;
    ZH_ULONG i;
 
@@ -6163,7 +6163,7 @@ PZH_ITEM zh_vmEvalBlockV( PZH_ITEM pBlock, ZH_ULONG ulArgCount, ... )
  */
 PZH_ITEM zh_vmEvalBlockOrMacro( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmEvalBlockOrMacro(%p)", ( void * ) pItem ) );
 
@@ -6205,7 +6205,7 @@ void zh_vmDestroyBlockOrMacro( PZH_ITEM pItem )
 
 void zh_vmFunction( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFunction(%hu)", uiParams ) );
 
@@ -6216,7 +6216,7 @@ void zh_vmFunction( ZH_USHORT uiParams )
 
 static void zh_vmDebugEntry( int nMode, int nLine, const char * szName, int nIndex, PZH_ITEM pFrame )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDebugEntry" ) );
 
@@ -6327,7 +6327,7 @@ static void zh_vmDebuggerShowLine( ZH_USHORT uiLine ) /* makes the debugger show
 
 static void zh_vmLocalName( ZH_USHORT uiLocal, const char * szLocalName ) /* locals and parameters index and name information for the debugger */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmLocalName(%hu, %s)", uiLocal, szLocalName ) );
 
@@ -6337,7 +6337,7 @@ static void zh_vmLocalName( ZH_USHORT uiLocal, const char * szLocalName ) /* loc
 
 static void zh_vmStaticName( ZH_BYTE bIsGlobal, ZH_USHORT uiStatic, const char * szStaticName ) /* statics vars information for the debugger */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmStaticName(%hu, %s)", uiStatic, szStaticName ) );
 
@@ -6353,7 +6353,7 @@ static void zh_vmModuleName( const char * szModuleName ) /* ZH and function name
 
    if( s_pFunDbgEntry )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       s_pFunDbgEntry( ZH_DBG_MODULENAME, 0, szModuleName, 0, NULL );
       zh_stackBaseItem()->item.asSymbol.stackstate->fDebugging = ZH_TRUE;
    }
@@ -6361,7 +6361,7 @@ static void zh_vmModuleName( const char * szModuleName ) /* ZH and function name
 
 static void zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBase;
    int iTotal;
 
@@ -6382,7 +6382,7 @@ static void zh_vmFrame( ZH_USHORT usLocals, unsigned char ucParams )
 
 static void zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pBase;
    int iTotal;
 
@@ -6403,7 +6403,7 @@ static void zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams )
 
 static void zh_vmSFrame( PZH_SYMBOL pSym )      /* sets the statics frame for a function */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSFrame(%p)", ( void * ) pSym ) );
 
@@ -6503,7 +6503,7 @@ static void zh_vmTSVReference( PZH_ITEM pStatic )
       zh_vmTSVRefMark
    };
 
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_TSVREF pTSVRef;
    PZH_ITEM pRefer;
 
@@ -6528,7 +6528,7 @@ static void zh_vmTSVReference( PZH_ITEM pStatic )
 
 static void zh_vmInitThreadStatics( ZH_USHORT uiCount, const ZH_BYTE * pCode )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmInitThreadStatics(%hu,%p)", uiCount, ( const void * ) pCode ) );
 
@@ -6547,7 +6547,7 @@ static void zh_vmInitThreadStatics( ZH_USHORT uiCount, const ZH_BYTE * pCode )
 
 void zh_vmPush( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPush(%p)", ( void * ) pItem ) );
 
@@ -6556,7 +6556,7 @@ void zh_vmPush( PZH_ITEM pItem )
 
 void zh_vmPushNil( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushNil()" ) );
 
@@ -6565,7 +6565,7 @@ void zh_vmPushNil( void )
 
 void zh_vmPushLogical( ZH_BOOL bValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLogical(%d)", ( int ) bValue ) );
@@ -6578,7 +6578,7 @@ void zh_vmPushLogical( ZH_BOOL bValue )
 /* not used by ZHVM code */
 void zh_vmPushNumber( double dNumber, int iDec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushNumber(%lf, %d)", dNumber, iDec ) );
 
@@ -6617,7 +6617,7 @@ static int zh_vmCalcIntWidth( ZH_MAXINT nNumber )
 
 void zh_vmPushInteger( int iNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushInteger(%d)", iNumber ) );
@@ -6630,7 +6630,7 @@ void zh_vmPushInteger( int iNumber )
 #if ZH_VMINT_MAX >= INT32_MAX
 static void zh_vmPushIntegerConst( int iNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushIntegerConst(%d)", iNumber ) );
@@ -6642,7 +6642,7 @@ static void zh_vmPushIntegerConst( int iNumber )
 #else
 static void zh_vmPushLongConst( long lNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLongConst(%ld)", lNumber ) );
@@ -6656,7 +6656,7 @@ static void zh_vmPushLongConst( long lNumber )
 
 void zh_vmPushLong( long lNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLong(%ld)", lNumber ) );
@@ -6678,7 +6678,7 @@ void zh_vmPushSize( ZH_I_SIZE nNumber )
 
 static void zh_vmPushZHLong( ZH_MAXINT nNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushZHLong(%" PFHL "d)", nNumber ) );
@@ -6691,7 +6691,7 @@ static void zh_vmPushZHLong( ZH_MAXINT nNumber )
 #if ! defined( ZH_LONG_LONG_OFF )
 static void zh_vmPushLongLongConst( ZH_LONGLONG llNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLongLongConst(%" PFLL "d)", llNumber ) );
@@ -6712,7 +6712,7 @@ void zh_vmPushNumInt( ZH_MAXINT nNumber )
 
 void zh_vmPushDouble( double dNumber, int iDec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushDouble(%lf, %d)", dNumber, iDec ) );
@@ -6728,7 +6728,7 @@ void zh_vmPushDouble( double dNumber, int iDec )
 
 static void zh_vmPushDoubleConst( double dNumber, int iWidth, int iDec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushDoubleConst(%lf, %d, %d)", dNumber, iWidth, iDec ) );
@@ -6749,7 +6749,7 @@ static void zh_vmPushDoubleConst( double dNumber, int iWidth, int iDec )
 
 void zh_vmPushDate( long lDate )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushDate(%ld)", lDate ) );
@@ -6761,7 +6761,7 @@ void zh_vmPushDate( long lDate )
 
 void zh_vmPushTimeStamp( long lJulian, long lMilliSec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushTimeStamp(%ld, %ld)", lJulian, lMilliSec ) );
@@ -6773,7 +6773,7 @@ void zh_vmPushTimeStamp( long lJulian, long lMilliSec )
 
 void zh_vmPushPointer( void * pPointer )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushPointer(%p)", ( void * ) pPointer ) );
@@ -6786,7 +6786,7 @@ void zh_vmPushPointer( void * pPointer )
 
 void zh_vmPushPointerGC( void * pPointer )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushPointerGC(%p)", ( void * ) pPointer ) );
@@ -6801,7 +6801,7 @@ void zh_vmPushPointerGC( void * pPointer )
 
 void zh_vmPushString( const char * szText, ZH_SIZE nLength )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushString(%s, %" ZH_PFS "u)", szText, nLength ) );
 
@@ -6810,7 +6810,7 @@ void zh_vmPushString( const char * szText, ZH_SIZE nLength )
 
 void zh_vmPushStringPcode( const char * szText, ZH_SIZE nLength )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushStringPcode(%s, %" ZH_PFS "u)", szText, nLength ) );
@@ -6824,7 +6824,7 @@ void zh_vmPushStringPcode( const char * szText, ZH_SIZE nLength )
 
 void zh_vmPushSymbol( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushSymbol(%p)", ( void * ) pSym ) );
@@ -6836,7 +6836,7 @@ void zh_vmPushSymbol( PZH_SYMBOL pSym )
 
 void zh_vmPushDynSym( PZH_DYNSYMBOL pDynSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushDynSym(%p)", ( void * ) pDynSym ) );
@@ -6848,7 +6848,7 @@ void zh_vmPushDynSym( PZH_DYNSYMBOL pDynSym )
 
 void zh_vmPushEvalSym( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushEvalSym()" ) );
@@ -6868,7 +6868,7 @@ void zh_vmPushEvalSym( void )
  */
 static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiLocals;
    PZH_ITEM pItem = zh_stackAllocItem();
 
@@ -6905,7 +6905,7 @@ static void zh_vmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE 
  */
 static void zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushBlockShort(%p,%p,%" ZH_PFS "u)", ( const void * ) pCode, ( void * ) pSymbols, nLen ) );
@@ -6938,7 +6938,7 @@ static void zh_vmPushBlockShort( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols, ZH_
  */
 static void zh_vmPushMacroBlock( const ZH_BYTE * pCode, ZH_SIZE nSize, ZH_USHORT usParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushMacroBlock(%p,%" ZH_PFS "u,%hu)", ( const void * ) pCode, nSize, usParams ) );
@@ -6960,7 +6960,7 @@ static void zh_vmPushMacroBlock( const ZH_BYTE * pCode, ZH_SIZE nSize, ZH_USHORT
  */
 static void zh_vmPushAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushAlias()" ) );
@@ -6976,7 +6976,7 @@ static void zh_vmPushAlias( void )
  */
 static void zh_vmPushAliasedField( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pAlias;
    int iCurrArea;
 
@@ -7002,7 +7002,7 @@ static void zh_vmPushAliasedField( PZH_SYMBOL pSym )
  */
 static void zh_vmPushAliasedVar( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pAlias = zh_stackItemFromTop( -1 );
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushAliasedVar(%p)", ( void * ) pSym ) );
@@ -7037,7 +7037,7 @@ static void zh_vmPushAliasedVar( PZH_SYMBOL pSym )
 
 static void zh_vmPushLocal( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLocal(%d)", iLocal ) );
@@ -7061,7 +7061,7 @@ static void zh_vmPushLocal( int iLocal )
 
 static void zh_vmPushLocalByRef( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pTop;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushLocalByRef(%d)", iLocal ) );
@@ -7093,7 +7093,7 @@ static void zh_vmPushLocalByRef( int iLocal )
 
 static void zh_vmPushStatic( ZH_USHORT uiStatic )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pStatic;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushStatic(%hu)", uiStatic ) );
@@ -7105,7 +7105,7 @@ static void zh_vmPushStatic( ZH_USHORT uiStatic )
 
 static void zh_vmPushStaticByRef( ZH_USHORT uiStatic )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pTop, pBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushStaticByRef(%hu)", uiStatic ) );
@@ -7129,7 +7129,7 @@ static void zh_vmPushStaticByRef( ZH_USHORT uiStatic )
 
 static void zh_vmPushVariable( PZH_SYMBOL pVarSymb )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_INFO, ( "(zh_vmPushVariable)" ) );
@@ -7163,7 +7163,7 @@ static void zh_vmPushVariable( PZH_SYMBOL pVarSymb )
 
 static void zh_vmDuplicate( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDuplicate()" ) );
@@ -7174,7 +7174,7 @@ static void zh_vmDuplicate( void )
 
 static void zh_vmDuplUnRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDuplUnRef()" ) );
@@ -7187,7 +7187,7 @@ static void zh_vmDuplUnRef( void )
 
 static void zh_vmPushUnRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPushUnRef()" ) );
@@ -7199,7 +7199,7 @@ static void zh_vmPushUnRef( void )
 
 static void zh_vmSwap( int iCount )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int i = -1;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSwap(%d)", iCount ) );
@@ -7218,7 +7218,7 @@ static void zh_vmSwap( int iCount )
 
 static ZH_BOOL zh_vmPopLogical( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopLogical()" ) );
 
@@ -7241,7 +7241,7 @@ static ZH_BOOL zh_vmPopLogical( void )
  */
 static void zh_vmPopAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopAlias()" ) );
 
@@ -7254,7 +7254,7 @@ static void zh_vmPopAlias( void )
  */
 static void zh_vmPopAliasedField( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCurrArea;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopAliasedField(%p)", ( void * ) pSym ) );
@@ -7275,7 +7275,7 @@ static void zh_vmPopAliasedField( PZH_SYMBOL pSym )
  */
 static void zh_vmPopAliasedVar( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pAlias = zh_stackItemFromTop( -1 );
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopAliasedVar(%p)", ( void * ) pSym ) );
@@ -7317,7 +7317,7 @@ static void zh_vmPopAliasedVar( PZH_SYMBOL pSym )
 
 static void zh_vmPopLocal( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal, pVal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopLocal(%d)", iLocal ) );
@@ -7347,7 +7347,7 @@ static void zh_vmPopLocal( int iLocal )
 
 static void zh_vmPopStatic( ZH_USHORT uiStatic )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pStatic, pVal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmPopStatic(%hu)", uiStatic ) );
@@ -8154,7 +8154,7 @@ static void zh_vmDoInitFunctions()
 
 static void zh_vmDoExitFunctions( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoExitFunctions()" ) );
@@ -8302,7 +8302,7 @@ void zh_vmPushItemRef( PZH_ITEM pItem )
       zh_vmItemRefMark
    };
 
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITMREF pItmRef;
    PZH_ITEM pRefer;
 
@@ -8346,7 +8346,7 @@ static PZH_ITEM zh_vmMsgRefRead( PZH_ITEM pRefer )
 
    if( zh_vmRequestQuery() == 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       zh_stackPushReturn();
       if( ( pMsgRef->value.type & ZH_IT_DEFAULT ) == 0 )
@@ -8377,7 +8377,7 @@ static PZH_ITEM zh_vmMsgRefWrite( PZH_ITEM pRefer, PZH_ITEM pSource )
 
    if( zh_vmRequestQuery() == 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
 
       zh_stackPushReturn();
       zh_vmPushDynSym( pMsgRef->assign );
@@ -8465,7 +8465,7 @@ ZH_BOOL zh_vmMsgReference( PZH_ITEM pObject, PZH_DYNSYMBOL pMessage, PZH_DYNSYMB
       zh_vmMsgRefMark
    };
 
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_MSGREF pMsgRef;
    PZH_ITEM pRefer;
 
@@ -8509,7 +8509,7 @@ static PZH_ITEM zh_vmMsgIdxRefRead( PZH_ITEM pRefer )
 
    if( zh_vmRequestQuery() == 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pObject = ZH_IS_BYREF( &pMsgIdxRef->object ) ?
                          zh_itemUnRef( &pMsgIdxRef->object ) :
                          &pMsgIdxRef->object;
@@ -8533,7 +8533,7 @@ static PZH_ITEM zh_vmMsgIdxRefWrite( PZH_ITEM pRefer, PZH_ITEM pSource )
 
    if( zh_vmRequestQuery() == 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pObject = ZH_IS_BYREF( &pMsgIdxRef->object ) ?
                          zh_itemUnRef( &pMsgIdxRef->object ) :
                          &pMsgIdxRef->object;
@@ -8651,7 +8651,7 @@ static void zh_vmMsgIndexReference( PZH_ITEM pRefer, PZH_ITEM pObject, PZH_ITEM 
 
 void zh_vmRequestQuit( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestQuit()" ) );
 
@@ -8663,7 +8663,7 @@ void zh_vmRequestQuit( void )
 
 void zh_vmRequestEndProc( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestEndProc()" ) );
 
@@ -8672,7 +8672,7 @@ void zh_vmRequestEndProc( void )
 
 void zh_vmRequestBreak( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_I_SIZE nRecoverBase;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestBreak(%p)", ( void * ) pItem ) );
@@ -8710,7 +8710,7 @@ void zh_vmRequestBreak( PZH_ITEM pItem )
 
 void zh_vmRequestCancel( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestCancel()" ) );
 
@@ -8740,7 +8740,7 @@ void zh_vmRequestCancel( void )
 
 ZH_USHORT zh_vmRequestQuery( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_vmThreadRequest & ZH_THREQUEST_QUIT )
    {
@@ -8760,7 +8760,7 @@ ZH_BOOL zh_vmRequestReenter( void )
 
    if( s_fZHVMActive )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pItem;
       int iLocks = 0;
 
@@ -8793,7 +8793,7 @@ ZH_BOOL zh_vmRequestReenter( void )
 
 void zh_vmRequestRestore( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiAction;
    PZH_ITEM pItem;
 
@@ -8838,7 +8838,7 @@ ZH_BOOL zh_vmRequestReenterExt( void )
       int iLocks = 0;
       PZH_ITEM pItem;
 
-      ZH_STACK_TLS_PRELOAD
+      
 
       if( zh_stackId() == NULL )
       {
@@ -8923,7 +8923,7 @@ ZH_BOOL zh_vmTryEval( PZH_ITEM * pResult, PZH_ITEM pItem, ZH_ULONG ulPCount, ...
 
       if( pSymbol && zh_vmRequestReenter() )
       {
-         ZH_STACK_TLS_PRELOAD
+         
 
          zh_xvmSeqBegin();
          zh_vmPush( zh_breakBlock() );
@@ -8982,7 +8982,7 @@ ZH_BOOL zh_vmIsReady( void )
 
    if( s_fZHVMActive )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmIsReady(%d) == zh_stackId() != NULL", zh_stackId() != NULL ) );
       return zh_stackId() != NULL;
    }
@@ -8997,42 +8997,42 @@ ZH_BOOL zh_vmInternalsEnabled( void )
 
 PZH_CODEPAGE zh_vmCodepage( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return ( PZH_CODEPAGE ) zh_stackGetCodepage();
 }
 
 void zh_vmSetCDP( PZH_CODEPAGE pCDP )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_stackSetCDP( ( void * ) pCDP );
 }
 
 PZH_LANG zh_vmLang( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return ( PZH_LANG ) zh_stackGetLang();
 }
 
 void zh_vmSetLang( PZH_LANG pLang )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_stackSetLang( ZH_UNCONST( pLang ) );
 }
 
 void * zh_vmI18N( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    return zh_stackGetI18N();
 }
 
 void zh_vmSetI18N( void * pI18N )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_i18n_release( zh_stackGetI18N() );
    zh_stackSetI18N( pI18N );
@@ -9048,7 +9048,7 @@ void zh_vmSetI18N( void * pI18N )
 
 void zh_xvmExitProc( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_stackGetActionRequest() & ZH_ENDPROC_REQUESTED )
       zh_stackSetActionRequest( 0 );
@@ -9056,7 +9056,7 @@ void zh_xvmExitProc( void )
 
 void zh_xvmEndProc( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( ! ( zh_stackGetActionRequest() & ( ZH_QUIT_REQUESTED | ZH_BREAK_REQUESTED ) ) )
       zh_stackSetActionRequest( ZH_ENDPROC_REQUESTED );
@@ -9064,7 +9064,7 @@ void zh_xvmEndProc( void )
 
 void zh_xvmSeqBegin( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    PZH_ITEM pItem;
 
@@ -9100,7 +9100,7 @@ void zh_xvmSeqBegin( void )
 
 ZH_BOOL zh_xvmSeqEnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    /*
     * remove all items placed on the stack after BEGIN code
@@ -9133,7 +9133,7 @@ ZH_BOOL zh_xvmSeqEnd( void )
 
 ZH_BOOL zh_xvmSeqEndTest( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_vmThreadRequest )
       zh_vmRequestTest();
@@ -9165,7 +9165,7 @@ ZH_BOOL zh_xvmSeqEndTest( void )
 
 ZH_BOOL zh_xvmSeqRecover( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    /*
     * Execute the RECOVER code
@@ -9195,7 +9195,7 @@ ZH_BOOL zh_xvmSeqRecover( void )
 
 void zh_xvmSeqAlways( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSeqAlways()" ) );
@@ -9223,7 +9223,7 @@ void zh_xvmSeqAlways( void )
 
 ZH_BOOL zh_xvmAlwaysBegin( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmAlwaysBegin()" ) );
 
@@ -9245,7 +9245,7 @@ ZH_BOOL zh_xvmAlwaysBegin( void )
 
 ZH_BOOL zh_xvmAlwaysEnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_USHORT uiPrevAction, uiCurrAction;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmAlwaysEnd()" ) );
@@ -9284,7 +9284,7 @@ ZH_BOOL zh_xvmAlwaysEnd( void )
 
 ZH_BOOL zh_xvmSeqBlock( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSeqBlock()" ) );
 
@@ -9295,7 +9295,7 @@ ZH_BOOL zh_xvmSeqBlock( void )
 
 ZH_BOOL zh_xvmEnumStart( int nVars, int nDescend )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEnumStart(%d,%d)", nVars, nDescend ) );
 
@@ -9306,7 +9306,7 @@ ZH_BOOL zh_xvmEnumStart( int nVars, int nDescend )
 
 ZH_BOOL zh_xvmEnumNext( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEnumNext()" ) );
 
@@ -9317,7 +9317,7 @@ ZH_BOOL zh_xvmEnumNext( void )
 
 ZH_BOOL zh_xvmEnumPrev( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEnumPrev()" ) );
 
@@ -9335,7 +9335,7 @@ void zh_xvmEnumEnd( void )
 
 ZH_BOOL zh_xvmSwitchGet( PZH_ITEM * pSwitchPtr )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSwitchGet(%p)", ( void * ) pSwitchPtr ) );
 
@@ -9346,7 +9346,7 @@ ZH_BOOL zh_xvmSwitchGet( PZH_ITEM * pSwitchPtr )
 
 void zh_xvmSetLine( ZH_USHORT uiLine )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSetLine(%hu)", uiLine ) );
 
@@ -9379,7 +9379,7 @@ void zh_xvmSFrame( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmDo( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDo(%hu)", uiParams ) );
 
@@ -9390,7 +9390,7 @@ ZH_BOOL zh_xvmDo( ZH_USHORT uiParams )
 
 ZH_BOOL zh_xvmFunction( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmFunction(%hu)", uiParams ) );
 
@@ -9403,7 +9403,7 @@ ZH_BOOL zh_xvmFunction( ZH_USHORT uiParams )
 
 ZH_BOOL zh_xvmSend( ZH_USHORT uiParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSend(%hu)", uiParams ) );
 
@@ -9416,7 +9416,7 @@ ZH_BOOL zh_xvmSend( ZH_USHORT uiParams )
 
 ZH_BOOL zh_xvmPushObjectVarRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushObjectVarRef()" ) );
 
@@ -9427,7 +9427,7 @@ ZH_BOOL zh_xvmPushObjectVarRef( void )
 
 void zh_xvmRetValue( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmRetValue()" ) );
 
@@ -9437,7 +9437,7 @@ void zh_xvmRetValue( void )
 
 void zh_xvmRetNil( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmRetNil()" ) );
 
@@ -9446,7 +9446,7 @@ void zh_xvmRetNil( void )
 
 void zh_xvmRetInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmRetInt(%ld)", lValue ) );
 
@@ -9469,7 +9469,7 @@ void zh_xvmThreadStatics( ZH_USHORT uiStatics, const ZH_BYTE * statics )
 
 void zh_xvmParameter( PZH_SYMBOL pSymbol, int iParams )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmParameter(%p,%d)", ( void * ) pSymbol, iParams ) );
 
@@ -9499,7 +9499,7 @@ void zh_xvmPopLocal( ZH_SHORT iLocal )
 
 static PZH_ITEM zh_xvmLocalPtr( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalPtr(%d)", iLocal ) );
 
@@ -9551,7 +9551,7 @@ void zh_xvmPopStatic( ZH_USHORT uiStatic )
 
 ZH_BOOL zh_xvmPushVar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushVar(%p)", ( void * ) pSymbol ) );
 
@@ -9562,7 +9562,7 @@ ZH_BOOL zh_xvmPushVar( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPopVar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopVar(%p)", ( void * ) pSymbol ) );
 
@@ -9588,7 +9588,7 @@ void zh_xvmPushBlock( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 
 void zh_xvmPushSelf( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushSelf()" ) );
 
@@ -9597,7 +9597,7 @@ void zh_xvmPushSelf( void )
 
 void zh_xvmPushFuncSymbol( PZH_SYMBOL pSym )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushFuncSymbol(%p)", ( void * ) pSym ) );
@@ -9611,7 +9611,7 @@ void zh_xvmPushFuncSymbol( PZH_SYMBOL pSym )
 
 ZH_BOOL zh_xvmPopLogical( ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPopLogical(%p)", ( void * ) pfValue ) );
 
@@ -9622,7 +9622,7 @@ ZH_BOOL zh_xvmPopLogical( ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmPopAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPopAlias()" ) );
 
@@ -9634,7 +9634,7 @@ ZH_BOOL zh_xvmPopAlias( void )
 
 ZH_BOOL zh_xvmSwapAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmSwapAlias()" ) );
 
@@ -9645,7 +9645,7 @@ ZH_BOOL zh_xvmSwapAlias( void )
 
 ZH_BOOL zh_xvmPushField( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushField(%p)", ( void * ) pSymbol ) );
 
@@ -9656,7 +9656,7 @@ ZH_BOOL zh_xvmPushField( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPushAlias( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushAlias()" ) );
 
@@ -9667,7 +9667,7 @@ ZH_BOOL zh_xvmPushAlias( void )
 
 ZH_BOOL zh_xvmPushAliasedField( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushAliasedField(%p)", ( void * ) pSymbol ) );
 
@@ -9678,7 +9678,7 @@ ZH_BOOL zh_xvmPushAliasedField( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPushAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCurrArea;
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushAliasedFieldExt(%p,%p)", ( void * ) pAlias, ( void * ) pField ) );
@@ -9693,7 +9693,7 @@ ZH_BOOL zh_xvmPushAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 
 ZH_BOOL zh_xvmPushAliasedVar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushAliasedVar(%p)", ( void * ) pSymbol ) );
 
@@ -9704,7 +9704,7 @@ ZH_BOOL zh_xvmPushAliasedVar( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPopField( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopField(%p)", ( void * ) pSymbol ) );
 
@@ -9716,7 +9716,7 @@ ZH_BOOL zh_xvmPopField( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPushMemvar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushMemvar(%p)", ( void * ) pSymbol ) );
 
@@ -9727,7 +9727,7 @@ ZH_BOOL zh_xvmPushMemvar( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPushMemvarByRef( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPushMemvarByRef(%p)", ( void * ) pSymbol ) );
 
@@ -9738,7 +9738,7 @@ ZH_BOOL zh_xvmPushMemvarByRef( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPopMemvar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopMemvar(%p)", ( void * ) pSymbol ) );
 
@@ -9750,7 +9750,7 @@ ZH_BOOL zh_xvmPopMemvar( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPopAliasedField( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopAliasedField(%p)", ( void * ) pSymbol ) );
 
@@ -9761,7 +9761,7 @@ ZH_BOOL zh_xvmPopAliasedField( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmPopAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iCurrArea;
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopAliasedFieldExt(%p,%p)", ( void * ) pAlias, ( void * ) pField ) );
@@ -9779,7 +9779,7 @@ ZH_BOOL zh_xvmPopAliasedFieldExt( PZH_SYMBOL pAlias, PZH_SYMBOL pField )
 
 ZH_BOOL zh_xvmPopAliasedVar( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmPopAliasedVar(%p)", ( void * ) pSymbol ) );
 
@@ -9790,7 +9790,7 @@ ZH_BOOL zh_xvmPopAliasedVar( PZH_SYMBOL pSymbol )
 
 void zh_xvmLocalSetInt( int iLocal, ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalSetInt(%d, %ld)", iLocal, lValue ) );
@@ -9825,7 +9825,7 @@ void zh_xvmLocalSetInt( int iLocal, ZH_LONG lValue )
 
 ZH_BOOL zh_xvmLocalAddInt( int iLocal, ZH_LONG lAdd )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalAddInt(%d,%ld)", iLocal, lAdd ) );
 
@@ -9836,7 +9836,7 @@ ZH_BOOL zh_xvmLocalAddInt( int iLocal, ZH_LONG lAdd )
 
 ZH_BOOL zh_xvmLocalInc( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalInc(%d)", iLocal ) );
@@ -9849,7 +9849,7 @@ ZH_BOOL zh_xvmLocalInc( int iLocal )
 
 ZH_BOOL zh_xvmLocalDec( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalDec(%d)", iLocal ) );
@@ -9862,7 +9862,7 @@ ZH_BOOL zh_xvmLocalDec( int iLocal )
 
 ZH_BOOL zh_xvmLocalIncPush( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalInc(%d)", iLocal ) );
@@ -9878,7 +9878,7 @@ ZH_BOOL zh_xvmLocalIncPush( int iLocal )
 
 ZH_BOOL zh_xvmLocalAdd( int iLocal )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pLocal;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLocalAdd(%d)", iLocal ) );
@@ -9895,7 +9895,7 @@ ZH_BOOL zh_xvmLocalAdd( int iLocal )
 
 ZH_BOOL zh_xvmStaticAdd( ZH_USHORT uiStatic )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pStatic;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmStaticAdd(%hu)", uiStatic ) );
@@ -9912,7 +9912,7 @@ ZH_BOOL zh_xvmStaticAdd( ZH_USHORT uiStatic )
 
 ZH_BOOL zh_xvmMemvarAdd( PZH_SYMBOL pSymbol )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pVal1, pVal2;
 
    ZH_TRACE( ZH_TR_INFO, ( "zh_xvmMemvarAdd(%p)", ( void * ) pSymbol ) );
@@ -9941,7 +9941,7 @@ ZH_BOOL zh_xvmMemvarAdd( PZH_SYMBOL pSymbol )
 
 ZH_BOOL zh_xvmAnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmAnd()" ) );
 
@@ -9952,7 +9952,7 @@ ZH_BOOL zh_xvmAnd( void )
 
 ZH_BOOL zh_xvmOr( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmOr()" ) );
 
@@ -9963,7 +9963,7 @@ ZH_BOOL zh_xvmOr( void )
 
 ZH_BOOL zh_xvmNot( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmNot()" ) );
 
@@ -9974,7 +9974,7 @@ ZH_BOOL zh_xvmNot( void )
 
 ZH_BOOL zh_xvmNegate( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmNegate()" ) );
 
@@ -10013,7 +10013,7 @@ void zh_xvmSwap( int iCount )
 
 ZH_BOOL zh_xvmForTest( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmForTest()" ) );
 
@@ -10031,7 +10031,7 @@ void zh_xvmFuncPtr( void )
 
 ZH_BOOL zh_xvmEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEqual()" ) );
 
@@ -10042,7 +10042,7 @@ ZH_BOOL zh_xvmEqual( void )
 
 ZH_BOOL zh_xvmExactlyEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmExactlyEqual()" ) );
 
@@ -10053,7 +10053,7 @@ ZH_BOOL zh_xvmExactlyEqual( void )
 
 ZH_BOOL zh_xvmEqualInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEqualInt(%ld)", lValue ) );
@@ -10106,7 +10106,7 @@ ZH_BOOL zh_xvmEqualInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmEqualIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10161,7 +10161,7 @@ ZH_BOOL zh_xvmEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmNotEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmNotEqual()" ) );
 
@@ -10172,7 +10172,7 @@ ZH_BOOL zh_xvmNotEqual( void )
 
 ZH_BOOL zh_xvmNotEqualInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmNotEqualInt(%ld)", lValue ) );
@@ -10225,7 +10225,7 @@ ZH_BOOL zh_xvmNotEqualInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmNotEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmNotEqualIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10280,7 +10280,7 @@ ZH_BOOL zh_xvmNotEqualIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmLess( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLess()" ) );
 
@@ -10291,7 +10291,7 @@ ZH_BOOL zh_xvmLess( void )
 
 ZH_BOOL zh_xvmLessThenInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLessThenInt(%ld)", lValue ) );
@@ -10339,7 +10339,7 @@ ZH_BOOL zh_xvmLessThenInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmLessThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLessThenIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10389,7 +10389,7 @@ ZH_BOOL zh_xvmLessThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmLessEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLessEqual()" ) );
 
@@ -10400,7 +10400,7 @@ ZH_BOOL zh_xvmLessEqual( void )
 
 ZH_BOOL zh_xvmLessEqualThenInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLessEqualThenInt(%ld)", lValue ) );
@@ -10448,7 +10448,7 @@ ZH_BOOL zh_xvmLessEqualThenInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmLessEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmLessEqualThenIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10498,7 +10498,7 @@ ZH_BOOL zh_xvmLessEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmGreater( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreater()" ) );
 
@@ -10509,7 +10509,7 @@ ZH_BOOL zh_xvmGreater( void )
 
 ZH_BOOL zh_xvmGreaterThenInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreaterThenInt(%ld)", lValue ) );
@@ -10557,7 +10557,7 @@ ZH_BOOL zh_xvmGreaterThenInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmGreaterThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreaterThenIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10607,7 +10607,7 @@ ZH_BOOL zh_xvmGreaterThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmGreaterEqual( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreaterEqual()" ) );
 
@@ -10618,7 +10618,7 @@ ZH_BOOL zh_xvmGreaterEqual( void )
 
 ZH_BOOL zh_xvmGreaterEqualThenInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreaterEqualThenInt(%ld)", lValue ) );
@@ -10666,7 +10666,7 @@ ZH_BOOL zh_xvmGreaterEqualThenInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmGreaterEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmGreaterEqualThenIntIs(%ld,%p)", lValue, ( void * ) pfValue ) );
@@ -10716,7 +10716,7 @@ ZH_BOOL zh_xvmGreaterEqualThenIntIs( ZH_LONG lValue, ZH_BOOL * pfValue )
 
 ZH_BOOL zh_xvmInstring( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmInstring()" ) );
 
@@ -10727,7 +10727,7 @@ ZH_BOOL zh_xvmInstring( void )
 
 ZH_BOOL zh_xvmAddInt( ZH_LONG lAdd )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmAddInt(%ld)", lAdd ) );
 
@@ -10738,7 +10738,7 @@ ZH_BOOL zh_xvmAddInt( ZH_LONG lAdd )
 
 ZH_BOOL zh_xvmPlus( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPlus()" ) );
 
@@ -10751,7 +10751,7 @@ ZH_BOOL zh_xvmPlus( void )
 
 ZH_BOOL zh_xvmPlusEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPlusEq()" ) );
@@ -10768,7 +10768,7 @@ ZH_BOOL zh_xvmPlusEq( void )
 
 ZH_BOOL zh_xvmPlusEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPlusEqPop()" ) );
@@ -10783,7 +10783,7 @@ ZH_BOOL zh_xvmPlusEqPop( void )
 
 ZH_BOOL zh_xvmMinus( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMinus()" ) );
 
@@ -10796,7 +10796,7 @@ ZH_BOOL zh_xvmMinus( void )
 
 ZH_BOOL zh_xvmMinusEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMinusEq()" ) );
@@ -10813,7 +10813,7 @@ ZH_BOOL zh_xvmMinusEq( void )
 
 ZH_BOOL zh_xvmMinusEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMinusEqPop()" ) );
@@ -10828,7 +10828,7 @@ ZH_BOOL zh_xvmMinusEqPop( void )
 
 ZH_BOOL zh_xvmMultByInt( ZH_LONG lValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMultByInt(%ld)", lValue ) );
@@ -10870,7 +10870,7 @@ ZH_BOOL zh_xvmMultByInt( ZH_LONG lValue )
 
 ZH_BOOL zh_xvmMult( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMult()" ) );
 
@@ -10882,7 +10882,7 @@ ZH_BOOL zh_xvmMult( void )
 
 ZH_BOOL zh_xvmMultEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMultEq()" ) );
@@ -10899,7 +10899,7 @@ ZH_BOOL zh_xvmMultEq( void )
 
 ZH_BOOL zh_xvmMultEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMultEqPop()" ) );
@@ -10914,7 +10914,7 @@ ZH_BOOL zh_xvmMultEqPop( void )
 
 ZH_BOOL zh_xvmDivideByInt( ZH_LONG lDivisor )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDivideByInt(%ld)", lDivisor ) );
@@ -10967,7 +10967,7 @@ ZH_BOOL zh_xvmDivideByInt( ZH_LONG lDivisor )
 
 ZH_BOOL zh_xvmModulusByInt( ZH_LONG lDivisor )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmModulusByInt(%ld)", lDivisor ) );
@@ -11023,7 +11023,7 @@ ZH_BOOL zh_xvmModulusByInt( ZH_LONG lDivisor )
 
 ZH_BOOL zh_xvmDivide( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDivide()" ) );
 
@@ -11035,7 +11035,7 @@ ZH_BOOL zh_xvmDivide( void )
 
 ZH_BOOL zh_xvmDivEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDivEq()" ) );
@@ -11052,7 +11052,7 @@ ZH_BOOL zh_xvmDivEq( void )
 
 ZH_BOOL zh_xvmDivEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDivEqPop()" ) );
@@ -11067,7 +11067,7 @@ ZH_BOOL zh_xvmDivEqPop( void )
 
 ZH_BOOL zh_xvmModulus( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmModulus()" ) );
 
@@ -11079,7 +11079,7 @@ ZH_BOOL zh_xvmModulus( void )
 
 ZH_BOOL zh_xvmModEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmModEq()" ) );
@@ -11096,7 +11096,7 @@ ZH_BOOL zh_xvmModEq( void )
 
 ZH_BOOL zh_xvmModEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmModEqPop()" ) );
@@ -11111,7 +11111,7 @@ ZH_BOOL zh_xvmModEqPop( void )
 
 ZH_BOOL zh_xvmPower( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPower()" ) );
 
    zh_vmPower( zh_stackItemFromTop( -2 ), zh_stackItemFromTop( -2 ), zh_stackItemFromTop( -1 ) );
@@ -11122,7 +11122,7 @@ ZH_BOOL zh_xvmPower( void )
 
 ZH_BOOL zh_xvmExpEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmExpEq()" ) );
@@ -11139,7 +11139,7 @@ ZH_BOOL zh_xvmExpEq( void )
 
 ZH_BOOL zh_xvmExpEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmExpEqPop()" ) );
@@ -11154,7 +11154,7 @@ ZH_BOOL zh_xvmExpEqPop( void )
 
 ZH_BOOL zh_xvmInc( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmInc()" ) );
 
    zh_vmInc( zh_stackItemFromTop( -1 ) );
@@ -11164,7 +11164,7 @@ ZH_BOOL zh_xvmInc( void )
 
 ZH_BOOL zh_xvmIncEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue, pTemp;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmIncEq()" ) );
@@ -11182,7 +11182,7 @@ ZH_BOOL zh_xvmIncEq( void )
 
 ZH_BOOL zh_xvmIncEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmIncEqPop()" ) );
 
@@ -11194,7 +11194,7 @@ ZH_BOOL zh_xvmIncEqPop( void )
 
 ZH_BOOL zh_xvmDec( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDec()" ) );
 
@@ -11205,7 +11205,7 @@ ZH_BOOL zh_xvmDec( void )
 
 ZH_BOOL zh_xvmDecEq( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pResult, pValue, pTemp;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDecEq()" ) );
@@ -11223,7 +11223,7 @@ ZH_BOOL zh_xvmDecEq( void )
 
 ZH_BOOL zh_xvmDecEqPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmDecEqPop()" ) );
 
@@ -11256,7 +11256,7 @@ void zh_xvmHashGen( ZH_SIZE nElements )
 
 static void zh_vmArrayItemPush( ZH_SIZE nIndex )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmArrayItemPush(%" ZH_PFS "u)", nIndex ) );
@@ -11327,7 +11327,7 @@ static void zh_vmArrayItemPush( ZH_SIZE nIndex )
 
 static void zh_vmArrayItemPop( ZH_SIZE nIndex )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pValue;
    PZH_ITEM pArray;
 
@@ -11420,7 +11420,7 @@ static void zh_vmArrayItemPop( ZH_SIZE nIndex )
 
 ZH_BOOL zh_xvmArrayPush( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmArrayPush()" ) );
 
@@ -11431,7 +11431,7 @@ ZH_BOOL zh_xvmArrayPush( void )
 
 ZH_BOOL zh_xvmArrayPushRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmArrayPushRef()" ) );
 
@@ -11442,7 +11442,7 @@ ZH_BOOL zh_xvmArrayPushRef( void )
 
 ZH_BOOL zh_xvmArrayItemPush( ZH_SIZE nIndex )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmArrayItemPush(%" ZH_PFS "u)", nIndex ) );
 
@@ -11453,7 +11453,7 @@ ZH_BOOL zh_xvmArrayItemPush( ZH_SIZE nIndex )
 
 ZH_BOOL zh_xvmArrayPop( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmArrayPop()" ) );
 
@@ -11464,7 +11464,7 @@ ZH_BOOL zh_xvmArrayPop( void )
 
 ZH_BOOL zh_xvmArrayItemPop( ZH_SIZE nIndex )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmArrayItemPop(%" ZH_PFS "u)", nIndex ) );
 
@@ -11498,7 +11498,7 @@ void zh_xvmPushLongLong( ZH_LONGLONG llNumber )
 
 void zh_xvmPushStringHidden( int iMethod, const char * szText, ZH_SIZE nSize )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    char * szString;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmPushStringHidden(%d, %s, %" ZH_PFS "u)", iMethod, szText, nSize ) );
@@ -11531,7 +11531,7 @@ void zh_xvmModuleName( const char * szModuleName )
 
 ZH_BOOL zh_xvmMacroArrayGen( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroArrayGen(%hu)", uiArgSets ) );
 
@@ -11542,7 +11542,7 @@ ZH_BOOL zh_xvmMacroArrayGen( ZH_USHORT uiArgSets )
 
 ZH_BOOL zh_xvmMacroDo( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroDo(%hu)", uiArgSets ) );
 
@@ -11553,7 +11553,7 @@ ZH_BOOL zh_xvmMacroDo( ZH_USHORT uiArgSets )
 
 ZH_BOOL zh_xvmMacroFunc( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroFunc(%hu)", uiArgSets ) );
 
@@ -11564,7 +11564,7 @@ ZH_BOOL zh_xvmMacroFunc( ZH_USHORT uiArgSets )
 
 ZH_BOOL zh_xvmMacroSend( ZH_USHORT uiArgSets )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroSend(%hu)", uiArgSets ) );
 
@@ -11575,7 +11575,7 @@ ZH_BOOL zh_xvmMacroSend( ZH_USHORT uiArgSets )
 
 ZH_BOOL zh_xvmMacroPush( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPush(%d)", iFlags ) );
 
@@ -11586,7 +11586,7 @@ ZH_BOOL zh_xvmMacroPush( int iFlags )
 
 ZH_BOOL zh_xvmMacroPushRef( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    PZH_ITEM pMacro;
 
@@ -11600,7 +11600,7 @@ ZH_BOOL zh_xvmMacroPushRef( void )
 
 ZH_BOOL zh_xvmMacroPushIndex( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushIndex()" ) );
 
@@ -11611,7 +11611,7 @@ ZH_BOOL zh_xvmMacroPushIndex( void )
 
 ZH_BOOL zh_xvmMacroPushList( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushList(%d)", iFlags ) );
 
@@ -11622,7 +11622,7 @@ ZH_BOOL zh_xvmMacroPushList( int iFlags )
 
 ZH_BOOL zh_xvmMacroPushPare( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushPare(%d)", iFlags ) );
 
@@ -11633,7 +11633,7 @@ ZH_BOOL zh_xvmMacroPushPare( int iFlags )
 
 ZH_BOOL zh_xvmMacroPushAliased( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPushAliased(%d)", iFlags ) );
 
@@ -11644,7 +11644,7 @@ ZH_BOOL zh_xvmMacroPushAliased( int iFlags )
 
 ZH_BOOL zh_xvmMacroPop( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPop(%d)", iFlags ) );
 
@@ -11655,7 +11655,7 @@ ZH_BOOL zh_xvmMacroPop( int iFlags )
 
 ZH_BOOL zh_xvmMacroPopAliased( int iFlags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroPopAliased(%d)", iFlags ) );
 
@@ -11666,7 +11666,7 @@ ZH_BOOL zh_xvmMacroPopAliased( int iFlags )
 
 ZH_BOOL zh_xvmMacroSymbol( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroSymbol()" ) );
 
@@ -11677,7 +11677,7 @@ ZH_BOOL zh_xvmMacroSymbol( void )
 
 ZH_BOOL zh_xvmMacroText( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmMacroText()" ) );
 
@@ -11709,7 +11709,7 @@ void zh_xvmWithObjectStart( void )
 
 void zh_xvmWithObjectEnd( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmWithObjectEnd()" ) );
 
@@ -11721,7 +11721,7 @@ void zh_xvmWithObjectMessage( PZH_SYMBOL pSymbol )
 {
    PZH_ITEM pWith;
 
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_xvmWithObjectMessage(%p)", ( void * ) pSymbol ) );
 
@@ -11741,7 +11741,7 @@ void zh_xvmWithObjectMessage( PZH_SYMBOL pSymbol )
 
 void zh_vmRequestDebug( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRequestDebug()" ) );
 
@@ -11751,7 +11751,7 @@ void zh_vmRequestDebug( void )
 
 ZH_BOOL zh_dbg_InvokeDebug( ZH_BOOL bInvoke )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL * pfRequest = zh_stackDebugRequest();
    ZH_BOOL bRequest = *pfRequest;
    *pfRequest = bInvoke;
@@ -11789,7 +11789,7 @@ ZH_ULONG zh_dbg_ProcLevel( void )
  */
 ZH_FUNC( __DBGINVOKEDEBUG )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_vmInternalsEnabled() )
    {
@@ -11811,7 +11811,7 @@ ZH_FUNC( __DBGVMVARSLIST )
       zh_itemReturnRelease( zh_vmStaticsArray() );
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_reta( 0 );
    }
 }
@@ -11821,7 +11821,7 @@ ZH_FUNC( __DBGVMVARSLIST )
  */
 ZH_FUNC( __DBGVMVARSLEN )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_vmInternalsEnabled() )
       zh_retnint( zh_vmStaticsCount() );
@@ -11858,7 +11858,7 @@ ZH_FUNC( __DBGPROCLEVEL )
 {
    if( zh_vmInternalsEnabled() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_retnl( zh_dbg_ProcLevel() - 1 );   /* Don't count self */
    }
 }
@@ -11894,7 +11894,7 @@ ZH_FUNC( __DBGVMVARGLIST )
    }
    else
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_reta( 0 );
    }
 }
@@ -11977,7 +11977,7 @@ void zh_vmUpdateAllocator( PZH_ALLOCUPDT_FUNC pFunc, int iCount )
  */
 ZH_FUNC( __SETPROFILER )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 #ifdef ZH_NO_PROFILER
    zh_retl( ZH_FALSE );
 #else
@@ -11989,7 +11989,7 @@ ZH_FUNC( __SETPROFILER )
 
 ZH_FUNC( __OPCOUNT ) /* it returns the total amount of opcodes */
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retnl( ZH_P_LAST_PCODE - 1 );
 }
 
@@ -11997,7 +11997,7 @@ ZH_FUNC( __OPGETPRF ) /* profiler: It returns an array with an opcode called and
                          consumed times { nTimes, nTime },
                          given the opcode index */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 #ifndef ZH_NO_PROFILER
    ZH_ULONG ulOpcode = zh_parnl( 1 );
 
@@ -12023,7 +12023,7 @@ ZH_FUNC( __OPGETPRF ) /* profiler: It returns an array with an opcode called and
  */
 ZH_FUNC( __TRACEPRGCALLS )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 #if defined( ZH_PRG_TRACE )
    zh_retl( zh_bTracePrgCalls );
    if( ZH_ISLOGICAL( 1 ) )
@@ -12035,7 +12035,7 @@ ZH_FUNC( __TRACEPRGCALLS )
 
 ZH_FUNC( __QUITCANCEL )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( ! zh_stackQuitState() )
    {
@@ -12065,7 +12065,7 @@ ZH_FUNC( __VMNOINTERNALS )
 
 ZH_FUNC( __VMITEMID )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    PZH_ITEM pItem = zh_param( 1, ZH_IT_ANY );
 
@@ -12084,7 +12084,7 @@ ZH_FUNC( __VMITEMID )
 
 ZH_FUNC( __VMITEMREFS )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    PZH_ITEM pItem = zh_param( 1, ZH_IT_ANY );
 
@@ -12105,7 +12105,7 @@ ZH_FUNC( __VMITEMREFS )
 
 ZH_FUNC( __VMMODULESVERIFY )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_vmVerifySymbols( zh_stackReturnItem() );
 }
@@ -12114,7 +12114,7 @@ ZH_FUNC( __VMCOUNTTHREADS )
 {
    int iStacks, iThreads;
 
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_VM_LOCK();
 
@@ -12136,7 +12136,7 @@ ZH_FUNC( __BREAKBLOCK )
 
 ZH_FUNC( __RECOVERERRORBLOCK )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_I_SIZE nRecoverBase = zh_stackGetRecoverBase();
 
@@ -12153,7 +12153,7 @@ ZH_FUNC( __RECOVERERRORBLOCK )
 
 ZH_FUNC( ZH_ARRAYTOPARAMS )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    PZH_ITEM pArray = zh_param( 1, ZH_IT_ARRAY );
 
@@ -12163,7 +12163,7 @@ ZH_FUNC( ZH_ARRAYTOPARAMS )
 
 ZH_FUNC( ERRORLEVEL )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_retni( s_nErrorLevel );
 

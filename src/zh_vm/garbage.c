@@ -757,7 +757,7 @@ ZH_FUNC( ZH_GCSTEP )
  */
 ZH_FUNC( ZH_GCALL )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    /* call zh_ret() to clear stack return item, ZHVM does not clean
     * it before calling functions/procedures if caller does not
@@ -775,7 +775,7 @@ ZH_FUNC( ZH_GCALL )
 #ifdef ZH_GC_AUTO
 ZH_FUNC( ZH_GCSETAUTO )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_PTRUINT nBlocks, nPrevBlocks;
    ZH_BOOL fSet = ZH_IS_PARAM_NUM( 1 );

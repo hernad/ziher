@@ -96,7 +96,7 @@ ZH_BOOL zh_itemParamStore( ZH_USHORT uiParam, PZH_ITEM pItem )
 
    if( zh_param( uiParam, ZH_IT_BYREF ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pDest = zh_stackItemFromBase( uiParam );
 
       if( pItem )
@@ -115,7 +115,7 @@ ZH_BOOL zh_itemParamStoreForward( ZH_USHORT uiParam, PZH_ITEM pItem )
 
    if( zh_param( uiParam, ZH_IT_BYREF ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pDest = zh_stackItemFromBase( uiParam );
 
       if( pItem )
@@ -134,7 +134,7 @@ ZH_BOOL zh_itemParamStoreRelease( ZH_USHORT uiParam, PZH_ITEM pItem )
 
    if( zh_param( uiParam, ZH_IT_BYREF ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_ITEM pDest = zh_stackItemFromBase( uiParam );
 
       if( pItem )
@@ -152,7 +152,7 @@ ZH_BOOL zh_itemParamStoreRelease( ZH_USHORT uiParam, PZH_ITEM pItem )
 
 ZH_USHORT zh_itemPCount( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemPCount()" ) );
 
@@ -752,7 +752,7 @@ PZH_ITEM zh_itemReturn( PZH_ITEM pItem )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_itemCopy( zh_stackReturnItem(), pItem );
    }
 
@@ -765,7 +765,7 @@ PZH_ITEM zh_itemReturnForward( PZH_ITEM pItem )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_itemMove( zh_stackReturnItem(), pItem );
    }
 
@@ -778,7 +778,7 @@ void zh_itemReturnRelease( PZH_ITEM pItem )
 
    if( pItem )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_itemMove( zh_stackReturnItem(), pItem );
       zh_itemRelease( pItem );
    }
@@ -922,7 +922,7 @@ PZH_ITEM zh_itemPutL( PZH_ITEM pItem, ZH_BOOL bValue )
 
 PZH_ITEM zh_itemPutND( PZH_ITEM pItem, double dNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_itemPutND(%p, %lf)", ( void * ) pItem, dNumber ) );
 
@@ -1094,7 +1094,7 @@ PZH_ITEM zh_itemPutNLen( PZH_ITEM pItem, double dNumber, int iWidth, int iDec )
 
    if( iDec < 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       iDec = zh_stackSetStruct()->ZH_SET_DECIMALS;
    }
 
@@ -1131,7 +1131,7 @@ PZH_ITEM zh_itemPutNDLen( PZH_ITEM pItem, double dNumber, int iWidth, int iDec )
 
    if( iDec < 0 )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       iDec = zh_stackSetStruct()->ZH_SET_DECIMALS;
    }
 
@@ -1160,7 +1160,7 @@ PZH_ITEM zh_itemPutNDDec( PZH_ITEM pItem, double dNumber, int iDec )
 
    if( iDec == ZH_DEFAULT_DECIMALS )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       pItem->item.asDouble.decimal = ( ZH_USHORT ) zh_stackSetStruct()->ZH_SET_DECIMALS;
    }
    else
@@ -1841,7 +1841,7 @@ PZH_ITEM zh_itemUnRefOnce( PZH_ITEM pItem )
 
             if( zh_vmRequestQuery() == 0 )
             {
-               ZH_STACK_TLS_PRELOAD
+               
                zh_itemPutNS( zh_stackAllocItem(), pItem->item.asEnum.offset );
                zh_errRT_BASE( EG_BOUND, 1132, NULL, zh_langDGetErrorDesc( EG_ARRACCESS ),
                               2, pItem->item.asEnum.basePtr, zh_stackItemFromTop( -1 ) );
@@ -1869,7 +1869,7 @@ PZH_ITEM zh_itemUnRefOnce( PZH_ITEM pItem )
                }
                else if( zh_vmRequestQuery() == 0 )
                {
-                  ZH_STACK_TLS_PRELOAD
+                  
                   zh_arrayPushBase( pItem->item.asRefer.BasePtr.array );
                   zh_itemPutNS( zh_stackAllocItem(), pItem->item.asRefer.value + 1 );
                   zh_errRT_BASE( EG_BOUND, 1132, NULL, zh_langDGetErrorDesc( EG_ARRACCESS ),
@@ -2290,7 +2290,7 @@ ZH_BOOL zh_itemCompare( PZH_ITEM pItem1, PZH_ITEM pItem2, ZH_BOOL bForceExact, i
 /* Check whether two strings are equal (0), smaller (-1), or greater (1) */
 int zh_itemStrCmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szFirst;
    const char * szSecond;
    ZH_SIZE nLenFirst;
@@ -2373,7 +2373,7 @@ int zh_itemStrCmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
 /* Check whether two strings are equal (0), smaller (-1), or greater (1), ignore case */
 int zh_itemStrICmp( PZH_ITEM pFirst, PZH_ITEM pSecond, ZH_BOOL bForceExact )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szFirst;
    const char * szSecond;
    ZH_SIZE nLenFirst;
@@ -2738,7 +2738,7 @@ char * zh_itemString( PZH_ITEM pItem, ZH_SIZE * nLen, ZH_BOOL * bFreeReq )
 
       case ZH_IT_DATE:
       {
-         ZH_STACK_TLS_PRELOAD
+         
          char szDate[ 9 ];
 
          zh_dateDecStr( szDate, pItem->item.asDateTime.julian );
@@ -2752,7 +2752,7 @@ char * zh_itemString( PZH_ITEM pItem, ZH_SIZE * nLen, ZH_BOOL * bFreeReq )
 
       case ZH_IT_TIMESTAMP:
       {
-         ZH_STACK_TLS_PRELOAD
+         
          char szDateTime[ 27 ];
 
          zh_timeStampFormat( szDateTime,
@@ -2771,7 +2771,7 @@ char * zh_itemString( PZH_ITEM pItem, ZH_SIZE * nLen, ZH_BOOL * bFreeReq )
       case ZH_IT_INTEGER:
       case ZH_IT_LONG:
       {
-         ZH_STACK_TLS_PRELOAD
+         
          if( zh_stackSetStruct()->ZH_SET_FIXED )
          {
             /* If fixed mode is enabled, use the default number of decimal places. */
