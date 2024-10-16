@@ -126,7 +126,7 @@ PZH_CODEBLOCK zh_codeblockNew( const ZH_BYTE * pBuffer,
                                PZH_SYMBOL pSymbols,
                                ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_CODEBLOCK pCBlock;
    PZH_ITEM pLocals, pBase;
    const ZH_BYTE * pCode;
@@ -232,7 +232,7 @@ PZH_CODEBLOCK zh_codeblockNew( const ZH_BYTE * pBuffer,
 
 PZH_CODEBLOCK zh_codeblockMacroNew( const ZH_BYTE * pBuffer, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_CODEBLOCK pCBlock;
    PZH_ITEM pBase;
    ZH_BYTE * pCode;

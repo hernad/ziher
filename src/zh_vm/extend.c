@@ -58,7 +58,7 @@
 
 PZH_ITEM zh_param( int iParam, long lMask )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_param(%d, %ld)", iParam, lMask ) );
 
@@ -97,7 +97,7 @@ PZH_ITEM zh_paramError( int iParam )
 
 ZH_ULONG zh_parinfo( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parinfo(%d)", iParam ) );
 
@@ -141,7 +141,7 @@ ZH_SIZE zh_parinfa( int iParamNum, ZH_SIZE nArrayIndex )
 
 ZH_BOOL zh_extIsNil( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_extIsNil(%d)", iParam ) );
@@ -165,7 +165,7 @@ ZH_BOOL zh_extIsNil( int iParam )
 
 ZH_BOOL zh_extIsArray( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    if( iParam == -1 )
@@ -186,7 +186,7 @@ ZH_BOOL zh_extIsArray( int iParam )
 
 ZH_BOOL zh_extIsObject( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem;
 
    if( iParam == -1 )
@@ -207,7 +207,7 @@ ZH_BOOL zh_extIsObject( int iParam )
 
 const char * zh_parc( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parc(%d)", iParam ) );
 
@@ -227,7 +227,7 @@ const char * zh_parc( int iParam )
 
 const char * zh_parcx( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parcx(%d)", iParam ) );
 
@@ -247,7 +247,7 @@ const char * zh_parcx( int iParam )
 
 ZH_SIZE zh_parclen( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parclen(%d)", iParam ) );
 
@@ -271,7 +271,7 @@ ZH_SIZE zh_parclen( int iParam )
 
 ZH_SIZE zh_parcsiz( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parcsiz(%d)", iParam ) );
 
@@ -296,7 +296,7 @@ ZH_SIZE zh_parcsiz( int iParam )
 
 const char * zh_pards( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_pards(%d)", iParam ) );
 
@@ -318,7 +318,7 @@ const char * zh_pards( int iParam )
 
 char * zh_pardsbuff( char * szDate, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_pardsbuff(%p, %d)", ( void * ) szDate, iParam ) );
 
@@ -340,7 +340,7 @@ char * zh_pardsbuff( char * szDate, int iParam )
 
 long zh_pardl( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_pardl(%d)", iParam ) );
 
@@ -360,7 +360,7 @@ long zh_pardl( int iParam )
 
 double zh_partd( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_partd(%d)", iParam ) );
 
@@ -381,7 +381,7 @@ double zh_partd( int iParam )
 
 ZH_BOOL zh_partdt( long * plJulian, long * plMilliSec, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_partdt(%p,%p,%d)", ( void * ) plJulian, ( void * ) plMilliSec, iParam ) );
 
@@ -406,7 +406,7 @@ ZH_BOOL zh_partdt( long * plJulian, long * plMilliSec, int iParam )
 
 int  zh_parl( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parl(%d)", iParam ) );
 
@@ -426,7 +426,7 @@ int  zh_parl( int iParam )
 
 int  zh_parldef( int iParam, int iDefValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parldef(%d,%d)", iParam, iDefValue ) );
 
@@ -446,7 +446,7 @@ int  zh_parldef( int iParam, int iDefValue )
 
 double  zh_parnd( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnd(%d)", iParam ) );
 
@@ -470,7 +470,7 @@ double  zh_parnd( int iParam )
 
 int  zh_parni( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parni(%d)", iParam ) );
 
@@ -494,7 +494,7 @@ int  zh_parni( int iParam )
 
 int  zh_parnidef( int iParam, int iDefValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parni(%d, %d)", iParam, iDefValue ) );
 
@@ -518,7 +518,7 @@ int  zh_parnidef( int iParam, int iDefValue )
 
 long  zh_parnl( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnl(%d)", iParam ) );
 
@@ -542,7 +542,7 @@ long  zh_parnl( int iParam )
 
 long  zh_parnldef( int iParam, long lDefValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnldef(%d, %ld)", iParam, lDefValue ) );
 
@@ -566,7 +566,7 @@ long  zh_parnldef( int iParam, long lDefValue )
 
 ZH_I_SIZE zh_parns( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parns(%d)", iParam ) );
 
@@ -590,7 +590,7 @@ ZH_I_SIZE zh_parns( int iParam )
 
 ZH_I_SIZE zh_parnsdef( int iParam, ZH_I_SIZE nDefValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnsdef(%d, %" ZH_PFS "d)", iParam, nDefValue ) );
 
@@ -615,7 +615,7 @@ ZH_I_SIZE zh_parnsdef( int iParam, ZH_I_SIZE nDefValue )
 #ifndef ZH_LONG_LONG_OFF
 ZH_LONGLONG  zh_parnll( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnll(%d)", iParam ) );
 
@@ -640,7 +640,7 @@ ZH_LONGLONG  zh_parnll( int iParam )
 
 ZH_MAXINT zh_parnint( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnint(%d)", iParam ) );
 
@@ -664,7 +664,7 @@ ZH_MAXINT zh_parnint( int iParam )
 
 ZH_MAXINT zh_parnintdef( int iParam, ZH_MAXINT nDefValue )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parnintdef(%d, %" PFHL "d)", iParam, nDefValue ) );
 
@@ -688,7 +688,7 @@ ZH_MAXINT zh_parnintdef( int iParam, ZH_MAXINT nDefValue )
 
 void * zh_parptr( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parptr(%d)", iParam ) );
 
@@ -708,7 +708,7 @@ void * zh_parptr( int iParam )
 
 void * zh_parptrGC( const ZH_GC_FUNCS * pFuncs, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parptrGC(%p,%d)", ( const void * ) pFuncs, iParam ) );
 
@@ -732,7 +732,7 @@ void * zh_parptrGC( const ZH_GC_FUNCS * pFuncs, int iParam )
 
 const char * zh_parvc( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvc(%d, ...)", iParam ) );
 
@@ -764,7 +764,7 @@ const char * zh_parvc( int iParam, ... )
 
 const char * zh_parvcx( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvcx(%d, ...)", iParam ) );
 
@@ -795,7 +795,7 @@ const char * zh_parvcx( int iParam, ... )
 
 ZH_SIZE zh_parvclen( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvclen(%d, ...)", iParam ) );
 
@@ -830,7 +830,7 @@ ZH_SIZE zh_parvclen( int iParam, ... )
 
 ZH_SIZE zh_parvcsiz( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvcsiz(%d, ...)", iParam ) );
 
@@ -866,7 +866,7 @@ ZH_SIZE zh_parvcsiz( int iParam, ... )
 
 const char * zh_parvds( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvds(%d, ...)", iParam ) );
 
@@ -899,7 +899,7 @@ const char * zh_parvds( int iParam, ... )
 
 char  * zh_parvdsbuff( char * szDate, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvdsbuff(%p, %d, ...)", ( void * ) szDate, iParam ) );
 
@@ -932,7 +932,7 @@ char  * zh_parvdsbuff( char * szDate, int iParam, ... )
 
 long zh_parvdl( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvdl(%d, ...)", iParam ) );
 
@@ -963,7 +963,7 @@ long zh_parvdl( int iParam, ... )
 
 double zh_parvtd( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvtd(%d, ...)", iParam ) );
 
@@ -995,7 +995,7 @@ double zh_parvtd( int iParam, ... )
 
 ZH_BOOL zh_parvtdt( long * plJulian, long * plMilliSec, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvtdt(%p,%p,%d, ...)", ( void * ) plJulian, ( void * ) plMilliSec, iParam ) );
 
@@ -1031,7 +1031,7 @@ ZH_BOOL zh_parvtdt( long * plJulian, long * plMilliSec, int iParam, ... )
 
 int  zh_parvl( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvl(%d, ...)", iParam ) );
 
@@ -1068,7 +1068,7 @@ int  zh_parvl( int iParam, ... )
 
 double  zh_parvnd( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvnd(%d, ...)", iParam ) );
 
@@ -1103,7 +1103,7 @@ double  zh_parvnd( int iParam, ... )
 
 int  zh_parvni( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvni(%d, ...)", iParam ) );
 
@@ -1138,7 +1138,7 @@ int  zh_parvni( int iParam, ... )
 
 long  zh_parvnl( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvnl(%d, ...)", iParam ) );
 
@@ -1175,7 +1175,7 @@ long  zh_parvnl( int iParam, ... )
 
 ZH_I_SIZE zh_parvns( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvns(%d, ...)", iParam ) );
 
@@ -1211,7 +1211,7 @@ ZH_I_SIZE zh_parvns( int iParam, ... )
 #ifndef ZH_LONG_LONG_OFF
 ZH_LONGLONG zh_parvnll( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvnll(%d, ...)", iParam ) );
 
@@ -1247,7 +1247,7 @@ ZH_LONGLONG zh_parvnll( int iParam, ... )
 
 ZH_MAXINT zh_parvnint( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvnint(%d, ...)", iParam ) );
 
@@ -1282,7 +1282,7 @@ ZH_MAXINT zh_parvnint( int iParam, ... )
 
 void * zh_parvptr( int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvptr(%d, ...)", iParam ) );
 
@@ -1313,7 +1313,7 @@ void * zh_parvptr( int iParam, ... )
 
 void * zh_parvptrGC( const ZH_GC_FUNCS * pFuncs, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parvptrGC(%p,%d, ...)", ( const void * ) pFuncs, iParam ) );
 
@@ -1353,7 +1353,7 @@ void * zh_parvptrGC( const ZH_GC_FUNCS * pFuncs, int iParam, ... )
 #undef zh_ret
 void zh_ret( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_ret()" ) );
 
@@ -1363,7 +1363,7 @@ void zh_ret( void )
 #undef zh_reta
 void zh_reta( ZH_SIZE nLen )  /* undocumented zh_reta() */
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_reta(%" ZH_PFS "u)", nLen ) );
 
@@ -1373,7 +1373,7 @@ void zh_reta( ZH_SIZE nLen )  /* undocumented zh_reta() */
 #undef zh_retc
 void zh_retc( const char * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retc(%s)", szText ) );
 
@@ -1383,7 +1383,7 @@ void zh_retc( const char * szText )
 #undef zh_retc_null
 void zh_retc_null( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retc_null()" ) );
 
@@ -1393,7 +1393,7 @@ void zh_retc_null( void )
 #undef zh_retc_buffer
 void zh_retc_buffer( char * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retc_buffer(%s)", szText ) );
 
@@ -1403,7 +1403,7 @@ void zh_retc_buffer( char * szText )
 #undef zh_retc_const
 void zh_retc_const( const char * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retc_const(%s)", szText ) );
 
@@ -1413,7 +1413,7 @@ void zh_retc_const( const char * szText )
 #undef zh_retclen
 void zh_retclen( const char * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retclen(%.*s, %" ZH_PFS "u)", ( int ) nLen, szText, nLen ) );
 
@@ -1423,7 +1423,7 @@ void zh_retclen( const char * szText, ZH_SIZE nLen )
 #undef zh_retclen_buffer
 void zh_retclen_buffer( char * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retclen_buffer(%.*s, %" ZH_PFS "u)", ( int ) nLen, szText, nLen ) );
 
@@ -1433,7 +1433,7 @@ void zh_retclen_buffer( char * szText, ZH_SIZE nLen )
 #undef zh_retclen_const
 void zh_retclen_const( const char * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retclen_const(%.*s, %" ZH_PFS "u)", ( int ) nLen, szText, nLen ) );
 
@@ -1445,7 +1445,7 @@ void zh_retclen_const( const char * szText, ZH_SIZE nLen )
 #undef zh_retds
 void zh_retds( const char * szDate )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retds(%s)", szDate ) );
 
@@ -1455,7 +1455,7 @@ void zh_retds( const char * szDate )
 #undef zh_retd
 void zh_retd( int iYear, int iMonth, int iDay )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retd(%04i, %02i, %02i)", iYear, iMonth, iDay ) );
 
@@ -1465,7 +1465,7 @@ void zh_retd( int iYear, int iMonth, int iDay )
 #undef zh_retdl
 void zh_retdl( long lJulian )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retdl(%ld)", lJulian ) );
 
@@ -1475,7 +1475,7 @@ void zh_retdl( long lJulian )
 #undef zh_rettd
 void zh_rettd( double dTimeStamp )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_rettd(%lf)", dTimeStamp ) );
 
@@ -1485,7 +1485,7 @@ void zh_rettd( double dTimeStamp )
 #undef zh_rettdt
 void zh_rettdt( long lJulian, long lMilliSec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_rettdt(%ld, %ld)", lJulian, lMilliSec ) );
 
@@ -1495,7 +1495,7 @@ void zh_rettdt( long lJulian, long lMilliSec )
 #undef zh_retl
 void zh_retl( int iLogical )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retl(%d)", iLogical ) );
 
@@ -1505,7 +1505,7 @@ void zh_retl( int iLogical )
 #undef zh_retnd
 void zh_retnd( double dNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnd(%lf)", dNumber ) );
 
@@ -1515,7 +1515,7 @@ void zh_retnd( double dNumber )
 #undef zh_retni
 void zh_retni( int iNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retni(%d)", iNumber ) );
 
@@ -1525,7 +1525,7 @@ void zh_retni( int iNumber )
 #undef zh_retnl
 void zh_retnl( long lNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnl(%ld)", lNumber ) );
 
@@ -1535,7 +1535,7 @@ void zh_retnl( long lNumber )
 #undef zh_retns
 void zh_retns( ZH_I_SIZE nNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retns(%" ZH_PFS "d )", nNumber ) );
 
@@ -1546,7 +1546,7 @@ void zh_retns( ZH_I_SIZE nNumber )
 #undef zh_retnll
 void zh_retnll( ZH_LONGLONG llNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnll(%" PFLL "d)", llNumber ) );
 
@@ -1557,7 +1557,7 @@ void zh_retnll( ZH_LONGLONG llNumber )
 #undef zh_retnint
 void zh_retnint( ZH_MAXINT nNumber )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnl(%" PFHL "d )", nNumber ) );
 
@@ -1567,7 +1567,7 @@ void zh_retnint( ZH_MAXINT nNumber )
 #undef zh_retnlen
 void zh_retnlen( double dNumber, int iWidth, int iDec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnlen(%lf, %d, %d)", dNumber, iWidth, iDec ) );
 
@@ -1577,7 +1577,7 @@ void zh_retnlen( double dNumber, int iWidth, int iDec )
 #undef zh_retndlen
 void zh_retndlen( double dNumber, int iWidth, int iDec )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retndlen(%lf, %d, %d)", dNumber, iWidth, iDec ) );
 
@@ -1587,7 +1587,7 @@ void zh_retndlen( double dNumber, int iWidth, int iDec )
 #undef zh_retnilen
 void zh_retnilen( int iNumber, int iWidth )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnilen(%d, %d)", iNumber, iWidth ) );
 
@@ -1597,7 +1597,7 @@ void zh_retnilen( int iNumber, int iWidth )
 #undef zh_retnllen
 void zh_retnllen( long lNumber, int iWidth )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnllen(%ld, %d)", lNumber, iWidth ) );
 
@@ -1608,7 +1608,7 @@ void zh_retnllen( long lNumber, int iWidth )
 #undef zh_retnlllen
 void zh_retnlllen( ZH_LONGLONG llNumber, int iWidth )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnlllen(%" PFLL "d, %d)", llNumber, iWidth ) );
 
@@ -1619,7 +1619,7 @@ void zh_retnlllen( ZH_LONGLONG llNumber, int iWidth )
 #undef zh_retnintlen
 void zh_retnintlen( ZH_MAXINT nNumber, int iWidth )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retnintlen(%" PFHL "d, %d)", nNumber, iWidth ) );
 
@@ -1629,7 +1629,7 @@ void zh_retnintlen( ZH_MAXINT nNumber, int iWidth )
 #undef zh_retptr
 void zh_retptr( void * pointer )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retptr(%p)", pointer ) );
 
@@ -1639,7 +1639,7 @@ void zh_retptr( void * pointer )
 #undef zh_retptrGC
 void zh_retptrGC( void * pointer )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retptrGC(%p)", pointer ) );
 
@@ -1648,7 +1648,7 @@ void zh_retptrGC( void * pointer )
 
 int zh_stor( int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stor(%d)", iParam ) );
 
@@ -1673,7 +1673,7 @@ int zh_stor( int iParam )
 
 int zh_storc( const char * szText, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storc(%s, %d)", szText, iParam ) );
 
@@ -1698,7 +1698,7 @@ int zh_storc( const char * szText, int iParam )
 
 int zh_storclen( const char * szText, ZH_SIZE nLen, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storclen(%.*s, %" ZH_PFS "u, %d)", ( int ) nLen, szText, nLen, iParam ) );
 
@@ -1723,7 +1723,7 @@ int zh_storclen( const char * szText, ZH_SIZE nLen, int iParam )
 
 int zh_storclen_buffer( char * szText, ZH_SIZE nLen, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storclen_buffer(%.*s, %" ZH_PFS "u, %d)", ( int ) nLen, szText, nLen, iParam ) );
 
@@ -1750,7 +1750,7 @@ int zh_storclen_buffer( char * szText, ZH_SIZE nLen, int iParam )
 
 int zh_stords( const char * szDate, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stords(%s, %d)", szDate, iParam ) );
 
@@ -1775,7 +1775,7 @@ int zh_stords( const char * szDate, int iParam )
 
 int zh_stordl( long lJulian, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stordl(%ld, %d)", lJulian, iParam ) );
 
@@ -1800,7 +1800,7 @@ int zh_stordl( long lJulian, int iParam )
 
 int zh_stortd( double dTimeStamp, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stortd(%lf, %d)", dTimeStamp, iParam ) );
 
@@ -1825,7 +1825,7 @@ int zh_stortd( double dTimeStamp, int iParam )
 
 int zh_stortdt( long lJulian, long lMilliSec, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stortd(%ld, %ld, %d)", lJulian, lMilliSec, iParam ) );
 
@@ -1850,7 +1850,7 @@ int zh_stortdt( long lJulian, long lMilliSec, int iParam )
 
 int zh_storl( int iLogical, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storl(%d, %d)", iLogical, iParam ) );
 
@@ -1875,7 +1875,7 @@ int zh_storl( int iLogical, int iParam )
 
 int zh_storni( int iValue, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storni(%d, %d)", iValue, iParam ) );
 
@@ -1900,7 +1900,7 @@ int zh_storni( int iValue, int iParam )
 
 int zh_stornl( long lValue, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stornl(%ld, %d)", lValue, iParam ) );
 
@@ -1925,7 +1925,7 @@ int zh_stornl( long lValue, int iParam )
 
 int zh_storns( ZH_I_SIZE nValue, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storns(%" ZH_PFS "d, %d)", nValue, iParam ) );
 
@@ -1951,7 +1951,7 @@ int zh_storns( ZH_I_SIZE nValue, int iParam )
 #ifndef ZH_LONG_LONG_OFF
 int zh_stornll( ZH_LONGLONG llValue, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stornll(%" PFLL "d, %d)", llValue, iParam ) );
 
@@ -1977,7 +1977,7 @@ int zh_stornll( ZH_LONGLONG llValue, int iParam )
 
 int zh_stornint( ZH_MAXINT nValue, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stornint(%" PFHL "d, %d)", nValue, iParam ) );
 
@@ -2002,7 +2002,7 @@ int zh_stornint( ZH_MAXINT nValue, int iParam )
 
 int zh_stornd( double dNumber, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_stornd(%lf, %d)", dNumber, iParam ) );
 
@@ -2027,7 +2027,7 @@ int zh_stornd( double dNumber, int iParam )
 
 int zh_storptr( void * pointer, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storptr(%p, %d)", pointer, iParam ) );
 
@@ -2052,7 +2052,7 @@ int zh_storptr( void * pointer, int iParam )
 
 int zh_storptrGC( void * pointer, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storptrGC(%p, %d)", pointer, iParam ) );
 
@@ -2081,7 +2081,7 @@ int zh_storptrGC( void * pointer, int iParam )
 
 int zh_storvc( const char * szText, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvc(%s, %d, ...)", szText, iParam ) );
 
@@ -2114,7 +2114,7 @@ int zh_storvc( const char * szText, int iParam, ... )
 
 int zh_storvclen( const char * szText, ZH_SIZE nLen, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvclen(%.*s, %" ZH_PFS "u, %d, ...)", ( int ) nLen, szText, nLen, iParam ) );
 
@@ -2147,7 +2147,7 @@ int zh_storvclen( const char * szText, ZH_SIZE nLen, int iParam, ... )
 
 int zh_storvclen_buffer( char * szText, ZH_SIZE nLen, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvclen_buffer(%.*s, %" ZH_PFS "u, %d, ...)", ( int ) nLen, szText, nLen, iParam ) );
 
@@ -2182,7 +2182,7 @@ int zh_storvclen_buffer( char * szText, ZH_SIZE nLen, int iParam, ... )
 
 int zh_storvds( const char * szDate, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvds(%s, %d, ...)", szDate, iParam ) );
 
@@ -2215,7 +2215,7 @@ int zh_storvds( const char * szDate, int iParam, ... )
 
 int zh_storvdl( long lJulian, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvdl(%ld, %d, ...)", lJulian, iParam ) );
 
@@ -2248,7 +2248,7 @@ int zh_storvdl( long lJulian, int iParam, ... )
 
 int zh_storvtd( double dTimeStamp, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvtd(%lf, %d, ...)", dTimeStamp, iParam ) );
 
@@ -2281,7 +2281,7 @@ int zh_storvtd( double dTimeStamp, int iParam, ... )
 
 int zh_storvtdt( long lJulian, long lMilliSec, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvtd(%ld, %ld, %d, ...)", lJulian, lMilliSec, iParam ) );
 
@@ -2314,7 +2314,7 @@ int zh_storvtdt( long lJulian, long lMilliSec, int iParam, ... )
 
 int zh_storvl( int iLogical, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvl(%d, %d, ...)", iLogical, iParam ) );
 
@@ -2347,7 +2347,7 @@ int zh_storvl( int iLogical, int iParam, ... )
 
 int zh_storvni( int iValue, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvni(%d, %d, ...)", iValue, iParam ) );
 
@@ -2380,7 +2380,7 @@ int zh_storvni( int iValue, int iParam, ... )
 
 int zh_storvnl( long lValue, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvnl(%ld, %d, ...)", lValue, iParam ) );
 
@@ -2413,7 +2413,7 @@ int zh_storvnl( long lValue, int iParam, ... )
 
 int zh_storvns( ZH_I_SIZE nValue, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvns(%" ZH_PFS "d, %d, ...)", nValue, iParam ) );
 
@@ -2447,7 +2447,7 @@ int zh_storvns( ZH_I_SIZE nValue, int iParam, ... )
 #ifndef ZH_LONG_LONG_OFF
 int zh_storvnll( ZH_LONGLONG llValue, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvnll(%" PFLL "d, %d, ...)", llValue, iParam ) );
 
@@ -2481,7 +2481,7 @@ int zh_storvnll( ZH_LONGLONG llValue, int iParam, ... )
 
 int zh_storvnint( ZH_MAXINT nValue, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvnint(%" PFHL "d, %d, ...)", nValue, iParam ) );
 
@@ -2514,7 +2514,7 @@ int zh_storvnint( ZH_MAXINT nValue, int iParam, ... )
 
 int zh_storvnd( double dNumber, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvnd(%lf, %d, ...)", dNumber, iParam ) );
 
@@ -2547,7 +2547,7 @@ int zh_storvnd( double dNumber, int iParam, ... )
 
 int zh_storvptr( void * pointer, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvptr(%p, %d, ...)", pointer, iParam ) );
 
@@ -2580,7 +2580,7 @@ int zh_storvptr( void * pointer, int iParam, ... )
 
 int zh_storvptrGC( void * pointer, int iParam, ... )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storvptrGC(%p, %d, ...)", pointer, iParam ) );
 
@@ -2614,7 +2614,7 @@ int zh_storvptrGC( void * pointer, int iParam, ... )
 #undef zh_pcount
 int  zh_pcount( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_pcount()" ) );
 

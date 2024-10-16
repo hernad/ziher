@@ -695,7 +695,7 @@ ZH_BOOL zh_arraySetStrU16( PZH_ITEM pArray, ZH_SIZE nIndex, int iEndian, const Z
 
 const char * zh_parstr( int iParam, void * cdp, void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parstr(%d,%p,%p,%p)", iParam, cdp, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -718,7 +718,7 @@ const char * zh_parstr( int iParam, void * cdp, void ** phString, ZH_SIZE * pnLe
 
 const char * zh_parstr_utf8( int iParam, void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parstr_utf8(%d,%p,%p)", iParam, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -742,7 +742,7 @@ const char * zh_parstr_utf8( int iParam, void ** phString, ZH_SIZE * pnLen )
 const ZH_WCHAR * zh_parstr_u16( int iParam, int iEndian,
                                 void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parstr_u16(%d,%d,%p,%p)", iParam, iEndian, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -767,7 +767,7 @@ const ZH_WCHAR * zh_parstr_u16( int iParam, int iEndian,
 const char * zh_parastr( int iParam, ZH_SIZE nIndex,
                          void * cdp, void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parastr(%d,%" ZH_PFS "u,%p,%p,%p)", iParam, nIndex, cdp, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -794,7 +794,7 @@ const char * zh_parastr( int iParam, ZH_SIZE nIndex,
 const char * zh_parastr_utf8( int iParam, ZH_SIZE nIndex,
                               void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parastr_utf8(%d,%" ZH_PFS "u,%p,%p)", iParam, nIndex, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -821,7 +821,7 @@ const char * zh_parastr_utf8( int iParam, ZH_SIZE nIndex,
 const ZH_WCHAR * zh_parastr_u16( int iParam, ZH_SIZE nIndex, int iEndian,
                                  void ** phString, ZH_SIZE * pnLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_parastr_u16(%d,%" ZH_PFS "u,%d,%p,%p)", iParam, nIndex, iEndian, ( void * ) phString, ( void * ) pnLen ) );
 
@@ -848,7 +848,7 @@ const ZH_WCHAR * zh_parastr_u16( int iParam, ZH_SIZE nIndex, int iEndian,
 
 void zh_retstr( void * cdp, const char * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstr(%p,%s)", cdp, szText ) );
 
@@ -858,7 +858,7 @@ void zh_retstr( void * cdp, const char * szText )
 
 void zh_retstr_utf8( const char * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstr_utf8(%s)", szText ) );
 
@@ -868,7 +868,7 @@ void zh_retstr_utf8( const char * szText )
 
 void zh_retstr_u16( int iEndian, const ZH_WCHAR * szText )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstr_u16(%d,%p)", iEndian, ( const void * ) szText ) );
 
@@ -879,7 +879,7 @@ void zh_retstr_u16( int iEndian, const ZH_WCHAR * szText )
 
 void zh_retstrlen( void * cdp, const char * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstrlen(%p,%s,%" ZH_PFS "u)", cdp, ( const void * ) szText, nLen ) );
 
@@ -888,7 +888,7 @@ void zh_retstrlen( void * cdp, const char * szText, ZH_SIZE nLen )
 
 void zh_retstrlen_utf8( const char * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstrlen_utf8(%s,%" ZH_PFS "u)", szText, nLen ) );
 
@@ -897,7 +897,7 @@ void zh_retstrlen_utf8( const char * szText, ZH_SIZE nLen )
 
 void zh_retstrlen_u16( int iEndian, const ZH_WCHAR * szText, ZH_SIZE nLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_retstrlen_u16(%d,%p,%" ZH_PFS "u)", iEndian, ( const void * ) szText, nLen ) );
 
@@ -907,7 +907,7 @@ void zh_retstrlen_u16( int iEndian, const ZH_WCHAR * szText, ZH_SIZE nLen )
 
 int zh_storstr( void * cdp, const char * szText, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstr(%p,%s,%d)", cdp, ( const void * ) szText, iParam ) );
 
@@ -934,7 +934,7 @@ int zh_storstr( void * cdp, const char * szText, int iParam )
 
 int zh_storstr_utf8( const char * szText, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstr_utf8(%s,%d)", szText, iParam ) );
 
@@ -961,7 +961,7 @@ int zh_storstr_utf8( const char * szText, int iParam )
 
 int zh_storstr_u16( int iEndian, const ZH_WCHAR * szText, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstr_u16(%d,%p,%d)", iEndian, ( const void * ) szText, iParam ) );
 
@@ -989,7 +989,7 @@ int zh_storstr_u16( int iEndian, const ZH_WCHAR * szText, int iParam )
 
 int zh_storstrlen( void * cdp, const char * szText, ZH_SIZE nLen, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstrlen(%p,%s,%" ZH_PFS "u,%d)", cdp, ( const void * ) szText, nLen, iParam ) );
 
@@ -1014,7 +1014,7 @@ int zh_storstrlen( void * cdp, const char * szText, ZH_SIZE nLen, int iParam )
 
 int zh_storstrlen_utf8( const char * szText, ZH_SIZE nLen, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstrlen_utf8(%s,%" ZH_PFS "u,%d)", szText, nLen, iParam ) );
 
@@ -1039,7 +1039,7 @@ int zh_storstrlen_utf8( const char * szText, ZH_SIZE nLen, int iParam )
 
 int zh_storstrlen_u16( int iEndian, const ZH_WCHAR * szText, ZH_SIZE nLen, int iParam )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_storstrlen_u16(%d,%p,%" ZH_PFS "u,%d)", iEndian, ( const void * ) szText, nLen, iParam ) );
 

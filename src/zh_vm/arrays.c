@@ -80,7 +80,7 @@ static void zh_arrayReleaseItems( PZH_BASEARRAY pBaseArray )
 
 void zh_arrayPushBase( PZH_BASEARRAY pBaseArray )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pItem = zh_stackAllocItem();
 
    pItem->type = ZH_IT_ARRAY;
@@ -101,7 +101,7 @@ static ZH_GARBAGE_FUNC( zh_arrayGarbageRelease )
       if( pBaseArray->uiPrevCls == 0 &&
           zh_clsHasDestructor( pBaseArray->uiClass ) )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          zh_arrayPushBase( pBaseArray );
          zh_objDestructorCall( zh_stackItemFromTop( -1 ) );
          zh_stackPop();
@@ -311,7 +311,7 @@ ZH_COUNTER zh_arrayRefs( PZH_ITEM pArray )
 
 PZH_ITEM zh_arrayFromId( PZH_ITEM pItem, void * pArrayId )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    zh_arrayPushBase( ( PZH_BASEARRAY ) pArrayId );
    if( pItem == NULL )
@@ -1042,7 +1042,7 @@ ZH_SIZE zh_arrayScanCase( PZH_ITEM pArray, PZH_ITEM pValue, ZH_SIZE * pnStart, Z
 
             if( ZH_IS_BLOCK( pValue ) )
             {
-               ZH_STACK_TLS_PRELOAD
+               
                do
                {
                   zh_vmPushEvalSym();
@@ -1223,7 +1223,7 @@ ZH_SIZE zh_arrayRevScan( PZH_ITEM pArray, PZH_ITEM pValue, ZH_SIZE * pnStart, ZH
 
             if( ZH_IS_BLOCK( pValue ) )
             {
-               ZH_STACK_TLS_PRELOAD
+               
                do
                {
                   zh_vmPushEvalSym();
@@ -1596,7 +1596,7 @@ PZH_ITEM zh_arrayClone( PZH_ITEM pArray )
 
 PZH_ITEM zh_arrayFromStack( ZH_USHORT uiLen )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray = zh_itemNew( NULL );
    ZH_USHORT uiPos;
 
@@ -1612,7 +1612,7 @@ PZH_ITEM zh_arrayFromStack( ZH_USHORT uiLen )
 
 PZH_ITEM zh_arrayFromParams( int iLevel )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
    ZH_USHORT uiPos, uiPCount;
    ZH_I_SIZE nBaseOffset;
@@ -1634,7 +1634,7 @@ PZH_ITEM zh_arrayFromParams( int iLevel )
 
 PZH_ITEM zh_arrayBaseParams( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
    ZH_USHORT uiPos, uiPCount;
 
@@ -1653,7 +1653,7 @@ PZH_ITEM zh_arrayBaseParams( void )
 
 PZH_ITEM zh_arraySelfParams( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pArray;
    ZH_USHORT uiPos, uiPCount;
 

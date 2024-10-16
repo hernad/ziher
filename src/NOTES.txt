@@ -119,7 +119,7 @@ void zh_gtRelease( void * hGT )
 
 ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
 
@@ -271,7 +271,7 @@ void zh_clsDoInit( void )
         &s_uiSymbolClass, &s_uiPointerClass,
         &s_uiObjectClass };
 
-   ZH_STACK_TLS_PRELOAD
+   
    int i;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsDoInit()" ) );

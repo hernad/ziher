@@ -99,7 +99,7 @@ static ZH_GARBAGE_FUNC( zh_hashGarbageRelease )
 
          if( ZH_IS_GCITEM( pKey ) && ZH_IS_GCITEM( pVal ) )
          {
-            ZH_STACK_TLS_PRELOAD
+            
 
             zh_itemRawMove( zh_stackAllocItem(), pVal );
             zh_itemClear( pKey );
@@ -651,7 +651,7 @@ PZH_ITEM zh_hashGetCItemPtr( PZH_ITEM pHash, const char * pszKey )
 
    if( ZH_IS_HASH( pHash ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       /* we will not make any copy of pKey (autoadd is disabled) so it's
        * safe to use zh_itemPutCConst()
        */
@@ -673,7 +673,7 @@ ZH_SIZE zh_hashGetCItemPos( PZH_ITEM pHash, const char * pszKey )
 
    if( ZH_IS_HASH( pHash ) )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       /* we will not make any copy of pKey (autoadd is disabled) so it's
        * safe to use zh_itemPutCConst()
        */

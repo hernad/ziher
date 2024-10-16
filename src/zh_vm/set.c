@@ -261,7 +261,7 @@ static const char * is_devicename( const char * szFileName )
 static void open_handle( PZH_SET_STRUCT pSet, const char * file_name,
                          ZH_BOOL fAppend, ZH_set_enum set_specifier )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_ITEM pError = NULL;
    PZH_FILE handle, * handle_ptr;
    ZH_ERRCODE uiError;
@@ -411,7 +411,7 @@ int zh_setUpdateEpoch( int iYear )
 
 ZH_BOOL zh_setSetCentury( ZH_BOOL new_century_setting )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
    ZH_BOOL old_century_setting = pSet->zh_set_century;
 
@@ -486,7 +486,7 @@ ZH_BOOL zh_setSetCentury( ZH_BOOL new_century_setting )
 
 ZH_FUNC( __SETCENTURY )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL old_century_setting = zh_setGetCentury();
    PZH_ITEM pNewVal = zh_param( 1, ZH_IT_ANY );
 
@@ -498,7 +498,7 @@ ZH_FUNC( __SETCENTURY )
 
 ZH_FUNC( SETCANCEL )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_retl( zh_setGetCancel() );
    /* SetCancel() accepts only logical parameters */
    zh_setSetItem( ZH_SET_CANCEL, zh_param( 1, ZH_IT_LOGICAL ) );
@@ -519,7 +519,7 @@ static char * zh_set_PRINTFILE_default( void )
 PZH_ITEM zh_setGetItem( ZH_set_enum set_specifier, PZH_ITEM pResult,
                         PZH_ITEM pArg1, PZH_ITEM pArg2 )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    if( pArg1 != NULL )
@@ -1068,7 +1068,7 @@ PZH_ITEM zh_setGetItem( ZH_set_enum set_specifier, PZH_ITEM pResult,
 
 ZH_FUNC( SET )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_setGetItem( ( ZH_set_enum ) zh_parnidef( 1, ZH_SET_INVALID_ ),
                   zh_stackReturnItem(),
                   zh_param( 2, ZH_IT_ANY ), zh_param( 3, ZH_IT_ANY ) );
@@ -1233,7 +1233,7 @@ PZH_SET_STRUCT zh_setClone( PZH_SET_STRUCT pSrc )
 
 int zh_setListenerAdd( ZH_SET_LISTENER_CALLBACK * callback )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
    PZH_SET_LISTENER p_sl = ( PZH_SET_LISTENER ) zh_xgrab( sizeof( ZH_SET_LISTENER ) );
    PZH_SET_LISTENER_LST pList;
@@ -1258,7 +1258,7 @@ int zh_setListenerAdd( ZH_SET_LISTENER_CALLBACK * callback )
 
 void zh_setListenerNotify( ZH_set_enum set, ZH_set_listener_enum when )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_LISTENER_LST pList = ( PZH_SET_LISTENER_LST ) zh_stackSetStruct()->zh_set_listener;
 
    if( pList )
@@ -1274,7 +1274,7 @@ void zh_setListenerNotify( ZH_set_enum set, ZH_set_listener_enum when )
 
 int zh_setListenerRemove( int listener )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_LISTENER_LST pList = ( PZH_SET_LISTENER_LST ) zh_stackSetStruct()->zh_set_listener;
 
    if( pList )
@@ -1304,7 +1304,7 @@ int zh_setListenerRemove( int listener )
 
 ZH_BOOL zh_setSetItem( ZH_set_enum set_specifier, PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_BOOL fResult = ZH_FALSE;
 
    if( pItem )
@@ -1929,7 +1929,7 @@ ZH_BOOL zh_setSetItem2( ZH_set_enum set_specifier, PZH_ITEM pItem1, PZH_ITEM pIt
          case ZH_SET_PRINTFILE:
             if( ZH_IS_STRING( pItem1 ) || ZH_IS_NIL( pItem1 ) )
             {
-               ZH_STACK_TLS_PRELOAD
+               
                PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
                zh_setListenerNotify( set_specifier, ZH_SET_LISTENER_BEFORE );
@@ -1952,7 +1952,7 @@ ZH_BOOL zh_setSetItem2( ZH_set_enum set_specifier, PZH_ITEM pItem1, PZH_ITEM pIt
 
 ZH_BOOL zh_setGetL( ZH_set_enum set_specifier )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    switch( set_specifier )
@@ -2073,7 +2073,7 @@ ZH_BOOL zh_setGetL( ZH_set_enum set_specifier )
 
 const char * zh_setGetCPtr( ZH_set_enum set_specifier )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    switch( set_specifier )
@@ -2179,7 +2179,7 @@ const char * zh_setGetCPtr( ZH_set_enum set_specifier )
 
 int     zh_setGetNI( ZH_set_enum set_specifier )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    switch( set_specifier )
@@ -2287,421 +2287,421 @@ long    zh_setGetNL( ZH_set_enum set_specifier )
 
 ZH_PATHNAMES * zh_setGetFirstSetPath( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_path;
 }
 
 PZH_FILE zh_setGetAltHan( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_althan;
 }
 
 ZH_BOOL zh_setGetCentury( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_century;
 }
 
 PZH_FILE zh_setGetExtraHan( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_extrahan;
 }
 
 PZH_FILE zh_setGetPrintHan( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_printhan;
 }
 
 ZH_BOOL zh_setGetAlternate( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_ALTERNATE;
 }
 
 const char *  zh_setGetAltFile( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_ALTFILE;
 }
 
 ZH_BOOL zh_setGetAutOpen( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_AUTOPEN;
 }
 
 int     zh_setGetAutOrder( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_AUTORDER;
 }
 
 int     zh_setGetAutoShare( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_AUTOSHARE;
 }
 
 ZH_BOOL zh_setGetBell( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_BELL;
 }
 
 ZH_BOOL zh_setGetCancel( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_CANCEL;
 }
 
 char *  zh_setGetColor( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_COLOR;
 }
 
 ZH_BOOL zh_setGetConfirm( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_CONFIRM;
 }
 
 ZH_BOOL zh_setGetConsole( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_CONSOLE;
 }
 
 const char * zh_setGetDateFormat( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DATEFORMAT;
 }
 
 const char * zh_setGetTimeFormat( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_TIMEFORMAT;
 }
 
 ZH_BOOL zh_setGetDebug( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DEBUG;
 }
 
 int     zh_setGetDecimals( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DECIMALS;
 }
 
 const char *  zh_setGetDefault( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DEFAULT;
 }
 
 ZH_BOOL zh_setGetDeleted( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DELETED;
 }
 
 const char *  zh_setGetDelimChars( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DELIMCHARS;
 }
 
 ZH_BOOL zh_setGetDelimiters( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DELIMITERS;
 }
 
 const char *  zh_setGetDevice( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DEVICE;
 }
 
 ZH_BOOL zh_setGetEOF( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EOF;
 }
 
 int     zh_setGetEpoch( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EPOCH;
 }
 
 ZH_BOOL zh_setGetEscape( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_ESCAPE;
 }
 
 int     zh_setGetEventMask( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EVENTMASK;
 }
 
 ZH_BOOL zh_setGetExact( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EXACT;
 }
 
 ZH_BOOL zh_setGetExclusive( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EXCLUSIVE;
 }
 
 ZH_BOOL zh_setGetExit( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EXIT;
 }
 
 ZH_BOOL zh_setGetExtra( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EXTRA;
 }
 
 const char *  zh_setGetExtraFile( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EXTRAFILE;
 }
 
 ZH_BOOL zh_setGetFixed( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_FIXED;
 }
 
 ZH_BOOL zh_setGetIdleRepeat( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_IDLEREPEAT;
 }
 
 ZH_BOOL zh_setGetInsert( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_INSERT;
 }
 
 ZH_BOOL zh_setGetIntensity( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_INTENSITY;
 }
 
 const char *  zh_setGetPath( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_PATH;
 }
 
 int     zh_setGetMargin( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_MARGIN;
 }
 
 int     zh_setGetMBlockSize( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_MBLOCKSIZE;
 }
 
 ZH_BOOL zh_setGetMCenter( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_MCENTER;
 }
 
 int     zh_setGetMessage( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_MESSAGE;
 }
 
 const char *  zh_setGetMFileExt( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_MFILEEXT;
 }
 
 ZH_BOOL zh_setGetOptimize( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_OPTIMIZE;
 }
 
 ZH_BOOL zh_setGetPrinter( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_PRINTER;
 }
 
 const char *  zh_setGetPrintFile( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_PRINTFILE;
 }
 
 ZH_BOOL zh_setGetScoreBoard( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_SCOREBOARD;
 }
 
 ZH_BOOL zh_setGetScrollBreak( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_SCROLLBREAK;
 }
 
 ZH_BOOL zh_setGetSoftSeek( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_SOFTSEEK;
 }
 
 ZH_BOOL zh_setGetStrictRead( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_STRICTREAD;
 }
 
 int     zh_setGetTypeAhead( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_TYPEAHEAD;
 }
 
 ZH_BOOL zh_setGetUnique( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_UNIQUE;
 }
 
 int     zh_setGetFileCase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_FILECASE;
 }
 
 void zh_setSetFileCase( int iFileCase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stackSetStruct()->ZH_SET_FILECASE = iFileCase;
 }
 
 int     zh_setGetDirCase( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DIRCASE;
 }
 
 void zh_setSetDirCase( int iDirCase )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stackSetStruct()->ZH_SET_DIRCASE = iDirCase;
 }
 
 int zh_setGetDirSeparator( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DIRSEPARATOR;
 }
 
 void zh_setSetDirSeparator( int iSeparator )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stackSetStruct()->ZH_SET_DIRSEPARATOR = iSeparator;
 }
 
 ZH_BOOL zh_setGetTrimFileName( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_TRIMFILENAME;
 }
 
 void zh_setSetTrimFileName( ZH_BOOL fTrim )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    zh_stackSetStruct()->ZH_SET_TRIMFILENAME = fTrim;
 }
 
 int     zh_setGetVideoMode( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_VIDEOMODE;
 }
 
 ZH_BOOL zh_setGetWrap( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_WRAP;
 }
 
 int     zh_setGetDBFLockScheme( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DBFLOCKSCHEME;
 }
 
 ZH_BOOL zh_setGetHardCommit( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_HARDCOMMIT;
 }
 
 ZH_BOOL zh_setGetForceOpt( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_FORCEOPT;
 }
 
 ZH_BOOL zh_setGetDefExtension( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_DEFEXTENSIONS;
 }
 
 const char * zh_setGetEOL( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_EOL;
 }
 
 const char * zh_setGetHBOUTLOG( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_ZHOUTLOG;
 }
 
 const char * zh_setGetHBOUTLOGINFO( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->ZH_SET_ZHOUTLOGINFO;
 }
 
 const char * zh_setGetOSCODEPAGE( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    return pSet->zh_set_oscp ? ( ( PZH_CODEPAGE ) pSet->zh_set_oscp )->id : NULL;
@@ -2709,13 +2709,13 @@ const char * zh_setGetOSCODEPAGE( void )
 
 void * zh_setGetOSCP( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    return zh_stackSetStruct()->zh_set_oscp;
 }
 
 const char * zh_setGetDBCODEPAGE( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    return pSet->zh_set_dbcp ? ( ( PZH_CODEPAGE ) pSet->zh_set_dbcp )->id : NULL;
@@ -2723,7 +2723,7 @@ const char * zh_setGetDBCODEPAGE( void )
 
 ZH_BOOL zh_osUseCP( void )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_stackId() )
    {
@@ -2742,7 +2742,7 @@ const char * zh_osEncodeCP( const char * szName, char ** pszFree, ZH_SIZE * pnSi
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2777,7 +2777,7 @@ const char * zh_osDecodeCP( const char * szName, char ** pszFree, ZH_SIZE * pnSi
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2812,7 +2812,7 @@ char * zh_osStrEncode( const char * pszName )
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2829,7 +2829,7 @@ char * zh_osStrEncodeN( const char * pszName, ZH_SIZE nLen )
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2846,7 +2846,7 @@ char * zh_osStrDecode( const char * pszName )
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2863,7 +2863,7 @@ char * zh_osStrDecode2( const char * pszName, char * pszBuffer, ZH_SIZE nSize )
 {
    if( zh_vmIsReady() )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       PZH_CODEPAGE cdpOS = ( PZH_CODEPAGE ) zh_stackSetStruct()->zh_set_oscp;
       if( cdpOS )
       {
@@ -2964,7 +2964,7 @@ char * zh_osStrU16Decode2( const ZH_WCHAR * pszNameW, char * pszBuffer, ZH_SIZE 
 
 PZH_FILE zh_setGetPrinterHandle( int iType )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_SET_STRUCT pSet = zh_stackSetStruct();
 
    switch( iType )

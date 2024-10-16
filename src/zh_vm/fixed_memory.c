@@ -66,7 +66,6 @@
    #include <malloc.h>
  */
 
-#define ZH_STACK_PRELOAD
 
 #include "zh_vm_opt.h"
 #include "zh_api.h"
@@ -426,7 +425,7 @@ static void dlmalloc_destroy( void )
 void zh_xinit_thread( void )
 {
 #if defined( ZH_FM_DLMT_ALLOC )
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( zh_stack.allocator == NULL )
    {
@@ -440,7 +439,7 @@ void zh_xinit_thread( void )
 void zh_xexit_thread( void )
 {
 #if defined( ZH_FM_DLMT_ALLOC )
-   ZH_STACK_TLS_PRELOAD
+   
    PZH_MSPACE pm = ( PZH_MSPACE ) zh_stack.allocator;
 
    if( pm )
@@ -1406,7 +1405,7 @@ ZH_SIZE zh_xquery( int iMode )
 
       case ZH_MEM_STACK_TOP:  /* (Total items currently on the stack) */
       {
-         ZH_STACK_TLS_PRELOAD
+         
          nResult = zh_stackTopOffset();
          break;
       }
@@ -1453,7 +1452,7 @@ ZH_BOOL zh_xtraced( void )
 
 ZH_FUNC( __FM_ALLOCLIMIT )
 {
-   ZH_STACK_TLS_PRELOAD;
+   ;
    zh_xclean();
 
    if( zh_vmInternalsEnabled() )

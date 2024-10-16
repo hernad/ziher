@@ -152,7 +152,7 @@ static ZH_BOOL zh_macroCheckParam( PZH_ITEM pItem )
       bValid = ZH_FALSE;
       if( pResult )
       {
-         ZH_STACK_TLS_PRELOAD
+         
          zh_stackPop();
          zh_vmPush( pResult );
          zh_itemRelease( pResult );
@@ -194,7 +194,7 @@ void zh_macroRun( PZH_MACRO pMacro )
 
 static void zh_macroSyntaxError( PZH_MACRO pMacro )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroSyntaxError(%p)", ( void * ) pMacro ) );
 
@@ -395,7 +395,7 @@ static char * zh_macroTextSubst( const char * szString, ZH_SIZE * pnStringLen )
 
 void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroGetValue(%p)", ( void * ) pItem ) );
 
@@ -471,7 +471,7 @@ void zh_macroGetValue( PZH_ITEM pItem, int iContext, int flags )
  */
 void zh_macroSetValue( PZH_ITEM pItem, int flags )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroSetValue(%p)", ( void * ) pItem ) );
 
@@ -515,7 +515,7 @@ void zh_macroSetValue( PZH_ITEM pItem, int flags )
  */
 void zh_macroPushReference( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroPushReference(%p)", ( void * ) pItem ) );
 
@@ -553,7 +553,7 @@ void zh_macroPushReference( PZH_ITEM pItem )
  */
 static void zh_macroUseAliased( PZH_ITEM pAlias, PZH_ITEM pVar, int iFlag, int iSupported )
 {
-   ZH_STACK_TLS_PRELOAD
+   
 
    if( ZH_IS_STRING( pAlias ) && ZH_IS_STRING( pVar ) )
    {
@@ -801,7 +801,7 @@ ZH_FUNC( ZH_MACROBLOCK )
 
    if( szMacro )
    {
-      ZH_STACK_TLS_PRELOAD
+      
       zh_macroBlock( szMacro, zh_stackReturnItem() );
    }
 }
@@ -893,7 +893,7 @@ ZH_FUNC( MEMVARBLOCK )
 
          if( pVarSym && zh_dynsymIsMemvar( pVarSym ) )
          {
-            ZH_STACK_TLS_PRELOAD
+            
             zh_macroSetGetBlock( pVarSym, zh_stackReturnItem(), 0, ZH_TRUE );
          }
       }
@@ -934,7 +934,7 @@ ZH_FUNC( FIELDBLOCK )
          PZH_DYNSYMBOL pFieldSym = zh_dynsymFind( szFieldName );
          if( pFieldSym )
          {
-            ZH_STACK_TLS_PRELOAD
+            
             zh_macroSetGetBlock( pFieldSym, zh_stackReturnItem(), 0, ZH_FALSE );
          }
       }
@@ -959,7 +959,7 @@ ZH_FUNC( FIELDWBLOCK )
          PZH_DYNSYMBOL pFieldSym = zh_dynsymFind( szFieldName );
          if( pFieldSym )
          {
-            ZH_STACK_TLS_PRELOAD
+            
             zh_macroSetGetBlock( pFieldSym, zh_stackReturnItem(), iWorkArea, ZH_FALSE );
          }
       }
@@ -975,7 +975,7 @@ ZH_FUNC( FIELDWBLOCK )
  */
 void zh_macroPushSymbol( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroPushSymbol(%p)", ( void * ) pItem ) );
 
    if( zh_macroCheckParam( pItem ) )
@@ -1043,7 +1043,7 @@ void zh_macroTextValue( PZH_ITEM pItem )
 
 const char * zh_macroGetType( PZH_ITEM pItem )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    const char * szType;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_macroGetType(%p)", ( void * ) pItem ) );
@@ -1161,7 +1161,7 @@ int zh_macroSetMacro( ZH_BOOL fSet, int flag )
 
 ZH_FUNC( ZH_SETMACRO )
 {
-   ZH_STACK_TLS_PRELOAD
+   
    int iPrmCnt = zh_pcount();
 
    if( iPrmCnt > 0 )
