@@ -26,7 +26,7 @@ int main( int argc, char * argv[] )
    
    zh_cmdargInit( argc, argv );
    puts("-- 2 --");
-   zh_vmInit( 1, 1 );
+   zh_vmInit( 1, 1, 1 );
    puts("");
    puts("************************ end run_hello_py_ext win ****************************");
 

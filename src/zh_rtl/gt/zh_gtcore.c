@@ -3533,7 +3533,9 @@ ZH_FUNC_EXTERN( ZH_GTSYS );
 
 int gtcount()
 {
-  return s_iGtCount;
+  //return s_iGtCount;
+  return zh_stackGetGT() != NULL;
+
 }
 
 static const char * zh_gt_FindDefault( void )
@@ -3691,6 +3693,8 @@ void zh_gtRelease( void * hGT )
       else
          zh_gt_BaseFree( pGT );
    }
+
+   
 }
 
 void zh_gtAttach( void * hGT )

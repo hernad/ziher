@@ -207,6 +207,8 @@ void zh_threadExit( void )
    {
       zh_itemRelease( s_pOnceMutex );
       s_pOnceMutex = NULL;
+      // hernad
+      s_fThreadInit = ZH_FALSE;
    }
 }
 

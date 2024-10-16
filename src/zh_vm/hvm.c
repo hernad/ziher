@@ -207,6 +207,8 @@ static ZH_DBGENTRY_FUNC s_pFunDbgEntry;   /* C level debugger entry */
 
 static ZH_BOOL s_fInternalsEnabled = ZH_TRUE;
 
+static int vmInitCount = 0;
+
 static int volatile zh_vmThreadRequest = 0;
 static void zh_vmRequestTest( void );
 
@@ -408,18 +410,67 @@ static void zh_vmDoModuleQuitFunctions( void )
  */
 static void zh_vmDoInitZHVM( void )
 {
-   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "__ZHVMINIT" );
+   char * sFunc = "__ZHVMINIT";
+   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( sFunc );
+   
+   printf(">>>>>>>>>>>>>>> __ZHVMINIT %p  %p\n", pDynSym, pDynSym->pSymbol->value.pFunPtr);
 
    if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
    {
       ZH_TRACE( ZH_TR_DEBUG, ( "__ZHVMINIT before push" ) );
-
+ 
       zh_vmPushSymbol( pDynSym->pSymbol );
       zh_vmPushNil();
       zh_vmProc( 0 );
    }; 
 
 
+}
+
+static void zh_vmDoInitZHObject( void )
+{
+   char * sFunc = "ZHOBJECT_VMINIT";
+   PZH_DYNSYMBOL pDynSym = zh_dynsymFind( sFunc );
+   
+   if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
+   {
+      printf(">>>>>>>>>>>>>>> ZHOBJECT_VMINIT %p  %p\n", pDynSym, pDynSym->pSymbol->value.pFunPtr);
+      zh_vmPushSymbol( pDynSym->pSymbol );
+      zh_vmPushNil();
+      zh_vmProc( 0 );
+   }; 
+
+   char * sFunc2 = "ZHCLASS_VMINIT";
+   PZH_DYNSYMBOL pDynSym2 = zh_dynsymFind( sFunc2 );
+
+
+   if( pDynSym2 && pDynSym2->pSymbol->value.pFunPtr )
+   {
+      printf(">>>>>>>>>>>>>>> ZHCLASS_VMINIT %p  %p\n", pDynSym2, pDynSym2->pSymbol->value.pFunPtr);
+      zh_vmPushSymbol( pDynSym2->pSymbol );
+      zh_vmPushNil();
+      zh_vmProc( 0 );
+   }; 
+
+   char * sFunc3 = "GET_VMINIT";
+   PZH_DYNSYMBOL pDynSym3 = zh_dynsymFind( sFunc3 );
+   if( pDynSym3 && pDynSym3->pSymbol->value.pFunPtr )
+   {
+      printf(">>>>>>>>>>>>>>> GET_VMINIT %p  %p\n", pDynSym3, pDynSym3->pSymbol->value.pFunPtr);
+      zh_vmPushSymbol( pDynSym3->pSymbol );
+      zh_vmPushNil();
+      zh_vmProc( 0 );
+   }; 
+
+   char * sFunc4 = "__GET_VMINIT";
+   PZH_DYNSYMBOL pDynSym4 = zh_dynsymFind( sFunc4 );
+   if( pDynSym4 && pDynSym4->pSymbol->value.pFunPtr )
+   {
+      printf(">>>>>>>>>>>>>>> __GET_VMINIT %p  %p\n", pDynSym4, pDynSym4->pSymbol->value.pFunPtr);
+      zh_vmPushSymbol( pDynSym4->pSymbol );
+      zh_vmPushNil();
+      zh_vmProc( 0 );
+   }; 
 }
 
 
@@ -430,8 +481,10 @@ static ZH_COND_NEW( s_vmCond );
 static int volatile s_iStackCount = 0;
 /* number of running ZHVM threads */
 static int volatile s_iRunningCount = 0;
+
 /* active ZHVM stacks list */
 static PZH_THREADSTATE s_vmStackLst = NULL;
+
 /* thread number */
 static ZH_THREAD_NO s_threadNo = 0;
 
@@ -872,6 +925,7 @@ void zh_vmThreadInit( void * Cargo )
           * and set ErrorBlock() by ErrorSys() function
           */
          zh_vmDoInitZHVM();
+         
       }
 
       if( pState->pMemvars )
@@ -917,7 +971,9 @@ void zh_vmThreadQuit( void )
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
    zh_vmDebuggerExit( ZH_FALSE );   /* deactivate debugger */
+   
    zh_gtRelease( NULL );
+
    zh_vmStackRelease();          /* release ZHVM stack and remove it from linked ZHVM stacks list */
 }
 
@@ -999,7 +1055,7 @@ void zh_vmSetDynFunc( PZH_DYNSYMBOL pDynSym )
 
 /* Ziher application entry point */
 
-void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
+void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmInit()" ) );
 
@@ -1009,16 +1065,18 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
 
    zh_xinit();
    zh_vmSetExceptionHandler();
-   if (bInitRT)
+   if (bInitRT) {
+      printf("============== init symbol RT\n");
       zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
-   
-   printf("init step 1\n");
+      
+   }
+
    zh_threadInit();
-   printf("init step 2\n");
+
    zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
-   
-   printf("init step 3\n");
    s_pSymbolsMtx = zh_threadMutexCreate();
+
+
    /* Set the language and codepage to the default */
    /* This trick is needed to stringify the macro value */
    zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
@@ -1030,27 +1088,31 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
-   printf("init step 4\n");
-   if (bInitRT)
+   //printf("init step 4\n");
+   if (bInitRT) {
       zh_cmdargUpdate();
-
-   printf("init step 5\n");
-   if (bInitRT)
+      printf("init step 5\n");
       zh_clsInit(); /* initialize Classy/OO system */
-   printf("init step 6\n");
-   if (bInitRT)
+      printf("init step 6\n");
       zh_errInit();
-   printf("init step 7\n");
-   if (bInitRT)
+      printf("init step 7\n");
       zh_breakBlock();
+   }
 
-   //printf("init step 8\n");
-   /* initialize dynamic symbol for evaluating codeblocks and break function */
-   zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
-   s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
+   
+   if (! zh_symEval.pDynSym) { 
+      printf("EVAL zh_dynsymGetCase\n");
+
+      /* initialize dynamic symbol for evaluating codeblocks and break function */
+      // EVAL
+      zh_symEval.pDynSym = zh_dynsymGetCase( zh_symEval.szName );
+      // BREAK
+      s_symBreak.pDynSym = zh_dynsymGetCase( s_symBreak.szName );
+   }
+
 
    printf("init step 9\n");
-   if (bInitRT)
+   if (bConInit)
      zh_conInit();
 
    /* Check for some internal switches */
@@ -1098,29 +1160,839 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
     * Static variables have to be initialized before any INIT functions
     * because INIT function can use static variables
     */
-   //printf("init step 14\n");
-   if (bInitRT)
+   
+   //if (vmInitCount == 0) {
      zh_vmDoInitStatics();
+   //  vmInitCount = 1;
+   //}
 
-   //printf("init step 15\n");
-   /* call __ZZHVMINIT() function to initialize GetList public variable
-    * and set ErrorBlock() by ErrorSys() function.
-    */
-   if (bInitRT)
-     zh_vmDoInitZHVM();
 
-   printf("init step 16\n");
-   if (bInitRT)
+   //zh_initDynTable();
+
+   //if (bInitRT) {
+
+      printf("init step 15\n");
+      zh_vmDoInitZHVM();
+
+      printf("init step 16f\n");
+      
+      
+      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
+      printf("init step 17\n");
+
+if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
+         printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
+         //ext_zh_vm_SymbolInit_F18_UTILS_ZH();
+
+         ext_zh_vm_SymbolInit_A_DBFS_ZH();
+         ext_zh_vm_SymbolInit_ADD_MCODE_ZH();
+         ext_zh_vm_SymbolInit_ADRESAR_ZH();
+         ext_zh_vm_SymbolInit_ADRESE_UGOVORI_LABELE_RTM_ZH();
+         ext_zh_vm_SymbolInit_ARRAY_BROWSE_ZH();
+         ext_zh_vm_SymbolInit_BARKOD_IMPORT_TXT_ZH();
+         ext_zh_vm_SymbolInit_BARKOD_LABELE_DELPHIRB_ZH();
+         ext_zh_vm_SymbolInit_BARKOD_TERMINAL_MAIN_ZH();
+         ext_zh_vm_SymbolInit_BARKOD_TERMINAL_UTILS_ZH();
+         ext_zh_vm_SymbolInit_BARKOD_ZH();
+         ext_zh_vm_SymbolInit_BLAGAJNA_DNEVNI_IZVJESTAJ_ZH();
+         ext_zh_vm_SymbolInit_BROJACI_ZH();
+         ext_zh_vm_SymbolInit_BROWSE_FAKT_DOKUMENTI_ZH();
+         ext_zh_vm_SymbolInit_BROWSE_P_SIFRA_ZH();
+         ext_zh_vm_SymbolInit_BROWSE_STAVKA_ZH();
+         ext_zh_vm_SymbolInit_BUG_REPORT_ZH();
+         ext_zh_vm_SymbolInit_CALC_ZH();
+         ext_zh_vm_SymbolInit_CLASS_CSV_READER_ZH();
+         ext_zh_vm_SymbolInit_CLIPBOARD_ZH();
+         ext_zh_vm_SymbolInit_CLS_DOK_ATTR_ZH();
+         ext_zh_vm_SymbolInit_COALESCE_ZH();
+         ext_zh_vm_SymbolInit_COMMON_BH_SLOVA_ZH();
+         ext_zh_vm_SymbolInit_COMMON_PRINT_EPL2_ZH();
+         ext_zh_vm_SymbolInit_COMMON_PRINT_GVIM_ZH();
+         ext_zh_vm_SymbolInit_COMMON_PRINT_PTXT_ZH();
+         ext_zh_vm_SymbolInit_COMMON_REPORT_COMMON_2_ZH();
+         ext_zh_vm_SymbolInit_COMMON_REPORT_COMMON_ZH();
+         ext_zh_vm_SymbolInit_COMMON_RPT_UTILS_ZH();
+         ext_zh_vm_SymbolInit_COMMON_SIFRARNICI_ZH();
+         ext_zh_vm_SymbolInit_COMMON_TIME_UTIL_ZH();
+         ext_zh_vm_SymbolInit_COMMON_UTIL_ZH();
+         ext_zh_vm_SymbolInit_COMMON_XML_ZH();
+         ext_zh_vm_SymbolInit_CORE_0_ZH();
+         ext_zh_vm_SymbolInit_CORE_COLORS_ZH();
+         ext_zh_vm_SymbolInit_CORE_HB_UTIL_ZH();
+         ext_zh_vm_SymbolInit__CORE_O_SIF_ZH();
+         ext_zh_vm_SymbolInit_CORE_OS_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_DBFS_ZH();
+         ext_zh_vm_SymbolInit_CRE_ALL_FAKT_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_FIN_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_KALK_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_LD_ZH();
+         ext_zh_vm_SymbolInit_CRE_ALL_OS_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_POS_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_ROBA_ZH();
+         ext_zh_vm_SymbolInit__CRE_ALL_VIRM_ZH();
+         ext_zh_vm_SymbolInit_CRE_DBF_UGOVORI_ZH();
+         ext_zh_vm_SymbolInit_CRE_FINMAT_ZH();
+         ext_zh_vm_SymbolInit_CRE_POREZNA_FAKTURA_DBF_ZH();
+         ext_zh_vm_SymbolInit_CRE_RELACIJE_FAKT_ZH();
+         ext_zh_vm_SymbolInit__CRE_R_EXPORT_DBF_ZH();
+         ext_zh_vm_SymbolInit_CRE_SIF_KONTO_VALUTE_ZH();
+         ext_zh_vm_SymbolInit_CRE_SIF_PARTNERI_ZH();
+         ext_zh_vm_SymbolInit_DB_CREATE_2_ZH();
+         ext_zh_vm_SymbolInit_DBF_CHECKSUM_ZH();
+         ext_zh_vm_SymbolInit_DBF_CREATE_INDEX_ZH();
+         ext_zh_vm_SymbolInit_DBF_INIT_ZH();
+         ext_zh_vm_SymbolInit_DBF_MODSTRU_ZH();
+         ext_zh_vm_SymbolInit_DBF_PARAMS_ZH();
+         ext_zh_vm_SymbolInit_DBF_SQL_ZH();
+         ext_zh_vm_SymbolInit_DBF_STRUCT_ZH();
+         ext_zh_vm_SymbolInit_DBF_UPDATE_SERVER_ZH();
+         ext_zh_vm_SymbolInit_DESTINACIJE_2_ZH();
+         ext_zh_vm_SymbolInit_DESTINACIJE_ZH();
+         ext_zh_vm_SymbolInit_DIAG_INFO_ZH();
+         ext_zh_vm_SymbolInit_DOWNLOAD_TEMPLATE_ZH();
+         ext_zh_vm_SymbolInit_DUMMY_ZH();
+         ext_zh_vm_SymbolInit_EDITOR_ZH();
+         ext_zh_vm_SymbolInit_EISPORUKE_ZH();
+         ext_zh_vm_SymbolInit_EMAIL_PODRSKA_ZH();
+         ext_zh_vm_SymbolInit_EMAIL_SEND_ZH();
+         ext_zh_vm_SymbolInit_ENABAVKE_EISPORUKE_DB_ZH();
+         ext_zh_vm_SymbolInit_ENABAVKE_EISPORUKE_MENI_ZH();
+         ext_zh_vm_SymbolInit_ENABAVKE_EISPORUKE_PDV_ZH();
+         ext_zh_vm_SymbolInit_ENABAVKE_UVOZ_ZH();
+         ext_zh_vm_SymbolInit_ENABAVKE_ZH();
+         ext_zh_vm_SymbolInit_EXPORT_SIFARNIK_ZH();
+         ext_zh_vm_SymbolInit_EXPORT_XLSX_ZH();
+         ext_zh_vm_SymbolInit_F18_ADMIN_ZH();
+         ext_zh_vm_SymbolInit_F18_BACKUP_ZH();
+         ext_zh_vm_SymbolInit_F18_DBF_UPGRADE_ZH();
+         ext_zh_vm_SymbolInit_F18_DBF_UTIL_ZH();
+         ext_zh_vm_SymbolInit_F18_EDITOR_ZH();
+         ext_zh_vm_SymbolInit_F18_INI_CONFIG_ZH();
+         ext_zh_vm_SymbolInit_F18_INIT_0_ZH();
+         ext_zh_vm_SymbolInit_F18_INIT_IDLE_HANDLERS_ZH();
+         ext_zh_vm_SymbolInit_F18_INIT_ZH();
+         ext_zh_vm_SymbolInit_F18_INI_ZH();
+         ext_zh_vm_SymbolInit_F18_LOGIN_ZH();
+         ext_zh_vm_SymbolInit_F18_LOG_ZH();
+         ext_zh_vm_SymbolInit_F18_PARAMETERS_ZH();
+         ext_zh_vm_SymbolInit_F18_REPORT_TEMPLATES_ZH();
+         ext_zh_vm_SymbolInit_F18_RTM_ZH();
+         ext_zh_vm_SymbolInit_F18_STR_CONVERT_ZH();
+         ext_zh_vm_SymbolInit_F18_THREADS_ZH();
+         ext_zh_vm_SymbolInit_F18_UPDATE_ZH();
+         ext_zh_vm_SymbolInit_F18_UTILS_ZH();
+         ext_zh_vm_SymbolInit_F18_VER_ZH();
+         ext_zh_vm_SymbolInit_F18_ZH();
+         ext_zh_vm_SymbolInit_F18_ZIP_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_ATRIBUTI_ZH();
+         ext_zh_vm_SymbolInit_FAKT_AZURIRANJE_ZH();
+         ext_zh_vm_SymbolInit_FAKT_BARKOD_TERMINAL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_BROJACI_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_COLUMN_ZH();
+         ext_zh_vm_SymbolInit_FAKT_DOKUMENTI_ZH();
+         ext_zh_vm_SymbolInit_FAKT_DOKUMENT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_EXPORT_LO_ZH();
+         ext_zh_vm_SymbolInit_FAKT_EXPORT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_FISKALNI_RACUN_ZH();
+         ext_zh_vm_SymbolInit_FAKT_FTXT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_GENERACIJA_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_INVENTURA_RPT_PROD_ZH();
+         ext_zh_vm_SymbolInit_FAKT_INVENTURA_RPT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_INVETURA_INIT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_KOLICINE_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_LAGER_LISTA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_MENU_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_REAL_KOL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_REAL_MP_ZH();
+         ext_zh_vm_SymbolInit_FAKT_IZVJ_STANJE_ROBE_ZH();
+         ext_zh_vm_SymbolInit_FAKT_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_FAKT_MNU_DOKUMENTI_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_FAKT_POCETNO_STANJE_ZH();
+         ext_zh_vm_SymbolInit_FAKT_POVRAT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PREGLED_DOKUMENATA_TABELA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PREGLED_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PRENOS_KALK_FAKT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PRENOS_MNU_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PRENOS_TOPS_FAKT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_PRINT_NARUDZBENICA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_REAL_PARTNERA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_SIFRARNICI_MNU_ZH();
+         ext_zh_vm_SymbolInit_FAKT_SIFRARNICI_ZH();
+         ext_zh_vm_SymbolInit__FAKT_SQL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_STAMPA_AZURIRANOG_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_STAMPA_DOKUMENTA_ODT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_STAMPA_DOKUMENTA_PDV_ZH();
+         ext_zh_vm_SymbolInit_FAKT_STAMPA_DOKUMENTA_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_STAMPA_LISTE_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_TRASH_UTILS_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UDALJENA_RAZMJENA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UNOS_COMMON_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UNOS_DOKUMENTA_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UNOS_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UNOS_FTXT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UPOREDNA_LISTA_KALK_FAKT_ZH();
+         ext_zh_vm_SymbolInit_FAKT_UTILS_ZH();
+         ext_zh_vm_SymbolInit_FAKT_VRSTE_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FETCH_METRIC_ZH();
+         ext_zh_vm_SymbolInit_FIN_ANAL_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_FIN_AZURIRANJE_NALOGA_ZH();
+         ext_zh_vm_SymbolInit_FIN_BROJACI_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FIN_BRUTO_BILANS_ANALITIKA_B_ZH();
+         ext_zh_vm_SymbolInit_FIN_BRUTO_BILANS_A_ZH();
+         ext_zh_vm_SymbolInit_FIN_BRUTO_BILANS_GRUPE_B_ZH();
+         ext_zh_vm_SymbolInit_FIN_BRUTO_BILANS_SINTETIKA_B_ZH();
+         ext_zh_vm_SymbolInit_FIN_BRUTO_BILANS_SUBANALITIKA_B_ZH();
+         ext_zh_vm_SymbolInit_FIN_DNEVNIK_NALOGA_ZH();
+         ext_zh_vm_SymbolInit_FIN_IMPORT_ELBA_ZH();
+         ext_zh_vm_SymbolInit_FIN_IOS_ZH();
+         ext_zh_vm_SymbolInit_FIN_IZVJESTAJI_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_IZVJESTAJI_OSTALI_ZH();
+         ext_zh_vm_SymbolInit_FIN_IZVJESTAJI_SPECIFIKACIJE_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_IZVJESTAJI_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_GEN_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_KAMATNI_LIST_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_OBR_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_OPOMENA_PRED_TUZBU_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_PRINT_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_UNOS_ZH();
+         ext_zh_vm_SymbolInit_FIN_KAMATE_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FIN_KARTICE_ZH();
+         ext_zh_vm_SymbolInit_FIN_KNJIZENJE_2_ZH();
+         ext_zh_vm_SymbolInit_FIN_KNJIZENJE_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FIN_KOMPENZACIJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_KONTROLA_ZBIRA_NALOGA_ZH();
+         ext_zh_vm_SymbolInit_FIN_KONTROLA_ZBIRA_TABELA_ZH();
+         ext_zh_vm_SymbolInit_FIN_KONTROLNI_IZVJESTAJI_ZH();
+         ext_zh_vm_SymbolInit_FIN_KUPCI_PREGLED_DUGOVANJA_ZH();
+         ext_zh_vm_SymbolInit_FIN_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_FIN_LEGACY_ZH();
+         ext_zh_vm_SymbolInit_FIN_NALOG_CLS_ZH();
+         ext_zh_vm_SymbolInit_FIN_NALOG_GEN_ZH();
+         ext_zh_vm_SymbolInit_FIN_NALOG_PANAL_PSINT_ZH();
+         ext_zh_vm_SymbolInit_FIN_NALOG_PSUBAN_ZH();
+         ext_zh_vm_SymbolInit_FIN_NALOG_ZH();
+         ext_zh_vm_SymbolInit_FIN_OSTALE_OPERACIJE_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_OTVORENE_STAVKE_ASISTENT_ZH();
+         ext_zh_vm_SymbolInit_FIN_OTVORENE_STAVKE_AUTOMATSKO_ZATVARANJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_OTVORENE_STAVKE_GEN_KNJIZENJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_OTVORENE_STAVKE_RUCNO_ZATVARANJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_OTVORENE_STAVKE_ZH();
+         ext_zh_vm_SymbolInit_FIN_PARAM_1_ZH();
+         ext_zh_vm_SymbolInit_FIN_PARTNER_SALDO_ZH();
+         ext_zh_vm_SymbolInit_FIN_POVRAT_DOKUMENTA_PRIPREMA_ZH();
+         ext_zh_vm_SymbolInit_FIN_PREGLED_DOKUMENATA_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_PREKNJIZENJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_DOKUMENATA_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_FAKT_FIN_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_LD_FIN_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_POCETNO_STANJE_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_POS_FIN_ZH();
+         ext_zh_vm_SymbolInit_FIN_PRENOS_RAZMJENA_PODATAKA_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_PROIZVOLJNI_IZVJESTAJI_ZH();
+         ext_zh_vm_SymbolInit_FIN_ROCNI_INTERVALI_SPECIF_DUGOVANJA_ZH();
+         ext_zh_vm_SymbolInit_FIN_ROCNI_INTERVALI_VALUTA_VAN_VALUTE_ZH();
+         ext_zh_vm_SymbolInit_FIN_ROCNI_INTERVALI_ZH();
+         ext_zh_vm_SymbolInit_FIN_RULES_ZH();
+         ext_zh_vm_SymbolInit_FIN_SIFARNICI_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_SIFARNICI_ZH();
+         ext_zh_vm_SymbolInit_FIN_SINTETICKI_NALOG_ZH();
+         ext_zh_vm_SymbolInit_FIN_SINT_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SINT_KART_PO_MJESECIMA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_3_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_4_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_5_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_ANALITIKA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIFIKACIJA_SQL_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIFIKACIJA_SUBAN_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIFIKACIJA_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_OTV_STAV_PREKO_BR_DAN_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_OTV_ST_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_PARTN_KONTO_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_PROIZV_SORT_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_RAMAGLAS_REPORTS_MENU_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPECIF_RAMAGLAS_REPORTS_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_PARTN_VAN_PROMETA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SPEC_PREBIJENO_KONTO_KONTO2_ZH();
+         ext_zh_vm_SymbolInit_FIN_STAMPA_AZURIRANIH_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_FIN_STAMPA_LISTE_NALOGA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SUBANALITICKA_KARTICA_DVA_KONTA_ZH();
+         ext_zh_vm_SymbolInit_FIN_SUBAN_KARTICA_SQL_ZH();
+         ext_zh_vm_SymbolInit_FIN_SUBAN_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_FIN_UDALJENA_RAZMJENA_ZH();
+         ext_zh_vm_SymbolInit_FIN_UNOS_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_FIN_UTIL_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_FLINK_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_FPRINT_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_HCP_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_MAIN_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_MENU_RPT_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_PARAMS_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_TREMOL_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_TRING_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_TXT_FUNCTIONS_ZH();
+         ext_zh_vm_SymbolInit_FISCAL_UTILS_ZH();
+         ext_zh_vm_SymbolInit_FMK_MIGRATE_ZH();
+         ext_zh_vm_SymbolInit_GEN_UGOVORI_2_ZH();
+         ext_zh_vm_SymbolInit_GET_LOZINKA_ZH();
+         ext_zh_vm_SymbolInit_GLOBAL_VARS_0_1_2_ZH();
+         ext_zh_vm_SymbolInit_GLOBAL_VARS_SPECIFIFICNOSTI_VARS_ZH();
+         ext_zh_vm_SymbolInit_HASH_UTIL_ZH();
+         ext_zh_vm_SymbolInit_HB_GT_UTILS_ZH();
+         ext_zh_vm_SymbolInit_HOT_KEYS_ZH();
+         ext_zh_vm_SymbolInit_INVALIDITET_ZH();
+         ext_zh_vm_SymbolInit_JAVA_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_JODREPORTS_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_KALK_ATRIBUT_ZH();
+         ext_zh_vm_SymbolInit_KALK_AZURIRANJE_PRIPR9_ZH();
+         ext_zh_vm_SymbolInit_KALK_AZURIRANJE_ZH();
+         ext_zh_vm_SymbolInit_KALK_BOX_STANJE_ZH();
+         ext_zh_vm_SymbolInit_KALK_BROJACI_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_KALK_BROWSE_DOKUMENTI_ZH();
+         ext_zh_vm_SymbolInit_KALK_COPY_AZURIRAN_U_PRIPRT_ZH();
+         ext_zh_vm_SymbolInit_KALK_DATVAL_ZH();
+         ext_zh_vm_SymbolInit_KALK_DOKUMENT_MENU_ZH();
+         ext_zh_vm_SymbolInit_KALK_FAKT_KALK_NORMATIVI_ZH();
+         ext_zh_vm_SymbolInit_KALK_FIN_STANJE_MAGACIN_ZH();
+         ext_zh_vm_SymbolInit_KALK_FIN_STANJE_PRODAVNICE_ZH();
+         ext_zh_vm_SymbolInit_KALK_FRM_DOK_80_ZH();
+         ext_zh_vm_SymbolInit_KALK_FRM_DOK_82_ZH();
+         ext_zh_vm_SymbolInit_KALK_GENDOK_FAKT_ZH();
+         ext_zh_vm_SymbolInit_KALK_GENDOK_MNU_ZH();
+         ext_zh_vm_SymbolInit_KALK_GENDOK_SI_ZH();
+         ext_zh_vm_SymbolInit_KALK_GEN_FIN_STANJE_MAGACINA_ZH();
+         ext_zh_vm_SymbolInit_KALK_GEN_FIN_STANJE_PRODAVNICE_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_11_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_12_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_14_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_16_94_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_18_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_19_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_2_10_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_41_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_95_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_IM_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_1_IP_ZH();
+         ext_zh_vm_SymbolInit_KALK_GET_UTILS_ZH();
+         ext_zh_vm_SymbolInit_KALK_IMPORT_CSV_ZH();
+         ext_zh_vm_SymbolInit_KALK_IMP_TXT_COMMON_ZH();
+         ext_zh_vm_SymbolInit_KALK_IZVJESTAJI_EXPORT_ZH();
+         ext_zh_vm_SymbolInit_KALK_IZVJESTAJI_FIN_OBRT_MAGACINA_ZH();
+         ext_zh_vm_SymbolInit_KALK_IZVJESTAJI_MNU_ZH();
+         ext_zh_vm_SymbolInit_KALK_IZVJESTAJI_UTILS_ZH();
+         ext_zh_vm_SymbolInit_KALK_IZVJESTAJ_KOLICINSKO_STANJE_OBJEKATA_ZH();
+         ext_zh_vm_SymbolInit_KALK_KALKULACIJA_CIJENA_ZH();
+         ext_zh_vm_SymbolInit_KALK_KARTICA_MAGACIN_2_ZH();
+         ext_zh_vm_SymbolInit_KALK_KARTICA_MAGACIN_ZH();
+         ext_zh_vm_SymbolInit_KALK_KARTICA_PRODAVNICA_ZH();
+         ext_zh_vm_SymbolInit_KALK_KONTIRANJE_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_KALK_KONTIRANJE_GEN_FINMAT_ZH();
+         ext_zh_vm_SymbolInit_KALK_KONTIRANJE_VISE_DOKUMENATA_PERIOD_ZH();
+         ext_zh_vm_SymbolInit_KALK_KOREKCIJA_NC_ZH();
+         ext_zh_vm_SymbolInit_KALK_LAGER_LISTA_MAGACIN_ODT_ZH();
+         ext_zh_vm_SymbolInit_KALK_LAGER_LISTA_MAGACIN_ZH();
+         ext_zh_vm_SymbolInit_KALK_LAGER_LISTA_PRODAVNICA_ZH();
+         ext_zh_vm_SymbolInit_KALK_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_KALK_LISTA_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_FRM_KARTICA_MAGACINA_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_GENDOK_INVENTURA_MAGACIN_IM_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_GENDOK_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_IZVJESTAJI_MENU_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_IZVJESTAJ_REAL_VELEPRODAJE_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_PREGLED_ROBE_ZA_DOBAVLJACA_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAGACIN_TRGOVACKA_KNJIGA_NA_VELIKO_TKV_ZH();
+         ext_zh_vm_SymbolInit_KALK_MAG_LAGER_LISTA_SQL_ZH();
+         ext_zh_vm_SymbolInit_KALK_MNU_RAZMJENA_PODATAKA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PARAMS_ZH();
+         ext_zh_vm_SymbolInit_KALK_PDV_ZH();
+         ext_zh_vm_SymbolInit_KALK_POVRAT_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PREGLED_PRODAJE_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRENOS_FAKT_KALK_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRENOS_IZ_FAKT_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRENOS_KALK_TOPS_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRENOS_TOPS_KALK_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRODAVNICA_REALIZOVANI_POREZ_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRODAVNICA_UKALKULISANI_POREZ_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_GENDOK_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_IZVJESTAJI_FRM_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_IZVJESTAJI_MENU_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_IZVJESTAJI_REKAP_FIN_STANJA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_IZVJESTAJI_UTILS_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_LAGER_LISTA_SQL_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_NIVELACIJA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_RAZMJENA_PODATAKA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_SINTETICKA_LAGER_LISTA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PROD_UTILS_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRO_FRM_PROIZVODNJA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRORACUN_NABAVNE_CIJENE_GENERACIJA_USKLADJENJA_95_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRORACUN_NABAVNE_CIJENE_MAGACIN_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRORACUN_NABAVNE_CIJENE_PRODAVNICA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRORACUN_NABAVNE_CIJENE_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRO_RPT_PROIZVODNJA_ZH();
+         ext_zh_vm_SymbolInit_KALK_PRO_RPT_RADNI_NALOG_ZH();
+         ext_zh_vm_SymbolInit_KALK_RASPORED_TROSKOVA_ZH();
+         ext_zh_vm_SymbolInit_KALK_REKAP_FIN_STANJE_MAGACIN_ZH();
+         ext_zh_vm_SymbolInit_KALK_ROBA_ZH();
+         ext_zh_vm_SymbolInit_KALK_SIFRE_ZH();
+         ext_zh_vm_SymbolInit_KALK_SMECE_PRIPR9_ZH();
+         ext_zh_vm_SymbolInit_KALK_SPECIF_DB_ZH();
+         ext_zh_vm_SymbolInit_KALK_SPECIF_PL_SIF_ZH();
+         ext_zh_vm_SymbolInit_KALK_SPECIF_RPT_ALL_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_11_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_18_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_19_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_41_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_80_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_81_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_82_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_IM_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_IP_ZH();
+         ext_zh_vm_SymbolInit_KALK_STAMPA_DOK_ZH();
+         ext_zh_vm_SymbolInit_KALK_STDOK_10_TXT_ZH();
+         ext_zh_vm_SymbolInit_KALK_STDOK_10_ZH();
+         ext_zh_vm_SymbolInit_KALK_STDOK_14_TXT_ZH();
+         ext_zh_vm_SymbolInit_KALK_STDOK_14_ZH();
+         ext_zh_vm_SymbolInit_KALK_STDOK_95_ZH();
+         ext_zh_vm_SymbolInit_KALK_STORNO_DOKUMENT_ZH();
+         ext_zh_vm_SymbolInit_KALK_TKM_TRGOVACKA_KNJIGA_NA_MALO_ZH();
+         ext_zh_vm_SymbolInit_KALK_UDALJENA_RAZMJENA_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOK_16_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOK_81_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOK_PR_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOK_RN_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOKUMENTA_CHECK_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOKUMENTA_MENI_F10_ZH();
+         ext_zh_vm_SymbolInit_KALK_UNOS_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_LD_AKONTACIJA_POREZA_ZH();
+         ext_zh_vm_SymbolInit_LD_BENEFICIRANI_STAZ_ZH();
+         ext_zh_vm_SymbolInit_LD_BRISANJE_OBRACUNA_ZH();
+         ext_zh_vm_SymbolInit_LD_DATUM_ISPLATE_ZH();
+         ext_zh_vm_SymbolInit__LD_DB_SQL_ZH();
+         ext_zh_vm_SymbolInit_LD_DOPRINOSI_ZH();
+         ext_zh_vm_SymbolInit_LD_EXPORT_BANKE_ZH();
+         ext_zh_vm_SymbolInit_LD_FIONS_ZH();
+         ext_zh_vm_SymbolInit_LD_ISPRAVKA_KREDITA_ZH();
+         ext_zh_vm_SymbolInit_LD_IZVJESTAJI_MNU_ZH();
+         ext_zh_vm_SymbolInit_LD_IZVJESTAJI_TOPLI_OBROK_ZH();
+         ext_zh_vm_SymbolInit_LD_IZVJESTAJI_UTILS_ZH();
+         ext_zh_vm_SymbolInit_LD_IZVJESTAJI_V2_ZH();
+         ext_zh_vm_SymbolInit_LD_JS3400_OBRAZAC_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_AUTORSKI_HONORARI_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_REDOVAN_RAD_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_SAMOSTALNI_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_UGOVORI_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_UPRAVNI_ODBOR_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_VISE_MJESECI_ZH();
+         ext_zh_vm_SymbolInit_LD_KARTICA_PLATE_ZH();
+         ext_zh_vm_SymbolInit_LD_KREDITI_SPECIFIKACIJA_ZH();
+         ext_zh_vm_SymbolInit_LD_KREDITI_ZH();
+         ext_zh_vm_SymbolInit_LD_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_LD_MIP_UTILS_ZH();
+         ext_zh_vm_SymbolInit_LD_MIP_ZH();
+         ext_zh_vm_SymbolInit_LD_OBRACUN_MNU_ZH();
+         ext_zh_vm_SymbolInit_LD_OBRACUN_UNOS_ZH();
+         ext_zh_vm_SymbolInit_LD_OBRAZAC_GIP_ZH();
+         ext_zh_vm_SymbolInit_LD_ODBICI_ELEMENTARNE_NEPOGODE_ZH();
+         ext_zh_vm_SymbolInit_LD_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_LD_PLATNI_SPISAK_TEKUCI_RACUN_ZH();
+         ext_zh_vm_SymbolInit_LD_PLATNI_SPISAK_ZH();
+         ext_zh_vm_SymbolInit_LD_POREZI_ZH();
+         ext_zh_vm_SymbolInit_LD_POREZ_ZH();
+         ext_zh_vm_SymbolInit_LD_PREGLED_ISPLATA_TEKUCI_RACUN_ZH();
+         ext_zh_vm_SymbolInit_LD_PREGLED_PLATA_ZA_VISE_MJESECI_ZH();
+         ext_zh_vm_SymbolInit_LD_PREGLED_PLATA_ZH();
+         ext_zh_vm_SymbolInit_LD_PREGLED_PRIMANJA_ZH();
+         ext_zh_vm_SymbolInit_LD_PRIJAVA_ZH();
+         ext_zh_vm_SymbolInit_LD_RADNI_SATI_ZH();
+         ext_zh_vm_SymbolInit_LD_REKAPITULACIJA_UTIL_ZH();
+         ext_zh_vm_SymbolInit_LD_REKAPITULACIJA_ZH();
+         ext_zh_vm_SymbolInit_LD_SIFRE_MNU_ZH();
+         ext_zh_vm_SymbolInit_LD_SIFRE_ZH();
+         ext_zh_vm_SymbolInit_LD_SIHTARICE_IZVJESTAJI_ZH();
+         ext_zh_vm_SymbolInit_LD_SIHTARICE_SIFRE_ZH();
+         ext_zh_vm_SymbolInit_LD_SIHTARICE_UNOS_ZH();
+         ext_zh_vm_SymbolInit_LD_SIHTARICE_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_NETO_PRIMANJA_PO_OPCINAMA_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_PO_RASPONIMA_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_PO_RJ_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_SAMOSTALNI_O_2002_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_UGOVORI_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_UTIL_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_UZ_ISPLATU_PLATA_2001_STARI_ZH();
+         ext_zh_vm_SymbolInit_LD_SPECIFIKACIJA_UZ_ISPLATU_PLATE_OBRAZAC_2001_ZH();
+         ext_zh_vm_SymbolInit_LD_UTILS_ZH();
+         ext_zh_vm_SymbolInit__LEGACY_OCITAJ_ZH();
+         ext_zh_vm_SymbolInit_LO_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_LOKAL_DB_ZH();
+         ext_zh_vm_SymbolInit_MATCH_CODE_ZH();
+         ext_zh_vm_SymbolInit_MY_BROWSE_ZH();
+         ext_zh_vm_SymbolInit_MY_SQL_SERVER_ZH();
+         ext_zh_vm_SymbolInit_MY_USE_ZH();
+         ext_zh_vm_SymbolInit_NOVA_STRANA_ZH();
+         ext_zh_vm_SymbolInit_NUMBER_UTIL_ZH();
+         ext_zh_vm_SymbolInit_O_DBF_ZH();
+         ext_zh_vm_SymbolInit__O_FAKT_ZH();
+         ext_zh_vm_SymbolInit__O_FIN_SQL_ZH();
+         ext_zh_vm_SymbolInit__O_FIN_ZH();
+         ext_zh_vm_SymbolInit__O_KALK_SQL_ZH();
+         ext_zh_vm_SymbolInit__O_KALK_ZH();
+         ext_zh_vm_SymbolInit__O_LD_SIHTARICE_ZH();
+         ext_zh_vm_SymbolInit__O_LD_ZH();
+         ext_zh_vm_SymbolInit__O_POS_DBF_ZH();
+         ext_zh_vm_SymbolInit_OS_DATABASE_UTILS_ZH();
+         ext_zh_vm_SymbolInit__O_SIF_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_AMORT_PO_KONTIMA_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_AMORT_PO_STOPAMA_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_MENU_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_PREGLED_AMORTIZACIJE_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_PREGLED_PO_KONTIMA_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_PREGLED_PO_RJ_ZH();
+         ext_zh_vm_SymbolInit_OS_IZVJ_PREGLED_REVALORIZACIJE_ZH();
+         ext_zh_vm_SymbolInit_OS_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_OS_OBRACUN_ZH();
+         ext_zh_vm_SymbolInit_OS_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_OS_POCETNO_STANJE_ZH();
+         ext_zh_vm_SymbolInit_OS_POPISNA_LISTA_ZH();
+         ext_zh_vm_SymbolInit_OS_REKAP_PO_K1_ZH();
+         ext_zh_vm_SymbolInit_OS_SIFRARNICI_ZH();
+         ext_zh_vm_SymbolInit__OS_SQL_ZH();
+         ext_zh_vm_SymbolInit_OS_UNOS_SREDSTAVA_ZH();
+         ext_zh_vm_SymbolInit_OS_UTIL_ZH();
+         ext_zh_vm_SymbolInit_OTPREMNICA_MP_ZH();
+         ext_zh_vm_SymbolInit__O_VIRM_DBF_ZH();
+         ext_zh_vm_SymbolInit_PARAMS_ORGANIZACIJA_ZH();
+         ext_zh_vm_SymbolInit_PARSIRAJ_SQL_ZH();
+         ext_zh_vm_SymbolInit_PARTNER_PDV_IDBROJ_ZH();
+         ext_zh_vm_SymbolInit_PDF_CLS_ZH();
+         ext_zh_vm_SymbolInit_PDF_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_PDV_ZH();
+         ext_zh_vm_SymbolInit_PIC_ZH();
+         ext_zh_vm_SymbolInit_POREZNA_FAKTURA_A4_2_ZH();
+         ext_zh_vm_SymbolInit_POREZNA_FAKTURA_A4_ZH();
+         ext_zh_vm_SymbolInit_POREZNA_FAKTURA_TRAKA_ZH();
+         ext_zh_vm_SymbolInit_POS_AZURIRANJE_OSTALI_DOKUMENTI_ZH();
+         ext_zh_vm_SymbolInit_POS_AZURIRANJE_RACUNA_ZH();
+         ext_zh_vm_SymbolInit_POS_BROJAC_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_POS_DATABASE_TEMP_ZH();
+         ext_zh_vm_SymbolInit__POS_DBF_ZH();
+         ext_zh_vm_SymbolInit_POS_DISPLAY_BIG_BROJEVE_ZH();
+         ext_zh_vm_SymbolInit_POS_FISKALNI_RACUN_ZH();
+         ext_zh_vm_SymbolInit_POS_FRM_INVENTURA_NIVELACIJA_ZH();
+         ext_zh_vm_SymbolInit_POS_FRM_RACUN_MENU_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_INVENTURA_NIVELACIJA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_KARTICA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_MENU_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_PDV_POREZI_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_POCETNO_STANJE_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_POREZ_PO_TARIFAMA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_PREGLED_KUMULATIVA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_RACUN_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_REALIZACIJA_KASE_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_REALIZACIJA_RADNIK_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_STAMPA_DOKUMENATA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_STANJE_PARTNERA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_STANJE_PM_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_STANJE_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_TARIFE_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_TOP_PRODAJA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_UTILS_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_VRSTE_PLACANJA_ZH();
+         ext_zh_vm_SymbolInit_POS_IZVJ_ZADUZENJE_ZH();
+         ext_zh_vm_SymbolInit_POS_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_POS_LISTA_RACUNA_ZH();
+         ext_zh_vm_SymbolInit_POS_MNU_ADMINISTRATOR_ZH();
+         ext_zh_vm_SymbolInit_POS_MNU_PRODAVAC_ZH();
+         ext_zh_vm_SymbolInit_POS_MNU_UPRAVNIK_ZH();
+         ext_zh_vm_SymbolInit_POS_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_POS_POCETNO_STANJE_ZH();
+         ext_zh_vm_SymbolInit_POS_POVRAT_DOKUMENTA_ZH();
+         ext_zh_vm_SymbolInit_POS_PREGLED_DOKUMENATA_TABELA_ZH();
+         ext_zh_vm_SymbolInit_POS_PREGLED_RACUNA_TABELA_ZH();
+         ext_zh_vm_SymbolInit_POS_PRENOS_POS_FAKT_ZH();
+         ext_zh_vm_SymbolInit_POS_PRENOS_POS_KALK_ZH();
+         ext_zh_vm_SymbolInit_POS_PRIJAVA_ZH();
+         ext_zh_vm_SymbolInit_POS_PRIVILEGIJE_ZH();
+         ext_zh_vm_SymbolInit_POS_RABATI_ZH();
+         ext_zh_vm_SymbolInit_POS_RACUN_UNOS_ZH();
+         ext_zh_vm_SymbolInit_POS_REALIZACIJA_MENU_ZH();
+         ext_zh_vm_SymbolInit_POS_ROBA_ZH();
+         ext_zh_vm_SymbolInit_POS_ROBMAT_MENU_ZH();
+         ext_zh_vm_SymbolInit_POS_SIFARNIK_ZH();
+         ext_zh_vm_SymbolInit_POS_SIFRARNIK_MENU_ZH();
+         ext_zh_vm_SymbolInit_POS_SMJENE_ZH();
+         ext_zh_vm_SymbolInit__POS_SQL_ZH();
+         ext_zh_vm_SymbolInit_POS_STORNO_RACUNA_ZH();
+         ext_zh_vm_SymbolInit_POSTGRESQL_UTIL_ZH();
+         ext_zh_vm_SymbolInit_POS_ZADUZENJE_UNOS_ZH();
+         ext_zh_vm_SymbolInit_PREGLED_ASORTIMANA_DOBAVLJAC_ZH();
+         ext_zh_vm_SymbolInit_PRINT_0_ZH();
+         ext_zh_vm_SymbolInit_PRINT_2_ZH();
+         ext_zh_vm_SymbolInit_PRINT_LISTA_2_ZH();
+         ext_zh_vm_SymbolInit_PRINT_LISTA_ZH();
+         ext_zh_vm_SymbolInit_PRINT_ODT_ZH();
+         ext_zh_vm_SymbolInit_P_SIFK_ZH();
+         ext_zh_vm_SymbolInit_PSQL_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_QOUTU_ZH();
+         ext_zh_vm_SymbolInit_RACUN_UTILS_ZH();
+         ext_zh_vm_SymbolInit_RB_TRAKA_ZH();
+         ext_zh_vm_SymbolInit_REPORT_COMMON_ZH();
+         ext_zh_vm_SymbolInit_ROBA_MENI_ZH();
+         ext_zh_vm_SymbolInit_ROBA_NALJEPNICE_ZH();
+         ext_zh_vm_SymbolInit__ROBA_SQL_ZH();
+         ext_zh_vm_SymbolInit_ROBA_SVEDI_NA_STANDARNU_JMJ_ZH();
+         ext_zh_vm_SymbolInit_RPT_NARUDZBENICA_ZH();
+         ext_zh_vm_SymbolInit_RULES_M_RULES_ZH();
+         ext_zh_vm_SymbolInit_RULES_RULES_ZH();
+         ext_zh_vm_SymbolInit_SASTAVNICE_ADMIN_ZH();
+         ext_zh_vm_SymbolInit_SASTAVNICE_IZVJ_ZH();
+         ext_zh_vm_SymbolInit_SASTAVNICE_PRINT_ZH();
+         ext_zh_vm_SymbolInit_SASTAVNICE_UTIL_ZH();
+         ext_zh_vm_SymbolInit_SASTAVNICE_ZH();
+         ext_zh_vm_SymbolInit_SAY_UTILS_ZH();
+         ext_zh_vm_SymbolInit_SEMAPHORES_FULL_ALGORITAM_ZH();
+         ext_zh_vm_SymbolInit_SEMAPHORES_IDS_ALGORITAM_ZH();
+         ext_zh_vm_SymbolInit_SEMAPHORES_LOCK_TABLES_ZH();
+         ext_zh_vm_SymbolInit_SEMAPHORES_ZH();
+         ext_zh_vm_SymbolInit_SERVER_DB_ZH();
+         ext_zh_vm_SymbolInit_SERVER_INFO_ZH();
+         ext_zh_vm_SymbolInit_SERVER_LOG_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_FAKT_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_FIN_ZH();
+         ext_zh_vm_SymbolInit_SET_A_DBF_KALK_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_LD_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_OS_ZH();
+         ext_zh_vm_SymbolInit_SET_A_DBF_PARAMS_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_POS_ZH();
+         ext_zh_vm_SymbolInit_SET_A_DBF_SIFK_SIFV_ZH();
+         ext_zh_vm_SymbolInit__SET_A_DBF_SIF_ZH();
+         ext_zh_vm_SymbolInit_SET_A_DBF_TEMPORARY_ZH();
+         ext_zh_vm_SymbolInit_SET_A_DBF_VIRM_ZH();
+         ext_zh_vm_SymbolInit_SHA256SUM_ZH();
+         ext_zh_vm_SymbolInit_SIF_K1_VRSTEP_ZH();
+         ext_zh_vm_SymbolInit_SIF_KONTA_TIPOVI_CIJENA_ZH();
+         ext_zh_vm_SymbolInit_SIF_KONTA_ZH();
+         ext_zh_vm_SymbolInit_SIFK_SIFV_ZH();
+         ext_zh_vm_SymbolInit_SIF_OPS_ZH();
+         ext_zh_vm_SymbolInit_SIF_RADNE_JEDINICE_ZH();
+         ext_zh_vm_SymbolInit_SIF_REFERENTI_ZH();
+         ext_zh_vm_SymbolInit_SIF_ROBA_ZH();
+         ext_zh_vm_SymbolInit_SIF_TARIFA_ZH();
+         ext_zh_vm_SymbolInit_SIF_TDOK_ZH();
+         ext_zh_vm_SymbolInit_SIF_TNAL_ZH();
+         ext_zh_vm_SymbolInit_SIF_TRFP_ZH();
+         ext_zh_vm_SymbolInit_SIF_UGOV_ZH();
+         ext_zh_vm_SymbolInit_SIF_UTIL_ZH();
+         ext_zh_vm_SymbolInit_SIF_VALUTE_ZH();
+         ext_zh_vm_SymbolInit_SQL_NIL_ZH();
+         ext_zh_vm_SymbolInit_SQL_QUERY_ZH();
+         ext_zh_vm_SymbolInit_SQL_RDD_ZH();
+         ext_zh_vm_SymbolInit_SQL_TABLE_UPDATE_ZH();
+         ext_zh_vm_SymbolInit_SQL_UTILS_ZH();
+         ext_zh_vm_SymbolInit_STAMPA_VIRMANA_DELPHIRB_ZH();
+         ext_zh_vm_SymbolInit_STANJE_NABAVNA_CIJENA_ZH();
+         ext_zh_vm_SymbolInit_ST_KALK_DOK_PR_ZH();
+         ext_zh_vm_SymbolInit_STRING_UTIL_ZH();
+         ext_zh_vm_SymbolInit_TAKSA_GORIVO_ZH();
+         ext_zh_vm_SymbolInit_T_APP_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_FAKT_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_FILE_READ_ZH();
+         ext_zh_vm_SymbolInit_T_FIN_MOD_ZH();
+         ext_zh_vm_SymbolInit_THREAD_CREATE_DBFS_ZH();
+         ext_zh_vm_SymbolInit_T_KALK_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_LD_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_OS_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_POS_MOD_ZH();
+         ext_zh_vm_SymbolInit_T_VIRM_MOD_ZH();
+         ext_zh_vm_SymbolInit_UDALJENA_RAZMJENA_UTILS_ZH();
+         ext_zh_vm_SymbolInit_UGOVORI_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_UGOVORI_UTILS_ZH();
+         ext_zh_vm_SymbolInit_UGOV_ROBA_ZH();
+         ext_zh_vm_SymbolInit__UGOV_SQL_ZH();
+         ext_zh_vm_SymbolInit_UI2_WINDOWS_ZH();
+         ext_zh_vm_SymbolInit_UI_BROWSEKEY_ZH();
+         ext_zh_vm_SymbolInit_UI_EVENT_ZH();
+         ext_zh_vm_SymbolInit_UI_MAIN_SCREEN_ZH();
+         ext_zh_vm_SymbolInit_UI_MAIN_ZH();
+         ext_zh_vm_SymbolInit_UI_MENU_ZH();
+         ext_zh_vm_SymbolInit_UI_MOUSE_ZH();
+         ext_zh_vm_SymbolInit_UI_MSGS_ZH();
+         ext_zh_vm_SymbolInit_UI_NASLOVNI_EKRAN_SPLASH_ZH();
+         ext_zh_vm_SymbolInit_UI_NASLOVNI_EKRAN_ZH();
+         ext_zh_vm_SymbolInit_UI_SCGET_ZH();
+         ext_zh_vm_SymbolInit_UI_STANDARD_DIALOGS_ZH();
+         ext_zh_vm_SymbolInit_UNICODE_ZH();
+         ext_zh_vm_SymbolInit_UPDATE_DBF_FROM_SERVER_ZH();
+         ext_zh_vm_SymbolInit_USER_UTIL_ZH();
+         ext_zh_vm_SymbolInit_USE_SQL_ZH();
+         ext_zh_vm_SymbolInit_VERSION_UTIL_ZH();
+         ext_zh_vm_SymbolInit_VIRM_EXPORT_BANKE_ZH();
+         ext_zh_vm_SymbolInit_VIRM_LAUNCHER_ZH();
+         ext_zh_vm_SymbolInit_VIRM_PARAMETRI_ZH();
+         ext_zh_vm_SymbolInit_VIRM_RAZMJENA_LD_ZH();
+         ext_zh_vm_SymbolInit_VIRM_RAZMJENA_MENU_ZH();
+         ext_zh_vm_SymbolInit_VIRM_SIFRARNIK_MENU_ZH();
+         ext_zh_vm_SymbolInit_VIRM_SIFRARNIK_ZH();
+         ext_zh_vm_SymbolInit_VIRM_UNOS_PODATAKA_ZH();
+         ext_zh_vm_SymbolInit_VRIJEME_SQL_ZH();
+         ext_zh_vm_SymbolInit_XBASE_LEGACY_ZH();
+         ext_zh_vm_SymbolInit_XBASE_PARSIRAJ_ZH();
+         ext_zh_vm_SymbolInit_XBASE_RDD_DBF_ZH();
+         ext_zh_vm_SymbolInit_XBASE_RDD_ZH();
+         ext_zh_vm_SymbolInit_YARG_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_YARG_ZH();
+
+         ext_zh_vm_SymbolInit_ACHOICE_ZH();
+         ext_zh_vm_SymbolInit_ADIR_ZH();
+         ext_zh_vm_SymbolInit_ALERT_FUNC_ZH();
+         ext_zh_vm_SymbolInit_ALTD_ZH();
+         ext_zh_vm_SymbolInit_ARRAY_RDD_ZH();
+         ext_zh_vm_SymbolInit_BASE64U_ZH();
+         ext_zh_vm_SymbolInit_BROWSE_FUNC_ZH();
+         ext_zh_vm_SymbolInit_CGI_ZH();
+         ext_zh_vm_SymbolInit_CLIENT_ZH();
+         ext_zh_vm_SymbolInit_CLS_CHECKBOX_ZH();
+         ext_zh_vm_SymbolInit_CLS_GET_HELPER_FUNC_ZH();
+         ext_zh_vm_SymbolInit_CLS_GET_ZH();
+         ext_zh_vm_SymbolInit_CLS_LISTBOX_ZH();
+         ext_zh_vm_SymbolInit_CLS_MENUITEM_ZH();
+         ext_zh_vm_SymbolInit_CLS_POPUPMENU_ZH();
+         ext_zh_vm_SymbolInit_CLS_PUSH_BUTTON_ZH();
+         ext_zh_vm_SymbolInit_CLS_RADIO_BUTTON_ZH();
+         ext_zh_vm_SymbolInit_CLS_RADIO_GRP_ZH();
+         ext_zh_vm_SymbolInit_CLS_SCROLL_BAR_ZH();
+         ext_zh_vm_SymbolInit_CLS_TBCOLUMN_ZH();
+         ext_zh_vm_SymbolInit_CLS_TBROWSE_ZH();
+         ext_zh_vm_SymbolInit_CLS_TOPBARMENU_ZH();
+         ext_zh_vm_SymbolInit_CLS_TPQSERVER_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZHEDITOR_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZHGETLIST_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZH_GET_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZHMEMOEDITOR_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZHMENUSYS_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZH_POPUPMENU_ZH();
+         ext_zh_vm_SymbolInit_CLS_ZHTEXTLINE_ZH();
+         ext_zh_vm_SymbolInit_CODEPAGE_TERM_ZH();
+         ext_zh_vm_SymbolInit_COLORS_FOR_MENU_SYSTEM_ZH();
+         ext_zh_vm_SymbolInit_CTDUMMY_ZH();
+         ext_zh_vm_SymbolInit_CTMISC_ZH();
+         ext_zh_vm_SymbolInit_CTRAND_ZH();
+         ext_zh_vm_SymbolInit_CTTIME_ZH();
+         ext_zh_vm_SymbolInit___DBCOPYSTRUCT_ZH();
+         ext_zh_vm_SymbolInit_DBEDIT_FUNC_ZH();
+         ext_zh_vm_SymbolInit_DBGBRWSR_ZH();
+         ext_zh_vm_SymbolInit_DBGHELP_ZH();
+         ext_zh_vm_SymbolInit_DBGMENU_ZH();
+         ext_zh_vm_SymbolInit_DBGTARR_ZH();
+         ext_zh_vm_SymbolInit_DBGTHSH_ZH();
+         ext_zh_vm_SymbolInit_DBGTINP_ZH();
+         ext_zh_vm_SymbolInit_DBGTMENU_ZH();
+         ext_zh_vm_SymbolInit_DBGTMITM_ZH();
+         ext_zh_vm_SymbolInit_DBGTOBJ_ZH();
+         ext_zh_vm_SymbolInit_DBGTWIN_ZH();
+         ext_zh_vm_SymbolInit_DBGWA_ZH();
+         ext_zh_vm_SymbolInit___DBJOIN_ZH();
+         ext_zh_vm_SymbolInit___DBLIST_ZH();
+         ext_zh_vm_SymbolInit___DBSORT_ZH();
+         ext_zh_vm_SymbolInit___DBTOTAL_ZH();
+         ext_zh_vm_SymbolInit___DBUPDATE_ZH();
+         ext_zh_vm_SymbolInit_DEBUGGER_ZH();
+         ext_zh_vm_SymbolInit_DEVOUTPICT_ZH();
+         ext_zh_vm_SymbolInit_DIR_SCAN_ZH();
+         ext_zh_vm_SymbolInit_DIR_ZH();
+         ext_zh_vm_SymbolInit_EINSTVAR_ZH();
+         ext_zh_vm_SymbolInit_ENCB64_ZH();
+         ext_zh_vm_SymbolInit_ENCODER_ZH();
+         ext_zh_vm_SymbolInit_ENCQP_ZH();
+         ext_zh_vm_SymbolInit_ENCURL_ZH();
+         ext_zh_vm_SymbolInit_ERROR_HANDLER_ZH();
+         ext_zh_vm_SymbolInit_ERRSTR_ZH();
+         ext_zh_vm_SymbolInit_F18_UTILS_ZH();
+         ext_zh_vm_SymbolInit_FCOPY_ZH();
+         ext_zh_vm_SymbolInit_GETINFO_ZH();
+         ext_zh_vm_SymbolInit_GETINPUT_ZH();
+         ext_zh_vm_SymbolInit_GETLIST_ZH();
+         ext_zh_vm_SymbolInit_GETSECRT_ZH();
+         ext_zh_vm_SymbolInit_GET_SYSTEM_GUI_READER_ZH();
+         ext_zh_vm_SymbolInit_GET_SYSTEM_ZH();
+         ext_zh_vm_SymbolInit_GET_SYSTEM_ZH_ZH();
+         ext_zh_vm_SymbolInit_GUI_HELPER_ZH();
+         ext_zh_vm_SymbolInit_INPUT_ZH();
+         ext_zh_vm_SymbolInit_KEYSAVE_ZH();
+         ext_zh_vm_SymbolInit_KEYSEC_ZH();
+         ext_zh_vm_SymbolInit_KEYTIME_ZH();
+         ext_zh_vm_SymbolInit_LANG_COMP_ZH();
+         ext_zh_vm_SymbolInit_LIBNAME_FUNC_ZH();
+         ext_zh_vm_SymbolInit_LOG_ZH();
+         ext_zh_vm_SymbolInit_MAILASSY_ZH();
+         ext_zh_vm_SymbolInit_MAILSEND_ZH();
+         ext_zh_vm_SymbolInit_MAIL_ZH();
+         ext_zh_vm_SymbolInit_MEMVAR_SAVE_RESTORE_ZH();
+         ext_zh_vm_SymbolInit_MENU_SYS_ZH();
+         ext_zh_vm_SymbolInit_MENU_TO_ZH();
+         ext_zh_vm_SymbolInit_MINIZIP_ERROR_ZH();
+         ext_zh_vm_SymbolInit_MISC_ZH();
+         ext_zh_vm_SymbolInit_NOOP_ZH();
+         ext_zh_vm_SymbolInit_OBJECT_LOWLEVEL_FUNC_ZH();
+         ext_zh_vm_SymbolInit_PDF_CLASS_ZH();
+         ext_zh_vm_SymbolInit_PDF_DOWNLOAD_ZH();
+         ext_zh_vm_SymbolInit_PROFILER_ZH();
+         ext_zh_vm_SymbolInit_RADIO_BUTTON_ZH_ZH();
+         ext_zh_vm_SymbolInit_RDD_INIT_ZH();
+         ext_zh_vm_SymbolInit_RDD_ORD_ZH();
+         ext_zh_vm_SymbolInit_READKEY_ZH();
+         ext_zh_vm_SymbolInit_READVAR_ZH();
+         ext_zh_vm_SymbolInit_SAVESCREEN_HELPER_FUNC_ZH();
+         ext_zh_vm_SymbolInit_SCREEN3_ZH();
+         ext_zh_vm_SymbolInit_SCRMARK_ZH();
+         ext_zh_vm_SymbolInit_SESSID_ZH();
+         ext_zh_vm_SymbolInit_SET_FUNC_ZH();
+         ext_zh_vm_SymbolInit_SET_TYPEAHEAD_ZH();
+         ext_zh_vm_SymbolInit_SHOWTIME_ZH();
+         ext_zh_vm_SymbolInit_SMTPCLI_ZH();
+         ext_zh_vm_SymbolInit_TBROWSEDB_FUNC_ZH();
+         ext_zh_vm_SymbolInit_TBRWTEXT_ZH();
+         ext_zh_vm_SymbolInit_TEMPFILE_ZH();
+         ext_zh_vm_SymbolInit_T_PERSIST_ZH();
+         ext_zh_vm_SymbolInit_T_SCALAR_ZH();
+         ext_zh_vm_SymbolInit_T_SYMBOL_ZH();
+         ext_zh_vm_SymbolInit_URL_ZH();
+         ext_zh_vm_SymbolInit_VAL_TO_EXP_ZH();
+         ext_zh_vm_SymbolInit_WAIT_ZH();
+         ext_zh_vm_SymbolInit_ZHCLASS_FUNC_ZH();
+         ext_zh_vm_SymbolInit_ZH_DELIM_ZH();
+         ext_zh_vm_SymbolInit_ZH_I18N2_ZH();
+         ext_zh_vm_SymbolInit_ZH_INI_FILE_ZH();
+         ext_zh_vm_SymbolInit_ZH_INIT_ZH();
+         ext_zh_vm_SymbolInit_ZH_INI_ZH();
+         ext_zh_vm_SymbolInit_ZHOBJECT_FUNC_ZH();
+         ext_zh_vm_SymbolInit_ZH_OTHERS_ZH();
+   }
+
+      printf("init step 18\n");
+      
+      //if (vmInitCount == 0) {
+      //   vmInitCount = 1;
+      //} else {
+         
+         
+      zh_vmDoInitZHObject();
+      
+      
+      //}
+
+    
+
       zh_clsDoInit();                     /* initialize Class(y) .zh functions */
-
-   //printf("init step 17\n");
-   if (bInitRT)
-     zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
+      
+   //}
 
    //printf("init step 18\n");
-   zh_vmDoInitFunctions();    /* process registered INIT procedures */
+   //zh_vmDoInitFunctions();    /* process registered INIT procedures */
 
    
+
 
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
    {
@@ -1191,7 +2063,39 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT )
    } else {
       //printf("init step 27\n");
    }
+
+  if (gtcount() < 1)
+      printf("=====>========GT_STD REGISTER: %d\n", register_GT_STD());  
+   else
+     printf("=====>========gtcount: %d===========================\n", gtcount());
+
+   printf("=============zh_vmInit kraj=====================\n");
+      
 }
+
+
+/*
+void zh_initDynTable( void )
+{
+   static const char * s_pszFuncNames[] =
+      { "ERRORBLOCK", "ERRORSYS", "__ZHVMINIT", "DEFERROR", "EMPTY", "ZH_STRFORMAT", 
+        "NETERR", "ERRORMESSAGE", "BREAK" };
+
+   ZH_STACK_TLS_PRELOAD
+   int i;
+
+   for( i = 0; i < ( int ) ZH_SIZEOFARRAY( s_pszFuncNames ); ++i )
+   {
+      PZH_DYNSYMBOL pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
+
+      if ( ! pFuncSym ) {
+         pFuncSym = zh_dynsymGetCase( s_pszFuncNames[i] ); 
+         printf("find %s: %d  %d\n", s_pszFuncNames[i], i, pFuncSym);
+      }
+
+   }
+}
+*/
 
 ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 {
@@ -1217,9 +2121,11 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
     * can be cleanly executed
     */
    zh_stackSetActionRequest( 0 );
+
    zh_rddCloseAll();             /* close all workareas */
    if (bInitRT)
       zh_rddShutDown();             /* remove all registered RDD drivers */
+
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
    zh_i18n_exit();               /* unregister i18n module */
@@ -1237,7 +2143,6 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    /* release thread specific data */
    zh_stackDestroyTSD();
 
-   // hernad ne diraj ovo
    if (bInitRT) {
      zh_breakBlockRelease();
      zh_errExit();
@@ -1259,7 +2164,6 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_gcCollectAll( ZH_TRUE );
 
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
-   
    zh_vmCleanModuleFunctions();
 
    zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
@@ -1269,7 +2173,6 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
       s_pSymbolsMtx = NULL;
    }
    zh_threadExit();
-
 
    if (bInitRT) {
      zh_langReleaseAll();             /* release lang modules */
@@ -1281,7 +2184,6 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
       zh_gcReleaseAll();
 
    zh_vmUnsetExceptionHandler();
-
    zh_xexit();
 
 #if defined( ZH_OS_WIN )
@@ -5848,13 +6750,6 @@ void zh_vmProc( ZH_USHORT uiParams )
 #ifndef ZH_NO_PROFILER
    if( bProfiler )
       ulClock = ( ZH_ULONG ) clock();
-#endif
-
-   /* Poll the console keyboard */
-#if 0
-   #if ! defined( ZH_GUI )
-      zh_inkeyPoll();
-   #endif
 #endif
 
    pSym = zh_stackNewFrame( &sStackState, uiParams )->item.asSymbol.value;

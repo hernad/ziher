@@ -64,7 +64,7 @@ f18_f18(PyObject *self, PyObject *args)
 
    zh_cmdargInit( 1, f18_args );
 
-   zh_vmInit( ZH_TRUE, ZH_TRUE );
+   zh_vmInit( ZH_TRUE, ZH_TRUE, ZH_TRUE );
    zh_vmQuit( ZH_FALSE );
    return PyLong_FromLong(0);
 }
@@ -74,7 +74,7 @@ static PyObject *
 f18_vminit(PyObject *self, PyObject *args)
 {
 
-   zh_vmInit( ZH_FALSE, ZH_TRUE );
+   zh_vmInit( ZH_FALSE, ZH_TRUE, ZH_TRUE );
 
    zh_conRelease();
 

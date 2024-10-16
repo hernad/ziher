@@ -67,9 +67,9 @@ REQUEST ZHObject
 
 FUNCTION ZHClass()
 
-   STATIC s_hClass  /* NOTE: Automatically defaults to NIL */
-
+   STATIC s_hClass := NIL  /* NOTE: Automatically defaults to NIL */
    LOCAL hClass
+
 
    IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
 
@@ -77,7 +77,6 @@ FUNCTION ZHClass()
 
 
            hClass := __clsNew( "ZHCLASS", 16,, @ZHClass() )
-
 
          __clsAddMsg( hClass, "New"            , @New()            , ZH_OO_MSG_METHOD )
          __clsAddMsg( hClass, "Create"         , @Create()         , ZH_OO_MSG_METHOD )
@@ -429,3 +428,17 @@ STATIC PROCEDURE SetDestructor( sFuncPtr )
 
 STATIC FUNCTION InitClass()
    RETURN QSelf()
+
+
+#pragma BEGINDUMP
+
+#include "zh_api.h"
+#include "zh_fs_api.h"
+
+ZH_FUNC( ZHCLASS_VMINIT )
+{
+   printf("zhclass_vminit ziher fn\n");
+   zh_INITSTATICS();
+}
+
+#pragma ENDDUMP 

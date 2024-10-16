@@ -52,7 +52,13 @@
 ZH_FUNC( ZH_GTCOUNT )
 {
    ZH_TRACE( ZH_TR_INFO, ( "zh_gtcount(%d)", gtcount() ) );
-   zh_retni( gtcount() );
+
+  if (gtcount() < 1) {
+      printf("=====>========GT_STD REGISTER: %d\n", register_GT_STD());  
+  } else
+     printf("=====>========gtcount: %d===========================\n", gtcount());
+
+  zh_retni( gtcount() );
 }
 
 ZH_FUNC( ZH_SETDISPCP )

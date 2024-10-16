@@ -222,10 +222,7 @@ ZH_FUNC_STATIC( msgNull );
 ZH_FUNC_STATIC( msgClassH );
 ZH_FUNC_STATIC( msgClassName );
 ZH_FUNC_STATIC( msgClassSel );
-#if 0
-ZH_FUNC_STATIC( msgClass );
-ZH_FUNC_STATIC( msgClassParent );
-#endif
+
 
 /* --- */
 
@@ -365,31 +362,7 @@ static PZH_ITEM s_pClassMtx = NULL;
 
 /* --- */
 
-#if 0
-static ZH_USHORT zh_clsBucketPos( PZH_DYNSYMBOL pMsg, ZH_USHORT uiMask )
-{
-   /* we can use PZH_DYNSYMBOL address as base for hash key.
-    * This value is perfectly unique and we do not need anything more
-    * but it's not continuous so we will have to add dynamic BUCKETSIZE
-    * modification to be 100% sure that we can resolve all symbol name
-    * conflicts (though even without it it's rather theoretical problem).
-    * [druzus]
-    */
 
-   /* Safely divide it by 16 - it's minimum memory allocated for single
-    * ZH_DYNSYMBOL structure
-    */
-   #if 0
-   return ( ( ZH_USHORT ) ( ( ZH_PTRUINT ) pMsg >> 4 ) & uiMask ) << BUCKETBITS;
-   #endif
-
-   /* Using continuous symbol numbers we are 100% sure that we will cover
-    * the whole 16-bit area and we will never have any problems until number
-    * of symbols is limited to 2^16. [druzus]
-    */
-   return ( pMsg->uiSymNum & uiMask ) << BUCKETBITS;
-}
-#endif
 
 /* zh_clsDictRealloc( PCLASS )
  *
@@ -740,14 +713,6 @@ static ZH_USHORT zh_clsParentInstanceOffset( PCLASS pClass, ZH_USHORT uiParentCl
    return 0;
 }
 
-#if 0
-static ZH_USHORT zh_clsParentInstanceOffset( PCLASS pClass, ZH_USHORT uiParentCls )
-{
-   PMETHOD pMethod = zh_clsFindMsg( pClass, s_pClasses[ uiParentCls ]->pClassSym );
-
-   return ( pMethod && pMethod->pFuncSym == &s___msgSuper ) ? pMethod->uiOffset : 0;
-}
-#endif
 
 static ZH_USHORT zh_clsAddInitValue( PCLASS pClass, PZH_ITEM pItem,
                                      ZH_USHORT uiType, ZH_USHORT uiData,
@@ -981,15 +946,9 @@ static void zh_clsCopyClass( PCLASS pClsDst, PCLASS pClsSrc )
    pClsDst->fHasDestructor = pClsSrc->fHasDestructor;
 
    /* CLASS DATA Not Shared ( new array, new value ) */
-#if 0
-   /* enable this code if you want to inherit class variables values
-    * from ancestor classes when new class is dynamically created.
-    * (compatibility with older [x]Ziher versions)
-    */
-   pClsDst->pClassDatas = zh_arrayClone( pClsSrc->pClassDatas );
-#else
+
    pClsDst->pClassDatas = zh_itemArrayNew( zh_arrayLen( pClsSrc->pClassDatas ) );
-#endif
+
    /* do not copy shared data array - just simply create new one */
    pClsDst->pSharedDatas = zh_itemArrayNew( 0 );
    pClsDst->pInlines = zh_arrayClone( pClsSrc->pInlines );
@@ -1116,10 +1075,7 @@ void zh_clsInit( void )
    s___msgSymbol.pDynSym      = zh_dynsymGetCase( s___msgSymbol.szName );
    s___msgKeys.pDynSym        = zh_dynsymGetCase( s___msgKeys.szName );
    s___msgValues.pDynSym      = zh_dynsymGetCase( s___msgValues.szName );
-/*
-   s___msgClsParent.pDynSym   = zh_dynsymGetCase( s___msgClsParent.szName );
-   s___msgClass.pDynSym       = zh_dynsymGetCase( s___msgClass.szName );
-*/
+
    s___msgEnumIndex.pDynSym   = zh_dynsymGetCase( s___msgEnumIndex.szName );
    s___msgEnumBase.pDynSym    = zh_dynsymGetCase( s___msgEnumBase.szName );
    s___msgEnumKey.pDynSym     = zh_dynsymGetCase( s___msgEnumKey.szName );
@@ -1147,7 +1103,7 @@ void zh_clsDoInit( void )
         "ZHDATE", "ZHTIMESTAMP",
         "ZHHASH", "ZHLOGICAL", "ZHNIL", "ZHNUMERIC",
         "ZHSYMBOL", "ZHPOINTER",
-        "ZHObject" };
+        "ZHOBJECT" };
    static ZH_USHORT * s_puiHandles[] =
       { &s_uiArrayClass, &s_uiBlockClass, &s_uiCharacterClass,
         &s_uiDateClass, &s_uiTimeStampClass,
@@ -1163,17 +1119,34 @@ void zh_clsDoInit( void )
    for( i = 0; i < ( int ) ZH_SIZEOFARRAY( s_puiHandles ); ++i )
    {
       PZH_DYNSYMBOL pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
+
+      //if ( ! pFuncSym )
+      //   pFuncSym = zh_dynsymGetCase( s_pszFuncNames[i] ); 
+
+      printf("clsDoInit %s %d  %d\n", s_pszFuncNames[i], i, pFuncSym);
       if( pFuncSym && zh_dynsymIsFunction( pFuncSym ) )
       {
+         printf("step 110\n");
          PZH_ITEM pReturn = zh_stackReturnItem();
+         printf("step 111\n");
          zh_itemSetNil( pReturn );
+         printf("step 112\n");
          zh_vmPushDynSym( pFuncSym );
+         printf("step 113\n");
          zh_vmPushNil();
+         printf("step 114\n");
          zh_vmProc( 0 );
-         if( ZH_IS_OBJECT( pReturn ) )
+         printf("step 115\n");
+         if( ZH_IS_OBJECT( pReturn ) ) {
+            printf("step 116\n");
             *( s_puiHandles[ i ] ) = pReturn->item.asArray.value->uiClass;
+            printf("step 117\n");
+         }
       }
+      //printf("after cls %d\n", i);
+      printf("step 118\n");
    }
+   printf("step 119 %d\n", ( int ) ZH_SIZEOFARRAY( s_puiHandles ));
 }
 
 /* zh_clsRelease( <pClass> )

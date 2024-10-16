@@ -1912,3 +1912,18 @@ METHOD New( nRow, nCol, bVarBlock, cVarName, cPicture, cColorSpec ) CLASS Get
 
 FUNCTION GetNew( nRow, nCol, bVarBlock, cVarName, cPicture, cColor )
    RETURN Get():New( nRow, nCol, bVarBlock, cVarName, cPicture, cColor )
+
+
+
+#pragma BEGINDUMP
+
+#include "zh_api.h"
+#include "zh_fs_api.h"
+
+ZH_FUNC( GET_VMINIT )
+{
+   printf("get_vminit ziher fn\n");
+   zh_INITSTATICS();
+}
+
+#pragma ENDDUMP    

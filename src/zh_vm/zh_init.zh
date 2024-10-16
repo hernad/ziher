@@ -58,9 +58,12 @@ PROCEDURE __ZHVMInit()
 
    MEMVAR GetList
 
-   PUBLIC GetList := {}
+   ? "---------------------- __ZHVMInit ZIHER START -----------------------------"
+   //PUBLIC GetList := {}
 
    ErrorSys()
+
+   ? "---------------------- __ZHVMInit ZIHER END -----------------------------"
 
    RETURN
 

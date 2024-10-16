@@ -718,3 +718,8 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 }
 
 #include "../zh_gt_reg.h"
+
+ZH_EXTERN ZH_BOOL register_GT_STD()
+{
+     return zh_gtRegister( &gtInit );
+}

@@ -67,7 +67,7 @@ int WINAPI WinMain( HINSTANCE hInstance,      /* handle to current instance */
 
    zh_winmainArgInit( hInstance, hPrevInstance, iCmdShow );
 
-   zh_vmInit( ZH_TRUE, ZH_TRUE );
+   zh_vmInit( ZH_TRUE, ZH_TRUE, ZH_TRUE);
    iErrorCode = zh_vmQuit( ZH_TRUE );
 
 #else

@@ -20,7 +20,7 @@ _LINUX_COPTS = [
     "-DUNICODE",
     "-DZH_OS_LINUX",
     #"-DZH_TR_LEVEL=4" #INFO
-    "-DZH_TR_LEVEL=5" #DEBUG
+    #"-DZH_TR_LEVEL=5" #DEBUG
 ]
 
 _WINDOWS_LOPTS = [
@@ -214,7 +214,7 @@ ZH_Z18_COMP_OPTS=[
     "-DF18_DEBUG",
     "-b",
     #"-DZH_TR_LEVEL=4", #INFO
-    "-DZH_TR_LEVEL=5", #DEBUG
+    #"-DZH_TR_LEVEL=5", #DEBUG
 ]
 
 ZH_DEPS_F18=[

@@ -154,7 +154,6 @@ cc_binary(
     copts = [
         "-Izh_zero",
         "-DZH_DYNIMP",
-        #"-DZH_TR_LEVEL=5",
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
@@ -256,8 +255,6 @@ windows_dll_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
@@ -353,7 +350,6 @@ cc_library(
     copts = [
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        "-DZH_TR_LEVEL=5"
     ],
     alwayslink=1,
     visibility = ["//visibility:public"],
@@ -435,7 +431,6 @@ cc_binary(
     copts = [
         "-Izh_zero",
         "-DZH_DYNIMP",
-        #"-DZH_TR_LEVEL=5",
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
@@ -457,8 +452,6 @@ windows_dll_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + PYTHON_COPT + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
@@ -482,8 +475,6 @@ shared_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + PYTHON_COPT + POSTGRESQL_COPT,
     visibility = ["//visibility:public"],
     exec_compatible_with = [
@@ -514,8 +505,6 @@ shared_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + PYTHON_COPT + POSTGRESQL_COPT,
     visibility = ["//visibility:public"],
     exec_compatible_with = [
@@ -538,7 +527,6 @@ cc_binary(
     copts = [
         "-Izh_zero",
         "-DZH_DYNIMP",
-        #"-DZH_TR_LEVEL=5",
     ],
     #linkstatic = True,
     visibility = ["//visibility:public"],
@@ -566,8 +554,6 @@ windows_dll_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + PYTHON_COPT + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
@@ -617,8 +603,6 @@ windows_dll_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
@@ -647,8 +631,6 @@ shared_library(
         "-Izh_vm",
         "-Izh_rtl",
         "-DZH_DYNLIB",
-        #"-DZH_TR_LEVEL=4", #INFO
-        #"-DZH_TR_LEVEL=5", DEBUG
     ]  + POSTGRESQL_COPT,
     #linkstatic = False,
     #linkshared = True,
