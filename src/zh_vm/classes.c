@@ -139,7 +139,6 @@ typedef struct
 } METHOD, * PMETHOD;
 
 
-#define ZH_MSG_POOL
 typedef struct
 {
    char *      szName;           /* Class name */
@@ -168,10 +167,8 @@ typedef struct
    ZH_USHORT   uiFriendModule;   /* Number of friend symbols in pFriendModule */
    ZH_USHORT   uiMutexOffset;    /* Offset in instance area to SYNC method mutex */
    ZH_USHORT   uiHashKey;
-#ifdef ZH_MSG_POOL
    ZH_USHORT * puiMsgIdx;
    ZH_USHORT   uiMethodCount;
-#endif
 } CLASS, * PCLASS;
 
 #define BUCKETBITS      2
@@ -183,11 +180,7 @@ typedef struct
 #define zh_clsInited(p) ( (p)->pMethods != NULL )
 #define zh_clsBucketPos( p, m )     ( ( (p)->uiSymNum & (m) ) << BUCKETBITS )
 
-#ifdef ZH_MSG_POOL
 #  define zh_clsMthNum( p )      ( ( ZH_SIZE ) ( p )->uiMethodCount )
-#else
-#  define zh_clsMthNum( p )      ( ( ( ZH_SIZE ) ( p )->uiHashKey + 1 ) << BUCKETBITS )
-#endif
 
 #if defined( ZH_REAL_BLOCK_SCOPE )
 #  undef ZH_CLASSY_BLOCK_SCOPE
@@ -365,31 +358,7 @@ static PZH_ITEM s_pClassMtx = NULL;
 
 /* --- */
 
-#if 0
-static ZH_USHORT zh_clsBucketPos( PZH_DYNSYMBOL pMsg, ZH_USHORT uiMask )
-{
-   /* we can use PZH_DYNSYMBOL address as base for hash key.
-    * This value is perfectly unique and we do not need anything more
-    * but it's not continuous so we will have to add dynamic BUCKETSIZE
-    * modification to be 100% sure that we can resolve all symbol name
-    * conflicts (though even without it it's rather theoretical problem).
-    * [druzus]
-    */
 
-   /* Safely divide it by 16 - it's minimum memory allocated for single
-    * ZH_DYNSYMBOL structure
-    */
-   #if 0
-   return ( ( ZH_USHORT ) ( ( ZH_PTRUINT ) pMsg >> 4 ) & uiMask ) << BUCKETBITS;
-   #endif
-
-   /* Using continuous symbol numbers we are 100% sure that we will cover
-    * the whole 16-bit area and we will never have any problems until number
-    * of symbols is limited to 2^16. [druzus]
-    */
-   return ( pMsg->uiSymNum & uiMask ) << BUCKETBITS;
-}
-#endif
 
 /* zh_clsDictRealloc( PCLASS )
  *
@@ -399,11 +368,7 @@ static ZH_BOOL zh_clsDictRealloc( PCLASS pClass )
 {
    ZH_SIZE nNewHashKey, nLimit, n;
 
-#ifdef ZH_MSG_POOL
    ZH_USHORT * puiMsgIdx;
-#else
-   PMETHOD pNewMethods;
-#endif
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsDictRealloc(%p)", ( void * ) pClass ) );
 
@@ -416,7 +381,6 @@ static ZH_BOOL zh_clsDictRealloc( PCLASS pClass )
       if( nNewHashKey > HASH_KEYMAX )
          zh_errInternal( 6002, "Could not realloc class message in __clsDictRealloc()", NULL, NULL );
 
-#ifdef ZH_MSG_POOL
       puiMsgIdx = ( ZH_USHORT * ) zh_xgrabz( ( nNewHashKey << BUCKETBITS ) * sizeof( ZH_USHORT ) );
 
       for( n = 0; n < nLimit; n++ )
@@ -453,46 +417,6 @@ static ZH_BOOL zh_clsDictRealloc( PCLASS pClass )
    zh_xfree( pClass->puiMsgIdx );
    pClass->puiMsgIdx = puiMsgIdx;
 
-#else
-
-      pNewMethods = ( PMETHOD ) zh_xgrabz( ( nNewHashKey << BUCKETBITS ) * sizeof( METHOD ) );
-
-      for( n = 0; n < nLimit; n++ )
-      {
-         PZH_DYNSYMBOL pMessage = ( PZH_DYNSYMBOL ) pClass->pMethods[ n ].pMessage;
-
-         if( pMessage )
-         {
-            PMETHOD pMethod = pNewMethods + zh_clsBucketPos( pMessage, nNewHashKey - 1 );
-            ZH_USHORT uiBucket = BUCKETSIZE;
-
-            do
-            {
-               if( ! pMethod->pMessage ) /* this message position is empty */
-               {
-                  memcpy( pMethod, pClass->pMethods + n, sizeof( METHOD ) );
-                  break;
-               }
-               ++pMethod;
-            }
-            while( --uiBucket );
-
-            /* Not enough go back to the beginning */
-            if( ! uiBucket )
-            {
-               zh_xfree( pNewMethods );
-               break;
-            }
-         }
-      }
-   }
-   while( n < nLimit );
-
-   pClass->uiHashKey = ( ZH_USHORT ) ( nNewHashKey - 1 );
-   zh_xfree( pClass->pMethods );
-   pClass->pMethods = pNewMethods;
-#endif
-
    return ZH_TRUE;
 }
 
@@ -503,21 +427,15 @@ static void zh_clsDictInit( PCLASS pClass, ZH_USHORT uiHashKey )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsDictInit(%p,%hu)", ( void * ) pClass, uiHashKey ) );
 
    pClass->uiHashKey = uiHashKey;
-#ifdef ZH_MSG_POOL
    nSize = ( ( ( ZH_SIZE ) uiHashKey + 1 ) << BUCKETBITS ) * sizeof( ZH_USHORT );
    pClass->puiMsgIdx = ( ZH_USHORT * ) zh_xgrabz( nSize );
 
    pClass->uiMethodCount = 1;
    pClass->pMethods = ( PMETHOD ) zh_xgrabz( sizeof( METHOD ) );
-#else
-   nSize = ( ( ( ZH_SIZE ) uiHashKey + 1 ) << BUCKETBITS ) * sizeof( METHOD );
-   pClass->pMethods = ( PMETHOD ) zh_xgrabz( nSize );
-#endif
 }
 
 static PMETHOD zh_clsFindMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
 {
-#ifdef ZH_MSG_POOL
 
    ZH_USHORT uiBucket, * puiMsgIdx;
 
@@ -536,25 +454,6 @@ static PMETHOD zh_clsFindMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
    }
    while( --uiBucket );
 
-#else
-
-   PMETHOD pMethod;
-   ZH_USHORT uiBucket;
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsFindMsg(%p,%p)", ( void * ) pClass, ( void * ) pMsg ) );
-
-   pMethod = pClass->pMethods + zh_clsBucketPos( pMsg, pClass->uiHashKey );
-   uiBucket = BUCKETSIZE;
-
-   do
-   {
-      if( pMethod->pMessage == pMsg )
-         return pMethod;
-      ++pMethod;
-   }
-   while( --uiBucket );
-
-#endif
 
    return NULL;
 }
@@ -566,7 +465,6 @@ static PMETHOD zh_clsAllocMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
    do
    {
 
-#ifdef ZH_MSG_POOL
 
       ZH_USHORT uiBucket = BUCKETSIZE, * puiMsgIdx = pClass->puiMsgIdx +
                                     zh_clsBucketPos( pMsg, pClass->uiHashKey );
@@ -586,21 +484,6 @@ static PMETHOD zh_clsAllocMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
          ++puiMsgIdx;
       }
       while( --uiBucket );
-
-#else
-
-      PMETHOD pMethod = pClass->pMethods + zh_clsBucketPos( pMsg, pClass->uiHashKey );
-      ZH_USHORT uiBucket = BUCKETSIZE;
-
-      do
-      {
-         if( ! pMethod->pMessage || pMethod->pMessage == pMsg )
-            return pMethod;
-         ++pMethod;
-      }
-      while( --uiBucket );
-
-#endif
 
    }
    while( zh_clsDictRealloc( pClass ) );
@@ -627,7 +510,6 @@ static ZH_BOOL zh_clsCanClearMethod( PMETHOD pMethod, ZH_BOOL fError )
 
 static void zh_clsFreeMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
 {
-#ifdef ZH_MSG_POOL
 
    ZH_USHORT uiBucket, * puiMsgIdx;
 
@@ -653,38 +535,6 @@ static void zh_clsFreeMsg( PCLASS pClass, PZH_DYNSYMBOL pMsg )
    }
    while( --uiBucket );
 
-#else
-
-   PMETHOD pMethod;
-   ZH_USHORT uiBucket;
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_clsFreeMsg(%p,%p)", ( void * ) pClass, ( void * ) pMsg ) );
-
-   pMethod = pClass->pMethods + zh_clsBucketPos( pMsg, pClass->uiHashKey );
-   uiBucket = BUCKETSIZE;
-
-   do
-   {
-      if( pMethod->pMessage == pMsg )
-      {
-         if( zh_clsCanClearMethod( pMethod, ZH_TRUE ) )
-         {
-            /* Move messages */
-            while( --uiBucket )
-            {
-               memcpy( pMethod, pMethod + 1, sizeof( METHOD ) );
-               pMethod++;
-            }
-            memset( pMethod, 0, sizeof( METHOD ) );
-            pClass->uiMethods--;       /* Decrease number of messages */
-         }
-         return;
-      }
-      ++pMethod;
-   }
-   while( --uiBucket );
-
-#endif
 }
 
 static ZH_BOOL zh_clsHasParentClass( PCLASS pClass, ZH_USHORT uiParentCls )
@@ -701,10 +551,6 @@ static ZH_BOOL zh_clsHasParentClass( PCLASS pClass, ZH_USHORT uiParentCls )
    /* alternative method but can give wrong results
     * if user overloads super casting method, [druzus].
     */
-   #if 0
-   PMETHOD pMethod = zh_clsFindMsg( pClass, s_pClasses[ uiParentCls ]->pClassSym );
-   return pMethod && pMethod->pFuncSym == &s___msgSuper;
-   #endif
 }
 
 static ZH_USHORT zh_clsGetParent( PCLASS pClass, PZH_DYNSYMBOL pParentSym )
@@ -1017,13 +863,11 @@ static void zh_clsCopyClass( PCLASS pClsDst, PCLASS pClsSrc )
    }
 
    nLimit = zh_clsMthNum( pClsSrc );
-#ifdef ZH_MSG_POOL
    memcpy( pClsDst->puiMsgIdx, pClsSrc->puiMsgIdx,
       ( ( ( ZH_SIZE ) pClsSrc->uiHashKey + 1 ) << BUCKETBITS ) * sizeof( ZH_USHORT ) );
    pClsDst->uiMethodCount = pClsSrc->uiMethodCount;
    pClsDst->pMethods = ( PMETHOD ) zh_xrealloc( pClsDst->pMethods,
                                                 nLimit * sizeof( METHOD ) );
-#endif
    memcpy( pClsDst->pMethods, pClsSrc->pMethods, nLimit * sizeof( METHOD ) );
    pClsDst->uiMethods = pClsSrc->uiMethods;
 
@@ -1206,10 +1050,8 @@ static void zh_clsRelease( PCLASS pClass )
       zh_xfree( pClass->pFriendSyms );
    if( pClass->pSuperClasses )
       zh_xfree( pClass->pSuperClasses );
-#ifdef ZH_MSG_POOL
    if( pClass->puiMsgIdx )
       zh_xfree( pClass->puiMsgIdx );
-#endif
    if( pClass->pClassDatas )
       zh_itemRelease( pClass->pClassDatas );
    if( pClass->pSharedDatas )
@@ -1824,7 +1666,6 @@ PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                   /* Someone tried to manipulate with supercast array */
                   zh_itemClear( pObject );
             }
-#ifdef ZH_MSG_POOL
             {
                ZH_USHORT uiBucket = BUCKETSIZE, * puiMsgIdx =
                   pClass->puiMsgIdx + zh_clsBucketPos( pMsg, pClass->uiHashKey );
@@ -1841,16 +1682,6 @@ PZH_SYMBOL zh_objGetMethod( PZH_ITEM pObject, PZH_SYMBOL pMessage,
                }
                while( --uiBucket );
             }
-#else
-            {
-               PMETHOD pMethod = zh_clsFindMsg( pClass, pMsg );
-               if( pMethod )
-               {
-                  pStack->uiMethod = ( ZH_USHORT ) ( pMethod - pClass->pMethods );
-                  return zh_clsValidScope( pMethod, pStack );
-               }
-            }
-#endif
          }
          else
          {
