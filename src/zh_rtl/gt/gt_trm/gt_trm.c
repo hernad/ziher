@@ -3218,6 +3218,7 @@ static void zh_gt_trm_Scroll( PZH_GT pGT, int iTop, int iLeft, int iBottom, int 
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_Scroll(%p,%d,%d,%d,%d,%d,%d,%d,%d)", ( void * ) pGT, iTop, iLeft, iBottom, iRight, iColor, usChar, iRows, iCols ) );
 
+   //printf("trm scrollllllllllllllllllllllllllammmmmmmmmmmmmmmm\n");
    /* Provide some basic scroll support for full screen */
    if( iCols == 0 && iRows > 0 && iTop == 0 && iLeft == 0 )
    {

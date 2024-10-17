@@ -53,7 +53,20 @@ ZH_GT_ANNOUNCE( ZH_GT_NAME )
 
 ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
    zh_gtRegister( &gtInit );
-ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+   printf("================================= startup gt neki =============================================================================================\n");
+   
+//ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+
+//#if ZH_GT_NUM == 1 
+  ZH_CALL_ON_STARTUP_EXT_END( _zh_startup_gt_Init_ )
+//#elif ZH_GT_NUM == 2 
+  // ext__zh_startup_gt_Init_TRM
+//  ZH_CALL_ON_STARTUP_EXT_END( _zh_startup_gt_Init_TRMX )
+//#elif ZH_GT_NUM == 5
+//  ZH_CALL_ON_STARTUP_EXT_END( _zh_startup_gt_Init_XWC )
+//#else
+//   ZH_CALL_ON_STARTUP_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+//#endif
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    \

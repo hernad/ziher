@@ -59,12 +59,12 @@ ZH_EXTERN_BEGIN
 #define ZH_GT_cgi    ZH_GT_CGI
 #define ZH_GT_win    ZH_GT_WIN
 #define ZH_GT_wvt    ZH_GT_WVT
-#define ZH_GT_tpl    ZH_GT_TPL
+
 #define ZH_GT_trm    ZH_GT_TRM
-#define ZH_GT_ele    ZH_GT_ELE
-#define ZH_GT_xvt    ZH_GT_XVT
+
+
 #define ZH_GT_xwc    ZH_GT_XWC
-#define ZH_GT_gui    ZH_GT_GUI
+
 
 /* These hacks are needed to force preprocessing if id/x is also a macro */
 #define _ZH_GT_PREF_( id )      _ZH_GT_PREF__( id )
@@ -78,6 +78,7 @@ ZH_EXTERN_BEGIN
                                  { \
                                     ZH_FUNC_EXEC( id ); \
                                  }
+
 
 #define ZH_GT_ANNOUNCE( id )     ZH_GT_ANNOUNCE_( _ZH_GT_PREF_( id ) )
 #define ZH_GT_ANNOUNCE_( id )    ZH_GT_ANNOUNCE__( id )

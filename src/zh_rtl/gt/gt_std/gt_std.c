@@ -47,6 +47,7 @@
 /* NOTE: User programs should never call this layer directly! */
 
 #define ZH_GT_NAME  STD
+#define ZH_GT_NUM  1
 
 #include "zh_api.h"
 #include "../zh_gt_core.h"

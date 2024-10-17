@@ -51,7 +51,7 @@
 #define ZH_GTXWC_H
 
 #define ZH_GT_NAME  XWC
-
+#define ZH_GT_NUM  5
 #include "zh_api.h"
 #include "../zh_gt_core.h"
 #include "zh_init.h"

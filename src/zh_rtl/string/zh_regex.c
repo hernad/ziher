@@ -527,14 +527,15 @@ ZH_CALL_ON_STARTUP_BEGIN( _zh_regex_init_ )
    /* detect UTF-8 support. */
    if( pcre2_config( PCRE2_CONFIG_UNICODE, &s_iUTF8Enabled ) != 0 )
       s_iUTF8Enabled = 0;
-
+   printf("================================= startup regex =============================================================================================\n");
+   //int ch = getchar();
    s_re_ctxg = pcre2_general_context_create( zh_pcre2_grab, zh_pcre2_free, NULL );
    s_re_ctxc = pcre2_compile_context_create( s_re_ctxg );
    s_re_ctxm = pcre2_match_context_create( s_re_ctxg );
 
    zh_vmAtExit( zh_pcre2_exit, NULL );
    zh_regexInit( zh_regfree, zh_regcomp, zh_regexec );
-ZH_CALL_ON_STARTUP_END( _zh_regex_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_regex_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_regex_init_ )

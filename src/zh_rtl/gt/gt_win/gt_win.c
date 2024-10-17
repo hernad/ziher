@@ -63,6 +63,7 @@
 /* NOTE: User programs should never call this layer directly! */
 
 #define ZH_GT_NAME  WIN
+#define ZH_GT_NUM  3
 
 /* TODO: include any standard headers here */
 /* *********************************************************************** */

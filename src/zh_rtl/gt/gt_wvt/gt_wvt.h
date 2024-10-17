@@ -48,6 +48,7 @@
 #define ZH_WVT_H_
 
 #define ZH_GT_NAME  WVT
+#define ZH_GT_NUM  4
 
 #include "zh_api.h"
 #include "zh_set.h"

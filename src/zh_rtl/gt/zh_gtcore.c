@@ -70,11 +70,15 @@ static const ZH_WCHAR s_szSpaceW[] = { ' ', 0 };
 PZH_GT zh_gt_Base( void )
 {
    PZH_GT pGT = ( PZH_GT ) zh_stackGetGT();
-
-   if( pGT && ZH_GTSELF_LOCK( pGT ) )
+   printf("gtbase-1\n");
+   if( pGT && ZH_GTSELF_LOCK( pGT ) ) {
+      printf("gtbase-2\n"); 
       return pGT;
-   else
+   }
+   else {
+      printf("gtbase-3null\n");
       return NULL;
+   }
 }
 
 void zh_gt_BaseFree( PZH_GT pGT )
@@ -582,12 +586,6 @@ static void zh_gt_def_ColorsToString( PZH_GT pGT, int * pColors, int iColorCount
 
          if( j == 0 )
          {
-            /* NOTE: When STRICT is on, Ziher will put both the "*" and "+"
-                     chars to the first half of the colorspec (like "W*+/B"),
-                     which is quite ugly, otherwise it will put the "+" to the
-                     first half and the "*" to the second (like "W+/B*"), which
-                     is how it should be done. [vszakats] */
-
             if( ( pColors[ iColorIndex ] & 0x08 ) != 0 )
                pszColorString[ iPos++ ] = '+';
 
