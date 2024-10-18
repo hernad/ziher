@@ -103,7 +103,6 @@ extern ZH_EXPORT PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT 
       } \
       ZH_EXTERN_END
 
-
    #define ZH_CALL_ON_STARTUP_BEGIN( func ) \
       static void __attribute__ ((constructor)) func( void ) \
       {

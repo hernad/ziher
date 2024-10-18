@@ -4256,7 +4256,7 @@ ZH_INIT_SYMBOLS_END( dbffpt1__InitSymbols )
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_dbffpt_rdd_init_ )
    zh_vmAtInit( zh_dbffptRddInit, NULL );
-ZH_CALL_ON_STARTUP_END( _zh_dbffpt_rdd_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_dbffpt_rdd_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( dbffpt1__InitSymbols ) \

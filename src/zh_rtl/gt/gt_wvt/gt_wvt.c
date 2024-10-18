@@ -100,15 +100,6 @@ static ZH_CRITICAL_NEW( s_wvtMtx );
 #define _WVT_WS_NORESIZE        ( WS_OVERLAPPEDWINDOW & ~( WS_THICKFRAME ) )
 #define _WVT_WS_MAXED           ( WS_OVERLAPPEDWINDOW & ~( WS_MAXIMIZEBOX ) )
 
-/* Left for testing to someone with multi monitor workspace on older platforms */
-#if 0
-#ifndef NO_MULTIMON
-   #if WINVER < 0x0500
-      #define COMPILE_MULTIMON_STUBS
-      #include <multimon.h>
-   #endif
-#endif
-#endif
 
 #define ZH_KF_ALTGR             0x10
 
@@ -4588,6 +4579,9 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 }
 
 /* *********************************************************************** */
+
+#define ZH_GT_NAME  WVT
+#define ZH_GT_NUM  4
 
 #include "..\zh_gt_reg.h"
 

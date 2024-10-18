@@ -1082,6 +1082,12 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
+   ext__zh_regex_init_();
+   ext__zh_dbffpt_rdd_init_();
+   ext__zh_startup_gt_Init_XWC();
+   ext__zh_startup_gt_Init_STD();
+   ext__zh_startup_gt_Init_TRM();
+
    zh_xinit();
    zh_vmSetExceptionHandler();
    if (bInitRT) {
@@ -1191,11 +1197,11 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
       printf("init step 17\n");
 
+
 if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
          //ext_zh_vm_SymbolInit_F18_UTILS_ZH();
-         ext__zh_regex_init_();
-         ext__zh_startup_gt_Init_TRM();
+
 
          ext_zh_vm_SymbolInit_A_DBFS_ZH();
          ext_zh_vm_SymbolInit_ADD_MCODE_ZH();

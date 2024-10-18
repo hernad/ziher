@@ -48,6 +48,7 @@
 
 /* This definition has to be placed before #include "zh_gt_api.h" */
 #define ZH_GT_NAME  NUL
+#define ZH_GT_NUM   0
 
 #include "zh_api.h"
 #include "zh_gt_core.h"

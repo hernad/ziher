@@ -6196,5 +6196,7 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    return ZH_TRUE;
 }
 
+#define ZH_GT_NAME  XWC
+#define ZH_GT_NUM 5
 
 #include "../zh_gt_reg.h"

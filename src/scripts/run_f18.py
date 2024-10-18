@@ -33,7 +33,7 @@ elif arg1 == "func_hello_ziher_2":
    bInitRT = True
    bInitConsole = True
    bReleaseConsole = True
-   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole, bReleaseConsole)
+   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    
    bInitConsole = 1
    bReleaseConsole = 1
@@ -84,7 +84,7 @@ elif arg1 == "func_hello_ziher_2":
    bReleaseConsole = True
    print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
    s = input()
-   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole, bReleaseConsole)
+   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    #f18klijentlib.fill_dyntable_0()
 
    #bInitConsole = 1

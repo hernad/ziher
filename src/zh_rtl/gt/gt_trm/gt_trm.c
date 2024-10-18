@@ -59,6 +59,7 @@
 /* NOTE: User programs should never call this layer directly! */
 
 #define ZH_GT_NAME  TRM
+#define ZH_GT_NUM   2
 
 #define ZH_GT_UNICODE_BUF
 
