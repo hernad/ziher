@@ -1758,7 +1758,7 @@ static void zh_delimRddInit( void * cargo )
    ZH_SYMBOL_UNUSED( cargo );
 
    if( zh_rddRegister( "DELIM", RDD_REGISTER_TYPE_TRANSFER ) > 1 )
-      zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+      zh_errInternal( ZH_EI_RDDINVALID, "ERR_DELIM", NULL, NULL );
 }
 
 ZH_INIT_SYMBOLS_BEGIN( delim1__InitSymbols )
@@ -1766,9 +1766,9 @@ ZH_INIT_SYMBOLS_BEGIN( delim1__InitSymbols )
 { "DELIM_GETFUNCTABLE", {ZH_FS_PUBLIC|ZH_FS_LOCAL}, {ZH_FUNCNAME( DELIM_GETFUNCTABLE )}, NULL }
 ZH_INIT_SYMBOLS_END( delim1__InitSymbols )
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_delim_rdd_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_delim_rdd_init_ )
    zh_vmAtInit( zh_delimRddInit, NULL );
-ZH_CALL_ON_STARTUP_END( _zh_delim_rdd_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_delim_rdd_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( delim1__InitSymbols ) \

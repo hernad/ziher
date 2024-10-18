@@ -6732,7 +6732,7 @@ static void zh_dbfRddInit( void * cargo )
    ZH_SYMBOL_UNUSED( cargo );
 
    if( zh_rddRegister( "DBF", RDD_REGISTER_TYPE_FULL ) > 1 )
-      zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+      zh_errInternal( ZH_EI_RDDINVALID, "ERR_DBF", NULL, NULL );
 }
 
 ZH_INIT_SYMBOLS_BEGIN( dbf1__InitSymbols )

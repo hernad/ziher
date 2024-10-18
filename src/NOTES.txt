@@ -59,7 +59,7 @@ static const ZH_GT_INIT gtInit = { ZH_GT_DRVNAME( ZH_GT_NAME ),
 
 ZH_GT_ANNOUNCE( ZH_GT_NAME )
 
-ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
    zh_gtRegister( &gtInit );
 ZH_CALL_ON_STARTUP_EXT_END( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
 

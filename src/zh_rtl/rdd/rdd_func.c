@@ -95,7 +95,7 @@ ZH_FUNC( RDDREGISTER )
        */
       if( zh_rddRegister( szDriver, ( ZH_USHORT ) zh_parni( 2 ) ) > 1 )
       {
-         zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+         zh_errInternal( ZH_EI_RDDINVALID, szDriver, NULL, NULL );
       }
    }
 }

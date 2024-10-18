@@ -234,21 +234,21 @@ int zh_sddRegister( PSDDNODE pSdd )
    PSDDNODE pNode = s_pSdd;
 
    /* "Inheritance" from NULL SDD */
-   if( pSdd->Connect == NULL )
+   //if( pSdd->Connect == NULL )
       pSdd->Connect = s_sddNull.Connect;
-   if( pSdd->Disconnect == NULL )
+   //if( pSdd->Disconnect == NULL )
       pSdd->Disconnect = s_sddNull.Disconnect;
-   if( pSdd->Execute == NULL )
+   //if( pSdd->Execute == NULL )
       pSdd->Execute = s_sddNull.Execute;
-   if( pSdd->Open == NULL )
+   //if( pSdd->Open == NULL )
       pSdd->Open = s_sddNull.Open;
-   if( pSdd->Close == NULL )
+   //if( pSdd->Close == NULL )
       pSdd->Close = s_sddNull.Close;
-   if( pSdd->GoTo == NULL )
+   //if( pSdd->GoTo == NULL )
       pSdd->GoTo = s_sddNull.GoTo;
-   if( pSdd->GetValue == NULL )
+   //if( pSdd->GetValue == NULL )
       pSdd->GetValue = s_sddNull.GetValue;
-   if( pSdd->GetVarLen == NULL )
+   //if( pSdd->GetVarLen == NULL )
       pSdd->GetVarLen = s_sddNull.GetVarLen;
 
    while( pNode )
@@ -1200,7 +1200,8 @@ ZH_FUNC( SQLBASE )
 {
 }
 
-ZH_FUNC_STATIC( SQLBASE_GETFUNCTABLE )
+ZH_FUNC( SQLBASE_GETFUNCTABLE )
+//ZH_FUNC_STATIC( SQLBASE_GETFUNCTABLE )
 {
    RDDFUNCS *  pTable;
    ZH_USHORT * puiCount, uiRddId;
@@ -1231,19 +1232,19 @@ static void zh_sqlbaseInit( void * cargo )
    ZH_SYMBOL_UNUSED( cargo );
 
    if( zh_rddRegister( "SQLBASE", RDD_REGISTER_TYPE_FULL ) > 1 )
-      zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+      zh_errInternal( ZH_EI_RDDINVALID, "ERR_SQLBASE", NULL, NULL );
 }
 
-ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
-{
-   "SQLBASE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE ) }, NULL
-},
-{ "SQLBASE_GETFUNCTABLE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE_GETFUNCTABLE ) }, NULL }
-ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
+//ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
+//{
+//   "SQLBASE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE ) }, NULL
+//},
+//{ "SQLBASE_GETFUNCTABLE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE_GETFUNCTABLE ) }, NULL }
+//ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_sqlbase_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sqlbase_init_ )
 zh_vmAtInit( zh_sqlbaseInit, NULL );
-ZH_CALL_ON_STARTUP_END( _zh_sqlbase_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_sqlbase_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( sqlbase__InitSymbols ) \

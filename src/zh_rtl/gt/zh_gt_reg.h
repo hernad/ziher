@@ -51,20 +51,24 @@ static const ZH_GT_INIT gtInit = { ZH_GT_DRVNAME( ZH_GT_NAME ),
 
 ZH_GT_ANNOUNCE( ZH_GT_NAME )
 
-ZH_CALL_ON_STARTUP_BEGIN( ZH_MACRONAME_JOIN( _zh_startup_gt_Init_, ZH_GT_NAME ) )
-   zh_gtRegister( &gtInit );
+
 #if ( ZH_GT_NUM == 1 )
+   ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_startup_gt_Init_STD )
    printf("========================== startup gt STD ===============================================================\n");   
 #elif ( ZH_GT_NUM == 2 )
+   ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_startup_gt_Init_TRM )
    printf("========================== startup gt TRM ===============================================================\n");   
 
 #elif ( ZH_GT_NUM == 5 )
+   ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_startup_gt_Init_XWC )
    printf("========================== startup gt XWC ===============================================================\n");   
 
 #elif ( ZH_GT_NUM == 0 )
+   ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_startup_gt_Init_NUL )
    printf("========================== startup gt NUL ===============================================================\n");   
 
-#endif   
+#endif
+  zh_gtRegister( &gtInit );   
   getchar();
 
 #if ( ZH_GT_NUM == 1 )

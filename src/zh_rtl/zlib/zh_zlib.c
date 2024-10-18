@@ -505,10 +505,10 @@ ZH_FUNC( ZH_ZERROR )
 #endif
 }
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_zlib_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_zlib_init_ )
    zh_zlibInit( s_zlibCompressBound, s_zlibUncompressedSize,
                 s_zlibCompress, s_zlibUncompress );
-ZH_CALL_ON_STARTUP_END( _zh_zlib_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_zlib_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY    ZH_DATASEG_FUNC( _zh_zlib_init_ )

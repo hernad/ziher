@@ -97,7 +97,7 @@ static void zh_sqlt3dd_init( void * cargo )
    ZH_SYMBOL_UNUSED( cargo );
 
    if( ! zh_sddRegister( &s_sqlt3dd ) )
-      zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+      zh_errInternal( ZH_EI_RDDINVALID, "ERR_SQLITE3", NULL, NULL );
 }
 
 static void zh_sqlt3dd_exit( void * cargo )

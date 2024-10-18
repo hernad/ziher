@@ -522,7 +522,7 @@ static void zh_pcre2_exit( void * cargo )
    pcre2_general_context_free( s_re_ctxg );
 }
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_regex_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_regex_init_ )
 
    /* detect UTF-8 support. */
    if( pcre2_config( PCRE2_CONFIG_UNICODE, &s_iUTF8Enabled ) != 0 )

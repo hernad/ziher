@@ -355,6 +355,7 @@ static void zh_vmCleanModuleFunctions( void )
 {
    PZH_FUNC_LIST pLst;
 
+
    while( s_InitFunctions )
    {
       pLst = s_InitFunctions;
@@ -373,6 +374,8 @@ static void zh_vmCleanModuleFunctions( void )
       s_QuitFunctions = pLst->pNext;
       zh_xfree( pLst );
    }
+
+
 }
 
 void zh_vmAtInit( ZH_INIT_FUNC pFunc, void * cargo )
@@ -461,25 +464,25 @@ static void zh_vmDoInitZHObject( void )
       zh_vmProc( 0 );
    }; 
 
-   char * sFunc3 = "GET_VMINIT";
-   PZH_DYNSYMBOL pDynSym3 = zh_dynsymFind( sFunc3 );
-   if( pDynSym3 && pDynSym3->pSymbol->value.pFunPtr )
-   {
-      printf(">>>>>>>>>>>>>>> GET_VMINIT %p  %p\n", pDynSym3, pDynSym3->pSymbol->value.pFunPtr);
-      zh_vmPushSymbol( pDynSym3->pSymbol );
-      zh_vmPushNil();
-      zh_vmProc( 0 );
-   }; 
+//   char * sFunc3 = "GET_VMINIT";
+//   PZH_DYNSYMBOL pDynSym3 = zh_dynsymFind( sFunc3 );
+//   if( pDynSym3 && pDynSym3->pSymbol->value.pFunPtr )
+//   {
+//      printf(">>>>>>>>>>>>>>> GET_VMINIT %p  %p\n", pDynSym3, pDynSym3->pSymbol->value.pFunPtr);
+//      zh_vmPushSymbol( pDynSym3->pSymbol );
+//      zh_vmPushNil();
+//      zh_vmProc( 0 );
+//   }; 
 
-   char * sFunc4 = "__GET_VMINIT";
-   PZH_DYNSYMBOL pDynSym4 = zh_dynsymFind( sFunc4 );
-   if( pDynSym4 && pDynSym4->pSymbol->value.pFunPtr )
-   {
-      printf(">>>>>>>>>>>>>>> __GET_VMINIT %p  %p\n", pDynSym4, pDynSym4->pSymbol->value.pFunPtr);
-      zh_vmPushSymbol( pDynSym4->pSymbol );
-      zh_vmPushNil();
-      zh_vmProc( 0 );
-   }; 
+ //  char * sFunc4 = "__GET_VMINIT";
+ //  PZH_DYNSYMBOL pDynSym4 = zh_dynsymFind( sFunc4 );
+ //  if( pDynSym4 && pDynSym4->pSymbol->value.pFunPtr )
+ //  {
+ //     printf(">>>>>>>>>>>>>>> __GET_VMINIT %p  %p\n", pDynSym4, pDynSym4->pSymbol->value.pFunPtr);
+ //     zh_vmPushSymbol( pDynSym4->pSymbol );
+ //     zh_vmPushNil();
+ //     zh_vmProc( 0 );
+ //  }; 
 
    //char * sFunc5 = "ERROR_VMINIT";
    //PZH_DYNSYMBOL pDynSym5 = zh_dynsymFind( sFunc5 );
@@ -1082,9 +1085,27 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
+   s_InitFunctions = NULL;
+   s_ExitFunctions = NULL;
+   s_QuitFunctions = NULL;
+
    ext__zh_regex_init_();
    ext__zh_dbfcdx_rdd_init_();
    ext__zh_dbffpt_rdd_init_();
+   ext__zh_delim_rdd_init_();
+
+
+   ext__zh_sqlbase_init_();
+   ext__zh_sqlmix_rdd_init_();
+   ext__zh_sddpostgre_init_();
+
+   ext__zh_zlib_init_();
+   ext__zh_zsock_init_();
+   
+   //ext__zh_sslsock_init_();
+
+
+
    ext__zh_startup_gt_Init_XWC();
    ext__zh_startup_gt_Init_STD();
    ext__zh_startup_gt_Init_TRM();
@@ -1195,7 +1216,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       printf("init step 16f\n");
       
       
-      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
       printf("init step 17\n");
 
 
@@ -1990,7 +2010,10 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          ext_zh_vm_SymbolInit_ZH_OTHERS_ZH();
    } 
    
-   
+  
+
+      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
+      
       zh_clsDoInit();          
 
 
@@ -2002,8 +2025,8 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
       
    
 
-   //printf("init step 18\n");
-   //zh_vmDoInitFunctions();    /* process registered INIT procedures */
+     //printf("init step 18\n");
+     //zh_vmDoInit_ZH_Functions();    /* process registered INIT procedures */
 
    
 
@@ -2178,7 +2201,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_gcCollectAll( ZH_TRUE );
 
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
-   zh_vmCleanModuleFunctions();
+   //zh_vmCleanModuleFunctions();
 
    zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
    if( s_pSymbolsMtx )
@@ -9038,7 +9061,7 @@ static void zh_vmDoInitStatics( void )
    }
 }
 
-static void zh_vmDoInitFunctions()
+static void zh_vmDoInit_ZH_Functions()
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
 

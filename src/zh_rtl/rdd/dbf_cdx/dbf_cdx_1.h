@@ -10027,7 +10027,7 @@ static void zh_cdxRddInit( void * cargo )
          return;
    }
 
-   zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+   zh_errInternal( ZH_EI_RDDINVALID, "ERR_DBF_DBFFPT", NULL, NULL );
 }
 
 
@@ -10039,7 +10039,7 @@ ZH_INIT_SYMBOLS_BEGIN( _zh_dbfcdx1_InitSymbols_ )
 { "DBFCDX_GETFUNCTABLE", {ZH_FS_PUBLIC|ZH_FS_LOCAL}, {ZH_FUNCNAME( _GETFUNCTABLE )}, NULL }
 ZH_INIT_SYMBOLS_END( _zh_dbfcdx1_InitSymbols_ )
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_dbfcdx_rdd_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_dbfcdx_rdd_init_ )
    zh_vmAtInit( zh_cdxRddInit, NULL );
 ZH_CALL_ON_STARTUP_EXT_END( _zh_dbfcdx_rdd_init_ )
 

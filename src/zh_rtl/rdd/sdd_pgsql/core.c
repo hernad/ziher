@@ -118,9 +118,9 @@ static SDDNODE s_pgsqldd = {
 static void zh_pgsqldd_init( void * cargo )
 {
    ZH_SYMBOL_UNUSED( cargo );
-
-   if( ! zh_sddRegister( &s_pgsqldd ) )
-      zh_errInternal( ZH_EI_RDDINVALID, NULL, NULL, NULL );
+   int iRet = zh_sddRegister( &s_pgsqldd );
+   if( ! iRet )
+      zh_errInternal( ZH_EI_RDDINVALID, sprintf("ERR_PSQLRDD %d", iRet), NULL, NULL );
 }
 
 ZH_FUNC( ZH_SDDPG_REGISTER )
@@ -131,15 +131,18 @@ ZH_FUNC( ZH_SDDPG_REGISTER )
 /* force SQLBASE linking */
 ZH_FUNC_TRANSLATE( SDDPG, SQLBASE )
 
-ZH_INIT_SYMBOLS_BEGIN( sddpostgre__InitSymbols )
-{
-   "SDDPG", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SDDPG ) }, NULL
-},
-ZH_INIT_SYMBOLS_END( sddpostgre__InitSymbols )
+//ZH_INIT_SYMBOLS_BEGIN( sddpostgre__InitSymbols )
+//{
+//  "SDDPG", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SDDPG ) }, NULL
+//},
+//ZH_INIT_SYMBOLS_END( sddpostgre__InitSymbols )
 
-ZH_CALL_ON_STARTUP_BEGIN( _zh_sddpostgre_init_ )
+ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sddpostgre_init_ )
+printf("=================== SDD PSQL ===========================\n");
+getchar();
+
 zh_vmAtInit( zh_pgsqldd_init, NULL );
-ZH_CALL_ON_STARTUP_END( _zh_sddpostgre_init_ )
+ZH_CALL_ON_STARTUP_EXT_END( _zh_sddpostgre_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  \
