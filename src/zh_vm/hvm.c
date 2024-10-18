@@ -1083,6 +1083,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 #endif
 
    ext__zh_regex_init_();
+   ext__zh_dbfcdx_rdd_init_();
    ext__zh_dbffpt_rdd_init_();
    ext__zh_startup_gt_Init_XWC();
    ext__zh_startup_gt_Init_STD();
