@@ -2070,8 +2070,8 @@ static RDDFUNCS sqlmixTable =
 /* force SQLBASE linking */
 ZH_FUNC_TRANSLATE( SQLMIX, SQLBASE )
 
-ZH_FUNC( SQLMIX_GETFUNCTABLE )
-//ZH_FUNC_STATIC( SQLMIX_GETFUNCTABLE )
+//ZH_FUNC( SQLMIX_GETFUNCTABLE )
+ZH_FUNC_STATIC( SQLMIX_GETFUNCTABLE )
 {
    RDDFUNCS *  pTable;
    ZH_USHORT * puiCount, * puiSuperRddId, uiRddId;
@@ -2106,12 +2106,12 @@ static void zh_sqlmixRddInit( void * cargo )
       zh_errInternal( ZH_EI_RDDINVALID, "ERR_SQLBASE_SQLMIX", NULL, NULL );
 }
 
-// ZH_INIT_SYMBOLS_BEGIN( sqlmix__InitSymbols )
-// {
-//   "SQLMIX", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SQLMIX ) }, NULL
-//},
-//{ "SQLMIX_GETFUNCTABLE", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SQLMIX_GETFUNCTABLE ) }, NULL }
-//ZH_INIT_SYMBOLS_END( sqlmix__InitSymbols )
+ZH_INIT_SYMBOLS_BEGIN( sqlmix__InitSymbols )
+{
+   "SQLMIX", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SQLMIX ) }, NULL
+},
+{ "SQLMIX_GETFUNCTABLE", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SQLMIX_GETFUNCTABLE ) }, NULL }
+ZH_INIT_SYMBOLS_END( sqlmix__InitSymbols )
 
 ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sqlmix_rdd_init_ )
 zh_vmAtInit( zh_sqlmixRddInit, NULL );

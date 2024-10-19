@@ -139,7 +139,7 @@ ZH_FUNC_TRANSLATE( SDDPG, SQLBASE )
 
 ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sddpostgre_init_ )
 printf("=================== SDD PSQL ===========================\n");
-getchar();
+//getchar();
 
 zh_vmAtInit( zh_pgsqldd_init, NULL );
 ZH_CALL_ON_STARTUP_EXT_END( _zh_sddpostgre_init_ )

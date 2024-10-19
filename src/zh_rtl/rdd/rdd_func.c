@@ -102,11 +102,20 @@ ZH_FUNC( RDDREGISTER )
 
 ZH_FUNC( RDDSETDEFAULT )
 {
+   int parSize1 = zh_parclen( 1 );
+   printf("rddsetdefault step-1  %d\n", parSize1 );
+   getchar();
+
    zh_retc( zh_rddDefaultDrv( NULL ) );
 
-   if( zh_parclen( 1 ) > 0 )
+   if( parSize1 > 0 )
    {
-      if( ! zh_rddDefaultDrv( zh_parc( 1 ) ) )
+      char *szDrv = zh_parc( 1 );
+      printf("rddsetdefault step-2:  %s\n", szDrv);
+      if( ! zh_rddDefaultDrv( szDrv ) ) {
+         printf("rddsetdefault step-3:  %s\n", szDrv);
+         getchar();
          zh_errRT_DBCMD( EG_ARG, EDBCMD_BADPARAMETER, NULL, ZH_ERR_FUNCNAME );
+      }
    }
 }

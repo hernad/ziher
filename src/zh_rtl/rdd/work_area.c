@@ -2130,12 +2130,19 @@ PZH_ITEM zh_rddList( ZH_USHORT uiType )
 
 /*
  * Find a RDD node.
+
+ * s_RddList [
+      [ szName,  rddID, uiType, uiAreaSize, pTable, pSuperTable, *lpvCargo ]
+   ]
  */
 LPRDDNODE zh_rddFindNode( const char * szDriver, ZH_USHORT * uiIndex )
 {
    ZH_USHORT uiCount;
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_rddFindNode(%s, %p)", szDriver, ( void * ) uiIndex ) );
+
+   printf("broj rdd nodeova %d\n", s_uiRddCount);
+   getchar();
 
    for( uiCount = 0; uiCount < s_uiRddCount; uiCount++ )
    {

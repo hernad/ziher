@@ -1086,20 +1086,27 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
+  //zh_vmDoModuleInitFunctions();       // process AtInit registered functions
+    
 
-   ext__zh_regex_init_();
-   ext__zh_dbfcdx_rdd_init_();
-   ext__zh_dbffpt_rdd_init_();
-   ext__zh_delim_rdd_init_();
+   // dole ima zh_vmDoModuleInitFunctions();       //process AtInit registered functions
+    
 
-
-   ext__zh_sqlbase_init_();
-   ext__zh_sqlmix_rdd_init_();
-   ext__zh_sddpostgre_init_();
-
-   ext__zh_zlib_init_();
-   ext__zh_zsock_init_();
+   //ext__zh_regex_init_();
+   //ext__zh_dbfcdx_rdd_init_();
+   //ext__zh_dbffpt_rdd_init_();
+//
+   //ext__zh_sqlbase_init_();
+   //ext__zh_sqlmix_rdd_init_();
+   //ext__zh_sddpostgre_init_();
+//
+   //ext__zh_delim_rdd_init_();
+  //
+   //ext__zh_zlib_init_();
+   //ext__zh_zsock_init_();
    
+  
+
    //ext__zh_sslsock_init_();
 
    ext__zh_startup_gt_Init_XWC();
@@ -1222,6 +1229,12 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       
    printf("============== vmInit step 15\n");
    getchar();
+
+ printf("============== vmInit step 16\n");
+ getchar();
+ 
+      zh_vmDoModuleInitFunctions();       // process AtInit registered functions
+    
 
 if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
@@ -2015,8 +2028,6 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
    } 
    
   
-      zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
-    
       zh_clsDoInit();          
 
 

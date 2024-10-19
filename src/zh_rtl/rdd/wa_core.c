@@ -375,6 +375,9 @@ const char * zh_rddDefaultDrv( const char * szDriver )
 
    if( szDriver && *szDriver )
    {
+      printf("zh_rdddefaultdrv step 100 %s\n", szDriver);
+      getchar();
+
       char szNewDriver[ ZH_RDD_MAX_DRIVERNAME_LEN + 1 ];
       LPRDDNODE pRddNode;
 
@@ -384,22 +387,36 @@ const char * zh_rddDefaultDrv( const char * szDriver )
          return NULL;
 
       pRddInfo->szDefaultRDD = pRddNode->szName;
+      printf("zh_rddDefaultDrv %s\n", szDriver);
+      getchar();
    }
    else if( ! pRddInfo->szDefaultRDD && zh_rddGetNode( 0 ) )
    {
-      const char * szDrvTable[] = { "DBFNTX", "DBFCDX", "DBFFPT", "DBF" };
+      const char * szDrvTable[] = { "DBFCDX", "DBFFPT", "DBF" };
       int i;
+      
+      printf("zh_rdddefaultdrv step 200 %s  size of array table %d\n", szDriver, ZH_SIZEOFARRAY( szDrvTable ));
+      getchar();
 
       pRddInfo->szDefaultRDD = "";
       for( i = 0; i < ( int ) ZH_SIZEOFARRAY( szDrvTable ); ++i )
       {
+
+         printf("zh_rddDefaultDrv step 300 %s tbl[i]: %s\n", szDriver, szDrvTable[ i ]);
+         getchar();
+
          if( zh_rddFindNode( szDrvTable[ i ], NULL ) )
          {
+            printf("zh_rddDefaultDrv step 400 %s\n", szDrvTable[ i ]);
+            getchar();
             pRddInfo->szDefaultRDD = szDrvTable[ i ];
             break;
          }
       }
    }
+
+   printf("zh_rddDefaultDrv step 500 %s\n", pRddInfo->szDefaultRDD);
+   getchar();
 
    return pRddInfo->szDefaultRDD;
 }

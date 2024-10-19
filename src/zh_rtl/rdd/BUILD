@@ -6,7 +6,7 @@ cc_library(
     name = "zh_rtl_rdd",
     srcs = glob([
         "*.c",
-        #"nul_sys/*.c",
+        "nul_sys/*.c",
         "dbf_cdx/*.c",
         "dbf_fpt/*.c",
         #"dbf_nsx/*.c",

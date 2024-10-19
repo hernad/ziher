@@ -1235,12 +1235,12 @@ static void zh_sqlbaseInit( void * cargo )
       zh_errInternal( ZH_EI_RDDINVALID, "ERR_SQLBASE", NULL, NULL );
 }
 
-//ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
-//{
-//   "SQLBASE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE ) }, NULL
-//},
-//{ "SQLBASE_GETFUNCTABLE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE_GETFUNCTABLE ) }, NULL }
-//ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
+ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
+{
+   "SQLBASE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE ) }, NULL
+},
+{ "SQLBASE_GETFUNCTABLE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE_GETFUNCTABLE ) }, NULL }
+ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
 
 ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sqlbase_init_ )
 zh_vmAtInit( zh_sqlbaseInit, NULL );
