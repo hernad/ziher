@@ -70,13 +70,13 @@ static const ZH_WCHAR s_szSpaceW[] = { ' ', 0 };
 PZH_GT zh_gt_Base( void )
 {
    PZH_GT pGT = ( PZH_GT ) zh_stackGetGT();
-   printf("gtbase-1\n");
+   //printf("gtbase-1\n");
    if( pGT && ZH_GTSELF_LOCK( pGT ) ) {
-      printf("gtbase-2\n"); 
+      //printf("gtbase-2\n"); 
       return pGT;
    }
    else {
-      printf("gtbase-3null\n");
+      //printf("gtbase-3null\n");
       return NULL;
    }
 }

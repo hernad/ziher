@@ -201,6 +201,7 @@ static void    zh_vmDebugEntry( int nMode, int nLine, const char * szName, int n
 static void    zh_vmDebuggerExit( ZH_BOOL fRemove );      /* shuts down the debugger */
 static void    zh_vmDebuggerShowLine( ZH_USHORT uiLine ); /* makes the debugger shows a specific source code line */
 static void    zh_vmDebuggerEndProc( void );     /* notifies the debugger for an endproc */
+static void    zh_vmDoInitZHFunctions( void );
 
 static PZH_DYNSYMBOL s_pDynsDbgEntry = NULL;   /* Cached __DBGENTRY symbol */
 static ZH_DBGENTRY_FUNC s_pFunDbgEntry;   /* C level debugger entry */
@@ -1147,8 +1148,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    }
 
 
+   printf("init step 100\n");
+   getchar();
 
-   printf("init step 9\n");
+
    if (bConInit)
      zh_conInit();
 
@@ -1158,7 +1161,9 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    if (bInitRT)
      zh_cmdargProcess();
 
-   printf("init step 11\n");
+   printf("init step 101\n");
+   getchar();
+
    if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
 
@@ -1213,11 +1218,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
       zh_vmDoInitZHObject();
 
-      printf("init step 16f\n");
-      
-      
-      printf("init step 17\n");
 
+   printf("init step 105\n");
+   getchar();
+      
 
 if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
@@ -2011,23 +2015,24 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
    } 
    
   
+   printf("init step 106\n");
+   getchar();
 
       zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
-      
+    
+
+   printf("init step 107\n");
+   getchar();
+
       zh_clsDoInit();          
 
 
-      printf("init step 18\n");
-      
-
-
-                 /* initialize Class(y) .zh functions */
-      
-   
+   printf("init step 108\n");
+   getchar();
 
      //printf("init step 18\n");
-     //zh_vmDoInit_ZH_Functions();    /* process registered INIT procedures */
-
+     /* process registered INIT ZH procedures */
+     zh_vmDoInitZHFunctions();    
    
 
 
@@ -2035,9 +2040,13 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
    {
       PZH_DYNSYMBOL pDynSym = zh_dynsymFind( "_APPMAIN" );
 
-      if( pDynSym && pDynSym->pSymbol->value.pFunPtr )
+      if( pDynSym && pDynSym->pSymbol->value.pFunPtr ) {
+
+         printf("============= _APPMAIN =====================\n");
+         getchar();
+
          s_pSymStart = pDynSym->pSymbol;
-      else
+      } else
       {
          /* if first char is '@' then start procedure were set by
           * programmer explicitly and should have the highest priority
@@ -2084,6 +2093,10 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
 
    if( bStartMainProc && s_pSymStart )
    {
+
+      printf("============= pSymStart =====================\n");
+      getchar();
+
       //printf("init step 22\n");
       zh_vmPushSymbol( s_pSymStart ); /* pushes first ZH_FS_PUBLIC defined symbol to the stack */
       //printf("init step 23\n");
@@ -2101,12 +2114,13 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
       //printf("init step 27\n");
    }
 
-  if (gtcount() < 1)
-      printf("=====>========GT_STD REGISTER: %d\n", register_GT_STD());  
-   else
-     printf("=====>========gtcount: %d===========================\n", gtcount());
+  //if (gtcount() < 1)
+  //    printf("=====>========GT_STD REGISTER: %d\n", register_GT_STD());  
+  // else
+  //   printf("=====>========gtcount: %d===========================\n", gtcount());
 
    printf("=============zh_vmInit kraj=====================\n");
+   getchar();
       
 }
 
@@ -9088,12 +9102,16 @@ static void zh_vmDoInitStatics( void )
    }
 }
 
-static void zh_vmDoInit_ZH_Functions()
+static void zh_vmDoInitZHFunctions( void )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
 
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions(%d)", fClipInit ) );
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions()") );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions()") );
+
+   printf("==============zh_vmDoInitZHFunctions===================\n");
+   getchar();
+
 
    while( pLastSymbols && zh_vmRequestQuery() == 0 )
    {

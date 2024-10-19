@@ -20,8 +20,8 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
    LOCAL cOption
    LOCAL nPos
 
-   ? "aleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-   inkey(0)
+   //? "aleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+   //inkey(0)
 
    //IF s_lNoAlert == NIL
    //   s_lNoAlert := zh_argCheck( "NOALERT" )
@@ -61,8 +61,8 @@ FUNCTION Alert( cMessage, aOptions, xColorNorm )
 
    ENDCASE
 
-   ? "aleeeeeeeee2222eeeeeeeeeeeeeeeeeeeeeeee"
-   inkey(0)
+   //? "aleeeeeeeee2222eeeeeeeeeeeeeeeeeeeeeeee"
+   //inkey(0)
 
    RETURN zh_gtAlert( cMessage, aOptionsOK, xColorNorm, xColorHigh )
 
