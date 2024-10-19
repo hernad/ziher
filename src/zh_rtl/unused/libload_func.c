@@ -44,7 +44,6 @@
  *
  */
 
-#define INCL_DOSMODULEMGR
 #define INCL_ERRORS
 
 #include "zh_vm_int.h"

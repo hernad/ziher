@@ -8601,6 +8601,10 @@ void zh_vmFreeSymbols( PZH_SYMBOLS pSymbols )
    }
 }
 
+
+/*
+   used by dynamic load module
+
 void zh_vmBeginSymbolGroup( void * hDynLib, ZH_BOOL fClone )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmBeginSymbolGroup(%p,%d)", hDynLib, ( int ) fClone ) );
@@ -8609,9 +8613,12 @@ void zh_vmBeginSymbolGroup( void * hDynLib, ZH_BOOL fClone )
    s_fCloneSym = fClone;
 }
 
+
+//   used by dynamic load module
+
 void zh_vmInitSymbolGroup( void * hNewDynLib, int argc, const char * argv[] )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmInitSymbolGroup(%p,%d,%p)", hNewDynLib, argc, ( const void * ) argv ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmInitSymbolGroup(%p,%d,%p)", hNewDynLib, argc, ( const void * ) argv ) );
 
    s_fCloneSym = ZH_FALSE;
 
@@ -8653,9 +8660,9 @@ void zh_vmInitSymbolGroup( void * hNewDynLib, int argc, const char * argv[] )
          pLastSymbols = pLastSymbols->pNext;
       }
 
-      /* library symbols are modified beforeinit functions
-         execution intentionally because init functions may
-         load new modules [druzus] */
+      // library symbols are modified beforeinit functions
+      //   execution intentionally because init functions may
+      //   load new modules [druzus] 
       zh_vmDoModuleSetLibID( s_InitFunctions, hDynLib, hNewDynLib );
       zh_vmDoModuleSetLibID( s_ExitFunctions, hDynLib, hNewDynLib );
       zh_vmDoModuleSetLibID( s_QuitFunctions, hDynLib, hNewDynLib );
@@ -8706,6 +8713,7 @@ void zh_vmInitSymbolGroup( void * hNewDynLib, int argc, const char * argv[] )
    }
 }
 
+
 void zh_vmExitSymbolGroup( void * hDynLib )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmExitSymbolGroup(%p)", hDynLib ) );
@@ -8754,17 +8762,20 @@ void zh_vmExitSymbolGroup( void * hDynLib )
       }
    }
 }
+*/
 
 PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols,
                                   const char * szModuleName, ZH_ULONG ulID,
+                                  
                                   ZH_BOOL fDynLib, ZH_BOOL fClone,
+
                                   ZH_BOOL fOverLoad )
 {
    PZH_SYMBOLS pNewSymbols;
    ZH_BOOL fRecycled, fInitStatics = ZH_FALSE;
    ZH_USHORT ui;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRegisterSymbols(%p,%hu,%s,%lu,%d,%d,%d)", ( void * ) pModuleSymbols, uiSymbols, szModuleName, ulID, ( int ) fDynLib, ( int ) fClone, ( int ) fOverLoad ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRegisterSymbols(%p,%hu,%s,%lu,%d,%d,%d)", ( void * ) pModuleSymbols, uiSymbols, szModuleName, ulID, ( int ) fDynLib, ( int ) fClone, ( int ) fOverLoad ) );
 
    //puts("hernad registerSymbols"); puts(szModuleName);
 
@@ -8845,10 +8856,13 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
          pSymbol->value.pFunPtr = ( pModuleSymbols + ui )->value.pFunPtr;
          pSymbol->scope.value = ( pModuleSymbols + ui )->scope.value;
       }
+      
+      /*
       if( fDynLib )
       {
          pSymbol->scope.value |= ZH_FS_DYNCODE;
       }
+      */
 
       hSymScope = pSymbol->scope.value;
       pNewSymbols->hScope |= hSymScope;
@@ -8868,8 +8882,8 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       }
 
       if( ! s_pSymStart && ! fDynLib && ! fStatics &&
-          ( hSymScope & ZH_FS_FIRST ) != 0 &&
-          ( hSymScope & ZH_FS_INITEXIT ) == 0 )
+          ( hSymScope & ZH_FS_FIRST ) != 0 &&   // tagiravno kao ENTRY_POINT
+          ( hSymScope & ZH_FS_INITEXIT ) == 0 ) // a nije staticka funkcija
       {
          /* first public defined symbol to start execution */
          s_pSymStart = pSymbol;
@@ -8991,13 +9005,24 @@ PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
                               ZH_USHORT uiPCodeVer )
 {
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmProcessSymbols(%p,%hu,%s,%lu,%hu)", ( void * ) pSymbols, uiModuleSymbols, szModuleName, ulID, uiPCodeVer ) );
+   
+   ZH_BOOL fOverload = ZH_FALSE;
+   //ZH_BOOL fOverload = ZH_TRUE;
+
+
+   //ZH_BOOL fDyn = s_fCloneSym;
+   //ZH_BOOL fClone = s_fCloneSym;
+
+   ZH_BOOL fDyn = 0;
+   ZH_BOOL fClone = 0;
 
    zh_vmVerifyPCodeVersion( szModuleName, uiPCodeVer );
    return zh_vmRegisterSymbols( pSymbols, uiModuleSymbols, szModuleName, ulID,
-                                s_fCloneSym, s_fCloneSym,
-                                ZH_FALSE )->pModuleSymbols;
+                                fDyn, fClone,
+                                fOverload )->pModuleSymbols;
 }
 
+/* unused maindllp
 PZH_SYMBOL zh_vmProcessDynLibSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
                                     const char * szModuleName, ZH_ULONG ulID,
                                     ZH_USHORT uiPCodeVer )
@@ -9008,6 +9033,8 @@ PZH_SYMBOL zh_vmProcessDynLibSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSym
    return zh_vmRegisterSymbols( pSymbols, uiModuleSymbols, szModuleName, ulID,
                                 ZH_TRUE, ZH_TRUE, ZH_FALSE )->pModuleSymbols;
 }
+*/
+
 
 static void zh_vmReleaseLocalSymbols( void )
 {

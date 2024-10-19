@@ -47,6 +47,10 @@
 #include "zh_api.h"
 #include "zh_vm.h"
 
+/*
+
+unused mandllp
+
 PZH_FUNC zh_vmProcAddress( const char * szFuncName )
 {
    typedef struct
@@ -56,7 +60,7 @@ PZH_FUNC zh_vmProcAddress( const char * szFuncName )
    }
    ZH_FUNC_REF_ADDR;
 
-   /* NOTE: this table must be well sorted by function names */
+   // NOTE: this table must be well sorted by function names
    static const ZH_FUNC_REF_ADDR s_funcTable[] =
    {
       { "zh_arrayAdd",         ( PZH_FUNC ) zh_arrayAdd               },
@@ -134,3 +138,5 @@ PZH_FUNC zh_vmProcAddress( const char * szFuncName )
 
    return iCmp == 0 ? s_funcTable[ uiFirst ].pFuncAddr : NULL;
 }
+
+*/
