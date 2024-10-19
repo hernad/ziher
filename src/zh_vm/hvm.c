@@ -1105,19 +1105,17 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    
    //ext__zh_sslsock_init_();
 
-
-
    ext__zh_startup_gt_Init_XWC();
    ext__zh_startup_gt_Init_STD();
    ext__zh_startup_gt_Init_TRM();
 
    zh_xinit();
    zh_vmSetExceptionHandler();
-   if (bInitRT) {
+   //if (bInitRT) {
       printf("============== init symbol RT\n");
       zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
       
-   }
+   //}
 
    zh_threadInit();
 
@@ -1136,6 +1134,9 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
+   printf("============== vmInit step 10\n");
+   getchar();
+
    //printf("init step 4\n");
    if (bInitRT) {
       zh_cmdargUpdate();
@@ -1148,23 +1149,22 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    }
 
 
-   printf("init step 100\n");
-   getchar();
 
-
+   printf("init step 9\n");
    if (bConInit)
      zh_conInit();
 
    /* Check for some internal switches */
    //printf("init step 10\n");
 
-   if (bInitRT)
+   //if (bInitRT)
      zh_cmdargProcess();
 
-   printf("init step 101\n");
-   getchar();
+   
+   printf("============== vmInit step 12\n");
+   getchar();  
 
-   if (bInitRT)
+   //if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
 
 #ifndef ZH_NO_PROFILER
@@ -1198,6 +1198,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
          s_pFunDbgEntry = zh_vmDebugEntry;
    }
 
+
+   printf("============== vmInit step 13\n");
+   getchar();
+
    /* Call functions that initializes static variables
     * Static variables have to be initialized before any INIT functions
     * because INIT function can use static variables
@@ -1218,10 +1222,9 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
       zh_vmDoInitZHObject();
 
-
-   printf("init step 105\n");
-   getchar();
       
+   printf("============== vmInit step 15\n");
+   getchar();
 
 if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
@@ -2015,20 +2018,11 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
    } 
    
   
-   printf("init step 106\n");
-   getchar();
-
       zh_vmDoModuleInitFunctions();       /* process AtInit registered functions */
     
-
-   printf("init step 107\n");
-   getchar();
-
       zh_clsDoInit();          
 
 
-   printf("init step 108\n");
-   getchar();
 
      //printf("init step 18\n");
      /* process registered INIT ZH procedures */

@@ -1599,7 +1599,7 @@ METHOD EraseGetMsg( aMsg ) CLASS ZHGetList
 
 METHOD New( GetList ) CLASS ZHGetList
 
-   ? "ZHGetList New GetList"
+   //? "ZHGetList New GetList"
    ::aGetList := GetList
 
    IF ZH_ISARRAY( GetList ) .AND. Len( GetList ) >= 1
