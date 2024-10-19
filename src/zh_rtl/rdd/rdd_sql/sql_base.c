@@ -234,21 +234,21 @@ int zh_sddRegister( PSDDNODE pSdd )
    PSDDNODE pNode = s_pSdd;
 
    /* "Inheritance" from NULL SDD */
-   //if( pSdd->Connect == NULL )
+   if( pSdd->Connect == NULL )
       pSdd->Connect = s_sddNull.Connect;
-   //if( pSdd->Disconnect == NULL )
+   if( pSdd->Disconnect == NULL )
       pSdd->Disconnect = s_sddNull.Disconnect;
-   //if( pSdd->Execute == NULL )
+   if( pSdd->Execute == NULL )
       pSdd->Execute = s_sddNull.Execute;
-   //if( pSdd->Open == NULL )
+   if( pSdd->Open == NULL )
       pSdd->Open = s_sddNull.Open;
-   //if( pSdd->Close == NULL )
+   if( pSdd->Close == NULL )
       pSdd->Close = s_sddNull.Close;
-   //if( pSdd->GoTo == NULL )
+   if( pSdd->GoTo == NULL )
       pSdd->GoTo = s_sddNull.GoTo;
-   //if( pSdd->GetValue == NULL )
+   if( pSdd->GetValue == NULL )
       pSdd->GetValue = s_sddNull.GetValue;
-   //if( pSdd->GetVarLen == NULL )
+   if( pSdd->GetVarLen == NULL )
       pSdd->GetVarLen = s_sddNull.GetVarLen;
 
    while( pNode )
@@ -1243,8 +1243,8 @@ ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
 ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_sqlbase_init_ )
-printf("sqlbase_init \n");
-getchar();
+//printf("sqlbase_init \n");
+//getchar();
 zh_vmAtInit( zh_sqlbaseInit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_sqlbase_init_ )
 

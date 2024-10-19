@@ -131,11 +131,11 @@ ZH_FUNC( ZH_SDDPG_REGISTER )
 /* force SQLBASE linking */
 ZH_FUNC_TRANSLATE( SDDPG, SQLBASE )
 
-//ZH_INIT_SYMBOLS_BEGIN( sddpostgre__InitSymbols )
-//{
-//  "SDDPG", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SDDPG ) }, NULL
-//},
-//ZH_INIT_SYMBOLS_END( sddpostgre__InitSymbols )
+ZH_INIT_SYMBOLS_BEGIN( sddpostgre__InitSymbols )
+{
+  "SDDPG", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SDDPG ) }, NULL
+},
+ZH_INIT_SYMBOLS_END( sddpostgre__InitSymbols )
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_sddpostgre_init_ )
 printf("=================== SDD PSQL ===========================\n");

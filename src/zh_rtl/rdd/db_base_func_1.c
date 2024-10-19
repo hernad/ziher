@@ -604,16 +604,31 @@ ZH_FUNC( ZH_RDDINFO )
    const char * szDriver;
 
    szDriver = zh_parc( 3 );
+
+   //printf("rddinfo step 300 %s\n", szDriver);
+   //getchar();
    if( ! szDriver ) /* no VIA RDD parameter, use default */
+   {
+      //printf("rddinfo step 301  setujem NULL\n");
+      //getchar();
       szDriver = zh_rddDefaultDrv( NULL );
+   }
 
    ulConnection = zh_parnl( 4 );
 
    pRDDNode = zh_rddFindNode( szDriver, &uiRddID );  /* find the RDDNODE */
    pIndex = zh_param( 1, ZH_IT_NUMERIC );
 
+   //printf("rddinfo step 400 %d\n", uiRddID);
+   //getchar();
+
+   //printf("rddinfo step 500 %p %p\n", pRDDNode, pIndex);
+   //getchar();
+
    if( pRDDNode && pIndex )
    {
+
+
       PZH_ITEM pInfo = zh_itemParam( 2 );
       SELF_RDDINFO( pRDDNode, ( ZH_USHORT ) zh_itemGetNI( pIndex ), ulConnection, pInfo );
       zh_itemReturnRelease( pInfo );

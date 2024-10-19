@@ -1138,8 +1138,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       zh_setInitialize( zh_stackSetStruct() );
    }
 
-   printf("============== vmInit step 10\n");
-   getchar();
+   //printf("============== vmInit step 10\n");
+   //getchar();
 
    //printf("init step 4\n");
    if (bInitRT) {
@@ -1165,8 +1165,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
      zh_cmdargProcess();
 
    
-   printf("============== vmInit step 12\n");
-   getchar();  
+   //printf("============== vmInit step 12\n");
+   //getchar();  
 
    //if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
@@ -1203,8 +1203,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    }
 
 
-   printf("============== vmInit step 13\n");
-   getchar();
+   //printf("============== vmInit step 13\n");
+   //getchar();
 
    /* Call functions that initializes static variables
     * Static variables have to be initialized before any INIT functions
@@ -1228,15 +1228,13 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       zh_vmDoInitZHObject();
 
       
-   printf("============== vmInit step 15\n");
-   getchar();
+   //printf("============== vmInit step 15\n");
+   //getchar();
 
- printf("============== vmInit step 16\n");
- getchar();
+ //printf("============== vmInit step 16\n");
+ //getchar();
 
-ext__zh_regex_init_();
-      zh_vmDoModuleInitFunctions();       // process AtInit registered functions
-    
+
 
 if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
@@ -2032,7 +2030,9 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
   
       zh_clsDoInit();          
 
-
+ext__zh_regex_init_();
+      zh_vmDoModuleInitFunctions();       // process AtInit registered functions
+    
 
      //printf("init step 18\n");
      /* process registered INIT ZH procedures */
@@ -2046,8 +2046,8 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
 
       if( pDynSym && pDynSym->pSymbol->value.pFunPtr ) {
 
-         printf("============= _APPMAIN =====================\n");
-         getchar();
+         //printf("============= _APPMAIN =====================\n");
+         //getchar();
 
          s_pSymStart = pDynSym->pSymbol;
       } else
@@ -2098,8 +2098,8 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
    if( bStartMainProc && s_pSymStart )
    {
 
-      printf("============= pSymStart =====================\n");
-      getchar();
+      //printf("============= pSymStart =====================\n");
+      //getchar();
 
       //printf("init step 22\n");
       zh_vmPushSymbol( s_pSymStart ); /* pushes first ZH_FS_PUBLIC defined symbol to the stack */
@@ -2123,8 +2123,8 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
   // else
   //   printf("=====>========gtcount: %d===========================\n", gtcount());
 
-   printf("=============zh_vmInit kraj=====================\n");
-   getchar();
+   //printf("=============zh_vmInit kraj=====================\n");
+   //getchar();
       
 }
 
@@ -9113,8 +9113,8 @@ static void zh_vmDoInitZHFunctions( void )
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions(%d)", fClipInit ) );
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions()") );
 
-   printf("==============zh_vmDoInitZHFunctions===================\n");
-   getchar();
+   //printf("==============zh_vmDoInitZHFunctions===================\n");
+   //getchar();
 
 
    while( pLastSymbols && zh_vmRequestQuery() == 0 )

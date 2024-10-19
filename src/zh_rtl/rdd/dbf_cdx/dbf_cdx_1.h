@@ -10040,8 +10040,8 @@ ZH_INIT_SYMBOLS_BEGIN( _zh_dbfcdx1_InitSymbols_ )
 ZH_INIT_SYMBOLS_END( _zh_dbfcdx1_InitSymbols_ )
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_dbfcdx_rdd_init_ )
-   printf("cdx_init \n");
-   getchar();
+   //printf("cdx_init \n");
+   //getchar();
    zh_vmAtInit( zh_cdxRddInit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_dbfcdx_rdd_init_ )
 

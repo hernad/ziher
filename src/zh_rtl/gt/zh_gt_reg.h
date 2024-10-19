@@ -69,7 +69,7 @@ ZH_GT_ANNOUNCE( ZH_GT_NAME )
 
 #endif
   zh_gtRegister( &gtInit );   
-  getchar();
+  //getchar();
 
 #if ( ZH_GT_NUM == 1 )
   ZH_CALL_ON_STARTUP_EXT_END( _zh_startup_gt_Init_STD )

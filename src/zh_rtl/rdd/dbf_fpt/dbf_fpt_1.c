@@ -4255,7 +4255,7 @@ ZH_INIT_SYMBOLS_BEGIN( dbffpt1__InitSymbols )
 ZH_INIT_SYMBOLS_END( dbffpt1__InitSymbols )
 
 ZH_CALL_ON_STARTUP_BEGIN( _zh_dbffpt_rdd_init_ )
-   printf("dbffpt\n");
+   //printf("dbffpt\n");
    zh_vmAtInit( zh_dbffptRddInit, NULL );
 ZH_CALL_ON_STARTUP_END( _zh_dbffpt_rdd_init_ )
 
