@@ -62,11 +62,11 @@ elif arg1 == "func_hello_ziher_2":
    #s = input()
    #textual_run(header=ziher_header)
    
-   #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
+   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
 
    #print("PY after func_hello_ziher")
    #s = input()
-   #textual_run(header=ziher_header)
+   textual_run(header=ziher_header)
 
    bInitRT = True
    f18klijentlib.vmquit(bInitRT)
@@ -101,16 +101,38 @@ elif arg1 == "func_hello_ziher_2":
    #print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
    #s = input()
 
+   for iter in range(1, 4):
+      print("=======================================", iter , "=========================""")
+      bInitConsole = 1
+      bReleaseConsole = 1
+      returnType = 0 # string
+      #print("func_hello_ziher_2 before")
+      #f18klijentlib.run("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole)
+      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      #print("func_hello_ziher_2 end")
+      s = input()
+      textual_run(header=ziher_header)
+
+      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      #print("func_hello_ziher_2 end")
+      s = input()
+      textual_run(header=ziher_header)
+
+      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      #print("func_hello_ziher_2 end")
+      s = input()
+      textual_run(header=ziher_header)
+
+      f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
+      
+      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      #print("func_hello_ziher_2 end")
+      s = input()
+      textual_run(header=ziher_header)
+
+      f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
    
-   bInitConsole = 1
-   bReleaseConsole = 1
-   returnType = 0 # string
-   #print("func_hello_ziher_2 before")
-   #f18klijentlib.run("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole)
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-   #print("func_hello_ziher_2 end")
-   s = input()
-   textual_run(header=ziher_header)
+
 else:
 
    ziher_home = os.getenv("ZIHER_HOME")

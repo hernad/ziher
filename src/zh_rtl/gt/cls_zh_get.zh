@@ -79,8 +79,8 @@ METHOD style( cStyle ) CLASS zh_Get
 
 ZH_FUNC( __GET_VMINIT )
 {
-   printf("__get_vminit ziher fn\n");
-   zh_INITSTATICS();
+  // printf("__get_vminit ziher fn\n");
+  // zh_INITSTATICS();
 }
 
 #pragma ENDDUMP       

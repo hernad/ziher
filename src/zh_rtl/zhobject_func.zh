@@ -53,15 +53,11 @@
 
 FUNCTION ZHObject()
 
-   STATIC s_oClass := NIL
+   /*STATIC*/ LOCAL s_oClass := NIL
    LOCAL oClass
 
-   //IF PCount() == 1 .AND. lInit
-   //   s_oClass := NIL
-   //   lInit := NIL
-   //ENDIF
 
-   IF s_oClass == NIL .AND. __clsLockDef( @s_oClass )
+   IF s_oClass == NIL .AND.  __clsLockDef( @s_oClass )
 
       BEGIN SEQUENCE
 
@@ -125,8 +121,8 @@ STATIC FUNCTION ZHObject_Error( cDesc, cClass, cMsg, nCode )
 
 ZH_FUNC( ZHOBJECT_VMINIT )
 {
-   printf("zhobject_vminit ziher fn\n");
-   zh_INITSTATICS();
+   //printf("zhobject_vminit ziher fn\n");
+   //zh_INITSTATICS();
 }
    
 

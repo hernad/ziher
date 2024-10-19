@@ -70,7 +70,8 @@ REQUEST ZHObject
 
 FUNCTION ZHClass()
 
-   STATIC s_hClass /* NOTE: Automatically defaults to NIL */
+   //STATIC s_hClass /* NOTE: Automatically defaults to NIL */
+
    LOCAL hClass
 
    //IF PCount() == 1 .AND. lInit
@@ -80,7 +81,7 @@ FUNCTION ZHClass()
    //ENDIF
 
 
-   IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
+   //IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
 
       BEGIN SEQUENCE
 
@@ -140,16 +141,18 @@ FUNCTION ZHClass()
          //? "ZHC-9"
          //inkey(0)
 
-      ALWAYS
+      //ALWAYS
 
-         __clsUnlockDef( @s_hClass, hClass )
+      //   __clsUnlockDef( @s_hClass, hClass )
 
       END SEQUENCE
 
-   ENDIF
+   //ENDIF
        //? "ZHC-XXX"
 
-   RETURN __clsInst( s_hClass )
+   //RETURN __clsInst( s_hClass )
+   RETURN __clsInst( hClass )
+   
 
 /* xSuper is used here as the new preprocessor file (class.zhh) send here
    always an array (if no superclass, this will be an empty one)
@@ -451,8 +454,8 @@ STATIC FUNCTION InitClass()
 
 ZH_FUNC( ZHCLASS_VMINIT )
 {
-   printf("zhclass_vminit ziher fn\n");
-   zh_INITSTATICS();
+   //printf("zhclass_vminit ziher fn\n");
+   //zh_INITSTATICS();
    
    //s_hClass == NUL;
 

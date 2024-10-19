@@ -977,7 +977,7 @@ void zh_clsDoInit( void )
         "ZHDATE", "ZHTIMESTAMP",
         "ZHHASH", "ZHLOGICAL", "ZHNIL", "ZHNUMERIC",
         "ZHSYMBOL", "ZHPOINTER",
-        "ZHOBJECT" };
+        /*"ZHCLASS",*/ "ZHOBJECT" };
    static ZH_USHORT * s_puiHandles[] =
       { &s_uiArrayClass, &s_uiBlockClass, &s_uiCharacterClass,
         &s_uiDateClass, &s_uiTimeStampClass,
@@ -994,33 +994,32 @@ void zh_clsDoInit( void )
    {
       PZH_DYNSYMBOL pFuncSym = zh_dynsymFindName( s_pszFuncNames[i] );
 
-      //if ( ! pFuncSym )
-      //   pFuncSym = zh_dynsymGetCase( s_pszFuncNames[i] ); 
+      if ( ! pFuncSym )
+         pFuncSym = zh_dynsymGetCase( s_pszFuncNames[i] ); 
 
-      printf("clsDoInit %s %d  %d\n", s_pszFuncNames[i], i, pFuncSym);
+      //printf("clsDoInit %s %d  %d\n", s_pszFuncNames[i], i, pFuncSym);
       if( pFuncSym && zh_dynsymIsFunction( pFuncSym ) )
       {
-         printf("step 110\n");
+         //printf("step 110\n");
          PZH_ITEM pReturn = zh_stackReturnItem();
-         printf("step 111\n");
+         //printf("step 111\n");
          zh_itemSetNil( pReturn );
-         printf("step 112\n");
+         //printf("step 112\n");
          zh_vmPushDynSym( pFuncSym );
-         printf("step 113\n");
+         //printf("step 113\n");
          zh_vmPushNil();
-         printf("step 114\n");
+         //printf("step 114 %s\n", pFuncSym->pSymbol->szName);
          zh_vmProc( 0 );
-         printf("step 115\n");
+         //printf("step 115\n");
          if( ZH_IS_OBJECT( pReturn ) ) {
-            printf("step 116\n");
+            //printf("step 116\n");
             *( s_puiHandles[ i ] ) = pReturn->item.asArray.value->uiClass;
-            printf("step 117\n");
+            //printf("step 117\n");
          }
       }
       //printf("after cls %d\n", i);
-      printf("step 118\n");
    }
-   printf("step 119 %d\n", ( int ) ZH_SIZEOFARRAY( s_puiHandles ));
+   //printf("step 119 %d\n", ( int ) ZH_SIZEOFARRAY( s_puiHandles ));
 }
 
 /* zh_clsRelease( <pClass> )

@@ -197,16 +197,13 @@
 #xtranslate __ZH_CLS_SCOPE( .F., .F., .T. )  => ZH_OO_CLSTP_HIDDEN
 #xtranslate __ZH_CLS_SCOPE( .F., .F., .F. )  => nScope /* Default */
 
-
 #xcommand CLASS <!ClassName!> [METACLASS <!metaClass!>] ;
              [ <frm: FROM, INHERIT> <!SuperClass1!> [,<!SuperClassN!>] ] ;
              [ <modulfriend: MODULE FRIENDLY> ] ;
              [ <static: STATIC> ] [ FUNCTION <FuncName> ] => ;
    _ZH_CLASS <ClassName> <FuncName> ;;
    <static> function __ZH_CLS_OPT( [<FuncName>,] <ClassName> ) ( ZH_CLS_PARAM_LIST ) ;;
-      STATIC s_oClass ;;
       LOCAL nScope, oClass, oInstance ;;
-      IF s_oClass == NIL .AND. __clsLockDef( @s_oClass ) ;;
          BEGIN SEQUENCE ;;
             nScope := ZH_OO_CLSTP_EXPORTED ; ZH_SYMBOL_UNUSED( nScope ) ;;
             oClass  := iif( <.metaClass.>, <(metaClass)>, ZHClass():new( <(ClassName)>, __ZH_CLS_PAR( [ @<SuperClass1>() ] [ , @<SuperClassN>() ] ), @__ZH_CLS_OPT([__ZH_CLS_ASID(<FuncName>),] <ClassName>)() [, <.modulfriend.> ] ) ) ;;
@@ -215,18 +212,13 @@
 
 #xcommand ENDCLASS [<lck: LOCK, LOCKED>] => ;
             oClass:Create() ; [<-lck-> __clsLock( oClass:hClass ) ] ;;
-         ALWAYS ;;
-            __clsUnlockDef( @s_oClass, oClass ) ;;
          END SEQUENCE ;;
          oInstance := oClass:Instance() ;;
          IF __objHasMsg( oInstance, "InitClass" ) ;;
             oInstance:InitClass( ZH_CLS_PARAM_LIST ) ;;
          END ;;
          RETURN oInstance ;;
-      END ;;
-      RETURN s_oClass:Instance() AS CLASS _CLASS_NAME_ ;;
    #undef  _CLASS_MODE_ ; #define _CLASS_MODE_ _CLASS_IMPLEMENTATION_
-
 
 #xcommand DECLARED METHOD <type: FUNCTION, PROCEDURE> <MethodName> CLASS <!ClassName!> => ;
       static <type> __ZH_CLS_MTHNAME <ClassName> <MethodName> ;;

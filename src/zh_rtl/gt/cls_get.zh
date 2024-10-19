@@ -1922,8 +1922,8 @@ FUNCTION GetNew( nRow, nCol, bVarBlock, cVarName, cPicture, cColor )
 
 ZH_FUNC( GET_VMINIT )
 {
-   printf("get_vminit ziher fn\n");
-   zh_INITSTATICS();
+   //printf("get_vminit ziher fn\n");
+   //zh_INITSTATICS();
 }
 
 #pragma ENDDUMP    

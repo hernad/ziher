@@ -19,7 +19,8 @@
         "*.zhh": "c",
         "zh_gt_core.h": "c",
         "zh_vm_pub.h": "c",
-        "dlfcn.h": "c"
+        "dlfcn.h": "c",
+        "functional": "c"
     },
     "git.ignoreLimitWarning": true,
     "java.configuration.updateBuildConfiguration": "automatic",

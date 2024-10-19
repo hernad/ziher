@@ -203,6 +203,8 @@ static void    zh_vmDebuggerShowLine( ZH_USHORT uiLine ); /* makes the debugger 
 static void    zh_vmDebuggerEndProc( void );     /* notifies the debugger for an endproc */
 static void    zh_vmDoInitZHFunctions( void );
 
+static int s_vmInitPozivNum = 0;
+
 static PZH_DYNSYMBOL s_pDynsDbgEntry = NULL;   /* Cached __DBGENTRY symbol */
 static ZH_DBGENTRY_FUNC s_pFunDbgEntry;   /* C level debugger entry */
 
@@ -1086,6 +1088,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
+  s_vmInitPozivNum ++;
+
   //zh_vmDoModuleInitFunctions();       // process AtInit registered functions
     
 
@@ -1116,9 +1120,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_xinit();
    zh_vmSetExceptionHandler();
    //if (bInitRT) {
-      printf("============== init symbol RT\n");
+   if ( s_vmInitPozivNum == 1) {
+        printf("============== init symbol RT\n");
       zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
-      
+   }
    //}
 
    zh_threadInit();
@@ -1222,10 +1227,13 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
    //if (bInitRT) {
 
+   //if ( s_vmInitPozivNum < 2 ) {
       printf("init step 15\n");
       zh_vmDoInitZHVM();
 
+      printf("init step 16\n");
       zh_vmDoInitZHObject();
+   //}
 
       
    //printf("============== vmInit step 15\n");
@@ -1235,8 +1243,10 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
  //getchar();
 
 
-
-if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
+//ZH_BOOL fDrugiPoziv = 0;
+if ( s_vmInitPozivNum > 100 ) {
+//if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
+         //fDrugiPoziv = 1;
          printf("=============== ext_zh_vm_SymbolInit_F18_UTILS_ZH  =============\n");
          //ext_zh_vm_SymbolInit_F18_UTILS_ZH();
 
@@ -2027,17 +2037,24 @@ if (! zh_dynsymFindName( "FUNC_HELLO_ZIHER_2" )) {
          ext_zh_vm_SymbolInit_ZH_OTHERS_ZH();
    } 
    
-  
-      zh_clsDoInit();          
+     printf("init step 217\n");  
+     //if (s_vmInitPozivNum < 2) {
+       printf("=========== clsdoinit ============== %d \n", s_vmInitPozivNum);
+       zh_clsDoInit();
+     //
+     //}
 
-ext__zh_regex_init_();
-      zh_vmDoModuleInitFunctions();       // process AtInit registered functions
-    
+      //if (! fDrugiPoziv ) {
+       zh_vmDoModuleInitFunctions();       // process AtInit registered functions
+       ext__zh_regex_init_();
+      //}
+      
 
-     //printf("init step 18\n");
+     printf("init step 218\n");
      /* process registered INIT ZH procedures */
-     zh_vmDoInitZHFunctions();    
-   
+     if (s_vmInitPozivNum < 2) {
+        zh_vmDoInitZHFunctions();    
+     }
 
 
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
@@ -2123,8 +2140,8 @@ ext__zh_regex_init_();
   // else
   //   printf("=====>========gtcount: %d===========================\n", gtcount());
 
-   //printf("=============zh_vmInit kraj=====================\n");
-   //getchar();
+   printf("=============zh_vmInit kraj=====================\n");
+   getchar();
       
 }
 
@@ -2155,8 +2172,7 @@ void zh_initDynTable( void )
 ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 {
    
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
 
    zh_vmTerminateThreads();
 
@@ -2165,12 +2181,12 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    /* release all known items stored in subsystems */
    zh_itemClear( zh_stackReturnItem() );
-   zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
+   //zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
 
    /* intentionally here to allow executing object destructors for all
     * cross referenced items before we release classy subsystem
     */
-   zh_gcCollectAll( ZH_TRUE );
+   //zh_gcCollectAll( ZH_TRUE );
 
    /* Clear any pending actions so RDD shutdown process
     * can be cleanly executed
@@ -2178,42 +2194,48 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_stackSetActionRequest( 0 );
 
    zh_rddCloseAll();             /* close all workareas */
-   if (bInitRT)
-      zh_rddShutDown();             /* remove all registered RDD drivers */
+   //if (bInitRT)
+   //zh_rddShutDown();             /* remove all registered RDD drivers */
 
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
+   //zh_memvarsClear( ZH_FALSE );  
+   
    zh_vmSetI18N( NULL );         /* remove i18n translation table */
-   zh_i18n_exit();               /* unregister i18n module */
+   //zh_i18n_exit();               /* unregister i18n module */
 
    zh_itemClear( zh_stackReturnItem() );
    zh_gcCollectAll( ZH_TRUE );
+   
    /* deactivate debugger */
-   zh_vmDebuggerExit( ZH_TRUE );
+   //zh_vmDebuggerExit( ZH_TRUE );
 
    /* stop executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_FALSE;
 
-   zh_vmStaticsClear();
+   //zh_vmStaticsClear();
 
    /* release thread specific data */
    zh_stackDestroyTSD();
 
-   if (bInitRT) {
-     zh_breakBlockRelease();
-     zh_errExit();
-     zh_clsReleaseAll();
-   }
+   //if (bInitRT) {
+   //  zh_breakBlockRelease();
+   //  zh_errExit();
+    
+   zh_clsReleaseAll();
 
-   zh_vmStaticsRelease();
+   //}
+
+   //dump
+   //zh_vmStaticsRelease();
 
    /* release all remaining items */
 
    zh_conRelease();                 /* releases Console */
    zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
-   if (bInitRT) {
-      zh_dynsymRelease();   /* releases the dynamic symbol table */
-   }
+   //if (bInitRT) {
+      //zh_dynsymRelease();   /* releases the dynamic symbol table */
+   //}
 
    zh_itemClear( zh_stackReturnItem() );
    zh_gcCollectAll( ZH_TRUE );
@@ -2221,22 +2243,22 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
    //zh_vmCleanModuleFunctions();
 
-   zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
-   if( s_pSymbolsMtx )
-   {
-      zh_itemRelease( s_pSymbolsMtx );
-      s_pSymbolsMtx = NULL;
-   }
-   zh_threadExit();
+   //zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
+   //if( s_pSymbolsMtx )
+   //{
+   //   zh_itemRelease( s_pSymbolsMtx );
+   //   s_pSymbolsMtx = NULL;
+   //}
+   //zh_threadExit();
 
-   if (bInitRT) {
-     zh_langReleaseAll();             /* release lang modules */
-     zh_cdpReleaseAll();              /* releases codepages */
-   }
+   //if (bInitRT) {
+   //  zh_langReleaseAll();             /* release lang modules */
+   //  zh_cdpReleaseAll();              /* releases codepages */
+   //}
 
    /* release all known garbage */
-   if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
-      zh_gcReleaseAll();
+   //if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
+   //   zh_gcReleaseAll();
 
    zh_vmUnsetExceptionHandler();
    zh_xexit();
@@ -8448,7 +8470,7 @@ static void zh_vmStaticsClear( void )
                   zh_itemClear( pItem );
                } else {
                   //printf("static simple %d\n", ul);
-                  zh_itemSetNil( pItem );
+                  //zh_itemSetNil( pItem );
                }
 
                //if ( pItem && ZH_IS_POINTER( pItem) ) {

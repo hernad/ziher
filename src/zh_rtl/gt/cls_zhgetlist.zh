@@ -1616,8 +1616,8 @@ METHOD New( GetList ) CLASS ZHGetList
 
 ZH_FUNC( GETLIST_VMINIT )
 {
-   printf("GETLIST_VMINIT ziher fn\n");
-   zh_INITSTATICS();
+   //printf("GETLIST_VMINIT ziher fn\n");
+  // zh_INITSTATICS();
 }
    
 #pragma ENDDUMP      
