@@ -50,9 +50,6 @@
 #include "oo.zhh"
 #include "error.zhh"
 
-//MEMVAR s_oClass, s_hClass
-
-
 
 FUNCTION ZHObject()
 
@@ -75,7 +72,7 @@ FUNCTION ZHObject()
          /* Class(y) */
          oClass:AddInline( "ISKINDOF"        , {| Self, xPar1 | __objDerivedFrom( Self, xPar1 ) }, ZH_OO_CLSTP_EXPORTED )
 
-         /*
+         
          oClass:AddMethod( "NEW"  , @ZHObject_New()   , ZH_OO_CLSTP_EXPORTED )
          oClass:AddMethod( "INIT" , @ZHObject_Init()  , ZH_OO_CLSTP_EXPORTED )
 
@@ -85,7 +82,7 @@ FUNCTION ZHObject()
 
          oClass:AddInline( "MSGNOTFOUND"     , {| Self, cMsg | ::Error( "Message not found", ::className(), cMsg, iif( zh_LeftEq( cMsg, "_" ), 1005, 1004 ) ) }, ZH_OO_CLSTP_EXPORTED )
 
-         */
+         
          oClass:Create()
 
       ALWAYS

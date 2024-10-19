@@ -1086,9 +1086,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
-   s_InitFunctions = NULL;
-   s_ExitFunctions = NULL;
-   s_QuitFunctions = NULL;
 
    ext__zh_regex_init_();
    ext__zh_dbfcdx_rdd_init_();
