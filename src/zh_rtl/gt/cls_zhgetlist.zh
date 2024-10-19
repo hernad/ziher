@@ -68,7 +68,7 @@
 #define MSGRIGHT        4
 #define MSGCOLOR        5
 
-CREATE CLASS ZHGetList INHERIT ZHObject
+CREATE CLASS ZHGetList
 
    EXPORTED:
 
