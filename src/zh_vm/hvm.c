@@ -1217,6 +1217,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    //}
 
 
+
    //zh_initDynTable();
 
    //if (bInitRT) {
@@ -1232,7 +1233,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
  printf("============== vmInit step 16\n");
  getchar();
- 
+
+ext__zh_regex_init_();
       zh_vmDoModuleInitFunctions();       // process AtInit registered functions
     
 

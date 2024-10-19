@@ -1242,9 +1242,11 @@ ZH_INIT_SYMBOLS_BEGIN( sqlbase__InitSymbols )
 { "SQLBASE_GETFUNCTABLE", { ZH_FS_PUBLIC }, { ZH_FUNCNAME( SQLBASE_GETFUNCTABLE ) }, NULL }
 ZH_INIT_SYMBOLS_END( sqlbase__InitSymbols )
 
-ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sqlbase_init_ )
+ZH_CALL_ON_STARTUP_BEGIN( _zh_sqlbase_init_ )
+printf("sqlbase_init \n");
+getchar();
 zh_vmAtInit( zh_sqlbaseInit, NULL );
-ZH_CALL_ON_STARTUP_EXT_END( _zh_sqlbase_init_ )
+ZH_CALL_ON_STARTUP_END( _zh_sqlbase_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( sqlbase__InitSymbols ) \

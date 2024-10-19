@@ -2141,8 +2141,8 @@ LPRDDNODE zh_rddFindNode( const char * szDriver, ZH_USHORT * uiIndex )
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_rddFindNode(%s, %p)", szDriver, ( void * ) uiIndex ) );
 
-   printf("broj rdd nodeova %d\n", s_uiRddCount);
-   getchar();
+   //printf("broj rdd nodeova %d\n", s_uiRddCount);
+   //getchar();
 
    for( uiCount = 0; uiCount < s_uiRddCount; uiCount++ )
    {

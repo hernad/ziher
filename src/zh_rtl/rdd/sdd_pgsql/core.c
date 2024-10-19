@@ -137,12 +137,12 @@ ZH_FUNC_TRANSLATE( SDDPG, SQLBASE )
 //},
 //ZH_INIT_SYMBOLS_END( sddpostgre__InitSymbols )
 
-ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sddpostgre_init_ )
+ZH_CALL_ON_STARTUP_BEGIN( _zh_sddpostgre_init_ )
 printf("=================== SDD PSQL ===========================\n");
 //getchar();
 
 zh_vmAtInit( zh_pgsqldd_init, NULL );
-ZH_CALL_ON_STARTUP_EXT_END( _zh_sddpostgre_init_ )
+ZH_CALL_ON_STARTUP_END( _zh_sddpostgre_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  \

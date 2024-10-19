@@ -2113,9 +2113,11 @@ ZH_INIT_SYMBOLS_BEGIN( sqlmix__InitSymbols )
 { "SQLMIX_GETFUNCTABLE", { ZH_FS_PUBLIC | ZH_FS_LOCAL }, { ZH_FUNCNAME( SQLMIX_GETFUNCTABLE ) }, NULL }
 ZH_INIT_SYMBOLS_END( sqlmix__InitSymbols )
 
-ZH_CALL_ON_STARTUP_EXT_BEGIN( _zh_sqlmix_rdd_init_ )
+ZH_CALL_ON_STARTUP_BEGIN( _zh_sqlmix_rdd_init_ )
+printf("RDDDDDDDDDDDDDDDDDDDDDDDDDDdd sqlmix_init \n");
+getchar();
 zh_vmAtInit( zh_sqlmixRddInit, NULL );
-ZH_CALL_ON_STARTUP_EXT_END( _zh_sqlmix_rdd_init_ )
+ZH_CALL_ON_STARTUP_END( _zh_sqlmix_rdd_init_ )
 
 #if defined( ZH_DATASEG_STARTUP )
    #define ZH_DATASEG_BODY  ZH_DATASEG_FUNC( sqlmix__InitSymbols ) \
