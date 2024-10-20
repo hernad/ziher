@@ -58,7 +58,7 @@ elif arg1 == "func_hello_ziher_2":
    returnType = 1 # integer
    f18klijentlib.vmquit(bInitRT)
 
-   for iter in range(1, 4):
+   for iter in range(1, 10):
       f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    
       print("=======================================", iter , "=========================""")
@@ -66,12 +66,12 @@ elif arg1 == "func_hello_ziher_2":
       bReleaseConsole = 1
       returnType = 0 # string
       ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      s = input()
-      textual_run(header=ziher_header)
+      #s = input()
+      #textual_run(header=ziher_header)
 
       ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      s = input()
-      textual_run(header=ziher_header)
+      #s = input()
+      #textual_run(header=ziher_header)
 
       
       bInitConsole = 1

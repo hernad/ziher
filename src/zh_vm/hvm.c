@@ -1120,32 +1120,30 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    //if (bInitRT) {
    if ( s_vmInitPozivNum == 1) {
 
-   zh_xinit();
-   zh_vmSetExceptionHandler();
+      zh_xinit();
+      zh_vmSetExceptionHandler();
 
-        printf("============== init symbol RT\n");
-      zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
-   
-   zh_threadInit();
-
-   zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
-   s_pSymbolsMtx = zh_threadMutexCreate();
-   
-   /* Set the language and codepage to the default */
-   /* This trick is needed to stringify the macro value */
-   zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
-   zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
-   {
+         printf("============== init symbol RT\n");
+         zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
       
-      s_main_thread = zh_stackId();
-      /* _SET_* initialization */
-      zh_setInitialize( zh_stackSetStruct() );
-   }
 
    }
    //}
+   zh_threadInit();
 
-
+      zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
+      s_pSymbolsMtx = zh_threadMutexCreate();
+      
+      /* Set the language and codepage to the default */
+      /* This trick is needed to stringify the macro value */
+      zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
+      zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
+      {
+         
+         s_main_thread = zh_stackId();
+         /* _SET_* initialization */
+         zh_setInitialize( zh_stackSetStruct() );
+      }
 
 
    //printf("============== vmInit step 10\n");
@@ -1163,7 +1161,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    }
 
 
-
    printf("init step 9\n");
    if (bConInit)
      zh_conInit();
@@ -1178,7 +1175,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    //printf("============== vmInit step 12\n");
    //getchar();  
    if ( s_vmInitPozivNum == 1) {
-
      //if (bInitRT)
      zh_i18n_init();            /* initialize i18n module */
    }  
@@ -1204,15 +1200,25 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_vmLock();
 
    //printf("init step 13\n");
-   s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
-   if( s_pDynsDbgEntry )
-   {
-      /* Try to get C dbgEntry() function pointer */
-      if( ! s_pFunDbgEntry )
-         zh_vmDebugEntry( ZH_DBG_GETENTRY, 0, NULL, 0, NULL );
-      if( ! s_pFunDbgEntry )
-         s_pFunDbgEntry = zh_vmDebugEntry;
-   }
+   //if ( s_vmInitPozivNum == 1) {
+      s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
+      if( s_pDynsDbgEntry )
+      {
+         /* Try to get C dbgEntry() function pointer */
+         printf("set dbg entry stop 800\n");
+         getchar();
+         if( ! s_pFunDbgEntry ) {
+            printf("set dbg entry stop 801\n");
+            getchar();
+            zh_vmDebugEntry( ZH_DBG_GETENTRY, 0, NULL, 0, NULL );
+         }
+         if( ! s_pFunDbgEntry ) {
+            printf("set dbg entry stop 802\n");
+            getchar();
+            s_pFunDbgEntry = zh_vmDebugEntry;
+         }
+      }
+   //}
 
 
    //printf("============== vmInit step 13\n");
@@ -1394,7 +1400,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
    printf("quit step 400\n");
 
-   zh_vmTerminateThreads();  //zaglavi
+   //zh_vmTerminateThreads();  //zaglavi
 
    printf("quit step 401\n");
 
@@ -1409,13 +1415,13 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
 
    /* release all known items stored in subsystems */
-   ///zh_itemClear( zh_stackReturnItem() );
-   //zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
+   zh_itemClear( zh_stackReturnItem() );
+   zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
 
    /* intentionally here to allow executing object destructors for all
     * cross referenced items before we release classy subsystem
     */
-   zh_gcCollectAll( ZH_TRUE ); //zaglavi
+   //zh_gcCollectAll( ZH_TRUE ); //zaglavi
 
    /* Clear any pending actions so RDD shutdown process
     * can be cleanly executed
@@ -1443,12 +1449,12 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    printf("quit step 407\n");
 
-   zh_gcCollectAll( ZH_TRUE ); //zaglavi
+   //zh_gcCollectAll( ZH_TRUE ); //zaglavi
    
    printf("quit step 408\n");
 
-   /* deactivate debugger */
-   zh_vmDebuggerExit( ZH_TRUE );
+   /* deactivate debugger ali ga nemoj brisati */
+   zh_vmDebuggerExit( ZH_FALSE );
 
    /* stop executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_FALSE;
@@ -1500,13 +1506,13 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
    //zh_vmCleanModuleFunctions();
 
-   //zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
-   //if( s_pSymbolsMtx )
-   //{
-   //   zh_itemRelease( s_pSymbolsMtx );
-   //   s_pSymbolsMtx = NULL;
-   //}
-   //zh_threadExit();
+   zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
+   if( s_pSymbolsMtx )
+   {
+      zh_itemRelease( s_pSymbolsMtx );
+      s_pSymbolsMtx = NULL;
+   }
+   zh_threadExit();
 
    //if (bInitRT) {
    //  zh_langReleaseAll();             /* release lang modules */
@@ -6536,6 +6542,9 @@ static void zh_vmDebuggerExit( ZH_BOOL fRemove )
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDebuggerExit(%d)", fRemove ) );
 
    /* is debugger linked ? */
+   //printf("hernad debug vmDebugerExxit.....\n");
+   //getchar();
+
    if( s_pFunDbgEntry )
    {
       /* inform debugger that we are quitting now */
