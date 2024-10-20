@@ -40,37 +40,7 @@ elif arg1 == "func_hello_ziher_2":
    returnType = 1 # integer
    func = "ZH_GTCOUNT"
    print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
-   #s = input()
-
-   #ziher_header = f18klijentlib.run_get("func_hello_ziher".upper(), 1, 1)
-   #print("PY after func_hello_ziher")
-   #s = input()
-   #textual_run(header=ziher_header)
-   
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
-   
-   #print("PY after func_hello_ziher_2")
    s = input()
-   textual_run(header=ziher_header)
-   
-   #f18klijentlib.run("NASLOVNI_EKRAN_SPLASH_SCREEN", 1, 1)
-   #f18klijentlib.run("MAIN", 1, 1)
-   
-   #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
-   
-   #print("PY after func_hello_ziher_2")
-   #s = input()
-   #textual_run(header=ziher_header)
-   
-   ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), 1, 1)
-
-   #print("PY after func_hello_ziher")
-   #s = input()
-   textual_run(header=ziher_header)
-
-   bInitRT = True
-   f18klijentlib.vmquit(bInitRT)
-   #textual_run(header="ziher vm ugašena...")
 
    #if 'f18klijentlib' in sys.modules:  
    #   #del sys.modules["f18klijentlib"]
@@ -82,56 +52,43 @@ elif arg1 == "func_hello_ziher_2":
    bInitRT = True
    bInitConsole = True
    bReleaseConsole = True
-   print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
-   s = input()
-   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
-   #f18klijentlib.fill_dyntable_0()
-
-   #bInitConsole = 1
-   #bReleaseConsole = 1
-   #fun = "__ZHVMINIT"
-   #f18klijentlib.run(fun, bInitConsole, bReleaseConsole)
-   
-   #print("dyntable count:", f18klijentlib.dyntable_count())
   
    bInitConsole = 1
    bReleaseConsole = 1
    returnType = 1 # integer
-   #func = "ZH_GTCOUNT"
-   #print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
-   #s = input()
+   f18klijentlib.vmquit(bInitRT)
 
    for iter in range(1, 4):
+      f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
+   
       print("=======================================", iter , "=========================""")
       bInitConsole = 1
       bReleaseConsole = 1
       returnType = 0 # string
-      #print("func_hello_ziher_2 before")
-      #f18klijentlib.run("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole)
       ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #print("func_hello_ziher_2 end")
       s = input()
       textual_run(header=ziher_header)
 
       ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #print("func_hello_ziher_2 end")
       s = input()
       textual_run(header=ziher_header)
 
-      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #print("func_hello_ziher_2 end")
-      s = input()
-      textual_run(header=ziher_header)
-
+      
+      bInitConsole = 1
+      bReleaseConsole = 1
       f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
       
-      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #print("func_hello_ziher_2 end")
-      s = input()
-      textual_run(header=ziher_header)
+      #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      #s = input()
+      #textual_run(header=ziher_header)
 
-      f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
-   
+      # nemoj dva puta pozivati main unutar vminit/vmquit
+      #f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
+      print("=====>>>>>>>>>>>>>>>>>>====== AFTER MAIN =============>>>>>>========================")
+
+      bInitRT = True
+      f18klijentlib.vmquit(bInitRT)
+      print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
 
 else:
 
