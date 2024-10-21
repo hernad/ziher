@@ -1436,9 +1436,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    printf("quit step 405\n");
 
-
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
-   //zh_memvarsClear( ZH_FALSE );  
    
    printf("quit step 406\n");
 
@@ -1459,7 +1457,8 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    /* stop executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_FALSE;
 
-   zh_vmStaticsClear();  //aplikacija pocinje da iskace radi stanja static varijabli
+   //zh_vmStaticsClear();  //aplikacija pocinje da iskace radi stanja static varijabli
+   // pravi problem kod zm_threadStart
 
    /* release thread specific data */
    zh_stackDestroyTSD();
@@ -1467,7 +1466,6 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    printf("quit step 409\n");
 
 
-   //if (bInitRT) {
    zh_breakBlockRelease();
    zh_errExit();
     
@@ -1485,19 +1483,19 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    printf("quit step 411\n");
 
-   // symlista nam treba
+   // symlista lokalnih symbolan nam treba
    //zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
-   //if (bInitRT) {
-      //zh_dynsymRelease();   /* releases the dynamic symbol table */
-   //}
+   // trebamo dynamic symbol table
+   //zh_dynsymRelease();   
+
 
    printf("quit step 412\n");
 
-   //zh_itemClear( zh_stackReturnItem() );
+   zh_itemClear( zh_stackReturnItem() );
    printf("quit step 412-b\n");
 
-   // zh_gcCollectAll( ZH_TRUE );  zaglavi
+   zh_gcCollectAll( ZH_TRUE );  //zaglavi
 
    printf("quit step 413\n");
 
