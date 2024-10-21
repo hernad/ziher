@@ -323,3 +323,10 @@ FUNCTION zh_iniWriteStr( hIni, cCommentBegin, cCommentEnd, lAutoMain )
    ENDIF
 
    RETURN iif( Empty( cBuffer ), NIL, cBuffer )
+
+
+INIT PROCEDURE zh_rtl_zh_ini_init()
+   
+   s_cLineComment := ";"
+   s_cHalfLineComment := "#"
+   RETURN

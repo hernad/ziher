@@ -2,6 +2,7 @@
 
 import sys
 import os
+import gc
 from importlib import reload
 
 from textual_splash import run as textual_run
@@ -33,54 +34,58 @@ elif arg1 == "func_hello_ziher_2":
    bInitRT = True
    bInitConsole = True
    bReleaseConsole = True
-   f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
-   
-   bInitConsole = 1
-   bReleaseConsole = 1
-   returnType = 1 # integer
-   func = "ZH_GTCOUNT"
-   print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
-   s = input()
 
-   #if 'f18klijentlib' in sys.modules:  
-   #   #del sys.modules["f18klijentlib"]
-   #   reload(sys.modules['f18klijentlib'])
-   #   #__import__("f18klijentlib")
-   #reload(f18klijentlib)
+   #f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
+   #
+   #bInitConsole = 1
+   #bReleaseConsole = 1
+   #returnType = 1 # integer
+   #func = "ZH_GTCOUNT"
+   #print("zh_gtcount:", f18klijentlib.run_get(func, bInitConsole, bReleaseConsole, returnType))
+   #s = input()
+   #
+   ##if 'f18klijentlib' in sys.modules:  
+   ##   #del sys.modules["f18klijentlib"]
+   ##   reload(sys.modules['f18klijentlib'])
+   ##   #__import__("f18klijentlib")
+   ##reload(f18klijentlib)
+   #
+   #bStartMainProc = False
+   #bInitRT = True
+   #bInitConsole = True
+   #bReleaseConsole = True
+   #
+   #bInitConsole = 1
+   #bReleaseConsole = 1
+   #returnType = 1 # integer
+   #f18klijentlib.vmquit(bInitRT)
 
-   bStartMainProc = False
-   bInitRT = True
-   bInitConsole = True
-   bReleaseConsole = True
-  
-   bInitConsole = 1
-   bReleaseConsole = 1
-   returnType = 1 # integer
-   f18klijentlib.vmquit(bInitRT)
-
-   for iter in range(1, 10):
+   for iter in range(1, 3):
       f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    
       print("=======================================", iter , "=========================""")
-      bInitConsole = 1
-      bReleaseConsole = 1
-      returnType = 0 # string
-      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #s = input()
-      #textual_run(header=ziher_header)
+      #bInitConsole = 1
+      #bReleaseConsole = 1
+      #returnType = 0 # string
+      #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      ##s = input()
+      ##textual_run(header=ziher_header)
 
-      ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #s = input()
-      #textual_run(header=ziher_header)
+      #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      ##s = input()
+      ##textual_run(header=ziher_header)
 
       
       bInitConsole = 1
       bReleaseConsole = 1
       f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
       
-      #ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      #s = input()
-      #textual_run(header=ziher_header)
+      returnType = 0
+      for j in range(0, 100):
+         print("ziher func_hello_ziher_2", j)
+         ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
+      s = input()
+      textual_run(header=ziher_header)
 
       # nemoj dva puta pozivati main unutar vminit/vmquit
       #f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
@@ -88,6 +93,7 @@ elif arg1 == "func_hello_ziher_2":
 
       bInitRT = True
       f18klijentlib.vmquit(bInitRT)
+      gc.collect()
       print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
 
 else:

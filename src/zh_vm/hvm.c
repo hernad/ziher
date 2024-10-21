@@ -1400,7 +1400,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
    printf("quit step 400\n");
 
-   //zh_vmTerminateThreads();  //zaglavi
+   zh_vmTerminateThreads();  //zaglavi
 
    printf("quit step 401\n");
 
@@ -1421,7 +1421,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    /* intentionally here to allow executing object destructors for all
     * cross referenced items before we release classy subsystem
     */
-   //zh_gcCollectAll( ZH_TRUE ); //zaglavi
+   zh_gcCollectAll( ZH_TRUE ); //zaglavi
 
    /* Clear any pending actions so RDD shutdown process
     * can be cleanly executed
@@ -1449,7 +1449,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    printf("quit step 407\n");
 
-   //zh_gcCollectAll( ZH_TRUE ); //zaglavi
+   zh_gcCollectAll( ZH_TRUE ); //zaglavi
    
    printf("quit step 408\n");
 
@@ -1459,7 +1459,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    /* stop executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_FALSE;
 
-   //zh_vmStaticsClear();
+   zh_vmStaticsClear();  //aplikacija pocinje da iskace radi stanja static varijabli
 
    /* release thread specific data */
    zh_stackDestroyTSD();
@@ -1468,12 +1468,11 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
 
    //if (bInitRT) {
-   //  zh_breakBlockRelease();
-   //  zh_errExit();
+   zh_breakBlockRelease();
+   zh_errExit();
     
    zh_clsReleaseAll();
 
-   //}
 
    //dump
    //zh_vmStaticsRelease();
@@ -1504,7 +1503,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
 
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
-   //zh_vmCleanModuleFunctions();
+   zh_vmCleanModuleFunctions();
 
    zh_vmStackRelease();             /* release ZHVM stack and remove it from linked ZHVM stacks list */
    if( s_pSymbolsMtx )
@@ -1521,16 +1520,16 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    /* release all known garbage */
    //if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
-   //   zh_gcReleaseAll();
+   //   zh_gcReleaseAll(); => segfault ako se ovo otvori
 
    printf("quit step 414\n");
 
 
-   //zh_vmUnsetExceptionHandler(); sumnjam na segfault kod narednog vminit
+   zh_vmUnsetExceptionHandler(); //sumnjam na segfault kod narednog vminit
 
    printf("quit step 415\n");
 
-   //zh_xexit();
+   zh_xexit();
 
 #if defined( ZH_OS_WIN )
    zh_winmainArgVFree();
