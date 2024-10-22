@@ -48,9 +48,9 @@
 
 PROCEDURE ErrorSys()
 
-   //ErrorBlock( {| oError | DefError( oError ) } )
+   ErrorBlock( {| oError | DefError( oError ) } )
    //ErrorBlock( {| oError | Break( oError ) } )
-   ErrorBlock( {| oError | Qout("ERRRRROR:", ErrorMessage( oError )), Break(oError) } )
+   //ErrorBlock( {| oError | Qout("ERRRRROR:", ErrorMessage( oError )), Break(oError) } )
 
    RETURN
 

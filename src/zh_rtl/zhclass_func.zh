@@ -70,18 +70,11 @@ REQUEST ZHObject
 
 FUNCTION ZHClass()
 
-   //STATIC s_hClass /* NOTE: Automatically defaults to NIL */
+   STATIC s_hClass /* NOTE: Automatically defaults to NIL */
 
    LOCAL hClass
 
-   //IF PCount() == 1 .AND. lInit
-   //   s_hClass := NIL
-   //   ? "Shclass lInit SET NIL ====================", s_hClass
-   //   lInit := NIL
-   //ENDIF
-
-
-   //IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
+   IF s_hClass == NIL .AND. __clsLockDef( @s_hClass )
 
       BEGIN SEQUENCE
 
@@ -141,17 +134,17 @@ FUNCTION ZHClass()
          //? "ZHC-9"
          //inkey(0)
 
-      //ALWAYS
+      ALWAYS
 
-      //   __clsUnlockDef( @s_hClass, hClass )
+         __clsUnlockDef( @s_hClass, hClass )
 
       END SEQUENCE
 
-   //ENDIF
+   ENDIF
        //? "ZHC-XXX"
 
-   //RETURN __clsInst( s_hClass )
-   RETURN __clsInst( hClass )
+   RETURN __clsInst( s_hClass )
+   //RETURN __clsInst( hClass )
    
 
 /* xSuper is used here as the new preprocessor file (class.zhh) send here
@@ -444,31 +437,3 @@ STATIC FUNCTION InitClass()
    RETURN QSelf()
 
 
-#pragma BEGINDUMP
-
-#include "zh_api.h"
-#include "zh_fs_api.h"
-#include "zh_vm.h"
-#include "zh_item_api.h"
-
-
-ZH_FUNC( ZHCLASS_VMINIT )
-{
-   //printf("zhclass_vminit ziher fn\n");
-   //zh_INITSTATICS();
-   
-   //s_hClass == NUL;
-
-}
-
-#pragma ENDDUMP
-
-FUNCTION ZHCLASS_VMINIT2
-   //s_hClass := NIL
-   //? "s_hClass je nedodirljiva ?", s_hClass
-
-   //ZHCLASS(.T.)
-   //ZHOBJECT(.T.)
-
-   //inkey(0)
-RETURN NIL

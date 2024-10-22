@@ -182,9 +182,6 @@ static void zh_stack_free( PZH_STACK pStack )
 
 void zh_stackDestroyTSD( void )
 {
-   
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackDestroyTSD()" ) );
 
    zh_stack_destroy_TSD( &zh_stack );
 }
@@ -192,9 +189,6 @@ void zh_stackDestroyTSD( void )
 void * zh_stackGetTSD( PZH_TSD pTSD )
 {
    
-
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_stackGetTSD(%p)", ( void * ) pTSD ) );
-
    if( pTSD->iHandle == 0 || pTSD->iHandle > zh_stack.iTSD ||
        zh_stack.pTSD[ pTSD->iHandle ].pTSD == NULL )
    {
@@ -938,49 +932,48 @@ PZH_STACKRDD zh_stackRDD( void )
 }
 
 
-#undef zh_stackGetStaticsBase
+//#undef zh_stackGetStaticsBase
 void * zh_stackGetStaticsBase( void )
 {
-   
+   //printf("getstaticksbase %p\n", zh_stack.pStatics);
    return zh_stack.pStatics;
 }
 
-#undef zh_stackSetStaticsBase
+//#undef zh_stackSetStaticsBase
 void zh_stackSetStaticsBase( void * pBase )
 {
-   
+   //printf("setstaticksbase %p\n", pBase);
    zh_stack.pStatics = pBase;
 }
 
-#undef zh_stackGetRecoverBase
+//#undef zh_stackGetRecoverBase
 ZH_I_SIZE zh_stackGetRecoverBase( void )
 {
-   
    return zh_stack.nRecoverBase;
 }
 
-#undef zh_stackSetRecoverBase
+//#undef zh_stackSetRecoverBase
 void zh_stackSetRecoverBase( ZH_I_SIZE nBase )
 {
    
    zh_stack.nRecoverBase = nBase;
 }
 
-#undef zh_stackGetActionRequest
+//#undef zh_stackGetActionRequest
 ZH_USHORT zh_stackGetActionRequest( void )
 {
    
    return zh_stack.uiActionRequest;
 }
 
-#undef zh_stackSetActionRequest
+//#undef zh_stackSetActionRequest
 void zh_stackSetActionRequest( ZH_USHORT uiAction )
 {
    
    zh_stack.uiActionRequest = uiAction;
 }
 
-#undef zh_stackWithObjectItem
+//#undef zh_stackWithObjectItem
 PZH_ITEM zh_stackWithObjectItem( void )
 {
    
@@ -988,14 +981,14 @@ PZH_ITEM zh_stackWithObjectItem( void )
                         * ( zh_stack.pItems + zh_stack.nWithObject ) : NULL;
 }
 
-#undef zh_stackWithObjectOffset
+//#undef zh_stackWithObjectOffset
 ZH_I_SIZE zh_stackWithObjectOffset( void )
 {
    
    return zh_stack.nWithObject;
 }
 
-#undef zh_stackWithObjectSetOffset
+//#undef zh_stackWithObjectSetOffset
 void zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset )
 {
    

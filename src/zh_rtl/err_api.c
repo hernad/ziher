@@ -488,8 +488,6 @@ void zh_errInit( void )
 
 void zh_errExit( void )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_errExit()" ) );
-
    zh_itemRelease( s_pError );
    s_pError = NULL;
 }

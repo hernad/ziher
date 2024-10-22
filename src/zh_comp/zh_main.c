@@ -3311,7 +3311,7 @@ void zh_compStaticDefStart( ZH_COMP_DECL )
    {
       ZH_BYTE pBuffer[ 5 ];
 
-      ZH_COMP_PARAM->pInitFunc = zh_compFunctionNew( ZH_COMP_PARAM, "(_INITSTATICS)", ZH_FS_INITEXIT | ZH_FS_LOCAL );
+      ZH_COMP_PARAM->pInitFunc = zh_compFunctionNew( ZH_COMP_PARAM, "(_INS)", ZH_FS_STATIC_INIT | ZH_FS_LOCAL );
       ZH_COMP_PARAM->pInitFunc->pOwner = ZH_COMP_PARAM->functions.pLast;
       ZH_COMP_PARAM->pInitFunc->funFlags = ZH_FUNF_USES_STATICS | ZH_FUNF_PROCEDURE;
       ZH_COMP_PARAM->functions.pLast = ZH_COMP_PARAM->pInitFunc;
@@ -3543,7 +3543,7 @@ void zh_compCodeBlockEnd( ZH_COMP_DECL )
          pFuncName = pFunc->szName;
    }
    if( *pFuncName == 0 )
-      pFuncName = "(_INITSTATICS)";
+      pFuncName = "(_INS)";
    pFunc->funFlags |= ( pCodeblock->funFlags & ZH_FUNF_USES_STATICS );
 
    /* generate a proper codeblock frame with a codeblock size and with
@@ -4098,6 +4098,18 @@ static void zh_compRestoreSwitches( ZH_COMP_DECL, PZH_COMP_SWITCHES pSwitches )
    ZH_COMP_PARAM->supported         = pSwitches->supported;
 }
 
+static void string_to_upper(char * temp) {
+  //char * name;
+  //name = strtok(temp,":");
+
+  // Convert to upper case
+  char *s = temp;
+  while (*s) {
+    *s = ZH_TOUPPER((unsigned char) *s);
+    s++;
+  }
+}
+
 static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuffer, int iStartLine )
 {
    char buffer[ ZH_PATH_MAX * 2 + 80 ];
@@ -4302,7 +4314,24 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
          ZH_COMP_PARAM->pInitFunc->pCode[ 4 ] = ZH_HIBYTE( ZH_COMP_PARAM->iStaticCnt );
          ZH_COMP_PARAM->pInitFunc->iStaticsBase = ZH_COMP_PARAM->iStaticCnt;
          /* Update pseudo function name */
-         zh_snprintf( szNewName, sizeof( szNewName ), "(_INITSTATICS%05d)", ZH_COMP_PARAM->iStaticCnt );
+         
+         char szFileName[100];
+         zh_strncpyUpper( szFileName, pFileName->szName, sizeof( szFileName ) - 1 );
+         /* replace non ID characters in name of local symbol table by '_' */
+         {
+            int iLen = ( int ) strlen( szFileName ), i;
+
+            for( i = 0; i < iLen; i++ )
+            {
+               char c = szFileName[ i ];
+               if( ! ZH_ISNEXTIDCHAR( c ) )
+                szFileName[ i ] = '_';
+            }
+         }
+
+         zh_snprintf( szNewName, sizeof( szNewName ), "(_INS%03d%s)", ZH_COMP_PARAM->iStaticCnt, szFileName );
+
+         
          ZH_COMP_PARAM->pInitFunc->szName = zh_compIdentifierNew( ZH_COMP_PARAM, szNewName, ZH_IDENT_COPY );
 
          zh_compAddInitFunc( ZH_COMP_PARAM, ZH_COMP_PARAM->pInitFunc );
@@ -4448,3 +4477,5 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
 
    return ZH_COMP_PARAM->fExit ? EXIT_FAILURE : iStatus;
 }
+
+

@@ -203,14 +203,13 @@ static void    zh_vmDebuggerShowLine( ZH_USHORT uiLine ); /* makes the debugger 
 static void    zh_vmDebuggerEndProc( void );     /* notifies the debugger for an endproc */
 static void    zh_vmDoInitZHFunctions( void );
 
-static int s_vmInitPozivNum = 0;
+static int s_vmInitPozivCount = 0;
 
 static PZH_DYNSYMBOL s_pDynsDbgEntry = NULL;   /* Cached __DBGENTRY symbol */
 static ZH_DBGENTRY_FUNC s_pFunDbgEntry;   /* C level debugger entry */
 
 static ZH_BOOL s_fInternalsEnabled = ZH_TRUE;
 
-static int vmInitCount = 0;
 
 static int volatile zh_vmThreadRequest = 0;
 static void zh_vmRequestTest( void );
@@ -434,6 +433,7 @@ static void zh_vmDoInitZHVM( void )
 
 }
 
+/*
 static void zh_vmDoInitZHObject( void )
 {
    char * sFunc = "ZHOBJECT_VMINIT";
@@ -497,6 +497,8 @@ static void zh_vmDoInitZHObject( void )
    //   zh_vmProc( 0 );
    //}; 
 }
+
+*/
 
 
 static ZH_CRITICAL_NEW( s_vmMtx );
@@ -1088,13 +1090,11 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    zh_winmainArgVBuild();
 #endif
 
-  s_vmInitPozivNum ++;
+  s_vmInitPozivCount ++;
 
-  //zh_vmDoModuleInitFunctions();       // process AtInit registered functions
+  // zh_vmDoModuleInitFunctions();       // process AtInit registered functions
     
 
-   // dole ima zh_vmDoModuleInitFunctions();       //process AtInit registered functions
-    
 
    //ext__zh_regex_init_();
    //ext__zh_dbfcdx_rdd_init_();
@@ -1117,67 +1117,57 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    ext__zh_startup_gt_Init_STD();
    ext__zh_startup_gt_Init_TRM();
 
-   //if (bInitRT) {
-   if ( s_vmInitPozivNum == 1) {
+
 
       zh_xinit();
       zh_vmSetExceptionHandler();
+
+   if ( s_vmInitPozivCount == 1) {
 
          printf("============== init symbol RT\n");
          zh_vmSymbolInit_RT();      /* initialize symbol table with runtime support functions */
       
 
    }
-   //}
+
    zh_threadInit();
 
-      zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
-      s_pSymbolsMtx = zh_threadMutexCreate();
+   zh_vmStackInit( zh_threadStateNew() ); /* initialize ZHVM thread stack */
+   s_pSymbolsMtx = zh_threadMutexCreate();
+   
+   /* Set the language and codepage to the default */
+   /* This trick is needed to stringify the macro value */
+   zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
+   zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
+   {
       
-      /* Set the language and codepage to the default */
-      /* This trick is needed to stringify the macro value */
-      zh_langSelectID( ZH_MACRO2STRING( ZH_LANG_DEFAULT ) );
-      zh_codepageSelectID( ZH_MACRO2STRING( ZH_CODEPAGE_DEFAULT ) );
-      {
-         
-         s_main_thread = zh_stackId();
-         /* _SET_* initialization */
-         zh_setInitialize( zh_stackSetStruct() );
-      }
-
-
-   //printf("============== vmInit step 10\n");
-   //getchar();
-
-   //printf("init step 4\n");
-   if (bInitRT) {
-      zh_cmdargUpdate();
-      //printf("init step 5\n");
-      zh_clsInit(); /* initialize Classy/OO system */
-      //printf("init step 6\n");
-      zh_errInit();
-      //printf("init step 7\n");
-      zh_breakBlock();
+      s_main_thread = zh_stackId();
+      /* _SET_* initialization */
+      zh_setInitialize( zh_stackSetStruct() );
    }
 
 
+   zh_cmdargUpdate();
+
+   zh_clsInit(); /* initialize Classy/OO system */
+
+   zh_errInit();
+
+   zh_breakBlock();
+
+
    printf("init step 9\n");
-   if (bConInit)
-     zh_conInit();
 
-   /* Check for some internal switches */
-   //printf("init step 10\n");
+   zh_conInit();
 
-   //if (bInitRT)
-     zh_cmdargProcess();
+
+   zh_cmdargProcess();
 
    
-   //printf("============== vmInit step 12\n");
-   //getchar();  
-   if ( s_vmInitPozivNum == 1) {
-     //if (bInitRT)
+
+   //if ( s_vmInitPozivCount == 1) {
      zh_i18n_init();            /* initialize i18n module */
-   }  
+   //}  
 
 #ifndef ZH_NO_PROFILER
    /* Initialize opcodes profiler support arrays */
@@ -1195,91 +1185,468 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    /* enable executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_TRUE;
 
-   //printf("init step 12\n");
+
    /* lock main ZHVM thread */
    zh_vmLock();
 
-   //printf("init step 13\n");
-   //if ( s_vmInitPozivNum == 1) {
-      s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
-      if( s_pDynsDbgEntry )
-      {
-         /* Try to get C dbgEntry() function pointer */
-         printf("set dbg entry stop 800\n");
+
+   s_pDynsDbgEntry = zh_dynsymFind( "__DBGENTRY" );
+   if( s_pDynsDbgEntry )
+   {
+      /* Try to get C dbgEntry() function pointer */
+      printf("set dbg entry stop 800\n");
+      getchar();
+      if( ! s_pFunDbgEntry ) {
+         printf("set dbg entry stop 801\n");
          getchar();
-         if( ! s_pFunDbgEntry ) {
-            printf("set dbg entry stop 801\n");
-            getchar();
-            zh_vmDebugEntry( ZH_DBG_GETENTRY, 0, NULL, 0, NULL );
-         }
-         if( ! s_pFunDbgEntry ) {
-            printf("set dbg entry stop 802\n");
-            getchar();
-            s_pFunDbgEntry = zh_vmDebugEntry;
-         }
+         zh_vmDebugEntry( ZH_DBG_GETENTRY, 0, NULL, 0, NULL );
       }
-   //}
+      if( ! s_pFunDbgEntry ) {
+         printf("set dbg entry stop 802\n");
+         getchar();
+         s_pFunDbgEntry = zh_vmDebugEntry;
+      }
+   }
+   
 
 
-   //printf("============== vmInit step 13\n");
-   //getchar();
 
    /* Call functions that initializes static variables
     * Static variables have to be initialized before any INIT functions
     * because INIT function can use static variables
     */
    
-   //if (vmInitCount == 0) {
-     zh_vmDoInitStatics();
-   //  vmInitCount = 1;
-   //}
-
-
-
-   //zh_initDynTable();
-
-   //if (bInitRT) {
+  
 
    
       printf("init step 15\n");
       getchar();
-      zh_vmDoInitZHVM();
+      zh_vmDoInitZHVM(); // u errorsys i __ZHVINIT ne smije biti static vars
 
-      printf("init step 16\n");
-      getchar();
+      if (s_vmInitPozivCount == 1000) {
+         zh_vmDoInitStatics();
+         
+      }  else {
+
+zh_INITSTATICS_SHOWTIME_ZH();
+zh_INITSTATICS_KEYTIME_ZH();
+zh_INITSTATICS_KEYSEC_ZH();
+zh_INITSTATICS_FCOPY_ZH();
+zh_INITSTATICS_CTDUMMY_ZH();
+zh_INITSTATICS_PDF_CLASS_ZH();
+zh_INITSTATICS_ARRAY_RDD_ZH();
+zh_INITSTATICS_READVAR_ZH();
+zh_INITSTATICS_MENU_TO_ZH();
+zh_INITSTATICS_GETLIST_ZH();
+zh_INITSTATICS_GET_SYSTEM_ZH();
+zh_INITSTATICS_ALERT_FUNC_ZH();
+zh_INITSTATICS_ZHOBJECT_FUNC_ZH();
+zh_INITSTATICS_ZHCLASS_FUNC_ZH();
+zh_INITSTATICS_NOOP_ZH();
+zh_INITSTATICS_ZH_INI_ZH();
+zh_INITSTATICS_DEBUGGER_ZH();
+zh_INITSTATICS_DBGTMENU_ZH();
+zh_INITSTATICS_SHOWTIME_ZH();
+zh_INITSTATICS_KEYTIME_ZH();
+zh_INITSTATICS_KEYSEC_ZH();
+zh_INITSTATICS_FCOPY_ZH();
+zh_INITSTATICS_CTDUMMY_ZH();
+zh_INITSTATICS_PDF_CLASS_ZH();
+zh_INITSTATICS_ARRAY_RDD_ZH();
+zh_INITSTATICS_READVAR_ZH();
+zh_INITSTATICS_MENU_TO_ZH();
+zh_INITSTATICS_GETLIST_ZH();
+zh_INITSTATICS_GET_SYSTEM_ZH();
+zh_INITSTATICS_ALERT_FUNC_ZH();
+zh_INITSTATICS_ZHOBJECT_FUNC_ZH();
+zh_INITSTATICS_ZHCLASS_FUNC_ZH();
+zh_INITSTATICS_NOOP_ZH();
+zh_INITSTATICS_ZH_INI_ZH();
+zh_INITSTATICS_DEBUGGER_ZH();
+zh_INITSTATICS_DBGTMENU_ZH();
+
+zh_INITSTATICS_RB_TRAKA_ZH();
+zh_INITSTATICS_POS_ROBA_ZH();
+zh_INITSTATICS_POS_RACUN_UNOS_ZH();
+zh_INITSTATICS_POS_PRENOS_POS_FAKT_ZH();
+zh_INITSTATICS_POS_PREGLED_DOKUMENATA_TABELA_ZH();
+zh_INITSTATICS_POS_POCETNO_STANJE_ZH();
+zh_INITSTATICS_POS_PARAMETRI_ZH();
+zh_INITSTATICS_POS_IZVJ_STANJE_PM_ZH();
+zh_INITSTATICS_POS_IZVJ_REALIZACIJA_KASE_ZH();
+zh_INITSTATICS_POS_IZVJ_PDV_POREZI_ZH();
+zh_INITSTATICS_POS_FRM_INVENTURA_NIVELACIJA_ZH();
+zh_INITSTATICS_POS_FISKALNI_RACUN_ZH();
+zh_INITSTATICS_POREZNA_FAKTURA_TRAKA_ZH();
+zh_INITSTATICS_OS_PARAMETRI_ZH();
+zh_INITSTATICS_OS_OBRACUN_ZH();
+zh_INITSTATICS_LD_SPECIFIKACIJA_NETO_PRIMANJA_PO_OPCINAMA_ZH();
+zh_INITSTATICS_LD_SIHTARICE_IZVJESTAJI_ZH();
+zh_INITSTATICS_LD_SIFRE_ZH();
+zh_INITSTATICS_LD_PARAMETRI_ZH();
+zh_INITSTATICS_LD_ODBICI_ELEMENTARNE_NEPOGODE_ZH();
+zh_INITSTATICS_LD_OBRAZAC_GIP_ZH();
+zh_INITSTATICS_LD_MIP_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_UPRAVNI_ODBOR_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_UGOVORI_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_SAMOSTALNI_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_REDOVAN_RAD_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_ZH();
+zh_INITSTATICS_LD_JS3400_OBRAZAC_ZH();
+zh_INITSTATICS_LD_IZVJESTAJI_TOPLI_OBROK_ZH();
+zh_INITSTATICS_INVALIDITET_ZH();
+zh_INITSTATICS__O_LD_ZH();
+zh_INITSTATICS__CRE_ALL_LD_ZH();
+zh_INITSTATICS_KALK_UNOS_DOKUMENTA_MENI_F10_ZH();
+zh_INITSTATICS_KALK_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_KALK_UNOS_DOK_81_ZH();
+zh_INITSTATICS_KALK_UNOS_DOK_16_ZH();
+zh_INITSTATICS_KALK_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_KALK_TKM_TRGOVACKA_KNJIGA_NA_MALO_ZH();
+zh_INITSTATICS_KALK_STDOK_10_ZH();
+zh_INITSTATICS_KALK_ROBA_ZH();
+zh_INITSTATICS_KALK_PRORACUN_NABAVNE_CIJENE_ZH();
+zh_INITSTATICS_KALK_PRENOS_TOPS_KALK_ZH();
+zh_INITSTATICS_KALK_PRENOS_KALK_TOPS_ZH();
+zh_INITSTATICS_KALK_PARAMS_ZH();
+zh_INITSTATICS_KALK_MAGACIN_TRGOVACKA_KNJIGA_NA_VELIKO_TKV_ZH();
+zh_INITSTATICS_KALK_LAGER_LISTA_PRODAVNICA_ZH();
+zh_INITSTATICS_KALK_LAGER_LISTA_MAGACIN_ZH();
+zh_INITSTATICS_KALK_KONTIRANJE_DOKUMENTA_ZH();
+zh_INITSTATICS_KALK_KARTICA_PRODAVNICA_ZH();
+zh_INITSTATICS_KALK_KARTICA_MAGACIN_ZH();
+zh_INITSTATICS_KALK_IZVJESTAJI_EXPORT_ZH();
+zh_INITSTATICS_KALK_IZVJESTAJ_KOLICINSKO_STANJE_OBJEKATA_ZH();
+zh_INITSTATICS_KALK_IMPORT_CSV_ZH();
+zh_INITSTATICS_KALK_IMP_TXT_COMMON_ZH();
+zh_INITSTATICS_KALK_GET_1_IM_ZH();
+zh_INITSTATICS_KALK_GET_1_95_ZH();
+zh_INITSTATICS_KALK_GET_1_2_10_ZH();
+zh_INITSTATICS_KALK_GET_1_18_ZH();
+zh_INITSTATICS_KALK_GET_1_16_94_ZH();
+zh_INITSTATICS_KALK_GET_1_14_ZH();
+zh_INITSTATICS_KALK_BROJACI_DOKUMENATA_ZH();
+zh_INITSTATICS_FISCAL_UTILS_ZH();
+zh_INITSTATICS_FISCAL_TREMOL_ZH();
+zh_INITSTATICS_FISCAL_PARAMS_ZH();
+zh_INITSTATICS_FISCAL_MENU_RPT_ZH();
+zh_INITSTATICS_FISCAL_MAIN_ZH();
+zh_INITSTATICS_FISCAL_HCP_ZH();
+zh_INITSTATICS_FISCAL_FPRINT_ZH();
+zh_INITSTATICS_FISCAL_FLINK_ZH();
+zh_INITSTATICS_FIN_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_FIN_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_FIN_SUBAN_KARTICA_SQL_ZH();
+zh_INITSTATICS_FIN_STAMPA_LISTE_NALOGA_ZH();
+zh_INITSTATICS_FIN_SPECIFIKACIJA_SQL_ZH();
+zh_INITSTATICS_FIN_PARAM_1_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_RUCNO_ZATVARANJE_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_GEN_KNJIZENJE_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_ZH();
+zh_INITSTATICS_FIN_NALOG_PSUBAN_ZH();
+zh_INITSTATICS_FIN_NALOG_ZH();
+zh_INITSTATICS_FIN_KOMPENZACIJE_ZH();
+zh_INITSTATICS_FIN_KAMATE_UNOS_ZH();
+zh_INITSTATICS_FIN_KAMATE_OBR_ZH();
+zh_INITSTATICS_FIN_KAMATE_KAMATNI_LIST_ZH();
+zh_INITSTATICS_FIN_IOS_ZH();
+zh_INITSTATICS_FIN_IMPORT_ELBA_ZH();
+zh_INITSTATICS_FIN_DNEVNIK_NALOGA_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_SUBANALITIKA_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_SINTETIKA_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_GRUPE_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_ANALITIKA_B_ZH();
+zh_INITSTATICS_FIN_AZURIRANJE_NALOGA_ZH();
+zh_INITSTATICS_ENABAVKE_ZH();
+zh_INITSTATICS_EISPORUKE_ZH();
+zh_INITSTATICS_STANJE_NABAVNA_CIJENA_ZH();
+zh_INITSTATICS_RPT_NARUDZBENICA_ZH();
+zh_INITSTATICS_FAKT_UNOS_DOKUMENTA_UTIL_ZH();
+zh_INITSTATICS_FAKT_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_FAKT_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_FAKT_STAMPA_DOKUMENTA_PDV_ZH();
+zh_INITSTATICS_FAKT_STAMPA_DOKUMENTA_ODT_ZH();
+zh_INITSTATICS_FAKT_PREGLED_DOKUMENATA_TABELA_ZH();
+zh_INITSTATICS_FAKT_PREGLED_DOKUMENATA_ZH();
+zh_INITSTATICS_FAKT_PARAMETRI_ZH();
+zh_INITSTATICS_FAKT_IZVJ_STANJE_ROBE_ZH();
+zh_INITSTATICS_FAKT_IZVJ_REAL_MP_ZH();
+zh_INITSTATICS_FAKT_IZVJ_KARTICA_ZH();
+zh_INITSTATICS_FAKT_GENERACIJA_DOKUMENTA_ZH();
+zh_INITSTATICS_FAKT_FTXT_ZH();
+zh_INITSTATICS_FAKT_FISKALNI_RACUN_ZH();
+zh_INITSTATICS_UI2_WINDOWS_ZH();
+zh_INITSTATICS_SQL_QUERY_ZH();
+zh_INITSTATICS_MY_SQL_SERVER_ZH();
+zh_INITSTATICS_SEMAPHORES_ZH();
+zh_INITSTATICS_MY_USE_ZH();
+zh_INITSTATICS_A_DBFS_ZH();
+zh_INITSTATICS_PRINT_ODT_ZH();
+zh_INITSTATICS_PRINT_2_ZH();
+zh_INITSTATICS_F18_REPORT_TEMPLATES_ZH();
+zh_INITSTATICS_PDF_CLS_ZH();
+zh_INITSTATICS_DBF_CREATE_INDEX_ZH();
+zh_INITSTATICS_YARG_DOWNLOAD_ZH();
+zh_INITSTATICS_SHA256SUM_ZH();
+zh_INITSTATICS_PSQL_DOWNLOAD_ZH();
+zh_INITSTATICS_PDF_DOWNLOAD_ZH();
+zh_INITSTATICS_JODREPORTS_DOWNLOAD_ZH();
+zh_INITSTATICS_JAVA_DOWNLOAD_ZH();
+zh_INITSTATICS_F18_UPDATE_ZH();
+zh_INITSTATICS_F18_EDITOR_ZH();
+zh_INITSTATICS_DOWNLOAD_TEMPLATE_ZH();
+zh_INITSTATICS_CLIPBOARD_ZH();
+zh_INITSTATICS_LO_DOWNLOAD_ZH();
+zh_INITSTATICS_XBASE_LEGACY_ZH();
+zh_INITSTATICS_PIC_ZH();
+zh_INITSTATICS_FISCAL_TRING_ZH();
+zh_INITSTATICS_F18_RTM_ZH();
+zh_INITSTATICS_F18_INI_ZH();
+zh_INITSTATICS_COMMON_PRINT_EPL2_ZH();
+zh_INITSTATICS_XBASE_RDD_DBF_ZH();
+zh_INITSTATICS_XBASE_RDD_ZH();
+zh_INITSTATICS_XBASE_PARSIRAJ_ZH();
+zh_INITSTATICS_VRIJEME_SQL_ZH();
+zh_INITSTATICS_UI_STANDARD_DIALOGS_ZH();
+zh_INITSTATICS_UI_SCGET_ZH();
+zh_INITSTATICS_UI_MSGS_ZH();
+zh_INITSTATICS_UI_MENU_ZH();
+zh_INITSTATICS_UI_MAIN_ZH();
+zh_INITSTATICS_UI_BROWSEKEY_ZH();
+zh_INITSTATICS_UGOV_ROBA_ZH();
+zh_INITSTATICS_TAKSA_GORIVO_ZH();
+zh_INITSTATICS_T_FILE_READ_ZH();
+zh_INITSTATICS_SERVER_DB_ZH();
+zh_INITSTATICS_RULES_RULES_ZH();
+zh_INITSTATICS_ROBA_SVEDI_NA_STANDARNU_JMJ_ZH();
+zh_INITSTATICS_POREZNA_FAKTURA_A4_ZH();
+zh_INITSTATICS_PARAMS_ORGANIZACIJA_ZH();
+zh_INITSTATICS_OTPREMNICA_MP_ZH();
+zh_INITSTATICS_MY_BROWSE_ZH();
+zh_INITSTATICS_GLOBAL_VARS_SPECIFIFICNOSTI_VARS_ZH();
+zh_INITSTATICS_FMK_MIGRATE_ZH();
+zh_INITSTATICS_FETCH_METRIC_ZH();
+zh_INITSTATICS_F18_UTILS_ZH();
+zh_INITSTATICS_F18_THREADS_ZH();
+zh_INITSTATICS_F18_LOGIN_ZH();
+zh_INITSTATICS_F18_INIT_IDLE_HANDLERS_ZH();
+zh_INITSTATICS_F18_INIT_ZH();
+zh_INITSTATICS_F18_DBF_UPGRADE_ZH();
+zh_INITSTATICS_EXPORT_XLSX_ZH();
+zh_INITSTATICS_DESTINACIJE_2_ZH();
+zh_INITSTATICS_COMMON_PRINT_GVIM_ZH();
+zh_INITSTATICS_CALC_ZH();
+zh_INITSTATICS_BROWSE_P_SIFRA_ZH();
+zh_INITSTATICS_ARRAY_BROWSE_ZH();
+zh_INITSTATICS__CRE_R_EXPORT_DBF_ZH();
+zh_INITSTATICS__CRE_ALL_DBFS_ZH();
+zh_INITSTATICS_F18_ZH();
+zh_INITSTATICS_RB_TRAKA_ZH();
+zh_INITSTATICS_POS_ROBA_ZH();
+zh_INITSTATICS_POS_RACUN_UNOS_ZH();
+zh_INITSTATICS_POS_PRENOS_POS_FAKT_ZH();
+zh_INITSTATICS_POS_PREGLED_DOKUMENATA_TABELA_ZH();
+zh_INITSTATICS_POS_POCETNO_STANJE_ZH();
+zh_INITSTATICS_POS_PARAMETRI_ZH();
+zh_INITSTATICS_POS_IZVJ_STANJE_PM_ZH();
+zh_INITSTATICS_POS_IZVJ_REALIZACIJA_KASE_ZH();
+zh_INITSTATICS_POS_IZVJ_PDV_POREZI_ZH();
+zh_INITSTATICS_POS_FRM_INVENTURA_NIVELACIJA_ZH();
+zh_INITSTATICS_POS_FISKALNI_RACUN_ZH();
+zh_INITSTATICS_POREZNA_FAKTURA_TRAKA_ZH();
+zh_INITSTATICS_OS_PARAMETRI_ZH();
+zh_INITSTATICS_OS_OBRACUN_ZH();
+zh_INITSTATICS_LD_SPECIFIKACIJA_NETO_PRIMANJA_PO_OPCINAMA_ZH();
+zh_INITSTATICS_LD_SIHTARICE_IZVJESTAJI_ZH();
+zh_INITSTATICS_LD_SIFRE_ZH();
+zh_INITSTATICS_LD_PARAMETRI_ZH();
+zh_INITSTATICS_LD_ODBICI_ELEMENTARNE_NEPOGODE_ZH();
+zh_INITSTATICS_LD_OBRAZAC_GIP_ZH();
+zh_INITSTATICS_LD_MIP_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_UPRAVNI_ODBOR_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_UGOVORI_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_SAMOSTALNI_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_REDOVAN_RAD_ZH();
+zh_INITSTATICS_LD_KARTICA_PLATE_ZH();
+zh_INITSTATICS_LD_JS3400_OBRAZAC_ZH();
+zh_INITSTATICS_LD_IZVJESTAJI_TOPLI_OBROK_ZH();
+zh_INITSTATICS_INVALIDITET_ZH();
+zh_INITSTATICS__O_LD_ZH();
+zh_INITSTATICS__CRE_ALL_LD_ZH();
+zh_INITSTATICS_KALK_UNOS_DOKUMENTA_MENI_F10_ZH();
+zh_INITSTATICS_KALK_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_KALK_UNOS_DOK_81_ZH();
+zh_INITSTATICS_KALK_UNOS_DOK_16_ZH();
+zh_INITSTATICS_KALK_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_KALK_TKM_TRGOVACKA_KNJIGA_NA_MALO_ZH();
+zh_INITSTATICS_KALK_STDOK_10_ZH();
+zh_INITSTATICS_KALK_ROBA_ZH();
+zh_INITSTATICS_KALK_PRORACUN_NABAVNE_CIJENE_ZH();
+zh_INITSTATICS_KALK_PRENOS_TOPS_KALK_ZH();
+zh_INITSTATICS_KALK_PRENOS_KALK_TOPS_ZH();
+zh_INITSTATICS_KALK_PARAMS_ZH();
+zh_INITSTATICS_KALK_MAGACIN_TRGOVACKA_KNJIGA_NA_VELIKO_TKV_ZH();
+zh_INITSTATICS_KALK_LAGER_LISTA_PRODAVNICA_ZH();
+zh_INITSTATICS_KALK_LAGER_LISTA_MAGACIN_ZH();
+zh_INITSTATICS_KALK_KONTIRANJE_DOKUMENTA_ZH();
+zh_INITSTATICS_KALK_KARTICA_PRODAVNICA_ZH();
+zh_INITSTATICS_KALK_KARTICA_MAGACIN_ZH();
+zh_INITSTATICS_KALK_IZVJESTAJI_EXPORT_ZH();
+zh_INITSTATICS_KALK_IZVJESTAJ_KOLICINSKO_STANJE_OBJEKATA_ZH();
+zh_INITSTATICS_KALK_IMPORT_CSV_ZH();
+zh_INITSTATICS_KALK_IMP_TXT_COMMON_ZH();
+zh_INITSTATICS_KALK_GET_1_IM_ZH();
+zh_INITSTATICS_KALK_GET_1_95_ZH();
+zh_INITSTATICS_KALK_GET_1_2_10_ZH();
+zh_INITSTATICS_KALK_GET_1_18_ZH();
+zh_INITSTATICS_KALK_GET_1_16_94_ZH();
+zh_INITSTATICS_KALK_GET_1_14_ZH();
+zh_INITSTATICS_KALK_BROJACI_DOKUMENATA_ZH();
+zh_INITSTATICS_FISCAL_UTILS_ZH();
+zh_INITSTATICS_FISCAL_TREMOL_ZH();
+zh_INITSTATICS_FISCAL_PARAMS_ZH();
+zh_INITSTATICS_FISCAL_MENU_RPT_ZH();
+zh_INITSTATICS_FISCAL_MAIN_ZH();
+zh_INITSTATICS_FISCAL_HCP_ZH();
+zh_INITSTATICS_FISCAL_FPRINT_ZH();
+zh_INITSTATICS_FISCAL_FLINK_ZH();
+zh_INITSTATICS_FIN_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_FIN_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_FIN_SUBAN_KARTICA_SQL_ZH();
+zh_INITSTATICS_FIN_STAMPA_LISTE_NALOGA_ZH();
+zh_INITSTATICS_FIN_SPECIFIKACIJA_SQL_ZH();
+zh_INITSTATICS_FIN_PARAM_1_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_RUCNO_ZATVARANJE_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_GEN_KNJIZENJE_ZH();
+zh_INITSTATICS_FIN_OTVORENE_STAVKE_ZH();
+zh_INITSTATICS_FIN_NALOG_PSUBAN_ZH();
+zh_INITSTATICS_FIN_NALOG_ZH();
+zh_INITSTATICS_FIN_KOMPENZACIJE_ZH();
+zh_INITSTATICS_FIN_KAMATE_UNOS_ZH();
+zh_INITSTATICS_FIN_KAMATE_OBR_ZH();
+zh_INITSTATICS_FIN_KAMATE_KAMATNI_LIST_ZH();
+zh_INITSTATICS_FIN_IOS_ZH();
+zh_INITSTATICS_FIN_IMPORT_ELBA_ZH();
+zh_INITSTATICS_FIN_DNEVNIK_NALOGA_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_SUBANALITIKA_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_SINTETIKA_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_GRUPE_B_ZH();
+zh_INITSTATICS_FIN_BRUTO_BILANS_ANALITIKA_B_ZH();
+zh_INITSTATICS_FIN_AZURIRANJE_NALOGA_ZH();
+zh_INITSTATICS_ENABAVKE_ZH();
+zh_INITSTATICS_EISPORUKE_ZH();
+zh_INITSTATICS_STANJE_NABAVNA_CIJENA_ZH();
+zh_INITSTATICS_RPT_NARUDZBENICA_ZH();
+zh_INITSTATICS_FAKT_UNOS_DOKUMENTA_UTIL_ZH();
+zh_INITSTATICS_FAKT_UNOS_DOKUMENTA_ZH();
+zh_INITSTATICS_FAKT_UDALJENA_RAZMJENA_ZH();
+zh_INITSTATICS_FAKT_STAMPA_DOKUMENTA_PDV_ZH();
+zh_INITSTATICS_FAKT_STAMPA_DOKUMENTA_ODT_ZH();
+zh_INITSTATICS_FAKT_PREGLED_DOKUMENATA_TABELA_ZH();
+zh_INITSTATICS_FAKT_PREGLED_DOKUMENATA_ZH();
+zh_INITSTATICS_FAKT_PARAMETRI_ZH();
+zh_INITSTATICS_FAKT_IZVJ_STANJE_ROBE_ZH();
+zh_INITSTATICS_FAKT_IZVJ_REAL_MP_ZH();
+zh_INITSTATICS_FAKT_IZVJ_KARTICA_ZH();
+zh_INITSTATICS_FAKT_GENERACIJA_DOKUMENTA_ZH();
+zh_INITSTATICS_FAKT_FTXT_ZH();
+zh_INITSTATICS_FAKT_FISKALNI_RACUN_ZH();
+zh_INITSTATICS_UI2_WINDOWS_ZH();
+zh_INITSTATICS_SQL_QUERY_ZH();
+zh_INITSTATICS_MY_SQL_SERVER_ZH();
+zh_INITSTATICS_SEMAPHORES_ZH();
+zh_INITSTATICS_MY_USE_ZH();
+zh_INITSTATICS_A_DBFS_ZH();
+zh_INITSTATICS_PRINT_ODT_ZH();
+zh_INITSTATICS_PRINT_2_ZH();
+zh_INITSTATICS_F18_REPORT_TEMPLATES_ZH();
+zh_INITSTATICS_PDF_CLS_ZH();
+zh_INITSTATICS_DBF_CREATE_INDEX_ZH();
+zh_INITSTATICS_YARG_DOWNLOAD_ZH();
+zh_INITSTATICS_SHA256SUM_ZH();
+zh_INITSTATICS_PSQL_DOWNLOAD_ZH();
+zh_INITSTATICS_PDF_DOWNLOAD_ZH();
+zh_INITSTATICS_JODREPORTS_DOWNLOAD_ZH();
+zh_INITSTATICS_JAVA_DOWNLOAD_ZH();
+zh_INITSTATICS_F18_UPDATE_ZH();
+zh_INITSTATICS_F18_EDITOR_ZH();
+zh_INITSTATICS_DOWNLOAD_TEMPLATE_ZH();
+zh_INITSTATICS_CLIPBOARD_ZH();
+zh_INITSTATICS_LO_DOWNLOAD_ZH();
+zh_INITSTATICS_XBASE_LEGACY_ZH();
+zh_INITSTATICS_PIC_ZH();
+zh_INITSTATICS_FISCAL_TRING_ZH();
+zh_INITSTATICS_F18_RTM_ZH();
+zh_INITSTATICS_F18_INI_ZH();
+zh_INITSTATICS_COMMON_PRINT_EPL2_ZH();
+zh_INITSTATICS_XBASE_RDD_DBF_ZH();
+zh_INITSTATICS_XBASE_RDD_ZH();
+zh_INITSTATICS_XBASE_PARSIRAJ_ZH();
+zh_INITSTATICS_VRIJEME_SQL_ZH();
+zh_INITSTATICS_UI_STANDARD_DIALOGS_ZH();
+zh_INITSTATICS_UI_SCGET_ZH();
+zh_INITSTATICS_UI_MSGS_ZH();
+zh_INITSTATICS_UI_MENU_ZH();
+zh_INITSTATICS_UI_MAIN_ZH();
+zh_INITSTATICS_UI_BROWSEKEY_ZH();
+zh_INITSTATICS_UGOV_ROBA_ZH();
+zh_INITSTATICS_TAKSA_GORIVO_ZH();
+zh_INITSTATICS_T_FILE_READ_ZH();
+zh_INITSTATICS_SERVER_DB_ZH();
+zh_INITSTATICS_RULES_RULES_ZH();
+zh_INITSTATICS_ROBA_SVEDI_NA_STANDARNU_JMJ_ZH();
+zh_INITSTATICS_POREZNA_FAKTURA_A4_ZH();
+zh_INITSTATICS_PARAMS_ORGANIZACIJA_ZH();
+zh_INITSTATICS_OTPREMNICA_MP_ZH();
+zh_INITSTATICS_MY_BROWSE_ZH();
+zh_INITSTATICS_GLOBAL_VARS_SPECIFIFICNOSTI_VARS_ZH();
+zh_INITSTATICS_FMK_MIGRATE_ZH();
+zh_INITSTATICS_FETCH_METRIC_ZH();
+zh_INITSTATICS_F18_UTILS_ZH();
+zh_INITSTATICS_F18_THREADS_ZH();
+zh_INITSTATICS_F18_LOGIN_ZH();
+zh_INITSTATICS_F18_INIT_IDLE_HANDLERS_ZH();
+zh_INITSTATICS_F18_INIT_ZH();
+zh_INITSTATICS_F18_DBF_UPGRADE_ZH();
+zh_INITSTATICS_EXPORT_XLSX_ZH();
+zh_INITSTATICS_DESTINACIJE_2_ZH();
+zh_INITSTATICS_COMMON_PRINT_GVIM_ZH();
+zh_INITSTATICS_CALC_ZH();
+zh_INITSTATICS_BROWSE_P_SIFRA_ZH();
+zh_INITSTATICS_ARRAY_BROWSE_ZH();
+zh_INITSTATICS__CRE_R_EXPORT_DBF_ZH();
+zh_INITSTATICS__CRE_ALL_DBFS_ZH();
+zh_INITSTATICS_F18_ZH();
+
+         
+
+      }
+      
+
+      // printf("init step 16\n");
+      // getchar();
       
       //zh_vmDoInitZHObject();
    
 
-      
-   //printf("============== vmInit step 15\n");
-   //getchar();
-
- //printf("============== vmInit step 16\n");
- //getchar();
-
-
      printf("init step 217\n");  
-     //if (s_vmInitPozivNum < 2) {
-       printf("=========== clsdoinit ============== %d \n", s_vmInitPozivNum);
+     //if (s_vmInitPozivCount < 2) {
+       printf("=========== clsdoinit ============== %d \n", s_vmInitPozivCount);
        zh_clsDoInit();
      //
      //}
 
-     if ( s_vmInitPozivNum == 1) {
+     if ( s_vmInitPozivCount == 1) {
 
-      //if (! fDrugiPoziv ) {
        zh_vmDoModuleInitFunctions();       // process AtInit registered functions
        ext__zh_regex_init_();
-      //}
+
      }  
 
-     printf("init step 218\n");
-     getchar();
+
      /* process registered INIT ZH procedures */
-     //if (s_vmInitPozivNum < 2) {
-        zh_vmDoInitZHFunctions();    
-     //}
+     zh_vmDoInitZHFunctions();    
+
 
 
    /* if there's a function called _APPMAIN() it will be executed first. [vszakats] */
@@ -1360,10 +1727,6 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       //printf("init step 27\n");
    }
 
-  //if (gtcount() < 1)
-  //    printf("=====>========GT_STD REGISTER: %d\n", register_GT_STD());  
-  // else
-  //   printf("=====>========gtcount: %d===========================\n", gtcount());
 
    printf("=============zh_vmInit kraj=====================\n");
    getchar();
@@ -1394,28 +1757,23 @@ void zh_initDynTable( void )
 }
 */
 
-ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
+ZH_EXPORT int zh_vmQuit( ZH_BOOL bFinal )
 {
    
-   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmQuit()" ) );
-   printf("quit step 400\n");
-
+ 
    zh_vmTerminateThreads();  //zaglavi
-
-   printf("quit step 401\n");
-
 
    zh_vmDoExitFunctions();          /* process defined EXIT functions */
 
-   printf("quit step 402\n");
+   //printf("quit step 402\n");
 
    //zh_vmDoModuleExitFunctions();    /* process AtExit registered functions */
 
-   printf("quit step 403\n");
-
+   //printf("quit step 403\n");
 
    /* release all known items stored in subsystems */
    zh_itemClear( zh_stackReturnItem() );
+
    zh_stackRemove( 1 );          /* clear stack items, leave only initial symbol item */
 
    /* intentionally here to allow executing object destructors for all
@@ -1428,28 +1786,32 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
     */
    zh_stackSetActionRequest( 0 );
 
-   printf("quit step 404\n");
+   //printf("quit step 404\n");
 
    zh_rddCloseAll();             /* close all workareas */
-   //if (bInitRT)
-   //zh_rddShutDown();             /* remove all registered RDD drivers */
+ 
+   if (bFinal) {
+     zh_rddShutDown();             /* remove all registered RDD drivers */
+   }
 
-   printf("quit step 405\n");
+   //printf("quit step 405\n");
 
    zh_memvarsClear( ZH_TRUE );   /* clear all PUBLIC (and PRIVATE if any) variables */
    
-   printf("quit step 406\n");
+   //printf("quit step 406\n");
 
-   //zh_vmSetI18N( NULL );         /* remove i18n translation table */
-   //zh_i18n_exit();               /* unregister i18n module */
+   if (bFinal) {
+     zh_vmSetI18N( NULL );         /* remove i18n translation table */
+     zh_i18n_exit();               /* unregister i18n module */
+   }
 
    zh_itemClear( zh_stackReturnItem() );
 
-   printf("quit step 407\n");
+   //printf("quit step 407\n");
 
    zh_gcCollectAll( ZH_TRUE ); //zaglavi
    
-   printf("quit step 408\n");
+   //printf("quit step 408\n");
 
    /* deactivate debugger ali ga nemoj brisati */
    zh_vmDebuggerExit( ZH_FALSE );
@@ -1457,47 +1819,45 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    /* stop executing PCODE (ZHVM reenter request) */
    s_fZHVMActive = ZH_FALSE;
 
-   //zh_vmStaticsClear();  //aplikacija pocinje da iskace radi stanja static varijabli
-   // pravi problem kod zm_threadStart
+   zh_vmStaticsClear();  //aplikacija pocinje da iskace radi stanja static varijabli
+                         // pravi problem kod zm_threadStart
 
    /* release thread specific data */
    zh_stackDestroyTSD();
 
-   printf("quit step 409\n");
-
-
+  
    zh_breakBlockRelease();
    zh_errExit();
     
    zh_clsReleaseAll();
 
+   zh_vmStaticsRelease();
 
-   //dump
-   //zh_vmStaticsRelease();
 
    /* release all remaining items */
-   printf("quit step 410\n");
-
+   //printf("quit step 410\n");
 
    zh_conRelease();                 /* releases Console */
 
    printf("quit step 411\n");
 
-   // symlista lokalnih symbolan nam treba
-   //zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
+   if (bFinal) {
+     // symlista lokalnih symbolan nam treba
+     zh_vmReleaseLocalSymbols();      /* releases the local modules linked list */
    
-   // trebamo dynamic symbol table
-   //zh_dynsymRelease();   
+     // trebamo dynamic symbol table
+     zh_dynsymRelease();   
+   }
 
 
-   printf("quit step 412\n");
+   //printf("quit step 412\n");
 
    zh_itemClear( zh_stackReturnItem() );
-   printf("quit step 412-b\n");
+   //printf("quit step 412-b\n");
 
    zh_gcCollectAll( ZH_TRUE );  //zaglavi
 
-   printf("quit step 413\n");
+   //printf("quit step 413\n");
 
 
    zh_vmDoModuleQuitFunctions();    /* process AtQuit registered functions */
@@ -1511,21 +1871,27 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
    }
    zh_threadExit();
 
-   //if (bInitRT) {
-   //  zh_langReleaseAll();             /* release lang modules */
-   //  zh_cdpReleaseAll();              /* releases codepages */
-   //}
+
+   if (bFinal) {
+     zh_langReleaseAll();             /* release lang modules */
+     zh_cdpReleaseAll();              /* releases codepages */
+   }
+
 
    /* release all known garbage */
-   //if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
-   //   zh_gcReleaseAll(); => segfault ako se ovo otvori
+   //
 
-   printf("quit step 414\n");
+   if (bFinal) {
+      if( zh_xquery( ZH_MEM_STATISTICS ) == 0 ) /* check if fmstat is ON */
+         zh_gcReleaseAll();  //=> segfault ako se ovo otvori
+   }
+
+   //printf("quit step 414\n");
 
 
    zh_vmUnsetExceptionHandler(); //sumnjam na segfault kod narednog vminit
 
-   printf("quit step 415\n");
+   //printf("quit step 415\n");
 
    zh_xexit();
 
@@ -1535,6 +1901,8 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bInitRT )
 
    return s_nErrorLevel;
 }
+
+
 
 void zh_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
@@ -6096,10 +6464,16 @@ void zh_vmProc( ZH_USHORT uiParams )
 #endif
 
    pSym = zh_stackNewFrame( &sStackState, uiParams )->item.asSymbol.value;
+
+   if (strncmp(pSym->szName, "(_INS", 5) == 0) {
+     printf("zovem %s %p %p\n", pSym->szName, pSym->value.pFunPtr, pSym->value.pStaticsBase);
+   }
+
    ZH_VM_FUNCUNREF( pSym );
    if( ZH_VM_ISFUNC( pSym ) )
    {
       ZH_TRACE_PRG( ( "Calling: %s", pSym->szName ) );
+
 
 #ifndef ZH_NO_PROFILER
       if( bProfiler && pSym->pDynSym )
@@ -6231,12 +6605,7 @@ void zh_vmSend( ZH_USHORT uiParams )
       ulClock = ( ZH_ULONG ) clock();
 #endif
 
-   /* Poll the console keyboard */
-#if 0
-   #if ! defined( ZH_GUI )
-      zh_inkeyPoll();
-   #endif
-#endif
+
 
    pSym = zh_stackNewFrame( &sStackState, uiParams )->item.asSymbol.value;
    pSelf = zh_stackSelfItem();   /* NIL, OBJECT or BLOCK */
@@ -6402,7 +6771,6 @@ PZH_ITEM zh_vmEvalBlockV( PZH_ITEM pBlock, ZH_ULONG ulArgCount, ... )
  */
 PZH_ITEM zh_vmEvalBlockOrMacro( PZH_ITEM pItem )
 {
-   
 
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmEvalBlockOrMacro(%p)", ( void * ) pItem ) );
 
@@ -6445,7 +6813,6 @@ void zh_vmDestroyBlockOrMacro( PZH_ITEM pItem )
 void zh_vmFunction( ZH_USHORT uiParams )
 {
    
-
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFunction(%hu)", uiParams ) );
 
    zh_itemSetNil( zh_stackReturnItem() );
@@ -6456,7 +6823,6 @@ void zh_vmFunction( ZH_USHORT uiParams )
 static void zh_vmDebugEntry( int nMode, int nLine, const char * szName, int nIndex, PZH_ITEM pFrame )
 {
    
-
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDebugEntry" ) );
 
    switch( nMode )
@@ -6646,16 +7012,25 @@ static void zh_vmVFrame( ZH_USHORT usLocals, unsigned char ucParams )
 static void zh_vmSFrame( PZH_SYMBOL pSym )      /* sets the statics frame for a function */
 {
    
-
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmSFrame(%p)", ( void * ) pSym ) );
 
    /* _INITSTATICS is now the statics frame. Statics() changed it! */
+
+   //if (! pSym) {
+   //   printf("zh_vmSFrame null %p\n", pSym);
+   //   getchar();
+   //}
    zh_stackSetStaticsBase( pSym->value.pStaticsBase );
 }
 
 static void zh_vmStatics( PZH_SYMBOL pSym, ZH_USHORT uiStatics ) /* initializes the global aStatics array or redimensions it */
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmStatics(%p, %hu)", ( void * ) pSym, uiStatics ) );
+
+   //if (! pSym) {
+   //   printf("zh_vmStatics null %p\n", pSym);
+   //   getchar();
+   //}
 
    /* statics frame for this ZH */
    pSym->value.pStaticsBase = ( void * ) zh_itemArrayNew( uiStatics );
@@ -7737,10 +8112,10 @@ static void zh_vmStaticsClear( void )
                if( pItem && ZH_IS_COMPLEX( pItem ) ){
                   //printf("static complex %d\n", ul);
                   zh_itemClear( pItem );
-               } else {
+               } //else {
                   //printf("static simple %d\n", ul);
                   //zh_itemSetNil( pItem );
-               }
+               //}
 
                //if ( pItem && ZH_IS_POINTER( pItem) ) {
                //    pItem = zh_itemPutNil(pItem);
@@ -7836,7 +8211,7 @@ static PZH_ITEM zh_vmStaticsArray( void )
 static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                         const char * szModuleName, ZH_ULONG ulID )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFindFreeModule(%p,%hu,%s,%lu)", ( void * ) pSymbols, uiSymbols, szModuleName, ulID ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFindFreeModule(%p,%hu,%s,%lu)", ( void * ) pSymbols, uiSymbols, szModuleName, ulID ) );
 
    if( s_ulFreeSymbols )
    {
@@ -8156,7 +8531,8 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       ZH_SYMBOLSCOPE hSymScope;
       ZH_BOOL fPublic, fStatics;
 
-      fStatics = ( pSymbol->scope.value & ZH_FS_INITEXIT ) == ZH_FS_INITEXIT ||
+      //fStatics = ( pSymbol->scope.value & ZH_FS_INITEXIT ) == ZH_FS_INITEXIT ||
+      fStatics = ( pSymbol->scope.value & ZH_FS_STATIC_INIT) == ZH_FS_STATIC_INIT ||
                  ( fRecycled && ui != 0 && ui == pNewSymbols->uiStaticsOffset &&
                    ZH_SYM_STATICSBASE( pSymbol ) );
 
@@ -8165,6 +8541,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
          pSymbol->value.pFunPtr = ( pModuleSymbols + ui )->value.pFunPtr;
          pSymbol->scope.value = ( pModuleSymbols + ui )->scope.value;
       }
+
       
       /*
       if( fDynLib )
@@ -8176,10 +8553,10 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       hSymScope = pSymbol->scope.value;
       pNewSymbols->hScope |= hSymScope;
 
-      fPublic = ( hSymScope & ( ZH_FS_INITEXIT | ZH_FS_STATIC | ZH_FS_FRAME ) ) == 0;
+      fPublic = ( hSymScope & ( ZH_FS_STATIC_INIT | ZH_FS_INITEXIT | ZH_FS_STATIC | ZH_FS_FRAME ) ) == 0;
       if( fStatics )
       {
-         if( ! fRecycled && strncmp( pSymbol->szName, "(_INITSTATICS", 13 ) == 0 )
+         if( ! fRecycled && strncmp( pSymbol->szName, "(_INS", 5 ) == 0 )
             pNewSymbols->uiStaticsOffset = ui;
          fInitStatics = ZH_TRUE;
       }
@@ -8191,20 +8568,14 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       }
 
       if( ! s_pSymStart && ! fDynLib && ! fStatics &&
-          ( hSymScope & ZH_FS_FIRST ) != 0 &&   // tagiravno kao ENTRY_POINT
+          ( hSymScope & ZH_FS_FIRST ) != 0 &&   // tagirano kao ENTRY_POINT
           ( hSymScope & ZH_FS_INITEXIT ) == 0 ) // a nije staticka funkcija
       {
          /* first public defined symbol to start execution */
          s_pSymStart = pSymbol;
       }
 
-      /* Enable this code to see static functions which are registered in global dynsym table */
-#if 0
-      if( fPublic && ( hSymScope & ( ZH_FS_INITEXIT | ZH_FS_STATIC ) ) != 0 )
-      {
-         ZH_TRACE( ZH_TR_DEBUG, ( "Registering: %s:%s scope %04x", szModuleName, pSymbol->szName, hSymScope ) );
-      }
-#endif
+
 
       if( fPublic )
       {
@@ -8371,8 +8742,12 @@ static void zh_vmReleaseLocalSymbols( void )
 static void zh_vmDoInitStatics( void )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
+   int nCntStatics = 0;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitStatics()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitStatics()" ) );
+
+   printf("doInitStatics start\n");
+   getchar();
 
    while( pLastSymbols )
    {
@@ -8382,19 +8757,28 @@ static void zh_vmDoInitStatics( void )
 
          for( ui = 0; ui < pLastSymbols->uiModuleSymbols; ui++ )
          {
-            ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_INITEXIT;
+            //printf("module name %s  symbol_name %s\n", pLastSymbols->szModuleName, ( pLastSymbols->pModuleSymbols + ui )->szName );
+            ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_STATIC_INIT;
 
-            if( scope == ZH_FS_INITEXIT )
+            if( scope == ZH_FS_STATIC_INIT )
             {
+               printf("ZH_FS_STATIC_INIT %d module name %s  symbol_name %s\n", ui, pLastSymbols->szModuleName, ( pLastSymbols->pModuleSymbols + ui )->szName );
+            
+               nCntStatics++;
                zh_vmPushSymbol( pLastSymbols->pModuleSymbols + ui );
                zh_vmPushNil();
                zh_vmProc( 0 );
+
             }
          }
-         pLastSymbols->fInitStatics = ZH_FALSE;
+         //zbog ovoga nema reinicijalizacije statica
+         //pLastSymbols->fInitStatics = ZH_FALSE;
       }
       pLastSymbols = pLastSymbols->pNext;
    }
+
+   printf("doInitStatics number of functions: %d\n", nCntStatics);
+   getchar();
 }
 
 static void zh_vmDoInitZHFunctions( void )
@@ -8420,10 +8804,9 @@ static void zh_vmDoInitZHFunctions( void )
             ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_INITEXIT;
 
             if( scope == ZH_FS_INIT )
-            //&&
-            //    ( strcmp( ( pLastSymbols->pModuleSymbols + ui )->szName,
-            //              "CLIPINIT$" ) == 0 ? fClipInit : ! fClipInit ) )
             {
+               printf("init func %s\n", (pLastSymbols->pModuleSymbols + ui)->szName);
+               getchar();
                zh_vmPushSymbol( pLastSymbols->pModuleSymbols + ui );
                zh_vmPushNil();
                zh_vmProc( ( ZH_USHORT ) zh_cmdargPushArgs() );

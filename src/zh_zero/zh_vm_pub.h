@@ -225,6 +225,7 @@ typedef struct _ZH_FUNC_LIST
 #define ZH_FS_DEFERRED  0x0800
 #define ZH_FS_FRAME     0x1000
 #define ZH_FS_USED      0x2000
+#define ZH_FS_STATIC_INIT     0x3000
 
 #define ZH_FS_INITEXIT ( ZH_FS_INIT | ZH_FS_EXIT )
 

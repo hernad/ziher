@@ -60,7 +60,8 @@ elif arg1 == "func_hello_ziher_2":
    #returnType = 1 # integer
    #f18klijentlib.vmquit(bInitRT)
 
-   for iter in range(1, 4):
+   nLastStep = 10
+   for iter in range(1, nLastStep + 1):
       f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    
       print("=======================================", iter , "=========================""")
@@ -81,20 +82,29 @@ elif arg1 == "func_hello_ziher_2":
       f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
       
       returnType = 0
-      for j in range(0, 70):
+      for j in range(0, 50):
          print("ziher func_hello_ziher_2", j)
          ziher_header = f18klijentlib.run_get("func_hello_ziher_2".upper(), bInitConsole, bReleaseConsole, returnType)
-      s = input()
-      textual_run(header=ziher_header)
+      #s = input()
+      #textual_run(header=ziher_header)
 
       # nemoj dva puta pozivati main unutar vminit/vmquit
       #f18klijentlib.run("MAIN".upper(), bInitConsole, bReleaseConsole)
       print("=====>>>>>>>>>>>>>>>>>>====== AFTER MAIN =============>>>>>>========================")
 
-      bInitRT = True
-      f18klijentlib.vmquit(bInitRT)
-      gc.collect()
+      if (iter == nLastStep): 
+         textual_run(header="LAST STEP: " + str(nLastStep))
+         f18klijentlib.vmquit(1)
+      else:
+         f18klijentlib.vmquit(0)
+      #gc.collect()
       print("=====>>>>>>>>>>>>>>>>>>====== QQQ after vmQuit QQQQ =============>>>>>>========================")
+
+   del sys.modules["f18klijentlib"]
+
+   textual_run(header="back to python - del f18 klijentlib")
+   textual_run(header="back to python 2")
+
 
 else:
 

@@ -25,7 +25,7 @@
 #include "zh_assert.h"
 
 static void zh_compGenCReadable( ZH_COMP_DECL, PZH_ZFUNC pFunc, FILE * yyc );
-static void zh_compGenCCompact( PZH_ZFUNC pFunc, FILE * yyc );
+static void zh_compGenCCompact( ZH_COMP_DECL, PZH_ZFUNC pFunc, FILE * yyc );
 static void zh_compGenCFunc( FILE * yyc, const char * cDecor, const char * szName, ZH_BOOL fStrip, int iFuncSuffix );
 static void zh_writeEndInit( ZH_COMP_DECL, FILE * yyc, const char * szModulname, const char * szSourceFile );
 
@@ -162,11 +162,13 @@ static void zh_compFuncUsed( ZH_COMP_DECL, PZH_HSYMBOL pSym )
 void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the C language output */
 {
    char        szFileName[ ZH_PATH_MAX ];
+   //char        szBaseName[ ZH_PATH_MAX ];
    PZH_HSYMBOL pSym;
    PZH_ZFUNC   pFunc;
    PZH_HINLINE pInline;
    FILE *      yyc; /* file handle for C output */
    ZH_BOOL     fHasHbInline = ZH_FALSE;
+
 
    zh_fsFNameMerge( szFileName, pFileName );
    if( ! pFileName->szExtension )
@@ -240,15 +242,36 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
       if( pSym )
          fprintf( yyc, "\n" );
 
+       /* writes the symbol table */
+      /* Generate the wrapper that will initialize local symbol table
+         */
+      zh_strncpyUpper( szFileName, pFileName->szName, sizeof( szFileName ) - 1 );
+      /* replace non ID characters in name of local symbol table by '_' */
+      {
+         int iLen = ( int ) strlen( szFileName ), i;
+
+         for( i = 0; i < iLen; i++ )
+         {
+            char c = szFileName[ i ];
+            if( ! ZH_ISNEXTIDCHAR( c ) )
+               szFileName[ i ] = '_';
+         }
+      }
+
       while( pSym )
       {
          if( pSym->iFunc )
          {
             if( pSym->szName[ 0 ] == '(' )
             {
-               fprintf( yyc, "ZH_FUNC_INIT%s();\n",
-                        ! memcmp( pSym->szName + 1, "_INITLINES", 10 ) ?
-                        "LINES" : "STATICS" );
+               
+               char formatString[100];
+               if ( memcmp( pSym->szName + 1, "_INITLINES", 10 ) == 0 ) {
+                  sprintf(formatString, "ZH_FUNC_INITLINES();\n");
+               } else {
+                  sprintf(formatString, "ZH_FUNC_INITSTATICS( %s );\n", szFileName);
+               }
+               fprintf( yyc, formatString );
             }
             else if( pSym->cScope & ZH_FS_LOCAL ) /* is it a function defined in this module */
             {
@@ -271,21 +294,8 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
          pSym = pSym->pNext;
       }
 
-      /* writes the symbol table */
-      /* Generate the wrapper that will initialize local symbol table
-       */
-      zh_strncpyUpper( szFileName, pFileName->szName, sizeof( szFileName ) - 1 );
-      /* replace non ID characters in name of local symbol table by '_' */
-      {
-         int iLen = ( int ) strlen( szFileName ), i;
+      
 
-         for( i = 0; i < iLen; i++ )
-         {
-            char c = szFileName[ i ];
-            if( ! ZH_ISNEXTIDCHAR( c ) )
-               szFileName[ i ] = '_';
-         }
-      }
       fprintf( yyc, "\nZH_INIT_SYMBOLS_BEGIN( zh_vm_SymbolInit_%s )\n", szFileName );
 
       pSym = ZH_COMP_PARAM->symbols.pFirst;
@@ -297,9 +307,27 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
              * we are using these two bits to mark the special function used to
              * initialize static variables or debugging info about valid stop lines
              */
-            fprintf( yyc, "{ \"%s\", { ZH_FS_INITEXIT | ZH_FS_LOCAL }, { zh_INIT%s }, NULL }",
-                     pSym->szName, ! memcmp( pSym->szName + 1, "_INITLINES", 10 ) ?
-                     "LINES" : "STATICS" ); /* NOTE: "zh_" intentionally in lower case */
+
+            char formatString[100];
+            char formatName[100];
+
+            if ( memcmp( pSym->szName + 1, "_INITLINES", 10 ) == 0 ) {
+               sprintf(formatString, "LINES");
+               fprintf( yyc, "{ \"%s\", { ZH_FS_INITEXIT | ZH_FS_LOCAL }, { zh_INIT%s }, NULL }",
+                       pSym->szName,  formatString); 
+
+            } else {
+               // init statics
+               sprintf(formatName, "%s", pSym->szName );
+               sprintf(formatString, "STATICS_%s", szFileName);
+               fprintf( yyc, "{ \"%s\", { ZH_FS_STATIC_INIT | ZH_FS_LOCAL }, { zh_INIT%s }, NULL }",
+                       formatName,  formatString); 
+            }
+                        
+   
+
+            //fprintf( yyc, "{ \"%s\", { ZH_FS_INITEXIT }, { zh_INIT%s }, NULL }",
+            //          pSym->szName,  formatString);
          }
          else
          {
@@ -363,8 +391,9 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
             fprintf( yyc, "\n" );
 
             /* Is it _STATICS$ - static initialization function */
-            if( pFunc == ZH_COMP_PARAM->pInitFunc )
-               fprintf( yyc, "ZH_FUNC_INITSTATICS()\n" );
+            if( pFunc == ZH_COMP_PARAM->pInitFunc ) {
+               fprintf( yyc, "ZH_FUNC_INITSTATICS( %s )\n", szFileName);
+            }
             /* Is it an (_INITLINES) function */
             else if( pFunc == ZH_COMP_PARAM->pLineFunc )
                fprintf( yyc, "ZH_FUNC_INITLINES()\n" );
@@ -385,7 +414,7 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
             else
             {
                if( ZH_COMP_PARAM->iGenCOutput == ZH_COMPGENC_COMPACT )
-                  zh_compGenCCompact( pFunc, yyc );
+                  zh_compGenCCompact( ZH_COMP_PARAM, pFunc, yyc );
                else
                   zh_compGenCReadable( ZH_COMP_PARAM, pFunc, yyc );
             }
@@ -455,9 +484,7 @@ void zh_compGenCCode( ZH_COMP_DECL, PZH_FNAME pFileName )       /* generates the
 static void zh_writeEndInit( ZH_COMP_DECL, FILE * yyc, const char * szModulname, const char * szSourceFile )
 {
    fprintf( yyc, "\nZH_INIT_SYMBOLS_EX_END( zh_vm_SymbolInit_%s, ", szModulname );
-   //hernad
-   //if( ZH_COMP_PARAM->fHideSource )
-   //   szSourceFile = "";
+
    zh_compGenCString( yyc, ( const ZH_BYTE * ) szSourceFile, strlen( szSourceFile ) );
    fprintf( yyc, ", 0x%lx, 0x%04x )\n\n", 0L, ZH_PCODE_VER );
 
@@ -471,6 +498,14 @@ static void zh_writeEndInit( ZH_COMP_DECL, FILE * yyc, const char * szModulname,
             "#endif\n",
             szModulname, szModulname );
 }
+
+//static void zh_compGenCFunc_static( FILE * yyc, const char * cDecor, const char * szName,
+//                             ZH_BOOL fStrip, int iFuncSuffix ) 
+//{
+//   fprintf( yyc, "printf(\"static %s\\n\");", cDecor );
+//   zh_compGenCFunc( yyc, cDecor, szName, fStrip, iFuncSuffix );
+//   return;
+//}
 
 static void zh_compGenCFunc( FILE * yyc, const char * cDecor, const char * szName,
                              ZH_BOOL fStrip, int iFuncSuffix )
@@ -2756,12 +2791,19 @@ static void zh_compGenCReadable( ZH_COMP_DECL, PZH_ZFUNC pFunc, FILE * yyc )
    fprintf( yyc, "   zh_vmExecute( pcode, symbols );\n}\n" );
 }
 
-static void zh_compGenCCompact( PZH_ZFUNC pFunc, FILE * yyc )
+static void zh_compGenCCompact( ZH_COMP_DECL, PZH_ZFUNC pFunc, FILE * yyc )
 {
    ZH_SIZE nPCodePos = 0;
    int     nChar;
 
-   fprintf( yyc, "{\n\tstatic const ZH_BYTE pcode[] =\n\t{\n\t\t" );
+
+   if (pFunc == ZH_COMP_PARAM->pInitFunc ) {
+      fprintf( yyc, "{\nprintf(\"========== %s %d\\n\");", pFunc->szName, 1);
+   } else
+     fprintf( yyc, "{\n");
+
+
+   fprintf( yyc, "\n\tstatic const ZH_BYTE pcode[] =\n\t{\n\t\t" );
 
    nChar = 0;
    while( nPCodePos < pFunc->nPCodePos )

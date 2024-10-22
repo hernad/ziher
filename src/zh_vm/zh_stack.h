@@ -254,17 +254,17 @@ extern PZH_ITEM    zh_stackLocalVariable( int iLocal );
 extern PZH_ITEM    zh_stackLocalVariableAt( int * piFromBase );
 extern PZH_ITEM ** zh_stackItemBasePtr( void );
 
-extern ZH_EXPORT ZH_I_SIZE     zh_stackGetRecoverBase( void );
-extern           void        zh_stackSetRecoverBase( ZH_I_SIZE nBase );
-extern           ZH_USHORT   zh_stackGetActionRequest( void );
-extern           void        zh_stackSetActionRequest( ZH_USHORT uiAction );
+//extern ZH_EXPORT ZH_I_SIZE     zh_stackGetRecoverBase( void );
+//extern           void        zh_stackSetRecoverBase( ZH_I_SIZE nBase );
+//extern           ZH_USHORT   zh_stackGetActionRequest( void );
+//extern           void        zh_stackSetActionRequest( ZH_USHORT uiAction );
 
-extern void        zh_stackSetStaticsBase( void * pBase );
-extern void *      zh_stackGetStaticsBase( void );
+//extern void        zh_stackSetStaticsBase( void * pBase );
+//extern void *      zh_stackGetStaticsBase( void );
 
-extern           PZH_ITEM    zh_stackWithObjectItem( void );
-extern ZH_EXPORT ZH_I_SIZE     zh_stackWithObjectOffset( void );
-extern           void        zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset );
+//extern           PZH_ITEM    zh_stackWithObjectItem( void );
+//extern ZH_EXPORT ZH_I_SIZE     zh_stackWithObjectOffset( void );
+//extern           void        zh_stackWithObjectSetOffset( ZH_I_SIZE nOffset );
 
 extern int *       zh_stackKeyPolls( void );
 extern ZH_BOOL *   zh_stackDebugRequest( void );
@@ -315,15 +315,15 @@ extern void        zh_stackUpdateAllocator( void *, PZH_ALLOCUPDT_FUNC, int );
 #define zh_stackReturnItem( )       ( &zh_stack.Return )
 #define zh_stackDateBuffer( )       ( zh_stack.szDate )
 #define zh_stackItemBasePtr( )      ( &zh_stack.pItems )
-#define zh_stackGetStaticsBase( )   ( zh_stack.pStatics )
-#define zh_stackSetStaticsBase( p ) do { zh_stack.pStatics = ( p ); } while( 0 )
-#define zh_stackGetRecoverBase( )   ( zh_stack.nRecoverBase )
-#define zh_stackSetRecoverBase( n ) do { zh_stack.nRecoverBase = ( n ); } while( 0 )
-#define zh_stackGetActionRequest( ) ( zh_stack.uiActionRequest )
-#define zh_stackSetActionRequest( n )     do { zh_stack.uiActionRequest = ( n ); } while( 0 )
-#define zh_stackWithObjectItem( )   ( zh_stack.nWithObject ? * ( zh_stack.pItems + zh_stack.nWithObject ) : NULL )
-#define zh_stackWithObjectOffset( ) ( zh_stack.nWithObject )
-#define zh_stackWithObjectSetOffset( n )  do { zh_stack.nWithObject = ( n ); } while( 0 )
+//#define zh_stackGetStaticsBase( )   ( zh_stack.pStatics )
+//#define zh_stackSetStaticsBase( p ) do { zh_stack.pStatics = ( p ); } while( 0 )
+//#define zh_stackGetRecoverBase( )   ( zh_stack.nRecoverBase )
+//#define zh_stackSetRecoverBase( n ) do { zh_stack.nRecoverBase = ( n ); } while( 0 )
+//#define zh_stackGetActionRequest( ) ( zh_stack.uiActionRequest )
+//#define zh_stackSetActionRequest( n )     do { zh_stack.uiActionRequest = ( n ); } while( 0 )
+//#define zh_stackWithObjectItem( )   ( zh_stack.nWithObject ? * ( zh_stack.pItems + zh_stack.nWithObject ) : NULL )
+//#define zh_stackWithObjectOffset( ) ( zh_stack.nWithObject )
+//#define zh_stackWithObjectSetOffset( n )  do { zh_stack.nWithObject = ( n ); } while( 0 )
 #define zh_stackGetCodepage( )           ( zh_stack.pCDP )
 #define zh_stackSetCDP( p )         do { zh_stack.pCDP = ( p ); } while( 0 )
 #define zh_stackGetLang( )          ( zh_stack.pLang )

@@ -53,11 +53,11 @@
 
 FUNCTION ZHObject()
 
-   /*STATIC*/ LOCAL s_oClass := NIL
+   STATIC s_oClass := NIL
    LOCAL oClass
 
 
-   IF s_oClass == NIL .AND.  __clsLockDef( @s_oClass )
+   IF s_oClass == NIL .AND. __clsLockDef( @s_oClass )
 
       BEGIN SEQUENCE
 

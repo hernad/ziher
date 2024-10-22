@@ -56,7 +56,7 @@
 #include "zh_setup.h"
 #include "zh_ver.h"
 
-#if  defined( __MINGW32__ ) || defined( _MSC_VER ) || defined( __GNUC__ ) || \
+#if defined( _MSC_VER ) || defined( __GNUC__ ) || \
    defined( ZH_OS_LINUX ) || defined( ZH_OS_DARWIN )
 #  include <stdint.h>
 #  if defined( _MSC_VER ) && _MSC_VER >= 1400
@@ -1402,7 +1402,7 @@ typedef ZH_U32 ZH_FATTR;
 #define ZH_FUNCNAME( funcname )        ZH_FUN_##funcname
 #define ZH_INIT_FUNCNAME( funcname )   ZH_FUN_init_##funcname
 #define ZH_EXIT_FUNCNAME( funcname )   ZH_FUN_exit_##funcname
-#define ZH_INITSTATICS_FUNCNAME()      zh_INITSTATICS
+#define ZH_INITSTATICS_FUNCNAME( funcname )   zh_INITSTATICS_##func
 
 #if defined( __cplusplus ) && ! defined( ZH_FUNC_USE_DECORATION )
    #define ZH_EXTERN_C_ ZH_EXTERN_C
@@ -1418,7 +1418,7 @@ typedef ZH_U32 ZH_FATTR;
 #define ZH_FUNC_STATIC( funcname ) static ZIHERF ZH_FUN_##funcname ( void )
 #define ZH_FUNC_INIT( funcname )   static ZIHERF ZH_FUN_init_##funcname ( void )
 #define ZH_FUNC_EXIT( funcname )   static ZIHERF ZH_FUN_exit_##funcname ( void )
-#define ZH_FUNC_INITSTATICS()      static ZIHERF zh_INITSTATICS( void )
+#define ZH_FUNC_INITSTATICS( funcname ) ZIHERF zh_INITSTATICS_##funcname ( void )
 #define ZH_FUNC_INITLINES()        static ZIHERF zh_INITLINES( void )
 #define ZH_FUNC_TRANSLATE( w, o )  ZH_FUNC_EXTERN( o ); ZH_FUNC( w ) { ZH_FUNC_EXEC( o ); }
 
