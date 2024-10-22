@@ -1195,15 +1195,15 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    {
       /* Try to get C dbgEntry() function pointer */
       printf("set dbg entry stop 800\n");
-      getchar();
+      //getchar();
       if( ! s_pFunDbgEntry ) {
          printf("set dbg entry stop 801\n");
-         getchar();
+         //getchar();
          zh_vmDebugEntry( ZH_DBG_GETENTRY, 0, NULL, 0, NULL );
       }
       if( ! s_pFunDbgEntry ) {
          printf("set dbg entry stop 802\n");
-         getchar();
+         //getchar();
          s_pFunDbgEntry = zh_vmDebugEntry;
       }
    }
@@ -1219,8 +1219,8 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
   
 
    
-      printf("init step 15\n");
-      getchar();
+      //printf("init step 15\n");
+      //getchar();
       zh_vmDoInitZHVM(); // u errorsys i __ZHVINIT ne smije biti static vars
 
       if (s_vmInitPozivCount == 1000) {
@@ -1862,7 +1862,7 @@ zh_INITSTATICS_F18_ZH();
 
 
    printf("=============zh_vmInit kraj=====================\n");
-   getchar();
+   //getchar();
       
 }
 
@@ -8921,8 +8921,8 @@ static void zh_vmDoInitZHFunctions( void )
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions(%d)", fClipInit ) );
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmDoInitFunctions()") );
 
-   printf("==============zh_vmDoInitZHFunctions=======%p   %d=====\n", pLastSymbols, zh_vmRequestQuery());
-   getchar();
+   //printf("==============zh_vmDoInitZHFunctions=======%p   %d=====\n", pLastSymbols, zh_vmRequestQuery());
+   //getchar();
 
 
    while( pLastSymbols && zh_vmRequestQuery() == 0 )
@@ -8938,8 +8938,8 @@ static void zh_vmDoInitZHFunctions( void )
 
             if( scope == ZH_FS_INIT )
             {
-               printf("init func %s\n", (pLastSymbols->pModuleSymbols + ui)->szName);
-               getchar();
+               //printf("init func %s\n", (pLastSymbols->pModuleSymbols + ui)->szName);
+               //getchar();
                zh_vmPushSymbol( pLastSymbols->pModuleSymbols + ui );
                zh_vmPushNil();
                zh_vmProc( ( ZH_USHORT ) zh_cmdargPushArgs() );
