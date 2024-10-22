@@ -2049,7 +2049,7 @@ static ZH_GENC_FUNC( zh_p_sframe )
             pFunc->pCode[ nPCodePos + 1 ],
             pFunc->pCode[ nPCodePos + 2 ] );
    if( cargo->bVerbose )
-      fprintf( cargo->yyc, "\t/* symbol (_INITSTATICS) */" );
+      fprintf( cargo->yyc, "\t/* symbol (_INS) */" );
    fprintf( cargo->yyc, "\n" );
    return 3;
 }
@@ -2062,7 +2062,7 @@ static ZH_GENC_FUNC( zh_p_statics )
             pFunc->pCode[ nPCodePos + 3 ],
             pFunc->pCode[ nPCodePos + 4 ] );
    if( cargo->bVerbose )
-      fprintf( cargo->yyc, "\t/* symbol (_INITSTATICS), %u statics */", ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 3 ] ) );
+      fprintf( cargo->yyc, "\t/* symbol (_INS), %u statics */", ZH_PCODE_MKUSHORT( &pFunc->pCode[ nPCodePos + 3 ] ) );
    fprintf( cargo->yyc, "\n" );
 
    return 5;

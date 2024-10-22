@@ -50,7 +50,7 @@
 #include "zh_defs.h"
 
 /* Maximum symbol name length handled by Ziher compiler and runtime. */
-#define ZH_SYMBOL_NAME_LEN   63
+#define ZH_SYMBOL_NAME_LEN   93
 
 ZH_EXTERN_BEGIN
 

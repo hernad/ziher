@@ -520,7 +520,7 @@ void zh_dbgEntry( int nMode, int nLine, const char * szName, int nIndex, PZH_ITE
             return;
 
          zh_procinfo( 0, szProcName, &uiLine, NULL );
-         if( ! strncmp( szProcName, "(_INITSTATICS", 13 ) )
+         if( ! strncmp( szProcName, "(_INS", 5 ) )
             info->bInitStatics = ZH_TRUE;
          else if( ! strncmp( szProcName, "(_INITGLOBALS", 13 ) )
             info->bInitGlobals = ZH_TRUE;
@@ -802,7 +802,7 @@ static void zh_dbgAddStack( ZH_DEBUGINFO * info, const char * szName, int nLine,
       }
       else
       {
-         /* We're in an (_INITSTATICSnnnnn) pseudo-function */
+         /* We're in an (_INSnnnnn) pseudo-function */
          zh_procinfo( 0, szBuff, NULL, NULL );
          top->szFunction = zh_strdup( szBuff );
       }

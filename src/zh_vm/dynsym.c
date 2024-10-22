@@ -311,17 +311,12 @@ PZH_DYNSYMBOL zh_dynsymNew( PZH_SYMBOL pSymbol )
 #define ZH_OVERLOAD_MULTIPLE_FUNC
 
 #if defined( ZH_OVERLOAD_MULTIPLE_FUNC )
-            /* In such way works MinGW, DJGPP, BCC */
 #if defined( __GNUC__ )
             /* MinGW (like most of other GCC ports) uses reverted order for
              * initialization functions
              */
             pDynSym->pSymbol->scope.value &= ~ZH_FS_LOCAL;
             pDynSym->pSymbol->scope.value |= ZH_FS_DEFERRED;
-#else
-            /* BCC, DJGPP, ... */
-            pSymbol->scope.value &= ~ZH_FS_LOCAL;
-            pSymbol->scope.value |= ZH_FS_DEFERRED;
 #endif
 #endif
          }

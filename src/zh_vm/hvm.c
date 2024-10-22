@@ -249,8 +249,8 @@ static int      s_nErrorLevel = 0;     /* application exit status */
 static PZH_SYMBOL s_pSymStart = NULL;    /* start symbol of the application. MAIN() is not required */
 
 static PZH_SYMBOLS s_pSymbols = NULL;  /* to hold a linked list of all different modules symbol tables */
-static ZH_ULONG    s_ulFreeSymbols = 0;/* number of free module symbols */
-static void *      s_hDynLibID = NULL; /* unique identifier to mark symbol tables loaded from dynamic libraries */
+//static ZH_ULONG    s_ulFreeSymbols = 0;/* number of free module symbols */
+//static void *      s_hDynLibID = NULL; /* unique identifier to mark symbol tables loaded from dynamic libraries */
 static ZH_BOOL     s_fCloneSym = ZH_FALSE;/* clone registered symbol tables */
 
 /* main VM thread stack ID */
@@ -309,7 +309,7 @@ static void zh_vmAddModuleFunction( PZH_FUNC_LIST * pLstPtr, ZH_INIT_FUNC pFunc,
 
    pLst->pFunc = pFunc;
    pLst->cargo = cargo;
-   pLst->hDynLib = s_hDynLibID;
+   //pLst->hDynLib = s_hDynLibID;
    ZH_ATINIT_LOCK();
    pLst->pNext = *pLstPtr;
    *pLstPtr = pLst;
@@ -1028,14 +1028,15 @@ PZH_ITEM zh_vmThreadStart( ZH_ULONG ulAttr, PZH_CARGO_FUNC pFunc, void * cargo )
    return zh_threadStart( ulAttr, pFunc, cargo );
 }
 
+/*
 void zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
    ZH_SYMBOL SymOldBuf, SymNewBuf;
 
-   /* make copy of symbols to eliminate possible problem with
-    * dynamic modification of passed parameters inside the loop
-    */
+   // make copy of symbols to eliminate possible problem with
+   // dynamic modification of passed parameters inside the loop
+   
    memcpy( &SymOldBuf, pOldSym, sizeof( SymOldBuf ) );
    pOldSym = &SymOldBuf;
    memcpy( &SymNewBuf, pNewSym, sizeof( SymNewBuf ) );
@@ -1060,6 +1061,7 @@ void zh_vmSetFunction( PZH_SYMBOL pOldSym, PZH_SYMBOL pNewSym )
       pLastSymbols = pLastSymbols->pNext;
    }
 }
+*/
 
 void zh_vmSetDynFunc( PZH_DYNSYMBOL pDynSym )
 {
@@ -1092,27 +1094,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
 
   s_vmInitPozivCount ++;
 
-  // zh_vmDoModuleInitFunctions();       // process AtInit registered functions
-    
-
-
-   //ext__zh_regex_init_();
-   //ext__zh_dbfcdx_rdd_init_();
-   //ext__zh_dbffpt_rdd_init_();
-//
-   //ext__zh_sqlbase_init_();
-   //ext__zh_sqlmix_rdd_init_();
-   //ext__zh_sddpostgre_init_();
-//
-   //ext__zh_delim_rdd_init_();
-  //
-   //ext__zh_zlib_init_();
-   //ext__zh_zsock_init_();
-   
   
-
-   //ext__zh_sslsock_init_();
-
    ext__zh_startup_gt_Init_XWC();
    ext__zh_startup_gt_Init_STD();
    ext__zh_startup_gt_Init_TRM();
@@ -1223,7 +1205,7 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
       //getchar();
       zh_vmDoInitZHVM(); // u errorsys i __ZHVINIT ne smije biti static vars
 
-      if (s_vmInitPozivCount == 1000) {
+      if (s_vmInitPozivCount < 1000) {
          zh_vmDoInitStatics();
          
       }  else {
@@ -1964,7 +1946,7 @@ ZH_EXPORT int zh_vmQuit( ZH_BOOL bFinal )
     
    zh_clsReleaseAll();
 
-   zh_vmStaticsRelease();
+   //zh_vmStaticsRelease();
 
 
    /* release all remaining items */
@@ -6598,9 +6580,9 @@ void zh_vmProc( ZH_USHORT uiParams )
 
    pSym = zh_stackNewFrame( &sStackState, uiParams )->item.asSymbol.value;
 
-   if (strncmp(pSym->szName, "(_INS", 5) == 0) {
-     printf("zovem %s %p %p\n", pSym->szName, pSym->value.pFunPtr, pSym->value.pStaticsBase);
-   }
+   //if (strncmp(pSym->szName, "(_INS", 5) == 0) {
+     //printf("zovem %s %p %p\n", pSym->szName, pSym->value.pFunPtr, pSym->value.pStaticsBase);
+   //}
 
    ZH_VM_FUNCUNREF( pSym );
    if( ZH_VM_ISFUNC( pSym ) )
@@ -8341,6 +8323,7 @@ static PZH_ITEM zh_vmStaticsArray( void )
    return pArray;
 }
 
+/*
 static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                                         const char * szModuleName, ZH_ULONG ulID )
 {
@@ -8384,7 +8367,9 @@ static PZH_SYMBOLS zh_vmFindFreeModule( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols
 
    return NULL;
 }
+*/
 
+/*
 void zh_vmFreeSymbols( PZH_SYMBOLS pSymbols )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmFreeSymbols(%p)", ( void * ) pSymbols ) );
@@ -8399,7 +8384,7 @@ void zh_vmFreeSymbols( PZH_SYMBOLS pSymbols )
          {
             PZH_SYMBOL pSymbol = &pSymbols->pModuleSymbols[ ui ];
 
-            /* do not overwrite already initialized statics' frame */
+            // do not overwrite already initialized statics' frame
             if( ui == 0 || ui != pSymbols->uiStaticsOffset ||
                 ! ZH_SYM_STATICSBASE( pSymbol ) )
             {
@@ -8417,6 +8402,7 @@ void zh_vmFreeSymbols( PZH_SYMBOLS pSymbols )
       zh_vmUnlockModuleSymbols();
    }
 }
+*/
 
 
 /*
@@ -8592,23 +8578,26 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
    ZH_BOOL fRecycled, fInitStatics = ZH_FALSE;
    ZH_USHORT ui;
 
+   //printf("module name: %s\n", szModuleName );
+   //getchar();
+
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmRegisterSymbols(%p,%hu,%s,%lu,%d,%d,%d)", ( void * ) pModuleSymbols, uiSymbols, szModuleName, ulID, ( int ) fDynLib, ( int ) fClone, ( int ) fOverLoad ) );
 
-   //puts("hernad registerSymbols"); puts(szModuleName);
+   //pNewSymbols = s_ulFreeSymbols == 0 ? NULL :
+   //              zh_vmFindFreeModule( pModuleSymbols, uiSymbols, szModuleName, ulID );
+   pNewSymbols = NULL;
 
-   pNewSymbols = s_ulFreeSymbols == 0 ? NULL :
-                 zh_vmFindFreeModule( pModuleSymbols, uiSymbols, szModuleName, ulID );
-
-   if( pNewSymbols )
-   {
-      pNewSymbols->fActive = fRecycled = ZH_TRUE;
-      pNewSymbols->hDynLib = s_hDynLibID;
-      pNewSymbols->hScope = 0;
-   }
-   else
-   {
+   //if( pNewSymbols )
+   //{
+   //   pNewSymbols->fActive = fRecycled = ZH_TRUE;
+   //   //pNewSymbols->hDynLib = s_hDynLibID;
+   //   pNewSymbols->hScope = 0;
+   //}
+   //else
+   //{
       fRecycled = ZH_FALSE;
 
+      /*
       if( fClone )
       {
          ZH_SIZE nSymSize = uiSymbols * sizeof( ZH_SYMBOL );
@@ -8628,6 +8617,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
             pModuleSymbols[ ui ].szName = buffer;
          }
       }
+      */
 
       pNewSymbols = ( PZH_SYMBOLS ) zh_xgrab( sizeof( ZH_SYMBOLS ) );
       pNewSymbols->pModuleSymbols = pModuleSymbols;
@@ -8638,7 +8628,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       pNewSymbols->fAllocated = fClone;
       pNewSymbols->fActive = ZH_TRUE;
       pNewSymbols->fInitStatics = ZH_FALSE;
-      pNewSymbols->hDynLib = s_hDynLibID;
+      //pNewSymbols->hDynLib = s_hDynLibID;
       pNewSymbols->hScope = 0;
       pNewSymbols->pNext = NULL;
 
@@ -8654,7 +8644,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
             pLastSymbols = pLastSymbols->pNext;
          pLastSymbols->pNext = pNewSymbols;
       }
-   }
+   //}
 
    // printf("hernad uiSymbolds %d\n", uiSymbols);
 
@@ -8665,15 +8655,15 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       ZH_BOOL fPublic, fStatics;
 
       //fStatics = ( pSymbol->scope.value & ZH_FS_INITEXIT ) == ZH_FS_INITEXIT ||
-      fStatics = ( pSymbol->scope.value & ZH_FS_STATIC_INIT) == ZH_FS_STATIC_INIT ||
-                 ( fRecycled && ui != 0 && ui == pNewSymbols->uiStaticsOffset &&
-                   ZH_SYM_STATICSBASE( pSymbol ) );
-
-      if( fRecycled && ! fStatics )
-      {
-         pSymbol->value.pFunPtr = ( pModuleSymbols + ui )->value.pFunPtr;
-         pSymbol->scope.value = ( pModuleSymbols + ui )->scope.value;
-      }
+      //fStatics = ( pSymbol->scope.value & ZH_FS_STATIC_INIT) == ZH_FS_STATIC_INIT ||
+      //           ( fRecycled && ui != 0 && ui == pNewSymbols->uiStaticsOffset &&
+      //             ZH_SYM_STATICSBASE( pSymbol ) );
+      //
+      //if( fRecycled && ! fStatics )
+      //{
+      pSymbol->value.pFunPtr = ( pModuleSymbols + ui )->value.pFunPtr;
+      pSymbol->scope.value = ( pModuleSymbols + ui )->scope.value;
+      //}
 
       
       /*
@@ -8686,13 +8676,26 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       hSymScope = pSymbol->scope.value;
       pNewSymbols->hScope |= hSymScope;
 
+      //fPublic = (hSymScope & ZH_FS_PUBLIC) != 0;
+
       fPublic = ( hSymScope & ( ZH_FS_STATIC_INIT | ZH_FS_INITEXIT | ZH_FS_STATIC | ZH_FS_FRAME ) ) == 0;
-      if( fStatics )
-      {
-         if( ! fRecycled && strncmp( pSymbol->szName, "(_INS", 5 ) == 0 )
-            pNewSymbols->uiStaticsOffset = ui;
-         fInitStatics = ZH_TRUE;
-      }
+      //if( fStatics )
+      //{
+      //   if( ! fRecycled && strncmp( pSymbol->szName, "(_INS", 5 ) == 0 )
+      //      pNewSymbols->uiStaticsOffset = ui;
+      //   
+      //   fInitStatics = ZH_TRUE;
+      //}
+
+      //if (pSymbol->scope.value & ZH_FS_STATIC_INIT) {
+      //  printf("symbol: %s fpublic %d   static: %d\n", pSymbol->szName, fPublic, pSymbol->scope.value & ZH_FS_STATIC_INIT);
+      //  //getchar();
+      //}
+      
+      //if (pSymbol->scope.value & ZH_FS_INIT) {
+      //  printf("symbol: %s fpublic %d   init: %d\n", pSymbol->szName, fPublic, pSymbol->scope.value & ZH_FS_INIT);
+      //  getchar();
+      //}
 
       if( ( hSymScope & ( ZH_FS_PCODEFUNC | ZH_FS_LOCAL | ZH_FS_FRAME ) ) ==
           ( ZH_FS_PCODEFUNC | ZH_FS_LOCAL ) && ( fRecycled || fClone ) )
@@ -8700,7 +8703,8 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
          pSymbol->value.pCodeFunc->pSymbols = pNewSymbols->pModuleSymbols;
       }
 
-      if( ! s_pSymStart && ! fDynLib && ! fStatics &&
+      //if( ! s_pSymStart && ! fDynLib && ! fStatics &&
+      if( ! s_pSymStart && ! fStatics &&
           ( hSymScope & ZH_FS_FIRST ) != 0 &&   // tagirano kao ENTRY_POINT
           ( hSymScope & ZH_FS_INITEXIT ) == 0 ) // a nije staticka funkcija
       {
@@ -8709,10 +8713,11 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
       }
 
 
-
-      if( fPublic )
+      if( fPublic || ( pSymbol->scope.value & ZH_FS_STATIC_INIT) )
       {
-         if( fDynLib && ZH_VM_ISFUNC( pSymbol ) )
+         
+         /*
+         if( ZH_VM_ISFUNC( pSymbol ) )
          {
             PZH_DYNSYMBOL pDynSym;
 
@@ -8722,7 +8727,7 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
             {
                if( fOverLoad && ( pSymbol->scope.value & ZH_FS_LOCAL ) != 0 )
                {
-                  /* overload existing public function */
+                  //* overload existing public function
                   pDynSym->pSymbol = pSymbol;
                   zh_vmSetDynFunc( pDynSym );
                   continue;
@@ -8746,6 +8751,8 @@ PZH_SYMBOLS zh_vmRegisterSymbols( PZH_SYMBOL pModuleSymbols, ZH_USHORT uiSymbols
                continue;
             }
          }
+         */
+
 
          zh_dynsymNew( pSymbol );
       }
@@ -8819,6 +8826,20 @@ PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
 {
    //ZH_TRACE( ZH_TR_DEBUG, ( "zh_vmProcessSymbols(%p,%hu,%s,%lu,%hu)", ( void * ) pSymbols, uiModuleSymbols, szModuleName, ulID, uiPCodeVer ) );
    
+   PZH_SYMBOLS pSymsRet;
+
+   if (strncmp(szModuleName, "ZHBUILTIN", 9) == 0)
+   {
+      PZH_SYMBOLS pSyms = s_pSymbols; int nCnt = 0;
+      while(pSyms )
+      {
+        nCnt += pSyms->uiModuleSymbols;
+        pSyms = pSyms->pNext;
+      }
+      
+      printf("%s size symbols start %d\n", szModuleName, nCnt);
+      getchar();
+   }
    ZH_BOOL fOverload = ZH_FALSE;
    //ZH_BOOL fOverload = ZH_TRUE;
 
@@ -8830,9 +8851,25 @@ PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiModuleSymbols,
    ZH_BOOL fClone = 0;
 
    zh_vmVerifyPCodeVersion( szModuleName, uiPCodeVer );
-   return zh_vmRegisterSymbols( pSymbols, uiModuleSymbols, szModuleName, ulID,
+   pSymsRet =  zh_vmRegisterSymbols( pSymbols, uiModuleSymbols, szModuleName, ulID,
                                 fDyn, fClone,
                                 fOverload )->pModuleSymbols;
+
+
+ 
+   {
+      PZH_SYMBOLS pSyms = s_pSymbols; int nCnt = 0;
+      while(pSyms )
+      {
+        nCnt += pSyms->uiModuleSymbols;
+        pSyms = pSyms->pNext;
+      }
+      
+      printf("size symbols after %d\n", nCnt);
+      getchar();
+   } 
+
+   return pSymsRet;                            
 }
 
 /* unused maindllp
@@ -8872,6 +8909,7 @@ static void zh_vmReleaseLocalSymbols( void )
  * this function. These two bits cannot be marked at the same
  * time for normal user defined functions.
  */
+/*
 static void zh_vmDoInitStatics( void )
 {
    PZH_SYMBOLS pLastSymbols = s_pSymbols;
@@ -8884,18 +8922,18 @@ static void zh_vmDoInitStatics( void )
 
    while( pLastSymbols )
    {
-      if( pLastSymbols->fInitStatics )
-      {
-         ZH_USHORT ui;
-
-         for( ui = 0; ui < pLastSymbols->uiModuleSymbols; ui++ )
+      //if( pLastSymbols->fInitStatics )
+      //if( pLastSymbols)-> hScope == ZH_FS_STATIC_INIT) //  ->fInitStatics )
+      //{
+          
+         for( ZH_USHORT ui = 0; ui < pLastSymbols->uiModuleSymbols; ui++ )
          {
             //printf("module name %s  symbol_name %s\n", pLastSymbols->szModuleName, ( pLastSymbols->pModuleSymbols + ui )->szName );
             ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_STATIC_INIT;
 
-            if( scope == ZH_FS_STATIC_INIT )
+            if( (scope & ZH_FS_STATIC_INIT) != 0 )
             {
-               printf("ZH_FS_STATIC_INIT %d module name %s  symbol_name %s\n", ui, pLastSymbols->szModuleName, ( pLastSymbols->pModuleSymbols + ui )->szName );
+               printf("ZH_FS_STATIC_INIT module name %s  symbol_name %s\n", pLastSymbols->szModuleName, ( pLastSymbols->pModuleSymbols + ui )->szName );
             
                nCntStatics++;
                zh_vmPushSymbol( pLastSymbols->pModuleSymbols + ui );
@@ -8906,12 +8944,60 @@ static void zh_vmDoInitStatics( void )
          }
          //zbog ovoga nema reinicijalizacije statica
          //pLastSymbols->fInitStatics = ZH_FALSE;
-      }
+      //}
       pLastSymbols = pLastSymbols->pNext;
    }
 
    printf("doInitStatics number of functions: %d\n", nCntStatics);
    getchar();
+}
+*/
+
+static void zh_vmDoInitStatics( void )
+{
+   
+   PZH_SYMBOLS pLastSymbols = s_pSymbols;
+
+   while( pLastSymbols ) // && zh_vmRequestQuery() == 0 )
+   {
+      // only if module contains some INIT functions
+      //if( pLastSymbols->fActive )
+      //{
+         ZH_USHORT ui = pLastSymbols->uiModuleSymbols;
+
+         while( ui-- )
+         {
+            ZH_SYMBOLSCOPE scope = ( pLastSymbols->pModuleSymbols + ui )->scope.value & ZH_FS_STATIC_INIT;
+
+            if( scope == ZH_FS_STATIC_INIT )
+            {
+
+               PZH_DYNSYMBOL pSym = zh_dynsymGetCase( (pLastSymbols->pModuleSymbols + ui)->szName );
+               
+
+               if (s_vmInitPozivCount == 2) {
+               //if ( strncmp( (pLastSymbols->pModuleSymbols + ui)->szName, "(_INS2DBGBRWSR)", 15) == 0) {
+                 printf("%s funcptr %p %p\n", (pLastSymbols->pModuleSymbols + ui)->szName, (pLastSymbols->pModuleSymbols + ui)->value.pFunPtr, pSym->pSymbol->value.pFunPtr);
+                 getchar();
+               
+               }
+            
+               pSym->pSymbol->value.pFunPtr();
+
+               //(pLastSymbols->pModuleSymbols + ui)->value.pFunPtr ();
+
+               
+               //zh_vmPushSymbol( pSym );
+               //zh_vmPushNil();
+               //zh_vmProc( 0 );
+               //if( zh_vmRequestQuery() != 0 )
+               //   break;
+            }
+         }
+      //}
+      pLastSymbols = pLastSymbols->pNext;
+   }
+   
 }
 
 static void zh_vmDoInitZHFunctions( void )
@@ -8923,7 +9009,6 @@ static void zh_vmDoInitZHFunctions( void )
 
    //printf("==============zh_vmDoInitZHFunctions=======%p   %d=====\n", pLastSymbols, zh_vmRequestQuery());
    //getchar();
-
 
    while( pLastSymbols && zh_vmRequestQuery() == 0 )
    {

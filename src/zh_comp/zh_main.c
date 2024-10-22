@@ -4305,7 +4305,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
 
       if( ZH_COMP_PARAM->pInitFunc )
       {
-         char szNewName[ 25 ];
+         char szNewName[ 45 ];
 
          /* Mark thread static variables */
          zh_compStaticDefThreadSet( ZH_COMP_PARAM );
@@ -4329,7 +4329,7 @@ static int zh_compCompile( ZH_COMP_DECL, const char * szPrg, const char * szBuff
             }
          }
 
-         zh_snprintf( szNewName, sizeof( szNewName ), "(_INS%03d%s)", ZH_COMP_PARAM->iStaticCnt, szFileName );
+         zh_snprintf( szNewName, sizeof( szNewName ), "(_INS%01d%s)", ZH_COMP_PARAM->iStaticCnt, szFileName );
 
          
          ZH_COMP_PARAM->pInitFunc->szName = zh_compIdentifierNew( ZH_COMP_PARAM, szNewName, ZH_IDENT_COPY );

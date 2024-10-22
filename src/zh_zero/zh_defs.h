@@ -1418,7 +1418,7 @@ typedef ZH_U32 ZH_FATTR;
 #define ZH_FUNC_STATIC( funcname ) static ZIHERF ZH_FUN_##funcname ( void )
 #define ZH_FUNC_INIT( funcname )   static ZIHERF ZH_FUN_init_##funcname ( void )
 #define ZH_FUNC_EXIT( funcname )   static ZIHERF ZH_FUN_exit_##funcname ( void )
-#define ZH_FUNC_INITSTATICS( funcname ) ZIHERF zh_INITSTATICS_##funcname ( void )
+#define ZH_FUNC_INITSTATICS( funcname ) ZH_EXTERN_C_ ZH_EXPORT  ZIHERF zh_INITSTATICS_##funcname ( void )
 #define ZH_FUNC_INITLINES()        static ZIHERF zh_INITLINES( void )
 #define ZH_FUNC_TRANSLATE( w, o )  ZH_FUNC_EXTERN( o ); ZH_FUNC( w ) { ZH_FUNC_EXEC( o ); }
 

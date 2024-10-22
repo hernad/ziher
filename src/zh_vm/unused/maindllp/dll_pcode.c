@@ -175,12 +175,14 @@ static PZH_SYMBOL s_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
    }
 }
 
+/*
 PZH_SYMBOL zh_vmProcessSymbols( PZH_SYMBOL pSymbols, ZH_USHORT uiSymbols,
                               const char * szModuleName, ZH_ULONG ulID,
                               ZH_USHORT uiPcodeVer )
 {
    return s_pProcessSymbols( pSymbols, uiSymbols, szModuleName, ulID, uiPcodeVer );
 }
+*/
 
 static void s_dummy_vmExecute( const ZH_BYTE * pCode, PZH_SYMBOL pSymbols )
 {
