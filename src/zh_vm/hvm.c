@@ -1200,15 +1200,15 @@ void zh_vmInit( ZH_BOOL bStartMainProc, ZH_BOOL bInitRT, ZH_BOOL bConInit )
    
   
 
+      //if (s_vmInitPozivCount < 1000) {
+         zh_vmDoInitStatics();
+         
+      //} 
    
       //printf("init step 15\n");
       //getchar();
       zh_vmDoInitZHVM(); // u errorsys i __ZHVINIT ne smije biti static vars
 
-      //if (s_vmInitPozivCount < 1000) {
-         zh_vmDoInitStatics();
-         
-      //} 
 
       // printf("init step 16\n");
       // getchar();
