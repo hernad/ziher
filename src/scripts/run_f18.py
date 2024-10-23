@@ -60,7 +60,7 @@ elif arg1 == "func_hello_ziher_2":
    #returnType = 1 # integer
    #f18klijentlib.vmquit(bInitRT)
 
-   nLastStep = 10
+   nLastStep = 4
    for iter in range(1, nLastStep + 1):
       f18klijentlib.vminit(bStartMainProc, bInitRT, bInitConsole)
    

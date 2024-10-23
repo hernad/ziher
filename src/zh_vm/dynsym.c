@@ -345,7 +345,7 @@ PZH_DYNSYMBOL zh_dynsymGetCase( const char * szName )
    PZH_DYNSYMBOL pDynSym;
    ZH_UINT uiPos;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymGetCase(%s)", szName ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_dynsymGetCase(%s)", szName ) );
 
    ZH_DYNSYM_LOCK();
 
