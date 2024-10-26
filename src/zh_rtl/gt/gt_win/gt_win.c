@@ -271,7 +271,7 @@ static void zh_gt_win_xSetCursorStyle( void )
 {
    CONSOLE_CURSOR_INFO cci;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xSetCursorStyle()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xSetCursorStyle()" ) );
 
    switch( s_iCursorStyle )
    {
@@ -304,7 +304,9 @@ static void zh_gt_win_xSetCursorStyle( void )
          break;
    }
    s_iOldCurStyle = s_iCursorStyle;
+   
    SetConsoleCursorInfo( s_HOutput, &cci );
+
 }
 
 /* *********************************************************************** */
@@ -354,7 +356,7 @@ static void zh_gt_win_xScreenUpdate( void )
 
 static void zh_gt_win_xUpdtSet( int iTop, int iLeft, int iBottom, int iRight )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xUpdtSet(%d, %d, %d, %d)", iTop, iLeft, iBottom, iRight ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xUpdtSet(%d, %d, %d, %d)", iTop, iLeft, iBottom, iRight ) );
 
    if( iTop < s_iUpdtTop )
       s_iUpdtTop = iTop;
@@ -390,9 +392,7 @@ static BOOL WINAPI zh_gt_win_CtrlHandler( DWORD dwCtrlType )
       case CTRL_LOGOFF_EVENT:
       case CTRL_SHUTDOWN_EVENT:
       default:
-#if 0
-         printf( " Event %lu ", ( ZH_ULONG ) dwCtrlType );
-#endif
+
          bHandled = FALSE;
          break;
    }
@@ -2035,7 +2035,7 @@ static int zh_gt_win_mouse_CountButton( PZH_GT pGT )
 
 static void zh_gt_win_Redraw( PZH_GT pGT, int iRow, int iCol, int iSize )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Redraw(%p,%d,%d,%d)", ( void * ) pGT, iRow, iCol, iSize ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Redraw(%p,%d,%d,%d)", ( void * ) pGT, iRow, iCol, iSize ) );
 
    if( iSize > 0 && s_pCharInfoScreen &&
        iRow < ( int ) _GetScreenHeight() && iCol < ( int ) _GetScreenWidth() )
@@ -2108,6 +2108,7 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->Info                       = zh_gt_win_Info;
    pFuncTable->Version                    = zh_gt_win_Version;
    
+   // kljucna in funkcija
    pFuncTable->ReadKey                    = zh_gt_win_ReadKey;
 
    pFuncTable->MouseIsPresent             = zh_gt_win_mouse_IsPresent;

@@ -124,9 +124,11 @@ ZH_FUNC( ZH_GTVERSION )
    zh_retc_const( zh_gtVersion( zh_parni( 1 ) ) );
 }
 
+/*
+   ziherLayer [ ZH_FUNC( ZH_GTALERT ) => ZH_FUN_ZH_GTALERT ] => cLayer [ zh_gtAlert => ZH_GTSELF_ALERT => zh_gt_def_Alert ]
+*/
 ZH_FUNC( ZH_GTALERT )
 {
-   //printf("====================== zh_gtalert ===============\n");
    zh_retni( zh_gtAlert( zh_param( 1, ZH_IT_ANY ),
                          zh_param( 2, ZH_IT_ANY ),
                          ZH_ISCHAR( 3 ) ? zh_gtColorToN( zh_parc( 3 ) ) : zh_parni( 3 ) /* iClrNorm */,

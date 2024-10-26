@@ -1208,18 +1208,14 @@ static void zh_gt_trm_LinuxSetCursorStyle( PZH_GTTRM pTerm, int iStyle )
             lcurs = 2;
             break;
          case SC_INSERT:
+         case SC_SPECIAL2:
+
             lcurs = 4;
             break;
          case SC_SPECIAL1:
             lcurs = 8;
             break;
-         case SC_SPECIAL2:
-            /* TODO: find a proper sequence to set a cursor
-               to SC_SPECIAL2 under Linux console?
-               There is no such mode in current stable kernels (2.4.20)
-             */
-            lcurs = 4;
-            break;
+
       }
       if( lcurs != -1 )
       {
@@ -2741,7 +2737,7 @@ static void zh_gt_trm_SetTerm( PZH_GTTRM pTerm )
    pTerm->terminal_ext  = 0;
    pTerm->fAM           = ZH_FALSE;
 
-   /* standard VGA colors */
+   /* standard VGA colors 16 */
    pTerm->colors[ 0x00 ] = 0x000000;
    pTerm->colors[ 0x01 ] = 0xAA0000;
    pTerm->colors[ 0x02 ] = 0x00AA00;
@@ -2824,11 +2820,17 @@ static void zh_gt_trm_SetTerm( PZH_GTTRM pTerm )
       pTerm->SetTermMode    = zh_gt_trm_LinuxSetTermMode;
       pTerm->GetCursorPos   = zh_gt_trm_AnsiGetCursorPos;
       pTerm->SetCursorPos   = zh_gt_trm_AnsiSetCursorPos;
+      
+      // razlika u odnosu na ansi setcursor
       pTerm->SetCursorStyle = zh_gt_trm_LinuxSetCursorStyle;
+      
       pTerm->SetAttributes  = zh_gt_trm_AnsiSetAttributes;
       pTerm->SetMode        = zh_gt_trm_AnsiSetMode;
       pTerm->GetAcsc        = zh_gt_trm_AnsiGetAcsc;
+      
+      // razlika
       pTerm->Tone           = zh_gt_trm_LinuxTone;
+
       pTerm->Bell           = zh_gt_trm_AnsiBell;
       pTerm->szAcsc         = szExtAcsc;
       if( strcmp( szTerm, "cygwin" ) == 0 )
@@ -2913,13 +2915,14 @@ static void zh_gt_trm_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
    zh_gt_trm_SetTerm( pTerm );
 
 // https://www.gnu.org/software/libc/manual/html_node/Flags-for-Sigaction.html
+
 // Macro: int SA_NOCLDSTOP
 // This flag is meaningful only for the SIGCHLD signal. When the flag is set, the system delivers the signal for a terminated child process but not for one that is stopped. By default, SIGCHLD is delivered for both terminated children and stopped children.
 
 // Setting this flag for a signal other than SIGCHLD has no effect.
 
 /* SA_NOCLDSTOP in #if is a hack to detect POSIX compatible environment */
-#if defined( ZH_OS_UNIX ) && defined( SA_NOCLDSTOP )
+#if defined( SA_NOCLDSTOP )
 
    if( pTerm->fStdinTTY )
    {
@@ -2978,6 +2981,7 @@ static void zh_gt_trm_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
    ZH_GTSELF_SETFLAG( pGT, ZH_GTI_STDERRCON, pTerm->fStderrTTY && pTerm->fOutTTY );
    pTerm->Init( pTerm );
    pTerm->SetTermMode( pTerm, 0 );
+
 #ifdef ZH_GTTRM_CHK_EXACT_POS
    if( pTerm->GetCursorPos( pTerm, &pTerm->iRow, &pTerm->iCol, NULL ) )
       ZH_GTSELF_SETPOS( pGT, pTerm->iRow, pTerm->iCol );
@@ -2991,6 +2995,7 @@ static void zh_gt_trm_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
    {
       zh_gt_trm_SetDispTrans( pTerm, 0 );
    }
+   
    ZH_GTSELF_SETBLINK( pGT, ZH_TRUE );
    if( pTerm->fOutTTY )
       ZH_GTSELF_SEMICOLD( pGT );
@@ -3217,9 +3222,8 @@ static ZH_BOOL zh_gt_trm_Resume( PZH_GT pGT )
 static void zh_gt_trm_Scroll( PZH_GT pGT, int iTop, int iLeft, int iBottom, int iRight,
                               int iColor, ZH_USHORT usChar, int iRows, int iCols )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_Scroll(%p,%d,%d,%d,%d,%d,%d,%d,%d)", ( void * ) pGT, iTop, iLeft, iBottom, iRight, iColor, usChar, iRows, iCols ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_trm_Scroll(%p,%d,%d,%d,%d,%d,%d,%d,%d)", ( void * ) pGT, iTop, iLeft, iBottom, iRight, iColor, usChar, iRows, iCols ) );
 
-   //printf("trm scrollllllllllllllllllllllllllammmmmmmmmmmmmmmm\n");
    /* Provide some basic scroll support for full screen */
    if( iCols == 0 && iRows > 0 && iTop == 0 && iLeft == 0 )
    {
@@ -3246,6 +3250,7 @@ static void zh_gt_trm_Scroll( PZH_GT pGT, int iTop, int iLeft, int iBottom, int 
       }
    }
 
+   // zh_gt_def_Scroll
    ZH_GTSUPER_SCROLL( pGT, iTop, iLeft, iBottom, iRight, iColor, usChar, iRows, iCols );
 }
 
@@ -3519,14 +3524,23 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_FuncInit(%p)", ( void * ) pFuncTable ) );
 
+   // dajemo GT-u na raspolaganje stdout, stderr, stdin 
    pFuncTable->Init                       = zh_gt_trm_Init;
+   
    pFuncTable->Exit                       = zh_gt_trm_Exit;
+
    pFuncTable->Redraw                     = zh_gt_trm_Redraw;
    pFuncTable->Refresh                    = zh_gt_trm_Refresh;
+   
+   // WIN nema definisan scroll funkciju
+   // o ovdje vecinu posla radi zh_gt_def_Scroll
    pFuncTable->Scroll                     = zh_gt_trm_Scroll;
+   
    pFuncTable->Version                    = zh_gt_trm_Version;
+   
    pFuncTable->Suspend                    = zh_gt_trm_Suspend;
    pFuncTable->Resume                     = zh_gt_trm_Resume;
+   
    pFuncTable->SetMode                    = zh_gt_trm_SetMode;
    pFuncTable->SetBlink                   = zh_gt_trm_SetBlink;
    pFuncTable->SetDispCP                  = zh_gt_trm_SetDispCP;
@@ -3535,6 +3549,12 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->Bell                       = zh_gt_trm_Bell;
    pFuncTable->Info                       = zh_gt_trm_Info;
 
+   // zh_gt_def_CheckPos - tekuca pozicija kod screen buffer-a
+
+   // zh_gt_def_PutChar
+   // out
+
+   // in
    pFuncTable->ReadKey                    = zh_gt_trm_ReadKey;
 
    pFuncTable->MouseIsPresent             = zh_gt_trm_mouse_IsPresent;

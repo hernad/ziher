@@ -1101,13 +1101,16 @@ ZH_ERRCODE zh_gtInfo( int iType, PZH_GT_INFO pInfo )
    return errCode;
 }
 
+/*
+   zh_gtAlert => ZH_GTSELF_ALERT => zh_gt_def_Alert
+*/
 int zh_gtAlert( PZH_ITEM pMessage, PZH_ITEM pOptions,
                 int iClrNorm, int iClrHigh, double dDelay )
 {
    int iResult = 0;
    PZH_GT pGT;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtAlert(%p, %p, %d, %d, %f)", ( void * ) pMessage, ( void * ) pOptions, iClrNorm, iClrHigh, dDelay ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gtAlert(%p, %p, %d, %d, %f)", ( void * ) pMessage, ( void * ) pOptions, iClrNorm, iClrHigh, dDelay ) );
 
    //printf("============zh_gtAlert start===========================\n");
 
