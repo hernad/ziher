@@ -68,6 +68,16 @@
 /* TODO: include any standard headers here */
 /* *********************************************************************** */
 
+/*
+_WINDOWS_COPTS = [
+    "-DUNICODE",
+    "-DZH_OS_WIN",
+    "-DZH_OS_WIN_64",
+    "-Izh_rtl"
+]
+*/
+
+
 #include "zh_api.h"
 #include "..\zh_gt_core.h"
 #include "zh_init.h"
@@ -158,7 +168,7 @@ static const COLORREF s_colorsDef[ 16 ] = { RGB( 0x00, 0x00, 0x00 ),
                                             RGB( 0xFF, 0xFF, 0x00 ),
                                             RGB( 0xFF, 0xFF, 0xFF ) };
 
-static ZH_BOOL     s_fWin9x;
+//static ZH_BOOL     s_fWin9x;
 static COLORREF    s_colorsOld[ 16 ];
 static ZH_BOOL     s_fResetColors;
 static ZH_BOOL     s_fOldClosable;
@@ -396,40 +406,17 @@ static void zh_gt_win_xGetScreenContents( PZH_GT pGT, SMALL_RECT * psrWin )
 {
    int iRow, iCol;
 
-#if ! defined( UNICODE )
-   PZH_CODEPAGE cdp;
-   ZH_BYTE bxAttr;
-#endif
-
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xGetScreenContents(%p,%p)", ( void * ) pGT, ( void * ) psrWin ) );
 
-#if ! defined( UNICODE )
-   bxAttr = 0;
-   cdp = ZH_GTSELF_CPTERM( pGT );
-   if( ! cdp )
-   {
-      cdp = ZH_GTSELF_CPBOX( pGT );
-      if( cdp )
-         bxAttr = ZH_GT_ATTR_BOX;
-      else
-         cdp = ZH_GTSELF_HOSTCP( pGT );
-   }
-#endif
 
    for( iRow = psrWin->Top; iRow <= psrWin->Bottom; ++iRow )
    {
       int i = iRow * _GetScreenWidth() + psrWin->Left;
       for( iCol = psrWin->Left; iCol <= psrWin->Right; ++iCol )
       {
-#if defined( UNICODE )
          ZH_GTSELF_PUTSCRCHAR( pGT, iRow, iCol,
                                ( ZH_UCHAR ) s_pCharInfoScreen[ i ].Attributes, 0,
                                s_pCharInfoScreen[ i ].Char.UnicodeChar );
-#else
-         ZH_USHORT usChar = zh_cdpGetU16( cdp, ( ZH_UCHAR ) s_pCharInfoScreen[ i ].Char.AsciiChar );
-         ZH_GTSELF_PUTSCRCHAR( pGT, iRow, iCol,
-                               ( ZH_UCHAR ) s_pCharInfoScreen[ i ].Attributes, bxAttr, usChar );
-#endif
          ++i;
       }
    }
@@ -472,17 +459,11 @@ static void zh_gt_win_xInitScreenParam( PZH_GT pGT )
        * buffer { 0, 0, s_csbi.dwSize.Y - 1, s_csbi.dwSize.X - 1 }
        * because it reads nothing, [druzus]
        */
-#if 0
-      srWin.Top    = 0;
-      srWin.Left   = 0;
-      srWin.Bottom = _GetScreenHeight() - 1;
-      srWin.Right  = _GetScreenWidth() - 1;
-#else
+
       srWin.Top    = s_csbi.srWindow.Top;
       srWin.Left   = s_csbi.srWindow.Left;
       srWin.Bottom = s_csbi.srWindow.Bottom;
       srWin.Right  = s_csbi.srWindow.Right;
-#endif
 
       coDest.Y = srWin.Top;
       coDest.X = srWin.Left;
@@ -706,7 +687,7 @@ static void zh_gt_win_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Init(%p,%p,%p,%p)", ( void * ) pGT, ( void * ) ( ZH_PTRUINT ) hFilenoStdin, ( void * ) ( ZH_PTRUINT ) hFilenoStdout, ( void * ) ( ZH_PTRUINT ) hFilenoStderr ) );
 
-   s_fWin9x = zh_iswin9x();
+   //s_fWin9x = zh_iswin9x();
 
    /* stdin && stdout && stderr */
    s_hStdIn  = hFilenoStdin;
@@ -1042,11 +1023,7 @@ static int Handle_Alt_Key( INPUT_RECORD * pInRec, ZH_BOOL * pAltIsDown, int * pA
          if( pInRec->Event.KeyEvent.bKeyDown )
             break;
          else if( pInRec->Event.KeyEvent.dwControlKeyState & 0x04000000 )
-#if defined( UNICODE )
             iVal = *pAltVal & 0xFFFF;
-#else
-            iVal = *pAltVal & 0xFF;
-#endif
          /* fallthrough */
       default:
          *pAltIsDown = ZH_FALSE;
@@ -1181,19 +1158,6 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
 
       if( s_dwNumRead )
       {
-#if defined( UNICODE )
-         /* Workaround for UNICOWS bug:
-               https://web.archive.org/web/blogs.msdn.com/michkap/archive/2007/01/13/1460724.aspx
-            [vszakats] */
-
-         if( s_fWin9x )
-         {
-            DWORD tmp;
-
-            for( tmp = 0; tmp < INPUT_BUFFER_LEN; ++tmp )
-               s_irBuffer[ tmp ].EventType = 0xFFFF;
-         }
-#endif
 
          /* Read keyboard input */
          ReadConsoleInput( s_HInput,          /* input buffer handle    */
@@ -1202,19 +1166,6 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
                            &s_dwNumRead );    /* number of records read */
          /* Set up to process the first input event */
          s_dwNumIndex = 0;
-
-#if defined( UNICODE )
-         if( s_fWin9x )
-         {
-            DWORD tmp;
-
-            for( tmp = 0; tmp < s_dwNumRead; ++tmp )
-            {
-               if( s_irBuffer[ tmp ].EventType == 0xFFFF )
-                  s_irBuffer[ tmp ].EventType = KEY_EVENT;
-            }
-         }
-#endif
 
 #if defined( _TRACE ) || defined( _TRACE_KEYPRESS )
          {
@@ -1319,11 +1270,7 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
          }
          else if( pInRec->Event.KeyEvent.bKeyDown )
          {
-#if defined( UNICODE )
             iChar = pInRec->Event.KeyEvent.uChar.UnicodeChar;
-#else
-            iChar = ( ZH_UCHAR ) pInRec->Event.KeyEvent.uChar.AsciiChar;
-#endif
 
             /*
              * Under Win9x, upper row keys are affected by caps-lock
@@ -1652,11 +1599,7 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
          }
          else if( wVKey == VK_MENU && ( dwState & NUMLOCK_ON ) != 0 )
          {
-#if defined( UNICODE )
             iChar = pInRec->Event.KeyEvent.uChar.UnicodeChar;
-#else
-            iChar = ( ZH_UCHAR ) pInRec->Event.KeyEvent.uChar.AsciiChar;
-#endif
          }
 
          if( iKey != 0 )
@@ -1668,14 +1611,9 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
          }
          else if( iChar != 0 )
          {
-#if defined( UNICODE )
             if( iChar >= 127 )
                iKey = ZH_INKEY_NEW_UNICODEF( iChar, iFlags );
-#else
-            int u = ZH_GTSELF_KEYTRANS( pGT, iChar );
-            if( u )
-               iKey = ZH_INKEY_NEW_UNICODEF( u, iFlags );
-#endif
+
             else if( iChar < 127 && ( iFlags & ( ZH_KF_CTRL | ZH_KF_ALT ) ) )
             {
                if( iChar >= 32 &&
@@ -1871,11 +1809,7 @@ static ZH_BOOL zh_gt_win_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          break;
 
       case ZH_GTI_ISUNICODE:
-#if defined( UNICODE )
          pInfo->pResult = zh_itemPutL( pInfo->pResult, ZH_TRUE );
-#else
-         pInfo->pResult = zh_itemPutL( pInfo->pResult, ZH_FALSE );
-#endif
          break;
 
       case ZH_GTI_CODEPAGE:
@@ -2029,8 +1963,8 @@ static ZH_BOOL zh_gt_win_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
 
       case ZH_GTI_KBDSPECIAL:
          pInfo->pResult = zh_itemPutL( pInfo->pResult, s_fSpecialKeyHandling );
-         if( s_fWin9x && zh_itemType( pInfo->pNewVal ) & ZH_IT_LOGICAL )
-            s_fSpecialKeyHandling = zh_itemGetL( pInfo->pNewVal );
+         //if( s_fWin9x && zh_itemType( pInfo->pNewVal ) & ZH_IT_LOGICAL )
+         //   s_fSpecialKeyHandling = zh_itemGetL( pInfo->pNewVal );
          break;
 
       case ZH_GTI_KBDALT:
@@ -2050,20 +1984,12 @@ static ZH_BOOL zh_gt_win_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
 
       case ZH_GTI_CLIPBOARDDATA:
          if( zh_itemType( pInfo->pNewVal ) & ZH_IT_STRING )
-#if defined( UNICODE )
             zh_gt_winapi_setClipboard( CF_UNICODETEXT, pInfo->pNewVal );
-#else
-            zh_gt_winapi_setClipboard( CF_OEMTEXT, pInfo->pNewVal );
-#endif
          else
          {
             if( pInfo->pResult == NULL )
                pInfo->pResult = zh_itemNew( NULL );
-#if defined( UNICODE )
             zh_gt_winapi_getClipboard( CF_UNICODETEXT, pInfo->pResult );
-#else
-            zh_gt_winapi_getClipboard( CF_OEMTEXT, pInfo->pResult );
-#endif
          }
          break;
 
@@ -2146,17 +2072,10 @@ static void zh_gt_win_Redraw( PZH_GT pGT, int iRow, int iCol, int iSize )
 
       while( iSize-- > 0 )
       {
-#if defined( UNICODE )
          ZH_USHORT usChar;
          if( ! ZH_GTSELF_GETSCRCHAR( pGT, iRow, iCol++, &iColor, &bAttr, &usChar ) )
             break;
          s_pCharInfoScreen[ i ].Char.UnicodeChar = zh_cdpGetU16Ctrl( usChar );
-#else
-         ZH_UCHAR uc;
-         if( ! ZH_GTSELF_GETSCRUC( pGT, iRow, iCol++, &iColor, &bAttr, &uc, ZH_TRUE ) )
-            break;
-         s_pCharInfoScreen[ i ].Char.AsciiChar = ( CHAR ) uc;
-#endif
          s_pCharInfoScreen[ i ].Attributes = ( WORD ) ( iColor & 0xFF );
          ++i;
       }
@@ -2200,15 +2119,20 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
 
    pFuncTable->Init                       = zh_gt_win_Init;
    pFuncTable->Exit                       = zh_gt_win_Exit;
+
    pFuncTable->SetMode                    = zh_gt_win_SetMode;
+   
    pFuncTable->Redraw                     = zh_gt_win_Redraw;
    pFuncTable->Refresh                    = zh_gt_win_Refresh;
-   pFuncTable->Version                    = zh_gt_win_Version;
    pFuncTable->PostExt                    = zh_gt_win_PostExt;
+   
    pFuncTable->Suspend                    = zh_gt_win_Suspend;
    pFuncTable->Resume                     = zh_gt_win_Resume;
+
    pFuncTable->Tone                       = zh_gt_win_Tone;
    pFuncTable->Info                       = zh_gt_win_Info;
+   pFuncTable->Version                    = zh_gt_win_Version;
+   
    pFuncTable->ReadKey                    = zh_gt_win_ReadKey;
 
    pFuncTable->MouseIsPresent             = zh_gt_win_mouse_IsPresent;

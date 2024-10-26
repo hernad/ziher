@@ -123,13 +123,6 @@ static void zh_gt_wvt_RegisterClass( HINSTANCE hInstance )
    wndclass.lpfnWndProc   = zh_gt_wvt_WndProc;
    wndclass.hInstance     = hInstance;
    wndclass.hCursor       = LoadCursor( NULL, IDC_ARROW );
-#if 0
-   wndclass.cbClsExtra    = 0;
-   wndclass.cbWndExtra    = 0;
-   wndclass.hIcon         = NULL;
-   wndclass.hbrBackground = NULL;
-   wndclass.lpszMenuName  = NULL;
-#endif
    wndclass.lpszClassName = s_szClassName;
 
    if( ! RegisterClass( &wndclass ) )
@@ -4486,18 +4479,6 @@ static int zh_gt_wvt_gfx_Primitive( PZH_GT pGT, int iType, int iTop, int iLeft, 
    return iRet;
 }
 
-#if 0
-static void zh_gt_wvt_gfx_Text( PZH_GT pGT, int iTop, int iLeft, const char *cBuf, int iColor, int iSize, int iWidth )
-{
-   ZH_SYMBOL_UNUSED( pGT );
-   ZH_SYMBOL_UNUSED( iTop );
-   ZH_SYMBOL_UNUSED( iLeft );
-   ZH_SYMBOL_UNUSED( cBuf );
-   ZH_SYMBOL_UNUSED( iColor );
-   ZH_SYMBOL_UNUSED( iSize );
-   ZH_SYMBOL_UNUSED( iWidth );
-}
-#endif
 
 /* ********************************************************************** */
 
@@ -4562,9 +4543,11 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->SetMode              = zh_gt_wvt_SetMode;
    pFuncTable->Redraw               = zh_gt_wvt_Redraw;
    pFuncTable->Refresh              = zh_gt_wvt_Refresh;
+   
    pFuncTable->Version              = zh_gt_wvt_Version;
    pFuncTable->Tone                 = zh_gt_wvt_Tone;
    pFuncTable->Info                 = zh_gt_wvt_Info;
+   
    pFuncTable->ReadKey              = zh_gt_wvt_ReadKey;
 
    pFuncTable->MouseIsPresent       = zh_gt_wvt_mouse_IsPresent;
