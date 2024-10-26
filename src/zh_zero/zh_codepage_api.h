@@ -61,6 +61,18 @@ ZH_EXTERN_BEGIN
                                        { \
                                           ZH_FUNC_EXEC( ZH_CODEPAGE_##id ); \
                                        }
+
+
+/*
+ZH_FUN_ZH_CODEPAGE_UTF8
+
+ZH_FUN_ZH_CODEPAGE_SLISO
+ZH_FUN_ZH_CODEPAGE_SLWIN
+ZH_FUN_ZH_CODEPAGE_SL852
+
+ZH_FUN_ZH_CODEPAGE_EN
+*/
+
 #define ZH_CODEPAGE_ANNOUNCE( id )     ZH_CODEPAGE_ANNOUNCE_( id )
 #define ZH_CODEPAGE_ANNOUNCE_( id )    ZH_FUNC( ZH_CODEPAGE_##id ) {}
 

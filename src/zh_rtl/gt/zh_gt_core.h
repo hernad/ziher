@@ -82,6 +82,8 @@ ZH_EXTERN_BEGIN
 
 #define ZH_GT_ANNOUNCE( id )     ZH_GT_ANNOUNCE_( _ZH_GT_PREF_( id ) )
 #define ZH_GT_ANNOUNCE_( id )    ZH_GT_ANNOUNCE__( id )
+
+// npr ZH_FUN_ZH_GT_TRM_DEFAULT
 #define ZH_GT_ANNOUNCE__( id )   ZH_FUNC( id ) {} ZH_FUNC( id##_DEFAULT ) {}
 
 #define ZH_GT_DRVNAME( id )      ZH_MACRO2STRING( id )
