@@ -82,7 +82,7 @@ static ZH_TSD_NEW( s_idleData, sizeof( ZH_IDLEDATA ), NULL, zh_idleDataRelease )
 
 void zh_releaseCPU( void )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_releaseCPU()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_releaseCPU()" ) );
 
    zh_threadReleaseCPU();
 }

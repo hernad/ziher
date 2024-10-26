@@ -3500,6 +3500,7 @@ static ZH_BOOL zh_gt_trm_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          break;
 
       case ZH_GTI_RESIZABLE:
+         // dummy result nije podrzano
          pInfo->pResult = zh_itemPutL( pInfo->pResult, ZH_TRUE );
          break;
 

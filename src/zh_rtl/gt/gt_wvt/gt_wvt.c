@@ -3851,6 +3851,7 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          break;
 
       case ZH_GTI_RESIZABLE:
+         // samo WVT podrzava resize
          pInfo->pResult = zh_itemPutL( pInfo->pResult, pWVT->bResizable );
          if( pInfo->pNewVal )
          {

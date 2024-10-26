@@ -227,8 +227,6 @@ void zh_threadReleaseCPU( void )
 
    zh_vmUnlock();
 
-   /* TODO: Add code to release time slices on all platforms */
-
 #if defined( ZH_OS_WIN )
 
    /* Forfeit the remainder of the current time slice. */
@@ -241,21 +239,6 @@ void zh_threadReleaseCPU( void )
       tv.tv_usec = 20000;
       select( 0, NULL, NULL, NULL, &tv );
    }
-
-   /* the code below is simpler but seems that some Linux kernels
-    * (e.g. from CentOS 5.1) have problems with nanosleep()
-    * so it was replaced by above code
-    */
-
-   /*
-   {
-      static const struct timespec nanosecs = { 0, 1000000 };
-      nanosleep( &nanosecs, NULL );
-   }
-   */
-#else
-
-   /* Do nothing */
 
 #endif
 
