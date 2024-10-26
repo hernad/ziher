@@ -311,7 +311,7 @@ static PZH_GTWVT zh_gt_wvt_New( PZH_GT pGT, HINSTANCE hInstance, int iCmdShow )
    pWVT->wcTrans           = NULL;
    pWVT->wcTransLen        = 0;
 
-   pWVT->Win9X             = zh_iswin9x();
+   //pWVT->Win9X             = zh_iswin9x();
 
    pWVT->IgnoreWM_SYSCHAR  = ZH_FALSE;
 
@@ -1726,7 +1726,7 @@ static void zh_gt_wvt_FitSize( PZH_GTWVT pWVT )
                zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
 
 
-               pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
+               pWVT->FixedFont = pWVT->fontWidth >= 0 &&
                            ( tm.tmPitchAndFamily & TMPF_FIXED_PITCH ) == 0 &&
                            ( pWVT->PTEXTSIZE.x == tm.tmMaxCharWidth );
                for( n = 0; n < pWVT->COLS; n++ )
@@ -1847,7 +1847,7 @@ static void zh_gt_wvt_ResetWindowSize( PZH_GTWVT pWVT, HFONT hFont )
    /* reset character bitmaps (after font selection) */
    zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
 
-   pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
+   pWVT->FixedFont =  pWVT->fontWidth >= 0 &&
                      ( tm.tmPitchAndFamily & TMPF_FIXED_PITCH ) == 0 &&
                      ( pWVT->PTEXTSIZE.x == tm.tmMaxCharWidth );
 
