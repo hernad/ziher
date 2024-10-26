@@ -311,7 +311,7 @@ static void zh_gt_win_xSetCursorStyle( void )
 
 static void zh_gt_win_xScreenUpdate( void )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xScreenUpdate()" ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_xScreenUpdate()" ) );
 
    if( s_pCharInfoScreen )
    {
@@ -687,7 +687,6 @@ static void zh_gt_win_Init( PZH_GT pGT, ZH_FHANDLE hFilenoStdin, ZH_FHANDLE hFil
 {
    ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Init(%p,%p,%p,%p)", ( void * ) pGT, ( void * ) ( ZH_PTRUINT ) hFilenoStdin, ( void * ) ( ZH_PTRUINT ) hFilenoStdout, ( void * ) ( ZH_PTRUINT ) hFilenoStderr ) );
 
-   //s_fWin9x = zh_iswin9x();
 
    /* stdin && stdout && stderr */
    s_hStdIn  = hFilenoStdin;
@@ -842,11 +841,11 @@ static void zh_gt_win_Exit( PZH_GT pGT )
 
 /* *********************************************************************** */
 
-static ZH_BOOL zh_gt_win_SetMode( PZH_GT pGT, int iRows, int iCols )
+static ZH_BOOL zh_gt_win_SetRowsCols( PZH_GT pGT, int iRows, int iCols )
 {
    ZH_BOOL fRet = ZH_FALSE;
 
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_SetMode(%p,%d,%d)", ( void * ) pGT, iRows, iCols ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_SetRowsCols(%p,%d,%d)", ( void * ) pGT, iRows, iCols ) );
 
    if( s_HOutput != INVALID_HANDLE_VALUE && iRows > 0 && iCols > 0 )
    {
@@ -941,7 +940,7 @@ static ZH_BOOL zh_gt_win_SetMode( PZH_GT pGT, int iRows, int iCols )
 
 static const char * zh_gt_win_Version( PZH_GT pGT, int iType )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Version(%p,%d)", ( void * ) pGT, iType ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Version(%p,%d)", ( void * ) pGT, iType ) );
 
    ZH_SYMBOL_UNUSED( pGT );
 
@@ -955,7 +954,7 @@ static const char * zh_gt_win_Version( PZH_GT pGT, int iType )
 
 static ZH_BOOL zh_gt_win_PostExt( PZH_GT pGT )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_PostExt(%p)", ( void * ) pGT ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_PostExt(%p)", ( void * ) pGT ) );
 
    ZH_GTSUPER_POSTEXT( pGT );
    if( s_pCharInfoScreen )
@@ -967,7 +966,7 @@ static ZH_BOOL zh_gt_win_PostExt( PZH_GT pGT )
 
 static ZH_BOOL zh_gt_win_Suspend( PZH_GT pGT )
 {
-   ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Suspend(%p)", ( void * ) pGT ) );
+   //ZH_TRACE( ZH_TR_DEBUG, ( "zh_gt_win_Suspend(%p)", ( void * ) pGT ) );
 
    ZH_SYMBOL_UNUSED( pGT );
 
@@ -1271,28 +1270,6 @@ static int zh_gt_win_ReadKey( PZH_GT pGT, int iEventMask )
          else if( pInRec->Event.KeyEvent.bKeyDown )
          {
             iChar = pInRec->Event.KeyEvent.uChar.UnicodeChar;
-
-            /*
-             * Under Win9x, upper row keys are affected by caps-lock
-             * and should not be.  There are 2 solutions - the first
-             * is to enable the calling of SpecialHandling below - which
-             * will only be activated under Win9x (Preferably under user
-             * control, since they know if their keyboard isn't working), or
-             * just enable KeyB handling in config.sys, and do not enable the
-             * following call.
-
-             * 2004-11-26 Vicente Guerra
-             * (With some clarification by Paul Tucker)
-             * If making this fix the default under Win98, then it doesn't
-             * work for non-US keyboards.  (The default has now been changed)
-             * I tried to replicate the problem under Win98SE (Spanish),
-             * but it works fine. I hope someone could tell me how the
-             * problem appears, for try to fix it.
-
-             * "Microsoft has confirmed this to be a bug in the Microsoft
-             * products " Windows 95 & Windows 98 (According to MSDN)
-             *
-             */
 
             if( s_fSpecialKeyHandling && ( dwState & CAPSLOCK_ON ) )
                iChar = SpecialHandling( wScan, iChar, ( dwState & SHIFT_PRESSED ) != 0 );
@@ -1963,8 +1940,6 @@ static ZH_BOOL zh_gt_win_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
 
       case ZH_GTI_KBDSPECIAL:
          pInfo->pResult = zh_itemPutL( pInfo->pResult, s_fSpecialKeyHandling );
-         //if( s_fWin9x && zh_itemType( pInfo->pNewVal ) & ZH_IT_LOGICAL )
-         //   s_fSpecialKeyHandling = zh_itemGetL( pInfo->pNewVal );
          break;
 
       case ZH_GTI_KBDALT:
@@ -2120,7 +2095,7 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->Init                       = zh_gt_win_Init;
    pFuncTable->Exit                       = zh_gt_win_Exit;
 
-   pFuncTable->SetMode                    = zh_gt_win_SetMode;
+   pFuncTable->SetMode                    = zh_gt_win_SetRowsCols;
    
    pFuncTable->Redraw                     = zh_gt_win_Redraw;
    pFuncTable->Refresh                    = zh_gt_win_Refresh;

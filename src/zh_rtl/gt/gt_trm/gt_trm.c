@@ -3529,6 +3529,7 @@ static ZH_BOOL zh_gt_FuncInit( PZH_GT_FUNCS pFuncTable )
    pFuncTable->SetMode                    = zh_gt_trm_SetMode;
    pFuncTable->SetBlink                   = zh_gt_trm_SetBlink;
    pFuncTable->SetDispCP                  = zh_gt_trm_SetDispCP;
+   
    pFuncTable->Tone                       = zh_gt_trm_Tone;
    pFuncTable->Bell                       = zh_gt_trm_Bell;
    pFuncTable->Info                       = zh_gt_trm_Info;

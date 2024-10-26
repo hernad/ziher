@@ -545,7 +545,11 @@ extern ZH_EXPORT int gtcount( void );
 #define ZH_GTSUPER_REST(g,t,l,b,r,p)             (ZH_GTSUPERTABLE(g))->Rest(g,t,l,b,r,p)
 #define ZH_GTSUPER_PUTTEXT(g,r,c,m,s,l)          (ZH_GTSUPERTABLE(g))->PutText(g,r,c,m,s,l)
 #define ZH_GTSUPER_PUTTEXTW(g,r,c,m,s,l)         (ZH_GTSUPERTABLE(g))->PutTextW(g,r,c,m,s,l)
+
+// izvrsice default GT funkciju zh_gt_win_Replicate, s obzirom da nijedan drajver ne definise 
+// posebnu funkciju za to
 #define ZH_GTSUPER_REPLICATE(g,r,c,m,a,u,l)      (ZH_GTSUPERTABLE(g))->Replicate(g,r,c,m,a,u,l)
+
 #define ZH_GTSUPER_WRITEAT(g,r,c,s,l)            (ZH_GTSUPERTABLE(g))->WriteAt(g,r,c,s,l)
 #define ZH_GTSUPER_WRITEATW(g,r,c,s,l)           (ZH_GTSUPERTABLE(g))->WriteAtW(g,r,c,s,l)
 #define ZH_GTSUPER_WRITE(g,s,l)                  (ZH_GTSUPERTABLE(g))->Write(g,s,l)
@@ -580,6 +584,8 @@ extern ZH_EXPORT int gtcount( void );
 #define ZH_GTSUPER_SETDISPCP(g,t,h,b)            (ZH_GTSUPERTABLE(g))->SetDispCP(g,t,h,b)
 #define ZH_GTSUPER_SETKEYCP(g,t,h)               (ZH_GTSUPERTABLE(g))->SetKeyCP(g,t,h)
 #define ZH_GTSUPER_READKEY(g,m)                  (ZH_GTSUPERTABLE(g))->ReadKey(g,m)
+
+// => zh_gt_def_inkeyGet, s obzirom da nijedan drajver ne definise svoju funkciju
 #define ZH_GTSUPER_INKEYGET(g,w,d,m)             (ZH_GTSUPERTABLE(g))->InkeyGet(g,w,d,m)
 #define ZH_GTSUPER_INKEYPUT(g,k)                 (ZH_GTSUPERTABLE(g))->InkeyPut(g,k)
 #define ZH_GTSUPER_INKEYINS(g,k)                 (ZH_GTSUPERTABLE(g))->InkeyIns(g,k)

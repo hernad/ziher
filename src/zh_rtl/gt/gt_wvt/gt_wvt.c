@@ -103,6 +103,7 @@ static ZH_CRITICAL_NEW( s_wvtMtx );
 
 #define ZH_KF_ALTGR             0x10
 
+
 static PZH_GTWVT s_wvtWindows[ WVT_MAX_WINDOWS ];
 static int       s_wvtCount = 0;
 
@@ -110,9 +111,7 @@ static const TCHAR s_szClassName[] = TEXT( "Ziher_WVT_Class" );
 
 static LRESULT CALLBACK zh_gt_wvt_WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam );
 static ZH_BOOL zh_gt_wvt_FullScreen( PZH_GT pGT );
-#if defined( UNICODE )
 static void zh_gt_wvt_ResetBoxCharBitmaps( PZH_GTWVT pWVT );
-#endif
 
 static void zh_gt_wvt_RegisterClass( HINSTANCE hInstance )
 {
@@ -217,10 +216,6 @@ static void zh_gt_wvt_Free( PZH_GTWVT pWVT )
    if( pWVT->hWindowTitle )
       zh_strfree( pWVT->hWindowTitle );
 
-#if ! defined( UNICODE )
-   if( pWVT->hFontBox && pWVT->hFontBox != pWVT->hFont )
-      DeleteObject( pWVT->hFontBox );
-#else
    if( pWVT->wcTrans )
       zh_itemFreeC( ( char * ) pWVT->wcTrans );
 
@@ -232,7 +227,6 @@ static void zh_gt_wvt_Free( PZH_GTWVT pWVT )
       DeleteObject( pWVT->hPen );
    if( pWVT->hBrush )
       DeleteObject( pWVT->hBrush );
-#endif
    if( pWVT->hFont )
       DeleteObject( pWVT->hFont );
 
@@ -314,12 +308,8 @@ static PZH_GTWVT zh_gt_wvt_New( PZH_GT pGT, HINSTANCE hInstance, int iCmdShow )
 
    pWVT->CentreWindow      = ZH_TRUE;         /* Default is to always display window in centre of screen */
    pWVT->CodePage          = OEM_CHARSET;     /* GetACP(); - set code page to default system */
-#if ! defined( UNICODE )
-   pWVT->boxCodePage       = OEM_CHARSET;     /* GetACP(); - set code page to default system */
-#else
    pWVT->wcTrans           = NULL;
    pWVT->wcTransLen        = 0;
-#endif
 
    pWVT->Win9X             = zh_iswin9x();
 
@@ -362,7 +352,6 @@ static PZH_GTWVT zh_gt_wvt_New( PZH_GT pGT, HINSTANCE hInstance, int iCmdShow )
    return pWVT;
 }
 
-#if defined( UNICODE )
 
 #define zh_bm_line( x1, y1, x2, y2 )      do { \
                MoveToEx( pWVT->hBmpDC, x1, y1, NULL ); \
@@ -1354,7 +1343,6 @@ static HBITMAP zh_gt_wvt_DefineBoxChar( PZH_GTWVT pWVT, ZH_USHORT usCh )
 
 /* *********************************************************************** */
 
-#if defined( UNICODE )
 static void zh_gt_wvt_ResetBoxCharBitmaps( PZH_GTWVT pWVT )
 {
    int i;
@@ -1368,7 +1356,6 @@ static void zh_gt_wvt_ResetBoxCharBitmaps( PZH_GTWVT pWVT )
    for( i = 0; i < ZH_BOXCH_TRANS_COUNT; ++i )
       pWVT->boxIndex[ i ] = ZH_BOXCH_TRANS_MAX;
 }
-#endif
 
 /* *********************************************************************** */
 
@@ -1460,7 +1447,7 @@ static HBITMAP zh_gt_wvt_GetBoxChar( PZH_GTWVT pWVT, ZH_USHORT * puc16 )
 
    return pWVT->boxImage[ iTrans ];
 }
-#endif /* UNICODE */
+
 
 /*
  * use the standard fixed OEM font, unless the caller has requested set size fonts
@@ -1622,25 +1609,6 @@ static ZH_BOOL zh_gt_wvt_GetCharFromInputQueue( PZH_GTWVT pWVT, int * iKey )
    return ZH_FALSE;
 }
 
-#if ! defined( UNICODE )
-static int zh_gt_wvt_key_ansi_to_oem( int c )
-{
-   BYTE pszSrc[ 2 ];
-   wchar_t pszWide[ 1 ];
-   BYTE pszDst[ 2 ];
-
-   pszSrc[ 0 ] = ( CHAR ) c;
-   pszSrc[ 1 ] =
-   pszDst[ 0 ] =
-   pszDst[ 1 ] = 0;
-
-   if( MultiByteToWideChar( CP_ACP, MB_PRECOMPOSED, ( LPCSTR ) pszSrc, 1, ( LPWSTR ) pszWide, 1 ) &&
-       WideCharToMultiByte( CP_OEMCP, 0, ( LPCWSTR ) pszWide, 1, ( LPSTR ) pszDst, 1, NULL, NULL ) )
-      return pszDst[ 0 ];
-   else
-      return c;
-}
-#endif
 
 static void zh_gt_wvt_FitRows( PZH_GTWVT pWVT )
 {
@@ -1754,10 +1722,8 @@ static void zh_gt_wvt_FitSize( PZH_GTWVT pWVT )
                pWVT->PTEXTSIZE.x = tm.tmAveCharWidth;
                pWVT->PTEXTSIZE.y = tm.tmHeight;
 
-#if defined( UNICODE )
                /* reset character bitmap tables (after font selection) */
                zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
-#endif
 
 
                pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
@@ -1857,21 +1823,6 @@ static void zh_gt_wvt_ResetWindowSize( PZH_GTWVT pWVT, HFONT hFont )
       if( ! hFont )
          hFont = zh_gt_wvt_GetFont( pWVT->fontFace, pWVT->fontHeight, pWVT->fontWidth,
                                     pWVT->fontWeight, pWVT->fontQuality, pWVT->CodePage );
-#if ! defined( UNICODE )
-      if( pWVT->hFont )
-         DeleteObject( pWVT->hFont );
-      if( pWVT->hFontBox && pWVT->hFontBox != pWVT->hFont )
-         DeleteObject( pWVT->hFontBox );
-      if( pWVT->CodePage == pWVT->boxCodePage )
-         pWVT->hFontBox = hFont;
-      else
-      {
-         pWVT->hFontBox = zh_gt_wvt_GetFont( pWVT->fontFace, pWVT->fontHeight, pWVT->fontWidth,
-                                             pWVT->fontWeight, pWVT->fontQuality, pWVT->boxCodePage );
-         if( ! pWVT->hFontBox )
-            pWVT->hFontBox = hFont;
-      }
-#endif
       pWVT->hFont = hFont;
    }
    else
@@ -1893,11 +1844,8 @@ static void zh_gt_wvt_ResetWindowSize( PZH_GTWVT pWVT, HFONT hFont )
                     tm.tmAveCharWidth; /* For fixed FONT should == tm.tmMaxCharWidth */
    pWVT->PTEXTSIZE.y = tm.tmHeight;    /* but seems to be a problem on Win9X so */
                                        /* assume proportional fonts always for Win9X */
-#if defined( UNICODE )
    /* reset character bitmaps (after font selection) */
    zh_gt_wvt_ResetBoxCharBitmaps( pWVT );
-#endif
-
 
    pWVT->FixedFont = ! pWVT->Win9X && pWVT->fontWidth >= 0 &&
                      ( tm.tmPitchAndFamily & TMPF_FIXED_PITCH ) == 0 &&
@@ -2212,10 +2160,6 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
             RedrawWindow( pWVT->hWnd, NULL, NULL, RDW_INVALIDATE | RDW_UPDATENOW );
 
             {
-#if ! defined( UNICODE )
-               PZH_CODEPAGE cdpHost = ZH_GTSELF_HOSTCP( pWVT->pGT ),
-                            cdpBox  = ZH_GTSELF_BOXCP( pWVT->pGT );
-#endif
                TCHAR * sBuffer;
                ZH_SIZE nSize, n;
                int     row, col;
@@ -2242,11 +2186,7 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
 
                      if( ! ZH_GTSELF_GETSCRCHAR( pWVT->pGT, row, col, &iColor, &bAttr, &usChar ) )
                         break;
-#if defined( UNICODE )
                      usChar = zh_cdpGetU16Ctrl( usChar );
-#else
-                     usChar = zh_cdpGetUC( ( bAttr & ZH_GT_ATTR_BOX ) ? cdpBox : cdpHost, usChar, '?' );
-#endif
                      sBuffer[ n++ ] = ( TCHAR ) usChar;
                   }
                   if( rect.top < rect.bottom )
@@ -2256,7 +2196,6 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
                   }
                }
 
-#if defined( UNICODE )
                if( n > 0 )
                {
                   PZH_ITEM pItem = zh_itemPutStrLenU16( NULL, ZH_CODEPAGE_ENDIAN_NATIVE, sBuffer, n );
@@ -2264,17 +2203,6 @@ static void zh_gt_wvt_MouseEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, L
                   zh_itemRelease( pItem );
                }
                zh_xfree( sBuffer );
-#else
-               if( n > 0 )
-               {
-                  PZH_ITEM pItem = zh_itemPutCLPtr( NULL, sBuffer, n );
-                  zh_gt_winapi_setClipboard( pWVT->CodePage == OEM_CHARSET ?
-                                             CF_OEMTEXT : CF_TEXT, pItem );
-                  zh_itemRelease( pItem );
-               }
-               else
-                  zh_xfree( sBuffer );
-#endif
             }
 
             zh_gt_wvt_Composited( pWVT, ZH_TRUE );
@@ -2701,28 +2629,12 @@ static ZH_BOOL zh_gt_wvt_KeyEvent( PZH_GTWVT pWVT, UINT message, WPARAM wParam, 
                         break;
                   }
                }
-#if defined( UNICODE )
                if( iKey >= 127 )
                   iKey = ZH_INKEY_NEW_UNICODEF( iKey, iFlags );
                else if( iFlags & ( ZH_KF_CTRL | ZH_KF_ALT ) )
                   iKey = ZH_INKEY_NEW_KEY( iKey, iFlags );
                else
                   iKey = ZH_INKEY_NEW_CHARF( iKey, iFlags );
-#else
-               {
-                  int u = ZH_GTSELF_KEYTRANS( pWVT->pGT, iKey );
-                  if( u )
-                     iKey = ZH_INKEY_NEW_UNICODEF( u, iFlags );
-                  else if( iKey < 127 && ( iFlags & ( ZH_KF_CTRL | ZH_KF_ALT ) ) )
-                     iKey = ZH_INKEY_NEW_KEY( iKey, iFlags );
-                  else
-                  {
-                     if( pWVT->CodePage == OEM_CHARSET )
-                        iKey = zh_gt_wvt_key_ansi_to_oem( iKey );
-                     iKey = ZH_INKEY_NEW_CHARF( iKey, iFlags );
-                  }
-               }
-#endif
             }
          }
          pWVT->IgnoreWM_SYSCHAR = ZH_FALSE;
@@ -2778,9 +2690,6 @@ static void zh_gt_wvt_PaintText( PZH_GTWVT pWVT )
    ZH_BYTE     bAttr;
    ZH_BOOL     fFixMetric = ( pWVT->fontAttribute & ZH_GTI_FONTA_FIXMETRIC ) != 0;
 
-#if ! defined( UNICODE )
-   HFONT       hFont, hOldFont = NULL;
-#endif
 
    hdc = BeginPaint( pWVT->hWnd, &ps );
 
@@ -2844,9 +2753,7 @@ static void zh_gt_wvt_PaintText( PZH_GTWVT pWVT )
       DeleteObject( hBrush );
    }
 
-#if defined( UNICODE )
    SelectObject( hdc, pWVT->hFont );
-#endif
 
    rcRect = zh_gt_wvt_GetColRowFromXYRect( pWVT, ps.rcPaint );
 
@@ -2859,7 +2766,6 @@ static void zh_gt_wvt_PaintText( PZH_GTWVT pWVT )
 
       while( iCol <= rcRect.right )
       {
-#if defined( UNICODE )
          HBITMAP hBitMap;
          ZH_USHORT usChar;
 
@@ -2907,34 +2813,6 @@ static void zh_gt_wvt_PaintText( PZH_GTWVT pWVT )
             }
             pWVT->TextLine[ len++ ] = ( TCHAR ) usChar;
          }
-#else
-         ZH_UCHAR uc;
-         if( ! ZH_GTSELF_GETSCRUC( pWVT->pGT, iRow, iCol, &iColor, &bAttr, &uc, ZH_TRUE ) )
-            break;
-         hFont = ( bAttr & ZH_GT_ATTR_BOX ) ? pWVT->hFontBox : pWVT->hFont;
-         if( len == 0 )
-         {
-            if( hFont != hOldFont )
-            {
-               SelectObject( hdc, hFont );
-               hOldFont = hFont;
-            }
-            iOldColor = iColor;
-         }
-         else if( iColor != iOldColor || hFont != hOldFont || fFixMetric )
-         {
-            zh_gt_wvt_TextOut( pWVT, hdc, startCol, iRow, iOldColor, pWVT->TextLine, ( UINT ) len );
-            if( hFont != hOldFont )
-            {
-               SelectObject( hdc, hFont );
-               hOldFont = hFont;
-            }
-            iOldColor = iColor;
-            startCol = iCol;
-            len = 0;
-         }
-         pWVT->TextLine[ len++ ] = ( TCHAR ) uc;
-#endif
          iCol++;
       }
       if( len > 0 )
@@ -3577,11 +3455,7 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          break;
 
       case ZH_GTI_ISUNICODE:
-#if defined( UNICODE )
          pInfo->pResult = zh_itemPutL( pInfo->pResult, ZH_TRUE );
-#else
-         pInfo->pResult = zh_itemPutL( pInfo->pResult, ZH_FALSE );
-#endif
          break;
 
       case ZH_GTI_INPUTFD:
@@ -3835,29 +3709,13 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
             {
                if( ! pWVT->hWnd )
                   pWVT->CodePage = iVal;
-#if ! defined( UNICODE )
-               else if( iVal == pWVT->boxCodePage )
-               {
-                  if( pWVT->hFont != pWVT->hFontBox )
-                  {
-                     if( pWVT->hFont )
-                        DeleteObject( pWVT->hFont );
-                     pWVT->hFont = pWVT->hFontBox;
-                  }
-                  pWVT->CodePage = iVal;
-               }
-#endif
                else
                {
                   HFONT hFont = zh_gt_wvt_GetFont( pWVT->fontFace, pWVT->fontHeight, pWVT->fontWidth,
                                                    pWVT->fontWeight, pWVT->fontQuality, iVal );
                   if( hFont )
                   {
-#if ! defined( UNICODE )
-                     if( pWVT->hFont && pWVT->hFont != pWVT->hFontBox )
-#else
                      if( pWVT->hFont )
-#endif
                         DeleteObject( pWVT->hFont );
                      pWVT->hFont = hFont;
                      pWVT->CodePage = iVal;
@@ -3867,45 +3725,7 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
          }
          break;
 
-#if ! defined( UNICODE )
-      case ZH_GTI_BOXCP:
-         pInfo->pResult = zh_itemPutNI( pInfo->pResult, pWVT->boxCodePage );
-         if( zh_itemType( pInfo->pNewVal ) & ZH_IT_NUMERIC )
-         {
-            iVal = zh_itemGetNI( pInfo->pNewVal );
-            if( iVal != pWVT->boxCodePage )
-            {
-               if( ! pWVT->hWnd )
-                  pWVT->boxCodePage = iVal;
-               else if( iVal == pWVT->CodePage )
-               {
-                  if( pWVT->hFontBox != pWVT->hFont )
-                  {
-                     if( pWVT->hFontBox )
-                        DeleteObject( pWVT->hFontBox );
-                     pWVT->hFontBox = pWVT->hFont;
-                  }
-                  pWVT->boxCodePage = iVal;
-               }
-               else
-               {
-                  HFONT hFont = zh_gt_wvt_GetFont( pWVT->fontFace, pWVT->fontHeight, pWVT->fontWidth,
-                                                   pWVT->fontWeight, pWVT->fontQuality, iVal );
-                  if( hFont )
-                  {
-                     if( pWVT->hFontBox && pWVT->hFontBox != pWVT->hFont )
-                        DeleteObject( pWVT->hFontBox );
-                     pWVT->hFontBox = hFont;
-                     pWVT->boxCodePage = iVal;
-                  }
-               }
-            }
-         }
-         break;
 
-      case ZH_GTI_UNITRANS:
-         break;
-#else
       case ZH_GTI_UNITRANS:
          if( pWVT->wcTrans )
             pInfo->pResult = zh_itemPutCL( pInfo->pResult, ( char * ) pWVT->wcTrans,
@@ -3923,7 +3743,6 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
                                  ( ZH_WCHAR * ) zh_itemGetC( pInfo->pNewVal );
          }
          break;
-#endif
       case ZH_GTI_ICONFILE:
       case ZH_GTI_ICONRES:
       {
@@ -3981,22 +3800,12 @@ static ZH_BOOL zh_gt_wvt_Info( PZH_GT pGT, int iType, PZH_GT_INFO pInfo )
 
       case ZH_GTI_CLIPBOARDDATA:
          if( zh_itemType( pInfo->pNewVal ) & ZH_IT_STRING )
-#if defined( UNICODE )
             zh_gt_winapi_setClipboard( CF_UNICODETEXT, pInfo->pNewVal );
-#else
-            zh_gt_winapi_setClipboard( pWVT->CodePage == OEM_CHARSET ?
-                                       CF_OEMTEXT : CF_TEXT, pInfo->pNewVal );
-#endif
          else
          {
             if( pInfo->pResult == NULL )
                pInfo->pResult = zh_itemNew( NULL );
-#if defined( UNICODE )
             zh_gt_winapi_getClipboard( CF_UNICODETEXT, pInfo->pResult );
-#else
-            zh_gt_winapi_getClipboard( pWVT->CodePage == OEM_CHARSET ?
-                                       CF_OEMTEXT : CF_TEXT, pInfo->pResult );
-#endif
          }
          break;
 
