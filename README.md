@@ -17,6 +17,26 @@ C:\dev\ziher\ziher_mono\ziher\src\bazel-bin\test>dir f18ziherpy.pyd
                0 Dir(s)  762.793.041.920 bytes free
 </pre>
 
+## Python API Reference
+
+Below is a summary of the `f18ziherpy` module's API:
+
+| Python call                                                   | Description                                                      |
+|---------------------------------------------------------------|------------------------------------------------------------------|
+| `vminit(startMain, initRT, releaseConsole)`                   | Initialize the Ziher VM                                          |
+| `vmquit(releaseRT)`                                           | Quit the Ziher VM                                                |
+| `con_init()`                                                  | Initialize console I/O                                           |
+| `con_release()`                                               | Release console I/O                                              |
+| `run(funcName, initConsole=0, releaseConsole=0)`               | Call a Ziher function (no return value)                          |
+| `run_get(funcName, initConsole=0, releaseConsole=0, returnType=0)` | Call a Ziher function and get its return (`str` or `int`)       |
+| `put_get(funcName, param, initConsole=0, releaseConsole=0)`    | Call a Ziher function with a string parameter and get its return (`str`) |
+| `hash(hashName, initConsole=0, releaseConsole=0)`             | Pass a Ziher hash in/out and return a Python `dict`               |
+| `set_callback(callback)`                                      | Register a Python callable for Ziher to invoke via `PY_CALLBACK`  |
+| `system(command)`                                             | Execute a shell command via `system()`                           |
+| `f18(command)`                                                | Execute an f18 command (e.g., `--help` or run in VM)             |
+
+For callback support, the `ziher_set_py_callback` function (in `zh_zero/zh_python.c`) saves the Python callable, and the Ziher function `PY_CALLBACK` can be used in Ziher code to invoke back into Python.
+
 
 <pre>
 C:\dev\ziher\ziher_mono\ziher\src\bazel-bin\test>dumpbin /dependents f18ziherpy.pyd
